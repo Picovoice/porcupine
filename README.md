@@ -1,6 +1,8 @@
 # Porcupine
 
-Porcupine is a self-service, highly-accurate, and lightweight **wake word** detection engine. It enables developers to 
+[![Build Status](https://travis-ci.org/Picovoice/Porcupine.svg?branch=master)](https://travis-ci.org/Picovoice/Porcupine)
+
+Porcupine is a self-service, highly-accurate, and lightweight **wake word** detection engine. It enables developers to
 build always-listening voice-enabled applications/platforms. Porcupine is
 
 * self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
