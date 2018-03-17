@@ -1,0 +1,2 @@
+pysoundfile==0.9.0
+enum34==1.1.6
