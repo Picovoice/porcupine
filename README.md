@@ -233,3 +233,8 @@ When initialized, input audio can be monitored using `manager.start() `. When do
 Anything you find in this repository is licensed under Apache 2.0. For obtaining a commercial license please contact us
 at sales@picovoice.ai.
 
+## Tools/Data used
+
+[MXNet](https://github.com/apache/incubator-mxnet) is used for training DNNs. Furthermore, 
+[LibriSpeech](http://www.openslr.org/12/) is used as the base training data.
+
