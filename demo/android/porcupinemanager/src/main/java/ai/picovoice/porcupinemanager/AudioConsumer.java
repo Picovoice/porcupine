@@ -16,19 +16,16 @@
 
 package ai.picovoice.porcupinemanager;
 
-
-import ai.picovoice.porcupine.PorcupineException;
-
 /**
  * AudioConsumer process the raw PCM data.
  */
 interface AudioConsumer {
     /**
      * Consume the raw PCM data.
-     * @throws PorcupineException An exception is thrown if there is an error while processing
+     * @throws PorcupineManagerException An exception is thrown if there is an error while processing
      * the PCM data.
      */
-     void consume(short[] pcm) throws PorcupineException;
+     void consume(short[] pcm) throws PorcupineManagerException;
 
     /**
      * Number of audio samples per frame.
