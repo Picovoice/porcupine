@@ -35,7 +35,7 @@ import android.widget.ToggleButton;
 
 import java.io.File;
 
-import ai.picovoice.porcupine.PorcupineException;
+import ai.picovoice.porcupinemanager.PorcupineManagerException;
 import ai.picovoice.porcupinemanager.KeywordCallback;
 import ai.picovoice.porcupinemanager.PorcupineManager;
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 porcupineManager.stop();
             }
-        } catch (PorcupineException e) {
+        } catch (PorcupineManagerException e) {
             Utils.showErrorToast(this);
         }
     }
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
      * Initialize the porcupineManager library.
      * @return Porcupine instance.
      */
-    private PorcupineManager initPorcupine() throws PorcupineException {
+    private PorcupineManager initPorcupine() throws PorcupineManagerException {
         Spinner mySpinner= findViewById(R.id.keyword_spinner);
         String kwd = mySpinner.getSelectedItem().toString();
         // It is assumed that the file name is all lower-case and spaces are replaced with "_".
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 porcupineManager = initPorcupine();
                 porcupineManager.start();
-            } catch (PorcupineException e) {
+            } catch (PorcupineManagerException e) {
                 Utils.showErrorToast(this);
             }
         }
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     if (porcupineManager != null) {
                         try {
                             porcupineManager.stop();
-                        } catch (PorcupineException e) {
+                        } catch (PorcupineManagerException e) {
                             Utils.showErrorToast(getApplicationContext());
                         }
                     }
