@@ -45,14 +45,18 @@ public class PorcupineManager {
         }
         /**
          * Consume the raw PCM data and notify user by using {@link KeywordCallback}.
-         * @throws PorcupineException An exception is thrown if there is an error while processing
+         * @throws PorcupineManagerException An exception is thrown if there is an error while processing
          * the PCM data by Porcupine library.
          */
         @Override
-        public void consume(short[] pcm) throws PorcupineException {
-            boolean seen = porcupine.process(pcm);
-            if (seen) {
-                keywordCallback.run();
+        public void consume(short[] pcm) throws PorcupineManagerException {
+            try {
+                boolean seen = porcupine.processFrame(pcm);
+                if (seen) {
+                    keywordCallback.run();
+                }
+            } catch (PorcupineException e) {
+                throw new PorcupineManagerException(e);
             }
         }
 
@@ -83,34 +87,38 @@ public class PorcupineManager {
      * at the cost of increased false alarm rate. For more information regarding this parameter
      * refer to 'include/pv_porcupine.h'.
      * @param keywordCallback callback when hte keyword is detected.
-     * @throws PorcupineException if there is an error while initializing Porcupine.
+     * @throws PorcupineManagerException if there is an error while initializing Porcupine.
      */
     public PorcupineManager(String modelFilePath, String keywordFilePath, float sensitivity,
-                            KeywordCallback keywordCallback) throws PorcupineException {
-        porcupine = new Porcupine(modelFilePath, keywordFilePath, sensitivity);
+                            KeywordCallback keywordCallback) throws PorcupineManagerException {
+        try {
+            porcupine = new Porcupine(modelFilePath, keywordFilePath, sensitivity);
+        } catch (PorcupineException e) {
+            throw new PorcupineManagerException(e);
+        }
         AudioConsumer audioConsumer = new PorcupineAudioConsumer(keywordCallback);
         audioRecorder = new AudioRecorder(audioConsumer);
     }
 
     /**
      * Start recording.
-     * @throws PorcupineException if AudioRecorder throws an exception while recording audio.
+     * @throws PorcupineManagerException if AudioRecorder throws an exception while recording audio.
      * audio.
      */
-    public void start() throws PorcupineException {
+    public void start() throws PorcupineManagerException {
         audioRecorder.start();
     }
 
     /**
      * Stop recording and dispose the engine.
-     * @throws PorcupineException if the {@link AudioRecorder} throws an exception while it's
+     * @throws PorcupineManagerException if the {@link AudioRecorder} throws an exception while it's
      * getting stopped.
      */
-    public void stop() throws PorcupineException {
+    public void stop() throws PorcupineManagerException {
         try {
             audioRecorder.stop();
         } catch (InterruptedException e) {
-            throw new PorcupineException(e);
+            throw new PorcupineManagerException(e);
         } finally {
             porcupine.delete();
         }
