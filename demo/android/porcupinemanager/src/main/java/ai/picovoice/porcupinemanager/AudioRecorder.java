@@ -28,7 +28,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ai.picovoice.porcupine.LogUtils;
-import ai.picovoice.porcupine.PorcupineException;
 
 
 /**
@@ -52,11 +51,11 @@ class AudioRecorder {
         /**
          * Record audio.
          * @return return null that is needed by the {@link Callable} interface.
-         * @throws PorcupineException An exception is thrown if {@link AudioRecord} or
+         * @throws PorcupineManagerException An exception is thrown if {@link AudioRecord} or
          * {@link ai.picovoice.porcupine} throws an error.
          */
         @Override
-        public Void call() throws PorcupineException {
+        public Void call() throws PorcupineManagerException {
             // Set the priority of this thread.
             android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
             record();
@@ -76,9 +75,9 @@ class AudioRecorder {
 
     /**
      * Start recording in a worker thread.
-     * @throws PorcupineException exception is thrown if the {@link RecordTask} throws an error.
+     * @throws PorcupineManagerException exception is thrown if the {@link RecordTask} throws an error.
      */
-    void start() throws PorcupineException {
+    void start() throws PorcupineManagerException {
         if (started.get()) {
             return;
         }
@@ -105,10 +104,10 @@ class AudioRecorder {
 
     /***
      * Record the audio and call the {@link AudioConsumer} to consume the raw PCM data.
-     * @throws PorcupineException exception is thrown if {@link AudioConsumer} throws an error or
+     * @throws PorcupineManagerException exception is thrown if {@link AudioConsumer} throws an error or
      * {@link AudioRecord} throws an error.
      */
-    private void record() throws PorcupineException {
+    private void record() throws PorcupineManagerException {
         int bufferSize = Math.max(sampleRate / 2,
                 AudioRecord.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT));
@@ -133,7 +132,7 @@ class AudioRecorder {
             record.stop();
 
         } catch (IllegalArgumentException | IllegalStateException e) {
-            throw new PorcupineException(e);
+            throw new PorcupineManagerException(e);
         } finally {
             if (record != null) {
                 record.release();

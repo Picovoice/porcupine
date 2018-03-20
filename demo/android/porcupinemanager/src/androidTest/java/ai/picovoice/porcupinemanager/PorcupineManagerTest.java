@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ai.picovoice.porcupine.PorcupineException;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -58,23 +57,23 @@ public class PorcupineManagerTest {
         copyFileToInternalStorage("porcupine.ppn");
     }
 
-    @Test(expected = PorcupineException.class)
-    public void initWithInvalidModelPath() throws PorcupineException {
+    @Test(expected = PorcupineManagerException.class)
+    public void initWithInvalidModelPath() throws PorcupineManagerException {
         new PorcupineManager("DummyModel.pv", keywordFilePath, 0.5f, null);
     }
 
-    @Test(expected = PorcupineException.class)
-    public void initWithInvalidKeywordFilePath() throws PorcupineException {
+    @Test(expected = PorcupineManagerException.class)
+    public void initWithInvalidKeywordFilePath() throws PorcupineManagerException {
         new PorcupineManager(modelFilePath, "DummyKeywordFile.ppn", 0.5f, null);
     }
 
-    @Test(expected = PorcupineException.class)
-    public void initWithInvalidSensitivity() throws PorcupineException {
+    @Test(expected = PorcupineManagerException.class)
+    public void initWithInvalidSensitivity() throws PorcupineManagerException {
         new PorcupineManager(modelFilePath, keywordFilePath, 2f, null);
     }
 
     @Test
-    public void runPorcupineManager() throws PorcupineException {
+    public void runPorcupineManager() throws PorcupineManagerException {
         PorcupineManager porcupineManager = new PorcupineManager(modelFilePath, keywordFilePath,
                 0.5f, null);
         assertNotNull(porcupineManager);

@@ -99,7 +99,7 @@ public class PorcupineTest {
         try {
             wavReader = new WavReader(audioFile);
             while (wavReader.readFrames(shortBuffer, frameLength) == frameLength) {
-                if (porcupine.process(shortBuffer)) {
+                if (porcupine.processFrame(shortBuffer)) {
                     count += 1;
                 }
             }
