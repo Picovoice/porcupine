@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package ai.picovoice.porcupine;
-
-
-import android.util.Log;
+package ai.picovoice.porcupinemanager;
 
 /**
- * Utility class to log in Android.
+ * Wrapper for Java Exceptions.
  */
-public class LogUtils {
-    /**
-     * Log a debug message.
-     * @param tag Source of the message, i.e., class or activity.
-     * @param message The message you would like logged.
-     */
-    public static void debug(final String tag, String message) {
-        if (BuildConfig.DEBUG) {
-            Log.d(tag, message);
-        }
+public class PorcupineManagerException extends Exception {
+    public PorcupineManagerException(Throwable cause) {
+        super(cause);
     }
 }
