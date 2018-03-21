@@ -61,8 +61,22 @@ public class Porcupine {
      * regarding required audio properties (i.e. sample rate, number of channels encoding, and
      * number of samples per frame) please refer to 'include/pv_porcupine.h'.
      * @return True if wake word is detected.
+     * @throws PorcupineException if there is an error while processing the audio sample.
      */
-    public native boolean process(short[] pcm);
+    public boolean processFrame(short[] pcm) throws PorcupineException {
+        try {
+            return process(pcm);
+        } catch (Exception e) {
+            throw new PorcupineException(e);
+        }
+    }
+
+    /**
+     * Process incoming audio stream for a given wake word.
+     * @param pcm An array of consecutive audio samples.
+     * @return True if wake word is detected.
+     */
+    private native boolean process(short[] pcm);
 
     /**
      * Releases resources acquired by Porcupine's library.
@@ -77,5 +91,3 @@ public class Porcupine {
      */
     private native void init(String modelFilePath, String keywordFilePath, float sensitivity);
 }
-
-
