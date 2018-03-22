@@ -52,6 +52,11 @@ Using [Android Studio](https://developer.android.com/studio/index.html) open [de
 project and then run the application. Note that you need an android phone with developer options enabled connected to
 your machine in order to run the application.
 
+### iOS Demo Application
+
+Using [Xcode](https://developer.apple.com/xcode/) open [demo/ios](/demo/ios) and run the application. Note that you need
+an iOS device connected to your machine and a valid Apple developer account.
+
 ## Creating Keyword Files
 
 Porcupine enables developers to build models for any wake word. This is done using Porcupine's optimizer utility.
@@ -206,7 +211,7 @@ manages all activities related to creating an input audio stream, feeding it int
 invoking a user-provided detection callback. The class can be initialized as below
 
 ```java
-    final String modelFilePath = ... # It is available at lib/common/porcupine_params.pv
+    final String modelFilePath = ... // It is available at lib/common/porcupine_params.pv
     final String keywordFilePath = ...
     final float sensitivity = 0.5f;
     
@@ -226,6 +231,78 @@ Sensitivity is the parameter that enables developers to trade miss rate for fals
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
  
 When initialized, input audio can be monitored using `manager.start() `. When done be sure to stop the manager using
+`manager.stop()`.
+
+### iOS
+
+There are two approaches for integrating Porcupine into an iOS application.
+
+#### Direct
+
+Porcupine is shipped as a precompiled ANSI C library can directly be used in Swift using module maps. It can be 
+initialized using
+
+```swift
+let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
+let keywordFilePath: String = ...
+let sensitivity: Float = 0.5;
+var handle: OpaquePointer?
+
+let status = pv_porcupine_init(modelFilePath, keywordFilePath, sensitivity, &handle)
+if status != PV_STATUS_SUCCESS {
+    // error handling logic
+}
+```
+
+Then `handle` can be used to monitor incoming audio stream
+
+```swift
+func getNextAudioFrame() -> UnsafeMutablePointer<Int16> {
+    //
+}
+
+while true {
+    let pcm = getNextAudioFrame()
+    var result = false
+    
+    let status = pv_porcupine_process(handle, pcm, &result)
+    if status != PV_STATUS_SUCCESS {
+        // error handling logic
+    }
+    if result {
+        // detection event logic/callback
+    }
+}
+```
+
+When done release the resources via
+
+```swift
+    pv_porcupine_delete(handle)
+```
+
+#### Binding
+
+[PorcupineManager](/binding/ios/PorcupineManager.swift) class manages all activities related to creating an input audio 
+stream, feeding it into Porcupine's library, and invoking a user-provided detection callback. The class can be 
+initialized as below
+
+```swift
+let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
+let keywordFilePath: String = ...
+let sensitivity: Float = 0.5
+let keywordCallback: (() -> Void) = {
+    // detection event callback
+}
+
+let manager = PorcupineManager(
+    modelFilePath: modelFilePath,
+    keywordFilePath: keywordFilePath,
+    sensitivity: sensitivity,
+    keywordCallback: keywordCallback)
+```
+
+When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using 
 `manager.stop()`.
 
 ## License
