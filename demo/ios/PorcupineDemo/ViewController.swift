@@ -84,7 +84,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             } catch let ex {
                 let alert = UIAlertController(
                     title: "Alert",
-                    message: "Failed to initialized Porcupine " + ex.localizedDescription,
+                    message: "Something went wrong" + ex.localizedDescription,
                     preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
