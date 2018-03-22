@@ -81,10 +81,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
             do {
                 try porcupineManager.start()
-            } catch let ex {
+            } catch {
                 let alert = UIAlertController(
                     title: "Alert",
-                    message: "Something went wrong" + ex.localizedDescription,
+                    message: "Something went wrong",
                     preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
