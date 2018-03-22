@@ -1,1 +1,4 @@
 *.pyc
+demo/ios/PorcupineDemo.xcodeproj/xcuserdata/
+demo/ios/PorcupineDemo.xcodeproj/project.xcworkspace/
+
