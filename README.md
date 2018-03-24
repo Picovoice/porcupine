@@ -12,6 +12,24 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 **Mac** are supported.
 * **open-source**. Anything you find in this repository is Apache 2.0 licensed.
 
+## Table of Contents
+
+* [Try It Out](#try-it-out)
+* [Structure of Repository](#structure-of-repository)
+* [Running Demo Applications](#running-demo-applications)
+    * [Python Demo Application (Raspberry Pi, Linux, Mac)](#python-demo-application-(raspberry-pi,-linux,-mac))
+    * [Android Demo Application](#android-demo-application)
+    * [iOS Demo Application](#ios-demo-application)
+* [Creating Keyword Files](#creating-keyword-files)
+* [Integration](#integration)
+    * [C](#c)
+    * [Python](#python)
+    * [Android](#android)
+    * [iOS](#ios)
+* [Contributing](#contributing)
+* [License](#license)
+* [Tools/Data used](#tools/data-used)
+
 ## Try It Out
 
 Try out Porcupine by downloading it's [Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en).
@@ -27,8 +45,7 @@ Bindings are available at [binding/](/binding) to facilitate usage from higher-l
 applications are at [demo/](/demo). When possible, use one of the demo applications as a starting point for your own implementation.
 
 [tools/](/tools) contains utility programs. Finally, [resources/](/resources) is a placeholder for data used by
-various applications within the repository. Some of the files under resources as stored using [Git LFS](https://git-lfs.github.com/).
-Please be sure to [install Git LFS](https://help.github.com/articles/installing-git-large-file-storage/) before cloning the repository. 
+various applications within the repository.
 
 Below is a quick walk-through of the repository. For detailed instructions please visit relevant pages. Throughout the
 documentation it is assumed that the current working directory is the root of repository.
@@ -304,6 +321,10 @@ let manager = PorcupineManager(
 
 When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using 
 `manager.stop()`.
+
+## Contributing
+
+If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
