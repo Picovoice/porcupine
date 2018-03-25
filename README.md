@@ -1,6 +1,12 @@
-# Porcupine
+<p align="center">
+  <img src="https://github.com/Picovoice/Porcupine/blob/master/demo/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png?raw=true" alt="PROCUPiNE"/>
+</p>
+
+# Porcupine &nbsp; [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=On-device%20wake%20word%20detection%20engine%20powered%20by%20deep%20learning&url=https://github.com/Picovoice/Porcupine&hashtags=deeplearning,voice,AI,privacy)
 
 [![Build Status](https://travis-ci.org/Picovoice/Porcupine.svg?branch=master)](https://travis-ci.org/Picovoice/Porcupine)
+[![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/Picovoice/Porcupine/blob/master/LICENSE)
 
 Porcupine is a self-service, highly-accurate, and lightweight **wake word** detection engine. It enables developers to
 build always-listening voice-enabled applications/platforms. Porcupine is
