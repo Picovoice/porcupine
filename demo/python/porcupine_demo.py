@@ -64,7 +64,7 @@ class PorcupineDemo(Thread):
         self._library_path = library_path
         self._model_file_path = model_file_path
         self._keyword_file_path = keyword_file_path
-        self._sensitivity = sensitivity
+        self._sensitivity = float(sensitivity)
         self._input_device_index = input_device_index
 
         self._output_path = output_path
