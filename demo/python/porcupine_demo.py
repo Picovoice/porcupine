@@ -137,32 +137,19 @@ class PorcupineDemo(Thread):
         pa.terminate()
 
 
-def _system():
-    x = platform.system()
-    if x == 'Linux':
-        return 'linux'
-    elif x == 'Darwin':
-        return 'mac'
-    else:
-        raise NotImplementedError('Porcupine is not supported on %s yet!' % x)
+def _default_library_path():
+    system = platform.system()
+    machine = platform.machine()
 
+    if system == 'Darwin':
+        return os.path.join(os.path.dirname(__file__), '../../lib/mac/%s/libpv_porcupine.dylib' % machine)
+    elif system == 'Linux':
+        if machine == 'x86_64' or machine == 'i386':
+            return os.path.join(os.path.dirname(__file__), '../../lib/linux/%s/libpv_porcupine.so' % machine)
+        elif machine.startswith('arm'):
+            return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/libpv_porcupine.so')
 
-def _machine():
-    x = platform.machine()
-    if x == 'x86_64' or x == 'i386':
-        return x
-    else:
-        raise NotImplementedError('Porcupine is not supported on %s yet!' % x)
-
-
-def _dynamic_library_extension():
-    x = _system()
-    if x == 'linux':
-        return 'so'
-    elif x == 'mac':
-        return 'dylib'
-    else:
-        raise NotImplementedError('Porcupine is not supported on %s yet!' % x)
+    raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
 
 if __name__ == '__main__':
@@ -170,14 +157,11 @@ if __name__ == '__main__':
 
     parser.add_argument('--keyword_file_path', help='absolute path to keyword file', type=str)
 
-    default_library_path = os.path.join(
-            os.path.dirname(__file__),
-            '../../lib/%s/%s/libpv_porcupine.%s' % (_system(), _machine(), _dynamic_library_extension()))
     parser.add_argument(
         '--library_path',
         help="absolute path to Porcupine's dynamic library",
         type=str,
-        default=default_library_path)
+        default=_default_library_path())
 
     parser.add_argument(
         '--model_file_path',
