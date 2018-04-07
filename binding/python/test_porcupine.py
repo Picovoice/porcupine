@@ -27,10 +27,9 @@ class PorcupineTestCase(unittest.TestCase):
 
     def setUp(self):
         self._porcupine = Porcupine(
-            library_path=self._abs_path('../../lib/%s/%s/libpv_porcupine.%s' % (self._system(), self._machine(),
-                                                                                self._dylib_extension())),
+            library_path=self._library_path(),
             model_file_path=self._abs_path('../../lib/common/porcupine_params.pv'),
-            keyword_file_path=self._abs_path('../../resources/keyword_files/porcupine_%s.ppn' % (self._system())),
+            keyword_file_path=self._abs_path('../../resources/keyword_files/porcupine_%s.ppn' % self._keyword_file_extension()),
             sensitivity=0.5)
 
     def tearDown(self):
@@ -55,33 +54,33 @@ class PorcupineTestCase(unittest.TestCase):
         return os.path.join(os.path.dirname(__file__), rel_path)
 
     @staticmethod
-    def _system():
-        x = platform.system()
-        if x == 'Linux':
+    def _keyword_file_extension():
+        system = platform.system()
+        machine = platform.machine()
+
+        if system == 'Linux' and (machine == 'x86_64' or machine == 'i386'):
             return 'linux'
-        elif x == 'Darwin':
+        elif system == 'Darwin':
             return 'mac'
-        else:
-            raise NotImplementedError('Porcupine is not supported on %s yet!' % x)
+        elif system == 'Linux' and machine.startswith('arm'):
+            return 'raspberrypi'
+
+        raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
     @staticmethod
-    def _machine():
-        x = platform.machine()
-        if x == 'x86_64' or x == 'i386':
-            return x
-        else:
-            raise NotImplementedError('Porcupine is not supported on %s yet!' % x)
+    def _library_path():
+        system = platform.system()
+        machine = platform.machine()
 
-    @staticmethod
-    def _dylib_extension():
-        s = platform.system()
-        if s == 'Linux':
-            return 'so'
+        if system == 'Darwin':
+            return os.path.join(os.path.dirname(__file__), '../../lib/mac/%s/libpv_porcupine.dylib' % machine)
+        elif system == 'Linux':
+            if machine == 'x86_64' or machine == 'i386':
+                return os.path.join(os.path.dirname(__file__), '../../lib/linux/%s/libpv_porcupine.so' % machine)
+            elif machine.startswith('arm'):
+                return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/libpv_porcupine.so')
 
-        if s == 'Darwin':
-            return 'dylib'
-
-        raise NotImplementedError('Porcupine is not supported on %s yet!' % s)
+        raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
 
 if __name__ == '__main__':
