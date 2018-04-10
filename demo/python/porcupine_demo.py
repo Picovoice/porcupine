@@ -34,15 +34,15 @@ from porcupine import Porcupine
 class PorcupineDemo(Thread):
     """
     Demo class for wake word detection (aka Porcupine) library. It creates an input audio stream from a microphone,
-    monitors it, and upon detecting the specified wake word prints the detection time on console. It optionally saves
-    the recorded audio into a file for further review.
+    monitors it, and upon detecting the specified wake word(s) prints the detection time and index of wake word on
+    console. It optionally saves the recorded audio into a file for further review.
     """
 
     def __init__(
             self,
             library_path,
             model_file_path,
-            keyword_file_path,
+            keyword_file_paths,
             sensitivity=0.5,
             input_device_index=None,
             output_path=None):
@@ -52,8 +52,9 @@ class PorcupineDemo(Thread):
 
         :param library_path: Absolute path to Porcupine's dynamic library.
         :param model_file_path: Absolute path to the model parameter file.
-        :param keyword_file_path: Absolute path to keyword file.
-        :param sensitivity: Sensitivity parameter. For more information refer to 'include/pv_porcupine.h'
+        :param keyword_file_paths: List of absolute paths to keyword files.
+        :param sensitivity: Sensitivity parameter. For more information refer to 'include/pv_porcupine.h'. It uses the
+        same sensitivity value for all keywords.
         :param input_device_index: Optional argument. If provided, audio is recorded from this input device. Otherwise,
         the default audio input device is used.
         :param output_path: If provided recorded audio will be stored in this location at the end of the run.
@@ -63,7 +64,7 @@ class PorcupineDemo(Thread):
 
         self._library_path = library_path
         self._model_file_path = model_file_path
-        self._keyword_file_path = keyword_file_path
+        self._keyword_file_paths = keyword_file_paths
         self._sensitivity = float(sensitivity)
         self._input_device_index = input_device_index
 
@@ -74,8 +75,11 @@ class PorcupineDemo(Thread):
     def run(self):
         """
          Creates an input audio stream, initializes wake word detection (Porcupine) object, and monitors the audio
-         stream for occurrences of the wake word. It prints the time of detection for each occurrence.
+         stream for occurrences of the wake word(s). It prints the time of detection for each occurrence and index of
+         wake word.
          """
+
+        num_keywords = len(self._keyword_file_paths)
 
         porcupine = None
         pa = None
@@ -84,8 +88,8 @@ class PorcupineDemo(Thread):
             porcupine = Porcupine(
                 library_path=self._library_path,
                 model_file_path=self._model_file_path,
-                keyword_file_path=self._keyword_file_path,
-                sensitivity=self._sensitivity)
+                keyword_file_paths=self._keyword_file_paths,
+                sensitivities=[self._sensitivity] * num_keywords)
 
             pa = pyaudio.PyAudio()
             audio_stream = pa.open(
@@ -104,8 +108,11 @@ class PorcupineDemo(Thread):
                     self._recorded_frames.append(pcm)
 
                 result = porcupine.process(pcm)
-                if result:
+                if num_keywords == 1 and result:
                     print('[%s] detected keyword' % str(datetime.now()))
+                elif num_keywords > 1 and result >= 0:
+                    print('[%s] detected keyword #%d' % (str(datetime.now()), result))
+
         except KeyboardInterrupt:
             print('stopping ...')
         finally:
@@ -155,7 +162,7 @@ def _default_library_path():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--keyword_file_path', help='absolute path to keyword file', type=str)
+    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files', type=str)
 
     parser.add_argument(
         '--library_path',
@@ -185,13 +192,13 @@ if __name__ == '__main__':
     if args.show_audio_devices_info:
         PorcupineDemo.show_audio_devices_info()
     else:
-        if not args.keyword_file_path:
-            raise ValueError('keyword file path is missing')
+        if not args.keyword_file_paths:
+            raise ValueError('keyword file paths are missing')
 
         PorcupineDemo(
             library_path=args.library_path,
             model_file_path=args.model_file_path,
-            keyword_file_path=args.keyword_file_path,
+            keyword_file_paths=args.keyword_file_paths.split(','),
             sensitivity=args.sensitivity,
             output_path=args.output_path,
             input_device_index=args.input_audio_device_index).run()
