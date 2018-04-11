@@ -16,6 +16,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * compact and computationally-efficient making it suitable for **IoT** applications.
 * **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **Linux**, and 
 **Mac** are supported.
+* scalable. It can detect tens of wake-words concurrently with virtually no added CPU/memory footprint.
 * **open-source**. Anything you find in this repository is Apache 2.0 licensed.
 
 ## Table of Contents
@@ -150,14 +151,14 @@ pv_porcupine_delete(handle);
 ### Python
 
 [/binding/python/porcupine.py](/binding/python/porcupine.py) provides Python binding for Porcupine library. Below is a
-quick demonstration of how to construct an instance of it.
+quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
 
 ```python
 library_path = ... # Path to Porcupine's C library available under lib/${SYSTEM}/${MACHINE}/
 model_file_path = ... # It is available at lib/common/porcupine_params.pv
-keyword_file_path = ...
-sensitivity = 0.5
-handle = Porcupine(library_path, model_file_path, keyword_file_path, sensitivity)
+keyword_file_paths = ['path/to/keyword/1', 'path/to/keyword/2', ...] 
+sensitivities = [0.5, 0.4, ...]
+handle = Porcupine(library_path, model_file_path, keyword_file_paths=keyword_file_paths, sensitivities=sensitivities)
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
@@ -173,8 +174,8 @@ def get_next_audio_frame():
     
 while True:
     pcm = get_next_audio_frame()
-    result = handle.process(pcm)
-    if result:
+    keyword_index = handle.process(pcm)
+    if keyword_index >= 0:
         # detection event logic/callback
         pass
 ```
@@ -263,15 +264,19 @@ There are two approaches for integrating Porcupine into an iOS application.
 #### Direct
 
 Porcupine is shipped as a precompiled ANSI C library can directly be used in Swift using module maps. It can be 
-initialized using
+initialized to detect multiple wake words concurrently using
 
 ```swift
 let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordFilePath: String = ...
-let sensitivity: Float = 0.5;
+let keywordFilePaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
+let sensitivities: [Float] = [0.3, 0.7, ...];
 var handle: OpaquePointer?
 
-let status = pv_porcupine_init(modelFilePath, keywordFilePath, sensitivity, &handle)
+let status = pv_porcupine_multiple_keywords_init(
+    modelFilePath,
+    keywordFilePaths.map{ UnsafePointer(strdup($0)) },
+    sensitivities,
+    &handle)
 if status != PV_STATUS_SUCCESS {
     // error handling logic
 }
@@ -286,13 +291,13 @@ func getNextAudioFrame() -> UnsafeMutablePointer<Int16> {
 
 while true {
     let pcm = getNextAudioFrame()
-    var result = false
+    var keyword_index: Int32 = -1
     
-    let status = pv_porcupine_process(handle, pcm, &result)
+    let status = pv_porcupine_process(handle, pcm, &keyword_index)
     if status != PV_STATUS_SUCCESS {
         // error handling logic
     }
-    if result {
+    if keyword_index >= 0 {
         // detection event logic/callback
     }
 }
@@ -312,16 +317,16 @@ initialized as below
 
 ```swift
 let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordFilePath: String = ...
-let sensitivity: Float = 0.5
-let keywordCallback: (() -> Void) = {
+let keywordFilePaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
+let sensitivities: [Float] = [0.3, 0.7, ...];
+let keywordCallback: ((Int32) -> Void) = {
     // detection event callback
 }
 
 let manager = PorcupineManager(
     modelFilePath: modelFilePath,
-    keywordFilePath: keywordFilePath,
-    sensitivity: sensitivity,
+    keywordFilePaths: keywordFilePaths,
+    sensitivities: sensitivities,
     keywordCallback: keywordCallback)
 ```
 
