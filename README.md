@@ -347,3 +347,13 @@ at sales@picovoice.ai.
 [MXNet](https://github.com/apache/incubator-mxnet) is used for training DNNs. Furthermore, 
 [LibriSpeech](http://www.openslr.org/12/) is used as the base training data.
 
+## Releases
+
+### v1.1.0 - April 11, 2018
+
+Added multiple wake-word detection capability. Porcupine can now detect multiple wake words with virtually no added
+CPU/memory footprint.
+
+### v1.0.0 - March 13, 2018
+
+Initial release.
