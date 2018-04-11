@@ -28,9 +28,10 @@ enum PorcupineManagerError: Error {
 class PorcupineManager {
     private let numBuffers = 5
     private let modelFilePath: String
-    private let keywordFilePath: String
-    private let sensitivity: Float
-    private let keywordCallback: (() -> Void)
+    private let keywordFilePaths: [String]
+    private let sensitivities: [Float]
+    private let keywordCallback: (() -> Void)?
+    private let multiKeywordCallback: ((Int32) -> Void)?
 
     private var isListening = false
     private var queue: AudioQueueRef?
@@ -41,11 +42,17 @@ class PorcupineManager {
 
         let porcupineManager: PorcupineManager = Unmanaged<PorcupineManager>.fromOpaque(userData!).takeUnretainedValue()
         let pcm = bufferRef.pointee.mAudioData.assumingMemoryBound(to: Int16.self)
-        var result = false
+        var result: Int32 = -1
 
-        pv_porcupine_process(porcupineManager.porcupine, pcm, &result)
+        pv_porcupine_multiple_keywords_process(porcupineManager.porcupine, pcm, &result)
 
-        if result { porcupineManager.keywordCallback() }
+        if result >= 0 {
+            if porcupineManager.keywordCallback != nil {
+                porcupineManager.keywordCallback!()
+            } else {
+                porcupineManager.multiKeywordCallback!(result)
+            }
+        }
 
         AudioQueueEnqueueBuffer(queue, bufferRef, 0, nil)
     }
@@ -64,7 +71,7 @@ class PorcupineManager {
     }
 
     
-    /// Initializer.
+    /// Initializer for single keyword use case.
     ///
     /// - Parameters:
     ///   - modelFilePath: Absolute path to file containing model parameters.
@@ -74,9 +81,26 @@ class PorcupineManager {
     ///   - keywordCallback: Callback to be executed after wake word detection.
     init(modelFilePath: String, keywordFilePath: String, sensitivity: Float, keywordCallback: @escaping (() -> Void)) {
         self.modelFilePath = modelFilePath
-        self.keywordFilePath = keywordFilePath
-        self.sensitivity = sensitivity
+        self.keywordFilePaths = [keywordFilePath]
+        self.sensitivities = [sensitivity]
         self.keywordCallback = keywordCallback
+        self.multiKeywordCallback = nil
+    }
+
+    
+    /// Initializer for multiple keyword use case.
+    ///
+    /// - Parameters:
+    ///   - modelFilePath: Absolute path to file containing model parameters.
+    ///   - keywordFilePaths: Absolute paths to keyword files.
+    ///   - sensitivities: List of sensitivity parameters for each keyword.
+    ///   - keywordCallback: Callback to be executed after wake word detection.
+    init(modelFilePath: String, keywordFilePaths: [String], sensitivities: [Float], keywordCallback: @escaping ((Int32) -> Void)) {
+        self.modelFilePath = modelFilePath
+        self.keywordFilePaths = keywordFilePaths
+        self.sensitivities = sensitivities
+        self.multiKeywordCallback = keywordCallback
+        self.keywordCallback = nil
     }
 
     /// Initializes Porcupine engine and audio recording.
@@ -85,8 +109,13 @@ class PorcupineManager {
     func start() throws {
         if isListening { return }
 
-        let status = pv_porcupine_init(modelFilePath, keywordFilePath, sensitivity, &porcupine)
-        try checkStatus(status)
+        let status = pv_porcupine_multiple_keywords_init(
+            modelFilePath,
+            Int32(keywordFilePaths.count),
+            keywordFilePaths.map{ UnsafePointer(strdup($0)) },
+            sensitivities,
+            &porcupine)
+         try checkStatus(status)
 
         var format = AudioStreamBasicDescription(
             mSampleRate: Float64(pv_sample_rate()),
