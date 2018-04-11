@@ -51,9 +51,9 @@ public class PorcupineManager {
         @Override
         public void consume(short[] pcm) throws PorcupineManagerException {
             try {
-                boolean seen = porcupine.processFrame(pcm);
-                if (seen) {
-                    keywordCallback.run();
+                final int keyword_index = porcupine.processFrameMultipleKeywords(pcm);
+                if (keyword_index >= 0) {
+                    keywordCallback.run(keyword_index);
                 }
             } catch (PorcupineException e) {
                 throw new PorcupineManagerException(e);
@@ -80,7 +80,7 @@ public class PorcupineManager {
     }
 
     /**
-     * Initialize Porcupine.
+     * Constructor for single keyword use case.
      * @param modelFilePath Absolute path to file containing model parameters.
      * @param keywordFilePath Absolute path to keyword file containing hyper-parameters.
      * @param sensitivity Sensitivity parameter. A higher sensitivity value lowers miss rate
@@ -99,6 +99,30 @@ public class PorcupineManager {
         AudioConsumer audioConsumer = new PorcupineAudioConsumer(keywordCallback);
         audioRecorder = new AudioRecorder(audioConsumer);
     }
+
+    /**
+     * Constructor for multiple keywords use case.
+     * @param modelFilePath Absolute path to file containing model parameters.
+     * @param keywordFilePaths Absolute path to keyword files.
+     * @param sensitivities Array of sensitivity parameters for each keyword.
+     * @param keywordCallback Callback when keyword is detected.
+     * @throws PorcupineManagerException if there is an error while initializing Porcupine.
+     */
+    public PorcupineManager(
+            String modelFilePath,
+            String[] keywordFilePaths,
+            float[] sensitivities,
+            KeywordCallback keywordCallback) throws PorcupineManagerException {
+        try {
+            porcupine = new Porcupine(modelFilePath, keywordFilePaths, sensitivities);
+        } catch (PorcupineException e) {
+            throw new PorcupineManagerException(e);
+        }
+
+        AudioConsumer audioConsumer = new PorcupineAudioConsumer(keywordCallback);
+        audioRecorder = new AudioRecorder(audioConsumer);
+    }
+
 
     /**
      * Start recording.

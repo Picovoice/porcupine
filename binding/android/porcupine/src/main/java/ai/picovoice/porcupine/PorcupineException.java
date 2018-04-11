@@ -23,4 +23,8 @@ public class PorcupineException extends Exception {
     public PorcupineException(Throwable cause) {
         super(cause);
     }
+
+    public PorcupineException(String message) {
+        super(message);
+    }
 }
