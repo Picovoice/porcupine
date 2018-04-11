@@ -20,5 +20,5 @@ package ai.picovoice.porcupinemanager;
  * Callback to run when the keyword is detected.
  */
 public interface KeywordCallback {
-    void run();
+    void run(int keyword_index);
 }

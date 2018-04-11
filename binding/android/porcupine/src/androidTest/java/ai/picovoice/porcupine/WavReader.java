@@ -25,7 +25,7 @@ import java.io.IOException;
  * Utility class to read Wav files.
  *
  * This is a minimal implementation for testing purposes. It expects the file to have single channel
- * and has a sample rate of 16000 bits per second.
+ * and has a sample rate of 16000 samples per second.
  */
 class WavReader {
     // Identifiers in the header of the file.
