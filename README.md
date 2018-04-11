@@ -16,7 +16,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * compact and computationally-efficient making it suitable for **IoT** applications.
 * **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **Linux**, and 
 **Mac** are supported.
-* scalable. It can detect tens of wake-words concurrently with virtually no added CPU/memory footprint.
+* **scalable**. It can detect tens of wake-words concurrently with virtually no added CPU/memory footprint.
 * **open-source**. Anything you find in this repository is Apache 2.0 licensed.
 
 ## Table of Contents
