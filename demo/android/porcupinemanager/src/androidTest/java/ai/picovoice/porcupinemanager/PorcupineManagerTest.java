@@ -81,6 +81,18 @@ public class PorcupineManagerTest {
         porcupineManager.stop();
     }
 
+    @Test
+    public void runPorcupineManagerMultipleKeywords() throws PorcupineManagerException {
+        PorcupineManager porcupineManager = new PorcupineManager(
+                modelFilePath,
+                new String[]{keywordFilePath},
+                new float[]{0.5f},
+                null);
+        assertNotNull(porcupineManager);
+        porcupineManager.start();
+        porcupineManager.stop();
+    }
+
     /**
      * Copy a file from the resources directory to internal storage.
      * @param filename The name of the file.

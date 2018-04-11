@@ -35,9 +35,9 @@ import android.widget.ToggleButton;
 
 import java.io.File;
 
-import ai.picovoice.porcupinemanager.PorcupineManagerException;
 import ai.picovoice.porcupinemanager.KeywordCallback;
 import ai.picovoice.porcupinemanager.PorcupineManager;
+import ai.picovoice.porcupinemanager.PorcupineManagerException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 .getColor(R.color.colorAccent);
         return new PorcupineManager(modelFilePath, keywordFilePath, 0.5f, new KeywordCallback() {
             @Override
-            public void run() {
+            public void run(int keyword_index) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
