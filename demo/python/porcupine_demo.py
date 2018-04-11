@@ -198,7 +198,7 @@ if __name__ == '__main__':
         PorcupineDemo(
             library_path=args.library_path,
             model_file_path=args.model_file_path,
-            keyword_file_paths=args.keyword_file_paths.split(','),
+            keyword_file_paths=[x.strip() for x in args.keyword_file_paths.split(',')],
             sensitivity=args.sensitivity,
             output_path=args.output_path,
             input_device_index=args.input_audio_device_index).run()
