@@ -14,23 +14,19 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="PorcupineWatchDemo" customModuleProvider="target">
                     <items>
-                        <group width="1" height="1" heightAdjustment="-40" alignment="left" id="OHS-VY-TIF">
-                            <items>
-                                <picker width="1" height="1" alignment="left" id="MzE-dN-byd">
-                                    <connections>
-                                        <action selector="wakePickerDidSelectItem:" destination="AgC-eL-Hgc" id="X5Y-hy-zeA"/>
-                                    </connections>
-                                </picker>
-                            </items>
-                        </group>
+                        <picker width="1" height="1" heightAdjustment="-40" alignment="left" id="MzE-dN-byd">
+                            <connections>
+                                <action selector="wakePickerDidSelectItem:" destination="AgC-eL-Hgc" id="X5Y-hy-zeA"/>
+                            </connections>
+                        </picker>
                         <button width="1" alignment="left" title="Start" id="b8K-Dn-5br">
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="startTogglePressed" destination="AgC-eL-Hgc" id="mb4-8I-kfx"/>
                             </connections>
                         </button>
                     </items>
                     <connections>
-                        <outlet property="containerGroup" destination="OHS-VY-TIF" id="RWA-lq-ziG"/>
                         <outlet property="startToggleButton" destination="b8K-Dn-5br" id="g1f-t0-gfP"/>
                         <outlet property="wakeWordPicker" destination="MzE-dN-byd" id="TJF-gL-P0G"/>
                     </connections>

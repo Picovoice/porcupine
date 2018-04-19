@@ -12,7 +12,6 @@ import AVFoundation
 
 class InterfaceController: WKInterfaceController {
 
-    @IBOutlet var containerGroup: WKInterfaceGroup!
     @IBOutlet var wakeWordPicker: WKInterfacePicker!
     @IBOutlet var startToggleButton: WKInterfaceButton!
     var porcupineManager: PorcupineManager!
@@ -66,9 +65,9 @@ class InterfaceController: WKInterfaceController {
         let keywordCallback: (() -> Void) = {
             DispatchQueue.main.async {
                 WKInterfaceDevice.current().play(.start)
-                self.containerGroup.setBackgroundColor(.orange)
+                self.startToggleButton.setBackgroundColor(.orange)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    self.containerGroup.setBackgroundColor(.clear)
+                    self.startToggleButton.setBackgroundColor(.darkGray)
                 })
             }
             print("found!")
