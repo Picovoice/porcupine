@@ -14,7 +14,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
 * using **deep neural networks** trained in **real-world situations** (i.e. noise and reverberation).
 * compact and computationally-efficient making it suitable for **IoT** applications.
-* **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **Linux**, and 
+* **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**, and 
 **Mac** are supported.
 * **scalable**. It can detect tens of wake-words concurrently with virtually no added CPU/memory footprint.
 * **open-source**. Anything you find in this repository is Apache 2.0 licensed.
@@ -336,6 +336,10 @@ When initialized, input audio can be monitored using `manager.start()`. When don
 ## Contributing
 
 If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Acknowledgements
+
+* Thank you @dyah10 for adding watchOS binding and demo application.
 
 ## License
 
