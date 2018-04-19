@@ -12,20 +12,44 @@ import Foundation
 
 class InterfaceController: WKInterfaceController {
 
+    @IBOutlet var containerGroup: WKInterfaceGroup!
+    @IBOutlet var wakeWordPicker: WKInterfacePicker!
+    @IBOutlet var startToggleButton: WKInterfaceButton!
+    var isRecording = false
+
+    let wakeWords = [
+        "Alexa", "Americano", "Avocado", "Blueberry", "Bumblebee", "Caterpillar", "Christina", "Dragonfly", "Flamingo",
+        "Francesca", "Grapefruit", "Grasshopper", "Iguana", "Picovoice", "Pineapple", "Porcupine", "Raspberry",
+        "Terminator", "Vancouver"]
+    var wakeWord = "Alexa"
+
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        // Configure interface objects here.
+        
+        let pickerItems: [WKPickerItem] = wakeWords.map {
+            let pickerItem = WKPickerItem()
+            pickerItem.title = $0
+            return pickerItem
+        }
+        
+        wakeWordPicker.setItems(pickerItems)
+        wakeWordPicker.focus()
     }
     
-    override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
-        super.willActivate()
-    }
-    
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
+    @IBAction func wakePickerDidSelectItem(_ value: Int) {
+        wakeWord = wakeWords[value]
+        print(wakeWord)
     }
 
+    @IBAction func startTogglePressed() {
+        if isRecording {
+            startToggleButton.setTitle("Start")
+        } else {
+            startToggleButton.setTitle("Stop")
+        }
+        isRecording = !isRecording
+    }
+    
 }
