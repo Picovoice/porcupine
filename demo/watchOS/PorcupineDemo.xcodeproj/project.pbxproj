@@ -15,6 +15,7 @@
 		9226E5E02088E49B0009EE63 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9226E5DF2088E49B0009EE63 /* NotificationController.swift */; };
 		9226E5E22088E49C0009EE63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9226E5E12088E49C0009EE63 /* Assets.xcassets */; };
 		9226E5E72088E49C0009EE63 /* PorcupineWatchDemo.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9226E5CA2088E4990009EE63 /* PorcupineWatchDemo.app */; };
+		9226E5F12088E9030009EE63 /* PorcupineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9226E5F02088E9030009EE63 /* PorcupineManager.swift */; };
 		BB24735A205F636700D96613 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = BB247359205F636700D96613 /* porcupine_params.pv */; };
 		BB2473632061678900D96613 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473622061678900D96613 /* americano_ios.ppn */; };
 		BB2473652061679900D96613 /* avocado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473642061679900D96613 /* avocado_ios.ppn */; };
@@ -105,6 +106,7 @@
 		9226E5E12088E49C0009EE63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9226E5E32088E49C0009EE63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9226E5E42088E49C0009EE63 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		9226E5F02088E9030009EE63 /* PorcupineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PorcupineManager.swift; path = ../../../binding/watchOS/PorcupineManager.swift; sourceTree = "<group>"; };
 		BB247359205F636700D96613 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../lib/common/porcupine_params.pv; sourceTree = "<group>"; };
 		BB24735B205F637700D96613 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = alexa_ios.ppn; sourceTree = "<group>"; };
 		BB2473622061678900D96613 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ../../../../resources/keyword_files/americano_ios.ppn; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		9226E5DA2088E49B0009EE63 /* PorcupineWatchDemo Extension */ = {
 			isa = PBXGroup;
 			children = (
+				9226E5F02088E9030009EE63 /* PorcupineManager.swift */,
 				9226E5DB2088E49B0009EE63 /* InterfaceController.swift */,
 				9226E5DD2088E49B0009EE63 /* ExtensionDelegate.swift */,
 				9226E5DF2088E49B0009EE63 /* NotificationController.swift */,
@@ -454,6 +457,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9226E5E02088E49B0009EE63 /* NotificationController.swift in Sources */,
+				9226E5F12088E9030009EE63 /* PorcupineManager.swift in Sources */,
 				9226E5DE2088E49B0009EE63 /* ExtensionDelegate.swift in Sources */,
 				9226E5DC2088E49B0009EE63 /* InterfaceController.swift in Sources */,
 			);
