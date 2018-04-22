@@ -353,7 +353,7 @@ at sales@picovoice.ai.
 
 ## Releases
 
-### V1.2.0 April 21, 2018
+### v1.2.0 April 21, 2018
 
 * Runtime optimization across platforms.
 * Added support for watchOS.
