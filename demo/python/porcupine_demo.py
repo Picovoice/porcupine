@@ -153,8 +153,8 @@ def _default_library_path():
     elif system == 'Linux':
         if machine == 'x86_64' or machine == 'i386':
             return os.path.join(os.path.dirname(__file__), '../../lib/linux/%s/libpv_porcupine.so' % machine)
-        elif machine.startswith('arm'):
-            return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/libpv_porcupine.so')
+        else:
+            raise Exception('cannot autodetect the binary type. Please enter the path to the shared object using --library_path command line argument.')
 
     raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
@@ -167,8 +167,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--library_path',
         help="absolute path to Porcupine's dynamic library",
-        type=str,
-        default=_default_library_path())
+        type=str)
 
     parser.add_argument(
         '--model_file_path',
@@ -196,7 +195,7 @@ if __name__ == '__main__':
             raise ValueError('keyword file paths are missing')
 
         PorcupineDemo(
-            library_path=args.library_path,
+            library_path=args.library_path if args.library_path is not None else _default_library_path(),
             model_file_path=args.model_file_path,
             keyword_file_paths=[x.strip() for x in args.keyword_file_paths.split(',')],
             sensitivity=args.sensitivity,
