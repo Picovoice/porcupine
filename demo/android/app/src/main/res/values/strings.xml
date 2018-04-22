@@ -42,5 +42,5 @@
     <string name="initial_count">0</string>
     <string name="record_permission_title">Record permission</string>
     <string name="record_permission_body">We need your permission to record audio in order to continue</string>
-    <string name="footer">©️ 2018 <a href="http://picovoice.ai/">Picovocie, Inc.</a></string>
+    <string name="footer">©️ 2018 <a href="http://picovoice.ai/">Picovoice, Inc.</a></string>
 </resources>
