@@ -353,6 +353,11 @@ at sales@picovoice.ai.
 
 ## Releases
 
+### V1.2.0 April 21, 2018
+
+* Runtime optimization across platforms.
+* Added support for watchOS.
+
 ### v1.1.0 - April 11, 2018
 
 Added multiple wake-word detection capability. Porcupine can now detect multiple wake words with virtually no added
