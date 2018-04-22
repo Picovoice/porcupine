@@ -102,3 +102,8 @@ python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_file
 ```
 
 If after listening to stored file there is no apparent problem detected please contact us at help@picovoice.ai.
+
+#### Why I am getting "Exception: cannot autodetect the binary type ..."?
+
+The demo application cannot auto-detect the CPU type on all variants of Raspberry Pi. Hence you need to provide the path
+to correct library file manually using `--library_path` command line argument. Please refer to [README.md](/lib/README.md).
