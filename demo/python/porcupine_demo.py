@@ -153,8 +153,8 @@ def _default_library_path():
     elif system == 'Linux':
         if machine == 'x86_64' or machine == 'i386':
             return os.path.join(os.path.dirname(__file__), '../../lib/linux/%s/libpv_porcupine.so' % machine)
-        elif machine.startswith('arm'):
-            return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/libpv_porcupine.so')
+        else:
+            raise Exception('cannot autodetect the binary type. Please enter the path to the shared object using --library_path command line argument.')
 
     raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
@@ -167,8 +167,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--library_path',
         help="absolute path to Porcupine's dynamic library",
-        type=str,
-        default=_default_library_path())
+        type=str)
 
     parser.add_argument(
         '--model_file_path',
@@ -188,6 +187,9 @@ if __name__ == '__main__':
     parser.add_argument('--show_audio_devices_info', action='store_true')
 
     args = parser.parse_args()
+
+    if args.library_path is None:
+        args.library_path = _default_library_path()
 
     if args.show_audio_devices_info:
         PorcupineDemo.show_audio_devices_info()

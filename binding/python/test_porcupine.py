@@ -105,7 +105,8 @@ class PorcupineTestCase(unittest.TestCase):
             if machine == 'x86_64' or machine == 'i386':
                 return os.path.join(os.path.dirname(__file__), '../../lib/linux/%s/libpv_porcupine.so' % machine)
             elif machine.startswith('arm'):
-                return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/libpv_porcupine.so')
+                # NOTE: This does not need to be fast. Use the armv6 binary.
+                return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/arm11/libpv_porcupine.so')
 
         raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
