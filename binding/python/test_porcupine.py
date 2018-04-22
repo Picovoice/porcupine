@@ -23,31 +23,58 @@ from porcupine import Porcupine
 
 
 class PorcupineTestCase(unittest.TestCase):
-    _porcupine = None
-
-    def setUp(self):
-        self._porcupine = Porcupine(
+    def test_process(self):
+        porcupine = Porcupine(
             library_path=self._library_path(),
             model_file_path=self._abs_path('../../lib/common/porcupine_params.pv'),
             keyword_file_path=self._abs_path('../../resources/keyword_files/porcupine_%s.ppn' % self._keyword_file_extension()),
             sensitivity=0.5)
 
-    def tearDown(self):
-        self._porcupine.delete()
-
-    def test_process(self):
         audio, sample_rate = soundfile.read(
             self._abs_path('../../resources/audio_samples/porcupine.wav'),
             dtype='int16')
-        assert sample_rate == self._porcupine.sample_rate
+        assert sample_rate == porcupine.sample_rate
 
-        num_frames = len(audio) // self._porcupine.frame_length
+        num_frames = len(audio) // porcupine.frame_length
         results = []
         for i in range(num_frames):
-            frame = audio[i * self._porcupine.frame_length:(i + 1) * self._porcupine.frame_length]
-            results.append(self._porcupine.process(frame))
+            frame = audio[i * porcupine.frame_length:(i + 1) * porcupine.frame_length]
+            results.append(porcupine.process(frame))
+
+        porcupine.delete()
 
         self.assertEqual(sum(results), 1)
+
+    def test_process_multiple(self):
+        keyword_file_names = ['alexa', 'americano', 'avocado', 'blueberry', 'bumblebee', 'caterpillar', 'christina',
+                              'dragonfly', 'flamingo', 'francesca', 'grapefruit', 'grasshopper', 'iguana', 'picovoice',
+                              'pineapple', 'porcupine', 'raspberry', 'terminator', 'vancouver']
+
+        keyword_file_paths = [
+            self._abs_path('../../resources/keyword_files/%s_%s.ppn' % (name, self._keyword_file_extension())) for name in keyword_file_names]
+
+        porcupine = Porcupine(
+            library_path=self._library_path(),
+            model_file_path=self._abs_path('../../lib/common/porcupine_params.pv'),
+            keyword_file_paths=keyword_file_paths,
+            sensitivities=[0.5] * len(keyword_file_paths))
+
+        audio, sample_rate = soundfile.read(
+            self._abs_path('../../resources/audio_samples/multiple_keywords.wav'),
+            dtype='int16')
+        assert sample_rate == porcupine.sample_rate
+
+        num_frames = len(audio) // porcupine.frame_length
+        results = []
+        for i in range(num_frames):
+            frame = audio[i * porcupine.frame_length:(i + 1) * porcupine.frame_length]
+            result = porcupine.process(frame)
+            if result >= 0:
+                results.append(result)
+
+        self.assertEqual(results, [15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
+
+        porcupine.delete()
 
     @staticmethod
     def _abs_path(rel_path):
