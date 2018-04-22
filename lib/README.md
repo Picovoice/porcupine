@@ -12,4 +12,4 @@ Tested on Ubuntu 16.04.
 
 * **arm11** is tuned for A, B, and Zero.
 * **cortex-a7** is tuned for 2.
-* ***cortex-a53** is tuned for 3 and 3 B+.
+* **cortex-a53** is tuned for 3 and 3 B+.
