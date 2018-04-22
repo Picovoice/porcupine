@@ -188,9 +188,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.library_path is None:
-        args.library_path = _default_library_path()
-
     if args.show_audio_devices_info:
         PorcupineDemo.show_audio_devices_info()
     else:
@@ -198,7 +195,7 @@ if __name__ == '__main__':
             raise ValueError('keyword file paths are missing')
 
         PorcupineDemo(
-            library_path=args.library_path,
+            library_path=args.library_path if args.library_path is not None else _default_library_path(),
             model_file_path=args.model_file_path,
             keyword_file_paths=[x.strip() for x in args.keyword_file_paths.split(',')],
             sensitivity=args.sensitivity,
