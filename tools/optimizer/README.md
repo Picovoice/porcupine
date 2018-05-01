@@ -21,8 +21,9 @@ The optimizer utility is located at [/tools/optimizer](/tools/optimizer).
 
 In this repository, the resource directory is located at [/resources](/resources). Keyword files are
 platform dependent. This means that a keyword file generated with ```-p linux``` cannot run on Android or Mac. The
-optimizer available at this repository can produce keyword files for Linux and Mac platforms. If you wish to receive a
-keyword file for any platform other than Linux or Mac please contact us at contact@picovoice.
+optimizer available at this repository can produce keyword files for Linux and Mac platforms. Custom keyword files for 
+platforms other than Linux and Mac are provided with a purchase of the commercial license. In order to purchase a commercial
+license please contact us at sales@picovoice.
 
 A keyword file for **Vancouver** targeted for a Mac machine can be created using
 
@@ -34,9 +35,9 @@ tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources -w vanc
 
 #### How do I create keyword files for platforms other than Linux/Mac?
 
-The optimizer provided in this repository does not have the capability to do so. Internally at Picovoice, we are able to
-create keyword files for any platform upon request. If you like to create a keyword file for platforms other than Linux
-or Mac please contact us at contact@picovoice.ai.
+The optimizer provided in this repository does not have the capability to do so. Custom keyword files for 
+platforms other than Linux and Mac are provided with purchase of the commercial license. In order to purchase a commercial
+license please contact us at sales@picovoice.
 
 #### How do I deal with "[ERROR] could not find the pronunciation of XXX"?
 

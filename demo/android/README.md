@@ -51,8 +51,9 @@ The library can be initialized using
 When initialized, input audio can be monitored using ```manager.start() ```. When done be sure to stop the manager using
 ```manager.stop()```. `modelFilePath` should point to [model parameter file](/lib/common/porcupine_params.pv) which contains
 neural network parameters. This file is shipped separately to reduce the size of library while supporting all ABIs. Furthermore,
-`keywordFilePath` should point to an Android keyword file available at [resources/keyword_files](/resources/keyword_files). If you
-like to use a different wake word please contact us at contact@picovoice.ai. For more information about keyword files refer to
+`keywordFilePath` should point to an Android keyword file available at [resources/keyword_files](/resources/keyword_files). Custom
+keyword files for Android are provided with purchase of the commercial license. In order to purchse a commercial license please
+ contact us at sales@picovoice.ai. For more information about keyword files refer to
 [tools/optimizer](/tools/optimizer). Finally, `sensitivity` is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate. For more information about this parameter 
 refer to [include/pv_porcupine.h](/include/pv_porcupine.h).
