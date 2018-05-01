@@ -45,8 +45,8 @@ The demo application allows you to test Porcupine on a variety of wake words in 
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib/](/lib) and header files are at [include/](/include). Currently, Raspberry Pi, Android, iOS, Linux, and Mac are supported.
-If you wish to run Porcupine on any other platform, please contact us at help@picovoice.ai.
+[lib/](/lib) and header files are at [include/](/include). Currently, Raspberry Pi, Android, iOS, watchOS, Linux, and Mac are supported.
+If you wish to run Porcupine on any other platform, please contact us at contact@picovoice.ai.
 
 Bindings are available at [binding/](/binding) to facilitate usage from higher-level languages/platforms. Demo
 applications are at [demo/](/demo). When possible, use one of the demo applications as a starting point for your own implementation.
@@ -63,16 +63,16 @@ documentation it is assumed that the current working directory is the root of re
 
 This [demo application](/demo/python) allows testing Porcupine using computer's microphone. It opens an input audio
 stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an
-example of running the demo for wake word **Alexa** from the command line. Replace ```${SYSTEM}``` with the name of
+example of running the demo for wake word **Alexa** from the command line. Replace `${SYSTEM}` with the name of
 the operating system on your machine (i.e. linux or mac).
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_path resources/keyword_files/alexa_${SYSTEM}.ppn
+python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/alexa_${SYSTEM}.ppn
 ```
 
 ### Android Demo Application
 
-Using [Android Studio](https://developer.android.com/studio/index.html) open [demo/android](/demo/android) as an android
+Using [Android Studio](https://developer.android.com/studio/index.html) open [demo/android](/demo/android) as an Android
 project and then run the application. Note that you need an android phone with developer options enabled connected to
 your machine in order to run the application.
 
