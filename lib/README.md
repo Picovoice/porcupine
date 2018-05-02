@@ -4,6 +4,10 @@ Contains parameters for deep neural networks used by Porcupine. Parameters are s
 reduce the total size of the library on platforms that need to support multiple ABIs (e.g. Android).
 
 
+## Windows
+
+Works on both x86_64 and i686 CPU architectures.
+
 ## Linux
 
 Tested on Ubuntu 16.04.
