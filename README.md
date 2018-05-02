@@ -14,8 +14,8 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
 * using **deep neural networks** trained in **real-world situations** (i.e. noise and reverberation).
 * compact and computationally-efficient making it suitable for **IoT** applications.
-* **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**, and 
-**Mac** are supported.
+* **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**, 
+**Mac**, and **Windows** are supported.
 * **scalable**. It can detect tens of wake-words concurrently with virtually no added CPU/memory footprint.
 * **open-source**. Anything you find in this repository is Apache 2.0 licensed.
 
@@ -24,7 +24,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * [Try It Out](#try-it-out)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
-    * [Python Demo Application (Raspberry Pi, Linux, Mac)](#python-demo-application-(raspberry-pi,-linux,-mac))
+    * [Python Demo Application (Raspberry Pi, Linux, Mac, Windows)](#python-demo-application-(raspberry-pi,-linux,-mac))
     * [Android Demo Application](#android-demo-application)
     * [iOS Demo Application](#ios-demo-application)
 * [Creating Keyword Files](#creating-keyword-files)
@@ -45,7 +45,7 @@ The demo application allows you to test Porcupine on a variety of wake words in 
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib/](/lib) and header files are at [include/](/include). Currently, Raspberry Pi, Android, iOS, watchOS, Linux, and Mac are supported.
+[lib/](/lib) and header files are at [include/](/include). Currently, Raspberry Pi, Android, iOS, watchOS, Linux, Mac, and Windows are supported.
 If you wish to run Porcupine on any other platform, please contact us at contact@picovoice.ai.
 
 Bindings are available at [binding/](/binding) to facilitate usage from higher-level languages/platforms. Demo
@@ -59,12 +59,12 @@ documentation it is assumed that the current working directory is the root of re
 
 ## Running Demo Applications
 
-### Python Demo Application (Raspberry Pi, Linux, Mac)
+### Python Demo Application (Raspberry Pi, Linux, Mac, Windows)
 
 This [demo application](/demo/python) allows testing Porcupine using computer's microphone. It opens an input audio
 stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an
 example of running the demo for wake word **Alexa** from the command line. Replace `${SYSTEM}` with the name of
-the operating system on your machine (i.e. linux or mac).
+the operating system on your machine (e.g. linux or mac).
 
 ```bash
 python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/alexa_${SYSTEM}.ppn
@@ -93,7 +93,7 @@ tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources/ -w ${W
 ```
 
 In the above example replace ```${SYSTEM}``` and ```${TARGET_SYSTEM}``` with current and target (runtime) operating
-systems (linux or mac). ```${MACHINE}``` is the CPU architecture of current machine (x86_64 or i386). ```${WAKE_WORD}```
+systems (linux, mac, or windows). ```${MACHINE}``` is the CPU architecture of current machine (x86_64 or i386). ```${WAKE_WORD}```
 is the chosen wake word. Finally, ```${OUTPUT_DIRECTORY}``` is the output directory where keyword file will be stored.
 
 ## Integration
