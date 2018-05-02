@@ -91,6 +91,8 @@ class PorcupineTestCase(unittest.TestCase):
             return 'mac'
         elif system == 'Linux' and machine.startswith('arm'):
             return 'raspberrypi'
+        elif system == 'Windows':
+            return 'windows'
 
         raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
@@ -107,6 +109,8 @@ class PorcupineTestCase(unittest.TestCase):
             elif machine.startswith('arm'):
                 # NOTE: This does not need to be fast. Use the armv6 binary.
                 return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/arm11/libpv_porcupine.so')
+        elif system == 'Windows':
+            return os.path.join(os.path.dirname(__file__), '../../lib/windows/libpv_porcupine.dll')
 
         raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 

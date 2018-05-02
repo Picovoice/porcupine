@@ -1,7 +1,7 @@
 # Porcupine Optimizer
 
 The optimizer enables developers to build models for their wake words of choice. Below it is assumed that the current 
-working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux or mac) and
+working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux, mac, or windows) and
 ```${MACHINE}``` refers to CPU architecture (x86_64 or i386).
 
 # Usage
@@ -15,7 +15,7 @@ The optimizer utility is located at [/tools/optimizer](/tools/optimizer).
  [INFO] 
  [INFO]  -r Absolute path to resource directory that contains data needed by optimizer.
  [INFO]  -w Keyword.
- [INFO]  -p Target platform for running keyword spotting module. Valid options are: linux and mac.
+ [INFO]  -p Target platform for running keyword spotting module. Valid options are: linux, mac, and windows.
  [INFO]  -o Absolute path to output directory where keyword file will be stored.
 ```
 
@@ -33,10 +33,10 @@ tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources -w vanc
 
 # FAQ
 
-#### How do I create keyword files for platforms other than Linux/Mac?
+#### How do I create keyword files for platforms other than Linux/Mac/Windows?
 
 The optimizer provided in this repository does not have the capability to do so. Custom keyword files for 
-platforms other than Linux and Mac are provided with purchase of the commercial license. In order to purchase a commercial
+platforms other than Linux, Mac, or Windows are provided with purchase of the commercial license. In order to purchase a commercial
 license please contact us at sales@picovoice.
 
 #### How do I deal with "[ERROR] could not find the pronunciation of XXX"?
