@@ -24,7 +24,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * [Try It Out](#try-it-out)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
-    * [Python Demo Application (Raspberry Pi, Linux, Mac, Windows)](#python-demo-application-(raspberry-pi,-linux,-mac))
+    * [Python Demo Application](#python-demo-application)
     * [Android Demo Application](#android-demo-application)
     * [iOS Demo Application](#ios-demo-application)
 * [Creating Keyword Files](#creating-keyword-files)
@@ -35,7 +35,8 @@ build always-listening voice-enabled applications/platforms. Porcupine is
     * [iOS](#ios)
 * [Contributing](#contributing)
 * [Pricing](#pricing)
-* [Tools/Data used](#tools/data-used)
+* [Tools used](#tools-used)
+* [Releases](#releases)
 
 ## Try It Out
 
@@ -59,7 +60,7 @@ documentation it is assumed that the current working directory is the root of re
 
 ## Running Demo Applications
 
-### Python Demo Application (Raspberry Pi, Linux, Mac, Windows)
+### Python Demo Application
 
 This [demo application](/demo/python) allows testing Porcupine using computer's microphone. It opens an input audio
 stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an
@@ -350,23 +351,24 @@ be generated using tools in the repository.
 
 ### iOS and watchOS (pilot program)
 
-Custom wake-words for iOS/watchOS can also be provided under Apache 2.0 license. We only charge 100 USD fee to create
-the wake-word and then you can use it on as many devices as you want for free. For obtaining a custom wake-word please contact us at sales@picovoice.ai.
+Custom wake-words for iOS/watchOS can also be provided under Apache 2.0 license. We only charge a one-time 100 USD fee to 
+create the wake-word and then you can use it on as many devices as you want for free. For obtaining a custom wake-word 
+please contact us at sales@picovoice.ai.
 
 ### Raspberry Pi and Android
 
-Custom wake-words for Raspberry Pi and Android are only provided with purchase of a commercial license.
-Our licensing model is perpetual and per device. For orders under 10000 devices we charge 1 USD per device. For every 5000 devices you get
-a free custom wake-word. Otherwise you need to pay 100 USD per custom wake-word. For obtaining a commercial license please contact us at sales@picovoice.ai.
+Custom wake-words for Raspberry Pi and Android are only provided with the purchase of a commercial license.
+Our licensing model is perpetual and per device. For orders under 10000 devices, we charge 1 USD per device. For every 
+5000 devices, you get a free custom wake-word. Otherwise, you need to pay 100 USD per custom wake-word. For obtaining a 
+commercial license please contact us at sales@picovoice.ai.
 
 ### DSP
 
 Please contact us at sales@picovoice.ai.
 
-## Tools/Data used
+## Tools used
 
-[MXNet](https://github.com/apache/incubator-mxnet) is used for training DNNs. Furthermore, 
-[LibriSpeech](http://www.openslr.org/12/) is used as the base training data.
+[MXNet](https://github.com/apache/incubator-mxnet) is used for training DNNs.
 
 ## Releases
 
