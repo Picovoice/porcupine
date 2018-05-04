@@ -22,6 +22,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 ## Table of Contents
 
 * [Try It Out](#try-it-out)
+* [Performance](#performance)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
     * [Python Demo Application](#python-demo-application)
@@ -42,6 +43,13 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 
 Try out Porcupine by downloading it's [Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en).
 The demo application allows you to test Porcupine on a variety of wake words in any environment.
+
+## Performance
+
+A scientific comparison between accuracy of Porcupine and two other widely-used engines is provided 
+[here](https://github.com/Picovoice/wakeword-benchmark). It clearly shows its robustness across different conditions.
+
+Porcupine is lightweight. It uses less than 1.4 MB of RAM. On a Raspberry Pi 3, it uses less than 8% of one of the CPU cores.
 
 ## Structure of Repository
 
