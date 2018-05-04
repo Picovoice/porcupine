@@ -34,7 +34,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
     * [Android](#android)
     * [iOS](#ios)
 * [Contributing](#contributing)
-* [License](#license)
+* [Pricing](#pricing)
 * [Tools/Data used](#tools/data-used)
 
 ## Try It Out
@@ -341,10 +341,27 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 * Thank you @dyah10 for adding watchOS binding and demo application.
 
-## License
+## Pricing
 
-Anything you find in this repository is licensed under Apache 2.0. For obtaining a commercial license please contact us
-at sales@picovoice.ai.
+### Free
+
+Anything you find here is free and licensed under Apache 2.0. This includes wake-words that are already available or can
+be generated using tools in the repository.
+
+### iOS and watchOS (pilot program)
+
+Custom wake-words for iOS/watchOS can also be provided under Apache 2.0 license. We only charge 100 USD fee to create
+the wake-word and then you can use it on as many devices as you want for free. For obtaining a custom wake-word please contact us at sales@picovoice.ai.
+
+### Raspberry Pi and Android
+
+Custom wake-words for Raspberry Pi and Android are only provided with purchase of a commercial license.
+Our licensing model is perpetual and per device. For orders under 10000 devices we charge 1 USD per device. For every 5000 devices you get
+a free custom wake-word. Otherwise you need to pay 100 USD per custom wake-word. For obtaining a commercial license please contact us at sales@picovoice.ai.
+
+### DSP
+
+Please contact us at sales@picovoice.ai.
 
 ## Tools/Data used
 
