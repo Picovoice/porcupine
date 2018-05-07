@@ -156,7 +156,10 @@ def _default_library_path():
         else:
             raise Exception('cannot autodetect the binary type. Please enter the path to the shared object using --library_path command line argument.')
     elif system == 'Windows':
-        return os.path.join(os.path.dirname(__file__), '../../lib/windows/libpv_porcupine.dll')
+        if platform.architecture()[0] == '32bit':
+            return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\i686\\libpv_porcupine.dll')
+        else:
+            return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\amd64\\libpv_porcupine.dll')
     raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
 
