@@ -110,7 +110,10 @@ class PorcupineTestCase(unittest.TestCase):
                 # NOTE: This does not need to be fast. Use the armv6 binary.
                 return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/arm11/libpv_porcupine.so')
         elif system == 'Windows':
-            return os.path.join(os.path.dirname(__file__), '../../lib/windows/libpv_porcupine.dll')
+            if platform.architecture()[0] == '32bit':
+                return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\i686\\libpv_porcupine.dll')
+            else:
+                return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\amd64\\libpv_porcupine.dll')
 
         raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
