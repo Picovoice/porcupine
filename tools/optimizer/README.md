@@ -2,7 +2,7 @@
 
 The optimizer enables developers to build models for their wake words of choice. Below it is assumed that the current 
 working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux, mac, or windows) and
-```${MACHINE}``` refers to CPU architecture (x86_64 or i386).
+```${MACHINE}``` refers to CPU architecture.
 
 # Usage
 
@@ -21,14 +21,14 @@ The optimizer utility is located at [/tools/optimizer](/tools/optimizer).
 
 In this repository, the resource directory is located at [/resources](/resources). Keyword files are
 platform dependent. This means that a keyword file generated with ```-p linux``` cannot run on Android or Mac. The
-optimizer available at this repository can produce keyword files for Linux and Mac platforms. Custom keyword files for 
-platforms other than Linux and Mac are provided with a purchase of the commercial license. In order to purchase a commercial
-license please contact us at sales@picovoice.
+optimizer available at this repository can produce keyword files for Linux, Mac, and Windows platforms. Custom keyword files for other
+platforms are provided with a purchase of the commercial license. In order to purchase a commercial
+license please contact sales@picovoice.
 
 A keyword file for **Vancouver** targeted for a Mac machine can be created using
 
 ```bash
-tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources -w vancouver -p mac -o ~/
+tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources -w "vancouver" -p mac -o ~/
 ```
 
 # FAQ
@@ -36,11 +36,18 @@ tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources -w vanc
 #### How do I create keyword files for platforms other than Linux/Mac/Windows?
 
 The optimizer provided in this repository does not have the capability to do so. Custom keyword files for 
-platforms other than Linux, Mac, or Windows are provided with purchase of the commercial license. In order to purchase a commercial
-license please contact us at sales@picovoice.
+platforms other than Linux, Mac, or Windows are provided with purchase of the commercial license.
 
 #### How do I deal with "[ERROR] could not find the pronunciation of XXX"?
 
 The optimizer has information about thousands of commonly-used English words. That being said, your chosen keyword might
-not be available in its internal dictionary. Please contact us at contact@picovoice.ai. We can provide you with
+not be available in its internal dictionary. Please open an issue. We can provide you with
 requested keyword file and will add the word to optimizer's internal dictionary for next release.
+
+
+#### How do I deal with "[ERROR] Wake phrase is too short or long for this optimizer."?
+
+This happens when the keyword is very short (e.g. "No") or very long (e.g. "this is a very descriptive keyword"). The 
+optimizer expects a certain length range for wake phrase and throws this error if the length is out of range. A typical 
+wake phrase is expected to be either a single word with multiple syllables (e.g. "Alexa") or a two word phrase 
+(e.g. "Hey Siri" or "OK Google").
