@@ -101,7 +101,7 @@ python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_file
 --input_audio_device_index 10 --output_path ~/test.wav
 ```
 
-If after listening to stored file there is no apparent problem detected please contact us at contact@picovoice.ai.
+If after listening to stored file there is no apparent problem detected please open an issue.
 
 #### Why am I getting "Exception: cannot autodetect the binary type ..."?
 

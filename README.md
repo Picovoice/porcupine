@@ -35,9 +35,9 @@ build always-listening voice-enabled applications/platforms. Porcupine is
     * [Android](#android)
     * [iOS](#ios)
 * [Contributing](#contributing)
-* [Pricing](#pricing)
 * [Tools used](#tools-used)
 * [Releases](#releases)
+* [License](#license)
 
 ## Try It Out
 
@@ -350,30 +350,6 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 * Thank you @dyah10 for adding watchOS binding and demo application.
 
-## Pricing
-
-### Free
-
-Anything you find here is free and licensed under Apache 2.0. This includes wake-words that are already available or can
-be generated using tools in the repository.
-
-### iOS and watchOS (pilot program)
-
-Custom wake-words for iOS/watchOS can also be provided under Apache 2.0 license. We only charge a one-time 100 USD fee to 
-create the wake-word and then you can use it on as many devices as you want for free. For obtaining a custom wake-word 
-please contact us at sales@picovoice.ai.
-
-### Raspberry Pi and Android
-
-Custom wake-words for Raspberry Pi and Android are only provided with the purchase of a commercial license.
-Our licensing model is perpetual and per device. For orders under 10000 devices, we charge 1 USD per device. For every 
-5000 devices, you get a free custom wake-word. Otherwise, you need to pay 100 USD per custom wake-word. For obtaining a 
-commercial license please contact us at sales@picovoice.ai.
-
-### DSP
-
-Please contact us at sales@picovoice.ai.
-
 ## Tools used
 
 [MXNet](https://github.com/apache/incubator-mxnet) is used for training DNNs.
@@ -393,3 +369,9 @@ CPU/memory footprint.
 ### v1.0.0 - March 13, 2018
 
 Initial release.
+
+## License
+
+Anything you find in this repository is licensed under Apache 2.0. This allows running the library on all supported platforms. Furthermore, 
+custom wake-words can be generated for Linux, Mac, and Windows. Custom wake-words for other platforms are provided with 
+the purchase of commercial license. In order to purchase a commercial license contact contact@picovoice.ai.
