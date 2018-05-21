@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://github.com/Picovoice/Porcupine/blob/master/demo/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png?raw=true" alt="PROCUPiNE"/>
-</p>
+![Description](resources/images/description.png)
 
 # Porcupine &nbsp; [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=On-device%20wake%20word%20detection%20engine%20powered%20by%20deep%20learning&url=https://github.com/Picovoice/Porcupine&hashtags=deeplearning,voice,AI,privacy)
 
@@ -22,6 +20,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 ## Table of Contents
 
 * [Try It Out](#try-it-out)
+* [Getting Started](#getting-started)
 * [Performance](#performance)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
@@ -44,10 +43,19 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 Try out Porcupine by downloading it's [Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en).
 The demo application allows you to test Porcupine on a variety of wake words in any environment.
 
+![Android Demo](resources/images/demo.gif)
+
+## Getting Started
+
+[![PORCUPiNE Tutorial](https://img.youtube.com/vi/3z7LBW_Rl9c/0.jpg)](https://www.youtube.com/watch?v=3z7LBW_Rl9c)
+
 ## Performance
 
-A scientific comparison between accuracy of Porcupine and two other widely-used engines is provided 
-[here](https://github.com/Picovoice/wakeword-benchmark). It clearly shows its robustness across different conditions.
+A scientific comparison between accuracy of Porcupine and two other widely-used libraries, PocketSphinx and Snowboy, is provided 
+[here](https://github.com/Picovoice/wakeword-benchmark). Below is miss rate measurements for different engines given a fixed
+false alarm rate in noisy conditions. It can be seen that Porcupine achieves much lower miss rate for any given false alarm rate.
+
+![Accuracy](https://raw.githubusercontent.com/Picovoice/wakeword-benchmark/master/doc/img/benchmark_noisy_bar.png?raw=true )
 
 Porcupine is lightweight. It uses less than 1.4 MB of RAM. On a Raspberry Pi 3, it uses less than 8% of one of the CPU cores.
 
@@ -72,7 +80,7 @@ documentation it is assumed that the current working directory is the root of re
 
 This [demo application](/demo/python) allows testing Porcupine using computer's microphone. It opens an input audio
 stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an
-example of running the demo for wake word **Alexa** from the command line. Replace `${SYSTEM}` with the name of
+example of running the demo for hotword **Alexa** from the command line. Replace `${SYSTEM}` with the name of
 the operating system on your machine (e.g. linux or mac).
 
 ```bash
@@ -93,7 +101,7 @@ an iOS device connected to your machine and a valid Apple developer account.
 ## Creating Keyword Files
 
 Porcupine enables developers to build models for any wake word. This is done using Porcupine's optimizer utility.
-It finds optimal model hyper-parameters for a given wake word and stores these parameters in a, so-called, keyword file.
+It finds optimal model hyper-parameters for a given hotword and stores these parameters in a, so-called, keyword file.
 You could create your own keyword file using the [Porcupine's optimizer](/tools/optimizer) from the command line
 
 ```bash
