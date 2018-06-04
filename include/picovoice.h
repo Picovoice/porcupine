@@ -17,6 +17,11 @@
 #ifndef PICOVOICE_H
 #define PICOVOICE_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /**
  * Audio sample rate accepted by Picovoice.
  */
@@ -31,5 +36,9 @@ typedef enum {
     PV_STATUS_IO_ERROR,
     PV_STATUS_INVALID_ARGUMENT,
 } pv_status_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // PICOVOICE_H

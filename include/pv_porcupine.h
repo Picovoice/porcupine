@@ -22,6 +22,11 @@
 
 #include "picovoice.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /**
  * Forward declaration for keyword spotting object (a.k.a. porcupine).
  * The object detects utterances of a given keyword(s) within incoming stream of audio in real-time.
@@ -116,5 +121,9 @@ const char *pv_porcupine_version(void);
  * @return frame length.
  */
 int pv_porcupine_frame_length(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // PV_PORCUPINE_H
