@@ -117,4 +117,4 @@ if __name__ == '__main__':
         library_path=args.library_path if args.library_path is not None else _default_library_path(),
         model_file_path=args.model_file_path,
         keyword_file_paths=[x.strip() for x in args.keyword_file_paths.split(',')],
-        sensitivity=args.sensitivity)
+        sensitivity=float(args.sensitivity))
