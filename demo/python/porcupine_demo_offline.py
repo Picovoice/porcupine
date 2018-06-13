@@ -90,9 +90,9 @@ def _run(input_audio_file_path, library_path, model_file_path, keyword_file_path
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--input_audio_file_path', help='Absolute path to input audio file', type=str)
+    parser.add_argument('--input_audio_file_path', help='Absolute path to input audio file', type=str, required=True)
 
-    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files', type=str)
+    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files', type=str, required=True)
 
     parser.add_argument(
         '--library_path',
@@ -108,9 +108,6 @@ if __name__ == '__main__':
     parser.add_argument('--sensitivity', help='detection sensitivity [0, 1]', default=0.5)
 
     args = parser.parse_args()
-
-    if not (args.input_audio_file_path and args.keyword_file_paths):
-        raise ValueError('A required argument is missing')
 
     _run(
         input_audio_file_path=args.input_audio_file_path,
