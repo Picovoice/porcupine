@@ -70,7 +70,7 @@ class PorcupineDemo(Thread):
         self._model_file_path = model_file_path
         self._keyword_file_paths = keyword_file_paths
         self._sensitivity = float(sensitivity)
-        self.frame_length = frame_length
+        self._frame_length = frame_length
         self._input_device_index = input_device_index
 
         self._output_path = output_path
@@ -79,10 +79,10 @@ class PorcupineDemo(Thread):
 
     def run(self):
         """
-         Creates an input audio stream, initializes wake word detection (Porcupine) object, and monitors the audio
-         stream for occurrences of the wake word(s). It prints the time of detection for each occurrence and index of
-         wake word.
-         """
+        Creates an input audio stream, initializes wake word detection (Porcupine) object, and monitors the audio
+        stream for occurrences of the wake word(s). It prints the time of detection for each occurrence and index of
+        wake word.
+        """
 
         num_keywords = len(self._keyword_file_paths)
 		
@@ -92,16 +92,17 @@ class PorcupineDemo(Thread):
                 result = porcupine.process(pcm)
                 if num_keywords == 1 and result:
                     print('[%s] detected keyword' % str(datetime.now()))
-                    # add you own code execution here ... it will not block the recognition
+                    # add your own code execution here ... it will not block the recognition
                 elif num_keywords > 1 and result >= 0:
                     print('[%s] detected keyword #%d' % (str(datetime.now()), result))
                     # or add it here if you use multiple keywords
             
-            return (None, pyaudio.paContinue)
+            return None, pyaudio.paContinue
 
         porcupine = None
         pa = None
         audio_stream = None
+        sample_rate = None
         try:
             porcupine = Porcupine(
                 library_path=self._library_path,
@@ -113,10 +114,10 @@ class PorcupineDemo(Thread):
             sample_rate = porcupine.sample_rate
             num_channels = 1
             audio_format = pyaudio.paInt16
-            if not self.frame_length:
+            if self._frame_length is None:
                 frame_length = porcupine.frame_length   # if you get problems with buffer overflow you can also try: frame_length = 4096
             else:
-                frame_length = self.frame_length
+                frame_length = self._frame_length
             audio_stream = pa.open(
                 rate=sample_rate,
                 channels=num_channels,
@@ -124,7 +125,7 @@ class PorcupineDemo(Thread):
                 input=True,
                 frames_per_buffer=frame_length,
                 input_device_index=self._input_device_index,
-				stream_callback=_audio_callback)
+			    stream_callback=_audio_callback)
 
             audio_stream.start_stream()
 
@@ -156,7 +157,7 @@ class PorcupineDemo(Thread):
             if pa is not None:
                 pa.terminate()
 
-            if self._output_path is not None and len(self._recorded_frames) > 0:
+            if self._output_path is not None and sample_rate is not None and len(self._recorded_frames) > 0:
                 recorded_audio = np.concatenate(self._recorded_frames, axis=0).astype(np.int16)
                 soundfile.write(self._output_path, recorded_audio, samplerate=sample_rate, subtype='PCM_16')
 
