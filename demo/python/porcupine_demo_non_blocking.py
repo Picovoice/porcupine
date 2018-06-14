@@ -47,8 +47,7 @@ class PorcupineDemo(Thread):
             keyword_file_paths,
             sensitivity=0.5,
             input_device_index=None,
-            output_path=None,
-            frame_length=None):
+            output_path=None):
 
         """
         Constructor.
@@ -61,7 +60,6 @@ class PorcupineDemo(Thread):
         :param input_device_index: Optional argument. If provided, audio is recorded from this input device. Otherwise,
         the default audio input device is used.
         :param output_path: If provided recorded audio will be stored in this location at the end of the run.
-        :param frame_length: Used for audio buffer
         """
 
         super(PorcupineDemo, self).__init__()
@@ -70,7 +68,6 @@ class PorcupineDemo(Thread):
         self._model_file_path = model_file_path
         self._keyword_file_paths = keyword_file_paths
         self._sensitivity = float(sensitivity)
-        self._frame_length = frame_length
         self._input_device_index = input_device_index
 
         self._output_path = output_path
@@ -114,10 +111,8 @@ class PorcupineDemo(Thread):
             sample_rate = porcupine.sample_rate
             num_channels = 1
             audio_format = pyaudio.paInt16
-            if self._frame_length is None:
-                frame_length = porcupine.frame_length   # if you get problems with buffer overflow you can also try: frame_length = 4096
-            else:
-                frame_length = self._frame_length
+            frame_length = porcupine.frame_length
+            
             audio_stream = pa.open(
                 rate=sample_rate,
                 channels=num_channels,
@@ -212,7 +207,6 @@ if __name__ == '__main__':
         default=os.path.join(os.path.dirname(__file__), '../../lib/common/porcupine_params.pv'))
 
     parser.add_argument('--sensitivity', help='detection sensitivity [0, 1]', default=0.5)
-    parser.add_argument('--frame_length', help='set the frame-length manually, e.g. 4096 (experimental feature, 0=auto)', type=int, default=None)
     parser.add_argument('--input_audio_device_index', help='index of input audio device', type=int, default=None)
 
     parser.add_argument(
@@ -237,6 +231,5 @@ if __name__ == '__main__':
             keyword_file_paths=[x.strip() for x in args.keyword_file_paths.split(',')],
             sensitivity=args.sensitivity,
             output_path=args.output_path,
-            input_device_index=args.input_audio_device_index,
-            frame_length=args.frame_length
+            input_device_index=args.input_audio_device_index
         ).run()
