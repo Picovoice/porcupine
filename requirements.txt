@@ -1,4 +1,4 @@
 pysoundfile==0.9.0
 enum34==1.1.6
-numpy==1.14.4
-pyaudio==0.2.11
+numpy
+pyaudio
