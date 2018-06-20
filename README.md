@@ -356,6 +356,8 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ### Acknowledgements
 
+* Thank you @veeableful for adding C++ QT demo.
+* Thank you @fquirin for adding non-blocking Python demo.
 * Thank you @dyah10 for adding watchOS binding and demo application.
 
 ## Tools used
