@@ -123,7 +123,7 @@ public class PorcupineTest {
 
         float[] sensitivities = new float[KEYWORD_FILENAMES.length];
         for (int i = 0; i < KEYWORD_FILENAMES.length; i++) {
-            sensitivities[i] = 1;
+            sensitivities[i] = 0.5f;
         }
 
         Porcupine porcupine = new Porcupine(modelFilePath, keyword_file_paths, sensitivities);
