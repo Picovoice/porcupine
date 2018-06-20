@@ -12,7 +12,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
 * using **deep neural networks** trained in **real-world situations** (i.e. noise and reverberation).
 * compact and computationally-efficient making it suitable for **IoT** applications.
-* **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**, 
+* **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**,
 **Mac**, and **Windows** are supported.
 * **scalable**. It can detect tens of wake-words concurrently with virtually no added CPU/memory footprint.
 * **open-source**. Anything you find in this repository is Apache 2.0 licensed.
@@ -51,7 +51,7 @@ The demo application allows you to test Porcupine on a variety of wake words in 
 
 ## Performance
 
-A scientific comparison between accuracy of Porcupine and two other widely-used libraries, PocketSphinx and Snowboy, is provided 
+A scientific comparison between accuracy of Porcupine and two other widely-used libraries, PocketSphinx and Snowboy, is provided
 [here](https://github.com/Picovoice/wakeword-benchmark). Below is miss rate measurements for different engines given a fixed
 false alarm rate in noisy conditions. It can be seen that Porcupine achieves much lower miss rate for any given false alarm rate.
 
@@ -120,7 +120,7 @@ Below are code snippets showcasing how Porcupine can be integrated into differen
 ### C
 
 Porcupine is implemented in ANSI C and therefore can be directly linked to C applications.
-[include/pv_porcupine.h](/include/pv_porcupine.h) and [include/picovoice.h](include/picovoice.h) header files contain 
+[include/pv_porcupine.h](/include/pv_porcupine.h) and [include/picovoice.h](include/picovoice.h) header files contain
 relevant information. An instance of Porcupine object can be constructed as follows
 
 ```c
@@ -173,7 +173,7 @@ quick demonstration of how to construct an instance of it to detect multiple key
 ```python
 library_path = ... # Path to Porcupine's C library available under lib/${SYSTEM}/${MACHINE}/
 model_file_path = ... # It is available at lib/common/porcupine_params.pv
-keyword_file_paths = ['path/to/keyword/1', 'path/to/keyword/2', ...] 
+keyword_file_paths = ['path/to/keyword/1', 'path/to/keyword/2', ...]
 sensitivities = [0.5, 0.4, ...]
 handle = Porcupine(library_path, model_file_path, keyword_file_paths=keyword_file_paths, sensitivities=sensitivities)
 ```
@@ -181,14 +181,14 @@ handle = Porcupine(library_path, model_file_path, keyword_file_paths=keyword_fil
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
-When initialized, valid sample rate can be obtained using ```handle.sample_rate```. Expected frame length 
+When initialized, valid sample rate can be obtained using ```handle.sample_rate```. Expected frame length
 (number of audio samples in an input array) is ```handle.frame_length```. The object can be used to monitor
 incoming audio as below
 
 ```python
 def get_next_audio_frame():
     pass
-    
+
 while True:
     pcm = get_next_audio_frame()
     keyword_index = handle.process(pcm)
@@ -210,14 +210,14 @@ There are two possibilities for integrating Porcupine into your Android's applic
 
 #### Binding
 
-[Porcupine](/binding/android/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a binding for 
+[Porcupine](/binding/android/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a binding for
 Android using [JNI](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/). It can be initialized using
 
 ```java
     final String modelFilePath = ... // It is available at lib/common/porcupine_params.pv
     final String keywordFilePath = ...
     final float sensitivity = 0.5f;
-    
+
     Porcupine porcupine = new Porcupine(modelFilePath, keywordFilePath, sensitivity);
 ```
 
@@ -228,7 +228,7 @@ Once initialized, ```porcupine``` can be used to monitor incoming audio
 
 ```java
     private short[] getNextAudioFrame();
-    
+
     while (true) {
         final boolean result = porcupine.process(getNextAudioFrame());
         if (result) {
@@ -237,7 +237,7 @@ Once initialized, ```porcupine``` can be used to monitor incoming audio
     }
 ```
 
-Finally, be sure to explicitly release resources acquired by porcupine as the class does not rely on the garbage collector 
+Finally, be sure to explicitly release resources acquired by porcupine as the class does not rely on the garbage collector
 for releasing native resources.
 
 ```java
@@ -247,7 +247,7 @@ for releasing native resources.
 #### High-Level API
 
 [Android demo application](/demo/android) provides a high-level API for integrating Porcupine into Android applications.
-The [PorcupineManager](/demo/android/porcupinemanager/src/main/java/ai/picovoice/porcupinemanager/PorcupineManager.java) class 
+The [PorcupineManager](/demo/android/porcupinemanager/src/main/java/ai/picovoice/porcupinemanager/PorcupineManager.java) class
 manages all activities related to creating an input audio stream, feeding it into Porcupine's library, and
 invoking a user-provided detection callback. The class can be initialized as below
 
@@ -255,7 +255,7 @@ invoking a user-provided detection callback. The class can be initialized as bel
     final String modelFilePath = ... // It is available at lib/common/porcupine_params.pv
     final String keywordFilePath = ...
     final float sensitivity = 0.5f;
-    
+
     PorcupineManager manager = new PorcupineManager(
             modelFilePath,
             keywordFilePath,
@@ -266,11 +266,11 @@ invoking a user-provided detection callback. The class can be initialized as bel
                     // detection event logic/callback
                 }
             });
-``` 
+```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
- 
+
 When initialized, input audio can be monitored using `manager.start() `. When done be sure to stop the manager using
 `manager.stop()`.
 
@@ -280,7 +280,7 @@ There are two approaches for integrating Porcupine into an iOS application.
 
 #### Direct
 
-Porcupine is shipped as a precompiled ANSI C library can directly be used in Swift using module maps. It can be 
+Porcupine is shipped as a precompiled ANSI C library can directly be used in Swift using module maps. It can be
 initialized to detect multiple wake words concurrently using
 
 ```swift
@@ -309,7 +309,7 @@ func getNextAudioFrame() -> UnsafeMutablePointer<Int16> {
 while true {
     let pcm = getNextAudioFrame()
     var keyword_index: Int32 = -1
-    
+
     let status = pv_porcupine_process(handle, pcm, &keyword_index)
     if status != PV_STATUS_SUCCESS {
         // error handling logic
@@ -328,8 +328,8 @@ When done release the resources via
 
 #### Binding
 
-[PorcupineManager](/binding/ios/PorcupineManager.swift) class manages all activities related to creating an input audio 
-stream, feeding it into Porcupine's library, and invoking a user-provided detection callback. The class can be 
+[PorcupineManager](/binding/ios/PorcupineManager.swift) class manages all activities related to creating an input audio
+stream, feeding it into Porcupine's library, and invoking a user-provided detection callback. The class can be
 initialized as below
 
 ```swift
@@ -347,7 +347,7 @@ let manager = PorcupineManager(
     keywordCallback: keywordCallback)
 ```
 
-When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using 
+When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
 `manager.stop()`.
 
 ## Contributing
@@ -363,6 +363,12 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 [MXNet](https://github.com/apache/incubator-mxnet) is used for training DNNs.
 
 ## Releases
+
+### v1.3.0 June 19, 2018
+
+* Added tiny model for deeply embedded platforms.
+* Improved model's accuracy.
+* Runtime optimization and bug fixes.
 
 ### v1.2.0 April 21, 2018
 
@@ -380,6 +386,6 @@ Initial release.
 
 ## License
 
-Anything you find in this repository is licensed under Apache 2.0. This allows running the library on all supported platforms. Furthermore, 
-custom wake-words can be generated for Linux, Mac, and Windows. Custom wake-words for other platforms are provided with 
+Anything you find in this repository is licensed under Apache 2.0. This allows running the library on all supported platforms. Furthermore,
+custom wake-words can be generated for Linux, Mac, and Windows. Custom wake-words for other platforms are provided with
 the purchase of commercial license. In order to purchase a commercial license contact contact@picovoice.ai.
