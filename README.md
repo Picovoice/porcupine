@@ -57,7 +57,7 @@ false alarm rate in noisy conditions. It can be seen that Porcupine achieves muc
 
 ![Accuracy](https://raw.githubusercontent.com/Picovoice/wakeword-benchmark/master/doc/img/benchmark_noisy_bar.png?raw=true )
 
-Porcupine is lightweight. It uses less than 1.4 MB of RAM. On a Raspberry Pi 3, it uses less than 8% of one of the CPU cores.
+Porcupine is lightweight. It uses less than 1.4 MB of RAM. On a Raspberry Pi 3, it uses less than 7% of one of the CPU cores. The [tiny model](/lib/common/porcupine_tiny_params.pv) uses 2% of one of the CPU cores and less than 200 KB of RAM.
 
 ## Structure of Repository
 
