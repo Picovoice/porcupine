@@ -52,23 +52,20 @@ The demo application allows you to test Porcupine on a variety of wake words in 
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and Snowboy, is provided
 [here](https://github.com/Picovoice/wakeword-benchmark). Compared to best performing engine, Porcupine's standard model is
-XX% more accurate, 4.2 times faster (on Raspberry Pi 3), and consumes 45% less memory. 
+2.53 times more accurate, 2.6 times faster (on Raspberry Pi 3), and consumes 45% less memory. 
 
 ## Model Variants
 
-Porcupine comes in three different variations: **standard**, **small**, and **tiny**. The small and tiny models are 
-specifically designed for deeply-embedded applications. Their accuracy is slightly lower than the standard model but they
-consume considerably less CPU/memory. Below is a comparison of runtime measurements for different variants on a Raspberry Pi3.
+Porcupine comes in two different variations: **standard** and **tiny**. The tiny model is specifically designed for
+deeply-embedded applications. Its accuracy is slightly lower than the standard model but it consume considerably less 
+CPU/memory. Below is a comparison of runtime measurements for different variants on a Raspberry Pi3.
 
-| Model Variant | [Real time Factor](http://enacademic.com/dic.nsf/enwiki/3796485) | Memory |
----|---|---
-Standard | 13.53 | 1380 KB |
-Small | 20.32 | 410 KB  |
-Tiny | 29.28 | 240 KB |
+| Model Variant | [Real time Factor](http://enacademic.com/dic.nsf/enwiki/3796485) | CPU Usage | Memory Usage |
+:---: | :---: | :---: | :---:
+Standard | 13.53 | 7.39% | 1380 KB |
+Tiny | 29.28 | 3.42% | 240 KB |
 
-The following graph compares the accuracy of different model variants
-
-For more information about the above measurements refer to [benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
+For accuracy comparison of different variants refer to [benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
 
 ## Structure of Repository
 
@@ -379,7 +376,6 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ### v1.4.0 July 20, 2018
 
-* Added small model (400 KB)
 * Improved accuracy across all models (specifically tiny variant)
 * Runtime optimizations
 * Updated documentation
