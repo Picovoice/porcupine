@@ -35,13 +35,13 @@ tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources -w "van
 #### How do I create keyword files for platforms other than Linux/Mac/Windows?
 
 The optimizer provided in this repository does not have the capability to do so. Custom keyword files for 
-platforms other than Linux, Mac, or Windows are provided with purchase of the commercial license.
+platforms other than Linux, Mac, or Windows are only provided with purchase of the commercial license.
 
 #### How do I deal with "[ERROR] could not find the pronunciation of XXX"?
 
 The optimizer has information about thousands of commonly-used English words. That being said, your chosen keyword might
-not be available in its internal dictionary. Please open an issue. We can provide you with
-requested keyword file and will add the word to optimizer's internal dictionary for next release.
+not be available in its internal dictionary. Please open an issue and we will add the word to optimizer's internal dictionary
+for next release.
 
 
 #### How do I deal with "[ERROR] Wake phrase is too short or long for this optimizer."?

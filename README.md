@@ -1,5 +1,3 @@
-![Description](resources/images/description.png)
-
 # Porcupine &nbsp; [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=On-device%20wake%20word%20detection%20engine%20powered%20by%20deep%20learning&url=https://github.com/Picovoice/Porcupine&hashtags=deeplearning,voice,AI,privacy)
 
 [![Build Status](https://travis-ci.org/Picovoice/Porcupine.svg?branch=master)](https://travis-ci.org/Picovoice/Porcupine)
@@ -12,7 +10,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
 * using **deep neural networks** trained in **real-world situations** (i.e. noise and reverberation).
 * compact and computationally-efficient making it suitable for **IoT** applications.
-* **cross platform**. It is implemented in pure ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**,
+* **cross platform**. It is implemented in pure fixed-point ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**,
 **Mac**, and **Windows** are supported.
 * **scalable**. It can detect tens of wake-words concurrently with virtually no added CPU/memory footprint.
 * **open-source**. Anything you find in this repository is Apache 2.0 licensed.
@@ -22,6 +20,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * [Try It Out](#try-it-out)
 * [Getting Started](#getting-started)
 * [Performance](#performance)
+* [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
     * [Python Demo Application](#python-demo-application)
@@ -51,13 +50,22 @@ The demo application allows you to test Porcupine on a variety of wake words in 
 
 ## Performance
 
-A scientific comparison between accuracy of Porcupine and two other widely-used libraries, PocketSphinx and Snowboy, is provided
-[here](https://github.com/Picovoice/wakeword-benchmark). Below is miss rate measurements for different engines given a fixed
-false alarm rate in noisy conditions. It can be seen that Porcupine achieves much lower miss rate for any given false alarm rate.
+A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and Snowboy, is provided
+[here](https://github.com/Picovoice/wakeword-benchmark). Compared to best performing engine, Porcupine's standard model is
+2.53 times more accurate, 2.6 times faster (on Raspberry Pi 3), and consumes 45% less memory. 
 
-![Accuracy](https://raw.githubusercontent.com/Picovoice/wakeword-benchmark/master/doc/img/benchmark_noisy_bar.png?raw=true )
+## Model Variants
 
-Porcupine is lightweight. It uses less than 1.4 MB of RAM. On a Raspberry Pi 3, it uses less than 7% of one of the CPU cores. The [tiny model](/lib/common/porcupine_tiny_params.pv) uses 2% of one of the CPU cores and less than 200 KB of RAM.
+Porcupine comes in two different variations: **standard** and **tiny**. The tiny model is specifically designed for
+deeply-embedded applications. Its accuracy is slightly lower than the standard model but it consumes considerably less 
+resources. Below is a comparison of runtime measurements for different variants of Porcupine on Raspberry Pi3
+
+| Model Variant | CPU Usage | Memory Usage |
+:---: | :---: | :---:
+Standard | 7.39% | 1380 KB |
+Tiny | 3.42% | 240 KB |
+
+For accuracy comparison of different variants refer to [benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
 
 ## Structure of Repository
 
@@ -366,10 +374,16 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ## Releases
 
+### v1.4.0 July 20, 2018
+
+* Improved accuracy across all models (specifically tiny variant)
+* Runtime optimizations
+* Updated documentation
+
 ### v1.3.0 June 19, 2018
 
-* Added tiny model for deeply embedded platforms.
-* Improved model's accuracy.
+* Added tiny model (200 KB) for deeply embedded platforms.
+* Improved accuracy.
 * Runtime optimization and bug fixes.
 
 ### v1.2.0 April 21, 2018
@@ -389,5 +403,7 @@ Initial release.
 ## License
 
 Anything you find in this repository is licensed under Apache 2.0. This allows running the library on all supported platforms. Furthermore,
-custom wake-words can be generated for Linux, Mac, and Windows. Custom wake-words for other platforms are provided with
-the purchase of commercial license. In order to purchase a commercial license contact contact@picovoice.ai.
+custom wake-words can be generated for Linux, Mac, and Windows.
+
+Custom wake-words for other platforms are provided with the purchase of commercial license. In order to purchase a 
+commercial license send an email to contact@picovoice.ai with a brief description of your use case.
