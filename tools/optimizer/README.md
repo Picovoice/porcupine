@@ -40,8 +40,8 @@ platforms other than Linux, Mac, or Windows are only provided with purchase of t
 #### How do I deal with "[ERROR] could not find the pronunciation of XXX"?
 
 The optimizer has information about thousands of commonly-used English words. That being said, your chosen keyword might
-not be available in its internal dictionary. Please open an issue. We can provide you with
-requested keyword file and will add the word to optimizer's internal dictionary for next release.
+not be available in its internal dictionary. Please open an issue and we will add the word to optimizer's internal dictionary
+for next release.
 
 
 #### How do I deal with "[ERROR] Wake phrase is too short or long for this optimizer."?
