@@ -82,7 +82,7 @@ class PorcupineDemo(Thread):
         """
 
         num_keywords = len(self._keyword_file_paths)
-		
+
         def _audio_callback(in_data, frame_count, time_info, status):
             if frame_count >= porcupine.frame_length:
                 pcm = struct.unpack_from("h" * porcupine.frame_length, in_data)
@@ -120,7 +120,7 @@ class PorcupineDemo(Thread):
                 input=True,
                 frames_per_buffer=frame_length,
                 input_device_index=self._input_device_index,
-			    stream_callback=_audio_callback)
+                stream_callback=_audio_callback)
 
             audio_stream.start_stream()
 
@@ -142,15 +142,16 @@ class PorcupineDemo(Thread):
         except KeyboardInterrupt:
             print('stopping ...')
         finally:
-            if porcupine is not None:
-                porcupine.delete()
-
             if audio_stream is not None:
                 audio_stream.stop_stream()
                 audio_stream.close()
 
             if pa is not None:
                 pa.terminate()
+
+            # delete Porcupine last to avoid segfault in callback.
+            if porcupine is not None:
+                porcupine.delete()
 
             if self._output_path is not None and sample_rate is not None and len(self._recorded_frames) > 0:
                 recorded_audio = np.concatenate(self._recorded_frames, axis=0).astype(np.int16)
