@@ -1,0 +1,11 @@
+[package]
+name = "porcupine-sys-demo"
+version = "0.1.0"
+authors = ["Lilis Iskandar <lilis@veand.co>"]
+
+[dependencies]
+chan = "0.1"
+chan-signal = "0.3"
+clap = "2.31"
+cpal = "0.8"
+porcupine-sys = "0.0.4"
