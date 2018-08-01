@@ -299,7 +299,7 @@ var handle: OpaquePointer?
 
 let status = pv_porcupine_multiple_keywords_init(
     modelFilePath,
-    1,
+    2, // Number of different keywords to monitor for, or keywordFilePaths.count
     keywordFilePaths.map{ UnsafePointer(strdup($0)) },
     sensitivities,
     &handle)
