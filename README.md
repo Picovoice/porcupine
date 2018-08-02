@@ -299,7 +299,7 @@ var handle: OpaquePointer?
 
 let status = pv_porcupine_multiple_keywords_init(
     modelFilePath,
-    2, // Number of different keywords to monitor for, or keywordFilePaths.count
+    Int32(keywordFilePaths.count), // Number of different keywords to monitor for
     keywordFilePaths.map{ UnsafePointer(strdup($0)) },
     sensitivities,
     &handle)
@@ -317,13 +317,13 @@ func getNextAudioFrame() -> UnsafeMutablePointer<Int16> {
 
 while true {
     let pcm = getNextAudioFrame()
-    var result = false
+    var keyword_index: Int32 = -1
 
-    let status = pv_porcupine_process(handle, pcm, &result)
+    let status = pv_porcupine_multiple_keywords_process(handle, pcm, &keyword_index)
     if status != PV_STATUS_SUCCESS {
         // error handling logic
     }
-    if result {
+    if keyword_index >= 0 {
         // detection event logic/callback
     }
 }
