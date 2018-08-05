@@ -22,7 +22,7 @@ The optimizer utility is located at [/tools/optimizer](/tools/optimizer).
 In this repository, the resource directory is located at [/resources](/resources). Keyword files are
 platform dependent. This means that a keyword file generated with ```-p linux``` cannot run on Android or Mac. The
 optimizer available at this repository can produce keyword files for Linux, Mac, and Windows platforms. Custom keyword files for other
-platforms are provided with a purchase of the commercial license. In order to purchase a commercial license contact contact@picovoice.ai.
+platforms are provided with purchase of the commercial license. In order to purchase a commercial license contact contact@picovoice.ai.
 
 A keyword file for **Vancouver** targeted for a Mac machine can be created using
 
@@ -39,7 +39,7 @@ platforms other than Linux, Mac, or Windows are only provided with purchase of t
 
 #### How do I deal with "[ERROR] could not find the pronunciation of XXX"?
 
-The optimizer has information about thousands of commonly-used English words. That being said, your chosen keyword might
+The optimizer has information about tens of thousands of commonly-used English words. That being said, your chosen keyword might
 not be available in its internal dictionary. Please open an issue and we will add the word to optimizer's internal dictionary
 for next release.
 

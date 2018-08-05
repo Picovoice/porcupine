@@ -83,6 +83,9 @@ class PorcupineDemo(Thread):
 
         num_keywords = len(self._keyword_file_paths)
 
+        keyword_names =\
+            [os.path.basename(x).strip('.ppn').strip('_tiny').split('_')[0] for x in self._keyword_file_paths]
+
         def _audio_callback(in_data, frame_count, time_info, status):
             if frame_count >= porcupine.frame_length:
                 pcm = struct.unpack_from("h" * porcupine.frame_length, in_data)
@@ -91,8 +94,11 @@ class PorcupineDemo(Thread):
                     print('[%s] detected keyword' % str(datetime.now()))
                     # add your own code execution here ... it will not block the recognition
                 elif num_keywords > 1 and result >= 0:
-                    print('[%s] detected keyword #%d' % (str(datetime.now()), result))
+                    print('[%s] detected %s' % (str(datetime.now()), keyword_names[result]))
                     # or add it here if you use multiple keywords
+
+                if self._output_path is not None:
+                    self._recorded_frames.append(pcm)
             
             return None, pyaudio.paContinue
 
