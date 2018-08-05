@@ -81,6 +81,9 @@ class PorcupineDemo(Thread):
 
         num_keywords = len(self._keyword_file_paths)
 
+        keyword_names =\
+            [os.path.basename(x).strip('.ppn').strip('_tiny').split('_')[0] for x in self._keyword_file_paths]
+
         porcupine = None
         pa = None
         audio_stream = None
@@ -111,7 +114,7 @@ class PorcupineDemo(Thread):
                 if num_keywords == 1 and result:
                     print('[%s] detected keyword' % str(datetime.now()))
                 elif num_keywords > 1 and result >= 0:
-                    print('[%s] detected keyword #%d' % (str(datetime.now()), result))
+                    print('[%s] detected %s' % (str(datetime.now()), keyword_names[result]))
 
         except KeyboardInterrupt:
             print('stopping ...')
@@ -166,7 +169,7 @@ def _default_library_path():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files', type=str, required=True)
+    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files', type=str)
 
     parser.add_argument(
         '--library_path',
@@ -195,6 +198,9 @@ if __name__ == '__main__':
     if args.show_audio_devices_info:
         PorcupineDemo.show_audio_devices_info()
     else:
+        if not args.keyword_file_paths:
+            raise ValueError('keyword file paths are missing')
+
         PorcupineDemo(
             library_path=args.library_path if args.library_path is not None else _default_library_path(),
             model_file_path=args.model_file_path,

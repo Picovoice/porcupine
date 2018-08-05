@@ -1,10 +1,10 @@
 # Prerequisites
 
-First, consult the prerequisites section of [Python binding](/binding/python). Additionally, this demo application
+First, consult the prerequisites section of [Python binding](/binding/python). Additionally, demo application
 uses [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) for recording input audio (i.e. microphone).
 Consult the installation guide at [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/).
 
-# Usage
+# Demo Application
 
 Usage information can be found via
 
@@ -54,7 +54,7 @@ python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_file
 --model_file_path lib/common/porcupine_tiny_params.pv
 ``` 
 
-# FAQ
+## FAQ
 
 #### The demo application does not detect anything. Why?
 
@@ -114,3 +114,13 @@ If after listening to stored file there is no apparent problem detected please o
 
 The demo application cannot auto-detect the CPU type on all variants of Raspberry Pi. Hence you need to provide the path
 to correct library file manually using `--library_path` command line argument. Please refer to [README.md](/lib/README.md).
+
+
+# Demo Application Non-Blocking
+
+This demo offers the same functionality as standard demo except that it uses non-blocking API of PyAudio. The use
+of non-blocking API can be beneficial in platforms that have weaker CPUs (such as Raspberry Pi Zero).
+
+# Demo Application Offline
+
+It allows testing Porcupine on a corpus of audio files. It is mainly useful for quantitative performance benchmarking.
