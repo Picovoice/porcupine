@@ -48,7 +48,13 @@ The demo application allows you to test Porcupine on a variety of wake words in 
 
 ## Getting Started
 
-[![PORCUPiNE Tutorial](https://img.youtube.com/vi/3z7LBW_Rl9c/0.jpg)](https://www.youtube.com/watch?v=3z7LBW_Rl9c)
+### Wake Word Tutorial
+
+[![Porcupine Tutorial - Wake Word](https://img.youtube.com/vi/3z7LBW_Rl9c/0.jpg)](https://www.youtube.com/watch?v=3z7LBW_Rl9c)
+
+### Voice Control Tutorial
+
+[![Porcupine Tutorial - Voice Control](https://img.youtube.com/vi/YQQ5Bq5HqpQ/0.jpg)](https://www.youtube.com/watch?v=YQQ5Bq5HqpQ)
 
 ## Performance
 
