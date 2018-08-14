@@ -33,7 +33,7 @@ public class PorcupineManager {
 
     public let modelFilePath: String
     public let wakeKeywordConfigurations: [WakeKeywordConfiguration]
-    public let onDetection: ((WakeKeywordConfiguration) -> Void)?
+    public var onDetection: ((WakeKeywordConfiguration) -> Void)?
     public private(set) var isListening = false
 
     /// Initializer for multiple keywords detection.
