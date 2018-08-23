@@ -43,7 +43,7 @@ class PorcupineDemo(Thread):
             library_path,
             model_file_path,
             keyword_file_paths,
-            sensitivity=0.5,
+            sensitivities,
             input_device_index=None,
             output_path=None):
 
@@ -53,7 +53,8 @@ class PorcupineDemo(Thread):
         :param library_path: Absolute path to Porcupine's dynamic library.
         :param model_file_path: Absolute path to the model parameter file.
         :param keyword_file_paths: List of absolute paths to keyword files.
-        :param sensitivity: Sensitivity parameter. For more information refer to 'include/pv_porcupine.h'. It uses the
+        :param sensitivities: Sensitivity parameter for each wake word. For more information refer to
+        'include/pv_porcupine.h'. It uses the
         same sensitivity value for all keywords.
         :param input_device_index: Optional argument. If provided, audio is recorded from this input device. Otherwise,
         the default audio input device is used.
@@ -65,7 +66,7 @@ class PorcupineDemo(Thread):
         self._library_path = library_path
         self._model_file_path = model_file_path
         self._keyword_file_paths = keyword_file_paths
-        self._sensitivity = float(sensitivity)
+        self._sensitivities = sensitivities
         self._input_device_index = input_device_index
 
         self._output_path = output_path
@@ -82,7 +83,11 @@ class PorcupineDemo(Thread):
         num_keywords = len(self._keyword_file_paths)
 
         keyword_names =\
-            [os.path.basename(x).strip('.ppn').strip('_tiny').split('_')[0] for x in self._keyword_file_paths]
+            [os.path.basename(x).replace('.ppn', '').replace('_tiny', '').split('_')[0] for x in self._keyword_file_paths]
+
+        print('listening for:')
+        for keyword_name, sensitivity in zip(keyword_names, sensitivities):
+            print('- %s (sensitivity: %f)' % (keyword_name, sensitivity))
 
         porcupine = None
         pa = None
@@ -92,7 +97,7 @@ class PorcupineDemo(Thread):
                 library_path=self._library_path,
                 model_file_path=self._model_file_path,
                 keyword_file_paths=self._keyword_file_paths,
-                sensitivities=[self._sensitivity] * num_keywords)
+                sensitivities=self._sensitivities)
 
             pa = pyaudio.PyAudio()
             audio_stream = pa.open(
@@ -182,7 +187,7 @@ if __name__ == '__main__':
         type=str,
         default=os.path.join(os.path.dirname(__file__), '../../lib/common/porcupine_params.pv'))
 
-    parser.add_argument('--sensitivity', help='detection sensitivity [0, 1]', default=0.5)
+    parser.add_argument('--sensitivities', help='detection sensitivity [0, 1]', default=0.5)
     parser.add_argument('--input_audio_device_index', help='index of input audio device', type=int, default=None)
 
     parser.add_argument(
@@ -201,10 +206,17 @@ if __name__ == '__main__':
         if not args.keyword_file_paths:
             raise ValueError('keyword file paths are missing')
 
+        keyword_file_paths = [x.strip() for x in args.keyword_file_paths.split(',')]
+
+        if isinstance(args.sensitivities, float):
+            sensitivities = [args.sensitivities] * len(keyword_file_paths)
+        else:
+            sensitivities = [float(x) for x in args.sensitivities.split(',')]
+
         PorcupineDemo(
             library_path=args.library_path if args.library_path is not None else _default_library_path(),
             model_file_path=args.model_file_path,
-            keyword_file_paths=[x.strip() for x in args.keyword_file_paths.split(',')],
-            sensitivity=args.sensitivity,
+            keyword_file_paths=keyword_file_paths,
+            sensitivities=sensitivities,
             output_path=args.output_path,
             input_device_index=args.input_audio_device_index).run()
