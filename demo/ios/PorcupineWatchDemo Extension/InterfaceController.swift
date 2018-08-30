@@ -52,7 +52,7 @@ class InterfaceController: WKInterfaceController {
     @IBAction func startTogglePressed() {
         if isRecording {
             wakeWordPicker.setEnabled(true)
-            porcupineManager.stop()
+            porcupineManager.stopListening()
             startToggleButton.setTitle("Start")
         } else {
             wakeWordPicker.setEnabled(false)
@@ -68,7 +68,7 @@ class InterfaceController: WKInterfaceController {
         let modelFilePath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
         let keywordFilePath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
         
-        let keywordCallback: (() -> Void) = {
+        let keywordCallback: ((WakeKeywordConfiguration) -> Void) = { word in
             DispatchQueue.main.async {
                 WKInterfaceDevice.current().play(.start)
                 self.startToggleButton.setBackgroundColor(.orange)
@@ -78,26 +78,18 @@ class InterfaceController: WKInterfaceController {
             }
             print("found!")
         }
-        
-        porcupineManager = PorcupineManager(
-            modelFilePath: modelFilePath!,
-            keywordFilePath: keywordFilePath!,
-            sensitivity: 0.5,
-            keywordCallback: keywordCallback)
-        
+
+        let keyword = WakeKeywordConfiguration(name: wakeWord, filePath: keywordFilePath!, sensitivity: 0.5)
+
         do {
-            try porcupineManager.start()
+            porcupineManager = try PorcupineManager(modelFilePath: modelFilePath!, wakeKeywordConfiguration: keyword, onDetection: keywordCallback)
+            try porcupineManager.startListening()
         } catch {
             print("Error starting manager")
         }
         
     }
 
-    
-    
-    
-    
-    
     private func initializeAudioSession() {
         let recordingSession = AVAudioSession.sharedInstance()
         do {
