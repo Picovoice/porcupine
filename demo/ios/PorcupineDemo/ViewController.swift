@@ -77,7 +77,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
             do {
                 porcupineManager = try PorcupineManager(modelFilePath: modelFilePath!, wakeKeywordConfiguration: keyword, onDetection: keywordCallback)
-                porcupineManager.startListening()
+                try porcupineManager.startListening()
             } catch {
                 let alert = UIAlertController(
                         title: "Alert",
