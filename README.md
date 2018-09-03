@@ -345,13 +345,13 @@ initialized as below
 
 ```swift
 let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordCallback: ((WakeKeywordConfiguration) -> Void) = {
+let keywordCallback: ((WakeWordConfiguration) -> Void) = {
     // detection event callback
 }
 
-let keywordConfiguration1 = WakeKeywordConfiguration(name: "1", filePath: "path/to/keyword/1", sensitivity: 0.5)
-let keywordConfiguration2 = WakeKeywordConfiguration(name: "2", filePath: "path/to/keyword/2", sensitivity: 0.7)
-let configurations = [ keywordConfiguration1, keywordConfiguration2 ]
+let wakeWordConfiguration1 = WakeWordConfiguration(name: "1", filePath: "path/to/keyword/1", sensitivity: 0.5)
+let wakewordConfiguration2 = WakeWordConfiguration(name: "2", filePath: "path/to/keyword/2", sensitivity: 0.7)
+let configurations = [ wakeWordConfiguration1, wakewordConfiguration2 ]
 
 let manager = try PorcupineManager(modelFilePath: modelFilePath, wakeKeywordConfigurations: configurations, onDetection: keywordCallback)
 ```
