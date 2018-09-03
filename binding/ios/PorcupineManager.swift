@@ -35,10 +35,10 @@ public class PorcupineManager {
     private lazy var audioEngine = AVAudioEngine()
 
     public let modelFilePath: String
-    public let wakeKeywordConfigurations: [WakeKeywordConfiguration]
+    public let wakeKeywordConfigurations: [WakeWordConfiguration]
 
     /// Callback when wake keyword is detected. This will be invoked on main queue.
-    public var onDetection: ((WakeKeywordConfiguration) -> Void)?
+    public var onDetection: ((WakeWordConfiguration) -> Void)?
 
     /// Whether current manager is listening to audio input.
     public var isListening: Bool {
@@ -56,7 +56,7 @@ public class PorcupineManager {
     ///   - wakeKeywordConfigurations: Keyword configurations to use.
     ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
     /// - Throws: PorcupineManagerError
-    public init(modelFilePath: String, wakeKeywordConfigurations: [WakeKeywordConfiguration], onDetection: ((WakeKeywordConfiguration) -> Void)?) throws {
+    public init(modelFilePath: String, wakeKeywordConfigurations: [WakeWordConfiguration], onDetection: ((WakeWordConfiguration) -> Void)?) throws {
 
         self.modelFilePath = modelFilePath
         self.wakeKeywordConfigurations = wakeKeywordConfigurations
@@ -82,10 +82,10 @@ public class PorcupineManager {
     ///
     /// - Parameters:
     ///   - modelFilePath: Absolute path to file containing model parameters.
-    ///   - wakeKeywordConfigurations: Keyword configuration to use.
+    ///   - wakeKeywordConfiguration: Keyword configuration to use.
     ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
     /// - Throws: PorcupineManagerError
-    public convenience init(modelFilePath: String, wakeKeywordConfiguration: WakeKeywordConfiguration, onDetection: ((WakeKeywordConfiguration) -> Void)?) throws {
+    public convenience init(modelFilePath: String, wakeKeywordConfiguration: WakeWordConfiguration, onDetection: ((WakeWordConfiguration) -> Void)?) throws {
         try self.init(modelFilePath: modelFilePath, wakeKeywordConfigurations: [wakeKeywordConfiguration], onDetection: onDetection)
     }
 
@@ -224,12 +224,12 @@ public class PorcupineManager {
     }
 }
 
-public struct WakeKeywordConfiguration {
+public struct WakeWordConfiguration {
     let name: String
     let filePath: String
     let sensitivity: Float
 
-    /// Initialiser for the wake word configuration.
+    /// Initializer for the wake word configuration.
     ///
     /// - Parameters:
     ///   - name: The name to use to help identify this configuration.
