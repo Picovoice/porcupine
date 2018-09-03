@@ -90,11 +90,11 @@ public class PorcupineManager {
     }
 
     deinit {
-        pv_porcupine_delete(porcupine)
-        porcupine = nil
         if isListening {
             stopListening()
         }
+        pv_porcupine_delete(porcupine)
+        porcupine = nil
     }
 
     /// Start listening for configured wake words.
