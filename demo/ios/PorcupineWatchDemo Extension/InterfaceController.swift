@@ -68,7 +68,7 @@ class InterfaceController: WKInterfaceController {
         let modelFilePath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
         let keywordFilePath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
         
-        let keywordCallback: ((WakeKeywordConfiguration) -> Void) = { word in
+        let keywordCallback: ((WakeWordConfiguration) -> Void) = { word in
             DispatchQueue.main.async {
                 WKInterfaceDevice.current().play(.start)
                 self.startToggleButton.setBackgroundColor(.orange)
@@ -79,7 +79,7 @@ class InterfaceController: WKInterfaceController {
             print("found!")
         }
 
-        let keyword = WakeKeywordConfiguration(name: wakeWord, filePath: keywordFilePath!, sensitivity: 0.5)
+        let keyword = WakeWordConfiguration(name: wakeWord, filePath: keywordFilePath!, sensitivity: 0.5)
 
         do {
             porcupineManager = try PorcupineManager(modelFilePath: modelFilePath!, wakeKeywordConfiguration: keyword, onDetection: keywordCallback)
