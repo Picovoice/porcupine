@@ -35,7 +35,7 @@ public class PorcupineManager {
     private lazy var audioEngine = AVAudioEngine()
 
     public let modelFilePath: String
-    public let wakeKeywordConfigurations: [WakeWordConfiguration]
+    public let wakeWordConfiguration: [WakeWordConfiguration]
 
     /// Callback when wake keyword is detected. This will be invoked on main queue.
     public var onDetection: ((WakeWordConfiguration) -> Void)?
@@ -59,7 +59,7 @@ public class PorcupineManager {
     public init(modelFilePath: String, wakeKeywordConfigurations: [WakeWordConfiguration], onDetection: ((WakeWordConfiguration) -> Void)?) throws {
 
         self.modelFilePath = modelFilePath
-        self.wakeKeywordConfigurations = wakeKeywordConfigurations
+        self.wakeWordConfiguration = wakeKeywordConfigurations
         self.onDetection = onDetection
 
         let keywordFilePaths = wakeKeywordConfigurations.map { $0.filePath }
@@ -161,7 +161,7 @@ public class PorcupineManager {
                 pv_porcupine_multiple_keywords_process(self.porcupine, offsetPointer, &result)
                 if result >= 0 {
                     let index = Int(result)
-                    let keyword = self.wakeKeywordConfigurations[index]
+                    let keyword = self.wakeWordConfiguration[index]
                     DispatchQueue.main.async {
                         self.onDetection?(keyword)
                     }
