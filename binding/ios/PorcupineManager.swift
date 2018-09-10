@@ -125,9 +125,15 @@ public class PorcupineManager {
         let sampleRate = Double(pv_sample_rate())
 
         let recordingFormat = inputNode.inputFormat(forBus: busNumber)
+
+        let duration = Double(frameLength) / sampleRate
+
+        // Buffer of 4, porcupine reads audio in 32ms frames.
+        // Default AVAudioEngine input node will only go as low as 4410 for buffer size (100ms).
+        // So as a workaround, read 4 at once so it's 4 * 32ms, which is bigger than 100 ms.
         let numberOfBuffer: UInt32 = 4
         let frameCapacity = numberOfBuffer * frameLength
-        let bufferSize = frameCapacity * numberOfBuffer
+        let bufferSize = AVAudioFrameCount(duration * recordingFormat.sampleRate) * numberOfBuffer
 
         // Format is hardcoded. It can only be nil if channels > 2 according to documentation. Assume non-nil.
         let picoFormat = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: sampleRate, channels: 1, interleaved: true)!
