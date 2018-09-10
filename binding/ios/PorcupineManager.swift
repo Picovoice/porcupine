@@ -229,20 +229,9 @@ private protocol AudioInputEngine: AnyObject {
 private class AudioInputEngine_AudioQueue: AudioInputEngine {
 
     private let numBuffers = 3
-
     private var audioQueue: AudioQueueRef?
-    private var audioBuffers: [AudioQueueBufferRef] = []
 
     var audioInput: ((UnsafePointer<Int16>) -> Void)?
-
-    deinit {
-        guard let queue = audioQueue else {
-            return
-        }
-        for buffer in audioBuffers {
-            AudioQueueFreeBuffer(queue, buffer)
-        }
-    }
 
     func start() throws {
         var format = AudioStreamBasicDescription(
@@ -268,7 +257,6 @@ private class AudioInputEngine_AudioQueue: AudioInputEngine {
             AudioQueueAllocateBuffer(queue, bufferSize, &bufferRef)
             if let buffer = bufferRef {
                 AudioQueueEnqueueBuffer(queue, buffer, 0, nil)
-                audioBuffers.append(buffer)
             }
         }
 
