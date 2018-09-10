@@ -25,14 +25,31 @@ public enum PorcupineManagerPermissionError: Error {
     case recordingDenied
 }
 
-/// iOS binding for Picovoice's wake word detection engine (aka Porcupine).
+public struct WakeWordConfiguration {
+    let name: String
+    let filePath: String
+    let sensitivity: Float
+
+    /// Initializer for the wake word configuration.
+    ///
+    /// - Parameters:
+    ///   - name: The name to use to help identify this configuration.
+    ///   - filePath: Absolute path to keyword file containing hyper-parameters (ppn).
+    ///   - sensitivity: Sensitivity parameter. A higher sensitivity value lowers miss rate at the cost of increased
+    ///     false alarm rate. For more information regarding this parameter refer to 'include/pv_porcupine.h'.
+    public init(name: String, filePath: String, sensitivity: Float) {
+        self.name = name
+        self.filePath = filePath
+        self.sensitivity = sensitivity
+    }
+}
+
+/// iOS / watchOS binding for Picovoice's wake word detection engine (aka Porcupine).
 public class PorcupineManager {
 
-    private let numBuffers = 5
-    private let busNumber = 0
-
     private var porcupine: OpaquePointer?
-    private lazy var audioEngine = AVAudioEngine()
+
+    private let audioInputEngine: AudioInputEngine
 
     public let modelFilePath: String
     public let wakeWordConfiguration: [WakeWordConfiguration]
@@ -41,11 +58,7 @@ public class PorcupineManager {
     public var onDetection: ((WakeWordConfiguration) -> Void)?
 
     /// Whether current manager is listening to audio input.
-    public var isListening: Bool {
-        get {
-            return audioEngine.isRunning
-        }
-    }
+    public private(set) var isListening = false
 
     private var shouldBeListening: Bool = false
 
@@ -61,6 +74,30 @@ public class PorcupineManager {
         self.modelFilePath = modelFilePath
         self.wakeWordConfiguration = wakeKeywordConfigurations
         self.onDetection = onDetection
+
+        #if os(iOS) || os(macOS)
+        self.audioInputEngine = AudioInputEngine_AudioQueue()
+        #elseif os(watchOS)
+        self.audioInputEngine = AudioInputEngine_AVAudioEngine()
+        #endif
+
+        audioInputEngine.audioInput = { [weak self] audio in
+
+            guard let `self` = self else {
+                return
+            }
+
+            var result: Int32 = -1
+
+            pv_porcupine_multiple_keywords_process(self.porcupine, audio, &result)
+            if result >= 0 {
+                let index = Int(result)
+                let keyword = self.wakeWordConfiguration[index]
+                DispatchQueue.main.async {
+                    self.onDetection?(keyword)
+                }
+            }
+        }
 
         let keywordFilePaths = wakeKeywordConfigurations.map { $0.filePath }
         let sensitivities = wakeKeywordConfigurations.map { $0.sensitivity }
@@ -115,11 +152,175 @@ public class PorcupineManager {
             return
         }
 
-        let inputNode = audioEngine.inputNode
-
         try audioSession.setCategory(AVAudioSessionCategoryRecord)
         try audioSession.setMode(AVAudioSessionModeMeasurement)
         try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+
+        try audioInputEngine.start()
+
+        isListening = true
+    }
+
+    /// Stop listening for wake words.
+    public func stopListening() {
+
+        shouldBeListening = false
+
+        guard isListening else {
+            return
+        }
+
+        audioInputEngine.stop()
+        isListening = false
+    }
+
+    // MARK: - Private
+
+    private func checkInitStatus(_ status: pv_status_t) throws {
+        switch status {
+        case PV_STATUS_IO_ERROR:
+            throw PorcupineManagerError.io
+        case PV_STATUS_OUT_OF_MEMORY:
+            throw PorcupineManagerError.outOfMemory
+        case PV_STATUS_INVALID_ARGUMENT:
+            throw PorcupineManagerError.invalidArgument
+        default:
+            return
+        }
+    }
+
+    @objc private func onAudioSessionInterruption(_ notification: Notification) {
+
+        guard let userInfo = notification.userInfo,
+            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let type = AVAudioSessionInterruptionType(rawValue: typeValue) else {
+                return
+        }
+
+        if type == .began {
+            audioInputEngine.pause()
+        } else if type == .ended {
+            // Interruption options are ignored. AVAudioEngine should be restarted
+            // unless PorcupineManager is told to stop listening.
+            guard let _ = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
+                return
+            }
+            if shouldBeListening {
+                try? audioInputEngine.start()
+            }
+        }
+    }
+}
+
+private protocol AudioInputEngine: AnyObject {
+
+    var audioInput: ((UnsafePointer<Int16>) -> Void)? { get set }
+
+    func start() throws
+    func stop()
+    func pause()
+
+}
+
+// 2 different audio input engine. watchOS requires the use of AVAudioEngine.
+// However, AVAudioEngine has limitation of input latency only going as low as 100ms.
+
+#if os(iOS) || os(macOS)
+private class AudioInputEngine_AudioQueue: AudioInputEngine {
+
+    private let numBuffers = 3
+
+    private var audioQueue: AudioQueueRef?
+    private var audioBuffers: [AudioQueueBufferRef] = []
+
+    var audioInput: ((UnsafePointer<Int16>) -> Void)?
+
+    deinit {
+        guard let queue = audioQueue else {
+            return
+        }
+        for buffer in audioBuffers {
+            AudioQueueFreeBuffer(queue, buffer)
+        }
+    }
+
+    func start() throws {
+        var format = AudioStreamBasicDescription(
+            mSampleRate: Float64(pv_sample_rate()),
+            mFormatID: kAudioFormatLinearPCM,
+            mFormatFlags: kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked,
+            mBytesPerPacket: 2,
+            mFramesPerPacket: 1,
+            mBytesPerFrame: 2,
+            mChannelsPerFrame: 1,
+            mBitsPerChannel: 16,
+            mReserved: 0)
+        let userData = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
+        AudioQueueNewInput(&format, createAudioQueueCallback(), userData, nil, nil, 0, &audioQueue)
+
+        guard let queue = audioQueue else {
+            return
+        }
+
+        let bufferSize = UInt32(pv_porcupine_frame_length()) * 2
+        for _ in 0..<numBuffers {
+            var bufferRef: AudioQueueBufferRef? = nil
+            AudioQueueAllocateBuffer(queue, bufferSize, &bufferRef)
+            if let buffer = bufferRef {
+                AudioQueueEnqueueBuffer(queue, buffer, 0, nil)
+                audioBuffers.append(buffer)
+            }
+        }
+
+        AudioQueueStart(queue, nil)
+    }
+
+    func stop() {
+        guard let audioQueue = audioQueue else {
+            return
+        }
+        AudioQueueStop(audioQueue, true)
+        AudioQueueDispose(audioQueue, false)
+    }
+
+    func pause() {
+        guard let audioQueue = audioQueue else {
+            return
+        }
+        AudioQueuePause(audioQueue)
+    }
+
+    private func createAudioQueueCallback() -> AudioQueueInputCallback {
+        return { userData, queue, bufferRef, startTimeRef, numPackets, packetDescriptions in
+
+            // `self` is passed in as userData in the audio queue callback.
+            guard let userData = userData else {
+                return
+            }
+            let `self` = Unmanaged<AudioInputEngine_AudioQueue>.fromOpaque(userData).takeUnretainedValue()
+
+            let pcm = bufferRef.pointee.mAudioData.assumingMemoryBound(to: Int16.self)
+
+            if let audioInput = self.audioInput {
+                audioInput(pcm)
+            }
+
+            AudioQueueEnqueueBuffer(queue, bufferRef, 0, nil)
+        }
+    }
+}
+#endif
+
+#if os(watchOS)
+private class AudioInputEngine_AVAudioEngine: AudioInputEngine {
+
+    private let busNumber = 0
+    private lazy var audioEngine = AVAudioEngine()
+
+    var audioInput: ((UnsafePointer<Int16>) -> Void)?
+
+    func start() throws {
+        let inputNode = audioEngine.inputNode
 
         let frameLength = UInt32(pv_porcupine_frame_length())
         let sampleRate = Double(pv_sample_rate())
@@ -144,8 +345,9 @@ public class PorcupineManager {
         inputNode.installTap(onBus: busNumber, bufferSize: bufferSize, format: recordingFormat) { [weak self] buffer, _ in
 
             guard let `self` = self,
-            let picoBuffer = AVAudioPCMBuffer(pcmFormat: picoFormat, frameCapacity: frameCapacity) else {
-                return
+                let picoBuffer = AVAudioPCMBuffer(pcmFormat: picoFormat, frameCapacity: frameCapacity),
+                let audioInput = self.audioInput else {
+                    return
             }
 
             let input: AVAudioConverterInputBlock = { inNumPackets, outStatus in
@@ -160,91 +362,22 @@ public class PorcupineManager {
                 return
             }
 
-            var result: Int32 = -1
-
             for i in 0..<Int(numberOfBuffer) {
                 let offsetPointer = pcm + i * Int(frameLength)
-                pv_porcupine_multiple_keywords_process(self.porcupine, offsetPointer, &result)
-                if result >= 0 {
-                    let index = Int(result)
-                    let keyword = self.wakeWordConfiguration[index]
-                    DispatchQueue.main.async {
-                        self.onDetection?(keyword)
-                    }
-                }
+                audioInput(offsetPointer)
             }
         }
 
         try audioEngine.start()
     }
 
-    /// Stop listening for wake words.
-    public func stopListening() {
-
-        shouldBeListening = false
-
-        guard isListening else {
-            return
-        }
-
+    func stop() {
         audioEngine.inputNode.removeTap(onBus: busNumber)
         audioEngine.stop()
     }
 
-    // MARK: - Private
-
-    private func checkInitStatus(_ status: pv_status_t) throws {
-        switch status {
-        case PV_STATUS_IO_ERROR:
-            throw PorcupineManagerError.io
-        case PV_STATUS_OUT_OF_MEMORY:
-            throw PorcupineManagerError.outOfMemory
-        case PV_STATUS_INVALID_ARGUMENT:
-            throw PorcupineManagerError.invalidArgument
-        default:
-            return
-        }
-    }
-
-
-    @objc private func onAudioSessionInterruption(_ notification: Notification) {
-
-        guard let userInfo = notification.userInfo,
-            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-            let type = AVAudioSessionInterruptionType(rawValue: typeValue) else {
-                return
-        }
-
-        if type == .began {
-            // AVAudioEngine pauses on its own
-        } else if type == .ended {
-            // Interruption options are ignored. AVAudioEngine should be restarted
-            // unless PorcupineManager is told to stop listening.
-            guard let _ = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
-                return
-            }
-            if shouldBeListening {
-                try? audioEngine.start()
-            }
-        }
+    func pause() {
+        audioEngine.pause()
     }
 }
-
-public struct WakeWordConfiguration {
-    let name: String
-    let filePath: String
-    let sensitivity: Float
-
-    /// Initializer for the wake word configuration.
-    ///
-    /// - Parameters:
-    ///   - name: The name to use to help identify this configuration.
-    ///   - filePath: Absolute path to keyword file containing hyper-parameters (ppn).
-    ///   - sensitivity: Sensitivity parameter. A higher sensitivity value lowers miss rate at the cost of increased
-    ///     false alarm rate. For more information regarding this parameter refer to 'include/pv_porcupine.h'.
-    public init(name: String, filePath: String, sensitivity: Float) {
-        self.name = name
-        self.filePath = filePath
-        self.sensitivity = sensitivity
-    }
-}
+#endif
