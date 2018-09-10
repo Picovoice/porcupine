@@ -200,7 +200,7 @@ public class PorcupineManager {
         if type == .began {
             audioInputEngine.pause()
         } else if type == .ended {
-            // Interruption options are ignored. AVAudioEngine should be restarted
+            // Interruption options are ignored. AudioEngine should be restarted
             // unless PorcupineManager is told to stop listening.
             guard let _ = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
                 return
