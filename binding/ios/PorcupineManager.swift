@@ -206,7 +206,7 @@ public class PorcupineManager {
                 return
             }
             if shouldBeListening {
-                try? audioInputEngine.start()
+                audioInputEngine.unpause()
             }
         }
     }
@@ -218,8 +218,9 @@ private protocol AudioInputEngine: AnyObject {
 
     func start() throws
     func stop()
-    func pause()
 
+    func pause()
+    func unpause()
 }
 
 // 2 different audio input engine. watchOS requires the use of AVAudioEngine.
@@ -276,6 +277,14 @@ private class AudioInputEngine_AudioQueue: AudioInputEngine {
             return
         }
         AudioQueuePause(audioQueue)
+    }
+
+    func unpause() {
+        guard let audioQueue = audioQueue else {
+            return
+        }
+        AudioQueueFlush(audioQueue)
+        AudioQueueStart(audioQueue, nil)
     }
 
     private func createAudioQueueCallback() -> AudioQueueInputCallback {
@@ -366,6 +375,10 @@ private class AudioInputEngine_AVAudioEngine: AudioInputEngine {
 
     func pause() {
         audioEngine.pause()
+    }
+
+    func unpause() {
+        try? audioEngine.start()
     }
 }
 #endif
