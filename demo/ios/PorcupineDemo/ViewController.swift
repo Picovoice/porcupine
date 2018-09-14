@@ -66,26 +66,23 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             let keywordFilePath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
 
             let originalColor = self.view.backgroundColor
-            let keywordCallback: (() -> Void) = {
-                DispatchQueue.main.sync { self.view.backgroundColor = UIColor.orange }
-                DispatchQueue.main.asyncAfter(
-                    deadline: DispatchTime.now() + 1.0,
-                    execute: {self.view.backgroundColor = originalColor})
+            let keywordCallback: ((WakeWordConfiguration) -> Void) = { word in
+                self.view.backgroundColor = UIColor.orange
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.view.backgroundColor = originalColor
+                }
             }
 
-            porcupineManager = PorcupineManager(
-                modelFilePath: modelFilePath!,
-                keywordFilePath: keywordFilePath!,
-                sensitivity: 0.5,
-                keywordCallback: keywordCallback)
+            let keyword = WakeWordConfiguration(name: wakeWord, filePath: keywordFilePath!, sensitivity: 0.5)
 
             do {
-                try porcupineManager.start()
+                porcupineManager = try PorcupineManager(modelFilePath: modelFilePath!, wakeKeywordConfiguration: keyword, onDetection: keywordCallback)
+                try porcupineManager.startListening()
             } catch {
                 let alert = UIAlertController(
-                    title: "Alert",
-                    message: "Something went wrong",
-                    preferredStyle: UIAlertControllerStyle.alert)
+                        title: "Alert",
+                        message: "Something went wrong",
+                        preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 return
@@ -95,11 +92,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             isRecording = true
             startButton.setTitle("STOP", for: UIControlState.normal)
         } else {
-            porcupineManager.stop()
+            porcupineManager.stopListening()
 
             wakeWordPicker.isUserInteractionEnabled = true
             isRecording = false
             startButton.setTitle("START", for: UIControlState.normal)
         }
     }
+
 }
