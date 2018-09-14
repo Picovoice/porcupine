@@ -351,21 +351,19 @@ initialized as below
 
 ```swift
 let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordFilePaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
-let sensitivities: [Float] = [0.3, 0.7, ...];
-let keywordCallback: ((Int32) -> Void) = {
+let keywordCallback: ((WakeWordConfiguration) -> Void) = {
     // detection event callback
 }
 
-let manager = PorcupineManager(
-    modelFilePath: modelFilePath,
-    keywordFilePaths: keywordFilePaths,
-    sensitivities: sensitivities,
-    keywordCallback: keywordCallback)
+let wakeWordConfiguration1 = WakeWordConfiguration(name: "1", filePath: "path/to/keyword/1", sensitivity: 0.5)
+let wakewordConfiguration2 = WakeWordConfiguration(name: "2", filePath: "path/to/keyword/2", sensitivity: 0.7)
+let configurations = [ wakeWordConfiguration1, wakewordConfiguration2 ]
+
+let manager = try PorcupineManager(modelFilePath: modelFilePath, wakeKeywordConfigurations: configurations, onDetection: keywordCallback)
 ```
 
-When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
-`manager.stop()`.
+When initialized, input audio can be monitored using `manager.startListening()`. When done be sure to stop the manager using
+`manager.stopListening()`.
 
 ## Contributing
 
