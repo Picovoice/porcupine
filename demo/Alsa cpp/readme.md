@@ -1,7 +1,7 @@
 ## Alsa Demo
 
-Inside the main.cpp file change the KEYWORD_PATH to the keyword you want
-Inside the compile.sh change the 
+Inside the main.cpp file change the KEYWORD_PATH to the keyword you want 
+Currently the wakeword is set to "PINEAPPLE" for testing 
 
 Use `./compile.sh` to compile and build the app `alsademo`  
 
