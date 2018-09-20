@@ -66,7 +66,7 @@ unsigned int srate = 16000;
 unsigned int nchan = 1;
 
 
-int init_soundcard(char *devicename)
+int init_soundcard(const char *devicename)
 {
     //connect to and set parameters for the sound device
     //returns any error setting or connecting
