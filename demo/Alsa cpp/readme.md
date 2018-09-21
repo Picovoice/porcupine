@@ -1,21 +1,29 @@
 ## Alsa Demo
 
-Inside the main.cpp file change the KEYWORD_PATH to the keyword you want  
-Currently the wakeword is set to "PINEAPPLE" for testing under linux  
-Set this to the correct ppn for your system type  
+Set KEYWORD_PATH in the main.cpp file to the keyword file that is correct for your system type.  
 
-
+Currently the KEYWORD_PATH is set to `pineapple_linux.ppn`. "pineapple" is the wakeword and "linux" is the OS system.  
+Checkout the `resources/keyword_files` for a list of available pre-built wakewords to use.  
+ 
 Requires `apt-get install libasound2-dev`  
 
-Use `./compile.sh` to compile and build the app `alsademo`  
+### Compile
 
-To run..
+Replace ${SYSTEM} with the name of the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi).  
+Replace ${MACHINE} with the CPU architecture of current machine (x86_64 or i386)  
+For Raspberry ARM  
+- A, B, and Zero - ${MACHINE} = arm11  
+- Pi2 - ${MACHINE} = cortex-a7  
+- Pi3 & 3B+ - ${MACHINE} = cortex-a53  
+
+Complile with g++  
+`g++ -o alsademo -I../../include -L../../lib/${SYSTEM}/$MACHINE main.cpp -lpv_porcupine -lasound`  
+
+
+### Run
+
 `$> ./alsademo`  
-this is run and connect to the system "delete" audio device
+This will connect to the alsa system "default" audio device, specified in either the `asoundrc` or `/etc/asound.conf` files.    
+Use `arecord -l` to see a list of alsas devices on the system.  
 
-`$>./alsademo hw:0` 
-Option to add arg of the audio device listed from `arecord -l` to use that device 
-
-
- 
 
