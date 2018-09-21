@@ -171,18 +171,18 @@ int listen()
 int main(int argc, char *argv[])
 {
 	cout << "Open default soundcard" << endl;
-    init_soundcard();
+	init_soundcard();
 
-    cout << "Init Porcupine" << endl;
-    start_porcupine();
+	cout << "Init Porcupine" << endl;
+	start_porcupine();
 
-    if (porcupineObject != NULL) {
-        cout << "Listen..." << endl;
-        listen();
-    }
+	if (porcupineObject != NULL) {
+			cout << "Listen..." << endl;
+			listen();
+	}
 
-    cout << "Close default soundcard" << endl;
-    close_soundcard();
-	
+	cout << "Close default soundcard" << endl;
+	close_soundcard();
+
 	return 0;
 }
