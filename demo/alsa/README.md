@@ -17,7 +17,7 @@ For Raspberry ARM
 - Pi3 & 3B+ - ${MACHINE} = cortex-a53  
 
 Complile with g++  
-`g++ -o alsademo -I../../include -L../../lib/${SYSTEM}/$MACHINE main.cpp -lpv_porcupine -lasound`  
+`g++ -O3 -o alsademo -I../../include -L../../lib/${SYSTEM}/$MACHINE -Wl,-rpath ../../lib/${SYSTEM}/$MACHINE main.cpp -lpv_porcupine -lasound`  
 
 
 ### Run
