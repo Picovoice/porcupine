@@ -49,60 +49,60 @@ int init_soundcard()
 
 	if ((err = snd_pcm_open(&capture_handle, snd_device, SND_PCM_STREAM_CAPTURE, 0)) < 0)
 	{
-        cout << "cannot open audio device " << snd_device << " (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot open audio device " << snd_device << " (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_hw_params_malloc(&hw_params)) < 0)
 	{
-        cout << "cannot allocate hardware parameter structure (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot allocate hardware parameter structure (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_hw_params_any(capture_handle, hw_params)) < 0)
 	{
-        cout << "cannot initialize hardware parameter structure (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot initialize hardware parameter structure (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_hw_params_set_access(capture_handle, hw_params,SND_PCM_ACCESS_RW_INTERLEAVED)) < 0)
 	{
-        cout << "cannot set access type (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot set access type (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_hw_params_set_format(capture_handle, hw_params,SND_PCM_FORMAT_S16_LE)) < 0)
 	{
-        cout << "cannot set sample format (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot set sample format (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_hw_params_set_rate_near(capture_handle, hw_params,&srate, 0)) < 0)
 	{
-        cout << "cannot set sample rate (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot set sample rate (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_hw_params_set_channels(capture_handle, hw_params, nchan))< 0)
 	{
-        cout << "cannot set channel count (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot set channel count (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_hw_params(capture_handle, hw_params)) < 0)
 	{
-        cout << "cannot set parameters (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot set parameters (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
 	if ((err = snd_pcm_prepare(capture_handle)) < 0)
 	{
-        cout << "cannot prepare audio interface for use (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot prepare audio interface for use (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 	if ((err = snd_pcm_start(capture_handle)) < 0)
 	{
-        cout << "cannot start soundcard (" << snd_strerror(err) << ", " << err << ")" << endl;
+	cout << "cannot start soundcard (" << snd_strerror(err) << ", " << err << ")" << endl;
 		return ERROR;
 	}
 
