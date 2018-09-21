@@ -120,7 +120,7 @@ int close_soundcard()
 int start_porcupine()
 {
     //connect to porcupine
-    pv_status_t status = pv_porcupine_init(MODEL_PATH, KEYWORD_PATH, 0.9, &porcupineObject);
+    pv_status_t status = pv_porcupine_init(MODEL_PATH, KEYWORD_PATH, 0.5, &porcupineObject);
     if (status == PV_STATUS_SUCCESS) {
         cout << "Porcupine initialized" << endl;
     } else {
