@@ -1,7 +1,9 @@
 ## Alsa Demo
 
-Inside the main.cpp file change the KEYWORD_PATH to the keyword you want 
+Inside the main.cpp file change the KEYWORD_PATH to the keyword you want  
 Currently the wakeword is set to "PINEAPPLE" for testing under linux  
+Set this to the correct ppn for your system type  
+
 
 Requires `apt-get install libasound2-dev`  
 
