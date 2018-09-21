@@ -132,23 +132,23 @@ int start_porcupine()
 
 int listen()
 {
-    //listen on the mic for the wake word
+	//listen on the mic for the wake word
 
-    int err = 0;
-    const int BUF_SIZE = pv_porcupine_frame_length();
-    short wav_data[BUF_SIZE];
-    bool detected;
+	int err = 0;
+	const int BUF_SIZE = pv_porcupine_frame_length();
+	short wav_data[BUF_SIZE];
+	bool detected;
 
 	while (1)
 	{
 		err = snd_pcm_readi(capture_handle, wav_data, BUF_SIZE) != BUF_SIZE;
 		if (err < 0) {
-            cout << "read from audio interface failed (" << snd_strerror(err) << ", " << err << ")" << endl;
+			cout << "read from audio interface failed (" << snd_strerror(err) << ", " << err << ")" << endl;
 			if (err == -32) // Broken pipe
 			{
 				if ((err = snd_pcm_prepare(capture_handle)) < 0)
 				{
-                    cout << "cannot prepare audio interface for use (" << snd_strerror(err) << ", " << err << ")" << endl;
+					cout << "cannot prepare audio interface for use (" << snd_strerror(err) << ", " << err << ")" << endl;
 					return ERROR;
 				}
 			}
@@ -157,13 +157,13 @@ int listen()
 				return ERROR;
 			}
 		} else {
-            pv_porcupine_process(porcupineObject, wav_data, &detected);
+			pv_porcupine_process(porcupineObject, wav_data, &detected);
 
-            if (detected) {
-                // Detected keyword. Do something!
-                cout << "Detected keyword!" << endl;
-            }
-        }
+			if (detected) {
+				// Detected keyword. Do something!
+				cout << "Detected keyword!" << endl;
+			}
+		}
 	}
 	return 0;
 }
@@ -177,8 +177,8 @@ int main(int argc, char *argv[])
 	start_porcupine();
 
 	if (porcupineObject != NULL) {
-			cout << "Listen..." << endl;
-			listen();
+		cout << "Listen..." << endl;
+		listen();
 	}
 
 	cout << "Close default soundcard" << endl;
