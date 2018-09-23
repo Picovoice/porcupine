@@ -25,8 +25,9 @@
 using namespace std;
 
 // Change these to match your environment!
-static char MODEL_PATH[] = "../../lib/common/porcupine_params.pv";
-static char KEYWORD_PATH[] = "../../resources/keyword_files/pineapple_linux.ppn";
+const char MODEL_PATH[] = "../../lib/common/porcupine_params.pv";
+const char KEYWORD_PATH[] = "../../resources/keyword_files/pineapple_linux.ppn";
+float sensitivity = 0.5f;
 
 static pv_porcupine_object_t *porcupineObject;
 
@@ -38,9 +39,9 @@ snd_pcm_info_t* s_info;
 unsigned int srate = 16000;
 unsigned int nchan = 1;
 
-#define ERROR 1;
-
 volatile sig_atomic_t stop;
+
+#define ERROR 1;
 
 void catchcancel(int signum) {
     stop = 1;
@@ -121,7 +122,7 @@ int init_soundcard()
 int start_porcupine()
 {
 	//connect to porcupine
-	pv_status_t status = pv_porcupine_init(MODEL_PATH, KEYWORD_PATH, 0.5, &porcupineObject);
+	pv_status_t status = pv_porcupine_init(MODEL_PATH, KEYWORD_PATH, sensitivity, &porcupineObject);
 	if (status == PV_STATUS_SUCCESS) {
 		cout << "Porcupine initialized" << endl;
 	} else {
