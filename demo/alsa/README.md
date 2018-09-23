@@ -17,8 +17,11 @@ For Raspberry ARM
 - Pi3 & 3B+ - ${MACHINE} = cortex-a53  
 
 Complile with g++  
+Single Keyword Demo  
 `g++ -O3 -o alsademo -I../../include -L../../lib/${SYSTEM}/$MACHINE -Wl,-rpath ../../lib/${SYSTEM}/$MACHINE main.cpp -lpv_porcupine -lasound`  
 
+Multiple Keyword Demo  
+`g++ -O3 -o alsamultipledemo -I../../include -L../../lib/${SYSTEM}/$MACHINE -Wl,-rpath ../../lib/${SYSTEM}/$MACHINE main_multiple_keywords.cpp -lpv_porcupine -lasound`  
 
 ### Run
 
