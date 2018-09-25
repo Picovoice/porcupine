@@ -371,6 +371,7 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ### Acknowledgements
 
+* Thank you @oziee for adding C++ ALSA demo.
 * Thank you @herlihalim for refactoring iOS binding and demo.
 * Thank you @veeableful for adding C++ and Rust demo.
 * Thank you @fquirin for adding non-blocking Python demo.
@@ -406,8 +407,15 @@ CPU/memory footprint.
 
 ## License
 
-This repository is licensed under Apache 2.0. This allows running the library on all supported platforms. Furthermore,
-custom wake-words can be generated for Linux, Mac, and Windows.
+This repository is licensed under Apache 2.0 expect for the [optimizer tool](/tools/optimizer) and keyword files
+generated using it. This allows running the library on all supported platforms using the set of freely-available [keyword
+files](/resources/keyword_files).
 
-Custom wake-words for other platforms are only provided with the purchase of the commercial license. In order to inquire
+Custom wake-words for Linux, Mac, and Windows can be generated using the [optimizer tool](/tools/optimizer) only for 
+personal and non-commercial use. The use of [optimizer tool](/tools/optimizer) and keyword files generated using it in
+commercial products without acquiring a commercial licensing agreement from Picovoice is strictly prohibited. 
+
+Custom wake-words for other platforms are only provided with the purchase of the commercial license.
+
+In order to inquire
 about the commercial license send an email to contact@picovoice.ai with a brief description of your use case.
