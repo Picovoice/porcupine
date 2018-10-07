@@ -41,6 +41,8 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 
 ## Try It Out
 
+Try out Porcupine using its [interactive web demo](https://picovoice.ai/#voice-control-demo). You need a working microphone.
+
 Try out Porcupine by downloading it's [Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en).
 The demo application allows you to test Porcupine on a variety of wake words in any environment.
 
