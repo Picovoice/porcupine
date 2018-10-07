@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voice Control Demo</title>
+</head>
+<body>
+    <script src="pv_porcupine.js"></script>
+    <script src="../../binding/js/porcupine.js"></script>
+    <script src="picovoiceAudioManager.js"></script>
+    <script src="voiceControlDemo.js"></script>
+
+    <h1 align="center">
+        Voice Control Interactive Demo
+    </h1>
+
+    <div align="center">
+        <img src="light_bulb_blue.svg" width="400em" id="light_bulb">
+    </div>
+
+    <div style="padding: 5em 20em">
+        <p>
+            This demo allows you to change the color of the smart lamp (above) using Picovoice's voice
+            control engine via any of the following commands. Note that you need a working microphone. This
+            demo is running locally in the browser. You can turn off your internet connection and it will
+            keep working.
+        </p>
+        <ul>
+            <li>OK lamp, white.</li>
+            <li>OK lamp, yellow.</li>
+            <li>OK lamp, orange.</li>
+            <li>OK lamp, purple.</li>
+            <li>OK lamp, navy blue.</li>
+        </ul>
+        <p align="center">
+            <button onclick="VoiceControlDemo.start()" id="demo_button">
+                Start Demo
+            </button>
+        </p>
+    </div>
+</body>
+</html>
