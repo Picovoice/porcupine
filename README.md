@@ -13,9 +13,8 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * using **deep neural networks** trained in **real-world situations**.
 * compact and computationally-efficient making it suitable for **IoT** applications. It can run with as low as 200 KB of memory.
 * **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**,
-**Mac**, and **Windows** are supported. Furthermore, Support for various ARM Cortex-A/M processors and a growing number of DSPs is available.
+**Mac**, **Windows**, and Web browsers are supported. Furthermore, Support for various ARM Cortex-A/M processors and a growing number of DSPs is available.
 * **scalable**. It can detect tens of commands concurrently with no added CPU/memory footprint.
-* **open-source**. Anything you find in this repository is Apache 2.0 licensed.
 
 ## Table of Contents
 
@@ -34,6 +33,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
     * [Python](#python)
     * [Android](#android)
     * [iOS](#ios)
+    * [Javascript](#Javascript)
 * [Contributing](#contributing)
 * [Tools used](#tools-used)
 * [Releases](#releases)
@@ -364,6 +364,32 @@ let manager = try PorcupineManager(modelFilePath: modelFilePath, wakeKeywordConf
 
 When initialized, input audio can be monitored using `manager.startListening()`. When done be sure to stop the manager using
 `manager.stopListening()`.
+
+### Javascript
+
+Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The [Javascript binding](/binding/js/)
+makes it trivial use Porcupine within a Javascript environment. Instantiate a new instance of engine using the factory method
+as blow
+
+```javascript
+    let keywordIDs = Array(UInt8Array(), ...);
+    let sensitivities = Float32Array(...);
+    let obj = Porcupine.create(keywordIDs, sensitivities);
+```
+
+when initialized incoming audio stream can be processed using the `process` method. Be sure to release the resources
+acquired by WebAssembly using `.release` when done
+
+```javascript
+    while (true) {
+        obj.process(audioFrameInt16Array);
+    }
+    
+    // release when done
+    obj.release();
+```
+
+For more information refer to [binding](/binding/js) and [demo](/demo/js).
 
 ## Contributing
 
