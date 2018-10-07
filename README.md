@@ -33,7 +33,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
     * [Python](#python)
     * [Android](#android)
     * [iOS](#ios)
-    * [Javascript](#Javascript)
+    * [Javascript](#javascript)
 * [Contributing](#contributing)
 * [Tools used](#tools-used)
 * [Releases](#releases)
