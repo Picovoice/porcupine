@@ -371,7 +371,7 @@ When initialized, input audio can be monitored using `manager.startListening()`.
 
 Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The [Javascript binding](/binding/js/)
 makes it trivial use Porcupine within a Javascript environment. Instantiate a new instance of engine using the factory method
-as blow
+as below
 
 ```javascript
     let keywordIDs = Array(UInt8Array(), ...);
