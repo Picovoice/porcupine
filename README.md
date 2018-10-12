@@ -435,7 +435,7 @@ CPU/memory footprint.
 
 ## License
 
-This repository is licensed under Apache 2.0 expect for the [optimizer tool](/tools/optimizer) and keyword files
+This repository is licensed under Apache 2.0 except for the [optimizer tool](/tools/optimizer) and keyword files
 generated using it. This allows running the library on all supported platforms using the set of freely-available [keyword
 files](/resources/keyword_files).
 
