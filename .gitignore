@@ -1,2 +1,4 @@
 .idea/
 *.pyc
+/binding/dotnet/PorcupineCS/obj
+/binding/dotnet/.vs/PorcupineCS
