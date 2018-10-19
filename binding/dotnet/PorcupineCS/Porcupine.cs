@@ -42,7 +42,7 @@ namespace PorcupineCS
         private static extern PicoVoiceStatus pv_porcupine_init(string modelFilepath, string keywordsFilePath, float sensitivity, out IntPtr pointer);
 
         [DllImport(LIBRARY_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern PicoVoiceStatus pv_porcupine_multiple_keywords_init(string modelFilepath, string[] keywordsFilePaths, float[] sensitivities, out IntPtr pointer);
+        private static extern PicoVoiceStatus pv_porcupine_multiple_keywords_init(string modelFilepath, int numberOfKeywords, string[] keywordsFilePaths, float[] sensitivities, out IntPtr pointer);
 
         [DllImport(LIBRARY_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_sample_rate();
@@ -96,7 +96,7 @@ namespace PorcupineCS
                 if(_sensitivities == null)
                     throw new ArgumentNullException(nameof(_sensitivities));
 
-                Status = pv_porcupine_multiple_keywords_init(_modelFilePath, _keywordFilePaths.ToArray(), _sensitivities.ToArray(), out _libraryPointer);
+                Status = pv_porcupine_multiple_keywords_init(_modelFilePath, _keywordFilePaths.Count(), _keywordFilePaths.ToArray(), _sensitivities.ToArray(), out _libraryPointer);
             }
             else
             {

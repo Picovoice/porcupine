@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PorcupineCS;
 
@@ -30,6 +31,9 @@ namespace PorcupineTest
             if (!File.Exists("porcupine.wav"))
                 File.Copy("../../../../../../resources/audio_samples/porcupine.wav", "./porcupine.wav");
 
+            if (!File.Exists("multiple_keywords.wav"))
+                File.Copy("../../../../../../resources/audio_samples/multiple_keywords.wav", "./multiple_keywords.wav");
+
             paths = new List<string>();
             List<string> temp = new List<string>()
             {
@@ -39,7 +43,7 @@ namespace PorcupineTest
             };
             foreach (string name in temp)
             {
-                paths.Add($"{GetAbsRootPath()}resources/keyword_files/{name}_windows.ppn");
+                paths.Add($"{GetAbsRootPath()}resources/keyword_files/{name}_windows.ppn".Replace("/", "\\"));
             }
             senses = new List<float>();
             for (int i= 0; i < paths.Count; i++)
@@ -50,14 +54,55 @@ namespace PorcupineTest
             //Console.WriteLine();
         }
 
+
         [TestMethod]
-        public void TestMethod1()
+        public void MultipleKeywords()
         {
-            Porcupine p = new Porcupine($"{Environment.CurrentDirectory}/porcupine_params.pv", keywordFilePaths:paths, sensitivities: senses);
-            short[] data = OpenWav("porcupine.wav", out short[] _); // the underscore indicates unnecessary data
-            PicoVoiceStatus status = p.ProcessMultipleKeywords(data, out int result);
+            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePaths:paths, sensitivities: senses);
+            WAVFile file = new WAVFile();
+            file.Open("multiple_keywords.wav", WAVFile.WAVFileMode.READ);
+            Assert.AreEqual(p.SampleRate()/1000, file.BitsPerSample, "The samplerate is not equal!!!");
+            List<short> data = new List<short>();
+            while (file.NumSamplesRemaining > 0)
+            {
+                data.Add(BitConverter.ToInt16(file.GetNextSample_ByteArray()));
+            }
+            PicoVoiceStatus status = p.ProcessMultipleKeywords(data.ToArray(), out int result);
             Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
             Assert.AreEqual(0, result, "The result is not as expected");
+        }
+
+        [TestMethod]
+        public void TestProcess()
+        {
+            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePath:Path.Combine(Environment.CurrentDirectory, "porcupine_windows.ppn"), sensitivity:0.5f);
+            Assert.AreEqual(PicoVoiceStatus.SUCCESS, p.Status, "the status of the creation of the recognition system has failed");
+            WAVFile file = new WAVFile();
+            file.Open("porcupine.wav", WAVFile.WAVFileMode.READ);
+            Assert.AreEqual(p.SampleRate() / 1000, file.BitsPerSample, "The samplerate is not equal!!!");
+            List<short> data = new List<short>();
+            while (file.NumSamplesRemaining > 0)
+            {
+                data.Add(BitConverter.ToInt16(file.GetNextSample_ByteArray()));
+            }
+
+            int framecount = (int) Math.Floor((decimal) (data.Count / p.FrameLength()));
+            var results = new List<bool>();
+            for (int i = 0; i < framecount;  i++)
+            {
+                int start = i * p.FrameLength();
+                int count = p.FrameLength();
+                List<short> frame = data.GetRange(start, count);
+                p.Process(frame.ToArray(), out bool result);
+                results.Add(result);
+            }
+
+            foreach (bool result in results)
+            {
+                Assert.AreEqual(true, result, "The result is not as expected");
+            }
+            //PicoVoiceStatus status = p.Process(data.ToArray(), out bool result);
+            //Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
         }
 
         #region utility
