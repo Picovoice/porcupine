@@ -31,6 +31,7 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * [Integration](#integration)
     * [C](#c)
     * [Python](#python)
+    * [Csharp](#csharp)
     * [Android](#android)
     * [iOS](#ios)
     * [Javascript](#javascript)
@@ -222,7 +223,7 @@ collector.
 handle.delete()
 ```
 
-### C\#
+### csharp
 
 [/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine library. Below is a
 quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.

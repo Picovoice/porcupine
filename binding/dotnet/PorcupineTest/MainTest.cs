@@ -118,8 +118,6 @@ namespace PorcupineTest
             var res = results.Count(x => x);
 
             Assert.AreEqual(1, res, $"The result is not as expected, expected {1} got {res}");
-            //PicoVoiceStatus status = p.Process(data.ToArray(), out bool result);
-            //Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
             p.Dispose();
         }
 
