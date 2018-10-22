@@ -21,18 +21,17 @@ namespace PorcupineTest
         [TestInitialize]
         public void Init()
         {
-            Console.WriteLine($"{Environment.CurrentDirectory}");
-            if (!File.Exists("libpv_porcupine.dll"))
-                File.Copy($"/../../../../../../lib/windows/amd64/libpv_porcupine.dll", "./libpv_porcupine.dll");
+            if (!File.Exists($"libpv_porcupine{GetExtension()}"))
+                File.Copy($"{GetAbsRootPath()}lib/{GetEnvironmentName()}/amd64/libpv_porcupine.dll", $"./libpv_porcupine{GetExtension()}");
 
             if(!File.Exists("porcupine_params.pv"))
-                File.Copy("../../../../../../lib/common/porcupine_params.pv", "./porcupine_params.pv");
+                File.Copy($"{GetAbsRootPath()}lib/common/porcupine_params.pv", "./porcupine_params.pv");
 
             if (!File.Exists("porcupine.wav"))
-                File.Copy("../../../../../../resources/audio_samples/porcupine.wav", "./porcupine.wav");
+                File.Copy($"{GetAbsRootPath()}resources/audio_samples/porcupine.wav", "./porcupine.wav");
 
             if (!File.Exists("multiple_keywords.wav"))
-                File.Copy("../../../../../../resources/audio_samples/multiple_keywords.wav", "./multiple_keywords.wav");
+                File.Copy($"{GetAbsRootPath()}resources/audio_samples/multiple_keywords.wav", "./multiple_keywords.wav");
 
             paths = new List<string>();
             List<string> temp = new List<string>()
@@ -43,7 +42,7 @@ namespace PorcupineTest
             };
             foreach (string name in temp)
             {
-                paths.Add($"{GetAbsRootPath()}resources/keyword_files/{name}_windows.ppn".Replace("/", "\\"));
+                paths.Add($"{GetAbsRootPath()}resources/keyword_files/{name}_{GetEnvironmentName()}.ppn".Replace("/", "\\"));
             }
             senses = new List<float>();
             for (int i= 0; i < paths.Count; i++)
@@ -58,24 +57,43 @@ namespace PorcupineTest
         [TestMethod]
         public void MultipleKeywords()
         {
-            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePaths:paths, sensitivities: senses);
+            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePaths: paths, sensitivities: senses);
             WAVFile file = new WAVFile();
             file.Open("multiple_keywords.wav", WAVFile.WAVFileMode.READ);
-            Assert.AreEqual(p.SampleRate()/1000, file.BitsPerSample, "The samplerate is not equal!!!");
+            Assert.AreEqual(p.SampleRate(), file.AudioFormat.SampleRateHz, "The samplerate is not equal!!!");
             List<short> data = new List<short>();
             while (file.NumSamplesRemaining > 0)
             {
                 data.Add(BitConverter.ToInt16(file.GetNextSample_ByteArray()));
             }
-            PicoVoiceStatus status = p.ProcessMultipleKeywords(data.ToArray(), out int result);
-            Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
-            Assert.AreEqual(0, result, "The result is not as expected");
+            int framecount = (int)Math.Floor((decimal)(data.Count / p.FrameLength()));
+            var results = new List<int>();
+            for (int i = 0; i < framecount; i++)
+            {
+                int start = i * p.FrameLength();
+                int count = p.FrameLength();
+                List<short> frame = data.GetRange(start, count);
+                PicoVoiceStatus status = p.ProcessMultipleKeywords(frame.ToArray(), out int result);
+                if(result >= 0) 
+                    results.Add(result);
+                Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
+            }
+
+            var requiredRes = new[] {15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+
+            Assert.AreEqual(requiredRes.Length, results.Count, $"expected results length are different expected {requiredRes.Length} got {results.Count}");
+            for (var i = 0; i < results.Count; i++)
+            {
+                Assert.AreEqual(requiredRes[i], results[i], $"The result is not as expected, expected {requiredRes[i]} got {results[i]}");
+            }
+
+            p.Dispose();
         }
 
         [TestMethod]
         public void TestProcess()
         {
-            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePath:Path.Combine(Environment.CurrentDirectory, "porcupine_windows.ppn"), sensitivity:0.5f);
+            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePath:$"{GetAbsRootPath()}resources/keyword_files/porcupine_{GetEnvironmentName()}.ppn", sensitivity:0.5f);
             Assert.AreEqual(PicoVoiceStatus.SUCCESS, p.Status, "the status of the creation of the recognition system has failed");
             WAVFile file = new WAVFile();
             file.Open("porcupine.wav", WAVFile.WAVFileMode.READ);
@@ -97,72 +115,58 @@ namespace PorcupineTest
                 results.Add(result);
             }
 
-            foreach (bool result in results)
-            {
-                Assert.AreEqual(true, result, "The result is not as expected");
-            }
+            var res = results.Count(x => x);
+
+            Assert.AreEqual(1, res, $"The result is not as expected, expected {1} got {res}");
             //PicoVoiceStatus status = p.Process(data.ToArray(), out bool result);
             //Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
+            p.Dispose();
         }
 
         #region utility
 
-        // convert two bytes to one double in the range -1 to 1
-        private static short BytesToShort(byte firstByte, byte secondByte)
+        private static string GetExtension()
         {
-            // convert two bytes to one short (little endian)
-            short s = (short)((secondByte << 8) | firstByte);
-            // convert to range from -1 to (just below) 1
-            return (short)(s + 32768); /// 32768.0;
+            PlatformID platform = Environment.OSVersion.Platform;
+            if (platform == PlatformID.MacOSX)
+            {
+                return ".dylib";
+            }
+
+            if (platform == PlatformID.Unix)
+            {
+                return ".so";
+            }
+
+            if (platform == PlatformID.Win32NT)
+            {
+                return ".dll";
+            }
+
+            throw new NotImplementedException("this OS has no binding logic implemented yet.");
         }
 
-        // Returns left and right double arrays. 'right' will be null if sound is mono.
-        private static short[] OpenWav(string filename, out short[] right)
+        private static string GetEnvironmentName()
         {
-            byte[] wav = File.ReadAllBytes(filename);
-
-
-            // Determine if mono or stereo
-            int channels = wav[22];     // Forget byte 23 as 99.999% of WAVs are 1 or 2 channels
-
-            // Get past all the other sub chunks to get to the data subchunk:
-            int pos = 12;   // First Subchunk ID from 12 to 16
-
-            // Keep iterating until we find the data chunk (i.e. 64 61 74 61 ...... (i.e. 100 97 116 97 in decimal))
-            while (!(wav[pos] == 100 && wav[pos + 1] == 97 && wav[pos + 2] == 116 && wav[pos + 3] == 97))
+            PlatformID platform = Environment.OSVersion.Platform;
+            if (platform == PlatformID.MacOSX)
             {
-                pos += 4;
-                int chunkSize = wav[pos] + wav[pos + 1] * 256 + wav[pos + 2] * 65536 + wav[pos + 3] * 16777216;
-                pos += 4 + chunkSize;
-            }
-            pos += 8;
-
-            // Pos is now positioned to start of actual sound data.
-            int samples = (wav.Length - pos) / 2;     // 2 bytes per sample (16 bit sound mono)
-            if (channels == 2) samples /= 2;        // 4 bytes per sample (16 bit stereo)
-
-            short[] left = new short[samples];
-            // Allocate memory (right will be null if only mono sound)
-            left = new short[samples];
-            if (channels == 2) right = new short[samples];
-            else right = null;
-
-            // Write to double array/s:
-            int i = 0;
-            while (pos < samples)
-            {
-                left[i] = BytesToShort(wav[pos], wav[pos + 1]);
-                pos += 2;
-                if (channels == 2)
-                {
-                    right[i] = BytesToShort(wav[pos], wav[pos + 1]);
-                    pos += 2;
-                }
-                i++;
+                return "mac";
             }
 
-            return left;
-        } 
+            if (platform == PlatformID.Unix)
+            {
+                return "linux";
+            }
+
+            if (platform == PlatformID.Win32NT)
+            {
+                return "windows";
+            }
+
+            throw new NotImplementedException("this OS has no binding logic implemented yet.");
+        }
+
         #endregion
     }
 }

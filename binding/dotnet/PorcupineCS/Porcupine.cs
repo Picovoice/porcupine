@@ -188,5 +188,11 @@ namespace PorcupineCS
         {
             pv_porcupine_delete(_libraryPointer);
         }
+
+        public void Dispose()
+        {
+            pv_porcupine_delete(_libraryPointer);
+            _libraryPointer = IntPtr.Zero;
+        }
     }
 }
