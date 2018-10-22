@@ -222,6 +222,59 @@ collector.
 handle.delete()
 ```
 
+### C\#
+
+[/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine library. Below is a
+quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
+
+
+```csharp
+string model_file_path = ... // The file is available at lib/common/porcupine_params.pv
+string keyword_file_path = ...
+float sensitivity = 0.5;
+Porcupine instance;
+
+instance = new Porcupine(model_file_path, keyword_file_path, sensitivity);
+
+if (instance.Status != PicoVoiceStatus.SUCCESS) {
+    // error handling logic
+}
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+
+Now the `instance` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
+The sample rate can be retrieved using `instance.SampleRate()`. Finally, Porcupine accepts input audio in consecutive chunks
+(aka frames) the length of each frame can be retrieved using `instance.FrameLength()`.
+
+```csharp
+Int16[] GetNextAudioFrame()
+{
+    ... // some functionality that gets the next frame
+}
+
+
+while (true) {
+    Int16[] frame = GetNextAudioFrame();
+    bool result;
+    PicoVoiceStatus status = instance.Process(pcm, out result);
+    if (status != PicoVoiceStatus.SUCCESS) {
+        // error handling logic
+    }
+    if (result) {
+        // detection event logic/callback
+    }
+}
+```
+
+Finally, when done we don't need to release the resources ourself, the garbage collector will fix it.
+But if you want to do it yourself.
+
+```csharp
+instance.Dispose();
+```
+
 ### Android
 
 There are two possibilities for integrating Porcupine into an Android application.
@@ -392,6 +445,9 @@ acquired by WebAssembly using `.release` when done
 ```
 
 For more information refer to [binding](/binding/js) and [demo](/demo/js).
+
+
+
 
 ## Contributing
 
