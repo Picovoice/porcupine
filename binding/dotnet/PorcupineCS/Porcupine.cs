@@ -1,10 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime;
 using System.Runtime.InteropServices;
 
 namespace PorcupineCS
@@ -30,11 +27,6 @@ namespace PorcupineCS
         private const string LIBRARY_NAME = "libpv_porcupine";
         private IntPtr _libraryPointer;
         private static readonly string _extension = $"{GetExtension()}";
-        private string _modelFilePath;
-        private string _keywordFilePath;
-        private float? _sensitivity;
-        private IEnumerable<string> _keywordFilePaths;
-        private IEnumerable<float> _sensitivities;
 
         #region PINVOKE
 
@@ -81,32 +73,24 @@ namespace PorcupineCS
             float? sensitivity = null, IEnumerable<string> keywordFilePaths = null,
             IEnumerable<float> sensitivities = null)
         {
-            _modelFilePath = modelFilePath;
-            _sensitivities = sensitivities;
-            _keywordFilePaths = keywordFilePaths;
-            _sensitivity = sensitivity;
-            _keywordFilePath = keywordFilePath;
             if(!File.Exists(LIBRARY_NAME + _extension))
                 throw new Exception($"the {LIBRARY_NAME} cannot be found.\nThis should be in the same folder as this or on a known path.");
             if (keywordFilePath == null)
             {
-                if(_keywordFilePaths == null)
-                    throw new ArgumentNullException(nameof(_keywordFilePaths));
+                if(keywordFilePaths == null)
+                    throw new ArgumentNullException(nameof(keywordFilePaths));
 
-                if(_sensitivities == null)
-                    throw new ArgumentNullException(nameof(_sensitivities));
+                if(sensitivities == null)
+                    throw new ArgumentNullException(nameof(sensitivities));
 
-                Status = pv_porcupine_multiple_keywords_init(_modelFilePath, _keywordFilePaths.Count(), _keywordFilePaths.ToArray(), _sensitivities.ToArray(), out _libraryPointer);
+                Status = pv_porcupine_multiple_keywords_init(modelFilePath, keywordFilePaths.Count(), keywordFilePaths.ToArray(), sensitivities.ToArray(), out _libraryPointer);
             }
             else
             {
-                if (_keywordFilePath == null)
-                    throw new ArgumentNullException(nameof(_keywordFilePath));
+                if (sensitivity == null)
+                    throw new ArgumentNullException(nameof(sensitivity));
 
-                if (_sensitivity == null)
-                    throw new ArgumentNullException(nameof(_sensitivity));
-
-                Status = pv_porcupine_init(_modelFilePath, _keywordFilePath, _sensitivity.Value, out _libraryPointer);
+                Status = pv_porcupine_init(modelFilePath, keywordFilePath, sensitivity.Value, out _libraryPointer);
             }
         }
 

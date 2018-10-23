@@ -2,6 +2,6 @@
 *.pyc
 /binding/dotnet/PorcupineCS/obj
 /binding/dotnet/.vs/PorcupineCS
-/binding/dotnet/PorcupineCS/bin/Debug/netcoreapp2.1
-/binding/dotnet/PorcupineTest/bin/Debug/netcoreapp2.1
+/binding/dotnet/PorcupineCS/bin
+/binding/dotnet/PorcupineTest/bin
 /binding/dotnet/PorcupineTest/obj

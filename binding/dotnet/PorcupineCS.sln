@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorcupineCS", "PorcupineCS\PorcupineCS.csproj", "{912583D6-EF30-4B7F-A710-F30A4BCF3A4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorcupineTest", "PorcupineTest\PorcupineTest.csproj", "{839DE713-3B20-4516-A101-CCEA8D364D20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorcupineTest", "PorcupineTest\PorcupineTest.csproj", "{839DE713-3B20-4516-A101-CCEA8D364D20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
