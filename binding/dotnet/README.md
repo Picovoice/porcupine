@@ -9,7 +9,7 @@ The code for reading the WAV files (in the folder [WAVUtilities](/PorcupineTest/
 -----------------------------
 # Running unit tests
 The easiest method is using visual studio to run the unit tests. 
-But I think it is possible to run them with 
+
 
 # Binding Class
 The csharp bindings use the standard [P/INVOKE functionality](https://docs.microsoft.com/en-gb/cpp/dotnet/how-to-call-native-dlls-from-managed-code-using-pinvoke?view=vs-2017)
