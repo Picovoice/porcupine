@@ -84,7 +84,7 @@ class Porcupine(object):
                 raise ValueError("Different number of sensitivity and keyword file path parameters are provided.")
 
             for x in keyword_file_paths:
-                if not os.path.exists(x):
+                if not os.path.exists(os.path.expanduser(x)):
                     raise IOError("Could not find keyword file at '%s'" % x)
 
             for x in sensitivities:
@@ -109,7 +109,7 @@ class Porcupine(object):
         status = init_func(
             model_file_path.encode(),
             self._num_keywords,
-            (c_char_p * self._num_keywords)(*[x.encode() for x in keyword_file_paths]),
+            (c_char_p * self._num_keywords)(*[os.path.expanduser(x).encode() for x in keyword_file_paths]),
             (c_float * self._num_keywords)(*sensitivities),
             byref(self._handle))
         if status is not self.PicovoiceStatuses.SUCCESS:
