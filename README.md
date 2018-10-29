@@ -456,6 +456,8 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ### Acknowledgements
 
+* Thank you @charithe for Go binding/demo.
+* Thank you @HeadhunterXamd for C Sharp binding/demo.
 * Thank you @oziee for adding C++ ALSA demo.
 * Thank you @herlihalim for refactoring iOS binding and demo.
 * Thank you @veeableful for adding C++ and Rust demo.
