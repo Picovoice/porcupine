@@ -31,12 +31,11 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 * [Integration](#integration)
     * [C](#c)
     * [Python](#python)
-    * [Csharp](#csharp)
+    * [C#](#csharp)
     * [Android](#android)
     * [iOS](#ios)
     * [Javascript](#javascript)
 * [Contributing](#contributing)
-* [Tools used](#tools-used)
 * [Releases](#releases)
 * [License](#license)
 

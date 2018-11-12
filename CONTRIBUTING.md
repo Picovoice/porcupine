@@ -1,6 +1,6 @@
 ## Ideas for Contributing
 
-* Adding new language/platform bindings. JavaScript, maybe? When adding a new binding please do make sure it
+* Adding new language/platform bindings. Node.js or Java, maybe? When adding a new binding please do make sure it
 is tested. Adding accompanying unit test is a great way to assure that. Take a look at
 [binding/python/](/binding/python) to find out how to unit test new bindings.
 
