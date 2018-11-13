@@ -474,6 +474,8 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 * Improved optimizer's performance.
 * Improved model accuracy.
+* Runtime optimization.
+* Added support for running within web browsers.
 
 ### v1.4.0 - July 20, 2018
 
