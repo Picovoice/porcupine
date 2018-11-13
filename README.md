@@ -1,19 +1,20 @@
-# Porcupine &nbsp; [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=On-device%20wake%20word%20detection%20engine%20powered%20by%20deep%20learning&url=https://github.com/Picovoice/Porcupine&hashtags=deeplearning,voice,AI,privacy)
+# Porcupine
 
 [![Build Status](https://travis-ci.org/Picovoice/Porcupine.svg?branch=master)](https://travis-ci.org/Picovoice/Porcupine)
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/Picovoice/Porcupine/blob/master/LICENSE)
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a self-service, highly-accurate, and lightweight **wake word** (**voice control**) engine. It enables developers to
-build always-listening voice-enabled applications/platforms. Porcupine is
+Porcupine is a self-service, highly-accurate, and lightweight **wake word** (**voice control**) engine. It enables
+developers to build always-listening voice-enabled applications/platforms. Porcupine is
 
 * self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
 * using **deep neural networks** trained in **real-world situations**.
-* compact and computationally-efficient making it suitable for **IoT** applications. It can run with as low as 200 KB of memory.
-* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**, **watchOS**, **Linux**,
-**Mac**, **Windows**, and Web browsers are supported. Furthermore, Support for various ARM Cortex-A/M processors and a growing number of DSPs is available.
+* compact and computationally-efficient making it suitable for **IoT** applications. It can run with as low as 200 KB of
+memory.
+* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**,
+**watchOS**, **Linux**, **Mac**, **Windows**, and **web browsers** are supported. Furthermore, Support for various
+**ARM Cortex-A** and **ARM Cortex-M** processors and a growing number of **DSPs** is available.
 * **scalable**. It can detect tens of commands concurrently with no added CPU/memory footprint.
 
 ## Table of Contents
@@ -43,8 +44,9 @@ build always-listening voice-enabled applications/platforms. Porcupine is
 
 Try out Porcupine using its [interactive web demo](https://picovoice.ai/#voice-control-demo). You need a working microphone.
 
-Try out Porcupine by downloading it's [Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en).
-The demo application allows you to test Porcupine on a variety of wake words in any environment.
+Try out Porcupine by downloading it's
+[Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en). The demo
+application allows you to test Porcupine on a variety of wake words in any environment.
 
 ![Android Demo](resources/images/demo.gif)
 
@@ -60,9 +62,10 @@ The demo application allows you to test Porcupine on a variety of wake words in 
 
 ## Performance
 
-A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and Snowboy, is provided
-[here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine, Porcupine's standard model is
-2.53 times more accurate, 2.6 times faster (on Raspberry Pi 3), and consumes 45% less memory. 
+A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
+Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine,
+Porcupine's standard model is 2.53 times more accurate, 2.6 times faster (on Raspberry Pi 3), and consumes 45% less
+memory. 
 
 ## Model Variants
 
@@ -75,16 +78,18 @@ resources. Below is the comparison of runtime measurements for different variant
 Standard | 7.39% | 1380 KB |
 Tiny | 3.42% | 240 KB |
 
-For accuracy comparison of different variants refer to [benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
+For accuracy comparison of different variants refer to
+[benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
 
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib/](/lib) and header files are at [include/](/include). Currently, Raspberry Pi, Android, iOS, watchOS, Linux, Mac, and Windows are supported.
-If you wish to run Porcupine on any other platform, please contact us at contact@picovoice.ai.
+[lib/](/lib) and header files are at [include/](/include). Currently, Raspberry Pi, Android, iOS, watchOS, Linux, Mac,
+Windows, and modern web browsers are supported.
 
 Bindings are available at [binding/](/binding) to facilitate usage from higher-level languages/platforms. Demo
-applications are at [demo/](/demo). When possible, use one of the demo applications as a starting point for your own implementation.
+applications are at [demo/](/demo). When possible, use one of the demo applications as a starting point for your own
+implementation.
 
 [tools/](/tools) contains utility programs. Finally, [resources/](/resources) is a placeholder for data used by
 various applications within the repository.
@@ -97,9 +102,9 @@ documentation, it is assumed that the current working directory is the root of t
 ### Python Demo Application
 
 This [demo application](/demo/python) allows testing Porcupine using computer's microphone. It opens an input audio
-stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an
-example of running the demo for hotword **Alexa** from the command line. Replace `${SYSTEM}` with the name of
-the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi).
+stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an example of
+running the demo for hotword **Alexa** from the command line. Replace `${SYSTEM}` with the name of the operating system
+on your machine (e.g. linux, mac, windows, or raspberry-pi).
 
 ```bash
 python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/alexa_${SYSTEM}.ppn
