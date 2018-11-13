@@ -48,10 +48,10 @@
 
 /* Begin PBXFileReference section */
 		BB247359205F636700D96613 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../lib/common/porcupine_params.pv; sourceTree = "<group>"; };
-		BB2473622061678900D96613 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = americano_ios.ppn; sourceTree = "<group>"; };
+		BB2473622061678900D96613 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = americano_ios.ppn; sourceTree = "<group>"; };
 		BB2473642061679900D96613 /* avocado_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = avocado_ios.ppn; sourceTree = "<group>"; };
 		BB247366206167AC00D96613 /* blueberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = blueberry_ios.ppn; sourceTree = "<group>"; };
-		BB247368206167BA00D96613 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = bumblebee_ios.ppn; sourceTree = "<group>"; };
+		BB247368206167BA00D96613 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = bumblebee_ios.ppn; sourceTree = "<group>"; };
 		BB24736A206167C500D96613 /* caterpillar_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = caterpillar_ios.ppn; sourceTree = "<group>"; };
 		BB24736C2061687C00D96613 /* christina_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = christina_ios.ppn; sourceTree = "<group>"; };
 		BB24736E2061688D00D96613 /* dragonfly_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = dragonfly_ios.ppn; sourceTree = "<group>"; };
@@ -59,15 +59,15 @@
 		BB247372206168AB00D96613 /* francesca_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = francesca_ios.ppn; sourceTree = "<group>"; };
 		BB247374206168B800D96613 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = grapefruit_ios.ppn; sourceTree = "<group>"; };
 		BB247376206168C900D96613 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = grasshopper_ios.ppn; sourceTree = "<group>"; };
-		BB247378206168DA00D96613 /* iguana_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = iguana_ios.ppn; sourceTree = "<group>"; };
+		BB247378206168DA00D96613 /* iguana_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = iguana_ios.ppn; sourceTree = "<group>"; };
 		BB24737A206168E900D96613 /* picovoice_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = picovoice_ios.ppn; sourceTree = "<group>"; };
 		BB24737C2061692800D96613 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = porcupine_ios.ppn; sourceTree = "<group>"; };
 		BB24737E2061693600D96613 /* pineapple_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pineapple_ios.ppn; sourceTree = "<group>"; };
-		BB2473802061694500D96613 /* raspberry_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = raspberry_ios.ppn; sourceTree = "<group>"; };
+		BB2473802061694500D96613 /* raspberry_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = raspberry_ios.ppn; sourceTree = "<group>"; };
 		BB2473822061694F00D96613 /* vancouver_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = vancouver_ios.ppn; sourceTree = "<group>"; };
 		BB2473842061695A00D96613 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = terminator_ios.ppn; sourceTree = "<group>"; };
 		BB24738C206312DC00D96613 /* PorcupineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PorcupineManager.swift; path = ../../../binding/ios/PorcupineManager.swift; sourceTree = "<group>"; };
-		BB24738E20633DED00D96613 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = alexa_ios.ppn; sourceTree = "<group>"; };
+		BB24738E20633DED00D96613 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = alexa_ios.ppn; sourceTree = "<group>"; };
 		BB65C7AF205EEBB300E8770E /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		BB65C7B1205F4BF400E8770E /* libpv_porcupine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_porcupine.a; path = ../../lib/ios/libpv_porcupine.a; sourceTree = "<group>"; };
 		BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -460,6 +460,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5KNTYR3JP3;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
 				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine;
@@ -476,6 +477,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5KNTYR3JP3;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
 				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine;
