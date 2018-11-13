@@ -48,7 +48,7 @@ typedef struct pv_porcupine_object pv_porcupine_object_t;
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_OUT_OF_MEMORY', or 'PV_STATUS_IO_ERROR' on
  * failure.
  */
-pv_status_t pv_porcupine_init(
+PV_API pv_status_t pv_porcupine_init(
         const char *model_file_path,
         const char *keyword_file_path,
         float sensitivity,
@@ -66,7 +66,7 @@ pv_status_t pv_porcupine_init(
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_OUT_OF_MEMORY', or 'PV_STATUS_IO_ERROR' on
  * failure.
  */
-pv_status_t pv_porcupine_multiple_keywords_init(
+PV_API pv_status_t pv_porcupine_multiple_keywords_init(
         const char *model_file_path,
         int number_keywords,
         const char * const *keyword_file_paths,
@@ -78,7 +78,7 @@ pv_status_t pv_porcupine_multiple_keywords_init(
  *
  * @param object Keyword spotting object.
  */
-void pv_porcupine_delete(pv_porcupine_object_t *object);
+PV_API void pv_porcupine_delete(pv_porcupine_object_t *object);
 
 /**
  * Monitors incoming audio stream for a given keyword.
@@ -90,7 +90,7 @@ void pv_porcupine_delete(pv_porcupine_object_t *object);
  * @param[out] result Flag indicating if the keyword has been observed ending at the current frame.
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' on failure.
  */
-pv_status_t pv_porcupine_process(pv_porcupine_object_t *object, const int16_t *pcm, bool *result);
+PV_API pv_status_t pv_porcupine_process(pv_porcupine_object_t *object, const int16_t *pcm, bool *result);
 
 /**
  * Monitors incoming audio stream for multiple keywords.
@@ -103,7 +103,7 @@ pv_status_t pv_porcupine_process(pv_porcupine_object_t *object, const int16_t *p
  * set to -1.
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' on failure.
  */
-pv_status_t pv_porcupine_multiple_keywords_process(
+PV_API pv_status_t pv_porcupine_multiple_keywords_process(
         pv_porcupine_object_t *object,
         const int16_t *pcm,
         int *keyword_index);
@@ -113,14 +113,14 @@ pv_status_t pv_porcupine_multiple_keywords_process(
  *
  * @return Version.
  */
-const char *pv_porcupine_version(void);
+PV_API const char *pv_porcupine_version(void);
 
 /**
  * Getter for length (number of audio samples) per frame.
  *
  * @return frame length.
  */
-int pv_porcupine_frame_length(void);
+PV_API int pv_porcupine_frame_length(void);
 
 #ifdef __cplusplus
 }
