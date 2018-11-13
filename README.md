@@ -470,6 +470,11 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ## Releases
 
+### v1.5.0 - November 15, 2018
+
+* Improved optimizer's performance.
+* Improved model accuracy.
+
 ### v1.4.0 - July 20, 2018
 
 * Improved accuracy across all models (specifically tiny variant).
@@ -508,5 +513,5 @@ commercial products without acquiring a commercial licensing agreement from Pico
 
 Custom wake-words for other platforms are only provided with the purchase of the commercial license.
 
-In order to inquire
-about the commercial license send an email to contact@picovoice.ai with a brief description of your use case.
+In order to inquire about the commercial license send an email to contact@picovoice.ai with a brief description of your
+use case.
