@@ -470,12 +470,11 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ## Releases
 
-### v1.5.0 - November 15, 2018
+### v1.5.0 - November 13, 2018
 
-* Improved optimizer's performance.
-* Improved model accuracy.
+* Improved optimizer's accuracy.
 * Runtime optimization.
-* Added support for running within web browsers.
+* Added support for running within web browsers (WebAssembly).
 
 ### v1.4.0 - July 20, 2018
 
