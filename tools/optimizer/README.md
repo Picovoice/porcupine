@@ -1,5 +1,10 @@
 # Porcupine Optimizer
 
+Please note that the optimizer tool in this repository can only generate keyword files for Linux, Mac, and Windows. 
+Furthermore these models are intended for non-commercial use only and their use in a commercial product is prohibited.
+For more detail please refer to our [license terms](https://github.com/Picovoice/Porcupine#license). Finally a model file is
+valid for 90 days but you can always use the optimizer to generate a new one.
+
 The optimizer enables developers to build models for their wake words of choice. Below it is assumed that the current 
 working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux, mac, or windows) and
 ```${MACHINE}``` refers to CPU architecture.
