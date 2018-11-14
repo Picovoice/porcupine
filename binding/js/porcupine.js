@@ -11,14 +11,15 @@ let Porcupine = (function () {
     let frameLength;
     let version;
 
-    Module.onRuntimeInitialized = async _ => {
+    let porcupineModule = PorcupineModule();
+    porcupineModule.then(function(Module) {
         initWasm = Module.cwrap('pv_porcupine_wasm_init', 'number', ['number', 'number', 'number', 'number']);
         releaseWasm = Module.cwrap('pv_porcupine_wasm_delete', ['number']);
         processWasm = Module.cwrap('pv_porcupine_wasm_process', 'number', ['number', 'number']);
         sampleRate = Module.cwrap('pv_wasm_sample_rate', 'number', [])();
         frameLength = Module.cwrap('pv_porcupine_wasm_frame_length', 'number', [])();
         version = Module.cwrap('pv_porcupine_wasm_version', 'string', [])();
-    };
+    });
 
     let create = function (keywordIDs, sensitivities) {
         /**
@@ -30,26 +31,26 @@ let Porcupine = (function () {
          * @returns An instance of wake word detection engine.
          */
         let keywordIDSizes = Int32Array.from(keywordIDs.map(keywordID => keywordID.byteLength));
-        let keywordIDSizesPointer = Module._malloc(keywordIDSizes.byteLength);
-        let keywordIDSizesBuffer = new Uint8Array(Module.HEAPU8.buffer, keywordIDSizesPointer, keywordIDSizes.byteLength);
+        let keywordIDSizesPointer = porcupineModule._malloc(keywordIDSizes.byteLength);
+        let keywordIDSizesBuffer = new Uint8Array(porcupineModule.HEAPU8.buffer, keywordIDSizesPointer, keywordIDSizes.byteLength);
         keywordIDSizesBuffer.set(new Uint8Array(keywordIDSizes.buffer));
 
         let keywordIDPointers = Uint32Array.from(keywordIDs.map(keywordID => {
-            let heapPointer = Module._malloc(keywordID.byteLength);
-            let heapBuffer = new Uint8Array(Module.HEAPU8.buffer, heapPointer, keywordID.byteLength);
+            let heapPointer = porcupineModule._malloc(keywordID.byteLength);
+            let heapBuffer = new Uint8Array(porcupineModule.HEAPU8.buffer, heapPointer, keywordID.byteLength);
             heapBuffer.set(keywordID);
             return heapPointer;
         }));
 
-        let keywordIDPointersPointer = Module._malloc(keywordIDPointers.byteLength);
+        let keywordIDPointersPointer = porcupineModule._malloc(keywordIDPointers.byteLength);
         let keywordIDPointersBuffer = new Uint8Array(
-            Module.HEAPU8.buffer,
+            porcupineModule.HEAPU8.buffer,
             keywordIDPointersPointer,
             keywordIDPointers.byteLength);
         keywordIDPointersBuffer.set(new Uint8Array(keywordIDPointers.buffer));
 
-        let sensitivitiesPointer = Module._malloc(sensitivities.byteLength);
-        let sensitivitiesBuffer = new Uint8Array(Module.HEAPU8.buffer, sensitivitiesPointer, sensitivities.byteLength);
+        let sensitivitiesPointer = porcupineModule._malloc(sensitivities.byteLength);
+        let sensitivitiesBuffer = new Uint8Array(porcupineModule.HEAPU8.buffer, sensitivitiesPointer, sensitivities.byteLength);
         sensitivitiesBuffer.set(new Uint8Array(sensitivities.buffer));
 
         let handleWasm = initWasm(
@@ -61,7 +62,7 @@ let Porcupine = (function () {
             throw new Error("failed to initialize porcupine.");
         }
 
-        let pcmWasmPointer = Module._malloc(this.frameLength * 2);
+        let pcmWasmPointer = porcupineModule._malloc(this.frameLength * 2);
 
         let release = function () {
             /**
@@ -69,7 +70,7 @@ let Porcupine = (function () {
              */
 
             releaseWasm(handleWasm);
-            Module._free(pcmWasmPointer);
+            porcupineModule._free(pcmWasmPointer);
         };
 
         let process = function (pcmInt16Array) {
@@ -80,7 +81,7 @@ let Porcupine = (function () {
              * @returns {Number} Index of detected keyword (phrase). When no keyword is detected it returns -1.
              */
 
-            let pcmWasmBuffer = new Uint8Array(Module.HEAPU8.buffer, pcmWasmPointer, pcmInt16Array.byteLength);
+            let pcmWasmBuffer = new Uint8Array(porcupineModule.HEAPU8.buffer, pcmWasmPointer, pcmInt16Array.byteLength);
             pcmWasmBuffer.set(new Uint8Array(pcmInt16Array.buffer));
 
             let keyword_index = processWasm(handleWasm, pcmWasmPointer);
