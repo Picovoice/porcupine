@@ -10,8 +10,8 @@ developers to build always-listening voice-enabled applications/platforms. Porcu
 
 * self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
 * using **deep neural networks** trained in **real-world situations**.
-* compact and computationally-efficient making it suitable for **IoT** applications. It can run with as low as 200 KB of
-memory.
+* compact and computationally-efficient making it suitable for **IoT** applications. It can run with as low as 20 KB of
+RAM.
 * **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**,
 **watchOS**, **Linux**, **Mac**, **Windows**, and **web browsers** are supported. Furthermore, Support for various
 **ARM Cortex-A** and **ARM Cortex-M** processors and a growing number of **DSPs** is available.
@@ -49,6 +49,10 @@ Try out Porcupine by downloading it's
 application allows you to test Porcupine on a variety of wake words in any environment.
 
 ![Android Demo](resources/images/demo.gif)
+
+See Porcupine in action on an ARM Cortex-M7 (accompanied by [Rhino](https://github.com/Picovoice/rhino) for intent inference).
+
+[![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
 
 ## Getting Started
 
@@ -514,5 +518,4 @@ commercial products without acquiring a commercial licensing agreement from Pico
 
 Custom wake-words for other platforms are only provided with the purchase of the commercial license.
 
-In order to inquire about the commercial license send an email to contact@picovoice.ai with a brief description of your
-use case.
+In order to inquire about the commercial license [contact us](https://picovoice.ai/company/#contact-us).

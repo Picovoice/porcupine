@@ -27,7 +27,8 @@ The optimizer utility is located at [/tools/optimizer](/tools/optimizer).
 In this repository, the resource directory is located at [/resources](/resources). Keyword files are
 platform dependent. This means that a keyword file generated with ```-p linux``` cannot run on Android or Mac. The
 optimizer available at this repository can produce keyword files for Linux, Mac, and Windows platforms. Custom keyword files for other
-platforms are provided with purchase of the commercial license. In order to purchase a commercial license contact contact@picovoice.ai.
+platforms are provided with purchase of the commercial license. In order to purchase a commercial license
+[contact us](https://picovoice.ai/company/#contact-us).
 
 A keyword file for **Vancouver** targeted for a Mac machine can be created using
 
