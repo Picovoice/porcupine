@@ -43,10 +43,10 @@ public class PorcupineTest {
     private final static Context CONTEXT = InstrumentationRegistry.getTargetContext();
 
     private final static String[] KEYWORD_FILENAMES = {
-            "alexa.ppn", "americano.ppn", "avocado.ppn", "blueberry.ppn", "bumblebee.ppn",
-            "caterpillar.ppn", "christina.ppn", "dragonfly.ppn", "flamingo.ppn", "francesca.ppn",
-            "grapefruit.ppn", "grasshopper.ppn", "iguana.ppn", "picovoice.ppn", "pineapple.ppn",
-            "porcupine.ppn", "raspberry.ppn", "terminator.ppn", "vancouver.ppn"
+            "americano.ppn", "avocado.ppn", "blueberry.ppn", "bumblebee.ppn", "caterpillar.ppn",
+            "christina.ppn", "dragonfly.ppn", "flamingo.ppn", "francesca.ppn", "grapefruit.ppn",
+            "grasshopper.ppn", "iguana.ppn", "picovoice.ppn", "pineapple.ppn", "porcupine.ppn",
+            "raspberry.ppn", "terminator.ppn", "vancouver.ppn"
     };
 
     /**
@@ -102,7 +102,7 @@ public class PorcupineTest {
     }
 
     private static final Integer[] EXPECTED_KEYWORD_INDICES = {
-            15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+            14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
     };
 
     /**

@@ -69,11 +69,12 @@ final class Utils {
      * Copy the keyword config files used by Porcupine library to the internal storage of the app.
      */
     private static void copyPorcupineConfigFiles(Context context) {
-        int[] resIds = {R.raw.alexa, R.raw.americano, R.raw.avocado, R.raw.blueberry,
-                        R.raw.bumblebee, R.raw.caterpillar, R.raw.christina, R.raw.dragonfly,
-                        R.raw.flamingo, R.raw.francesca, R.raw.grapefruit, R.raw.grasshopper,
-                        R.raw.iguana, R.raw.picovoice, R.raw.pineapple, R.raw.porcupine,
-                        R.raw.raspberry, R.raw.terminator, R.raw.vancouver, R.raw.params};
+        int[] resIds = {
+                R.raw.americano, R.raw.avocado, R.raw.blueberry, R.raw.bumblebee, R.raw.caterpillar,
+                R.raw.christina, R.raw.dragonfly, R.raw.flamingo, R.raw.francesca, R.raw.grapefruit,
+                R.raw.grasshopper, R.raw.iguana, R.raw.picovoice, R.raw.pineapple, R.raw.porcupine,
+                R.raw.raspberry, R.raw.terminator, R.raw.vancouver, R.raw.params
+        };
         Resources resources = context.getResources();
         for (int resId : resIds) {
             String filename = resources.getResourceEntryName(resId);
