@@ -24,10 +24,13 @@ from porcupine import Porcupine
 
 class PorcupineTestCase(unittest.TestCase):
     def test_process(self):
+        extension = self._keyword_file_extension()
+        keyword_file_path = self._abs_path('../../resources/keyword_files/%s/porcupine_%s.ppn' % (extension, extension))
+
         porcupine = Porcupine(
             library_path=self._library_path(),
             model_file_path=self._abs_path('../../lib/common/porcupine_params.pv'),
-            keyword_file_path=self._abs_path('../../resources/keyword_files/porcupine_%s.ppn' % self._keyword_file_extension()),
+            keyword_file_path=keyword_file_path,
             sensitivity=0.5)
 
         audio, sample_rate = soundfile.read(
@@ -46,12 +49,14 @@ class PorcupineTestCase(unittest.TestCase):
         self.assertEqual(sum(results), 1)
 
     def test_process_multiple(self):
-        keyword_file_names = ['alexa', 'americano', 'avocado', 'blueberry', 'bumblebee', 'caterpillar', 'christina',
-                              'dragonfly', 'flamingo', 'francesca', 'grapefruit', 'grasshopper', 'iguana', 'picovoice',
-                              'pineapple', 'porcupine', 'raspberry', 'terminator', 'vancouver']
+        keyword_file_names = [
+            'alexa', 'americano', 'avocado', 'blueberry', 'bumblebee', 'caterpillar', 'christina', 'dragonfly',
+            'flamingo', 'francesca', 'grapefruit', 'grasshopper', 'iguana', 'picovoice', 'pineapple', 'porcupine',
+            'raspberry', 'terminator', 'vancouver'
+        ]
 
-        keyword_file_paths = [
-            self._abs_path('../../resources/keyword_files/%s_%s.ppn' % (name, self._keyword_file_extension())) for name in keyword_file_names]
+        extension = self._keyword_file_extension()
+        keyword_file_paths = [self._abs_path('../../resources/keyword_files/%s/%s_%s.ppn' % (extension, name, extension)) for name in keyword_file_names]
 
         porcupine = Porcupine(
             library_path=self._library_path(),

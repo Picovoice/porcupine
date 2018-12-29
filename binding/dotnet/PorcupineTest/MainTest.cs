@@ -42,7 +42,7 @@ namespace PorcupineTest
             };
             foreach (string name in temp)
             {
-                paths.Add($"{GetAbsRootPath()}resources/keyword_files/{name}_{GetEnvironmentName()}.ppn".Replace("/", "\\"));
+                paths.Add($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()/{name}_{GetEnvironmentName()}.ppn".Replace("/", "\\"));
             }
             senses = new List<float>();
             for (int i= 0; i < paths.Count; i++)
