@@ -17,53 +17,33 @@
 		9226E5E22088E49C0009EE63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9226E5E12088E49C0009EE63 /* Assets.xcassets */; };
 		9226E5E72088E49C0009EE63 /* PorcupineWatchDemo.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9226E5CA2088E4990009EE63 /* PorcupineWatchDemo.app */; };
 		9226E5F32088EA4B0009EE63 /* libpv_porcupine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9226E5F22088EA4B0009EE63 /* libpv_porcupine.a */; };
-		9226E6082088EACE0009EE63 /* alexa_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24738E20633DED00D96613 /* alexa_ios.ppn */; };
-		9226E6092088EACE0009EE63 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473842061695A00D96613 /* terminator_ios.ppn */; };
-		9226E60A2088EACE0009EE63 /* vancouver_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473822061694F00D96613 /* vancouver_ios.ppn */; };
-		9226E60B2088EACE0009EE63 /* raspberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473802061694500D96613 /* raspberry_ios.ppn */; };
-		9226E60C2088EACE0009EE63 /* pineapple_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24737E2061693600D96613 /* pineapple_ios.ppn */; };
-		9226E60D2088EACE0009EE63 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24737C2061692800D96613 /* porcupine_ios.ppn */; };
-		9226E60E2088EACE0009EE63 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24737A206168E900D96613 /* picovoice_ios.ppn */; };
-		9226E60F2088EACE0009EE63 /* iguana_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247378206168DA00D96613 /* iguana_ios.ppn */; };
-		9226E6102088EACE0009EE63 /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247376206168C900D96613 /* grasshopper_ios.ppn */; };
-		9226E6112088EACE0009EE63 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247374206168B800D96613 /* grapefruit_ios.ppn */; };
-		9226E6122088EACE0009EE63 /* francesca_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247372206168AB00D96613 /* francesca_ios.ppn */; };
-		9226E6132088EACE0009EE63 /* flamingo_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473702061689C00D96613 /* flamingo_ios.ppn */; };
-		9226E6142088EACE0009EE63 /* dragonfly_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24736E2061688D00D96613 /* dragonfly_ios.ppn */; };
-		9226E6152088EACE0009EE63 /* christina_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24736C2061687C00D96613 /* christina_ios.ppn */; };
-		9226E6162088EACE0009EE63 /* caterpillar_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24736A206167C500D96613 /* caterpillar_ios.ppn */; };
-		9226E6172088EACE0009EE63 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247368206167BA00D96613 /* bumblebee_ios.ppn */; };
-		9226E6182088EACE0009EE63 /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247366206167AC00D96613 /* blueberry_ios.ppn */; };
-		9226E6192088EACE0009EE63 /* avocado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473642061679900D96613 /* avocado_ios.ppn */; };
-		9226E61A2088EACE0009EE63 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473622061678900D96613 /* americano_ios.ppn */; };
 		9226E61B2088EB230009EE63 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = BB247359205F636700D96613 /* porcupine_params.pv */; };
 		BB24735A205F636700D96613 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = BB247359205F636700D96613 /* porcupine_params.pv */; };
-		BB2473632061678900D96613 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473622061678900D96613 /* americano_ios.ppn */; };
-		BB2473652061679900D96613 /* avocado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473642061679900D96613 /* avocado_ios.ppn */; };
-		BB247367206167AC00D96613 /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247366206167AC00D96613 /* blueberry_ios.ppn */; };
-		BB247369206167BA00D96613 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247368206167BA00D96613 /* bumblebee_ios.ppn */; };
-		BB24736B206167C500D96613 /* caterpillar_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24736A206167C500D96613 /* caterpillar_ios.ppn */; };
-		BB24736D2061687C00D96613 /* christina_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24736C2061687C00D96613 /* christina_ios.ppn */; };
-		BB24736F2061688D00D96613 /* dragonfly_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24736E2061688D00D96613 /* dragonfly_ios.ppn */; };
-		BB2473712061689C00D96613 /* flamingo_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473702061689C00D96613 /* flamingo_ios.ppn */; };
-		BB247373206168AB00D96613 /* francesca_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247372206168AB00D96613 /* francesca_ios.ppn */; };
-		BB247375206168B800D96613 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247374206168B800D96613 /* grapefruit_ios.ppn */; };
-		BB247377206168C900D96613 /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247376206168C900D96613 /* grasshopper_ios.ppn */; };
-		BB247379206168DA00D96613 /* iguana_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB247378206168DA00D96613 /* iguana_ios.ppn */; };
-		BB24737B206168E900D96613 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24737A206168E900D96613 /* picovoice_ios.ppn */; };
-		BB24737D2061692800D96613 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24737C2061692800D96613 /* porcupine_ios.ppn */; };
-		BB24737F2061693600D96613 /* pineapple_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24737E2061693600D96613 /* pineapple_ios.ppn */; };
-		BB2473812061694500D96613 /* raspberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473802061694500D96613 /* raspberry_ios.ppn */; };
-		BB2473832061694F00D96613 /* vancouver_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473822061694F00D96613 /* vancouver_ios.ppn */; };
-		BB2473852061695B00D96613 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB2473842061695A00D96613 /* terminator_ios.ppn */; };
 		BB24738D206312DC00D96613 /* PorcupineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB24738C206312DC00D96613 /* PorcupineManager.swift */; };
-		BB24738F20633DED00D96613 /* alexa_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BB24738E20633DED00D96613 /* alexa_ios.ppn */; };
 		BB65C7B2205F4BF400E8770E /* libpv_porcupine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB65C7B1205F4BF400E8770E /* libpv_porcupine.a */; };
 		BBE66BCE205DD6F7006005B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */; };
 		BBE66BD0205DD6F7006005B1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCF205DD6F7006005B1 /* ViewController.swift */; };
 		BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD1205DD6F7006005B1 /* Main.storyboard */; };
 		BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD4205DD6F7006005B1 /* Assets.xcassets */; };
 		BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD6205DD6F7006005B1 /* LaunchScreen.storyboard */; };
+		BBFFB357226ECBE100A9DA37 /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB345226ECBE000A9DA37 /* grasshopper_ios.ppn */; };
+		BBFFB358226ECBE100A9DA37 /* francesca_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB346226ECBE000A9DA37 /* francesca_ios.ppn */; };
+		BBFFB359226ECBE100A9DA37 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB347226ECBE000A9DA37 /* grapefruit_ios.ppn */; };
+		BBFFB35A226ECBE100A9DA37 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB348226ECBE000A9DA37 /* porcupine_ios.ppn */; };
+		BBFFB35B226ECBE100A9DA37 /* vancouver_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB349226ECBE000A9DA37 /* vancouver_ios.ppn */; };
+		BBFFB35C226ECBE100A9DA37 /* pineapple_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB34A226ECBE000A9DA37 /* pineapple_ios.ppn */; };
+		BBFFB35D226ECBE100A9DA37 /* christina_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB34B226ECBE000A9DA37 /* christina_ios.ppn */; };
+		BBFFB35E226ECBE100A9DA37 /* iguana_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB34C226ECBE000A9DA37 /* iguana_ios.ppn */; };
+		BBFFB35F226ECBE100A9DA37 /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB34D226ECBE000A9DA37 /* blueberry_ios.ppn */; };
+		BBFFB360226ECBE100A9DA37 /* avocado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB34E226ECBE000A9DA37 /* avocado_ios.ppn */; };
+		BBFFB361226ECBE100A9DA37 /* flamingo_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB34F226ECBE000A9DA37 /* flamingo_ios.ppn */; };
+		BBFFB362226ECBE100A9DA37 /* dragonfly_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB350226ECBE000A9DA37 /* dragonfly_ios.ppn */; };
+		BBFFB363226ECBE100A9DA37 /* caterpillar_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB351226ECBE000A9DA37 /* caterpillar_ios.ppn */; };
+		BBFFB364226ECBE100A9DA37 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB352226ECBE000A9DA37 /* picovoice_ios.ppn */; };
+		BBFFB365226ECBE100A9DA37 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB353226ECBE000A9DA37 /* bumblebee_ios.ppn */; };
+		BBFFB366226ECBE100A9DA37 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB354226ECBE000A9DA37 /* americano_ios.ppn */; };
+		BBFFB367226ECBE100A9DA37 /* raspberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB355226ECBE000A9DA37 /* raspberry_ios.ppn */; };
+		BBFFB368226ECBE100A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB356226ECBE000A9DA37 /* terminator_ios.ppn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,27 +110,7 @@
 		9226E5E42088E49C0009EE63 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		9226E5F22088EA4B0009EE63 /* libpv_porcupine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_porcupine.a; path = ../../lib/watchos/libpv_porcupine.a; sourceTree = "<group>"; };
 		BB247359205F636700D96613 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../lib/common/porcupine_params.pv; sourceTree = "<group>"; };
-		BB24735B205F637700D96613 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = alexa_ios.ppn; sourceTree = "<group>"; };
-		BB2473622061678900D96613 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = americano_ios.ppn; sourceTree = "<group>"; };
-		BB2473642061679900D96613 /* avocado_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = avocado_ios.ppn; sourceTree = "<group>"; };
-		BB247366206167AC00D96613 /* blueberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = blueberry_ios.ppn; sourceTree = "<group>"; };
-		BB247368206167BA00D96613 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = bumblebee_ios.ppn; sourceTree = "<group>"; };
-		BB24736A206167C500D96613 /* caterpillar_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = caterpillar_ios.ppn; sourceTree = "<group>"; };
-		BB24736C2061687C00D96613 /* christina_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = christina_ios.ppn; sourceTree = "<group>"; };
-		BB24736E2061688D00D96613 /* dragonfly_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = dragonfly_ios.ppn; sourceTree = "<group>"; };
-		BB2473702061689C00D96613 /* flamingo_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = flamingo_ios.ppn; sourceTree = "<group>"; };
-		BB247372206168AB00D96613 /* francesca_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = francesca_ios.ppn; sourceTree = "<group>"; };
-		BB247374206168B800D96613 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = grapefruit_ios.ppn; sourceTree = "<group>"; };
-		BB247376206168C900D96613 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = grasshopper_ios.ppn; sourceTree = "<group>"; };
-		BB247378206168DA00D96613 /* iguana_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = iguana_ios.ppn; sourceTree = "<group>"; };
-		BB24737A206168E900D96613 /* picovoice_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = picovoice_ios.ppn; sourceTree = "<group>"; };
-		BB24737C2061692800D96613 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = porcupine_ios.ppn; sourceTree = "<group>"; };
-		BB24737E2061693600D96613 /* pineapple_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pineapple_ios.ppn; sourceTree = "<group>"; };
-		BB2473802061694500D96613 /* raspberry_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = raspberry_ios.ppn; sourceTree = "<group>"; };
-		BB2473822061694F00D96613 /* vancouver_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = vancouver_ios.ppn; sourceTree = "<group>"; };
-		BB2473842061695A00D96613 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = terminator_ios.ppn; sourceTree = "<group>"; };
 		BB24738C206312DC00D96613 /* PorcupineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PorcupineManager.swift; path = ../../../binding/ios/PorcupineManager.swift; sourceTree = "<group>"; };
-		BB24738E20633DED00D96613 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = text; path = alexa_ios.ppn; sourceTree = "<group>"; };
 		BB65C7AF205EEBB300E8770E /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		BB65C7B1205F4BF400E8770E /* libpv_porcupine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_porcupine.a; path = ../../lib/ios/libpv_porcupine.a; sourceTree = "<group>"; };
 		BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +121,24 @@
 		BBE66BD7205DD6F7006005B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BBE66BD9205DD6F7006005B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PorcupineDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBFFB345226ECBE000A9DA37 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grasshopper_ios.ppn; path = ios/grasshopper_ios.ppn; sourceTree = "<group>"; };
+		BBFFB346226ECBE000A9DA37 /* francesca_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = francesca_ios.ppn; path = ios/francesca_ios.ppn; sourceTree = "<group>"; };
+		BBFFB347226ECBE000A9DA37 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grapefruit_ios.ppn; path = ios/grapefruit_ios.ppn; sourceTree = "<group>"; };
+		BBFFB348226ECBE000A9DA37 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ios/porcupine_ios.ppn; sourceTree = "<group>"; };
+		BBFFB349226ECBE000A9DA37 /* vancouver_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = vancouver_ios.ppn; path = ios/vancouver_ios.ppn; sourceTree = "<group>"; };
+		BBFFB34A226ECBE000A9DA37 /* pineapple_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = pineapple_ios.ppn; path = ios/pineapple_ios.ppn; sourceTree = "<group>"; };
+		BBFFB34B226ECBE000A9DA37 /* christina_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = christina_ios.ppn; path = ios/christina_ios.ppn; sourceTree = "<group>"; };
+		BBFFB34C226ECBE000A9DA37 /* iguana_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iguana_ios.ppn; path = ios/iguana_ios.ppn; sourceTree = "<group>"; };
+		BBFFB34D226ECBE000A9DA37 /* blueberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = blueberry_ios.ppn; path = ios/blueberry_ios.ppn; sourceTree = "<group>"; };
+		BBFFB34E226ECBE000A9DA37 /* avocado_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = avocado_ios.ppn; path = ios/avocado_ios.ppn; sourceTree = "<group>"; };
+		BBFFB34F226ECBE000A9DA37 /* flamingo_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = flamingo_ios.ppn; path = ios/flamingo_ios.ppn; sourceTree = "<group>"; };
+		BBFFB350226ECBE000A9DA37 /* dragonfly_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = dragonfly_ios.ppn; path = ios/dragonfly_ios.ppn; sourceTree = "<group>"; };
+		BBFFB351226ECBE000A9DA37 /* caterpillar_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = caterpillar_ios.ppn; path = ios/caterpillar_ios.ppn; sourceTree = "<group>"; };
+		BBFFB352226ECBE000A9DA37 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ios/picovoice_ios.ppn; sourceTree = "<group>"; };
+		BBFFB353226ECBE000A9DA37 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = bumblebee_ios.ppn; path = ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
+		BBFFB354226ECBE000A9DA37 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ios/americano_ios.ppn; sourceTree = "<group>"; };
+		BBFFB355226ECBE000A9DA37 /* raspberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = raspberry_ios.ppn; path = ios/raspberry_ios.ppn; sourceTree = "<group>"; };
+		BBFFB356226ECBE000A9DA37 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = terminator_ios.ppn; path = ios/terminator_ios.ppn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,26 +195,24 @@
 		BB247361206164C400D96613 /* keyword_files */ = {
 			isa = PBXGroup;
 			children = (
-				BB24738E20633DED00D96613 /* alexa_ios.ppn */,
-				BB2473842061695A00D96613 /* terminator_ios.ppn */,
-				BB2473822061694F00D96613 /* vancouver_ios.ppn */,
-				BB2473802061694500D96613 /* raspberry_ios.ppn */,
-				BB24737E2061693600D96613 /* pineapple_ios.ppn */,
-				BB24737C2061692800D96613 /* porcupine_ios.ppn */,
-				BB24737A206168E900D96613 /* picovoice_ios.ppn */,
-				BB247378206168DA00D96613 /* iguana_ios.ppn */,
-				BB247376206168C900D96613 /* grasshopper_ios.ppn */,
-				BB247374206168B800D96613 /* grapefruit_ios.ppn */,
-				BB247372206168AB00D96613 /* francesca_ios.ppn */,
-				BB2473702061689C00D96613 /* flamingo_ios.ppn */,
-				BB24736E2061688D00D96613 /* dragonfly_ios.ppn */,
-				BB24736C2061687C00D96613 /* christina_ios.ppn */,
-				BB24736A206167C500D96613 /* caterpillar_ios.ppn */,
-				BB247368206167BA00D96613 /* bumblebee_ios.ppn */,
-				BB247366206167AC00D96613 /* blueberry_ios.ppn */,
-				BB2473642061679900D96613 /* avocado_ios.ppn */,
-				BB2473622061678900D96613 /* americano_ios.ppn */,
-				BB24735B205F637700D96613 /* alexa_ios.ppn */,
+				BBFFB354226ECBE000A9DA37 /* americano_ios.ppn */,
+				BBFFB34E226ECBE000A9DA37 /* avocado_ios.ppn */,
+				BBFFB34D226ECBE000A9DA37 /* blueberry_ios.ppn */,
+				BBFFB353226ECBE000A9DA37 /* bumblebee_ios.ppn */,
+				BBFFB351226ECBE000A9DA37 /* caterpillar_ios.ppn */,
+				BBFFB34B226ECBE000A9DA37 /* christina_ios.ppn */,
+				BBFFB350226ECBE000A9DA37 /* dragonfly_ios.ppn */,
+				BBFFB34F226ECBE000A9DA37 /* flamingo_ios.ppn */,
+				BBFFB346226ECBE000A9DA37 /* francesca_ios.ppn */,
+				BBFFB347226ECBE000A9DA37 /* grapefruit_ios.ppn */,
+				BBFFB345226ECBE000A9DA37 /* grasshopper_ios.ppn */,
+				BBFFB34C226ECBE000A9DA37 /* iguana_ios.ppn */,
+				BBFFB352226ECBE000A9DA37 /* picovoice_ios.ppn */,
+				BBFFB34A226ECBE000A9DA37 /* pineapple_ios.ppn */,
+				BBFFB348226ECBE000A9DA37 /* porcupine_ios.ppn */,
+				BBFFB355226ECBE000A9DA37 /* raspberry_ios.ppn */,
+				BBFFB356226ECBE000A9DA37 /* terminator_ios.ppn */,
+				BBFFB349226ECBE000A9DA37 /* vancouver_ios.ppn */,
 			);
 			name = keyword_files;
 			path = ../../../resources/keyword_files;
@@ -433,27 +409,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9226E60E2088EACE0009EE63 /* picovoice_ios.ppn in Resources */,
-				9226E6102088EACE0009EE63 /* grasshopper_ios.ppn in Resources */,
-				9226E6172088EACE0009EE63 /* bumblebee_ios.ppn in Resources */,
-				9226E60A2088EACE0009EE63 /* vancouver_ios.ppn in Resources */,
-				9226E6082088EACE0009EE63 /* alexa_ios.ppn in Resources */,
-				9226E6112088EACE0009EE63 /* grapefruit_ios.ppn in Resources */,
-				9226E6122088EACE0009EE63 /* francesca_ios.ppn in Resources */,
 				9226E61B2088EB230009EE63 /* porcupine_params.pv in Resources */,
-				9226E6092088EACE0009EE63 /* terminator_ios.ppn in Resources */,
-				9226E60B2088EACE0009EE63 /* raspberry_ios.ppn in Resources */,
-				9226E60F2088EACE0009EE63 /* iguana_ios.ppn in Resources */,
-				9226E6132088EACE0009EE63 /* flamingo_ios.ppn in Resources */,
 				9226E5E22088E49C0009EE63 /* Assets.xcassets in Resources */,
-				9226E6142088EACE0009EE63 /* dragonfly_ios.ppn in Resources */,
-				9226E6162088EACE0009EE63 /* caterpillar_ios.ppn in Resources */,
-				9226E61A2088EACE0009EE63 /* americano_ios.ppn in Resources */,
-				9226E6152088EACE0009EE63 /* christina_ios.ppn in Resources */,
-				9226E6192088EACE0009EE63 /* avocado_ios.ppn in Resources */,
-				9226E6182088EACE0009EE63 /* blueberry_ios.ppn in Resources */,
-				9226E60C2088EACE0009EE63 /* pineapple_ios.ppn in Resources */,
-				9226E60D2088EACE0009EE63 /* porcupine_ios.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,29 +418,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB2473632061678900D96613 /* americano_ios.ppn in Resources */,
-				BB24736F2061688D00D96613 /* dragonfly_ios.ppn in Resources */,
+				BBFFB359226ECBE100A9DA37 /* grapefruit_ios.ppn in Resources */,
+				BBFFB35F226ECBE100A9DA37 /* blueberry_ios.ppn in Resources */,
 				BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */,
+				BBFFB357226ECBE100A9DA37 /* grasshopper_ios.ppn in Resources */,
+				BBFFB361226ECBE100A9DA37 /* flamingo_ios.ppn in Resources */,
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
-				BB2473852061695B00D96613 /* terminator_ios.ppn in Resources */,
-				BB247367206167AC00D96613 /* blueberry_ios.ppn in Resources */,
-				BB24738F20633DED00D96613 /* alexa_ios.ppn in Resources */,
-				BB24736B206167C500D96613 /* caterpillar_ios.ppn in Resources */,
+				BBFFB363226ECBE100A9DA37 /* caterpillar_ios.ppn in Resources */,
+				BBFFB35B226ECBE100A9DA37 /* vancouver_ios.ppn in Resources */,
+				BBFFB360226ECBE100A9DA37 /* avocado_ios.ppn in Resources */,
+				BBFFB35E226ECBE100A9DA37 /* iguana_ios.ppn in Resources */,
+				BBFFB367226ECBE100A9DA37 /* raspberry_ios.ppn in Resources */,
+				BBFFB364226ECBE100A9DA37 /* picovoice_ios.ppn in Resources */,
+				BBFFB35A226ECBE100A9DA37 /* porcupine_ios.ppn in Resources */,
+				BBFFB365226ECBE100A9DA37 /* bumblebee_ios.ppn in Resources */,
 				BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */,
-				BB247377206168C900D96613 /* grasshopper_ios.ppn in Resources */,
-				BB24736D2061687C00D96613 /* christina_ios.ppn in Resources */,
-				BB2473832061694F00D96613 /* vancouver_ios.ppn in Resources */,
-				BB2473812061694500D96613 /* raspberry_ios.ppn in Resources */,
-				BB24737B206168E900D96613 /* picovoice_ios.ppn in Resources */,
-				BB247373206168AB00D96613 /* francesca_ios.ppn in Resources */,
-				BB2473712061689C00D96613 /* flamingo_ios.ppn in Resources */,
-				BB247369206167BA00D96613 /* bumblebee_ios.ppn in Resources */,
-				BB247375206168B800D96613 /* grapefruit_ios.ppn in Resources */,
-				BB24737D2061692800D96613 /* porcupine_ios.ppn in Resources */,
-				BB247379206168DA00D96613 /* iguana_ios.ppn in Resources */,
-				BB24737F2061693600D96613 /* pineapple_ios.ppn in Resources */,
+				BBFFB366226ECBE100A9DA37 /* americano_ios.ppn in Resources */,
+				BBFFB35D226ECBE100A9DA37 /* christina_ios.ppn in Resources */,
+				BBFFB35C226ECBE100A9DA37 /* pineapple_ios.ppn in Resources */,
+				BBFFB362226ECBE100A9DA37 /* dragonfly_ios.ppn in Resources */,
+				BBFFB368226ECBE100A9DA37 /* terminator_ios.ppn in Resources */,
 				BB24735A205F636700D96613 /* porcupine_params.pv in Resources */,
-				BB2473652061679900D96613 /* avocado_ios.ppn in Resources */,
+				BBFFB358226ECBE100A9DA37 /* francesca_ios.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
