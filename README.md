@@ -21,7 +21,6 @@ available.
 ## Table of Contents
 
 * [Try It Out](#try-it-out)
-* [Getting Started](#getting-started)
 * [Performance](#performance)
 * [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
@@ -29,7 +28,7 @@ available.
     * [Python Demo Application](#python-demo-application)
     * [Android Demo Application](#android-demo-application)
     * [iOS Demo Application](#ios-demo-application)
-* [Creating Keyword Files](#creating-keyword-files)
+* [Evaluating Keyword Files](#evaluating-keyword-files)
 * [Integration](#integration)
     * [C](#c)
     * [Python](#python)
@@ -121,10 +120,10 @@ an iOS device connected to your machine and a valid Apple developer account.
 
 Porcupine enables developers to evaluate models for any wake word. This is done using Porcupine's optimizer utility.
 It finds optimal model hyper-parameters for a given hotword and stores these parameters in a keyword file.
-You could create your own keyword file using the [Porcupine's optimizer](/tools/optimizer) from the command line
+You could create keyword files using the [Porcupine's optimizer](/tools/optimizer) from the command line
 
 ```bash
-tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources/ -w ${WAKE_WORD} \
+tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources/optimizer_data -w ${WAKE_WORD} \
 -p ${TARGET_SYSTEM} -o ${OUTPUT_DIRECTORY}
 ```
 
@@ -469,6 +468,7 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 * Improved accuracy across all models.
 * Runtime optimization across all models
 * Added support for Beagle Bone
+* iOS build can run on simulator now.
 
 ### v1.5.0 - November 13, 2018
 
@@ -505,13 +505,12 @@ CPU/memory footprint.
 ## License
 
 This repository is licensed under Apache 2.0 except for the [optimizer tool](/tools/optimizer) and keyword files
-generated using it. This allows running the library on all supported platforms using the set of freely-available [keyword
-files](/resources/keyword_files).
+generated using it. This allows running the library on all supported platforms using the set of freely-available
+[keyword files](/resources/keyword_files).
 
 Custom wake-words for Linux, Mac, and Windows can be generated using the [optimizer tool](/tools/optimizer) only for 
-non-commercial and evaluation purposes. The use of [optimizer tool](/tools/optimizer) and keyword files generated using
-it in commercial products without acquiring a commercial licensing agreement from Picovoice is strictly prohibited. 
+**non-commercial** and **evaluation** purposes. The use of [optimizer tool](/tools/optimizer) and keyword files generated
+using it in commercial products without acquiring a commercial licensing agreement from Picovoice is strictly prohibited. 
 
-Custom wake-words for other platforms are only provided with the purchase of the commercial license.
-
-In order to inquire about the commercial license [contact us](https://picovoice.ai/company/#contact-us).
+Custom wake-words for other platforms are only provided with the purchase of the commercial license. In order to inquire
+about the commercial license [contact us](https://picovoice.ai/company/#contact-us).
