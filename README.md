@@ -464,9 +464,9 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ## Releases
 
-### v1.6.0 - April 28th, 2019
+### v1.6.0 - April 25th, 2019
 
-* Improved accuracy accross all models.
+* Improved accuracy across all models.
 * Runtime optimization across all models
 * Added support for Beagle Bone
 
@@ -478,13 +478,13 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ### v1.4.0 - July 20, 2018
 
-* Improved accuracy across all models (specifically tiny variant).
+* Improved accuracy across all models (specifically compressed variant).
 * Runtime optimizations.
 * Updated documentation.
 
 ### v1.3.0 - June 19, 2018
 
-* Added tiny model (200 KB) for deeply-embedded platforms.
+* Added compressed model (200 KB) for deeply-embedded platforms.
 * Improved accuracy.
 * Runtime optimizations and bug fixes.
 
