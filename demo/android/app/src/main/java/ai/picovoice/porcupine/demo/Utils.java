@@ -73,7 +73,7 @@ final class Utils {
                 R.raw.americano, R.raw.avocado, R.raw.blueberry, R.raw.bumblebee, R.raw.caterpillar,
                 R.raw.christina, R.raw.dragonfly, R.raw.flamingo, R.raw.francesca, R.raw.grapefruit,
                 R.raw.grasshopper, R.raw.iguana, R.raw.picovoice, R.raw.pineapple, R.raw.porcupine,
-                R.raw.raspberry, R.raw.terminator, R.raw.vancouver, R.raw.params
+                R.raw.raspberry, R.raw.terminator, R.raw.vancouver, R.raw.params, R.raw.hey_pico
         };
         Resources resources = context.getResources();
         for (int resId : resIds) {

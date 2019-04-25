@@ -18,8 +18,10 @@
 #define PICOVOICE_H
 
 #ifdef __cplusplus
+
 extern "C"
 {
+
 #endif
 
 #define PV_API __attribute__((visibility ("default")))
@@ -39,10 +41,21 @@ typedef enum {
     PV_STATUS_INVALID_ARGUMENT,
     PV_STATUS_STOP_ITERATION,
     PV_STATUS_KEY_ERROR,
+    PV_STATUS_INVALID_STATE,
 } pv_status_t;
 
+/**
+ * Provides string representations of status codes.
+ *
+ * @param status Status code.
+ * @return String representation.
+ */
+const char *pv_status_to_string(pv_status_t status);
+
 #ifdef __cplusplus
+
 }
+
 #endif
 
 #endif // PICOVOICE_H

@@ -83,7 +83,7 @@ class PorcupineDemo(Thread):
         num_keywords = len(self._keyword_file_paths)
 
         keyword_names =\
-            [os.path.basename(x).replace('.ppn', '').replace('_tiny', '').split('_')[0] for x in self._keyword_file_paths]
+            [os.path.basename(x).replace('.ppn', '').replace('_compressed', '').split('_')[0] for x in self._keyword_file_paths]
 
         print('listening for:')
         for keyword_name, sensitivity in zip(keyword_names, sensitivities):
