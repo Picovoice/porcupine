@@ -6,8 +6,8 @@ For more detail refer to our [license terms](https://github.com/Picovoice/Porcup
 valid for 30 days but you can always use the optimizer to generate a new one.
 
 The optimizer enables developers to evaluate models for their wake words of choice. Below it is assumed that the current 
-working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux, mac, or windows) and
-```${MACHINE}``` refers to CPU architecture (x86_64 or amd64).
+working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux, mac, or windows)
+and ```${MACHINE}``` refers to CPU architecture (x86_64 or amd64).
 
 # Usage
 
@@ -26,9 +26,12 @@ The optimizer utility is located at [/tools/optimizer](/tools/optimizer).
 
 In this repository, the resource directory is located at [/resources](/resources/optimizer_data). Keyword files are
 platform dependent. This means that a keyword file generated with ```-p linux``` cannot run on Android or Mac. The
-optimizer available at this repository can produce keyword files for Linux, Mac, and Windows platforms. Custom keyword
-files for other platforms are only provided with purchase of the commercial license. In order to purchase a commercial license
-[contact us](https://picovoice.ai/company/#contact-us).
+optimizer available at this repository can produce keyword files for Linux (x86_64), Mac, and Windows platforms. Note
+ that the generated keyword files can only be used for non-commercial and evaluation purposes and are valid for 30 days.
+ If you are working on a non-commercial application you can regenerate the file when it expires and keep using it.
+ 
+ Custom keyword files for other platforms are only provided with purchase of the commercial license. In order to
+ purchase a commercial license [contact us](https://picovoice.ai/company/#contact-us).
 
 A keyword file for **Vancouver** targeted for a Mac machine can be created using
 
