@@ -84,7 +84,7 @@ class PorcupineDemo(Thread):
         num_keywords = len(self._keyword_file_paths)
 
         keyword_names =\
-            [os.path.basename(x).strip('.ppn').strip('_tiny').split('_')[0] for x in self._keyword_file_paths]
+            [os.path.basename(x).strip('.ppn').strip('_compressed').split('_')[0] for x in self._keyword_file_paths]
 
         def _audio_callback(in_data, frame_count, time_info, status):
             if frame_count >= porcupine.frame_length:

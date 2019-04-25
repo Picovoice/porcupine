@@ -5,22 +5,21 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a self-service, highly-accurate, and lightweight **wake word** (**voice control**) engine. It enables
-developers to build always-listening voice-enabled applications/platforms. Porcupine is
+Porcupine is a highly-accurate and lightweight **wake word**
+(a.k.a **keyword spotting**, **hotword detection** and **voice command**) engine. It enables developers to build
+always-listening voice-enabled applications. It is
 
-* self-service. Developers are empowered to **choose any wake word** and build its model **within seconds**.
 * using **deep neural networks** trained in **real-world situations**.
-* compact and computationally-efficient making it suitable for **IoT** applications. It can run with as low as 20 KB of
-RAM.
-* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Android**, **iOS**,
-**watchOS**, **Linux**, **Mac**, **Windows**, and **web browsers** are supported. Furthermore, Support for various
-**ARM Cortex-A** and **ARM Cortex-M** processors and a growing number of **DSPs** is available.
-* **scalable**. It can detect tens of commands concurrently with no added CPU/memory footprint.
+* compact and computationally-efficient making it suitable for **IoT**. It can run with as low as **20 KB RAM** on an MCU.
+* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Beagle Bone**, **Android**,
+**iOS**, **watchOS**, **Linux**, **Mac**, **Windows**, and **web browsers** (**WebAssembly**) are supported. Furthermore,
+Support for various **ARM Cortex-A** and **ARM Cortex-M** (M4 and M7) processors and **DSPs** is available.
+* **scalable**. It can detect multiple (possibly many) of voice commands concurrently with no added CPU/memory footprint.
+* self-service. Developers are empowered to **choose any wake phrase** and evaluate it.
 
 ## Table of Contents
 
 * [Try It Out](#try-it-out)
-* [Getting Started](#getting-started)
 * [Performance](#performance)
 * [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
@@ -28,7 +27,7 @@ RAM.
     * [Python Demo Application](#python-demo-application)
     * [Android Demo Application](#android-demo-application)
     * [iOS Demo Application](#ios-demo-application)
-* [Creating Keyword Files](#creating-keyword-files)
+* [Evaluating Keyword Files](#evaluating-keyword-files)
 * [Integration](#integration)
     * [C](#c)
     * [Python](#python)
@@ -42,7 +41,8 @@ RAM.
 
 ## Try It Out
 
-Try out Porcupine using its [interactive web demo](https://picovoice.ai/products/#wake-word-demo). You need a working microphone.
+Try out Porcupine using its [interactive web demo](https://picovoice.ai/products/#wake-word-demo). You need a working
+microphone.
 
 Try out Porcupine by downloading it's
 [Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en). The demo
@@ -50,37 +50,27 @@ application allows you to test Porcupine on a variety of wake words in any envir
 
 ![Android Demo](resources/images/demo.gif)
 
-See Porcupine in action on an ARM Cortex-M7 (accompanied by [Rhino](https://github.com/Picovoice/rhino) for intent inference).
+See Porcupine in action on an ARM Cortex-M7 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
 
 [![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
-
-## Getting Started
-
-### Wake Word Tutorial
-
-[![Porcupine Tutorial - Wake Word](https://img.youtube.com/vi/3z7LBW_Rl9c/0.jpg)](https://www.youtube.com/watch?v=3z7LBW_Rl9c)
-
-### Voice Control Tutorial
-
-[![Porcupine Tutorial - Voice Control](https://img.youtube.com/vi/YQQ5Bq5HqpQ/0.jpg)](https://www.youtube.com/watch?v=YQQ5Bq5HqpQ)
 
 ## Performance
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
 Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine,
-Porcupine's standard model is 2.53 times more accurate, 2.6 times faster (on Raspberry Pi 3), and consumes 45% less
-memory. 
+Porcupine's standard model is 3 times more accurate, 3.3 times faster (on Raspberry Pi 3). 
 
 ## Model Variants
 
-Porcupine comes in two different variations: **standard** and **tiny**. The tiny model is specifically designed for
-deeply-embedded applications. Its accuracy is slightly lower than the standard model but it consumes considerably less 
-resources. Below is the comparison of runtime measurements for different variants of Porcupine on Raspberry Pi3.
+Porcupine comes in two different variations: **standard** and **compressed**. The compressed model is specifically designed
+for deeply-embedded applications (MCUs and DSPs). Its accuracy is slightly lower than the standard model but it consumes
+considerably less resources. Below is the comparison of runtime measurements for different variants of Porcupine on
+Raspberry Pi3.
 
-| Model Variant | CPU Usage | Memory Usage |
+| Model Variant | CPU Usage | Model Size (KB)
 :---: | :---: | :---:
-Standard | 7.39% | 1380 KB |
-Tiny | 3.42% | 240 KB |
+Standard | 5.67% | 1388
+Compressed | 2.43% | 232
 
 For accuracy comparison of different variants refer to
 [benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
@@ -88,8 +78,8 @@ For accuracy comparison of different variants refer to
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib/](/lib) and header files are at [include/](/include). Currently, Raspberry Pi, Android, iOS, watchOS, Linux, Mac,
-Windows, and modern web browsers are supported.
+[lib/](/lib) and header files are at [include/](/include). Currently, Beagle Bone, Raspberry Pi, Android, iOS, watchOS,
+Linux, Mac, Windows, and modern web browsers (supporting WebAssembly) are supported.
 
 Bindings are available at [binding/](/binding) to facilitate usage from higher-level languages/platforms. Demo
 applications are at [demo/](/demo). When possible, use one of the demo applications as a starting point for your own
@@ -107,11 +97,11 @@ documentation, it is assumed that the current working directory is the root of t
 
 This [demo application](/demo/python) allows testing Porcupine using computer's microphone. It opens an input audio
 stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an example of
-running the demo for hotword **Alexa** from the command line. Replace `${SYSTEM}` with the name of the operating system
-on your machine (e.g. linux, mac, windows, or raspberry-pi).
+running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name of the operating system
+on your machine (e.g. linux, mac, windows, or raspberrypi).
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/alexa_${SYSTEM}.ppn
+python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/${SYSTEM}/alexa_${SYSTEM}.ppn
 ```
 
 ### Android Demo Application
@@ -125,19 +115,19 @@ your machine in order to run the application.
 Using [Xcode](https://developer.apple.com/xcode/) open [demo/ios](/demo/ios) and run the application. Note that you need
 an iOS device connected to your machine and a valid Apple developer account.
 
-## Creating Keyword Files
+## Evaluating Keyword Files
 
-Porcupine enables developers to build models for any wake word. This is done using Porcupine's optimizer utility.
+Porcupine enables developers to evaluate models for any wake word. This is done using Porcupine's optimizer utility.
 It finds optimal model hyper-parameters for a given hotword and stores these parameters in a keyword file.
-You could create your own keyword file using the [Porcupine's optimizer](/tools/optimizer) from the command line
+You could create keyword files using the [Porcupine's optimizer](/tools/optimizer) from the command line
 
 ```bash
-tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources/ -w ${WAKE_WORD} \
+tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources/optimizer_data -w ${WAKE_WORD} \
 -p ${TARGET_SYSTEM} -o ${OUTPUT_DIRECTORY}
 ```
 
 In the above example replace ```${SYSTEM}``` and ```${TARGET_SYSTEM}``` with current and target (runtime) operating
-systems (linux, mac, or windows). ```${MACHINE}``` is the CPU architecture of current machine (x86_64 or i386). ```${WAKE_WORD}```
+systems (linux, mac, or windows). ```${MACHINE}``` is the CPU architecture of current machine (x86_64 or amd64). ```${WAKE_WORD}```
 is the chosen wake word. Finally, ```${OUTPUT_DIRECTORY}``` is the output directory where keyword file will be stored.
 
 ## Integration
@@ -154,6 +144,7 @@ object can be constructed as follows.
 const char *model_file_path = ... // The file is available at lib/common/porcupine_params.pv
 const char *keyword_file_path = ...
 const float sensitivity = 0.5;
+
 pv_porcupine_object_t *handle;
 
 const pv_status_t status = pv_porcupine_init(model_file_path, keyword_file_path, sensitivity, &handle);
@@ -164,7 +155,7 @@ if (status != PV_STATUS_SUCCESS) {
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+[0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
 
 Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
 The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in consecutive chunks
@@ -233,8 +224,8 @@ handle.delete()
 
 ### csharp
 
-[/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine library. Below is a
-quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
+[/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine
+. Below is a quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
 
 
 ```csharp
@@ -455,9 +446,6 @@ acquired by WebAssembly using `.release` when done
 
 For more information refer to [binding](/binding/js) and [demo](/demo/js).
 
-
-
-
 ## Contributing
 
 If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -474,6 +462,13 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ## Releases
 
+### v1.6.0 - April 25th, 2019
+
+* Improved accuracy across all models.
+* Runtime optimization across all models
+* Added support for Beagle Bone
+* iOS build can run on simulator now.
+
 ### v1.5.0 - November 13, 2018
 
 * Improved optimizer's accuracy.
@@ -482,13 +477,13 @@ If you like to contribute to Porcupine, please read through [CONTRIBUTING.md](CO
 
 ### v1.4.0 - July 20, 2018
 
-* Improved accuracy across all models (specifically tiny variant).
+* Improved accuracy across all models (specifically compressed variant).
 * Runtime optimizations.
 * Updated documentation.
 
 ### v1.3.0 - June 19, 2018
 
-* Added tiny model (200 KB) for deeply-embedded platforms.
+* Added compressed model (200 KB) for deeply-embedded platforms.
 * Improved accuracy.
 * Runtime optimizations and bug fixes.
 
@@ -509,13 +504,12 @@ CPU/memory footprint.
 ## License
 
 This repository is licensed under Apache 2.0 except for the [optimizer tool](/tools/optimizer) and keyword files
-generated using it. This allows running the library on all supported platforms using the set of freely-available [keyword
-files](/resources/keyword_files).
+generated using it. This allows running the library on all supported platforms using the set of freely-available
+[keyword files](/resources/keyword_files).
 
 Custom wake-words for Linux, Mac, and Windows can be generated using the [optimizer tool](/tools/optimizer) only for 
-personal and non-commercial use. The use of [optimizer tool](/tools/optimizer) and keyword files generated using it in
-commercial products without acquiring a commercial licensing agreement from Picovoice is strictly prohibited. 
+**non-commercial** and **evaluation** purposes. The use of [optimizer tool](/tools/optimizer) and keyword files generated
+using it in commercial products without acquiring a commercial licensing agreement from Picovoice is strictly prohibited. 
 
-Custom wake-words for other platforms are only provided with the purchase of the commercial license.
-
-In order to inquire about the commercial license [contact us](https://picovoice.ai/company/#contact-us).
+Custom wake-words for other platforms are only provided with the purchase of the commercial license. In order to inquire
+about the commercial license [contact us](https://picovoice.ai/company/#contact-us).

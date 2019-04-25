@@ -1,13 +1,13 @@
 # Porcupine Optimizer
 
-Please note that the optimizer tool in this repository can only generate keyword files for Linux, Mac, and Windows. 
+Note that the optimizer tool in this repository can only generate keyword files for Linux, Mac, and Windows. 
 Furthermore these models are intended for non-commercial use only and their use in a commercial product is prohibited.
-For more detail please refer to our [license terms](https://github.com/Picovoice/Porcupine#license). Finally a model file is
-valid for 90 days but you can always use the optimizer to generate a new one.
+For more detail refer to our [license terms](https://github.com/Picovoice/Porcupine#license). Finally a model file is
+valid for 30 days but you can always use the optimizer to generate a new one.
 
-The optimizer enables developers to build models for their wake words of choice. Below it is assumed that the current 
-working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux, mac, or windows) and
-```${MACHINE}``` refers to CPU architecture.
+The optimizer enables developers to evaluate models for their wake words of choice. Below it is assumed that the current 
+working directory is the root of the repository. ```${SYSTEM}``` refers to the operating system (linux, mac, or windows)
+and ```${MACHINE}``` refers to CPU architecture (x86_64 or amd64).
 
 # Usage
 
@@ -24,16 +24,19 @@ The optimizer utility is located at [/tools/optimizer](/tools/optimizer).
  [INFO]  -o Absolute path to output directory where keyword file will be stored.
 ```
 
-In this repository, the resource directory is located at [/resources](/resources). Keyword files are
+In this repository, the resource directory is located at [/resources](/resources/optimizer_data). Keyword files are
 platform dependent. This means that a keyword file generated with ```-p linux``` cannot run on Android or Mac. The
-optimizer available at this repository can produce keyword files for Linux, Mac, and Windows platforms. Custom keyword files for other
-platforms are provided with purchase of the commercial license. In order to purchase a commercial license
-[contact us](https://picovoice.ai/company/#contact-us).
+optimizer available at this repository can produce keyword files for Linux (x86_64), Mac, and Windows platforms. Note
+ that the generated keyword files can only be used for non-commercial and evaluation purposes and are valid for 30 days.
+ If you are working on a non-commercial application you can regenerate the file when it expires and keep using it.
+ 
+ Custom keyword files for other platforms are only provided with purchase of the commercial license. In order to
+ purchase a commercial license [contact us](https://picovoice.ai/company/#contact-us).
 
 A keyword file for **Vancouver** targeted for a Mac machine can be created using
 
 ```bash
-tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources -w "vancouver" -p mac -o ~/
+tools/optimizer/${SYSTEM}/${MACHINE}/pv_porcupine_optimizer -r resources/optimizer_data -w "vancouver" -p mac -o ~/
 ```
 
 # FAQ
@@ -48,7 +51,6 @@ platforms other than Linux, Mac, or Windows are only provided with purchase of t
 The optimizer has information about tens of thousands of commonly-used English words. That being said, your chosen
 keyword might not be available in its internal dictionary. If you are interested in the commercial license, we can create
 the custom models for you.
-
 
 #### How do I deal with "[ERROR] Wake phrase is too short or long for this optimizer."?
 
