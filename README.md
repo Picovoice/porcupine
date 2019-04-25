@@ -5,18 +5,17 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a highly-accurate and lightweight **wake word** (**voice command**) engine. It enables developers to build
+Porcupine is a highly-accurate and lightweight **wake word**
+(a.k.a **keyword spotting**, **hotword detection** and **voice command**) engine. It enables developers to build
 always-listening voice-enabled applications. It is
 
 * using **deep neural networks** trained in **real-world situations**.
-* compact and computationally-efficient making it suitable for **IoT** applications. It can run with as low as
-**20 KB RAM** on an MCU.
+* compact and computationally-efficient making it suitable for **IoT**. It can run with as low as **20 KB RAM** on an MCU.
 * **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Beagle Bone**, **Android**,
-**iOS**, **watchOS**, **Linux**, **Mac**, **Windows**, and **web browsers** (WebAssembly) are supported. Furthermore,
-Support for various **ARM Cortex-A** and **ARM Cortex-M** (M4 and M7) processors and a growing number of **DSPs** is
-available.
-* **scalable**. It can detect tens of voice commands concurrently with no added CPU/memory footprint.
-* self-service. Developers are empowered to **choose any wake phrase** and evaluate it **within seconds**.
+**iOS**, **watchOS**, **Linux**, **Mac**, **Windows**, and **web browsers** (**WebAssembly**) are supported. Furthermore,
+Support for various **ARM Cortex-A** and **ARM Cortex-M** (M4 and M7) processors and **DSPs** is available.
+* **scalable**. It can detect multiple (possibly many) of voice commands concurrently with no added CPU/memory footprint.
+* self-service. Developers are empowered to **choose any wake phrase** and evaluate it.
 
 ## Table of Contents
 
