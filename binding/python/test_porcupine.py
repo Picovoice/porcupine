@@ -90,7 +90,7 @@ class PorcupineTestCase(unittest.TestCase):
         system = platform.system()
         machine = platform.machine()
 
-        if system == 'Linux' and (machine == 'x86_64' or machine == 'i386'):
+        if system == 'Linux' and machine == 'x86_64':
             return 'linux'
         elif system == 'Darwin':
             return 'mac'
@@ -109,16 +109,13 @@ class PorcupineTestCase(unittest.TestCase):
         if system == 'Darwin':
             return os.path.join(os.path.dirname(__file__), '../../lib/mac/%s/libpv_porcupine.dylib' % machine)
         elif system == 'Linux':
-            if machine == 'x86_64' or machine == 'i386':
+            if machine == 'x86_64':
                 return os.path.join(os.path.dirname(__file__), '../../lib/linux/%s/libpv_porcupine.so' % machine)
             elif machine.startswith('arm'):
                 # NOTE: This does not need to be fast. Use the armv6 binary.
                 return os.path.join(os.path.dirname(__file__), '../../lib/raspberry-pi/arm11/libpv_porcupine.so')
         elif system == 'Windows':
-            if platform.architecture()[0] == '32bit':
-                return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\i686\\libpv_porcupine.dll')
-            else:
-                return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\amd64\\libpv_porcupine.dll')
+            return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\amd64\\libpv_porcupine.dll')
 
         raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
 
