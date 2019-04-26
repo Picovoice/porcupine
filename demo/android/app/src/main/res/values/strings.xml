@@ -18,23 +18,13 @@
     <string-array name="keywords">
         <item>Hey Pico</item>
         <item>Americano</item>
-        <item>Avocado</item>
         <item>Blueberry</item>
         <item>Bumblebee</item>
-        <item>Caterpillar</item>
-        <item>Christina</item>
-        <item>Dragonfly</item>
-        <item>Flamingo</item>
-        <item>Francesca</item>
         <item>Grapefruit</item>
         <item>Grasshopper</item>
-        <item>Iguana</item>
         <item>Picovoice</item>
-        <item>Pineapple</item>
         <item>Porcupine</item>
-        <item>Raspberry</item>
         <item>Terminator</item>
-        <item>Vancouver</item>
     </string-array>
     <string name="keyword_label">Keyword</string>
     <string name="start">Start</string>
