@@ -70,10 +70,9 @@ final class Utils {
      */
     private static void copyPorcupineConfigFiles(Context context) {
         int[] resIds = {
-                R.raw.americano, R.raw.avocado, R.raw.blueberry, R.raw.bumblebee, R.raw.caterpillar,
-                R.raw.christina, R.raw.dragonfly, R.raw.flamingo, R.raw.francesca, R.raw.grapefruit,
-                R.raw.grasshopper, R.raw.iguana, R.raw.picovoice, R.raw.pineapple, R.raw.porcupine,
-                R.raw.raspberry, R.raw.terminator, R.raw.vancouver, R.raw.params, R.raw.hey_pico
+                R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
+                R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.hey_pico,
+                R.raw.terminator, R.raw.params
         };
         Resources resources = context.getResources();
         for (int resId : resIds) {

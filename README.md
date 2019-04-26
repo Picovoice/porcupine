@@ -1,6 +1,5 @@
 # Porcupine
 
-[![Build Status](https://travis-ci.org/Picovoice/Porcupine.svg?branch=master)](https://travis-ci.org/Picovoice/Porcupine)
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
