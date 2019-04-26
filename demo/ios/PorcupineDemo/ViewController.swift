@@ -18,9 +18,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var startButton: UIButton!
 
     let wakeWords = [
-        "Hey Pico", "Americano", "Avocado", "Blueberry", "Bumblebee", "Caterpillar", "Christina", "Dragonfly", "Flamingo",
-        "Francesca", "Grapefruit", "Grasshopper", "Iguana", "Picovoice", "Pineapple", "Porcupine", "Raspberry",
-        "Terminator", "Vancouver"]
+        "Hey Pico", "Americano", "Blueberry", "Bumblebee", "Grapefruit", "Grasshopper", "Picovoice", "Porcupine", "Terminator"]
     var wakeWord = "Picovoice"
 
     var porcupineManager: PorcupineManager!

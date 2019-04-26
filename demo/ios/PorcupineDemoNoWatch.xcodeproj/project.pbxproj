@@ -16,22 +16,12 @@
 		BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD4205DD6F7006005B1 /* Assets.xcassets */; };
 		BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD6205DD6F7006005B1 /* LaunchScreen.storyboard */; };
 		BBFFB333226EC72E00A9DA37 /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */; };
-		BBFFB334226EC72E00A9DA37 /* francesca_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB322226EC72D00A9DA37 /* francesca_ios.ppn */; };
 		BBFFB335226EC72E00A9DA37 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */; };
 		BBFFB336226EC72E00A9DA37 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */; };
-		BBFFB337226EC72E00A9DA37 /* vancouver_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB325226EC72D00A9DA37 /* vancouver_ios.ppn */; };
-		BBFFB338226EC72E00A9DA37 /* pineapple_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB326226EC72D00A9DA37 /* pineapple_ios.ppn */; };
-		BBFFB339226EC72E00A9DA37 /* christina_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB327226EC72E00A9DA37 /* christina_ios.ppn */; };
-		BBFFB33A226EC72E00A9DA37 /* iguana_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB328226EC72E00A9DA37 /* iguana_ios.ppn */; };
 		BBFFB33B226EC72E00A9DA37 /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */; };
-		BBFFB33C226EC72E00A9DA37 /* avocado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32A226EC72E00A9DA37 /* avocado_ios.ppn */; };
-		BBFFB33D226EC72E00A9DA37 /* flamingo_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32B226EC72E00A9DA37 /* flamingo_ios.ppn */; };
-		BBFFB33E226EC72E00A9DA37 /* dragonfly_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32C226EC72E00A9DA37 /* dragonfly_ios.ppn */; };
-		BBFFB33F226EC72E00A9DA37 /* caterpillar_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32D226EC72E00A9DA37 /* caterpillar_ios.ppn */; };
 		BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */; };
 		BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */; };
 		BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */; };
-		BBFFB343226EC72E00A9DA37 /* raspberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB331226EC72E00A9DA37 /* raspberry_ios.ppn */; };
 		BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */; };
 		BBFFB3802272321800A9DA37 /* hey pico_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB37F2272321800A9DA37 /* hey pico_ios.ppn */; };
 /* End PBXBuildFile section */
@@ -60,22 +50,12 @@
 		BBE66BD9205DD6F7006005B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PorcupineDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grasshopper_ios.ppn; path = ios/grasshopper_ios.ppn; sourceTree = "<group>"; };
-		BBFFB322226EC72D00A9DA37 /* francesca_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = francesca_ios.ppn; path = ios/francesca_ios.ppn; sourceTree = "<group>"; };
 		BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grapefruit_ios.ppn; path = ios/grapefruit_ios.ppn; sourceTree = "<group>"; };
 		BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ios/porcupine_ios.ppn; sourceTree = "<group>"; };
-		BBFFB325226EC72D00A9DA37 /* vancouver_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = vancouver_ios.ppn; path = ios/vancouver_ios.ppn; sourceTree = "<group>"; };
-		BBFFB326226EC72D00A9DA37 /* pineapple_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = pineapple_ios.ppn; path = ios/pineapple_ios.ppn; sourceTree = "<group>"; };
-		BBFFB327226EC72E00A9DA37 /* christina_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = christina_ios.ppn; path = ios/christina_ios.ppn; sourceTree = "<group>"; };
-		BBFFB328226EC72E00A9DA37 /* iguana_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iguana_ios.ppn; path = ios/iguana_ios.ppn; sourceTree = "<group>"; };
 		BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = blueberry_ios.ppn; path = ios/blueberry_ios.ppn; sourceTree = "<group>"; };
-		BBFFB32A226EC72E00A9DA37 /* avocado_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = avocado_ios.ppn; path = ios/avocado_ios.ppn; sourceTree = "<group>"; };
-		BBFFB32B226EC72E00A9DA37 /* flamingo_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = flamingo_ios.ppn; path = ios/flamingo_ios.ppn; sourceTree = "<group>"; };
-		BBFFB32C226EC72E00A9DA37 /* dragonfly_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = dragonfly_ios.ppn; path = ios/dragonfly_ios.ppn; sourceTree = "<group>"; };
-		BBFFB32D226EC72E00A9DA37 /* caterpillar_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = caterpillar_ios.ppn; path = ios/caterpillar_ios.ppn; sourceTree = "<group>"; };
 		BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ios/picovoice_ios.ppn; sourceTree = "<group>"; };
 		BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = bumblebee_ios.ppn; path = ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
 		BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ios/americano_ios.ppn; sourceTree = "<group>"; };
-		BBFFB331226EC72E00A9DA37 /* raspberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = raspberry_ios.ppn; path = ios/raspberry_ios.ppn; sourceTree = "<group>"; };
 		BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = terminator_ios.ppn; path = ios/terminator_ios.ppn; sourceTree = "<group>"; };
 		BBFFB37F2272321800A9DA37 /* hey pico_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey pico_ios.ppn"; path = "ios/hey pico_ios.ppn"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,23 +84,13 @@
 			children = (
 				BBFFB37F2272321800A9DA37 /* hey pico_ios.ppn */,
 				BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */,
-				BBFFB32A226EC72E00A9DA37 /* avocado_ios.ppn */,
 				BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */,
 				BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */,
-				BBFFB32D226EC72E00A9DA37 /* caterpillar_ios.ppn */,
-				BBFFB327226EC72E00A9DA37 /* christina_ios.ppn */,
-				BBFFB32C226EC72E00A9DA37 /* dragonfly_ios.ppn */,
-				BBFFB32B226EC72E00A9DA37 /* flamingo_ios.ppn */,
-				BBFFB322226EC72D00A9DA37 /* francesca_ios.ppn */,
 				BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */,
 				BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */,
-				BBFFB328226EC72E00A9DA37 /* iguana_ios.ppn */,
 				BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */,
-				BBFFB326226EC72D00A9DA37 /* pineapple_ios.ppn */,
 				BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */,
-				BBFFB331226EC72E00A9DA37 /* raspberry_ios.ppn */,
 				BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */,
-				BBFFB325226EC72D00A9DA37 /* vancouver_ios.ppn */,
 			);
 			name = keyword_files;
 			path = ../../../resources/keyword_files;
@@ -261,25 +231,15 @@
 				BBFFB33B226EC72E00A9DA37 /* blueberry_ios.ppn in Resources */,
 				BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */,
 				BBFFB333226EC72E00A9DA37 /* grasshopper_ios.ppn in Resources */,
-				BBFFB33D226EC72E00A9DA37 /* flamingo_ios.ppn in Resources */,
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
-				BBFFB33F226EC72E00A9DA37 /* caterpillar_ios.ppn in Resources */,
-				BBFFB337226EC72E00A9DA37 /* vancouver_ios.ppn in Resources */,
-				BBFFB33C226EC72E00A9DA37 /* avocado_ios.ppn in Resources */,
-				BBFFB33A226EC72E00A9DA37 /* iguana_ios.ppn in Resources */,
-				BBFFB343226EC72E00A9DA37 /* raspberry_ios.ppn in Resources */,
 				BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */,
 				BBFFB336226EC72E00A9DA37 /* porcupine_ios.ppn in Resources */,
 				BBFFB3802272321800A9DA37 /* hey pico_ios.ppn in Resources */,
 				BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */,
 				BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */,
 				BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */,
-				BBFFB339226EC72E00A9DA37 /* christina_ios.ppn in Resources */,
-				BBFFB338226EC72E00A9DA37 /* pineapple_ios.ppn in Resources */,
-				BBFFB33E226EC72E00A9DA37 /* dragonfly_ios.ppn in Resources */,
 				BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */,
 				BB24735A205F636700D96613 /* porcupine_params.pv in Resources */,
-				BBFFB334226EC72E00A9DA37 /* francesca_ios.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
