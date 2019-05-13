@@ -61,7 +61,7 @@ See Porcupine in action on an ARM Cortex-M7 (accompanied by [rhino](https://gith
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
 Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine,
-Porcupine's standard model is 3 times more accurate, 3.3 times faster (on Raspberry Pi 3). 
+Porcupine's standard model is 3.34 times more accurate, 4.38 times faster (on Raspberry Pi 3). 
 
 ## Model Variants
 
