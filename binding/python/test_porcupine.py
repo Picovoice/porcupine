@@ -50,13 +50,15 @@ class PorcupineTestCase(unittest.TestCase):
 
     def test_process_multiple(self):
         keyword_file_names = [
-            'alexa', 'americano', 'avocado', 'blueberry', 'bumblebee', 'caterpillar', 'christina', 'dragonfly',
-            'flamingo', 'francesca', 'grapefruit', 'grasshopper', 'iguana', 'picovoice', 'pineapple', 'porcupine',
-            'raspberry', 'terminator', 'vancouver'
+            'alexa', 'americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'hey pico', 'picovoice',
+            'porcupine', 'terminator'
         ]
 
         extension = self._keyword_file_extension()
-        keyword_file_paths = [self._abs_path('../../resources/keyword_files/%s/%s_%s.ppn' % (extension, name, extension)) for name in keyword_file_names]
+        keyword_file_paths = list()
+        for name in keyword_file_names:
+            keyword_file_paths.append(
+                self._abs_path('../../resources/keyword_files/%s/%s_%s.ppn' % (extension, name, extension)))
 
         porcupine = Porcupine(
             library_path=self._library_path(),
@@ -77,7 +79,7 @@ class PorcupineTestCase(unittest.TestCase):
             if result >= 0:
                 results.append(result)
 
-        self.assertEqual(results, [15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
+        self.assertEqual(results, [8, 0, 1, 2, 3, 4, 5, 7, 8, 9])
 
         porcupine.delete()
 
