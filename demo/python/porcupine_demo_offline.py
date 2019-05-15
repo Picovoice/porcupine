@@ -48,7 +48,7 @@ def _default_library_path():
 
 def _run(input_audio_file_path, library_path, model_file_path, keyword_file_paths, sensitivity):
     """
-    Monitors an input audio file for occurances of keywords for which keyword files are provided and prints their
+    Monitors an input audio file for occurrences of keywords for which keyword files are provided and prints their
     occurrence time (in seconds from start of file).
 
     :param input_audio_file_path: Absolute path to input audio file. The file should have a sample rate of 16000 and
