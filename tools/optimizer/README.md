@@ -31,7 +31,7 @@ optimizer available at this repository can produce keyword files for Linux (x86_
  If you are working on a non-commercial application you can regenerate the file when it expires and keep using it.
  
  Custom keyword files for other platforms are only provided with purchase of the commercial license. In order to
- purchase a commercial license [contact us](https://picovoice.ai/company/#contact-us).
+ purchase a commercial license send an email to hello@picovoice.ai.
 
 A keyword file for **Vancouver** targeted for a Mac machine can be created using
 
