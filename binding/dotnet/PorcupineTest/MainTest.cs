@@ -58,6 +58,7 @@ namespace PorcupineTest
         public void MultipleKeywords()
         {
             Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePaths: paths, sensitivities: senses);
+            Assert.AreEqual(PicoVoiceStatus.SUCCESS, p.Status, "the status of the creation of the recognition system has failed");
             WAVFile file = new WAVFile();
             file.Open("multiple_keywords.wav", WAVFile.WAVFileMode.READ);
             Assert.AreEqual(p.SampleRate(), file.AudioFormat.SampleRateHz, "The samplerate is not equal!!!");
