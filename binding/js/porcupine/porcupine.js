@@ -4,12 +4,12 @@ let Porcupine = (function () {
      * a factory method for creating new instances of wake word engine.
      */
 
-    let initWasm;
-    let releaseWasm;
-    let processWasm;
-    let sampleRate;
-    let frameLength;
-    let version;
+    let initWasm = null;
+    let releaseWasm = null;
+    let processWasm = null;
+    let sampleRate = null;
+    let frameLength = null;
+    let version = null;
 
     let porcupineModule = PorcupineModule();
     porcupineModule.then(function(Module) {
@@ -21,9 +21,17 @@ let Porcupine = (function () {
         version = Module.cwrap('pv_porcupine_wasm_version', 'string', [])();
     });
 
+    let isLoaded = function() {
+        /**
+         * Flag indicating if 'PorcupineModule' is loaded. .create() can only be called after loading is finished.
+         */
+        return initWasm != null;
+    };
+
     let create = function (keywordIDs, sensitivities) {
         /**
-         * Creates an instance of wake word detection engine (aka porcupine).
+         * Creates an instance of wake word detection engine (aka porcupine). Can be called only after .isLoaded()
+         * returns true.
          * @param {Array} Array of keyword IDs. A keyword ID is the signature for a given phrase to be detected. Each
          * keyword ID should be stored as UInt8Array.
          * @param {Float32Array} Detection sensitivity. A higher sensitivity reduces miss rate at the cost of higher
@@ -101,5 +109,5 @@ let Porcupine = (function () {
         }
     };
 
-    return {create: create}
+    return {isLoaded: isLoaded, create: create}
 })();

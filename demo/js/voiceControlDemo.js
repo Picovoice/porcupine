@@ -54,14 +54,12 @@ let VoiceControlDemo = (function(){
 
     let sensitivities = new Float32Array([0.5, 1, 1, 1, 1, 1]);
 
-    let keywordNames = Object.keys(keywordIDs);
-
     let currentTimeSeconds = function() { return new Date().getTime() / 1000 };
 
     let is_listening = false;
     let listeningStartSeconds;
-    let processCallback = function(keywordIndex) {
-        if (keywordIndex === -1) {
+    let processCallback = function(keyword) {
+        if (keyword === null) {
             if (is_listening && (currentTimeSeconds() - listeningStartSeconds) > 5) {
                 document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
                 is_listening = false;
@@ -69,7 +67,6 @@ let VoiceControlDemo = (function(){
             return;
         }
 
-        let keyword = keywordNames[keywordIndex];
         if (is_listening) {
             if (keyword === "yellow") {
                 document.querySelector("#light_bulb").setAttribute("style", "background-color:yellow")
@@ -96,7 +93,7 @@ let VoiceControlDemo = (function(){
         }
     };
 
-    let audioManager;
+    let porcupineManager;
 
     let audioManagerErrorCallback = function(ex) {
         alert(ex.toString());
@@ -107,15 +104,18 @@ let VoiceControlDemo = (function(){
     };
 
     let start = function() {
-        audioManager = new PicovoiceAudioManager();
-        audioManager.start(Porcupine.create(Object.values(keywordIDs), sensitivities), processCallback, audioManagerErrorCallback);
+        porcupineManager = PorcupineManager(
+            "/node_modules/@picovoice/porcupine_manager/src/porcupine_worker.js",
+            "/node_modules/@picovoice/web-voice-processor/src/downsampling_worker.js");
+
+        porcupineManager.start(keywordIDs, sensitivities, processCallback, audioManagerErrorCallback);
 
         document.querySelector("#demo_button").setAttribute("onclick", "VoiceControlDemo.stop()");
         document.querySelector("#demo_button").innerText = "Stop Demo";
     };
 
     let stop = function() {
-        audioManager.stop();
+        porcupineManager.stop();
 
         document.querySelector("#light_bulb").setAttribute("style", "background-color:white");
         document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");

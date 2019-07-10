@@ -1,0 +1,14 @@
+{
+  "name": "porcupine-demo",
+  "version": "1.0.0",
+  "description": "porcupine demo running locally in browser",
+  "main": "picovoiceAudioManager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@picovoice/porcupine_manager": "1.1.0"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@picovoice/porcupine_manager",
+  "version": "1.1.0",
+  "description": "wake word detection and voice commands engine running locally in browser",
+  "main": "src/porcupine_manager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Picovoice/Porcupine.git"
+  },
+  "keywords": [
+    "wake word",
+    "hotword",
+    "voice commands",
+    "speech recognition",
+    "private",
+    "offline"
+  ],
+  "author": {
+    "name": "Picovoice Inc.",
+    "email": "hello@picovoice.ai",
+    "url": "https://picovoice.ai"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Picovoice/Porcupine/issues"
+  },
+  "homepage": "https://github.com/Picovoice/Porcupine#readme",
+  "dependencies": {
+    "@picovoice/web-voice-processor": "1.1.0"
+  }
+}
