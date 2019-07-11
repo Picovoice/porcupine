@@ -1,7 +1,7 @@
 # Porcupine Optimizer
 
 Note that the optimizer tool in this repository can only generate keyword files for Linux, Mac, and Windows. 
-Furthermore these models are intended for non-commercial use only and their use in a commercial product is prohibited.
+Furthermore these models are intended for non-commercial and personal use only and their use in a commercial product is prohibited.
 For more detail refer to our [license terms](https://github.com/Picovoice/Porcupine#license). Finally a model file is
 valid for 30 days but you can always use the optimizer to generate a new one.
 
