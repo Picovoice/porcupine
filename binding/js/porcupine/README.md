@@ -32,5 +32,3 @@ by WebAssembly using `.release`.
 
 `audioFrameInt16Array` is an array of audio samples in 16-bit format. The length of array can be retrieved using `obj.frameLength`
 and the required sample rate using `obj.sampleRate`.
-
-For a working example refer to [demo](/demo/js).
