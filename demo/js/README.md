@@ -1,7 +1,13 @@
 # Prerequisites
 
-This demo is only tested on Firefox. In particular it does not work on Chrome as it cannot load files on local filesystem.
-The Javascript binding works on both Firefox and Chrome and any browser that supports
-[WebAssembly](https://webassembly.org/) and [Web Audio Api](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API).
+Install dependencies by executing the following command from [demo/js/](/demo/js)
 
-Just open the HTML file in Firefox and follow the instructions.
+```bash
+npm install
+```
+
+Run this to launch the demo
+
+```bash
+live-server
+```
