@@ -4,7 +4,7 @@ PorcupineManager = (function (porcupineWorkerScript, downsamplingScript) {
     let start = function (keywordIDs, sensitivities, detectionCallback, errorCallback) {
         porcupineWorker = new Worker(porcupineWorkerScript);
         porcupineWorker.postMessage({
-            command: 'init',
+            command: "init",
             keywordIDs: keywordIDs,
             sensitivities: sensitivities
         });

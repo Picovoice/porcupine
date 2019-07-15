@@ -3,13 +3,13 @@ importScripts("porcupine.js");
 
 onmessage = function (e) {
     switch (e.data.command) {
-        case 'init':
+        case "init":
             init(e.data.keywordIDs, e.data.sensitivities);
             break;
-        case 'process':
+        case "process":
             process(e.data.inputFrame);
             break;
-        case 'release':
+        case "release":
             release();
             break;
     }

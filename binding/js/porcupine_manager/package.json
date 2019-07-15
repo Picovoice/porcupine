@@ -1,7 +1,7 @@
 {
   "name": "@picovoice/porcupine_manager",
-  "version": "1.1.0",
-  "description": "wake word detection and voice commands engine running locally in browser",
+  "version": "1.2.0",
+  "description": "wake word detection & voice command engine running locally in browser",
   "main": "src/porcupine_manager.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,7 +16,9 @@
     "voice commands",
     "speech recognition",
     "private",
-    "offline"
+    "offline",
+    "realtime",
+    "real-time"
   ],
   "author": {
     "name": "Picovoice Inc.",
@@ -29,6 +31,6 @@
   },
   "homepage": "https://github.com/Picovoice/Porcupine#readme",
   "dependencies": {
-    "@picovoice/web-voice-processor": "1.1.0"
+    "@picovoice/web-voice-processor": "1.2.0"
   }
 }
