@@ -15,7 +15,7 @@ namespace PorcupineTest
 
         private string GetAbsRootPath()
         {
-            return $"{Environment.CurrentDirectory}/../../../../../../";
+            return Path.GetFullPath($"{Environment.CurrentDirectory}/../../../../../../");
         }
 
         [TestInitialize]
@@ -32,18 +32,8 @@ namespace PorcupineTest
 
             if (!File.Exists("multiple_keywords.wav"))
                 File.Copy($"{GetAbsRootPath()}resources/audio_samples/multiple_keywords.wav", "./multiple_keywords.wav");
-
-            paths = new List<string>();
-            List<string> temp = new List<string>()
-            {
-                "alexa", "americano", "avocado", "blueberry", "bumblebee", "caterpillar", "christina",
-                "dragonfly", "flamingo", "francesca", "grapefruit", "grasshopper", "iguana", "picovoice",
-                "pineapple", "porcupine", "raspberry", "terminator", "vancouver"
-            };
-            foreach (string name in temp)
-            {
-                paths.Add($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()/{name}_{GetEnvironmentName()}.ppn".Replace("/", "\\"));
-            }
+            
+            paths = Directory.GetFiles($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}", $"*_{GetEnvironmentName()}.ppn").ToList();
             senses = new List<float>();
             for (int i= 0; i < paths.Count; i++)
             {
@@ -57,7 +47,13 @@ namespace PorcupineTest
         [TestMethod]
         public void MultipleKeywords()
         {
-            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePaths: paths, sensitivities: senses);
+            var modelFilePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"));
+            
+            Assert.IsTrue(File.Exists(modelFilePath), $"File.Exists(modelFilePath) --> {modelFilePath}");
+            paths.ForEach(keywordFilePath => Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}"));
+
+            Porcupine p = new Porcupine(modelFilePath, keywordFilePaths: paths, sensitivities: senses);
+            Assert.AreEqual(PicoVoiceStatus.SUCCESS, p.Status, "the status of the creation of the recognition system has failed");
             WAVFile file = new WAVFile();
             file.Open("multiple_keywords.wav", WAVFile.WAVFileMode.READ);
             Assert.AreEqual(p.SampleRate(), file.AudioFormat.SampleRateHz, "The samplerate is not equal!!!");
@@ -79,7 +75,7 @@ namespace PorcupineTest
                 Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
             }
 
-            var requiredRes = new[] {15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+            var requiredRes = new[] {8, 0, 1, 2, 3, 4, 5, 7, 8, 9};
 
             Assert.AreEqual(requiredRes.Length, results.Count, $"expected results length are different expected {requiredRes.Length} got {results.Count}");
             for (var i = 0; i < results.Count; i++)
@@ -93,7 +89,13 @@ namespace PorcupineTest
         [TestMethod]
         public void TestProcess()
         {
-            Porcupine p = new Porcupine(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"), keywordFilePath:$"{GetAbsRootPath()}resources/keyword_files/porcupine_{GetEnvironmentName()}.ppn", sensitivity:0.5f);
+            var modelFilePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"));
+            var keywordFilePath = Path.GetFullPath($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}/porcupine_{GetEnvironmentName()}.ppn");
+
+            Assert.IsTrue(File.Exists(modelFilePath), $"File.Exists(modelFilePath) --> {modelFilePath}");
+            Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}");
+
+            Porcupine p = new Porcupine(modelFilePath, keywordFilePath:keywordFilePath, sensitivity:0.5f);
             Assert.AreEqual(PicoVoiceStatus.SUCCESS, p.Status, "the status of the creation of the recognition system has failed");
             WAVFile file = new WAVFile();
             file.Open("porcupine.wav", WAVFile.WAVFileMode.READ);
