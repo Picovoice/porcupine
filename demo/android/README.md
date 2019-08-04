@@ -18,6 +18,12 @@ your machine in order to run the application.
 If you'd like to run tests navigate to [androidTest](/demo/android/app/src/androidTest/java/ai/picovoice/porcupine/demo) using Android Studio,
 right click, and select `Run Tests in ai.picovoice.porcupine.demo` from drop down menu.
 
+### Note for Building on Windows
+
+This repository is using [symlinks](https://en.wikipedia.org/wiki/Symbolic_link). On Windows symlinks do not work as
+expected. You need to copy-paste the resources pointed to by all symlinks manually. For Android demo a number of raw resources
+are symlinks. You can find these symlinks [here](/demo/android/app/src/main/res/raw). This includes all the keyword
+files (i.e. files with `.ppn` extension) and also the model parameter file (i.e. file with `.pv` extension).
 
 ## Library Installation and Usage
 
