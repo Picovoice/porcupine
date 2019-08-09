@@ -20,6 +20,16 @@ commercial customers.
 them for free. In addition, developers can generate custom wake phrases (subject to certain limitations and only on Linux, Mac, or Windows)
 for non-commercial, personal, and evaluation-only purposes.  
 
+## Picovoice Console (Early Access)
+
+Announcing early access to the Picovoice Console (https://console.picovoice.ai). The Console is a web-based platform for building voice applications.
+
+You can sign up for an account with your email address or with your GitHub account. We will open access to early adopters when new features are available to use. We welcome your feedback; please send it to console@picovoice.ai. 
+
+Eventually, the Picovoice Console will make the Porcupine optimizer tool on GitHub unnecessary as you will be able to generate models with extra capabilities and features using the web interface. As a side benefit, this will allow us to drastically shrink the large Porcupine repository.
+
+Make sure you are signed up for the Picovoice mailing list and be the first to hear about new Picovoice Console announcements.
+
 ## Table of Contents
 
 * [Try It Out](#try-it-out)
