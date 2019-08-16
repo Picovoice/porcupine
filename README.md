@@ -530,18 +530,18 @@ license terms and fees, [contact us](https://picovoice.ai/contact.html).
 
 ## FAQ
 
-**[Q] Which speech product should I use?**
+**[Q] Which Picovoice speech product should I use?**
 
-**[A]** If you need to recognize a single phrase or a number of (tens or less) of predefined phrases, in an
+**[A]** If you need to recognize a single phrase or a number of predefined phrases (dozens or fewer), in an
 always-listening fashion, then you should use Porcupine (wake word engine). If you need to recognize complex voice
 commands within a confined and well-defined domain with limited number of vocabulary and variations of spoken forms
-(1000s or less), then you should use [Rhino](https://github.com/Picovoice/rhino) (speech-to-intent engine). If you need
-to transcribe free-form speech in an open-domain, then you should use [Cheetah](https://github.com/Picovoice/cheetah)
+(1000s or fewer), then you should use [Rhino](https://github.com/Picovoice/rhino) (speech-to-intent engine). If you need
+to transcribe free-form speech in an open domain, then you should use [Cheetah](https://github.com/Picovoice/cheetah)
 (speech-to-text engine).
 
 **[Q] What are the benefits of implementing voice interfaces on-device, instead of using cloud services?**
 
-**[A]** Privacy, minimal latency, improved reliability, runtime efficiency, cost saving to name a few. More detail is
+**[A]** Privacy, minimal latency, improved reliability, runtime efficiency, and cost savings, to name a few. More detail is
 available [here](https://picovoice.ai/blog/the_case_for_voice_ai_on_the_edge.html).
 
 **[Q] Does Picovoice technology work in far-field applications?**
@@ -551,7 +551,7 @@ microphone, and audio frontend used (if any). It is recommended to try out our t
 sample models in your environment. Additionally, we often publish open-source benchmarks of our technology in noisy
 environments [1](https://github.com/Picovoice/wakeword-benchmark)
 [2](https://github.com/Picovoice/speech-to-intent-benchmark) [3](https://github.com/Picovoice/stt-benchmark). If the
-target environment is noisy and/or reverberant and user is few meters away from the microphone, a multi-microphone audio
+target environment is noisy and/or reverberant and the user is few meters away from the microphone, a multi-microphone audio
 frontend can be beneficial.
 
 **[Q] Does Picovoice software work in my target environment and noise conditions?**
@@ -569,9 +569,9 @@ the software using freely-available models in your target environment and applic
 
 **[Q] Can I use Picovoice software for telephony applications?**
 
-**[A]** We expect audio with 16000 sampling rate. PSTN networks usually sample at 8000 rate. It is possible to
-upsample but then the frequency content above 4000 is gone and performance will be suboptimal. It is possible to train
-acoustic models for telephony applications if the commercial opportunity is justified.
+**[A]** We expect audio with 16000Hz sampling rate. PSTN networks usually sample at 8000Hz. It is possible to
+upsample, but then the frequency content above 4000Hz is missing and performance will be suboptimal. It is possible to train
+acoustic models for telephony applications, if the commercial opportunity is justified.
 
 **[Q] My audio source is 48kHz/44.1KHz. Does Picovoice software support that?**
 
@@ -584,36 +584,32 @@ operating systems or sound cards (Audio codecs) provide such functionality; othe
 in voice, software, and hardware. We consider such requests on a case-by-case basis and assist clients who can
 guarantee a certain minimum licensing volume.
 
-
 **[Q] If I am using GitHub to evaluate the software, do you provide technical support?**
 
 **[A]** Prior to commercial engagement, basic support solely pertaining to software issues or bugs is provided via
 GitHub issues by the open-source community or a member of our team. We do not offer any free support with integration
-or support with any platform (either operating system or hardware) that is not officially supported via GitHub.
+or support with any platform (operating system or hardware) that is not officially supported via GitHub.
 
 **[Q] Why does Picovoice have GitHub repositories?**
 
-**[A]** To facilitate performance evaluation, for commercial prospects, and also enable open source community to
-take advantage of the technology for personal and non-commercial applications.
+**[A]** To facilitate performance evaluation, for commercial prospects, and to enable the open source community to use the technology for personal and non-commercial applications.
 
 **[Q] What is the engagement process?**
 
-**[A]** You may use what is available on GitHub while respecting its governing license terms without engaging with us.
-This facilitates performance evaluation. Then you need to acquire a development license to get access to custom speech
-models or use the software for development and internal evaluation within a company. Development license is for
-building a PoC or prototype. When ready to commercialize you need to acquire a commercial license. The terms depend
-on your vertical.
+**[A]** You may use what is available on GitHub while respecting its governing license terms, without engaging with us.
+This facilitates initial performance evaluation. Subsequently, you may acquire a development license to get access to custom speech models or use the software for development and internal evaluation within a company; the development license is for
+building a proof-of-concept or prototype. When ready to commercialize your product, you need to acquire a commercial license.
 
 **[Q] Does Picovoice offer AEC, VAD, noise suppression, or microphone array beamforming?**
 
 **[A]** No. But we do have partners who provide such algorithms. Please add this to your inquiry when reaching out
-and we can connect you.
+and we can help to connect you.
 
 **[Q] Can you build a voice-enabled app for me?**
 
-**[A]** We do not provide software development services, so most likely the answer is no.  However, via a professional
+**[A]** We do not provide software development services, so most likely the answer is no. However, via a professional
 services agreement we can help with proofs-of-concept (these will typically be rudimentary apps focused on voice user
-interface or building the audio pipeline), evaluations on a specific domain/task, integration of SDK in your app,
+interface or building the audio pipeline), evaluations on a specific domain/task, integration of SDKs in your app,
 training of custom acoustic and language models, and porting to custom hardware platforms.
 
 **[Q] How do I evaluate Porcupine software performance?**
@@ -625,9 +621,9 @@ your own audio files (noise sources collected from your target environment or ut
 benchmark the performance. Additionally, we have made a set of sample wake words freely available on this GitHub
 repository on all platforms to facilitate evaluation, testing, and integration.
 
-**[Q] Can Porcupine wake word detection software detect non-english keywords?**
+**[Q] Can Porcupine wake word detection software detect non-English keywords?**
 
-**[A** It depends. Generally speaking, if English speakers would be able to easily pronounce the non-english wake word
+**[A]** It depends. If English speakers can easily pronounce the non-English wake word,
 then we can most likely generate it for you. We recommend sending us a few audio samples including the utterance of the
 requested wake word so that our engineering team can review and provide feedback on feasibility.
 
@@ -648,7 +644,7 @@ mumbling, etc. We do require the speaker to somewhat clearly vocalize the phrase
 **[A]** Generally speaking yes, however it is difficult to quantify the cause-and-effect accurately. We have published
 a guide [here](https://picovoice.ai/docs/choose-wake-word/index.html) to help you pick a wake word that would achieve
 optimal performance. You will need to avoid using short phrases, and make sure your wake word includes diverse sounds
-and at least six phonemes. Long phrases are also not recommended due to poor user experience.
+and at least six phonemes. Long phrases are also not recommended due to the poor user experience.
 
 **[Q] Is there a guideline for picking a wake word?**
 
@@ -662,7 +658,7 @@ platforms, uses roughly 1.5MB of readonly memory (ROM / FLASH) and 5% of a singl
 
 **[Q] What should I set the sensitivity value to?**
 
-**[A]** You have to pick a sensitivity parameter that suits your application requirements. A higher sensitivity value
+**[A]** You should pick a sensitivity parameter that suits your application requirements. A higher sensitivity value
 gives a lower miss rate at the expense of higher false alarm rate. If your application places tighter requirements on
 false alarms, but can tolerate misses, then you should lower the sensitivity value.  
 
@@ -684,7 +680,7 @@ To learn more about ROC curves and benchmarking a wake word detection, you may r
 **[Q] If I use Porcupine wake word detection in my mobile application, does it function when the app is running in the background?**
 
 **[A]** Developers have been able to successfully run Porcupine wake word detection software on iOS and Android in
-background mode. However, this feature is determined by the operating system, and we cannot guarantee that this will
+background mode. However, this feature is controlled by the operating system, and we cannot guarantee that this will
 be possible in future releases of iOS or Android. Please check iOS and Android guidelines, technical documentation,
 and terms of service before choosing to run Porcupine wake word detection in the background. We recommend using the
 sample demo applications made available on this repository to test this capability in your end application before
@@ -737,7 +733,7 @@ requirements.
 
 **[Q] How does Picovoice wake word detection software work when UK and US wake word pronunciations sometimes differ?**
 
-**[A]** For words that have different pronunciations in UK and US English, such as “tomato”, we recommend listening
+**[A]** For words that have different pronunciations in UK and US English, like “tomato”, we recommend listening
 for both pronunciations simultaneously with two separate wake word model files, each targeting a distinct pronunciation.
 
 **[Q] How many wake words can Porcupine detect simultaneously?**
@@ -749,7 +745,7 @@ for both pronunciations simultaneously with two separate wake word model files, 
 **[A]** Listening to additional wake words does not increase the CPU usage. However it will require 1 KB of
 memory per additional wake word model.
 
-**[Q] Is Picovoice “Alexa” wake word verified by Amazon?**
+**[Q] Is the Picovoice “Alexa” wake word verified by Amazon?**
 
 **[A]** Amazon Alexa Certification requirements are different for near, mid, and far-field applications
 (AVS, AMA, etc.). Also, the certification is typically performed on the end hardware, and the outcome depends on many
@@ -770,7 +766,7 @@ necessary integration with such platforms and potential areas of compliance.
 
 **[A]** The absolute power consumption (in wattage) depends on numerous factors such as processor architecture,
 vendor, fabrication technology, and system level power management design. If your design requires low power
-consumption in the (sub) milli-watt range for always-listening wake word detection, you will likely need to consider
+consumption in the (sub) milliwatt range for always-listening wake word detection, you will likely need to consider
 MCU (ARM Cortex-M) or DSP implementation.
 
 **[Q] Can Porcupine distinguish words with similar pronunciation?**
