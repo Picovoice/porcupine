@@ -20,14 +20,14 @@ them for free. In addition, developers can generate custom wake phrases using
 [Picovoice Console](https://console.picovoice.ai) (subject to certain limitations and only on Linux, Mac, or Windows)
 for non-commercial, personal, and evaluation-only purposes.  
 
-## Picovoice Console (Early Access)
+## Picovoice Console
 
-Announcing early access to the [Picovoice Console](https://console.picovoice.ai). The Console is a web-based platform for
+Announcing the [Picovoice Console](https://console.picovoice.ai). The Console is a web-based platform for
 building voice applications. You can sign up for an account with your email address or with your GitHub account.
 
-The console precedes the (now retired) optimizer tool as you can train custom wake-words using the console. If you have cloned
-the repository prior to August 31st, 2019, we highly suggest to make a new clone and use the Console for training custom
-wake-words as the size of the repository is reduced from ~ 3 GB to 30 MB (100X reduction).
+The console succeeds the (now retired) optimizer tool, as it can be used to train custom wake-words (Porcupine .ppn files). If you cloned
+this repository prior to August 31st, 2019, we highly recommend to make a new clone and use the Console for training custom
+wake-words. The size of the repository is reduced from ~3 GB to 30 MB (100X reduction), which should make working with it easier as well as reduce cloning timeout errors from GitHub that some people have reported.
 
 
 ## Table of Contents
@@ -352,7 +352,7 @@ invoking a user-provided detection callback. The class can be initialized as bel
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
-When initialized, input audio can be monitored using `manager.start() `. When done be sure to stop the manager using
+When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
 `manager.stop()`.
 
 ### iOS
