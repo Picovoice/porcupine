@@ -105,8 +105,7 @@ Bindings are available at [binding/](/binding) to facilitate usage from higher-l
 applications are located at [demo/](/demo). We recommend using one of the demo applications as a starting point for your own
 implementation, when possible.
 
-[tools/](/tools) contains utility programs. Finally, [resources/](/resources) is a placeholder for data used by
-various applications within the repository.
+Finally, [resources/](/resources) is a placeholder for data used by various applications within the repository.
 
 Below is a quick walkthrough of the repository. For detailed instructions please visit the relevant pages. Throughout the
 documentation, it is assumed that the current working directory is the root of the repository.
