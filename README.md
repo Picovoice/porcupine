@@ -4,28 +4,30 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a highly-accurate and lightweight **wake word**
-(a.k.a. **keyword spotting**, **trigger word detection**, **hotword detection**, or **voice command**) engine.
-It enables developers to build always-listening voice-enabled applications. It is
+Porcupine is a highly-accurate and lightweight **wake word** (a.k.a. **keyword spotting**, **trigger word detection**,
+**hotword detection**, and **voice command**) engine. It enables developers to build always-listening voice-enabled
+applications. It is
 
 * using **deep neural networks** trained in **real-world situations**.
 * compact and computationally-efficient making it suitable for **IoT**. It can run with as low as **20 KB RAM** on an MCU.
-* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi**, **Beagle Bone**, **Android**,
-**iOS**, **watchOS**, **Linux**, **Mac**, **Windows**, and **web browsers** (**WebAssembly**) are supported. Furthermore,
-Support for various **ARM Cortex-A** and **ARM Cortex-M** (M4 and M7) processors and **DSP cores** is available for
-commercial customers.
-
+* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi (all variants)**, **Beagle Bone**,
+**Android**, **iOS**, **watchOS**, **Linux (x86_64)**, **Mac**, **Windows**, and **web browsers** (**WebAssembly**) are
+supported. Furthermore, Support for various **ARM Cortex-A** and **ARM Cortex-M** processors and **DSP cores** is available
+for commercial customers.
 * **scalable**. It can detect multiple (possibly many) voice commands concurrently with no added CPU/memory footprint.
 * self-service. Developers are empowered to choose from a set of predefined wake phrases on different platforms and use
-them for free. In addition, developers can generate custom wake phrases (subject to certain limitations and only on Linux, Mac, or Windows)
+them for free. In addition, developers can generate custom wake phrases using
+[Picovoice Console](https://console.picovoice.ai) (subject to certain limitations and only on Linux, Mac, or Windows)
 for non-commercial, personal, and evaluation-only purposes.  
 
 ## Picovoice Console (Early Access)
 
-Announcing early access to the Picovoice Console (https://console.picovoice.ai). The Console is a web-based platform for
+Announcing early access to the [Picovoice Console](https://console.picovoice.ai). The Console is a web-based platform for
 building voice applications. You can sign up for an account with your email address or with your GitHub account.
 
-You may train custom wake-words using the console.
+The console precedes the (now retired) optimizer tool as you can train custom wake-words using the console. If you have cloned
+the repository prior to August 31st, 2019, we highly suggest to make a new clone and use the Console for training custom
+wake-words as the size of the repository is reduced from ~ 3 GB to 30 MB (100X reduction).
 
 
 ## Table of Contents
@@ -53,8 +55,8 @@ You may train custom wake-words using the console.
 
 ## Try It Out
 
-Try out Porcupine using its [interactive web demo](https://picovoice.ai/products/#wake-word-demo). You need a working
-microphone.
+Try out Porcupine using its [interactive web demo](https://picovoice.ai/demos/porcupine_wasm_smart_lighting.html).
+You need a working microphone.
 
 Try out Porcupine by downloading its
 [Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en). The demo
@@ -65,6 +67,12 @@ application allows you to test Porcupine on a variety of wake words in any envir
 See Porcupine in action on an ARM Cortex-M7 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
 
 [![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
+
+See Porcupine in action on an ARM Cortex-M4 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
+
+[![Porcupine in Action](https://img.youtube.com/vi/T0tAnh8tUQg/0.jpg)](https://www.youtube.com/watch?v=T0tAnh8tUQg)
+
+[![Porcupine in Action](https://img.youtube.com/vi/dH8Q-JplpSo/0.jpg)](https://www.youtube.com/watch?v=dH8Q-JplpSo)
 
 ## Performance
 
