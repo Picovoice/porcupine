@@ -1,0 +1,21 @@
+include LICENSE
+
+include demo/python/porcupine_demo.py
+include demo/python/porcupine_demo_offline.py
+include binding/python/porcupine.py
+include lib/common/porcupine_params.pv
+include lib/beaglebone/libpv_porcupine.so
+include lib/linux/x86_64/libpv_porcupine.so
+include lib/mac/x86_64/libpv_porcupine.dylib
+include lib/raspberry-pi/arm11/libpv_porcupine.so
+include lib/raspberry-pi/cortex-a7/libpv_porcupine.so
+include lib/raspberry-pi/cortex-a53/libpv_porcupine.so
+
+recursive-include resources/keyword_files/beaglebone *
+recursive-include resources/keyword_files/linux *
+recursive-include resources/keyword_files/mac/ *
+recursive-include resources/keyword_files/raspberrypi *
+recursive-include resources/util/python *
+
+global-exclude README.md
+global-exclude *_compressed.ppn

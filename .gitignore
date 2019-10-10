@@ -6,3 +6,6 @@
 demo/ios/PorcupineDemoNoWatch.xcodeproj/xcshareddata/
 .vs/
 _ReSharper.Caches/
+build
+dist
+pvporcupine.egg-info

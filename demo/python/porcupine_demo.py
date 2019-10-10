@@ -16,7 +16,6 @@
 
 import argparse
 import os
-import platform
 import struct
 import sys
 from datetime import datetime
@@ -27,8 +26,10 @@ import pyaudio
 import soundfile
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../binding/python'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
 
 from porcupine import Porcupine
+from util import *
 
 
 class PorcupineDemo(Thread):
@@ -82,11 +83,12 @@ class PorcupineDemo(Thread):
 
         num_keywords = len(self._keyword_file_paths)
 
-        keyword_names =\
-            [os.path.basename(x).replace('.ppn', '').replace('_compressed', '').split('_')[0] for x in self._keyword_file_paths]
+        keyword_names = list()
+        for x in self._keyword_file_paths:
+            keyword_names.append(os.path.basename(x).replace('.ppn', '').replace('_compressed', '').split('_')[0])
 
         print('listening for:')
-        for keyword_name, sensitivity in zip(keyword_names, sensitivities):
+        for keyword_name, sensitivity in zip(keyword_names, self._sensitivities):
             print('- %s (sensitivity: %f)' % (keyword_name, sensitivity))
 
         porcupine = None
@@ -152,49 +154,24 @@ class PorcupineDemo(Thread):
         pa.terminate()
 
 
-def _default_library_path():
-    system = platform.system()
-    machine = platform.machine()
-
-    if system == 'Darwin':
-        return os.path.join(os.path.dirname(__file__), '../../lib/mac/%s/libpv_porcupine.dylib' % machine)
-    elif system == 'Linux':
-        if machine == 'x86_64' or machine == 'i386':
-            return os.path.join(os.path.dirname(__file__), '../../lib/linux/%s/libpv_porcupine.so' % machine)
-        else:
-            raise Exception('cannot autodetect the binary type. Please enter the path to the shared object using --library_path command line argument.')
-    elif system == 'Windows':
-        if platform.architecture()[0] == '32bit':
-            return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\i686\\libpv_porcupine.dll')
-        else:
-            return os.path.join(os.path.dirname(__file__), '..\\..\\lib\\windows\\amd64\\libpv_porcupine.dll')
-    raise NotImplementedError('Porcupine is not supported on %s/%s yet!' % (system, machine))
-
-
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files', type=str)
+    parser.add_argument('--keywords', help='comma-separated list of default keywords (%s)' % ', '.join(KEYWORDS))
 
-    parser.add_argument(
-        '--library_path',
-        help="absolute path to Porcupine's dynamic library",
-        type=str)
+    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files')
 
-    parser.add_argument(
-        '--model_file_path',
-        help='absolute path to model parameter file',
-        type=str,
-        default=os.path.join(os.path.dirname(__file__), '../../lib/common/porcupine_params.pv'))
+    parser.add_argument('--library_path', help="absolute path to Porcupine's dynamic library", default=LIBRARY_PATH)
+
+    parser.add_argument('--model_file_path', help='absolute path to model parameter file', default=MODEL_FILE_PATH)
 
     parser.add_argument('--sensitivities', help='detection sensitivity [0, 1]', default=0.5)
+
     parser.add_argument('--input_audio_device_index', help='index of input audio device', type=int, default=None)
 
     parser.add_argument(
         '--output_path',
-        help='absolute path to where recorded audio will be stored. If not set, it will be bypassed.',
-        type=str,
-        default=None)
+        help='absolute path to where recorded audio will be stored. If not set, it will be bypassed.')
 
     parser.add_argument('--show_audio_devices_info', action='store_true')
 
@@ -203,10 +180,19 @@ if __name__ == '__main__':
     if args.show_audio_devices_info:
         PorcupineDemo.show_audio_devices_info()
     else:
-        if not args.keyword_file_paths:
-            raise ValueError('keyword file paths are missing')
+        if args.keyword_file_paths is None:
+            if args.keywords is None:
+                raise ValueError('either --keywords or --keyword_file_paths must be set')
 
-        keyword_file_paths = [x.strip() for x in args.keyword_file_paths.split(',')]
+            keywords = [x.strip() for x in args.keywords.split(',')]
+
+            if all(x in KEYWORDS for x in keywords):
+                keyword_file_paths = [KEYWORD_FILE_PATHS[x] for x in keywords]
+            else:
+                raise ValueError(
+                    'selected keywords are not available by default. available keywords are: %s' % ', '.join(KEYWORDS))
+        else:
+            keyword_file_paths = [x.strip() for x in args.keyword_file_paths.split(',')]
 
         if isinstance(args.sensitivities, float):
             sensitivities = [args.sensitivities] * len(keyword_file_paths)
@@ -214,9 +200,13 @@ if __name__ == '__main__':
             sensitivities = [float(x) for x in args.sensitivities.split(',')]
 
         PorcupineDemo(
-            library_path=args.library_path if args.library_path is not None else _default_library_path(),
+            library_path=args.library_path,
             model_file_path=args.model_file_path,
             keyword_file_paths=keyword_file_paths,
             sensitivities=sensitivities,
             output_path=args.output_path,
             input_device_index=args.input_audio_device_index).run()
+
+
+if __name__ == '__main__':
+    main()
