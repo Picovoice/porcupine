@@ -7,7 +7,7 @@ def _pv_linux_machine(machine):
     if machine == 'x86_64':
         return machine
 
-    cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo'])
+    cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
 
     hardware_info = [x for x in cpu_info.split('\n') if 'Hardware' in x][0]
     model_info = [x for x in cpu_info.split('\n') if 'model name' in x][0]

@@ -37,10 +37,10 @@ LONG_DESCRIPTION = \
     Make sure you have a working microphone connected to your device first. From commandline type the following
 
     ```bash
-    pvporcupine_mic --keywords alexa
+    pvporcupine_mic --keywords picovoice
     ```
 
-    Then say 'alexa'. The demo processes audio steam from microphone in realtime and detects utterances of 'alexa'
+    Then say 'picovoice'. The demo processes audio steam from microphone in realtime and detects utterances of 'picovoice'
 
     ### File-Based Demo
 
@@ -87,7 +87,7 @@ for x in ('build', 'dist', 'pvporcupine.egg-info'):
 
 setuptools.setup(
     name="pvporcupine",
-    version="1.6.0",
+    version="1.6.1",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-device wake word detection powered by deep learning.",
