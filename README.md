@@ -64,6 +64,8 @@ application allows you to test Porcupine on a variety of wake words in any envir
 
 ![Android Demo](resources/images/demo.gif)
 
+Try out Porcupine by installing its [PIP package](https://pypi.org/project/pvporcupine/).
+
 See Porcupine in action on an ARM Cortex-M7 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
 
 [![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
@@ -113,6 +115,28 @@ documentation, it is assumed that the current working directory is the root of t
 ## Running Demo Applications
 
 ### Python Demo Application
+
+### PIP
+
+Install Porcupine [PIP package](https://pypi.org/project/pvporcupine/). Then with a working  microphone connected to
+your device run the following in the terminal
+
+```shell
+pvporcupine_mic --keywords porcupine
+``` 
+
+The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
+utterances of wake-word "porcupine".
+
+In order to process audio files (e.g. WAV or FLAC) run
+
+```shell
+pvporcupine_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
+``` 
+
+Then the engine scans the given audio file for occurrences of keyword "bumblebee".
+
+### Repository
 
 This [demo application](/demo/python) allows testing Porcupine using your computer's microphone. It opens an input audio
 stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an example of
@@ -194,6 +218,37 @@ pv_porcupine_delete(handle);
 ```
 
 ### Python
+
+#### PIP
+
+The PIP package exposes a factory method to create instances of the engine as below
+
+```python
+import pvporcupine
+
+handle = pvporcupine.create(keywords=['picovoice', 'bumblebee'])
+```
+
+`keywords` argument is a shorthand for accessing default keyword files shipped with the library. The default keyword files
+available can be retrieved via
+
+```python
+import pvporcupine
+
+print(pvporcupine.KEYWORDS)
+```
+
+If you wish to use a non-default keyword file you need to identify its path as below
+
+```python
+import pvporcupine
+
+handle = pvporcupine.create(keyword_file_paths=['path/to/non/default/keyword/file'])
+```
+
+In order to learn how to use the created object continue reading the section below.
+
+#### Repository
 
 [/binding/python/porcupine.py](/binding/python/porcupine.py) provides a Python binding for Porcupine library. Below is a
 quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
