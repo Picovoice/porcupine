@@ -43,10 +43,8 @@ public class PorcupineTest {
     private final static Context CONTEXT = InstrumentationRegistry.getTargetContext();
 
     private final static String[] KEYWORD_FILENAMES = {
-            "americano.ppn", "avocado.ppn", "blueberry.ppn", "bumblebee.ppn", "caterpillar.ppn",
-            "christina.ppn", "dragonfly.ppn", "flamingo.ppn", "francesca.ppn", "grapefruit.ppn",
-            "grasshopper.ppn", "iguana.ppn", "picovoice.ppn", "pineapple.ppn", "porcupine.ppn",
-            "raspberry.ppn", "terminator.ppn", "vancouver.ppn"
+            "americano.ppn", "blueberry.ppn", "bumblebee.ppn", "grapefruit.ppn", "grasshopper.ppn",
+            "picovoice.ppn", "porcupine.ppn", "terminator.ppn"
     };
 
     /**
@@ -101,9 +99,7 @@ public class PorcupineTest {
         porcupine.delete();
     }
 
-    private static final Integer[] EXPECTED_KEYWORD_INDICES = {
-            14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
-    };
+    private static final Integer[] EXPECTED_KEYWORD_INDICES = {6, 0, 1, 2, 3, 4, 5, 6, 7};
 
     /**
      * Read a test WAV test file containing multiple utterances of different keywords, process it
