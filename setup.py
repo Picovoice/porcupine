@@ -51,21 +51,20 @@ LONG_DESCRIPTION = \
     Replace `${INPUT_AUDIO_FILE_PATH}` with a valid path to an audio file (e.g. WAV or FLAC). The demo scans the file
     for occurrences of 'bumblebee'.
 
-    In order get more information about using demos run them with '--help' argument or look into their GitHub page
+    In order to get more information about using demos, run them with '--help' argument or look into their GitHub page
     [here](https://github.com/Picovoice/porcupine/tree/master/demo/python).
 
     ### Porcupine Class
     
-    You can create an instance of Porcupine engine for use within your application using the factory method provided as
-    below
+    You can create an instance of Porcupine engine for use within your application using the factory method provided below
 
     ```python
     import pvporcupine
 
-    pvporcupine.create(keywords=pvporcupine.KEYWORDS())
+    pvporcupine.create(keywords=pvporcupine.KEYWORDS)
     ```
 
-    `pvporcupine.KEYWORDS()` is the set of default keyword files that ships with the PIP package across all platforms. In
+    `pvporcupine.KEYWORDS` is the set of default keyword files that ships with the PIP package across all platforms. In
     order to use your own keyword file you can instantiate the object as follows:
 
     ```python
