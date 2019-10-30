@@ -113,4 +113,5 @@ setuptools.setup(
             'pvporcupine_file=pvporcupine.demo.python.porcupine_demo_offline:main'
         ],
     ),
+    python_requires='>=3',
 )
