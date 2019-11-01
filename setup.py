@@ -86,7 +86,7 @@ for x in ('build', 'dist', 'pvporcupine.egg-info'):
 
 setuptools.setup(
     name="pvporcupine",
-    version="1.6.2",
+    version="1.6.3",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-device wake word detection powered by deep learning.",
