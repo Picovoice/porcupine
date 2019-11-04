@@ -9,7 +9,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine_manager": "1.2.0"
+    "@picovoice/porcupine_manager": "1.3.0"
   },
   "devDependencies": {
     "live-server": "*"

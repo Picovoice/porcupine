@@ -207,10 +207,8 @@
             }
 
             if (is_listening) {
-                console.log(keyword);
                 if (keyword in COLORS_CODE) {
                     let backgroundColor = "background-color:" + COLORS_CODE[keyword];
-                    console.log(backgroundColor);
                     document.querySelector("#light_bulb").setAttribute("style", backgroundColor);
                 }
                 document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
@@ -230,7 +228,7 @@
             alert(ex.toString());
             document.querySelector("#light_bulb").setAttribute("style", "background-color:white");
             document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
-            document.querySelector("#demo_button").setAttribute("onclick", "VoiceControlDemo.start()");
+            document.querySelector("#demo_button").setAttribute("onclick", "start()");
             document.querySelector("#demo_button").innerText = "Start Demo";
         };
 
@@ -241,7 +239,7 @@
 
             porcupineManager.start(KEYWORDS_ID, SENSITIVITIES, processCallback, audioManagerErrorCallback);
 
-            document.querySelector("#demo_button").setAttribute("onclick", "VoiceControlDemo.stop()");
+            document.querySelector("#demo_button").setAttribute("onclick", "stop()");
             document.querySelector("#demo_button").innerText = "Stop Demo";
         };
 
@@ -250,7 +248,7 @@
 
             document.querySelector("#light_bulb").setAttribute("style", "background-color:white");
             document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
-            document.querySelector("#demo_button").setAttribute("onclick", "VoiceControlDemo.start()");
+            document.querySelector("#demo_button").setAttribute("onclick", "start()");
             document.querySelector("#demo_button").innerText = "Start Demo";
         };
     </script>
