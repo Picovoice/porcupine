@@ -13,7 +13,7 @@ PorcupineManager = (function (porcupineWorkerScript, downsamplingScript) {
             detectionCallback(e.data.keyword);
         };
 
-        WebVoiceProcessor.start([porcupineWorker], downsamplingScript, errorCallback);
+        WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
     };
 
     let stop = function () {
@@ -21,5 +21,9 @@ PorcupineManager = (function (porcupineWorkerScript, downsamplingScript) {
         porcupineWorker.postMessage({command: "release"});
     };
 
-    return {start: start, stop: stop}
+    let processFrame = function (frame) {
+        porcupineWorker.postMessage({command: "process", inputFrame: frame});
+    };
+
+    return {start: start, processFrame: processFrame, stop: stop}
 });

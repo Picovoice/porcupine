@@ -70,7 +70,7 @@ let Porcupine = (function () {
             throw new Error("failed to initialize porcupine.");
         }
 
-        let pcmWasmPointer = porcupineModule._malloc(this.frameLength * 2);
+        let pcmWasmPointer = porcupineModule._malloc(frameLength * 2);
 
         let release = function () {
             /**
