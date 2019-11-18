@@ -1,0 +1,4 @@
+include ':app', ':porcupine', ':porcupinemanager'
+rootProject.name='AndroidForegroundService'
+project(':porcupine').projectDir = new File(settingsDir, '../../../binding/android/Porcupine/app')
+project(':porcupinemanager').projectDir = new File(settingsDir, '../../../binding/android/PorcupineManager/app')
