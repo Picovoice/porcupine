@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
-include ':app', ':porcupinemanager', ':porcupine'
-project(':porcupine').projectDir = new File('../../binding/android/porcupine')
+include ':app', ':porcupinemanager', 'porcupine'
+project(':porcupine').projectDir = new File(settingsDir, '../../../binding/android/Porcupine/app')
+project(':porcupinemanager').projectDir = new File(settingsDir, '../../../binding/android/PorcupineManager/app')
