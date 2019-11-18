@@ -21,13 +21,12 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Process;
+import android.util.Log;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import ai.picovoice.porcupine.LogUtils;
 
 
 /**
@@ -126,7 +125,7 @@ class AudioRecorder {
                 if (r == buffer.length) {
                     audioConsumer.consume(buffer);
                 } else {
-                    LogUtils.debug(TAG, "Not enough samples for the audio consumer.");
+                    Log.d(TAG, "Not enough samples for the audio consumer.");
                 }
             }
             record.stop();
