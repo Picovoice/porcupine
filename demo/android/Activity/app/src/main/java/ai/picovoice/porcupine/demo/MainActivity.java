@@ -17,13 +17,15 @@
 package ai.picovoice.porcupine.demo;
 
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,9 +33,19 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import ai.picovoice.porcupinemanager.KeywordCallback;
 import ai.picovoice.porcupinemanager.PorcupineManager;
@@ -46,11 +58,78 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout layout;
     private ToggleButton recordButton;
 
+    /**
+     * Check whether user granted record permission.
+     *
+     * @param context application context.
+     */
+    static boolean hasRecordPermission(Context context) {
+        int permResult = ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.RECORD_AUDIO);
+        return permResult == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Show a dialog to user and ask for record permission.
+     *
+     * @param activity application activity.
+     */
+    static void showRecordPermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity,
+                new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+    }
+
+    /**
+     * Copy the keyword config files used by Porcupine library to the internal storage of the app.
+     */
+    private void copyPorcupineConfigFiles() {
+        int[] resIds = {
+                R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
+                R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.hey_pico,
+                R.raw.terminator, R.raw.params
+        };
+        Resources resources = getResources();
+        for (int resId : resIds) {
+            String filename = resources.getResourceEntryName(resId);
+            String fileExtension = resId == R.raw.params ? ".pv" : ".ppn";
+            InputStream is = null;
+            OutputStream os = null;
+            try {
+                is = new BufferedInputStream(resources.openRawResource(resId),
+                        256);
+                os = new BufferedOutputStream(openFileOutput(filename + fileExtension,
+                        Context.MODE_PRIVATE), 256);
+                int r;
+                while ((r = is.read()) != -1) {
+                    os.write(r);
+                }
+                os.flush();
+            } catch (IOException e) {
+                showErrorToast();
+            } finally {
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                    if (os != null) {
+                        os.close();
+                    }
+                } catch (IOException e) {
+                    showErrorToast();
+                }
+            }
+        }
+    }
+
+    void showErrorToast() {
+        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Utils.configurePorcupine(this);
+        copyPorcupineConfigFiles();
         notificationPlayer = MediaPlayer.create(this, R.raw.notification);
         layout = findViewById(R.id.layout);
         recordButton = findViewById(R.id.record_button);
@@ -65,33 +144,35 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Handler for the record button. Processes the audio and uses Porcupine library to detect the
      * keyword. It increments a counter to indicate the occurrence of a keyword.
+     *
      * @param view ToggleButton used for recording audio.
      */
     public void process(View view) {
         try {
             if (recordButton.isChecked()) {
                 // check if record permission was given.
-                if (Utils.hasRecordPermission(this)) {
+                if (hasRecordPermission(this)) {
                     porcupineManager = initPorcupine();
                     porcupineManager.start();
 
                 } else {
-                    Utils.showRecordPermission(this);
+                    showRecordPermission(this);
                 }
             } else {
                 porcupineManager.stop();
             }
         } catch (PorcupineManagerException e) {
-            Utils.showErrorToast(this);
+            showErrorToast();
         }
     }
 
     /**
      * Initialize the porcupineManager library.
+     *
      * @return Porcupine instance.
      */
     private PorcupineManager initPorcupine() throws PorcupineManagerException {
-        Spinner mySpinner= findViewById(R.id.keyword_spinner);
+        Spinner mySpinner = findViewById(R.id.keyword_spinner);
         String kwd = mySpinner.getSelectedItem().toString();
         // It is assumed that the file name is all lower-case and spaces are replaced with "_".
         String filename = kwd.toLowerCase().replaceAll("\\s+", "_");
@@ -134,13 +215,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Check the result of the record permission request.
-     * @param requestCode request code of the permission request.
-     * @param permissions requested permissions.
+     *
+     * @param requestCode  request code of the permission request.
+     * @param permissions  requested permissions.
      * @param grantResults results of the permission requests.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
+                                           @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         // We only ask for record permission.
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
@@ -151,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 porcupineManager = initPorcupine();
                 porcupineManager.start();
             } catch (PorcupineManagerException e) {
-                Utils.showErrorToast(this);
+                showErrorToast();
             }
         }
     }
@@ -159,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Configure the style and behaviour of the keyword spinner.
      */
-    private void configureKeywordSpinner(){
+    private void configureKeywordSpinner() {
         Spinner spinner = findViewById(R.id.keyword_spinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -177,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             porcupineManager.stop();
                         } catch (PorcupineManagerException e) {
-                            Utils.showErrorToast(getApplicationContext());
+                            showErrorToast();
                         }
                     }
                     recordButton.toggle();
