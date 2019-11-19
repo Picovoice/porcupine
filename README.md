@@ -346,7 +346,7 @@ There are two possibilities for integrating Porcupine into an Android applicatio
 
 #### Binding
 
-[Porcupine](/binding/android/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a binding for
+[Porcupine](/binding/android/Porcupine/app/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a binding for
 Android using [JNI](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/). It can be initialized using.
 
 ```java
@@ -382,10 +382,10 @@ for releasing native resources.
 
 #### High-Level API
 
-The [Android demo application](/demo/android) provides a high-level API for integrating Porcupine into Android applications.
-The [PorcupineManager](/demo/android/porcupinemanager/src/main/java/ai/picovoice/porcupinemanager/PorcupineManager.java) class
-manages all activities related to creating an input audio stream, feeding it into the Porcupine library, and
-invoking a user-provided detection callback. The class can be initialized as below.
+[PorcupineManager](binding/android/PorcupineManager/app/src/main/java/ai/picovoice/porcupinemanager/PorcupineManager.java)
+ provides a high-level API for integrating Porcupine into Android applications. It manages all activities related to creating
+ an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback. The class
+ can be initialized as below.
 
 ```java
     final String modelFilePath = ... // It is available at lib/common/porcupine_params.pv
@@ -487,7 +487,7 @@ When initialized, input audio can be monitored using `manager.startListening()`.
 
 ### Javascript
 
-Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The [Javascript binding](/binding/js/)
+Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The [Javascript binding](/binding/js/porcupine/porcupine.js)
 makes it trivial use Porcupine within a Javascript environment. Instantiate a new instance of engine using the factory method
 as below
 
