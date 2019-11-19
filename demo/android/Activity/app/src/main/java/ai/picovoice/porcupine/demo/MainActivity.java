@@ -53,8 +53,11 @@ import ai.picovoice.porcupinemanager.PorcupineManagerException;
 
 public class MainActivity extends AppCompatActivity {
     private PorcupineManager porcupineManager = null;
+
     private MediaPlayer notificationPlayer;
+
     private RelativeLayout layout;
+
     private ToggleButton recordButton;
 
     private boolean hasRecordPermission() {
@@ -65,43 +68,31 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
     }
 
-    private void copyPorcupineConfigFiles() {
-        int[] resIds = {
-                R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
-                R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.hey_pico,
-                R.raw.terminator, R.raw.params
-        };
+    private void copyResourceFile(int resourceID, String filename) throws IOException {
         Resources resources = getResources();
-        for (int resId : resIds) {
-            String filename = resources.getResourceEntryName(resId);
-            String fileExtension = resId == R.raw.params ? ".pv" : ".ppn";
-            InputStream is = null;
-            OutputStream os = null;
-            try {
-                is = new BufferedInputStream(resources.openRawResource(resId),
-                        256);
-                os = new BufferedOutputStream(openFileOutput(filename + fileExtension,
-                        Context.MODE_PRIVATE), 256);
-                int r;
-                while ((r = is.read()) != -1) {
-                    os.write(r);
-                }
-                os.flush();
-            } catch (IOException e) {
-                showErrorToast();
-            } finally {
-                try {
-                    if (is != null) {
-                        is.close();
-                    }
-                    if (os != null) {
-                        os.close();
-                    }
-                } catch (IOException e) {
-                    showErrorToast();
-                }
+        try (InputStream is = new BufferedInputStream(resources.openRawResource(resourceID), 256); OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)) {
+            int r;
+            while ((r = is.read()) != -1) {
+                os.write(r);
             }
+            os.flush();
         }
+    }
+
+    private static int[] KEYWORD_FILE_RESOURCE_IDS = {
+            R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
+            R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.hey_pico,
+            R.raw.terminator,
+    };
+
+    private void copyPorcupineResourceFiles() throws IOException {
+        Resources resources = getResources();
+
+        for (int keywordFileResourceID : KEYWORD_FILE_RESOURCE_IDS) {
+            copyResourceFile(keywordFileResourceID, resources.getResourceEntryName(keywordFileResourceID) + ".ppn");
+        }
+
+        copyResourceFile(R.raw.porcupine_params, resources.getResourceEntryName(R.raw.porcupine_params) + ".pv");
     }
 
     private void showErrorToast() {
@@ -112,28 +103,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        copyPorcupineConfigFiles();
+
+        try {
+            copyPorcupineResourceFiles();
+        } catch (IOException e) {
+            Toast.makeText(this, "Failed to copy resource files", Toast.LENGTH_SHORT).show();
+        }
+
         notificationPlayer = MediaPlayer.create(this, R.raw.notification);
+
         layout = findViewById(R.id.layout);
+
         recordButton = findViewById(R.id.record_button);
 
-        // Make the footer linkable.
         TextView footer = findViewById(R.id.footer);
         footer.setMovementMethod(LinkMovementMethod.getInstance());
-        // create the keyword spinner.
+
         configureKeywordSpinner();
     }
 
-    /**
-     * Handler for the record button. Processes the audio and uses Porcupine library to detect the
-     * keyword. It increments a counter to indicate the occurrence of a keyword.
-     *
-     * @param view ToggleButton used for recording audio.
-     */
     public void process(View view) {
         try {
             if (recordButton.isChecked()) {
-                // check if record permission was given.
                 if (hasRecordPermission()) {
                     porcupineManager = initPorcupine();
                     porcupineManager.start();
@@ -145,15 +136,10 @@ public class MainActivity extends AppCompatActivity {
                 porcupineManager.stop();
             }
         } catch (PorcupineManagerException e) {
-            showErrorToast();
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
 
-    /**
-     * Initialize the porcupineManager library.
-     *
-     * @return Porcupine instance.
-     */
     private PorcupineManager initPorcupine() throws PorcupineManagerException {
         Spinner mySpinner = findViewById(R.id.keyword_spinner);
         String kwd = mySpinner.getSelectedItem().toString();
@@ -196,18 +182,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Check the result of the record permission request.
-     *
-     * @param requestCode  request code of the permission request.
-     * @param permissions  requested permissions.
-     * @param grantResults results of the permission requests.
-     */
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        // We only ask for record permission.
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
             ToggleButton tbtn = findViewById(R.id.record_button);
             tbtn.toggle();

@@ -20,7 +20,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "ai.picovoice.porcupine.demo"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
