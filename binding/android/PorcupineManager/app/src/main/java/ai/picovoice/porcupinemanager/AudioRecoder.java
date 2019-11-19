@@ -74,9 +74,8 @@ class AudioRecorder {
 
     /**
      * Start recording in a worker thread.
-     * @throws PorcupineManagerException exception is thrown if the {@link RecordTask} throws an error.
      */
-    void start() throws PorcupineManagerException {
+    void start() {
         if (started.get()) {
             return;
         }
