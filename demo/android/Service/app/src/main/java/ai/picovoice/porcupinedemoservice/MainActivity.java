@@ -1,14 +1,19 @@
 package ai.picovoice.porcupinedemoservice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,8 +23,19 @@ import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonStartService;
-    Button buttonStopService;
+    ToggleButton startButton;
+
+    private boolean hasRecordPermission() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestRecordPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+    }
+
+    private void showErrorToast() {
+        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+    }
 
     private static void copyPorcupineConfigFiles(Context context) {
         int[] resIds = {
@@ -65,19 +81,16 @@ public class MainActivity extends AppCompatActivity {
 
         copyPorcupineConfigFiles(this);
 
-        buttonStartService = findViewById(R.id.buttonStartService);
-        buttonStopService = findViewById(R.id.buttonStopService);
+        startButton = findViewById(R.id.startButton);
 
-        buttonStartService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startService();
-            }
-        });
-
-        buttonStopService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        startButton.setOnClickListener(v -> {
+            if (startButton.isChecked()) {
+                if (hasRecordPermission()) {
+                    startService();
+                } else {
+                    requestRecordPermission();
+                }
+            } else {
                 stopService();
             }
         });
