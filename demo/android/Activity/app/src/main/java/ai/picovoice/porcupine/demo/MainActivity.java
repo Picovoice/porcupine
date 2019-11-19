@@ -221,14 +221,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Configure the style and behaviour of the keyword spinner.
-     */
     private void configureKeywordSpinner() {
         Spinner spinner = findViewById(R.id.keyword_spinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.keywords, R.layout.keyword_spinner_item);
+                this,
+                R.array.keywords,
+                R.layout.keyword_spinner_item);
         adapter.setDropDownViewResource(R.layout.keyword_spinner_item);
         spinner.setAdapter(adapter);
 
