@@ -21,7 +21,9 @@ import ai.picovoice.porcupinemanager.PorcupineManagerException;
 
 public class PorcupineService extends Service {
     private static final String CHANNEL_ID = "PorcupineServiceChannel";
+
     private PorcupineManager porcupineManager;
+
     private int numKeywordsDetected;
 
     private void createNotificationChannel() {
@@ -39,9 +41,6 @@ public class PorcupineService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String keywordFileName = intent.getStringExtra("keywordFileName");
-        assert keywordFileName != null;
-
         createNotificationChannel();
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -62,6 +61,9 @@ public class PorcupineService extends Service {
         startForeground(1234, notification);
 
         String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
+
+        String keywordFileName = intent.getStringExtra("keywordFileName");
+        assert keywordFileName != null;
         String keywordFilePath = new File(this.getFilesDir(), keywordFileName).getAbsolutePath();
 
         try {

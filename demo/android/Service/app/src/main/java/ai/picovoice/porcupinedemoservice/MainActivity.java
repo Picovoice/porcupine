@@ -54,6 +54,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void startService() {
+        Intent serviceIntent = new Intent(this, PorcupineService.class);
+        serviceIntent.putExtra("keywordFileName", "porcupine_android.ppn");
+        ContextCompat.startForegroundService(this, serviceIntent);
+    }
+
+    private void stopService() {
+        Intent serviceIntent = new Intent(this, PorcupineService.class);
+        stopService(serviceIntent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,16 +90,5 @@ public class MainActivity extends AppCompatActivity {
                 stopService();
             }
         });
-    }
-
-    public void startService() {
-        Intent serviceIntent = new Intent(this, PorcupineService.class);
-        serviceIntent.putExtra("keywordFileName", "porcupine_android.ppn");
-        ContextCompat.startForegroundService(this, serviceIntent);
-    }
-
-    public void stopService() {
-        Intent serviceIntent = new Intent(this, PorcupineService.class);
-        stopService(serviceIntent);
     }
 }
