@@ -18,7 +18,6 @@ package ai.picovoice.porcupine.demo;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -58,30 +57,14 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout layout;
     private ToggleButton recordButton;
 
-    /**
-     * Check whether user granted record permission.
-     *
-     * @param context application context.
-     */
-    static boolean hasRecordPermission(Context context) {
-        int permResult = ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.RECORD_AUDIO);
-        return permResult == PackageManager.PERMISSION_GRANTED;
+    private boolean hasRecordPermission() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
 
-    /**
-     * Show a dialog to user and ask for record permission.
-     *
-     * @param activity application activity.
-     */
-    static void showRecordPermission(Activity activity) {
-        ActivityCompat.requestPermissions(activity,
-                new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+    private void requestRecordPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
     }
 
-    /**
-     * Copy the keyword config files used by Porcupine library to the internal storage of the app.
-     */
     private void copyPorcupineConfigFiles() {
         int[] resIds = {
                 R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
@@ -121,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void showErrorToast() {
+    private void showErrorToast() {
         Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
     }
 
@@ -151,12 +134,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (recordButton.isChecked()) {
                 // check if record permission was given.
-                if (hasRecordPermission(this)) {
+                if (hasRecordPermission()) {
                     porcupineManager = initPorcupine();
                     porcupineManager.start();
 
                 } else {
-                    showRecordPermission(this);
+                    requestRecordPermission();
                 }
             } else {
                 porcupineManager.stop();
