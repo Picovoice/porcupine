@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startService() {
         Intent serviceIntent = new Intent(this, PorcupineService.class);
+        serviceIntent.putExtra("keywordFileName", "porcupine_android.ppn");
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 

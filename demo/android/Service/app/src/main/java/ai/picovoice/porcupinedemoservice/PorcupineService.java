@@ -12,45 +12,57 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import java.io.File;
 
-import ai.picovoice.porcupinemanager.*;
+import ai.picovoice.porcupinemanager.PorcupineManager;
+import ai.picovoice.porcupinemanager.PorcupineManagerException;
 
 public class PorcupineService extends Service {
-
-    public static final String CHANNEL_ID = "ForegroundServiceChannel";
-
+    private static final String CHANNEL_ID = "PorcupineServiceChannel";
     private PorcupineManager porcupineManager;
+    private int numKeywordsDetected;
 
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "PorcupineServiceChannel",
+                    NotificationManager.IMPORTANCE_HIGH);
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            assert manager != null;
+            manager.createNotificationChannel(notificationChannel);
+        }
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String input = intent.getStringExtra("inputExtra");
+        String keywordFileName = intent.getStringExtra("keywordFileName");
+        assert keywordFileName != null;
 
         createNotificationChannel();
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
                 0,
-                notificationIntent,
+                new Intent(this, MainActivity.class),
                 0);
 
+        numKeywordsDetected = 0;
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
-                .setContentText(input)
+                .setContentTitle("Porcupine")
+                .setContentText("num detected : " + numKeywordsDetected)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentIntent(pendingIntent)
                 .build();
 
-        startForeground(666, notification);
+        startForeground(1234, notification);
 
-        String keywordFilePath = new File(this.getFilesDir(), "porcupine_android.ppn")
-                .getAbsolutePath();
         String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
+        String keywordFilePath = new File(this.getFilesDir(), keywordFileName).getAbsolutePath();
 
         try {
             porcupineManager = new PorcupineManager(
@@ -58,27 +70,30 @@ public class PorcupineService extends Service {
                     keywordFilePath,
                     0.5f,
                     (keywordIndex) -> {
+                        numKeywordsDetected++;
+
                         CharSequence title = "Porcupine";
-                        PendingIntent contentIntent = PendingIntent.getActivity(this,
-                                0, new Intent(this, MainActivity.class), 0);
+                        PendingIntent contentIntent = PendingIntent.getActivity(
+                                this,
+                                0,
+                                new Intent(this, MainActivity.class),
+                                0);
 
-                        Notification notification1 = new NotificationCompat.Builder(this, CHANNEL_ID)
+                        Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
                                 .setContentTitle(title)
-                                .setContentText("detected")
+                                .setContentText("num detected : " + numKeywordsDetected)
                                 .setSmallIcon(R.drawable.ic_launcher_background)
-                                .setContentIntent(contentIntent).build();
+                                .setContentIntent(contentIntent)
+                                .build();
 
-                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        mNotificationManager.notify(666, notification1);
-
-                        Log.i("", "detected " + keywordIndex);
+                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        assert notificationManager != null;
+                        notificationManager.notify(1234, n);
                     });
             porcupineManager.start();
         } catch (PorcupineManagerException e) {
-            Log.e("", e.toString());
+            Log.e("PORCUPINE_SERVICE", e.toString());
         }
-//        audioRecorder = new AudioRecorder();
-//        audioRecorder.start();
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -89,26 +104,14 @@ public class PorcupineService extends Service {
         return null;
     }
 
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "Foreground Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(notificationChannel);
-        }
-    }
-
     @Override
     public void onDestroy() {
         try {
             porcupineManager.stop();
-//            audioRecorder.stop();
         } catch (PorcupineManagerException e) {
-            Log.e("", e.toString());
+            Log.e("PORCUPINE_SERVICE", e.toString());
         }
+
         super.onDestroy();
     }
 }
