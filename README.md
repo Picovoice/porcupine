@@ -56,13 +56,9 @@ wake-words. The size of the repository is reduced from ~3 GB to 30 MB (100X redu
 ## Try It Out
 
 Try out Porcupine using its [interactive web demo](https://picovoice.ai/demos/porcupine_wasm_smart_lighting.html).
-You need a working microphone.
 
 Try out Porcupine by downloading its
-[Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en). The demo
-application allows you to test Porcupine on a variety of wake words in any environment.
-
-![Android Demo](resources/images/demo.gif)
+[Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en).
 
 Try out Porcupine by installing its [PIP package](https://pypi.org/project/pvporcupine/).
 
@@ -73,8 +69,6 @@ See Porcupine in action on an ARM Cortex-M7 (accompanied by [rhino](https://gith
 See Porcupine in action on an ARM Cortex-M4 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
 
 [![Porcupine in Action](https://img.youtube.com/vi/T0tAnh8tUQg/0.jpg)](https://www.youtube.com/watch?v=T0tAnh8tUQg)
-
-[![Porcupine in Action](https://img.youtube.com/vi/dH8Q-JplpSo/0.jpg)](https://www.youtube.com/watch?v=dH8Q-JplpSo)
 
 ## Performance
 
