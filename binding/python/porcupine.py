@@ -1,21 +1,17 @@
 #
 # Copyright 2018 Picovoice Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+# file accompanying this source.
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 #
 
 import os
 from ctypes import *
+from ctypes.util import find_library
 from enum import Enum
 
 
@@ -29,11 +25,17 @@ class Porcupine(object):
         OUT_OF_MEMORY = 1
         IO_ERROR = 2
         INVALID_ARGUMENT = 3
+        STOP_ITERATION = 4
+        KEY_ERROR = 5
+        INVALID_STATE = 6
 
     _PICOVOICE_STATUS_TO_EXCEPTION = {
         PicovoiceStatuses.OUT_OF_MEMORY: MemoryError,
         PicovoiceStatuses.IO_ERROR: IOError,
-        PicovoiceStatuses.INVALID_ARGUMENT: ValueError
+        PicovoiceStatuses.INVALID_ARGUMENT: ValueError,
+        PicovoiceStatuses.STOP_ITERATION: StopIteration,
+        PicovoiceStatuses.KEY_ERROR: KeyError,
+        PicovoiceStatuses.INVALID_STATE: ValueError,
     }
 
     class CPorcupine(Structure):
@@ -95,7 +97,7 @@ class Porcupine(object):
 
         self._num_keywords = len(keyword_file_paths)
 
-        init_func = library.pv_porcupine_multiple_keywords_init
+        init_func = library.pv_porcupine_init
         init_func.argtypes = [
             c_char_p,
             c_int,
@@ -115,36 +117,53 @@ class Porcupine(object):
         if status is not self.PicovoiceStatuses.SUCCESS:
             raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Initialization failed')
 
-        self.process_func = library.pv_porcupine_multiple_keywords_process
-        self.process_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_short), POINTER(c_int)]
-        self.process_func.restype = self.PicovoiceStatuses
-
         self._delete_func = library.pv_porcupine_delete
         self._delete_func.argtypes = [POINTER(self.CPorcupine)]
         self._delete_func.restype = None
 
-        self._sample_rate = library.pv_sample_rate()
+        self.process_func = library.pv_porcupine_process
+        self.process_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_short), POINTER(c_int)]
+        self.process_func.restype = self.PicovoiceStatuses
+
+        self._libc = CDLL(find_library('c'))
+
+        state_size_byte_func = library.pv_porcupine_state_size_byte
+        state_size_byte_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_int)]
+        state_size_byte_func.restype = self.PicovoiceStatuses
+
+        state_size_byte = c_int32()
+        status = state_size_byte_func(self._handle, byref(state_size_byte))
+        if status is not self.PicovoiceStatuses.SUCCESS:
+            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Initialization failed')
+
+        self._state = self._libc.malloc(state_size_byte.value)
+
+        self._get_state_func = library.pv_porcupine_get_state
+        self._get_state_func.argtypes = [POINTER(self.CPorcupine), c_void_p]
+        self._get_state_func.restype = self.PicovoiceStatuses
+
+        self._set_state_func = library.pv_porcupine_set_state
+        self._set_state_func.argtypes = [POINTER(self.CPorcupine), c_void_p]
+        self._set_state_func.restype = self.PicovoiceStatuses
+
+        self._version = library.pv_porcupine_version()
         self._frame_length = library.pv_porcupine_frame_length()
 
-    @property
-    def sample_rate(self):
-        """Audio sample rate accepted by Porcupine library."""
+        self._sample_rate = library.pv_sample_rate()
 
-        return self._sample_rate
+    def delete(self):
+        """Releases resources acquired by Porcupine's library."""
 
-    @property
-    def frame_length(self):
-        """Number of audio samples per frame expected by C library."""
-
-        return self._frame_length
+        self._delete_func(self._handle)
+        self._libc.free(self._state)
 
     def process(self, pcm):
         """
-        Monitors incoming audio stream for given wake word(s).
+        Processes a frame of the incoming audio stream and emits the detection result.
 
-        :param pcm: An array (or array-like) of consecutive audio samples. For more information regarding required audio
-        properties (i.e. sample rate, number of channels encoding, and number of samples per frame) please refer to
-        'include/pv_porcupine.h'.
+        :param pcm: A frame of audio samples. The number of samples per frame can be attained by calling
+        '.frame_length'. The incoming audio needs to have a sample rate equal to '.sample_rate' and be 16-bit
+        linearly-encoded. Porcupine operates on single-channel audio.
         :return: For a single wake-word use cse True if wake word is detected. For multiple wake-word use case it
         returns the index of detected wake-word. Indexing is 0-based and according to ordering of input keyword file
         paths. It returns -1 when no keyword is detected.
@@ -162,7 +181,41 @@ class Porcupine(object):
         else:
             return keyword_index
 
-    def delete(self):
-        """Releases resources acquired by Porcupine's library."""
+    @property
+    def get_state(self):
+        """Getter for the state."""
 
-        self._delete_func(self._handle)
+        status = self._get_state_func(self._handle, self._state)
+        if status is not self.PicovoiceStatuses.SUCCESS:
+            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Getting state failed')
+
+        return self._state
+
+    def set_state(self, state):
+        """
+        Setter for the state.
+
+        :param state: Object's state
+        """
+
+        status = self._set_state_func(self._handle, state)
+        if status is not self.PicovoiceStatuses.SUCCESS:
+            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Setting state failed')
+
+    @property
+    def version(self):
+        """Getter for version"""
+
+        return self._version
+
+    @property
+    def frame_length(self):
+        """Getter for number of audio samples per frame."""
+
+        return self._frame_length
+
+    @property
+    def sample_rate(self):
+        """Audio sample rate accepted by Picovoice."""
+
+        return self._sample_rate

@@ -1,17 +1,12 @@
 #
 # Copyright 2018 Picovoice Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+# file accompanying this source.
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 #
 
 import os
@@ -49,10 +44,8 @@ class PorcupineTestCase(unittest.TestCase):
         self.assertEqual(sum(results), 1)
 
     def test_process_multiple(self):
-        keyword_file_names = [
-            'alexa', 'americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'hey pico', 'picovoice',
-            'porcupine', 'terminator'
-        ]
+        keyword_file_names = \
+            ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator']
 
         extension = self._keyword_file_extension()
         keyword_file_paths = list()
@@ -79,7 +72,7 @@ class PorcupineTestCase(unittest.TestCase):
             if result >= 0:
                 results.append(result)
 
-        self.assertEqual(results, [8, 0, 1, 2, 3, 4, 5, 7, 8, 9])
+        self.assertEqual(results, [6, 0, 1, 2, 3, 4, 5, 6, 7])
 
         porcupine.delete()
 
