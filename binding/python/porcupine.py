@@ -155,7 +155,6 @@ class Porcupine(object):
         """Releases resources acquired by Porcupine's library."""
 
         self._delete_func(self._handle)
-        self._libc.free(self._state)
 
     def process(self, pcm):
         """
