@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static int[] KEYWORD_FILE_RESOURCE_IDS = {
             R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
-            R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.hey_pico,
-            R.raw.terminator,
+            R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
     };
 
     private void copyPorcupineResourceFiles() throws IOException {
