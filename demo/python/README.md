@@ -118,11 +118,6 @@ The demo application cannot auto-detect the CPU type on all variants of Raspberr
 to correct library file manually using `--library_path` command line argument. Please refer to [README.md](/lib/README.md).
 
 
-# Demo Application Non-Blocking
-
-This demo offers the same functionality as standard demo except that it uses non-blocking API of PyAudio. The use
-of non-blocking API can be beneficial in platforms that have weaker CPUs (such as Raspberry Pi Zero).
-
 # Demo Application Offline
 
 It allows testing Porcupine on a corpus of audio files. It is mainly useful for quantitative performance benchmarking.

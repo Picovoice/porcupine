@@ -109,8 +109,8 @@ setuptools.setup(
     ],
     entry_points=dict(
         console_scripts=[
-            'pvporcupine_mic=pvporcupine.demo.python.porcupine_demo:main',
-            'pvporcupine_file=pvporcupine.demo.python.porcupine_demo_offline:main'
+            'pvporcupine_mic=pvporcupine.demo.python.porcupine_demo_mic:main',
+            'pvporcupine_file=pvporcupine.demo.python.porcupine_demo_file:main'
         ],
     ),
     python_requires='>=3',

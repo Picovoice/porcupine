@@ -25,4 +25,4 @@ python binding/python/test_porcupine.py
 # Binding Class
 
 Porcupine's Python binding uses [ctypes](https://docs.python.org/3.5/library/ctypes.html) to access Porcupine's C
-library. For an example usage refer to [Python demo application](/demo/python/porcupine_demo.py).  
+library. For an example usage refer to [Python demo application](/demo/python/porcupine_demo_mic.py).  
