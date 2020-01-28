@@ -11,7 +11,6 @@
 
 import os
 from ctypes import *
-from ctypes.util import find_library
 from enum import Enum
 
 
@@ -125,8 +124,6 @@ class Porcupine(object):
         self.process_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_short), POINTER(c_int)]
         self.process_func.restype = self.PicovoiceStatuses
 
-        self._libc = CDLL(find_library('c'))
-
         state_size_byte_func = library.pv_porcupine_state_size_byte
         state_size_byte_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_int)]
         state_size_byte_func.restype = self.PicovoiceStatuses
@@ -136,7 +133,7 @@ class Porcupine(object):
         if status is not self.PicovoiceStatuses.SUCCESS:
             raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Initialization failed')
 
-        self._state = self._libc.malloc(state_size_byte.value)
+        self._state = (c_byte * state_size_byte.value)()
 
         self._get_state_func = library.pv_porcupine_get_state
         self._get_state_func.argtypes = [POINTER(self.CPorcupine), c_void_p]
