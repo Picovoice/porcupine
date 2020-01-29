@@ -44,6 +44,7 @@ namespace PorcupineCS
         public Porcupine(string modelPath, IEnumerable<string> keywordPaths, IEnumerable<float> sensitivities)
         {
             if(!File.Exists(LIBRARY_NAME + _extension)) {
+                Console.WriteLine(LIBRARY_NAME + _extension);
                 throw new Exception($"the {LIBRARY_NAME} cannot be found.\nThis should be in the same folder as this or on a known path.");
             }
             if (keywordPaths.Count() != sensitivities.Count())
@@ -51,6 +52,7 @@ namespace PorcupineCS
                 throw new ArgumentException();
             }
 
+            Console.WriteLine(keywordPaths.Count());
             Status status = pv_porcupine_init(modelPath, keywordPaths.Count(), keywordPaths.ToArray(), sensitivities.ToArray(), out _libraryPointer);
             if (status != Status.SUCCESS) {
                 throw new Exception();
@@ -97,7 +99,7 @@ namespace PorcupineCS
 
             if (platform == PlatformID.Unix)
             {
-                return ".so";
+                return ".dylib";
             }
 
             if (platform == PlatformID.Win32NT)

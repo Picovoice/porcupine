@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PorcupineCS;
 
@@ -10,8 +11,8 @@ namespace PorcupineTest
     [TestClass]
     public class MainTest
     {
-        private List<string> paths;
-        private List<float> senses;
+        private List<string> keywordPaths;
+        private List<float> sensitivities;
 
         private string GetAbsRootPath()
         {
@@ -22,9 +23,9 @@ namespace PorcupineTest
         public void Init()
         {
             if (!File.Exists($"libpv_porcupine{GetExtension()}"))
-                File.Copy($"{GetAbsRootPath()}lib/{GetEnvironmentName()}/x86_64/libpv_porcupine.so", $"./libpv_porcupine{GetExtension()}");
+                File.Copy($"{GetAbsRootPath()}lib/{GetEnvironmentName()}/{GetArchitecture()}/libpv_porcupine.{GetExtension()}", $"./libpv_porcupine{GetExtension()}");
 
-            if(!File.Exists("porcupine_params.pv"))
+            if (!File.Exists("porcupine_params.pv"))
                 File.Copy($"{GetAbsRootPath()}lib/common/porcupine_params.pv", "./porcupine_params.pv");
 
             if (!File.Exists("porcupine.wav"))
@@ -32,12 +33,19 @@ namespace PorcupineTest
 
             if (!File.Exists("multiple_keywords.wav"))
                 File.Copy($"{GetAbsRootPath()}resources/audio_samples/multiple_keywords.wav", "./multiple_keywords.wav");
+
+            string[] keywords = {"americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"};
+
+            keywordPaths = new List<string>();
+            foreach (string keyword in keywords) {
+                keywordPaths.Add($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}/{keyword}_{GetEnvironmentName()}.ppn");
+                Console.WriteLine($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}/{keyword}_{GetEnvironmentName()}.ppn");
+            }
             
-            paths = Directory.GetFiles($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}", $"*_{GetEnvironmentName()}.ppn").ToList();
-            senses = new List<float>();
-            for (int i= 0; i < paths.Count; i++)
+            sensitivities = new List<float>();
+            for (int i = 0; i < keywordPaths.Count; i++)
             {
-                senses.Add(0.5f);
+                sensitivities.Add(0.5f);
             }
         }
 
@@ -45,11 +53,11 @@ namespace PorcupineTest
         public void TestProcess()
         {
             var modelFilePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"));
-            
+
             Assert.IsTrue(File.Exists(modelFilePath), $"File.Exists(modelFilePath) --> {modelFilePath}");
-            paths.ForEach(keywordFilePath => Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}"));
-            Console.WriteLine(paths);
-            Porcupine p = new Porcupine(modelFilePath, keywordPaths: paths, sensitivities: senses);
+            keywordPaths.ForEach(keywordFilePath => Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}"));
+            Console.WriteLine(keywordPaths);
+            Porcupine p = new Porcupine(modelFilePath, keywordPaths: keywordPaths, sensitivities: sensitivities);
             WAVFile file = new WAVFile();
             file.Open("multiple_keywords.wav", WAVFile.WAVFileMode.READ);
             Assert.AreEqual(p.SampleRate(), file.AudioFormat.SampleRateHz, "The samplerate is not equal!!!");
@@ -66,13 +74,14 @@ namespace PorcupineTest
                 int count = p.FrameLength();
                 List<short> frame = data.GetRange(start, count);
                 int result = p.Process(frame.ToArray());
-                if(result >= 0) {
+                if (result >= 0)
+                {
                     results.Add(result);
                     Console.WriteLine(result);
                 }
             }
 
-            var requiredRes = new[] {8, 0, 1, 2, 3, 4, 5, 7, 8, 9};
+            var requiredRes = new[] { 6, 0, 1, 2, 3, 4, 5, 6, 7 };
 
             Assert.AreEqual(requiredRes.Length, results.Count, $"expected results length are different expected {requiredRes.Length} got {results.Count}");
             for (var i = 0; i < results.Count; i++)
@@ -85,18 +94,17 @@ namespace PorcupineTest
 
         private static string GetExtension()
         {
-            PlatformID platform = Environment.OSVersion.Platform;
-            if (platform == PlatformID.MacOSX)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return ".dylib";
             }
 
-            if (platform == PlatformID.Unix)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return ".so";
             }
 
-            if (platform == PlatformID.Win32NT)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return ".dll";
             }
@@ -106,20 +114,40 @@ namespace PorcupineTest
 
         private static string GetEnvironmentName()
         {
-            PlatformID platform = Environment.OSVersion.Platform;
-            if (platform == PlatformID.MacOSX)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return "mac";
             }
 
-            if (platform == PlatformID.Unix)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return "linux";
             }
 
-            if (platform == PlatformID.Win32NT)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "windows";
+            }
+
+            throw new NotImplementedException("this OS has no binding logic implemented yet.");
+        }
+
+
+        private static string GetArchitecture()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return "x86_64";
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return "x86_64";
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "amd64";
             }
 
             throw new NotImplementedException("this OS has no binding logic implemented yet.");
