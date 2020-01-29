@@ -23,7 +23,7 @@ namespace PorcupineTest
         public void Init()
         {
             if (!File.Exists($"libpv_porcupine{GetExtension()}"))
-                File.Copy($"{GetAbsRootPath()}lib/{GetEnvironmentName()}/{GetArchitecture()}/libpv_porcupine.{GetExtension()}", $"./libpv_porcupine{GetExtension()}");
+                File.Copy($"{GetAbsRootPath()}lib/{GetEnvironmentName()}/{GetArchitecture()}/libpv_porcupine{GetExtension()}", $"./libpv_porcupine{GetExtension()}");
 
             if (!File.Exists("porcupine_params.pv"))
                 File.Copy($"{GetAbsRootPath()}lib/common/porcupine_params.pv", "./porcupine_params.pv");
