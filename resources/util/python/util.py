@@ -19,6 +19,8 @@ def _pv_linux_machine(machine):
             return 'cortex-a7'
         elif 'rev 4' in model_info:
             return 'cortex-a53'
+        elif 'rev 3' in model_info:
+            return 'cortex-a72'
     elif 'AM33' in hardware_info:
         return 'beaglebone'
     else:
@@ -40,7 +42,7 @@ def _pv_platform():
 
 _PV_SYSTEM, _PV_MACHINE = _pv_platform()
 
-_RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53'}
+_RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72'}
 
 
 def _library_path():
@@ -73,7 +75,7 @@ def _keyword_files_subdir():
         if _PV_MACHINE == 'x86_64':
             return 'linux'
         elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
-            return 'raspberrypi'
+            return 'raspberry-pi'
         elif _PV_MACHINE == 'beaglebone':
             return 'beaglebone'
     elif _PV_SYSTEM == 'Windows':
