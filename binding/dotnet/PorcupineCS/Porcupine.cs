@@ -99,7 +99,7 @@ namespace PorcupineCS
 
             if (platform == PlatformID.Unix)
             {
-                return ".dylib";
+                return ".so";
             }
 
             if (platform == PlatformID.Win32NT)
