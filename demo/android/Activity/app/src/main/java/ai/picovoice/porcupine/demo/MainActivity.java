@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         // get the keyword file and model parameter file from internal storage.
         String keywordFilePath = new File(this.getFilesDir(), filename + ".ppn")
                 .getAbsolutePath();
-        String modelFilePath = new File(this.getFilesDir(), "params.pv").getAbsolutePath();
+        String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
         final int detectedBackgroundColor = getResources()
                 .getColor(R.color.colorAccent);
         return new PorcupineManager(modelFilePath, keywordFilePath, 0.5f, new KeywordCallback() {
