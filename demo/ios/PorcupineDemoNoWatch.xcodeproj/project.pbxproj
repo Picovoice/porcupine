@@ -23,7 +23,6 @@
 		BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */; };
 		BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */; };
 		BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */; };
-		BBFFB3802272321800A9DA37 /* hey pico_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB37F2272321800A9DA37 /* hey pico_ios.ppn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +56,6 @@
 		BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = bumblebee_ios.ppn; path = ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
 		BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ios/americano_ios.ppn; sourceTree = "<group>"; };
 		BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = terminator_ios.ppn; path = ios/terminator_ios.ppn; sourceTree = "<group>"; };
-		BBFFB37F2272321800A9DA37 /* hey pico_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey pico_ios.ppn"; path = "ios/hey pico_ios.ppn"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +80,6 @@
 		BB247361206164C400D96613 /* keyword_files */ = {
 			isa = PBXGroup;
 			children = (
-				BBFFB37F2272321800A9DA37 /* hey pico_ios.ppn */,
 				BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */,
 				BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */,
 				BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */,
@@ -234,7 +231,6 @@
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
 				BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */,
 				BBFFB336226EC72E00A9DA37 /* porcupine_ios.ppn in Resources */,
-				BBFFB3802272321800A9DA37 /* hey pico_ios.ppn in Resources */,
 				BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */,
 				BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */,
 				BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */,
@@ -418,12 +414,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5KNTYR3JP3;
+				DEVELOPMENT_TEAM = 3LF2YUBQ5S;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine;
+				PRODUCT_BUNDLE_IDENTIFIER = picovoice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -435,12 +431,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5KNTYR3JP3;
+				DEVELOPMENT_TEAM = 3LF2YUBQ5S;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine;
+				PRODUCT_BUNDLE_IDENTIFIER = picovoice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
