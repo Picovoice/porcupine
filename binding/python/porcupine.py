@@ -124,25 +124,6 @@ class Porcupine(object):
         self.process_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_short), POINTER(c_int)]
         self.process_func.restype = self.PicovoiceStatuses
 
-        state_size_byte_func = library.pv_porcupine_state_size_byte
-        state_size_byte_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_int)]
-        state_size_byte_func.restype = self.PicovoiceStatuses
-
-        state_size_byte = c_int32()
-        status = state_size_byte_func(self._handle, byref(state_size_byte))
-        if status is not self.PicovoiceStatuses.SUCCESS:
-            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Initialization failed')
-
-        self._state = (c_byte * state_size_byte.value)()
-
-        self._get_state_func = library.pv_porcupine_get_state
-        self._get_state_func.argtypes = [POINTER(self.CPorcupine), c_void_p]
-        self._get_state_func.restype = self.PicovoiceStatuses
-
-        self._set_state_func = library.pv_porcupine_set_state
-        self._set_state_func.argtypes = [POINTER(self.CPorcupine), c_void_p]
-        self._set_state_func.restype = self.PicovoiceStatuses
-
         self._version = library.pv_porcupine_version()
         self._frame_length = library.pv_porcupine_frame_length()
 
@@ -176,27 +157,6 @@ class Porcupine(object):
             return keyword_index == 0
         else:
             return keyword_index
-
-    @property
-    def get_state(self):
-        """Getter for the state."""
-
-        status = self._get_state_func(self._handle, self._state)
-        if status is not self.PicovoiceStatuses.SUCCESS:
-            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Getting state failed')
-
-        return self._state
-
-    def set_state(self, state):
-        """
-        Setter for the state.
-
-        :param state: Object's state
-        """
-
-        status = self._set_state_func(self._handle, state)
-        if status is not self.PicovoiceStatuses.SUCCESS:
-            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]('Setting state failed')
 
     @property
     def version(self):

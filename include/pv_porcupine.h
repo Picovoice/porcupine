@@ -73,36 +73,6 @@ PV_API void pv_porcupine_delete(pv_porcupine_t *object);
 PV_API pv_status_t pv_porcupine_process(pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index);
 
 /**
- * Getter for the size of the state. The state contains information about the acoustic environment and can be retrieved
- * using 'pv_porcupine_get_state()' or set by calling 'pv_porcupine_set_state()'. State transfer is recommended when
- * using Porcupine along with Picovoice's Speech-to-Intent engine (Rhino).
- *
- * @param object Keyword spotting object.
- * @param state_size State size in bytes.
- * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' on failure.
- */
-PV_API pv_status_t pv_porcupine_state_size_byte(const pv_porcupine_t *object, int32_t *state_size);
-
-/**
- * Getter for the state.
- *
- * @param object Keyword spotting object.
- * @param state Buffer for saving the state. The memory needs to be pre-allocated by the caller. The required size can
- * be retrieved by calling 'pv_porcupine_state_size_byte()'.
- * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' on failure.
- */
-PV_API pv_status_t pv_porcupine_get_state(const pv_porcupine_t *object, void *state);
-
-/**
- * Setter for the state.
- *
- * @param object Keyword spotting object.
- * @param state Object's state.
- * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' on failure.
- */
-PV_API pv_status_t pv_porcupine_set_state(pv_porcupine_t *object, const void *state);
-
-/**
  * Getter for version.
  *
  * @return Version.
