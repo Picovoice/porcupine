@@ -18,7 +18,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != 6) {
-        fprintf(stdout, "usage : %s library_path model_path keyword_path sensitivity wav_path\n", argv[0]);
+        fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity wav_path\n", argv[0]);
         exit(1);
     }
 
@@ -78,6 +78,13 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    pv_porcupine_t *porcupine;
+    pv_status_t status = pv_porcupine_init(model_path, 1, &keyword_path, &sensitivity, &porcupine);
+    if (status != PV_STATUS_SUCCESS) {
+        fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string(status));
+        exit(1);
+    }
+
     FILE *wav = fopen(wav_path, "rb");
     if (!wav) {
         fprintf(stderr, "failed to open wav file\n");
@@ -97,13 +104,6 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_porcupine_t *porcupine;
-    pv_status_t status = pv_porcupine_init(model_path, 1, &keyword_path, &sensitivity, &porcupine);
-    if (status != PV_STATUS_SUCCESS) {
-        fprintf(stderr, "failed with '%s'\n", pv_status_to_string(status));
-        exit(1);
-    }
-
     double total_cpu_time_usec = 0;
     double total_processed_time_usec = 0;
     int32_t frame_index = 0;
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
         int32_t keyword_index;
         status = pv_porcupine_process(porcupine, pcm, &keyword_index);
         if (status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, "failed to process audio\n");
+            fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n", pv_status_to_string(status));
             exit(1);
         }
 
@@ -129,16 +129,16 @@ int main(int argc, char *argv[]) {
         total_cpu_time_usec +=
                 (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
         total_processed_time_usec += (frame_length * 1e6) / pv_sample_rate();
-
         frame_index++;
     }
 
     const double real_time_factor = total_cpu_time_usec / total_processed_time_usec;
-    fprintf(stdout, "real time factor is : %.3f\n", real_time_factor);
+    fprintf(stdout, "real time factor : %.3f\n", real_time_factor);
 
-    pv_porcupine_delete(porcupine);
     free(pcm);
     fclose(wav);
+    pv_porcupine_delete(porcupine);
+    dlclose(porcupine_library);
 
     return 0;
 }

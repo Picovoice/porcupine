@@ -25,17 +25,21 @@ void interrupt_handler(int _) {
 
 int main(int argc, char *argv[]) {
     if (argc != 6) {
-        fprintf(stderr, "usage : %s library_path input_audio_device model_path keyword_path sensitivity\n", argv[0]);
+        fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity input_audio_device\n", argv[0]);
         exit(1);
     }
 
     signal(SIGINT, interrupt_handler);
 
     const char *library_path = argv[1];
+    const char *model_path = argv[2];
+    const char *keyword_path = argv[3];
+    const float sensitivity = (float) atof(argv[4]);
+    const char *input_audio_device = argv[5];
 
     void *porcupine_library = dlopen(library_path, RTLD_NOW);
     if (!porcupine_library) {
-        fprintf(stderr, "failed to load dynamic library.\n");
+        fprintf(stderr, "failed to open library.\n");
         exit(1);
     }
 
@@ -79,7 +83,12 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    const char *input_audio_device = argv[2];
+    pv_porcupine_t *porcupine;
+    pv_status_t status = pv_porcupine_init(model_path, 1, &keyword_path, &sensitivity, &porcupine);
+    if (status != PV_STATUS_SUCCESS) {
+        fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string(status));
+        exit(1);
+    }
 
     snd_pcm_t *alsa_handle;
     int error_code = snd_pcm_open(&alsa_handle, input_audio_device, SND_PCM_STREAM_CAPTURE, 0);
@@ -139,17 +148,6 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    const char *model_path = argv[3];
-    const char *keyword_path = argv[4];
-    const float sensitivity = (float) atof(argv[5]);
-
-    pv_porcupine_t *porcupine;
-    pv_status_t status = pv_porcupine_init(model_path, 1, &keyword_path, &sensitivity, &porcupine);
-    if (status != PV_STATUS_SUCCESS) {
-        fprintf(stderr, "failed to initialize with '%s'\n", pv_status_to_string(status));
-        exit(1);
-    }
-
     const int32_t frame_length = pv_porcupine_frame_length();
 
     int16_t *pcm = malloc(frame_length * sizeof(int16_t));
@@ -171,17 +169,18 @@ int main(int argc, char *argv[]) {
         int32_t keyword_index;
         status = pv_porcupine_process(porcupine, pcm, &keyword_index);
         if (status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, "failed to process with '%s'\n", pv_status_to_string(status));
+            fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n", pv_status_to_string(status));
             exit(1);
         }
         if (keyword_index != -1) {
-            fprintf(stdout, "detected keyword %d\n", keyword_index);
+            fprintf(stdout, "detected keyword\n");
         }
     }
 
     free(pcm);
     snd_pcm_close(alsa_handle);
     pv_porcupine_delete(porcupine);
+    dlclose(porcupine_library);
 
     return 0;
 }
