@@ -1,0 +1,31 @@
+{
+  "author": {
+    "name": "Picovoice Inc.",
+    "email": "hello@picovoice.ai",
+    "url": "https://picovoice.ai"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Picovoice/porcupine.git"
+  },
+  "dependencies": {
+    "@picovoice/web-voice-processor": "1.3.0",
+    "live-server": "*",
+    "copy-files-from-to": "2.1.0"
+  },
+  "copyFiles": [
+    {
+      "from": "../../binding/javascript/porcupine.js",
+      "to": "scripts/porcupine.js"
+    },
+    {
+      "from": "../../lib/wasm/pv_porcupine.js",
+      "to": "scripts/pv_porcupine.js"
+    },
+    {
+      "from": "../../lib/wasm/pv_porcupine.wasm",
+      "to": "scripts/pv_porcupine.wasm"
+    }
+  ]
+}

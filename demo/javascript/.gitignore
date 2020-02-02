@@ -1,0 +1,5 @@
+/node_modules/
+package-lock.json
+/scripts/porcupine.js
+/scripts/pv_porcupine.js
+/scripts/pv_porcupine.wasm

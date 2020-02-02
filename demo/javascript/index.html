@@ -11,7 +11,7 @@
         </h1>
 
         <div>
-            <img src="light_bulb_blue.svg" width="256em" id="light_bulb">
+            <img src="images/light_bulb_blue.svg" width="256em" id="light_bulb">
         </div>
 
         <div align="left" style="padding: 2em 0">
@@ -48,7 +48,7 @@
     </div>
 
     <script src="/node_modules/@picovoice/web-voice-processor/src/web_voice_processor.js"></script>
-    <script src="/node_modules/@picovoice/porcupine_manager/src/porcupine_manager.js"></script>
+    <script src="/scripts/porcupine_manager.js"></script>
     <script>
         const KEYWORDS_ID = {
             "Hey Edison": new Uint8Array([
@@ -3678,7 +3678,7 @@
         let processCallback = function (keyword) {
             if (keyword === null) {
                 if (is_listening && (currentTimeSeconds() - listeningStartSeconds) > 5) {
-                    document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
+                    document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
                     is_listening = false;
                 }
                 return;
@@ -3689,12 +3689,12 @@
                     let backgroundColor = "background-color:" + COLORS_CODE[keyword];
                     document.querySelector("#light_bulb").setAttribute("style", backgroundColor);
                 }
-                document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
+                document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
                 is_listening = false;
             }
 
             if (keyword === "Hey Edison") {
-                document.querySelector("#light_bulb").setAttribute("src", "light_bulb_red.svg");
+                document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_red.svg");
                 is_listening = true;
                 listeningStartSeconds = currentTimeSeconds();
             }
@@ -3705,14 +3705,14 @@
         let audioManagerErrorCallback = function (ex) {
             alert(ex.toString());
             document.querySelector("#light_bulb").setAttribute("style", "background-color:white");
-            document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
+            document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
             document.querySelector("#demo_button").setAttribute("onclick", "start()");
             document.querySelector("#demo_button").innerText = "Start Demo";
         };
 
         start = function () {
             porcupineManager = PorcupineManager(
-                "/node_modules/@picovoice/porcupine_manager/src/porcupine_worker.js",
+                "/scripts/porcupine_worker.js",
                 "/node_modules/@picovoice/web-voice-processor/src/downsampling_worker.js");
 
             porcupineManager.start(KEYWORDS_ID, SENSITIVITIES, processCallback, audioManagerErrorCallback);
@@ -3725,7 +3725,7 @@
             porcupineManager.stop();
 
             document.querySelector("#light_bulb").setAttribute("style", "background-color:white");
-            document.querySelector("#light_bulb").setAttribute("src", "light_bulb_blue.svg");
+            document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
             document.querySelector("#demo_button").setAttribute("onclick", "start()");
             document.querySelector("#demo_button").innerText = "Start Demo";
         };
