@@ -27,5 +27,8 @@
       "from": "../../lib/wasm/pv_porcupine.wasm",
       "to": "scripts/pv_porcupine.wasm"
     }
-  ]
+  ],
+  "copyFilesSettings": {
+    "whenFileExists": "overwrite"
+  }
 }
