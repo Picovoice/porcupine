@@ -1,17 +1,12 @@
 #
 # Copyright 2018 Picovoice Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+# file accompanying this source.
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 #
 
 import argparse
@@ -72,11 +67,21 @@ def _run(input_audio_file_path, library_path, model_file_path, keyword_file_path
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--input_audio_file_path', help='Absolute path to input audio file', required=True)
+    parser.add_argument(
+        '--input_audio_file_path',
+        help='absolute path to input audio file',
+        required=True)
 
-    parser.add_argument('--keywords', help='comma-separated list of default keywords (%s)' % ', '.join(KEYWORDS))
+    parser.add_argument(
+        '--keywords',
+        nargs='+',
+        help='list of default keywords',
+        choices=KEYWORDS)
 
-    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files')
+    parser.add_argument(
+        '--keyword_file_paths',
+        nargs='+',
+        help='list of absolute paths to keyword files')
 
     parser.add_argument('--library_path', help="absolute path to Porcupine's dynamic library", default=LIBRARY_PATH)
 
@@ -90,15 +95,9 @@ def main():
         if args.keywords is None:
             raise ValueError('either --keywords or --keyword_file_paths must be set')
 
-        keywords = [x.strip() for x in args.keywords.split(',')]
-
-        if all(x in KEYWORDS for x in keywords):
-            keyword_file_paths = [KEYWORD_FILE_PATHS[x] for x in keywords]
-        else:
-            raise ValueError(
-                'selected keywords are not available by default. available keywords are: %s' % ', '.join(KEYWORDS))
+        keyword_file_paths = [KEYWORD_FILE_PATHS[x] for x in args.keywords]
     else:
-        keyword_file_paths = [x.strip() for x in args.keyword_file_paths.split(',')]
+        keyword_file_paths = args.keyword_file_paths
 
     _run(
         input_audio_file_path=args.input_audio_file_path,
