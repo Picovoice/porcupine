@@ -5,4 +5,4 @@ pipelines.
 
 ## PorcupineManager
 
-Provides a high-level API that takes care of audio recording and processing.
+Provides a high-level API that takes care of audio recording as well.
