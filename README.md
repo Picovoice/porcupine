@@ -4,35 +4,26 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a highly-accurate and lightweight **wake word** (a.k.a. **keyword spotting**, **trigger word detection**,
-**hotword detection**, and **voice command**) engine. It enables developers to build always-listening voice-enabled
-applications. It is
+Porcupine is a highly-accurate and lightweight wake word (a.k.a. keyword spotting, trigger word detection, hotword
+detection, and voice command) engine. It enables building always-listening voice-enabled applications. It is
 
-* using **deep neural networks** trained in **real-world situations**.
-* compact and computationally-efficient making it suitable for **IoT**. It can run with as low as **20 KB RAM** on an MCU.
-* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi (all variants)**, **Beagle Bone**,
-**Android**, **iOS**, **watchOS**, **Linux (x86_64)**, **Mac**, **Windows**, and **web browsers** (**WebAssembly**) are
-supported. Furthermore, Support for various **ARM Cortex-A** and **ARM Cortex-M** processors and **DSP cores** is available
-for commercial customers.
-* **scalable**. It can detect multiple (possibly many) voice commands concurrently with no added CPU/memory footprint.
+* using deep neural networks trained in real-world situations.
+* compact and computationally-efficient making it suitable for IoT. It can run with as low as 20 KB RAM on a
+microcontroller.
+* cross-platform. It is implemented in fixed-point ANSI C. Raspberry Pi (all variants), Beagle Bone, Android, iOS,
+watchOS, Linux (x86_64), Mac, Windows, and web browsers are supported. Furthermore, Support for various ARM Cortex-A and
+ARM Cortex-M processors is available for commercial customers.
+* scalable. It can detect multiple (possibly many) always-listening voice commands concurrently with no added CPU/memory
+footprint.
 * self-service. Developers are empowered to choose from a set of predefined wake phrases on different platforms and use
 them for free. In addition, developers can generate custom wake phrases using
 [Picovoice Console](https://console.picovoice.ai) (subject to certain limitations and only on Linux, Mac, or Windows)
 for non-commercial, personal, and evaluation-only purposes.  
 
-## Picovoice Console
-
-Announcing the [Picovoice Console](https://console.picovoice.ai). The Console is a web-based platform for
-building voice applications. You can sign up for an account with your email address or with your GitHub account.
-
-The console succeeds the (now retired) optimizer tool, as it can be used to train custom wake-words (Porcupine .ppn files). If you cloned
-this repository prior to August 31st, 2019, we highly recommend to make a new clone and use the Console for training custom
-wake-words. The size of the repository is reduced from ~3 GB to 30 MB (100X reduction), which should make working with it easier as well as reduce cloning timeout errors from GitHub that some people have reported.
-
-
 ## Table of Contents
 
 * [Try It Out](#try-it-out)
+* [License](#license)
 * [Performance](#performance)
 * [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
@@ -40,6 +31,8 @@ wake-words. The size of the repository is reduced from ~3 GB to 30 MB (100X redu
     * [Python Demo Application](#python-demo-application)
     * [Android Demo Application](#android-demo-application)
     * [iOS Demo Application](#ios-demo-application)
+    * [C Demo Application](#c-demo-application)
+    * [Javascript Application](#javascript-application)
 * [Evaluating Keyword Files](#evaluating-keyword-files)
 * [Integration](#integration)
     * [C](#c)
@@ -48,10 +41,20 @@ wake-words. The size of the repository is reduced from ~3 GB to 30 MB (100X redu
     * [Android](#android)
     * [iOS](#ios)
     * [Javascript](#javascript)
-* [Contributing](#contributing)
 * [Releases](#releases)
-* [License](#license)
 * [FAQ](#faq)
+
+## License
+
+This repository is licensed under Apache 2.0. This allows running the Porcupine wake word detection library on all
+supported platforms except microcontrollers using the set of freely-available [models](/resources/keyword_files).
+
+You may create custom wake-word models (for execution on Linux (x86_64), Mac (x86_64), and Windows (x86_64)) using
+[Picovoice Console](https://console.picovoice.ai/) for non-commercial and personal use free of charge.
+
+Custom wake-words for other platforms are only provided with the
+purchase of the Picovoice development or commercial license. To enquire about the Picovoice development and commercial
+license terms and fees, [contact us](https://picovoice.ai/contact.html).
 
 ## Try It Out
 
@@ -62,11 +65,11 @@ Try out Porcupine by downloading its
 
 Try out Porcupine by installing its [PIP package](https://pypi.org/project/pvporcupine/).
 
-See Porcupine in action on an ARM Cortex-M7 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
+See Porcupine in action on an ARM Cortex-M7 (accompanied by [Rhino](https://github.com/Picovoice/rhino) for intent inference).
 
 [![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
 
-See Porcupine in action on an ARM Cortex-M4 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
+See Porcupine in action on an ARM Cortex-M4 (accompanied by [Rhino](https://github.com/Picovoice/rhino) for intent inference).
 
 [![Porcupine in Action](https://img.youtube.com/vi/T0tAnh8tUQg/0.jpg)](https://www.youtube.com/watch?v=T0tAnh8tUQg)
 
@@ -103,14 +106,13 @@ implementation, when possible.
 
 Finally, [resources/](/resources) is a placeholder for data used by various applications within the repository.
 
-Below is a quick walkthrough of the repository. For detailed instructions please visit the relevant pages. Throughout the
-documentation, it is assumed that the current working directory is the root of the repository.
+Throughout the documentation, it is assumed that the current working directory is the root of the repository.
 
 ## Running Demo Applications
 
 ### Python Demo Application
 
-### PIP
+#### PIP
 
 Install Porcupine [PIP package](https://pypi.org/project/pvporcupine/). Then with a working  microphone connected to
 your device run the following in the terminal
@@ -130,15 +132,15 @@ pvporcupine_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bum
 
 Then the engine scans the given audio file for occurrences of keyword "bumblebee".
 
-### Repository
+#### Repository
 
 This [demo application](/demo/python) allows testing Porcupine using your computer's microphone. It opens an input audio
 stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an example of
 running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name of the operating system
-on your machine (e.g. linux, mac, windows, or raspberrypi).
+on your machine (e.g. linux, mac, windows, or raspberry-pi).
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/${SYSTEM}/alexa_${SYSTEM}.ppn
+python demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/${SYSTEM}/alexa_${SYSTEM}.ppn
 ```
 
 ### Android Demo Application
@@ -151,6 +153,10 @@ your machine.
 
 Using [Xcode](https://developer.apple.com/xcode/), open [demo/ios](/demo/ios) and run the application. You will need
 an iOS device connected to your machine and a valid Apple developer account.
+
+### Javascript Application
+
+### C Demo Application
 
 ## Evaluating Keyword Files
 
@@ -505,20 +511,6 @@ acquired by WebAssembly using `.release` when done
 
 For more information, refer to [binding](/binding/js) and [demo](/demo/js).
 
-## Contributing
-
-If you would like to contribute to Porcupine, please read through [CONTRIBUTING.md](CONTRIBUTING.md).
-
-### Acknowledgements
-
-* Thank you @charithe for Go binding/demo.
-* Thank you @HeadhunterXamd for C Sharp binding/demo.
-* Thank you @oziee for adding C++ ALSA demo.
-* Thank you @herlihalim for refactoring iOS binding and demo.
-* Thank you @veeableful for adding C++ and Rust demo.
-* Thank you @fquirin for adding non-blocking Python demo.
-* Thank you @dyah10 for adding watchOS binding and demo.
-
 ## Releases
 
 ### v1.6.0 - April 25th, 2019
@@ -559,18 +551,6 @@ CPU/memory footprint.
 ### v1.0.0 - March 13, 2018
 
 * Initial release.
-
-## License
-
-This repository is licensed under Apache 2.0. This allows running the Porcupine wake word detection library on all
-supported platforms using the set of freely-available [keyword files](/resources/keyword_files).
-
-You may create custom wake-word models (for execution on Linux, Mac, and Windows) using
-[Picovoice Console](https://console.picovoice.ai/) for non-commercial and personal use free of charge.
-
-Custom wake-words for other platforms must be generated by the Picovoice engineering team and are only provided with the
-purchase of the Picovoice development or commercial license. To enquire about the Picovoice development and commercial
-license terms and fees, [contact us](https://picovoice.ai/contact.html).
 
 ## FAQ
 
