@@ -11,7 +11,7 @@ applications. It is
 * compact and computationally-efficient making it perfect for IoT.
 * cross-platform. It is implemented in fixed-point ANSI C. Raspberry Pi (all variants), Beagle Bone, Android, iOS,
 watchOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
-various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for commercial customers.
+various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for enterprise customers.
 * scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
 * self-service. Developers can train custom wake phrases using [Picovoice Console](https://console.picovoice.ai).
 
@@ -23,18 +23,18 @@ various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is availa
 * [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
-    * [Python Demo Application](#python-demos)
-    * [Android Demo Application](#android-demos)
-    * [iOS Demo Application](#ios-demos)
-    * [JavaScript Application](#javascript-demos)
-    * [C Demo Application](#c-demos)
+    * [Python](#python-demos)
+    * [Android](#android-demos)
+    * [iOS](#ios-demos)
+    * [JavaScript](#javascript-demos)
+    * [C](#c-demos)
 * [Integration](#integration)
     * [Python](#python)
     * [Android](#android)
     * [iOS](#ios)
-    * [Javascript](#javascript)
+    * [JavaScript](#javascript)
     * [C](#c)
-    * [C#](#csharp)
+    * [C#](#c#)
 * [Releases](#releases)
 * [FAQ](#faq)
 
@@ -46,8 +46,8 @@ models using [Picovoice Console](https://console.picovoice.ai/) for **non-commer
 The free-tier only allows model training for x86_64 (Linux, Mac, and Windows).
 
 Custom wake-words for other platforms are only provided with the
-purchase of the Picovoice development or commercial license. To enquire about the Picovoice development and commercial
-license terms and fees, [contact us](https://picovoice.ai/contact.html).
+purchase of the Picovoice enterprise license. To enquire about the Picovoice development and commercial license terms
+and fees, [contact us](https://picovoice.ai/contact.html).
 
 ## Try It Out
 
@@ -57,13 +57,11 @@ license terms and fees, [contact us](https://picovoice.ai/contact.html).
 
 * [PIP Package](https://pypi.org/project/pvporcupine/)
 
-* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an
-[ARM Cortex-M7](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i.mx-rt-crossover-mcus/i.mx-rt1050-crossover-mcu-with-arm-cortex-m7-core:i.MX-RT1050)
+* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an ARM Cortex-M7
 
 [![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
 
-* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an
-[ARM Cortex-M4](https://www.st.com/en/microcontrollers-microprocessors/stm32f411.html)
+* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an ARM Cortex-M4
 
 [![Porcupine in Action](https://img.youtube.com/vi/T0tAnh8tUQg/0.jpg)](https://www.youtube.com/watch?v=T0tAnh8tUQg)
 
@@ -475,7 +473,7 @@ Finally, when done be sure to release the acquired resources.
 pv_porcupine_delete(handle);
 ```
 
-### cSharp
+### C#
 
 [/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine
 . Below is a quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
