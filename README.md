@@ -135,10 +135,10 @@ Using [Xcode](https://developer.apple.com/xcode/), open
 [demo/ios/PorcupineDemoNoWatch.xcodeproj](/demo/ios/PorcupineDemoNoWatch.xcodeproj) and run the application. You will
 need an iOS device connected to your machine and a valid Apple developer account.
 
-### Javascript Demos
+### JavaScript Demos
 
 You need `npm` installed first. Install dependencies by executing the following commands from
-[demo/javascript](/demo/javascript)
+[demo/javaScript](/demo/javascript)
 
 ```bash
 npm install
@@ -392,10 +392,10 @@ let manager = try PorcupineManager(modelFilePath: modelFilePath, wakeKeywordConf
 When initialized, input audio can be monitored using `manager.startListening()`. When done be sure to stop the manager using
 `manager.stopListening()`.
 
-### Javascript
+### JavaScript
 
 Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The
-[Javascript binding](/binding/javascript/porcupine.js) makes it trivial use Porcupine within a Javascript environment.
+[JavaScript binding](/binding/javascript/porcupine.js) makes it trivial use Porcupine within a JavaScript environment.
 Instantiate a new instance of engine using the factory method as below
 
 ```javascript

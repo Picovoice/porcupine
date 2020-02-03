@@ -4,18 +4,18 @@ First, consult the prerequisites section of [Python binding](/binding/python). A
 uses [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) for recording input audio (i.e. microphone).
 Consult the installation guide at [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/).
 
-# Demo Application
+# Microphone-Based Application
 
 Usage information can be found via
 
 ```bash
-python demo/python/porcupine_demo.py --help
+python3 demo/python/porcupine_demo_mic.py --help
 ```
 
 In the simplest form, a path to a valid wake word file needs to be provided to the script.
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/${SYSTEM}/blueberry_${SYSTEM}.ppn
+python3 demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/${SYSTEM}/blueberry_${SYSTEM}.ppn
 ``` 
 
 In the above command replace ```${SYSTEM}``` with the operating system (i.e. linux or mac). It starts recording audio
@@ -44,16 +44,8 @@ be alarmed this is normal. In order to detect a different wake word change the k
 Also, you can detect multiple wake words concurrently (e.g. Blueberry and Raspberry) using
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_paths \
-resources/keyword_files/${SYSTEM}/blueberry_${SYSTEM}.ppn,resources/keyword_files/${SYSTEM}/raspberry_${SYSTEM}.ppn
-``` 
-
-Finally, in order to run Porcupine's compressed variant pass in compressed keyword file(s) along with path to compressed
- model file
-
-```bash
-python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/${SYSTEM}/blueberry_${SYSTEM}_compressed.ppn \
---model_file_path lib/common/porcupine_compressed_params.pv
+python3 demo/python/porcupine_demo_mic.py --keyword_file_paths \
+resources/keyword_files/${SYSTEM}/blueberry_${SYSTEM}.ppn resources/keyword_files/${SYSTEM}/raspberry_${SYSTEM}.ppn
 ``` 
 
 ## FAQ
@@ -65,7 +57,7 @@ There are a couple of debugging facilities baked into the demo application to so
 console
 
 ```bash
-python ./demo/python/porcupine_demo.py --show_audio_devices_info
+python3 ./demo/python/porcupine_demo_mic.py --show_audio_devices_info
 ```
 
 It provides information about various audio input devices on the box. On a Linux box, this is the console output
@@ -99,25 +91,19 @@ It can be seen that the last device (index 21) is considered default. But on thi
 the input device which has an index of 10. After finding the correct index the demo application can be invoked as below
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/blueberry_linux.ppn \
+python3 demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/blueberry_linux.ppn \
 --input_audio_device_index 10
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved by
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/blueberry_linux.ppn \
+python3 demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/blueberry_linux.ppn \
 --input_audio_device_index 10 --output_path ~/test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
 
-#### Why am I getting "Exception: cannot autodetect the binary type ..."?
-
-The demo application cannot auto-detect the CPU type on all variants of Raspberry Pi. Hence you need to provide the path
-to correct library file manually using `--library_path` command line argument. Please refer to [README.md](/lib/README.md).
-
-
-# Demo Application Offline
+# File-Based Application
 
 It allows testing Porcupine on a corpus of audio files. It is mainly useful for quantitative performance benchmarking.

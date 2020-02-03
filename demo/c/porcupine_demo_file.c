@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 
     void *porcupine_library = dlopen(library_path, RTLD_NOW);
     if (!porcupine_library) {
-        fprintf(stderr, "failed to open library");
+        fprintf(stderr, "failed to open library\n");
         exit(1);
     }
 
