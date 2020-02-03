@@ -71,37 +71,23 @@ license terms and fees, [contact us](https://picovoice.ai/contact.html).
 ## Performance
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
-Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of these two,
-Porcupine's standard model is 3.34 times more accurate, 4.38 times faster (on Raspberry Pi 3). 
+Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of
+these two, Porcupine's standard model is 3.6 times more accurate and 3.8 times faster (on Raspberry Pi 3).
 
 ## Model Variants
 
-Porcupine has two flavours: **standard** and **compressed**. The compressed model is specifically designed
-for deeply-embedded applications (MCUs and DSPs). Its accuracy is slightly lower than the standard model, but it consumes
-considerably less resources. Below is the comparison of runtime measurements for different variants of Porcupine on
-Raspberry Pi3:
-
-| Model Variant | CPU Usage | Model Size (KB)
-:---: | :---: | :---:
-Standard | 5.67% | 1388
-Compressed | 2.43% | 232
-
-For an accuracy comparison of different variants, refer to
-[benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
+The library in this repository is the standard trim of the engine. The standard trim is suitable for applications
+running on microprocessors (e.g. Raspberry Pi and BeagleBone) and mobile devices (Android and iOS). Picovoice has
+developed several different trims of the engine targeted at a wide range of applications. These trims are only available
+to commercial customers.
 
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib/](/lib) and header files are at [include/](/include). Currently, BeagleBone, Raspberry Pi, Android, iOS, watchOS,
-Linux, macOS, Windows, and modern web browsers (with WebAssembly) are supported.
-
-Bindings are available at [binding/](/binding) to facilitate usage from higher-level languages and platforms. Demo
-applications are located at [demo/](/demo). We recommend using one of the demo applications as a starting point for your own
-implementation, when possible.
-
-Finally, [resources/](/resources) is a placeholder for data used by various applications within the repository.
-
-Throughout the documentation, it is assumed that the current working directory is the root of the repository.
+[lib/](/lib) and header files are at [include/](/include). Bindings are available at [binding/](/binding) to facilitate
+usage from higher-level languages/platforms. Demo applications are located at [demo/](/demo). We recommend using one of
+the demo applications as a starting point for your own implementation, when appropriate. Finally,
+[resources/](/resources) is a placeholder for data used by various applications within the repository.
 
 ## Running Demo Applications
 
