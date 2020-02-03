@@ -84,7 +84,7 @@ class PorcupineDemo(Thread):
 
         print('listening for:')
         for keyword_name, sensitivity in zip(keyword_names, self._sensitivities):
-            print('- %s (sensitivity: %f)' % (keyword_name, sensitivity))
+            print('- %s (sensitivity: %.2f)' % (keyword_name, sensitivity))
 
         porcupine = None
         pa = None

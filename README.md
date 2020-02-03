@@ -26,9 +26,8 @@ various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is availa
     * [Python Demo Application](#python-demo-application)
     * [Android Demo Application](#android-demo-application)
     * [iOS Demo Application](#ios-demo-application)
+    * [JavaScript Application](#javascript-application)
     * [C Demo Application](#c-demo-application)
-    * [Javascript Application](#javascript-application)
-* [Evaluating Keyword Files](#evaluating-keyword-files)
 * [Integration](#integration)
     * [C](#c)
     * [Python](#python)
@@ -84,10 +83,10 @@ to commercial customers.
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib/](/lib) and header files are at [include/](/include). Bindings are available at [binding/](/binding) to facilitate
-usage from higher-level languages/platforms. Demo applications are located at [demo/](/demo). We recommend using one of
+[lib](/lib) and header files are at [include](/include). Bindings are available at [binding](/binding) to facilitate
+usage from higher-level languages/platforms. Demo applications are located at [demo](/demo). We recommend using one of
 the demo applications as a starting point for your own implementation, when appropriate. Finally,
-[resources/](/resources) is a placeholder for data used by various applications within the repository.
+[resources](/resources) is a placeholder for data used by various applications within the repository.
 
 ## Running Demo Applications
 
@@ -95,7 +94,7 @@ the demo applications as a starting point for your own implementation, when appr
 
 #### PIP
 
-Install Porcupine [PIP package](https://pypi.org/project/pvporcupine/). Then with a working  microphone connected to
+Install Porcupine [PIP package](https://pypi.org/project/pvporcupine/). Then with a working microphone connected to
 your device run the following in the terminal
 
 ```shell
@@ -105,7 +104,7 @@ pvporcupine_mic --keywords porcupine
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
 utterances of wake-word "porcupine".
 
-In order to process audio files (e.g. WAV or FLAC) run
+In order to process audio files (e.g. WAV) run
 
 ```shell
 pvporcupine_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
@@ -115,35 +114,65 @@ Then the engine scans the given audio file for occurrences of keyword "bumblebee
 
 #### Repository
 
-This [demo application](/demo/python) allows testing Porcupine using your computer's microphone. It opens an input audio
-stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an example of
-running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name of the operating system
-on your machine (e.g. linux, mac, windows, or raspberry-pi).
+This [demo application](/demo/python/porcupine_demo_mic.py) allows testing Porcupine using your computer's microphone.
+It opens an input audio stream, monitors it using Porcupine's library, and logs the detection events into the console.
+Below is an example of running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name
+of the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi).
 
 ```bash
-python demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/${SYSTEM}/alexa_${SYSTEM}.ppn
+python demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn
 ```
+
+checkout [demo/python](/demo/python) for detailed information.
 
 ### Android Demo Application
 
-Using [Android Studio](https://developer.android.com/studio/index.html), open [demo/android](/demo/android) as an Android
-project and then run the application. You will need an Android device (with developer options enabled) connected to
-your machine.
+Using [Android Studio](https://developer.android.com/studio/index.html), open
+[demo/android/Activity](/demo/android/Activity) as an Android project and then run the application. You will need an
+Android device (with developer options enabled) connected to your machine.
 
 ### iOS Demo Application
 
-Using [Xcode](https://developer.apple.com/xcode/), open [demo/ios](/demo/ios) and run the application. You will need
-an iOS device connected to your machine and a valid Apple developer account.
+Using [Xcode](https://developer.apple.com/xcode/), open
+[demo/ios/PorcupineDemoNoWatch.xcodeproj](/demo/ios/PorcupineDemoNoWatch.xcodeproj) and run the application. You will
+need an iOS device connected to your machine and a valid Apple developer account.
 
 ### Javascript Application
 
+You need NPM installed first. Install dependencies by executing the following commands from
+[demo/javascript](/demo/javascript)
+
+```bash
+npm install
+npm install -g copy-files-from-to
+copy-files-from-to
+```
+
+Run this to launch the demo and follow instructions available on the launched page.
+
+```bash
+npx live-server --ignore="${PWD}/node_modules"
+```
+
 ### C Demo Application
 
-## Evaluating Keyword Files
+[This demo](/demo/c/porcupine_demo_mic.c) only runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone)
+and Mac. You need GCC and ALSA packages installed to compile it. Compile the demo using
 
-Porcupine enables developers to evaluate models for any wake word. This is done using
-[Picovoice's console](https://console.picovoice.ai/). You may use the console to train wake word models for execution on
-Linux (x86_64), Mac, or Windows and only for non-commercial and personal use.
+```bash
+gcc -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound -std=c99
+```
+
+Find the name of your audio input device (microphone) via `arecord -L`. Finally execute the following
+
+```bash
+demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
+resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${INPUT_AUDIO_DEVICE}
+```
+
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the 
+name of the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi), and `${INPUT_AUDIO_DEVICE}` with
+the name of your microphone device. The demo opens an audio stream and detects utterances of "porcupine".
 
 ## Integration
 
