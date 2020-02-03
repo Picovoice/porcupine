@@ -4,21 +4,16 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a highly-accurate and lightweight wake word (a.k.a. keyword spotting, trigger word detection, hotword
-detection, and voice command) engine. It enables building always-listening voice-enabled applications. It is
+Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
+applications. It is
 
-* using deep neural networks trained in real-world situations.
-* compact and computationally-efficient making it suitable for IoT. It can run with as low as 20 KB RAM on a
-microcontroller.
+* using deep neural networks trained in real-world environments.
+* compact and computationally-efficient making it perfect for IoT.
 * cross-platform. It is implemented in fixed-point ANSI C. Raspberry Pi (all variants), Beagle Bone, Android, iOS,
-watchOS, Linux (x86_64), Mac, Windows, and web browsers are supported. Furthermore, Support for various ARM Cortex-A and
-ARM Cortex-M processors is available for commercial customers.
-* scalable. It can detect multiple (possibly many) always-listening voice commands concurrently with no added CPU/memory
-footprint.
-* self-service. Developers are empowered to choose from a set of predefined wake phrases on different platforms and use
-them for free. In addition, developers can generate custom wake phrases using
-[Picovoice Console](https://console.picovoice.ai) (subject to certain limitations and only on Linux, Mac, or Windows)
-for non-commercial, personal, and evaluation-only purposes.  
+watchOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
+various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for commercial customers.
+* scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
+* self-service. Developers can generate custom wake phrases using [Picovoice Console](https://console.picovoice.ai).
 
 ## Table of Contents
 
