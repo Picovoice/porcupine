@@ -14,7 +14,7 @@ PorcupineManager uses the [Web Audio API](https://developer.mozilla.org/en-US/do
 ## Installation
 
 ```bash
-npm install porcupine-manager
+npm install @picovoice/porcupine_manager
 ```
 
 ## Usage
