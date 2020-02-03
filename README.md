@@ -13,12 +13,12 @@ applications. It is
 watchOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
 various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for commercial customers.
 * scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-* self-service. Developers can generate custom wake phrases using [Picovoice Console](https://console.picovoice.ai).
+* self-service. Developers can train custom wake phrases using [Picovoice Console](https://console.picovoice.ai).
 
 ## Table of Contents
 
-* [Try It Out](#try-it-out)
 * [License](#license)
+* [Try It Out](#try-it-out)
 * [Performance](#performance)
 * [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
@@ -41,11 +41,10 @@ various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is availa
 
 ## License
 
-This repository is licensed under Apache 2.0. This allows running the Porcupine wake word detection library on all
-supported platforms except microcontrollers using the set of freely-available [models](/resources/keyword_files).
-
-You may create custom wake-word models (for execution on Linux (x86_64), Mac (x86_64), and Windows (x86_64)) using
-[Picovoice Console](https://console.picovoice.ai/) for non-commercial and personal use free of charge.
+This repository is licensed under Apache 2.0 which allows running the engine on all supported platforms (except
+microcontrollers) using a set of freely-available [models](/resources/keyword_files). You may create custom wake-word
+models using [Picovoice Console](https://console.picovoice.ai/) for **non-commercial and personal use** free of charge.
+The free-tier only allows model training for x86_64 (Linux, Mac, and Windows).
 
 Custom wake-words for other platforms are only provided with the
 purchase of the Picovoice development or commercial license. To enquire about the Picovoice development and commercial
@@ -53,18 +52,19 @@ license terms and fees, [contact us](https://picovoice.ai/contact.html).
 
 ## Try It Out
 
-Try out Porcupine using its [interactive web demo](https://picovoice.ai/demos/porcupine_wasm_smart_lighting.html).
+* [Interactive Web Demo](https://picovoice.ai/demos/porcupine_wasm_smart_lighting.html)
 
-Try out Porcupine by downloading its
-[Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en).
+* [Android Demo Application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en)
 
-Try out Porcupine by installing its [PIP package](https://pypi.org/project/pvporcupine/).
+* [PIP Package](https://pypi.org/project/pvporcupine/)
 
-See Porcupine in action on an ARM Cortex-M7 (accompanied by [Rhino](https://github.com/Picovoice/rhino) for intent inference).
+* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an
+[ARM Cortex-M7](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i.mx-rt-crossover-mcus/i.mx-rt1050-crossover-mcu-with-arm-cortex-m7-core:i.MX-RT1050)
 
 [![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
 
-See Porcupine in action on an ARM Cortex-M4 (accompanied by [Rhino](https://github.com/Picovoice/rhino) for intent inference).
+* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an
+[ARM Cortex-M4](https://www.st.com/en/microcontrollers-microprocessors/stm32f411.html)
 
 [![Porcupine in Action](https://img.youtube.com/vi/T0tAnh8tUQg/0.jpg)](https://www.youtube.com/watch?v=T0tAnh8tUQg)
 
