@@ -90,7 +90,7 @@ the demo applications as a starting point for your own implementation, when appr
 
 ## Running Demo Applications
 
-### Python Demo Application
+### Python
 
 #### PIP
 
@@ -125,19 +125,19 @@ python demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_
 
 checkout [demo/python](/demo/python) for detailed information.
 
-### Android Demo Application
+### Android
 
 Using [Android Studio](https://developer.android.com/studio/index.html), open
 [demo/android/Activity](/demo/android/Activity) as an Android project and then run the application. You will need an
 Android device (with developer options enabled) connected to your machine.
 
-### iOS Demo Application
+### iOS
 
 Using [Xcode](https://developer.apple.com/xcode/), open
 [demo/ios/PorcupineDemoNoWatch.xcodeproj](/demo/ios/PorcupineDemoNoWatch.xcodeproj) and run the application. You will
 need an iOS device connected to your machine and a valid Apple developer account.
 
-### Javascript Application
+### Javascript
 
 You need NPM installed first. Install dependencies by executing the following commands from
 [demo/javascript](/demo/javascript)
@@ -154,7 +154,7 @@ Run this to launch the demo and follow instructions available on the launched pa
 npx live-server --ignore="${PWD}/node_modules"
 ```
 
-### C Demo Application
+### C
 
 [This demo](/demo/c/porcupine_demo_mic.c) only runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone)
 and Mac. You need GCC and ALSA packages installed to compile it. Compile the demo using
@@ -187,19 +187,19 @@ object can be constructed as follows.
 ```c
 const char *model_file_path = ... // The file is available at lib/common/porcupine_params.pv
 const char *keyword_file_path = ...
-const float sensitivity = 0.5;
+const float sensitivity = 0.5f;
 
-pv_porcupine_object_t *handle;
+pv_porcupine_t *handle;
 
-const pv_status_t status = pv_porcupine_init(model_file_path, keyword_file_path, sensitivity, &handle);
+const pv_status_t status = pv_porcupine_init(model_file_path, 1, &keyword_file_path, &sensitivity, &handle);
 
 if (status != PV_STATUS_SUCCESS) {
     // error handling logic
 }
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
+within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
 
 Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
 The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in consecutive chunks
@@ -210,12 +210,12 @@ extern const int16_t *get_next_audio_frame(void);
 
 while (true) {
     const int16_t *pcm = get_next_audio_frame();
-    bool result;
-    const pv_status_t status = pv_porcupine_process(handle, pcm, &result);
+    int32_t keyword_index;
+    const pv_status_t status = pv_porcupine_process(handle, pcm, &keyword_index);
     if (status != PV_STATUS_SUCCESS) {
         // error handling logic
     }
-    if (result) {
+    if (keyword_index != -1) {
         // detection event logic/callback
     }
 }
@@ -283,8 +283,7 @@ def get_next_audio_frame():
     pass
 
 while True:
-    pcm = get_next_audio_frame()
-    keyword_index = handle.process(pcm)
+    keyword_index = handle.process(get_next_audio_frame())
     if keyword_index >= 0:
         # detection event logic/callback
         pass
@@ -354,7 +353,7 @@ instance.Dispose();
 
 There are two possibilities for integrating Porcupine into an Android application.
 
-#### Binding
+#### Low-Level API
 
 [Porcupine](/binding/android/Porcupine/app/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a binding for
 Android using [JNI](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/). It can be initialized using.
@@ -435,7 +434,7 @@ let keywordFilePaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
 let sensitivities: [Float] = [0.3, 0.7, ...];
 var handle: OpaquePointer?
 
-let status = pv_porcupine_multiple_keywords_init(
+let status = pv_porcupine_init(
     modelFilePath,
     Int32(keywordFilePaths.count), // Number of different keywords to monitor for
     keywordFilePaths.map{ UnsafePointer(strdup($0)) },
@@ -457,7 +456,7 @@ while true {
     let pcm = getNextAudioFrame()
     var keyword_index: Int32 = -1
 
-    let status = pv_porcupine_multiple_keywords_process(handle, pcm, &keyword_index)
+    let status = pv_porcupine_process(handle, pcm, &keyword_index)
     if status != PV_STATUS_SUCCESS {
         // error handling logic
     }
@@ -497,31 +496,48 @@ When initialized, input audio can be monitored using `manager.startListening()`.
 
 ### Javascript
 
-Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The [Javascript binding](/binding/js/porcupine/porcupine.js)
-makes it trivial use Porcupine within a Javascript environment. Instantiate a new instance of engine using the factory method
-as below
+Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The
+[Javascript binding](/binding/javascript/porcupine.js) makes it trivial use Porcupine within a Javascript environment.
+Instantiate a new instance of engine using the factory method as below
 
 ```javascript
-    let keywordIDs = Array(UInt8Array(), ...);
-    let sensitivities = Float32Array(...);
-    let obj = Porcupine.create(keywordIDs, sensitivities);
+let keywordModels = [new Uint8Array([...]), ...];
+let sensitivities = new Float32Array([0.5, ...]);
+
+let handle = Porcupine.create(keywordModels, sensitivities)
 ```
 
-when initialized incoming audio stream can be processed using the `process` method. Be sure to release the resources
-acquired by WebAssembly using `.release` when done
+When instantiated `handle` can process audio via its `.process` method.
 
 ```javascript
+    let getNextAudioFrame = function() {
+        ...
+    };
+
     while (true) {
-        obj.process(audioFrameInt16Array);
+        let keywordIndex = handle.process(getNextAudioFrame());
+        if (keywordIndex !== -1) {
+            // detection event callback
+        }
     }
-    
-    // release when done
-    obj.release();
 ```
 
-For more information, refer to [binding](/binding/js) and [demo](/demo/js).
+When done be sure to release resources acquired by WebAssembly using `.release`.
+
+```javascript
+    handle.release();
+```
 
 ## Releases
+
+### v1.7.0 - Feb 13th, 2020
+
+* Improved accuracy.
+* Runtime optimization.
+* Added support for Raspberry Pi 4.
+* Added service-based Android demo application.
+* Added C demo applications.
+* Updated documentation.
 
 ### v1.6.0 - April 25th, 2019
 
