@@ -34,7 +34,6 @@ various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is availa
     * [iOS](#ios)
     * [JavaScript](#javascript)
     * [C](#c)
-    * [C#](#c#)
 * [Releases](#releases)
 * [FAQ](#faq)
 
@@ -69,22 +68,21 @@ and fees, [contact us](https://picovoice.ai/contact.html).
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
 Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of
-these two, Porcupine's standard model is 3.6 times more accurate and 3.8 times faster (on Raspberry Pi 3).
+these two, Porcupine's standard model is **3.6 times more accurate** and **3.8 times faster** (on Raspberry Pi 3).
 
 ## Model Variants
 
 The library in this repository is the standard trim of the engine. The standard trim is suitable for applications
 running on microprocessors (e.g. Raspberry Pi and BeagleBone) and mobile devices (Android and iOS). Picovoice has
-developed several different trims of the engine targeted at a wide range of applications. These trims are only available
-to commercial customers.
+developed several trims of the engine targeted at a wide range of applications. These are only available to enterprise
+customers.
 
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
 [lib](/lib) and header files are at [include](/include). Bindings are available at [binding](/binding) to facilitate
-usage from higher-level languages/platforms. Demo applications are located at [demo](/demo). We recommend using one of
-the demo applications as a starting point for your own implementation, when appropriate. Finally,
-[resources](/resources) is a placeholder for data used by various applications within the repository.
+usage from higher-level languages. Demo applications are located at [demo](/demo). Finally, [resources](/resources) is a
+placeholder for data used by various applications within the repository.
 
 ## Running Demo Applications
 
@@ -92,8 +90,8 @@ the demo applications as a starting point for your own implementation, when appr
 
 #### PIP
 
-Install Porcupine [PIP package](https://pypi.org/project/pvporcupine/). Then with a working microphone connected to
-your device run the following in the terminal
+Install Porcupine using [PIP](https://pypi.org/project/pvporcupine/). Then with a working microphone connected to your
+device run the following in the terminal
 
 ```shell
 pvporcupine_mic --keywords porcupine
@@ -108,26 +106,28 @@ In order to process audio files (e.g. WAV) run
 pvporcupine_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
 ``` 
 
-Then the engine scans the given audio file for occurrences of keyword "bumblebee".
+Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Python
+demos go to [demo/python](/demo/python).
 
 #### Repository
 
 This [demo application](/demo/python/porcupine_demo_mic.py) allows testing Porcupine using your computer's microphone.
-It opens an input audio stream, monitors it using Porcupine's library, and logs the detection events into the console.
-Below is an example of running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name
-of the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi).
+It opens an input audio stream, monitors it, and logs the detection events into the console. Below is an example of
+running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name of the operating
+system on your machine (e.g. linux, mac, windows, or raspberry-pi).
 
 ```bash
-python demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn
+python3 demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn
 ```
-
-checkout [demo/python](/demo/python) for detailed information.
 
 ### Android Demos
 
 Using [Android Studio](https://developer.android.com/studio/index.html), open
 [demo/android/Activity](/demo/android/Activity) as an Android project and then run the application. You will need an
 Android device (with developer options enabled) connected to your machine.
+
+In order to learn about how to use Porcupine in long running services go to
+[demo/android/Service](/demo/android/Service).
 
 ### iOS Demos
 
@@ -137,7 +137,7 @@ need an iOS device connected to your machine and a valid Apple developer account
 
 ### Javascript Demos
 
-You need NPM installed first. Install dependencies by executing the following commands from
+You need `npm` installed first. Install dependencies by executing the following commands from
 [demo/javascript](/demo/javascript)
 
 ```bash
@@ -146,7 +146,7 @@ npm install -g copy-files-from-to
 copy-files-from-to
 ```
 
-Run this to launch the demo and follow instructions available on the launched page.
+Run this to launch the demo and follow instructions on the page.
 
 ```bash
 npx live-server --ignore="${PWD}/node_modules"
@@ -154,14 +154,14 @@ npx live-server --ignore="${PWD}/node_modules"
 
 ### C Demos
 
-[This demo](/demo/c/porcupine_demo_mic.c) only runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone)
-and Mac. You need GCC and ALSA packages installed to compile it. Compile the demo using
+[This demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone) and
+Mac. You need `GCC` and `ALSA` installed to compile it. Compile the demo using
 
 ```bash
 gcc -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound -std=c99
 ```
 
-Find the name of your audio input device (microphone) via `arecord -L`. Finally execute the following
+Find the name of audio input device (microphone) on your computer using `arecord -L`. Finally execute the following
 
 ```bash
 demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
@@ -170,7 +170,9 @@ resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${INPUT_AUDIO_DEVI
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the 
 name of the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi), and `${INPUT_AUDIO_DEVICE}` with
-the name of your microphone device. The demo opens an audio stream and detects utterances of "porcupine".
+the name of your microphone device. The demo opens an audio stream and detects utterances of keyword "porcupine".
+
+In order to learn more about file-based C demo go to [demo/c](/demo/c).
 
 ## Integration
 
@@ -265,7 +267,7 @@ Android using [JNI](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/)
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
-Once initialized, ```porcupine``` can be used to monitor incoming audio.
+Once initialized, `porcupine` can be used to monitor incoming audio.
 
 ```java
     private short[] getNextAudioFrame();
@@ -278,8 +280,8 @@ Once initialized, ```porcupine``` can be used to monitor incoming audio.
     }
 ```
 
-Finally, be sure to explicitly release resources acquired by porcupine as the class does not rely on the garbage collector
-for releasing native resources.
+Finally, be sure to explicitly release resources acquired by porcupine as the binding class does not rely on the
+garbage collector for releasing native resources.
 
 ```java
     porcupine.delete();
@@ -471,59 +473,6 @@ Finally, when done be sure to release the acquired resources.
 
 ```c
 pv_porcupine_delete(handle);
-```
-
-### C#
-
-[/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine
-. Below is a quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
-
-
-```csharp
-string model_file_path = ... // The file is available at lib/common/porcupine_params.pv
-string keyword_file_path = ...
-float sensitivity = 0.5;
-Porcupine instance;
-
-instance = new Porcupine(model_file_path, keyword_file_path, sensitivity);
-
-if (instance.Status != PicoVoiceStatus.SUCCESS) {
-    // error handling logic
-}
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
-
-Now the `instance` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
-The sample rate can be retrieved using `instance.SampleRate()`. Finally, Porcupine accepts input audio in consecutive chunks
-(aka frames) the length of each frame can be retrieved using `instance.FrameLength()`.
-
-```csharp
-Int16[] GetNextAudioFrame()
-{
-    ... // some functionality that gets the next frame
-}
-
-
-while (true) {
-    Int16[] frame = GetNextAudioFrame();
-    bool result;
-    PicoVoiceStatus status = instance.Process(pcm, out result);
-    if (status != PicoVoiceStatus.SUCCESS) {
-        // error handling logic
-    }
-    if (result) {
-        // detection event logic/callback
-    }
-}
-```
-
-Finally, when done we don't need to release the resources ourselves; the garbage collector will handle this.
-But, if you want to do it yourself:
-
-```csharp
-instance.Dispose();
 ```
 
 ## Releases
