@@ -23,18 +23,18 @@ various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is availa
 * [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
-    * [Python Demo Application](#python-demo-application)
-    * [Android Demo Application](#android-demo-application)
-    * [iOS Demo Application](#ios-demo-application)
-    * [JavaScript Application](#javascript-application)
-    * [C Demo Application](#c-demo-application)
+    * [Python Demo Application](#python-demos)
+    * [Android Demo Application](#android-demos)
+    * [iOS Demo Application](#ios-demos)
+    * [JavaScript Application](#javascript-demos)
+    * [C Demo Application](#c-demos)
 * [Integration](#integration)
-    * [C](#c)
     * [Python](#python)
-    * [C#](#csharp)
     * [Android](#android)
     * [iOS](#ios)
     * [Javascript](#javascript)
+    * [C](#c)
+    * [C#](#csharp)
 * [Releases](#releases)
 * [FAQ](#faq)
 
@@ -90,7 +90,7 @@ the demo applications as a starting point for your own implementation, when appr
 
 ## Running Demo Applications
 
-### Python
+### Python Demos
 
 #### PIP
 
@@ -125,19 +125,19 @@ python demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_
 
 checkout [demo/python](/demo/python) for detailed information.
 
-### Android
+### Android Demos
 
 Using [Android Studio](https://developer.android.com/studio/index.html), open
 [demo/android/Activity](/demo/android/Activity) as an Android project and then run the application. You will need an
 Android device (with developer options enabled) connected to your machine.
 
-### iOS
+### iOS Demos
 
 Using [Xcode](https://developer.apple.com/xcode/), open
 [demo/ios/PorcupineDemoNoWatch.xcodeproj](/demo/ios/PorcupineDemoNoWatch.xcodeproj) and run the application. You will
 need an iOS device connected to your machine and a valid Apple developer account.
 
-### Javascript
+### Javascript Demos
 
 You need NPM installed first. Install dependencies by executing the following commands from
 [demo/javascript](/demo/javascript)
@@ -154,7 +154,7 @@ Run this to launch the demo and follow instructions available on the launched pa
 npx live-server --ignore="${PWD}/node_modules"
 ```
 
-### C
+### C Demos
 
 [This demo](/demo/c/porcupine_demo_mic.c) only runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone)
 and Mac. You need GCC and ALSA packages installed to compile it. Compile the demo using
@@ -177,55 +177,6 @@ the name of your microphone device. The demo opens an audio stream and detects u
 ## Integration
 
 Below are code snippets showcasing how Porcupine can be integrated into different applications.
-
-### C
-
-Porcupine is implemented in ANSI C and therefore can be directly linked to C applications.
-[include/pv_porcupine.h](/include/pv_porcupine.h) header file contains relevant information. An instance of Porcupine
-object can be constructed as follows.
-
-```c
-const char *model_file_path = ... // The file is available at lib/common/porcupine_params.pv
-const char *keyword_file_path = ...
-const float sensitivity = 0.5f;
-
-pv_porcupine_t *handle;
-
-const pv_status_t status = pv_porcupine_init(model_file_path, 1, &keyword_file_path, &sensitivity, &handle);
-
-if (status != PV_STATUS_SUCCESS) {
-    // error handling logic
-}
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
-within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
-
-Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
-The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in consecutive chunks
-(aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
-
-```c
-extern const int16_t *get_next_audio_frame(void);
-
-while (true) {
-    const int16_t *pcm = get_next_audio_frame();
-    int32_t keyword_index;
-    const pv_status_t status = pv_porcupine_process(handle, pcm, &keyword_index);
-    if (status != PV_STATUS_SUCCESS) {
-        // error handling logic
-    }
-    if (keyword_index != -1) {
-        // detection event logic/callback
-    }
-}
-```
-
-Finally, when done be sure to release the acquired resources.
-
-```c
-pv_porcupine_delete(handle);
-```
 
 ### Python
 
@@ -294,59 +245,6 @@ collector.
 
 ```python
 handle.delete()
-```
-
-### csharp
-
-[/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine
-. Below is a quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
-
-
-```csharp
-string model_file_path = ... // The file is available at lib/common/porcupine_params.pv
-string keyword_file_path = ...
-float sensitivity = 0.5;
-Porcupine instance;
-
-instance = new Porcupine(model_file_path, keyword_file_path, sensitivity);
-
-if (instance.Status != PicoVoiceStatus.SUCCESS) {
-    // error handling logic
-}
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
-
-Now the `instance` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
-The sample rate can be retrieved using `instance.SampleRate()`. Finally, Porcupine accepts input audio in consecutive chunks
-(aka frames) the length of each frame can be retrieved using `instance.FrameLength()`.
-
-```csharp
-Int16[] GetNextAudioFrame()
-{
-    ... // some functionality that gets the next frame
-}
-
-
-while (true) {
-    Int16[] frame = GetNextAudioFrame();
-    bool result;
-    PicoVoiceStatus status = instance.Process(pcm, out result);
-    if (status != PicoVoiceStatus.SUCCESS) {
-        // error handling logic
-    }
-    if (result) {
-        // detection event logic/callback
-    }
-}
-```
-
-Finally, when done we don't need to release the resources ourselves; the garbage collector will handle this.
-But, if you want to do it yourself:
-
-```csharp
-instance.Dispose();
 ```
 
 ### Android
@@ -526,6 +424,108 @@ When done be sure to release resources acquired by WebAssembly using `.release`.
 
 ```javascript
     handle.release();
+```
+
+### C
+
+Porcupine is implemented in ANSI C and therefore can be directly linked to C applications.
+[include/pv_porcupine.h](/include/pv_porcupine.h) header file contains relevant information. An instance of Porcupine
+object can be constructed as follows.
+
+```c
+const char *model_file_path = ... // The file is available at lib/common/porcupine_params.pv
+const char *keyword_file_path = ...
+const float sensitivity = 0.5f;
+
+pv_porcupine_t *handle;
+
+const pv_status_t status = pv_porcupine_init(model_file_path, 1, &keyword_file_path, &sensitivity, &handle);
+
+if (status != PV_STATUS_SUCCESS) {
+    // error handling logic
+}
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
+within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
+
+Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
+The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in consecutive chunks
+(aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
+
+```c
+extern const int16_t *get_next_audio_frame(void);
+
+while (true) {
+    const int16_t *pcm = get_next_audio_frame();
+    int32_t keyword_index;
+    const pv_status_t status = pv_porcupine_process(handle, pcm, &keyword_index);
+    if (status != PV_STATUS_SUCCESS) {
+        // error handling logic
+    }
+    if (keyword_index != -1) {
+        // detection event logic/callback
+    }
+}
+```
+
+Finally, when done be sure to release the acquired resources.
+
+```c
+pv_porcupine_delete(handle);
+```
+
+### cSharp
+
+[/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine
+. Below is a quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
+
+
+```csharp
+string model_file_path = ... // The file is available at lib/common/porcupine_params.pv
+string keyword_file_path = ...
+float sensitivity = 0.5;
+Porcupine instance;
+
+instance = new Porcupine(model_file_path, keyword_file_path, sensitivity);
+
+if (instance.Status != PicoVoiceStatus.SUCCESS) {
+    // error handling logic
+}
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+
+Now the `instance` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
+The sample rate can be retrieved using `instance.SampleRate()`. Finally, Porcupine accepts input audio in consecutive chunks
+(aka frames) the length of each frame can be retrieved using `instance.FrameLength()`.
+
+```csharp
+Int16[] GetNextAudioFrame()
+{
+    ... // some functionality that gets the next frame
+}
+
+
+while (true) {
+    Int16[] frame = GetNextAudioFrame();
+    bool result;
+    PicoVoiceStatus status = instance.Process(pcm, out result);
+    if (status != PicoVoiceStatus.SUCCESS) {
+        // error handling logic
+    }
+    if (result) {
+        // detection event logic/callback
+    }
+}
+```
+
+Finally, when done we don't need to release the resources ourselves; the garbage collector will handle this.
+But, if you want to do it yourself:
+
+```csharp
+instance.Dispose();
 ```
 
 ## Releases
