@@ -117,7 +117,8 @@ running the demo for hotword `picovoice` from the command line. Replace `${SYSTE
 system on your machine (e.g. linux, mac, windows, or raspberry-pi).
 
 ```bash
-python3 demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn
+python3 demo/python/porcupine_demo_mic.py \
+--keyword_file_paths resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn
 ```
 
 ### Android Demos
@@ -219,7 +220,11 @@ library_path = ... # Path to Porcupine's C library available under lib/${SYSTEM}
 model_file_path = ... # It is available at lib/common/porcupine_params.pv
 keyword_file_paths = ['path/to/keyword/1', 'path/to/keyword/2', ...]
 sensitivities = [0.5, 0.4, ...]
-handle = Porcupine(library_path, model_file_path, keyword_file_paths=keyword_file_paths, sensitivities=sensitivities)
+handle = Porcupine(
+    library_path,
+    model_file_path,
+    keyword_file_paths=keyword_file_paths,
+    sensitivities=sensitivities)
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
@@ -382,11 +387,20 @@ let keywordCallback: ((WakeWordConfiguration) -> Void) = {
     // detection event callback
 }
 
-let wakeWordConfiguration1 = WakeWordConfiguration(name: "1", filePath: "path/to/keyword/1", sensitivity: 0.5)
-let wakewordConfiguration2 = WakeWordConfiguration(name: "2", filePath: "path/to/keyword/2", sensitivity: 0.7)
+let wakeWordConfiguration1 = WakeWordConfiguration(
+    name: "1",
+    filePath: "path/to/keyword/1",
+    sensitivity: 0.5)
+let wakewordConfiguration2 = WakeWordConfiguration(
+    name: "2",
+    filePath: "path/to/keyword/2",
+    sensitivity: 0.7)
 let configurations = [ wakeWordConfiguration1, wakewordConfiguration2 ]
 
-let manager = try PorcupineManager(modelFilePath: modelFilePath, wakeKeywordConfigurations: configurations, onDetection: keywordCallback)
+let manager = try PorcupineManager(
+    modelFilePath: modelFilePath,
+    wakeKeywordConfigurations: configurations,
+    onDetection: keywordCallback)
 ```
 
 When initialized, input audio can be monitored using `manager.startListening()`. When done be sure to stop the manager using
@@ -439,7 +453,12 @@ const float sensitivity = 0.5f;
 
 pv_porcupine_t *handle;
 
-const pv_status_t status = pv_porcupine_init(model_file_path, 1, &keyword_file_path, &sensitivity, &handle);
+const pv_status_t status = pv_porcupine_init(
+    model_file_path,
+    1,
+    &keyword_file_path,
+    &sensitivity,
+    &handle);
 
 if (status != PV_STATUS_SUCCESS) {
     // error handling logic
@@ -627,8 +646,8 @@ requested wake word so that our engineering team can review and provide feedback
 **[Q] What is Porcupine’s wake word detection accuracy?**
 
 **[A]** We have extensive benchmarking on Porcupine performance compared accuracy against alternatives,
-and published the result [here](https://github.com/Picovoice/wakeword-benchmark). Porcupine can achieve 90%+ accuracy
-(detection rate) with less than 1 false alarm in 8 hours in the presence of ambient noise with 10dB SNR at microphone
+and published the result [here](https://github.com/Picovoice/wakeword-benchmark). Porcupine can achieve 91%+ accuracy
+(detection rate) with less than 1 false alarm in 10 hours in the presence of ambient noise with 10dB SNR at microphone
 level.
 
 **[Q] Can Porcupine detect the wake word if the speaker is yelling/shouting in anger, excitement, or pain?**
