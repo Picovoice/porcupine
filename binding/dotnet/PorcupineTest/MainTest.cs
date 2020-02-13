@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PorcupineCS;
 
@@ -10,8 +11,8 @@ namespace PorcupineTest
     [TestClass]
     public class MainTest
     {
-        private List<string> paths;
-        private List<float> senses;
+        private List<string> keywordPaths;
+        private List<float> sensitivities;
 
         private string GetAbsRootPath()
         {
@@ -22,9 +23,9 @@ namespace PorcupineTest
         public void Init()
         {
             if (!File.Exists($"libpv_porcupine{GetExtension()}"))
-                File.Copy($"{GetAbsRootPath()}lib/{GetEnvironmentName()}/amd64/libpv_porcupine.dll", $"./libpv_porcupine{GetExtension()}");
+                File.Copy($"{GetAbsRootPath()}lib/{GetEnvironmentName()}/{GetArchitecture()}/libpv_porcupine{GetExtension()}", $"./libpv_porcupine{GetExtension()}");
 
-            if(!File.Exists("porcupine_params.pv"))
+            if (!File.Exists("porcupine_params.pv"))
                 File.Copy($"{GetAbsRootPath()}lib/common/porcupine_params.pv", "./porcupine_params.pv");
 
             if (!File.Exists("porcupine.wav"))
@@ -32,28 +33,31 @@ namespace PorcupineTest
 
             if (!File.Exists("multiple_keywords.wav"))
                 File.Copy($"{GetAbsRootPath()}resources/audio_samples/multiple_keywords.wav", "./multiple_keywords.wav");
-            
-            paths = Directory.GetFiles($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}", $"*_{GetEnvironmentName()}.ppn").ToList();
-            senses = new List<float>();
-            for (int i= 0; i < paths.Count; i++)
-            {
-                senses.Add(0.5f);
-            }
 
-            //Console.WriteLine();
+            string[] keywords = {"americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"};
+
+            keywordPaths = new List<string>();
+            foreach (string keyword in keywords) {
+                keywordPaths.Add($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}/{keyword}_{GetEnvironmentName()}.ppn");
+                Console.WriteLine($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}/{keyword}_{GetEnvironmentName()}.ppn");
+            }
+            
+            sensitivities = new List<float>();
+            for (int i = 0; i < keywordPaths.Count; i++)
+            {
+                sensitivities.Add(0.5f);
+            }
         }
 
-
         [TestMethod]
-        public void MultipleKeywords()
+        public void TestProcess()
         {
             var modelFilePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"));
-            
-            Assert.IsTrue(File.Exists(modelFilePath), $"File.Exists(modelFilePath) --> {modelFilePath}");
-            paths.ForEach(keywordFilePath => Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}"));
 
-            Porcupine p = new Porcupine(modelFilePath, keywordFilePaths: paths, sensitivities: senses);
-            Assert.AreEqual(PicoVoiceStatus.SUCCESS, p.Status, "the status of the creation of the recognition system has failed");
+            Assert.IsTrue(File.Exists(modelFilePath), $"File.Exists(modelFilePath) --> {modelFilePath}");
+            keywordPaths.ForEach(keywordFilePath => Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}"));
+            Console.WriteLine(keywordPaths);
+            Porcupine p = new Porcupine(modelFilePath, keywordPaths: keywordPaths, sensitivities: sensitivities);
             WAVFile file = new WAVFile();
             file.Open("multiple_keywords.wav", WAVFile.WAVFileMode.READ);
             Assert.AreEqual(p.SampleRate(), file.AudioFormat.SampleRateHz, "The samplerate is not equal!!!");
@@ -69,13 +73,15 @@ namespace PorcupineTest
                 int start = i * p.FrameLength();
                 int count = p.FrameLength();
                 List<short> frame = data.GetRange(start, count);
-                PicoVoiceStatus status = p.ProcessMultipleKeywords(frame.ToArray(), out int result);
-                if(result >= 0) 
+                int result = p.Process(frame.ToArray());
+                if (result >= 0)
+                {
                     results.Add(result);
-                Assert.AreEqual(PicoVoiceStatus.SUCCESS, status, "The status is not as expected");
+                    Console.WriteLine(result);
+                }
             }
 
-            var requiredRes = new[] {8, 0, 1, 2, 3, 4, 5, 7, 8, 9};
+            var requiredRes = new[] { 6, 0, 1, 2, 3, 4, 5, 6, 7 };
 
             Assert.AreEqual(requiredRes.Length, results.Count, $"expected results length are different expected {requiredRes.Length} got {results.Count}");
             for (var i = 0; i < results.Count; i++)
@@ -86,59 +92,19 @@ namespace PorcupineTest
             p.Dispose();
         }
 
-        [TestMethod]
-        public void TestProcess()
-        {
-            var modelFilePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "porcupine_params.pv"));
-            var keywordFilePath = Path.GetFullPath($"{GetAbsRootPath()}resources/keyword_files/{GetEnvironmentName()}/porcupine_{GetEnvironmentName()}.ppn");
-
-            Assert.IsTrue(File.Exists(modelFilePath), $"File.Exists(modelFilePath) --> {modelFilePath}");
-            Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}");
-
-            Porcupine p = new Porcupine(modelFilePath, keywordFilePath:keywordFilePath, sensitivity:0.5f);
-            Assert.AreEqual(PicoVoiceStatus.SUCCESS, p.Status, "the status of the creation of the recognition system has failed");
-            WAVFile file = new WAVFile();
-            file.Open("porcupine.wav", WAVFile.WAVFileMode.READ);
-            Assert.AreEqual(p.SampleRate() / 1000, file.BitsPerSample, "The samplerate is not equal!!!");
-            List<short> data = new List<short>();
-            while (file.NumSamplesRemaining > 0)
-            {
-                data.Add(BitConverter.ToInt16(file.GetNextSample_ByteArray()));
-            }
-
-            int framecount = (int) Math.Floor((decimal) (data.Count / p.FrameLength()));
-            var results = new List<bool>();
-            for (int i = 0; i < framecount;  i++)
-            {
-                int start = i * p.FrameLength();
-                int count = p.FrameLength();
-                List<short> frame = data.GetRange(start, count);
-                p.Process(frame.ToArray(), out bool result);
-                results.Add(result);
-            }
-
-            var res = results.Count(x => x);
-
-            Assert.AreEqual(1, res, $"The result is not as expected, expected {1} got {res}");
-            p.Dispose();
-        }
-
-        #region utility
-
         private static string GetExtension()
         {
-            PlatformID platform = Environment.OSVersion.Platform;
-            if (platform == PlatformID.MacOSX)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return ".dylib";
             }
 
-            if (platform == PlatformID.Unix)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return ".so";
             }
 
-            if (platform == PlatformID.Win32NT)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return ".dll";
             }
@@ -148,18 +114,17 @@ namespace PorcupineTest
 
         private static string GetEnvironmentName()
         {
-            PlatformID platform = Environment.OSVersion.Platform;
-            if (platform == PlatformID.MacOSX)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return "mac";
             }
 
-            if (platform == PlatformID.Unix)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return "linux";
             }
 
-            if (platform == PlatformID.Win32NT)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "windows";
             }
@@ -167,6 +132,25 @@ namespace PorcupineTest
             throw new NotImplementedException("this OS has no binding logic implemented yet.");
         }
 
-        #endregion
+
+        private static string GetArchitecture()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return "x86_64";
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return "x86_64";
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "amd64";
+            }
+
+            throw new NotImplementedException("this OS has no binding logic implemented yet.");
+        }
     }
 }

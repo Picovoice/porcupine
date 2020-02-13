@@ -1,18 +1,14 @@
 /*
- * Copyright 2018 Picovoice Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+    Copyright 2018 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is
+    located in the "LICENSE" file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+    express or implied. See the License for the specific language governing permissions and
+    limitations under the License.
+*/
 
 package ai.picovoice.porcupine.demo;
 
@@ -81,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static int[] KEYWORD_FILE_RESOURCE_IDS = {
             R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
-            R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.hey_pico,
-            R.raw.terminator,
+            R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
     };
 
     private void copyPorcupineResourceFiles() throws IOException {
@@ -148,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         // get the keyword file and model parameter file from internal storage.
         String keywordFilePath = new File(this.getFilesDir(), filename + ".ppn")
                 .getAbsolutePath();
-        String modelFilePath = new File(this.getFilesDir(), "params.pv").getAbsolutePath();
+        String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
         final int detectedBackgroundColor = getResources()
                 .getColor(R.color.colorAccent);
         return new PorcupineManager(modelFilePath, keywordFilePath, 0.5f, new KeywordCallback() {

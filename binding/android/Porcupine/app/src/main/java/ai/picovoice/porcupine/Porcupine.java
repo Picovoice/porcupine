@@ -1,48 +1,39 @@
 /*
- * Copyright 2018 Picovoice Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+    Copyright 2018 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is
+    located in the "LICENSE" file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+    express or implied. See the License for the specific language governing permissions and
+    limitations under the License.
+*/
 
 package ai.picovoice.porcupine;
 
 
 /**
- * Android binding for Picovoice's wake word detection (aka Porcupine) library.
+ * Android binding for Picovoice's wake word detection engine (Porcupine).
  */
 public class Porcupine {
-    private final int numberKeywords;
-    private final long object;
-
     static {
         System.loadLibrary("pv_porcupine");
     }
 
+    private final long object;
+
     /**
-     * Constructor for single keyword use case.
-     * @param modelFilePath Absolute path to file containing model parameters.
-     * @param keywordFilePath Absolute path to keyword file containing hyper-parameters.
-     * @param sensitivity Sensitivity parameter. A higher sensitivity value lowers miss rate
-     * at the cost of increased false alarm rate. For more information regarding this parameter
-     * refer to 'include/pv_porcupine.h'.
+     * Constructor.
+     *
+     * @param modelFilePath   Absolute path to file containing model parameters.
+     * @param keywordFilePath Absolute path to keyword model file.
+     * @param sensitivity     Sensitivity parameter. A higher sensitivity value lowers miss rate at
+     *                        the cost of increased false alarm rate. A sensitivity value should be
+     *                        within [0, 1].
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
-    public Porcupine(
-            String modelFilePath,
-            String keywordFilePath,
-            float sensitivity) throws PorcupineException {
-        numberKeywords = 1;
-
+    public Porcupine(String modelFilePath, String keywordFilePath, float sensitivity) throws PorcupineException {
         try {
             object = init(modelFilePath, new String[]{keywordFilePath}, new float[]{sensitivity});
         } catch (Exception e) {
@@ -51,18 +42,17 @@ public class Porcupine {
     }
 
     /**
-     * Constructor for multiple keyword use case.
-     * @param modelFilePath Absolute path to file containing model parameters.
+     * Constructor.
+     *
+     * @param modelFilePath    Absolute path to file containing model parameters.
      * @param keywordFilePaths Array of absolute paths to keyword files.
-     * @param sensitivities Array of sensitivity parameter for each keyword.
+     * @param sensitivities    Array of sensitivity parameters.
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
     public Porcupine(
             String modelFilePath,
             String[] keywordFilePaths,
             float[] sensitivities) throws PorcupineException {
-        numberKeywords = keywordFilePaths.length;
-
         try {
             object = init(modelFilePath, keywordFilePaths, sensitivities);
         } catch (Exception e) {
@@ -72,47 +62,30 @@ public class Porcupine {
 
     /**
      * Number of audio samples per frame expected by C library.
+     *
      * @return acceptable number of audio samples per frame.
      */
     public native int getFrameLength();
 
     /**
-     * Audio sample rate accepted by Porcupine library.
+     * Audio sample rate accepted by Porcupine.
+     *
      * @return sample rate acceptable by Porcupine.
      */
     public native int getSampleRate();
 
     /**
-     * Monitors incoming audio stream for a given wake word.
-     * @param pcm An array of consecutive audio samples. For more information
-     * regarding required audio properties (i.e. sample rate, number of channels encoding, and
-     * number of samples per frame) please refer to 'include/pv_porcupine.h'.
-     * @return True if wake word is detected.
-     * @throws PorcupineException if there is an error while processing the audio sample.
-     */
-    public boolean processFrame(short[] pcm) throws PorcupineException {
-        if (numberKeywords > 1) {
-            throw new PorcupineException(
-                    "Initialized for multiple keyword detection, use 'processFrameMultipleKeywords()' instead.");
-        }
-
-        try {
-            return process(object, pcm) == 0;
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
-    }
-
-    /**
-     * Monitors incoming audio stream for one or more keywords.
-     * @param pcm An array of consecutive audio samples. For more information
-     * regarding required audio properties (i.e. sample rate, number of channels encoding, and
-     * number of samples per frame) please refer to 'include/pv_porcupine.h'.
+     * Monitors incoming audio stream for keywords.
+     *
+     * @param pcm An array of consecutive audio samples. The number of samples per frame can be
+     *            attained by calling {@link #getFrameLength()}. The incoming audio needs to have a
+     *            sample rate equal to {@link #getSampleRate()} and be 16-bit linearly-encoded.
+     *            Porcupine operates on single-channel audio.
      * @return Index of detected keyword. Indexing is 0-based and according to ordering of keyword
      * files passed to constructor. When no keyword is detected it returns -1.
      * @throws PorcupineException if there is an error while processing the audio sample.
      */
-    public int processFrameMultipleKeywords(short[] pcm) throws PorcupineException {
+    public int process(short[] pcm) throws PorcupineException {
         try {
             return process(object, pcm);
         } catch (Exception e) {
@@ -121,7 +94,7 @@ public class Porcupine {
     }
 
     /**
-     * Releases resources acquired by Porcupine's library.
+     * Releases resources acquired.
      */
     public void delete() {
         delete(object);
@@ -129,7 +102,7 @@ public class Porcupine {
 
     private native long init(String modelFilePath, String[] keywordFilePaths, float[] sensitivities);
 
-    private native int process(long object, short[] pcm);
-
     private native void delete(long object);
+
+    private native int process(long object, short[] pcm);
 }

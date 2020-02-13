@@ -89,7 +89,7 @@ public class PorcupineManager {
 
             var result: Int32 = -1
 
-            pv_porcupine_multiple_keywords_process(self.porcupine, audio, &result)
+            pv_porcupine_process(self.porcupine, audio, &result)
             if result >= 0 {
                 let index = Int(result)
                 let keyword = self.wakeWordConfiguration[index]
@@ -102,7 +102,7 @@ public class PorcupineManager {
         let keywordFilePaths = wakeKeywordConfigurations.map { $0.filePath }
         let sensitivities = wakeKeywordConfigurations.map { $0.sensitivity }
 
-        let status = pv_porcupine_multiple_keywords_init(
+        let status = pv_porcupine_init(
             modelFilePath,
             Int32(keywordFilePaths.count),
             keywordFilePaths.map { UnsafePointer(strdup($0)) },

@@ -4,122 +4,94 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a highly-accurate and lightweight **wake word** (a.k.a. **keyword spotting**, **trigger word detection**,
-**hotword detection**, and **voice command**) engine. It enables developers to build always-listening voice-enabled
+Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
 applications. It is
 
-* using **deep neural networks** trained in **real-world situations**.
-* compact and computationally-efficient making it suitable for **IoT**. It can run with as low as **20 KB RAM** on an MCU.
-* **cross-platform**. It is implemented in fixed-point ANSI C. Currently **Raspberry Pi (all variants)**, **Beagle Bone**,
-**Android**, **iOS**, **watchOS**, **Linux (x86_64)**, **Mac**, **Windows**, and **web browsers** (**WebAssembly**) are
-supported. Furthermore, Support for various **ARM Cortex-A** and **ARM Cortex-M** processors and **DSP cores** is available
-for commercial customers.
-* **scalable**. It can detect multiple (possibly many) voice commands concurrently with no added CPU/memory footprint.
-* self-service. Developers are empowered to choose from a set of predefined wake phrases on different platforms and use
-them for free. In addition, developers can generate custom wake phrases using
-[Picovoice Console](https://console.picovoice.ai) (subject to certain limitations and only on Linux, Mac, or Windows)
-for non-commercial, personal, and evaluation-only purposes.  
-
-## Picovoice Console
-
-Announcing the [Picovoice Console](https://console.picovoice.ai). The Console is a web-based platform for
-building voice applications. You can sign up for an account with your email address or with your GitHub account.
-
-The console succeeds the (now retired) optimizer tool, as it can be used to train custom wake-words (Porcupine .ppn files). If you cloned
-this repository prior to August 31st, 2019, we highly recommend to make a new clone and use the Console for training custom
-wake-words. The size of the repository is reduced from ~3 GB to 30 MB (100X reduction), which should make working with it easier as well as reduce cloning timeout errors from GitHub that some people have reported.
-
+* using deep neural networks trained in real-world environments.
+* compact and computationally-efficient making it perfect for IoT.
+* cross-platform. It is implemented in fixed-point ANSI C. Raspberry Pi (all variants), Beagle Bone, Android, iOS,
+watchOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
+various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for enterprise customers.
+* scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
+* self-service. Developers can train custom wake phrases using [Picovoice Console](https://console.picovoice.ai).
 
 ## Table of Contents
 
+* [License](#license)
 * [Try It Out](#try-it-out)
 * [Performance](#performance)
 * [Model Variants](#model-variants)
 * [Structure of Repository](#structure-of-repository)
 * [Running Demo Applications](#running-demo-applications)
-    * [Python Demo Application](#python-demo-application)
-    * [Android Demo Application](#android-demo-application)
-    * [iOS Demo Application](#ios-demo-application)
-* [Evaluating Keyword Files](#evaluating-keyword-files)
+    * [Python](#python-demos)
+    * [Android](#android-demos)
+    * [iOS](#ios-demos)
+    * [JavaScript](#javascript-demos)
+    * [C](#c-demos)
 * [Integration](#integration)
-    * [C](#c)
     * [Python](#python)
-    * [C#](#csharp)
     * [Android](#android)
     * [iOS](#ios)
-    * [Javascript](#javascript)
-* [Contributing](#contributing)
+    * [JavaScript](#javascript)
+    * [C](#c)
 * [Releases](#releases)
-* [License](#license)
 * [FAQ](#faq)
+
+## License
+
+This repository is licensed under Apache 2.0 which allows running the engine on all supported platforms (except
+microcontrollers) using a set of freely-available [models](/resources/keyword_files). You may create custom wake-word
+models using [Picovoice Console](https://console.picovoice.ai/) for **non-commercial and personal use** free of charge.
+The free-tier only allows model training for x86_64 (Linux, Mac, and Windows).
+
+Custom wake-words for other platforms are only provided with the
+purchase of the Picovoice enterprise license. To enquire about the Picovoice development and commercial license terms
+and fees, [contact us](https://picovoice.ai/contact.html).
 
 ## Try It Out
 
-Try out Porcupine using its [interactive web demo](https://picovoice.ai/demos/porcupine_wasm_smart_lighting.html).
-You need a working microphone.
+* [Interactive Web Demo](https://picovoice.ai/demos/porcupine_wasm_smart_lighting.html)
 
-Try out Porcupine by downloading its
-[Android demo application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en). The demo
-application allows you to test Porcupine on a variety of wake words in any environment.
+* [Android Demo Application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en)
 
-![Android Demo](resources/images/demo.gif)
+* [PIP Package](https://pypi.org/project/pvporcupine/)
 
-Try out Porcupine by installing its [PIP package](https://pypi.org/project/pvporcupine/).
-
-See Porcupine in action on an ARM Cortex-M7 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
+* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an ARM Cortex-M7
 
 [![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
 
-See Porcupine in action on an ARM Cortex-M4 (accompanied by [rhino](https://github.com/Picovoice/rhino) for intent inference).
+* Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an ARM Cortex-M4
 
 [![Porcupine in Action](https://img.youtube.com/vi/T0tAnh8tUQg/0.jpg)](https://www.youtube.com/watch?v=T0tAnh8tUQg)
-
-[![Porcupine in Action](https://img.youtube.com/vi/dH8Q-JplpSo/0.jpg)](https://www.youtube.com/watch?v=dH8Q-JplpSo)
 
 ## Performance
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
-Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of these two,
-Porcupine's standard model is 3.34 times more accurate, 4.38 times faster (on Raspberry Pi 3). 
+Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of
+these two, Porcupine's standard model is **3.6 times more accurate** and **3.8 times faster** (on Raspberry Pi 3).
 
 ## Model Variants
 
-Porcupine has two flavours: **standard** and **compressed**. The compressed model is specifically designed
-for deeply-embedded applications (MCUs and DSPs). Its accuracy is slightly lower than the standard model, but it consumes
-considerably less resources. Below is the comparison of runtime measurements for different variants of Porcupine on
-Raspberry Pi3:
-
-| Model Variant | CPU Usage | Model Size (KB)
-:---: | :---: | :---:
-Standard | 5.67% | 1388
-Compressed | 2.43% | 232
-
-For an accuracy comparison of different variants, refer to
-[benchmark repository](https://github.com/Picovoice/wakeword-benchmark).
+The library in this repository is the standard trim of the engine. The standard trim is suitable for applications
+running on microprocessors (e.g. Raspberry Pi and BeagleBone) and mobile devices (Android and iOS). Picovoice has
+developed several trims of the engine targeted at a wide range of applications. These are only available to enterprise
+customers.
 
 ## Structure of Repository
 
 Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib/](/lib) and header files are at [include/](/include). Currently, BeagleBone, Raspberry Pi, Android, iOS, watchOS,
-Linux, macOS, Windows, and modern web browsers (with WebAssembly) are supported.
-
-Bindings are available at [binding/](/binding) to facilitate usage from higher-level languages and platforms. Demo
-applications are located at [demo/](/demo). We recommend using one of the demo applications as a starting point for your own
-implementation, when possible.
-
-Finally, [resources/](/resources) is a placeholder for data used by various applications within the repository.
-
-Below is a quick walkthrough of the repository. For detailed instructions please visit the relevant pages. Throughout the
-documentation, it is assumed that the current working directory is the root of the repository.
+[lib](/lib) and header files are at [include](/include). Bindings are available at [binding](/binding) to facilitate
+usage from higher-level languages. Demo applications are located at [demo](/demo). Finally, [resources](/resources) is a
+placeholder for data used by various applications within the repository.
 
 ## Running Demo Applications
 
-### Python Demo Application
+### Python Demos
 
-### PIP
+#### PIP
 
-Install Porcupine [PIP package](https://pypi.org/project/pvporcupine/). Then with a working  microphone connected to
-your device run the following in the terminal
+Install Porcupine using [PIP](https://pypi.org/project/pvporcupine/). Then with a working microphone connected to your
+device run the following in the terminal
 
 ```shell
 pvporcupine_mic --keywords porcupine
@@ -128,94 +100,84 @@ pvporcupine_mic --keywords porcupine
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
 utterances of wake-word "porcupine".
 
-In order to process audio files (e.g. WAV or FLAC) run
+In order to process audio files (e.g. WAV) run
 
 ```shell
 pvporcupine_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
 ``` 
 
-Then the engine scans the given audio file for occurrences of keyword "bumblebee".
+Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Python
+demos go to [demo/python](/demo/python).
 
-### Repository
+#### Repository
 
-This [demo application](/demo/python) allows testing Porcupine using your computer's microphone. It opens an input audio
-stream, monitors it using Porcupine's library, and logs the detection events into the console. Below is an example of
-running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name of the operating system
-on your machine (e.g. linux, mac, windows, or raspberrypi).
+This [demo application](/demo/python/porcupine_demo_mic.py) allows testing Porcupine using your computer's microphone.
+It opens an input audio stream, monitors it, and logs the detection events into the console. Below is an example of
+running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name of the operating
+system on your machine (e.g. linux, mac, windows, or raspberry-pi).
 
 ```bash
-python demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/${SYSTEM}/alexa_${SYSTEM}.ppn
+python3 demo/python/porcupine_demo_mic.py \
+--keyword_file_paths resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn
 ```
 
-### Android Demo Application
+### Android Demos
 
-Using [Android Studio](https://developer.android.com/studio/index.html), open [demo/android](/demo/android) as an Android
-project and then run the application. You will need an Android device (with developer options enabled) connected to
-your machine.
+Using [Android Studio](https://developer.android.com/studio/index.html), open
+[demo/android/Activity](/demo/android/Activity) as an Android project and then run the application. You will need an
+Android device (with developer options enabled) connected to your machine.
 
-### iOS Demo Application
+In order to learn about how to use Porcupine in long running services go to
+[demo/android/Service](/demo/android/Service).
 
-Using [Xcode](https://developer.apple.com/xcode/), open [demo/ios](/demo/ios) and run the application. You will need
-an iOS device connected to your machine and a valid Apple developer account.
+### iOS Demos
 
-## Evaluating Keyword Files
+Using [Xcode](https://developer.apple.com/xcode/), open
+[demo/ios/PorcupineDemoNoWatch.xcodeproj](/demo/ios/PorcupineDemoNoWatch.xcodeproj) and run the application. You will
+need an iOS device connected to your machine and a valid Apple developer account.
 
-Porcupine enables developers to evaluate models for any wake word. This is done using
-[Picovoice's console](https://console.picovoice.ai/). You may use the console to train wake word models for execution on
-Linux (x86_64), Mac, or Windows and only for non-commercial and personal use.
+### JavaScript Demos
+
+You need `npm` installed first. Install dependencies by executing the following commands from
+[demo/javaScript](/demo/javascript)
+
+```bash
+npm install
+npm install -g copy-files-from-to
+copy-files-from-to
+```
+
+Run this to launch the demo and follow instructions on the page.
+
+```bash
+npx live-server --ignore="${PWD}/node_modules"
+```
+
+### C Demos
+
+[This demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone) and
+Mac. You need `GCC` and `ALSA` installed to compile it. Compile the demo using
+
+```bash
+gcc -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound -std=c99
+```
+
+Find the name of audio input device (microphone) on your computer using `arecord -L`. Finally execute the following
+
+```bash
+demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
+resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${INPUT_AUDIO_DEVICE}
+```
+
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the 
+name of the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi), and `${INPUT_AUDIO_DEVICE}` with
+the name of your microphone device. The demo opens an audio stream and detects utterances of keyword "porcupine".
+
+In order to learn more about file-based C demo go to [demo/c](/demo/c).
 
 ## Integration
 
 Below are code snippets showcasing how Porcupine can be integrated into different applications.
-
-### C
-
-Porcupine is implemented in ANSI C and therefore can be directly linked to C applications.
-[include/pv_porcupine.h](/include/pv_porcupine.h) header file contains relevant information. An instance of Porcupine
-object can be constructed as follows.
-
-```c
-const char *model_file_path = ... // The file is available at lib/common/porcupine_params.pv
-const char *keyword_file_path = ...
-const float sensitivity = 0.5;
-
-pv_porcupine_object_t *handle;
-
-const pv_status_t status = pv_porcupine_init(model_file_path, keyword_file_path, sensitivity, &handle);
-
-if (status != PV_STATUS_SUCCESS) {
-    // error handling logic
-}
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
-
-Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
-The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in consecutive chunks
-(aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
-
-```c
-extern const int16_t *get_next_audio_frame(void);
-
-while (true) {
-    const int16_t *pcm = get_next_audio_frame();
-    bool result;
-    const pv_status_t status = pv_porcupine_process(handle, pcm, &result);
-    if (status != PV_STATUS_SUCCESS) {
-        // error handling logic
-    }
-    if (result) {
-        // detection event logic/callback
-    }
-}
-```
-
-Finally, when done be sure to release the acquired resources.
-
-```c
-pv_porcupine_delete(handle);
-```
 
 ### Python
 
@@ -258,7 +220,11 @@ library_path = ... # Path to Porcupine's C library available under lib/${SYSTEM}
 model_file_path = ... # It is available at lib/common/porcupine_params.pv
 keyword_file_paths = ['path/to/keyword/1', 'path/to/keyword/2', ...]
 sensitivities = [0.5, 0.4, ...]
-handle = Porcupine(library_path, model_file_path, keyword_file_paths=keyword_file_paths, sensitivities=sensitivities)
+handle = Porcupine(
+    library_path,
+    model_file_path,
+    keyword_file_paths=keyword_file_paths,
+    sensitivities=sensitivities)
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
@@ -273,8 +239,7 @@ def get_next_audio_frame():
     pass
 
 while True:
-    pcm = get_next_audio_frame()
-    keyword_index = handle.process(pcm)
+    keyword_index = handle.process(get_next_audio_frame())
     if keyword_index >= 0:
         # detection event logic/callback
         pass
@@ -287,64 +252,11 @@ collector.
 handle.delete()
 ```
 
-### csharp
-
-[/binding/dotnet/PorcupineCS/Porcupine.cs](/binding/dotnet/PorcupineCS/Porcupine.cs) provides a c# binding for Porcupine
-. Below is a quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
-
-
-```csharp
-string model_file_path = ... // The file is available at lib/common/porcupine_params.pv
-string keyword_file_path = ...
-float sensitivity = 0.5;
-Porcupine instance;
-
-instance = new Porcupine(model_file_path, keyword_file_path, sensitivity);
-
-if (instance.Status != PicoVoiceStatus.SUCCESS) {
-    // error handling logic
-}
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
-
-Now the `instance` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
-The sample rate can be retrieved using `instance.SampleRate()`. Finally, Porcupine accepts input audio in consecutive chunks
-(aka frames) the length of each frame can be retrieved using `instance.FrameLength()`.
-
-```csharp
-Int16[] GetNextAudioFrame()
-{
-    ... // some functionality that gets the next frame
-}
-
-
-while (true) {
-    Int16[] frame = GetNextAudioFrame();
-    bool result;
-    PicoVoiceStatus status = instance.Process(pcm, out result);
-    if (status != PicoVoiceStatus.SUCCESS) {
-        // error handling logic
-    }
-    if (result) {
-        // detection event logic/callback
-    }
-}
-```
-
-Finally, when done we don't need to release the resources ourselves; the garbage collector will handle this.
-But, if you want to do it yourself:
-
-```csharp
-instance.Dispose();
-```
-
 ### Android
 
 There are two possibilities for integrating Porcupine into an Android application.
 
-#### Binding
+#### Low-Level API
 
 [Porcupine](/binding/android/Porcupine/app/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a binding for
 Android using [JNI](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/). It can be initialized using.
@@ -360,7 +272,7 @@ Android using [JNI](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/)
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
-Once initialized, ```porcupine``` can be used to monitor incoming audio.
+Once initialized, `porcupine` can be used to monitor incoming audio.
 
 ```java
     private short[] getNextAudioFrame();
@@ -373,8 +285,8 @@ Once initialized, ```porcupine``` can be used to monitor incoming audio.
     }
 ```
 
-Finally, be sure to explicitly release resources acquired by porcupine as the class does not rely on the garbage collector
-for releasing native resources.
+Finally, be sure to explicitly release resources acquired by porcupine as the binding class does not rely on the
+garbage collector for releasing native resources.
 
 ```java
     porcupine.delete();
@@ -425,7 +337,7 @@ let keywordFilePaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
 let sensitivities: [Float] = [0.3, 0.7, ...];
 var handle: OpaquePointer?
 
-let status = pv_porcupine_multiple_keywords_init(
+let status = pv_porcupine_init(
     modelFilePath,
     Int32(keywordFilePaths.count), // Number of different keywords to monitor for
     keywordFilePaths.map{ UnsafePointer(strdup($0)) },
@@ -447,7 +359,7 @@ while true {
     let pcm = getNextAudioFrame()
     var keyword_index: Int32 = -1
 
-    let status = pv_porcupine_multiple_keywords_process(handle, pcm, &keyword_index)
+    let status = pv_porcupine_process(handle, pcm, &keyword_index)
     if status != PV_STATUS_SUCCESS {
         // error handling logic
     }
@@ -475,57 +387,123 @@ let keywordCallback: ((WakeWordConfiguration) -> Void) = {
     // detection event callback
 }
 
-let wakeWordConfiguration1 = WakeWordConfiguration(name: "1", filePath: "path/to/keyword/1", sensitivity: 0.5)
-let wakewordConfiguration2 = WakeWordConfiguration(name: "2", filePath: "path/to/keyword/2", sensitivity: 0.7)
+let wakeWordConfiguration1 = WakeWordConfiguration(
+    name: "1",
+    filePath: "path/to/keyword/1",
+    sensitivity: 0.5)
+let wakewordConfiguration2 = WakeWordConfiguration(
+    name: "2",
+    filePath: "path/to/keyword/2",
+    sensitivity: 0.7)
 let configurations = [ wakeWordConfiguration1, wakewordConfiguration2 ]
 
-let manager = try PorcupineManager(modelFilePath: modelFilePath, wakeKeywordConfigurations: configurations, onDetection: keywordCallback)
+let manager = try PorcupineManager(
+    modelFilePath: modelFilePath,
+    wakeKeywordConfigurations: configurations,
+    onDetection: keywordCallback)
 ```
 
 When initialized, input audio can be monitored using `manager.startListening()`. When done be sure to stop the manager using
 `manager.stopListening()`.
 
-### Javascript
+### JavaScript
 
-Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The [Javascript binding](/binding/js/porcupine/porcupine.js)
-makes it trivial use Porcupine within a Javascript environment. Instantiate a new instance of engine using the factory method
-as below
+Porcupine is available on modern web browsers in [WebAssembly](https://webassembly.org/). The
+[JavaScript binding](/binding/javascript/porcupine.js) makes it trivial use Porcupine within a JavaScript environment.
+Instantiate a new instance of engine using the factory method as below
 
 ```javascript
-    let keywordIDs = Array(UInt8Array(), ...);
-    let sensitivities = Float32Array(...);
-    let obj = Porcupine.create(keywordIDs, sensitivities);
+let keywordModels = [new Uint8Array([...]), ...];
+let sensitivities = new Float32Array([0.5, ...]);
+
+let handle = Porcupine.create(keywordModels, sensitivities)
 ```
 
-when initialized incoming audio stream can be processed using the `process` method. Be sure to release the resources
-acquired by WebAssembly using `.release` when done
+When instantiated `handle` can process audio via its `.process` method.
 
 ```javascript
+    let getNextAudioFrame = function() {
+        ...
+    };
+
     while (true) {
-        obj.process(audioFrameInt16Array);
+        let keywordIndex = handle.process(getNextAudioFrame());
+        if (keywordIndex !== -1) {
+            // detection event callback
+        }
     }
-    
-    // release when done
-    obj.release();
 ```
 
-For more information, refer to [binding](/binding/js) and [demo](/demo/js).
+When done be sure to release resources acquired by WebAssembly using `.release`.
 
-## Contributing
+```javascript
+    handle.release();
+```
 
-If you would like to contribute to Porcupine, please read through [CONTRIBUTING.md](CONTRIBUTING.md).
+### C
 
-### Acknowledgements
+Porcupine is implemented in ANSI C and therefore can be directly linked to C applications.
+[include/pv_porcupine.h](/include/pv_porcupine.h) header file contains relevant information. An instance of Porcupine
+object can be constructed as follows.
 
-* Thank you @charithe for Go binding/demo.
-* Thank you @HeadhunterXamd for C Sharp binding/demo.
-* Thank you @oziee for adding C++ ALSA demo.
-* Thank you @herlihalim for refactoring iOS binding and demo.
-* Thank you @veeableful for adding C++ and Rust demo.
-* Thank you @fquirin for adding non-blocking Python demo.
-* Thank you @dyah10 for adding watchOS binding and demo.
+```c
+const char *model_file_path = ... // The file is available at lib/common/porcupine_params.pv
+const char *keyword_file_path = ...
+const float sensitivity = 0.5f;
+
+pv_porcupine_t *handle;
+
+const pv_status_t status = pv_porcupine_init(
+    model_file_path,
+    1,
+    &keyword_file_path,
+    &sensitivity,
+    &handle);
+
+if (status != PV_STATUS_SUCCESS) {
+    // error handling logic
+}
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
+within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
+
+Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
+The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in consecutive chunks
+(aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
+
+```c
+extern const int16_t *get_next_audio_frame(void);
+
+while (true) {
+    const int16_t *pcm = get_next_audio_frame();
+    int32_t keyword_index;
+    const pv_status_t status = pv_porcupine_process(handle, pcm, &keyword_index);
+    if (status != PV_STATUS_SUCCESS) {
+        // error handling logic
+    }
+    if (keyword_index != -1) {
+        // detection event logic/callback
+    }
+}
+```
+
+Finally, when done be sure to release the acquired resources.
+
+```c
+pv_porcupine_delete(handle);
+```
 
 ## Releases
+
+### v1.7.0 - Feb 13th, 2020
+
+* Improved accuracy.
+* Runtime optimization.
+* Added support for Raspberry Pi 4.
+* Added service-based Android demo application.
+* Added C demo applications.
+* Updated documentation.
 
 ### v1.6.0 - April 25th, 2019
 
@@ -565,18 +543,6 @@ CPU/memory footprint.
 ### v1.0.0 - March 13, 2018
 
 * Initial release.
-
-## License
-
-This repository is licensed under Apache 2.0. This allows running the Porcupine wake word detection library on all
-supported platforms using the set of freely-available [keyword files](/resources/keyword_files).
-
-You may create custom wake-word models (for execution on Linux, Mac, and Windows) using
-[Picovoice Console](https://console.picovoice.ai/) for non-commercial and personal use free of charge.
-
-Custom wake-words for other platforms must be generated by the Picovoice engineering team and are only provided with the
-purchase of the Picovoice development or commercial license. To enquire about the Picovoice development and commercial
-license terms and fees, [contact us](https://picovoice.ai/contact.html).
 
 ## FAQ
 
@@ -680,8 +646,8 @@ requested wake word so that our engineering team can review and provide feedback
 **[Q] What is Porcupine’s wake word detection accuracy?**
 
 **[A]** We have extensive benchmarking on Porcupine performance compared accuracy against alternatives,
-and published the result [here](https://github.com/Picovoice/wakeword-benchmark). Porcupine can achieve 90%+ accuracy
-(detection rate) with less than 1 false alarm in 8 hours in the presence of ambient noise with 10dB SNR at microphone
+and published the result [here](https://github.com/Picovoice/wakeword-benchmark). Porcupine can achieve 91%+ accuracy
+(detection rate) with less than 1 false alarm in 10 hours in the presence of ambient noise with 10dB SNR at microphone
 level.
 
 **[Q] Can Porcupine detect the wake word if the speaker is yelling/shouting in anger, excitement, or pain?**
