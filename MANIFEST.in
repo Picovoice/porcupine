@@ -1,7 +1,7 @@
 include LICENSE
 
-include demo/python/porcupine_demo_mic.py
 include demo/python/porcupine_demo_file.py
+include demo/python/porcupine_demo_mic.py
 include binding/python/porcupine.py
 include lib/common/porcupine_params.pv
 include lib/beaglebone/libpv_porcupine.so

@@ -6,7 +6,7 @@ LONG_DESCRIPTION = \
     """
     #[Porcupine](https://github.com/Picovoice/porcupine).   
 
-    It supports Linux (x86_64), Mac, Raspberry Pi (Zero, 1, 2, 3), and BeagleBone.
+    It supports Linux (x86_64), Mac, Raspberry Pi (Zero, 1, 2, 3, 4), and BeagleBone.
 
     ## Installation
 
@@ -86,7 +86,7 @@ for x in ('build', 'dist', 'pvporcupine.egg-info'):
 
 setuptools.setup(
     name="pvporcupine",
-    version="1.6.3",
+    version="1.7.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-device wake word detection powered by deep learning.",
