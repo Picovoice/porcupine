@@ -56,16 +56,17 @@ namespace PorcupineTest
 
             Assert.IsTrue(File.Exists(modelFilePath), $"File.Exists(modelFilePath) --> {modelFilePath}");
             keywordPaths.ForEach(keywordFilePath => Assert.IsTrue(File.Exists(keywordFilePath), $"File.Exists(keywordFilePath) --> {keywordFilePath}"));
-            Console.WriteLine(keywordPaths);
             Porcupine p = new Porcupine(modelFilePath, keywordPaths: keywordPaths, sensitivities: sensitivities);
-            WAVFile file = new WAVFile();
-            file.Open("multiple_keywords.wav", WAVFile.WAVFileMode.READ);
-            Assert.AreEqual(p.SampleRate(), file.AudioFormat.SampleRateHz, "The samplerate is not equal!!!");
+            
             List<short> data = new List<short>();
-            while (file.NumSamplesRemaining > 0)
-            {
-                data.Add(BitConverter.ToInt16(file.GetNextSample_ByteArray()));
+            using (BinaryReader reader = new BinaryReader(File.Open("multiple_keywords.wav", FileMode.Open))) {
+                reader.ReadBytes(44);
+                
+                while (reader.BaseStream.Position != reader.BaseStream.Length) {
+                    data.Add(reader.ReadInt16());
+                }
             }
+            
             int framecount = (int)Math.Floor((decimal)(data.Count / p.FrameLength()));
             var results = new List<int>();
             for (int i = 0; i < framecount; i++)
@@ -77,7 +78,6 @@ namespace PorcupineTest
                 if (result >= 0)
                 {
                     results.Add(result);
-                    Console.WriteLine(result);
                 }
             }
 
