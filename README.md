@@ -18,6 +18,7 @@ various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is availa
 ## Table of Contents
 
 * [License](#license)
+* [Use Cases](#use-cases)
 * [Try It Out](#try-it-out)
 * [Performance](#performance)
 * [Model Variants](#model-variants)
@@ -47,6 +48,17 @@ The free-tier only allows model training for x86_64 (Linux, Mac, and Windows).
 Custom wake-words for other platforms are only provided with the
 purchase of the Picovoice enterprise license. To enquire about the Picovoice development and commercial license terms
 and fees, [contact us](https://picovoice.ai/contact.html).
+
+## Use Cases
+
+Porcupine is the right product if you need to detect one or a few simple voice commands. Voice activation (wake word detection),
+music control (e.g. volume up/down, play next/last), and voice navigation are a few examples.
+
+* If you need to understand complex and naturally-spoken voice commands within a specific domain, check out
+[Rhino](https://github.com/Picovoice/rhino).
+* If you need open-domain transcription, checkout [Leopard](https://github.com/Picovoice/leopard).
+* If you need open-domain transcription with real-time feedback (i.e. partial results), checkout
+[Cheetah](https://github.com/Picovoice/cheetah).
 
 ## Try It Out
 
