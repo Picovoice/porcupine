@@ -47,7 +47,7 @@ The free-tier only allows model training for x86_64 (Linux, Mac, and Windows).
 
 Custom wake-words for other platforms are only provided with the
 purchase of the Picovoice enterprise license. To enquire about the Picovoice development and commercial license terms
-and fees, [contact us](https://picovoice.ai/contact.html).
+and fees, [contact Picovoice](https://picovoice.ai/contact/).
 
 ## Use Cases
 
