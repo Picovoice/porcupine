@@ -62,7 +62,7 @@ music control (e.g. volume up/down, play next/last), and voice navigation are a 
 
 ## Try It Out
 
-* [Interactive Web Demo](https://picovoice.ai/demos/porcupine_wasm_smart_lighting.html)
+* [Interactive Web Demo](https://picovoice.ai/demos/lamp/)
 
 * [Android Demo Application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en)
 
