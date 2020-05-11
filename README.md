@@ -570,7 +570,7 @@ to transcribe free-form speech in an open domain, then you should use [Cheetah](
 **[Q] What are the benefits of implementing voice interfaces on-device, instead of using cloud services?**
 
 **[A]** Privacy, minimal latency, improved reliability, runtime efficiency, and cost savings, to name a few. More detail is
-available [here](https://picovoice.ai/blog/the_case_for_voice_ai_on_the_edge.html).
+available [here](https://picovoice.ai/blog/the-case-for-voice-ai-on-the-edge/).
 
 **[Q] Does Picovoice technology work in far-field applications?**
 
