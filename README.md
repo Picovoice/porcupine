@@ -670,13 +670,13 @@ mumbling, etc. We do require the speaker to somewhat clearly vocalize the phrase
 **[Q] Does Porcupine’s detection accuracy depend on the choice of wake word?**
 
 **[A]** Generally speaking yes, however it is difficult to quantify the cause-and-effect accurately. We have published
-a guide [here](https://picovoice.ai/docs/choose-wake-word/index.html) to help you pick a wake word that would achieve
+a guide [here](https://picovoice.ai/blog/tips-for-choosing-a-wake-word/) to help you pick a wake word that would achieve
 optimal performance. You will need to avoid using short phrases, and make sure your wake word includes diverse sounds
 and at least six phonemes. Long phrases are also not recommended due to the poor user experience.
 
 **[Q] Is there a guideline for picking a wake word?**
 
-**[A]** We have published a guide [here](https://picovoice.ai/docs/choose-wake-word/index.html) to help you pick a
+**[A]** We have published a guide [here](https://picovoice.ai/blog/tips-for-choosing-a-wake-word/) to help you pick a
 wake word that would achieve optimal performance.
 
 **[Q] How much CPU and memory does Picovoice wake word detection software consume?**
