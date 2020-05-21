@@ -11,16 +11,9 @@
 
 import argparse
 import os
-import platform
 import sys
 
 import soundfile
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../binding/python'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
-
-from porcupine import Porcupine
-from util import *
 
 
 def _run(input_audio_file_path, library_path, model_file_path, keyword_file_paths, sensitivity):
@@ -108,4 +101,9 @@ def main():
 
 
 if __name__ == '__main__':
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../binding/python'))
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
+    from util import *
+    from porcupine import Porcupine
+
     main()

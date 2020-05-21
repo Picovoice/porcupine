@@ -20,12 +20,6 @@ import numpy as np
 import pyaudio
 import soundfile
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../binding/python'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
-
-from porcupine import Porcupine
-from util import *
-
 
 class PorcupineDemo(Thread):
     """
@@ -204,4 +198,9 @@ def main():
 
 
 if __name__ == '__main__':
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../binding/python'))
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
+    from porcupine import Porcupine
+    from util import *
+
     main()

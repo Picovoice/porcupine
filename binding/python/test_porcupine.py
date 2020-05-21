@@ -16,10 +16,6 @@ import unittest
 import soundfile
 from porcupine import Porcupine
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
-
-from util import *
-
 
 class PorcupineTestCase(unittest.TestCase):
     def test_process(self):
@@ -77,4 +73,7 @@ class PorcupineTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
+    from util import *
+
     unittest.main()
