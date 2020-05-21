@@ -11,7 +11,7 @@ LONG_DESCRIPTION = \
     ## Installation
 
     ```bash
-    pip install pvporcupine
+    sudo pip3 install pvporcupine
     ```
 
     If it fails to install PyAudio, you can do the following for Debian/Ubuntu as referenced in the installation guide
@@ -20,14 +20,14 @@ LONG_DESCRIPTION = \
     Install PyAudio  
 
     ```bash
-    sudo apt-get install python-pyaudio python3-pyaudio
+    sudo apt-get install python3-pyaudio
     ```
 
     If the above fails then first run the following
 
     ```bash
     sudo apt-get install portaudio19-dev
-    sudo apt-get install python-all-dev python3-all-dev
+    sudo apt-get install python3-all-dev
     ```
 
     ## Usage
