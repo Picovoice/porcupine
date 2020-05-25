@@ -80,7 +80,7 @@ music control (e.g. volume up/down, play next/last), and voice navigation are a 
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
 Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of
-these two, Porcupine's standard model is **6.4 times more accurate** and **6.5 times faster** (on Raspberry Pi 3).
+these two, Porcupine's standard model is **5.4 times more accurate** and **6.5 times faster** (on Raspberry Pi 3).
 
 ## Model Variants
 
