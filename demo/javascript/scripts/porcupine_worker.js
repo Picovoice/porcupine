@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -20,6 +20,12 @@ onmessage = function (e) {
     case "process":
       process(e.data.inputFrame);
       break;
+    case "pause":
+      paused = true;
+      break;
+    case "resume":
+      paused = false;
+      break;
     case "release":
       release();
       break;
@@ -29,10 +35,11 @@ onmessage = function (e) {
 let keywordIDArray;
 let keywords;
 let sensitivities;
-
+let paused;
 let porcupine = null;
 
 function init(keywordIDs, _sensitivities_) {
+  paused = false;
   keywordIDArray = Object.values(keywordIDs);
   keywords = Object.keys(keywordIDs);
   sensitivities = _sensitivities_;
@@ -43,13 +50,15 @@ function init(keywordIDs, _sensitivities_) {
 }
 
 function process(inputFrame) {
-  if (porcupine == null && Porcupine.isLoaded()) {
+  if (porcupine === null && Porcupine.isLoaded()) {
     porcupine = Porcupine.create(keywordIDArray, sensitivities);
-  } else if (porcupine != null) {
-    let keywordIndex = porcupine.process(inputFrame);
-    postMessage({
-      keyword: keywordIndex === -1 ? null : keywords[keywordIndex],
-    });
+  } else if (porcupine !== null) {
+    if (!paused) {
+      let keywordIndex = porcupine.process(inputFrame);
+      postMessage({
+        keyword: keywordIndex === -1 ? null : keywords[keywordIndex],
+      });
+    }
   }
 }
 
