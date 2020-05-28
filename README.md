@@ -508,7 +508,7 @@ pv_porcupine_delete(handle);
 
 ## Releases
 
-### v1.8.0 - May 28th, 2020
+### v1.8.0 - May 27th, 2020
 
 * Improved accuracy.
 * Runtime optimization.
