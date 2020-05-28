@@ -11,8 +11,12 @@
   },
   "dependencies": {
     "@picovoice/web-voice-processor": "1.3.0",
-    "live-server": "*",
-    "copy-files-from-to": "2.1.0"
+    "copy-files-from-to": "2.3.0",
+    "serve": "11.3.1"
+  },
+  "scripts": {
+    "copy": "yarn run copy-files-from-to",
+    "start": "yarn run serve"
   },
   "copyFiles": [
     {

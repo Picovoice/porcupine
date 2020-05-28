@@ -1,20 +1,31 @@
-# Usage
+# JavaScript Lamp Demo
 
-Install dependencies by executing the following commands from [demo/javascript](/demo/javascript):
+## Usage
+
+Install the demo's dependencies by using either yarn or npm. Execute the commands provided from [demo/javascript](/demo/javascript). This will launch a local server hosting the demo.
+
+### Yarn
+
+```bash
+yarn
+yarn copy
+yarn start
+```
+
+### NPM
 
 ```bash
 npm install
 npm install -g copy-files-from-to
 copy-files-from-to
+npx serve
 ```
 
-Run this to launch the demo:
+## Try the demo
 
-```bash
-npx live-server --ignore="${PWD}/node_modules"
-```
+Open http://localhost:5000 in your web browser to try the demo.
 
-## Compatibility
+## Browser Compatibility
 
 [PorcupineManager](scripts/porcupine_manager.js) uses the
 [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) and
