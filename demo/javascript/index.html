@@ -11,57 +11,159 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Porcupine Demo</title>
-</head>
-<body>
-    <div align="center" style="padding: 2.5em">
-        <h1>
-            Porcupine Demo
-        </h1>
+  </head>
+  <body>
+    <div align="center" style="padding: 2.5em;">
+      <h1>
+        Porcupine Demo
+      </h1>
 
-        <div>
-            <img src="images/light_bulb_blue.svg" width="256em" id="light_bulb" alt="">
-        </div>
+      <div>
+        <img
+          src="images/light_bulb_blue.svg"
+          width="256em"
+          id="light_bulb"
+          alt=""
+        />
+      </div>
 
-        <div align="left" style="padding: 2em 0">
-            <p style="line-height: 2; font-size: 1.25em">
-                This demo allows you to change the color of the smart lamp (above) using Porcupine. Note that you need a
-                working microphone. This demo is running locally in the browser. You can turn off your internet connection
-                and it will keep working.
-            </p>
+      <div align="left" style="padding: 2em 0;">
+        <p style="line-height: 2; font-size: 1.25em;">
+          This demo allows you to change the color of the smart lamp (above)
+          using Porcupine. Note that you need a working microphone. This demo is
+          running locally in the browser. You can turn off your internet
+          connection and it will keep working.
+        </p>
 
-            <p style="line-height: 2; font-size: 1.25em">
-                The wake phrase is <strong>Hey Edison</strong>. After the wake phrase is detected the lamp turns red and
-                starts listening to follow-on color name. Available colors are
-                <span style="background-color: #FF69B4;padding: 0.25em; border-radius: 5px">Hot Pink</span>&nbsp;,
-                <span style="background-color: #FF1493;padding: 0.25em; border-radius: 5px">Deep Pink</span>&nbsp;,
-                <span style="background-color: #B22222;padding: 0.25em; border-radius: 5px">Fire Brick</span>&nbsp;,
-                <span style="background-color: #FFEFD5;padding: 0.25em; border-radius: 5px">Papaya Whip</span>&nbsp;,
-                <span style="background-color: #FFDAB9;padding: 0.25em; border-radius: 5px">Peach Puff</span>&nbsp;,
-                <span style="background-color: #F4A460;padding: 0.25em; border-radius: 5px">Sandy Brown</span>&nbsp;,
-                <span style="background-color: #32CD32;padding: 0.25em; border-radius: 5px">Lime Green</span>&nbsp;,
-                <span style="background-color: #228B22;padding: 0.25em; border-radius: 5px">Forest Green</span>&nbsp;,
-                <span style="background-color: #00BFFF;padding: 0.25em; border-radius: 5px">Deep Sky Blue</span>&nbsp;,
-                <span style="background-color: #FF00FF;padding: 0.25em; border-radius: 5px">Magenta</span>&nbsp;,
-                <span style="background-color: #F5F5F5;padding: 0.25em; border-radius: 5px">White Smoke</span>&nbsp;,
-                <span style="background-color: #FFF0F5;padding: 0.25em; border-radius: 5px">Lavender Blush</span>&nbsp;,
-                and <span style="background-color: #696969;padding: 0.25em; border-radius: 5px">Dim Gray</span>&nbsp;.
-            </p>
+        <p style="line-height: 2; font-size: 1.25em;">
+          The wake phrase is <strong>Hey Edison</strong>. After the wake phrase
+          is detected the lamp turns red and starts listening to follow-on color
+          name. Available colors are
+          <span
+            style="
+              background-color: #ff69b4;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Hot Pink</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #ff1493;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Deep Pink</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #b22222;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Fire Brick</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #ffefd5;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Papaya Whip</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #ffdab9;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Peach Puff</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #f4a460;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Sandy Brown</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #32cd32;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Lime Green</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #228b22;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Forest Green</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #00bfff;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Deep Sky Blue</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #ff00ff;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Magenta</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #f5f5f5;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >White Smoke</span
+          >&nbsp;,
+          <span
+            style="
+              background-color: #fff0f5;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Lavender Blush</span
+          >&nbsp;, and
+          <span
+            style="
+              background-color: #696969;
+              padding: 0.25em;
+              border-radius: 5px;
+            "
+            >Dim Gray</span
+          >&nbsp;.
+        </p>
 
-            <p align="center" >
-                <button onclick="start()" id="demo_button" style="font-size: 1.5em; padding: 0.5em 1em">
-                    Start Demo
-                </button>
-            </p>
-        </div>
+        <p align="center">
+          <button
+            onclick="start()"
+            id="demo_button"
+            style="font-size: 1.5em; padding: 0.5em 1em;"
+          >
+            Start Demo
+          </button>
+        </p>
+      </div>
     </div>
 
     <script src="node_modules/@picovoice/web-voice-processor/src/web_voice_processor.js"></script>
     <script src="scripts/porcupine_manager.js"></script>
     <script>
-        const KEYWORDS_ID = {
+const KEYWORDS_ID = {
             "Hey Edison": new Uint8Array([
                 0x8d, 0x9a, 0x9e, 0x3e, 0x6a, 0xf2, 0x11, 0x40, 0xc4, 0x91, 0x94, 0xdd, 0xf5, 0xe0, 0xf1, 0xc1, 0xc1,
                 0x2d, 0x15, 0x71, 0x62, 0x29, 0x4d, 0x15, 0x41, 0x9b, 0x59, 0x48, 0x2d, 0xe0, 0x28, 0x4c, 0x97, 0x36,
@@ -2774,99 +2876,130 @@
             ])
         };
 
-        const COLORS_CODE = {
-            "Hot Pink": "#FF69B4",
-            "Deep Pink": "#FF1493",
-            "Fire Brick": "#B22222",
-            "Papaya Whip": "#FFEFD5",
-            "Peach Puff": "#FFDAB9",
-            "Sandy Brown": "#F4A460",
-            "Lime Green": "#32CD32",
-            "Forest Green": "#228B22",
-            "Deep Sky Blue": "#191970",
-            "Magenta": "#FF00FF",
-            "White Smoke": "#F5F5F5",
-            "Lavender Blush": "#FFF0F5",
-            "Dim Gray": "#696969"
-        };
+      const COLORS_CODE = {
+        "Hot Pink": "#FF69B4",
+        "Deep Pink": "#FF1493",
+        "Fire Brick": "#B22222",
+        "Papaya Whip": "#FFEFD5",
+        "Peach Puff": "#FFDAB9",
+        "Sandy Brown": "#F4A460",
+        "Lime Green": "#32CD32",
+        "Forest Green": "#228B22",
+        "Deep Sky Blue": "#191970",
+        Magenta: "#FF00FF",
+        "White Smoke": "#F5F5F5",
+        "Lavender Blush": "#FFF0F5",
+        "Dim Gray": "#696969",
+      };
 
-        const SENSITIVITIES = new Float32Array([
-            0.5, // "Hey Edison"
-            0.5, // "Hot Pink"
-            0.5, // "Deep Pink"
-            0.5, // "Fire Brick"
-            0.5, // "Papaya Whip"
-            0.5, // "Peach Puff"
-            0.5, // "Sandy Brown"
-            0.5, // "Lime Green"
-            0.5, // "Forest Green"
-            0.5, // "Midnight Blue"
-            0.5, // "Magenta"
-            0.5, // "White Smoke"
-            0.5, // "Lavender Blush"
-            0.5 // "Dim Gray"
-        ]);
+      const SENSITIVITIES = new Float32Array([
+        0.5, // "Hey Edison"
+        0.5, // "Hot Pink"
+        0.5, // "Deep Pink"
+        0.5, // "Fire Brick"
+        0.5, // "Papaya Whip"
+        0.5, // "Peach Puff"
+        0.5, // "Sandy Brown"
+        0.5, // "Lime Green"
+        0.5, // "Forest Green"
+        0.5, // "Midnight Blue"
+        0.5, // "Magenta"
+        0.5, // "White Smoke"
+        0.5, // "Lavender Blush"
+        0.5, // "Dim Gray"
+      ]);
 
-        let currentTimeSeconds = function () {
-            return new Date().getTime() / 1000;
-        };
+      let currentTimeSeconds = function () {
+        return new Date().getTime() / 1000;
+      };
 
-        let is_listening = false;
-        let listeningStartSeconds;
-        let processCallback = function (keyword) {
-            if (keyword === null) {
-                if (is_listening && (currentTimeSeconds() - listeningStartSeconds) > 5) {
-                    document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
-                    is_listening = false;
-                }
-                return;
-            }
+      let is_listening = false;
+      let listeningStartSeconds;
+      let processCallback = function (keyword) {
+        if (keyword === null) {
+          if (
+            is_listening &&
+            currentTimeSeconds() - listeningStartSeconds > 5
+          ) {
+            document
+              .querySelector("#light_bulb")
+              .setAttribute("src", "images/light_bulb_blue.svg");
+            is_listening = false;
+          }
+          return;
+        }
 
-            if (is_listening) {
-                if (keyword in COLORS_CODE) {
-                    let backgroundColor = "background-color:" + COLORS_CODE[keyword];
-                    document.querySelector("#light_bulb").setAttribute("style", backgroundColor);
-                }
-                document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
-                is_listening = false;
-            }
+        if (is_listening) {
+          if (keyword in COLORS_CODE) {
+            let backgroundColor = "background-color:" + COLORS_CODE[keyword];
+            document
+              .querySelector("#light_bulb")
+              .setAttribute("style", backgroundColor);
+          }
+          document
+            .querySelector("#light_bulb")
+            .setAttribute("src", "images/light_bulb_blue.svg");
+          is_listening = false;
+        }
 
-            if (keyword === "Hey Edison") {
-                document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_red.svg");
-                is_listening = true;
-                listeningStartSeconds = currentTimeSeconds();
-            }
-        };
+        if (keyword === "Hey Edison") {
+          document
+            .querySelector("#light_bulb")
+            .setAttribute("src", "images/light_bulb_red.svg");
+          is_listening = true;
+          listeningStartSeconds = currentTimeSeconds();
+        }
+      };
 
-        let porcupineManager;
+      let porcupineManager;
 
-        let audioManagerErrorCallback = function (ex) {
-            alert(ex.toString());
-            document.querySelector("#light_bulb").setAttribute("style", "background-color:white");
-            document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
-            document.querySelector("#demo_button").setAttribute("onclick", "start()");
-            document.querySelector("#demo_button").innerText = "Start Demo";
-        };
+      let audioManagerErrorCallback = function (ex) {
+        alert(ex.toString());
+        document
+          .querySelector("#light_bulb")
+          .setAttribute("style", "background-color:white");
+        document
+          .querySelector("#light_bulb")
+          .setAttribute("src", "images/light_bulb_blue.svg");
+        document
+          .querySelector("#demo_button")
+          .setAttribute("onclick", "start()");
+        document.querySelector("#demo_button").innerText = "Start Demo";
+      };
 
-        start = function () {
-            porcupineManager = PorcupineManager(
-                "/scripts/porcupine_worker.js",
-                "/node_modules/@picovoice/web-voice-processor/src/downsampling_worker.js");
+      start = function () {
+        porcupineManager = PorcupineManager(
+          "/scripts/porcupine_worker.js",
+          "/node_modules/@picovoice/web-voice-processor/src/downsampling_worker.js"
+        );
 
-            porcupineManager.start(KEYWORDS_ID, SENSITIVITIES, processCallback, audioManagerErrorCallback);
+        porcupineManager.start(
+          KEYWORDS_ID,
+          SENSITIVITIES,
+          processCallback,
+          audioManagerErrorCallback
+        );
 
-            document.querySelector("#demo_button").setAttribute("onclick", "stop()");
-            document.querySelector("#demo_button").innerText = "Stop Demo";
-        };
+        document
+          .querySelector("#demo_button")
+          .setAttribute("onclick", "stop()");
+        document.querySelector("#demo_button").innerText = "Stop Demo";
+      };
 
-        stop = function () {
-            porcupineManager.stop();
+      stop = function () {
+        porcupineManager.stop();
 
-            document.querySelector("#light_bulb").setAttribute("style", "background-color:white");
-            document.querySelector("#light_bulb").setAttribute("src", "images/light_bulb_blue.svg");
-            document.querySelector("#demo_button").setAttribute("onclick", "start()");
-            document.querySelector("#demo_button").innerText = "Start Demo";
-        };
+        document
+          .querySelector("#light_bulb")
+          .setAttribute("style", "background-color:white");
+        document
+          .querySelector("#light_bulb")
+          .setAttribute("src", "images/light_bulb_blue.svg");
+        document
+          .querySelector("#demo_button")
+          .setAttribute("onclick", "start()");
+        document.querySelector("#demo_button").innerText = "Start Demo";
+      };
     </script>
-</body>
+  </body>
 </html>
