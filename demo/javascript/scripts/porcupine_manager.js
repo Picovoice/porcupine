@@ -9,32 +9,37 @@
     specific language governing permissions and limitations under the License.
 */
 
-PorcupineManager = (function (porcupineWorkerScript, downsamplingScript) {
-    let porcupineWorker;
+PorcupineManager = function (porcupineWorkerScript, downsamplingScript) {
+  let porcupineWorker;
 
-    let start = function (keywordIDs, sensitivities, detectionCallback, errorCallback) {
-        porcupineWorker = new Worker(porcupineWorkerScript);
-        porcupineWorker.postMessage({
-            command: "init",
-            keywordIDs: keywordIDs,
-            sensitivities: sensitivities
-        });
+  let start = function (
+    keywordIDs,
+    sensitivities,
+    detectionCallback,
+    errorCallback
+  ) {
+    porcupineWorker = new Worker(porcupineWorkerScript);
+    porcupineWorker.postMessage({
+      command: "init",
+      keywordIDs: keywordIDs,
+      sensitivities: sensitivities,
+    });
 
-        porcupineWorker.onmessage = function (e) {
-            detectionCallback(e.data.keyword);
-        };
-
-        WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
+    porcupineWorker.onmessage = function (e) {
+      detectionCallback(e.data.keyword);
     };
 
-    let stop = function () {
-        WebVoiceProcessor.stop();
-        porcupineWorker.postMessage({command: "release"});
-    };
+    WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
+  };
 
-    let processFrame = function (frame) {
-        porcupineWorker.postMessage({command: "process", inputFrame: frame});
-    };
+  let stop = function () {
+    WebVoiceProcessor.stop();
+    porcupineWorker.postMessage({ command: "release" });
+  };
 
-    return {start: start, processFrame: processFrame, stop: stop}
-});
+  let processFrame = function (frame) {
+    porcupineWorker.postMessage({ command: "process", inputFrame: frame });
+  };
+
+  return { start: start, processFrame: processFrame, stop: stop };
+};
