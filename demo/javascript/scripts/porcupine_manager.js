@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -9,7 +9,11 @@
     specific language governing permissions and limitations under the License.
 */
 
-PorcupineManager = function (porcupineWorkerScript, downsamplingScript) {
+PorcupineManager = function (
+  initCallback,
+  porcupineWorkerScript,
+  downsamplingScript
+) {
   let porcupineWorker;
 
   let start = function (
@@ -19,22 +23,28 @@ PorcupineManager = function (porcupineWorkerScript, downsamplingScript) {
     errorCallback
   ) {
     porcupineWorker = new Worker(porcupineWorkerScript);
-    porcupineWorker.postMessage({
-      command: "init",
-      keywordIDs: keywordIDs,
-      sensitivities: sensitivities,
-    });
 
-    porcupineWorker.onmessage = function (e) {
-      detectionCallback(e.data.keyword);
-    };
+    // ppn-init message signals that ppn wasm has fully loaded and ready for processing
+    porcupineWorker.onmessage = function (messageEvent) {
+      if (messageEvent.data.type === "ppn-init") {
+        porcupineWorker.postMessage({
+          command: "init",
+          keywordIDs: keywordIDs,
+          sensitivities: sensitivities,
+        });
 
-    WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
+        WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
+        initCallback();
+      } else {
+        detectionCallback(messageEvent.data.keyword);
+      }
+    }.bind(this);
   };
 
   let stop = function () {
     WebVoiceProcessor.stop();
     porcupineWorker.postMessage({ command: "release" });
+    porcupineWorker.terminate();
   };
 
   let processFrame = function (frame) {

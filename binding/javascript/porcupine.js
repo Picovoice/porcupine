@@ -42,6 +42,7 @@ let Porcupine = (function () {
       []
     )();
     version = Module.cwrap("pv_porcupine_wasm_version", "string", [])();
+    postMessage({ type: "ppn-init" });
   });
 
   let isLoaded = function () {

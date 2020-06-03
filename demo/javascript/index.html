@@ -2886,7 +2886,7 @@ const KEYWORDS_ID = {
         "Lime Green": "#32CD32",
         "Forest Green": "#228B22",
         "Deep Sky Blue": "#191970",
-        Magenta: "#FF00FF",
+        "Magenta": "#FF00FF",
         "White Smoke": "#F5F5F5",
         "Lavender Blush": "#FFF0F5",
         "Dim Gray": "#696969",
@@ -2969,6 +2969,7 @@ const KEYWORDS_ID = {
 
       start = function () {
         porcupineManager = PorcupineManager(
+          ready,
           "/scripts/porcupine_worker.js",
           "/node_modules/@picovoice/web-voice-processor/src/downsampling_worker.js"
         );
@@ -2980,11 +2981,17 @@ const KEYWORDS_ID = {
           audioManagerErrorCallback
         );
 
-        document
-          .querySelector("#demo_button")
-          .setAttribute("onclick", "stop()");
-        document.querySelector("#demo_button").innerText = "Stop Demo";
+        let demoButton = document.querySelector("#demo_button");
+        demoButton.setAttribute("onclick", "stop()");
+        demoButton.innerText = "Initializing...";
+        demoButton.disabled = true;
       };
+
+      ready = function () {
+        let demoButton = document.querySelector("#demo_button");
+        demoButton.innerText = "Stop Demo";
+        demoButton.disabled = false;
+      }
 
       stop = function () {
         porcupineManager.stop();
