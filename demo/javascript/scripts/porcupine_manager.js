@@ -45,7 +45,6 @@ PorcupineManager = (function () {
   let stop = function () {
     WebVoiceProcessor.stop();
     porcupineWorker.postMessage({ command: "release" });
-    porcupineWorker.terminate();
     porcupineWorker = null;
   };
 

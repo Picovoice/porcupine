@@ -63,4 +63,5 @@ function release() {
   }
 
   porcupine = null;
+  close();
 }
