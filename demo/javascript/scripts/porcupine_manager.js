@@ -9,20 +9,21 @@
     specific language governing permissions and limitations under the License.
 */
 
-PorcupineManager = function (
-  initCallback,
-  porcupineWorkerScript,
-  downsamplingScript
-) {
+PorcupineManager = (function () {
   let porcupineWorker;
 
   let start = function (
     keywordIDs,
     sensitivities,
     detectionCallback,
-    errorCallback
+    errorCallback,
+    initCallback,
+    porcupineWorkerScript,
+    downsamplingScript
   ) {
     porcupineWorker = new Worker(porcupineWorkerScript);
+
+    let engine = this;
 
     // ppn-init message signals that ppn wasm has fully loaded and ready for processing
     porcupineWorker.onmessage = function (messageEvent) {
@@ -33,18 +34,19 @@ PorcupineManager = function (
           sensitivities: sensitivities,
         });
 
-        WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
+        WebVoiceProcessor.start([engine], downsamplingScript, errorCallback);
         initCallback();
       } else {
         detectionCallback(messageEvent.data.keyword);
       }
-    }.bind(this);
+    };
   };
 
   let stop = function () {
     WebVoiceProcessor.stop();
     porcupineWorker.postMessage({ command: "release" });
     porcupineWorker.terminate();
+    porcupineWorker = null;
   };
 
   let processFrame = function (frame) {
@@ -52,4 +54,4 @@ PorcupineManager = function (
   };
 
   return { start: start, processFrame: processFrame, stop: stop };
-};
+})();

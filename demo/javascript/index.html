@@ -2951,6 +2951,12 @@ const KEYWORDS_ID = {
         }
       };
 
+      let readyCallback = function () {
+        let demoButton = document.querySelector("#demo_button");
+        demoButton.innerText = "Stop Demo";
+        demoButton.disabled = false;
+      };
+
       let porcupineManager;
 
       let audioManagerErrorCallback = function (ex) {
@@ -2968,17 +2974,14 @@ const KEYWORDS_ID = {
       };
 
       start = function () {
-        porcupineManager = PorcupineManager(
-          ready,
-          "/scripts/porcupine_worker.js",
-          "/node_modules/@picovoice/web-voice-processor/src/downsampling_worker.js"
-        );
-
-        porcupineManager.start(
+        PorcupineManager.start(
           KEYWORDS_ID,
           SENSITIVITIES,
           processCallback,
-          audioManagerErrorCallback
+          audioManagerErrorCallback,
+          readyCallback,
+          "/scripts/porcupine_worker.js",
+          "/node_modules/@picovoice/web-voice-processor/src/downsampling_worker.js"
         );
 
         let demoButton = document.querySelector("#demo_button");
@@ -2987,14 +2990,9 @@ const KEYWORDS_ID = {
         demoButton.disabled = true;
       };
 
-      ready = function () {
-        let demoButton = document.querySelector("#demo_button");
-        demoButton.innerText = "Stop Demo";
-        demoButton.disabled = false;
-      }
 
       stop = function () {
-        porcupineManager.stop();
+        PorcupineManager.stop();
 
         document
           .querySelector("#light_bulb")
