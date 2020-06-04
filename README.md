@@ -228,7 +228,7 @@ In order to learn how to use the created object continue reading the section bel
 quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
 
 ```python
-library_path = ... # Path to Porcupine's C library available under lib/${SYSTEM}/${MACHINE}/
+library_path = ... # Path to Porcupine's C library available under lib/
 model_file_path = ... # It is available at lib/common/porcupine_params.pv
 keyword_file_paths = ['path/to/keyword/1', 'path/to/keyword/2', ...]
 sensitivities = [0.5, 0.4, ...]
