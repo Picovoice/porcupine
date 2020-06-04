@@ -9,6 +9,11 @@
     specific language governing permissions and limitations under the License.
 */
 
+let callback = function callback() {
+  postMessage({ status: "ppn-init" });
+};
+let PorcupineOptions = { callback: callback };
+
 importScripts("pv_porcupine.js");
 importScripts("porcupine.js");
 

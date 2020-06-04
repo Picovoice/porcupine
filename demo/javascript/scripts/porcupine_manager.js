@@ -25,9 +25,9 @@ PorcupineManager = (function () {
 
     let engine = this;
 
-    // ppn-init message signals that ppn wasm has fully loaded and ready for processing
+    // ppn-init message from the worker signals that the ppn wasm has fully loaded and ready for processing
     porcupineWorker.onmessage = function (messageEvent) {
-      if (messageEvent.data.type === "ppn-init") {
+      if (messageEvent.data.status === "ppn-init") {
         porcupineWorker.postMessage({
           command: "init",
           keywordIDs: keywordIDs,
