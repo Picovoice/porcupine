@@ -17,26 +17,48 @@ various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is availa
 
 ## Table of Contents
 
-* [License](#license)
-* [Use Cases](#use-cases)
-* [Try It Out](#try-it-out)
-* [Performance](#performance)
-* [Model Variants](#model-variants)
-* [Structure of Repository](#structure-of-repository)
-* [Running Demo Applications](#running-demo-applications)
-    * [Python](#python-demos)
-    * [Android](#android-demos)
-    * [iOS](#ios-demos)
-    * [JavaScript](#javascript-demos)
-    * [C](#c-demos)
-* [Integration](#integration)
-    * [Python](#python)
-    * [Android](#android)
-    * [iOS](#ios)
-    * [JavaScript](#javascript)
-    * [C](#c)
-* [Releases](#releases)
-* [FAQ](#faq)
+- [Porcupine](#porcupine)
+  - [Table of Contents](#table-of-contents)
+  - [License](#license)
+  - [Use Cases](#use-cases)
+  - [Try It Out](#try-it-out)
+  - [Performance](#performance)
+  - [Model Variants](#model-variants)
+  - [Structure of Repository](#structure-of-repository)
+  - [Running Demo Applications](#running-demo-applications)
+    - [Python Demos](#python-demos)
+      - [PIP](#pip)
+      - [Repository](#repository)
+    - [Android Demos](#android-demos)
+    - [iOS Demos](#ios-demos)
+    - [JavaScript Demos](#javascript-demos)
+      - [Yarn](#yarn)
+      - [NPM](#npm)
+      - [Web Browser](#web-browser)
+    - [C Demos](#c-demos)
+  - [Integration](#integration)
+    - [Python](#python)
+      - [PIP](#pip-1)
+      - [Repository](#repository-1)
+    - [Android](#android)
+      - [Low-Level API](#low-level-api)
+      - [High-Level API](#high-level-api)
+    - [iOS](#ios)
+      - [Direct](#direct)
+      - [Binding](#binding)
+    - [JavaScript](#javascript)
+    - [C](#c)
+  - [Releases](#releases)
+    - [v1.8.0 - May 27th, 2020](#v180---may-27th-2020)
+    - [v1.7.0 - Feb 13th, 2020](#v170---feb-13th-2020)
+    - [v1.6.0 - April 25th, 2019](#v160---april-25th-2019)
+    - [v1.5.0 - November 13, 2018](#v150---november-13-2018)
+    - [v1.4.0 - July 20, 2018](#v140---july-20-2018)
+    - [v1.3.0 - June 19, 2018](#v130---june-19-2018)
+    - [v1.2.0 - April 21, 2018](#v120---april-21-2018)
+    - [v1.1.0 - April 11, 2018](#v110---april-11-2018)
+    - [v1.0.0 - March 13, 2018](#v100---march-13-2018)
+  - [FAQ](#faq)
 
 ## License
 
@@ -150,20 +172,29 @@ need an iOS device connected to your machine and a valid Apple developer account
 
 ### JavaScript Demos
 
-You need `npm` installed first. Install dependencies by executing the following commands from
-[demo/javaScript](/demo/javascript)
+You need `yarn` or `npm` installed first. Install the demo dependencies by executing either of the following sets of `yarn` or `npm` commands from
+[demo/javaScript](/demo/javascript):
+
+#### Yarn
+
+```bash
+yarn
+yarn copy
+yarn start
+```
+
+#### NPM
 
 ```bash
 npm install
 npm install -g copy-files-from-to
 copy-files-from-to
+npx serve
 ```
 
-Run this to launch the demo and follow instructions on the page.
+#### Web Browser
 
-```bash
-npx live-server --ignore="${PWD}/node_modules"
-```
+The last command will launch a local server running the demo. Open http://localhost:5000 in your web browser and follow the instructions on the page.
 
 ### C Demos
 

@@ -9,6 +9,11 @@
     specific language governing permissions and limitations under the License.
 */
 
+let callback = function callback() {
+  postMessage({ status: "ppn-init" });
+};
+let PorcupineOptions = { callback: callback };
+
 importScripts("pv_porcupine.js");
 importScripts("porcupine.js");
 
@@ -43,20 +48,15 @@ function init(keywordIDs, _sensitivities_) {
   keywordIDArray = Object.values(keywordIDs);
   keywords = Object.keys(keywordIDs);
   sensitivities = _sensitivities_;
-
-  if (Porcupine.isLoaded()) {
-    porcupine = Porcupine.create(keywordIDArray, sensitivities);
-  }
+  porcupine = Porcupine.create(keywordIDArray, sensitivities);
 }
 
 function process(inputFrame) {
-  if (porcupine === null && Porcupine.isLoaded()) {
-    porcupine = Porcupine.create(keywordIDArray, sensitivities);
-  } else if (porcupine !== null) {
-    if (!paused) {
-      let keywordIndex = porcupine.process(inputFrame);
+  if (porcupine !== null && !paused) {
+    let keywordIndex = porcupine.process(inputFrame);
+    if (keywordIndex !== -1) {
       postMessage({
-        keyword: keywordIndex === -1 ? null : keywords[keywordIndex],
+        keyword: keywords[keywordIndex],
       });
     }
   }
@@ -68,4 +68,5 @@ function release() {
   }
 
   porcupine = null;
+  close();
 }

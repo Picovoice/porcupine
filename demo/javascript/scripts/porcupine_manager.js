@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -9,32 +9,48 @@
     specific language governing permissions and limitations under the License.
 */
 
-PorcupineManager = (function (porcupineWorkerScript, downsamplingScript) {
-    let porcupineWorker;
+PorcupineManager = (function () {
+  let porcupineWorker;
 
-    let start = function (keywordIDs, sensitivities, detectionCallback, errorCallback) {
-        porcupineWorker = new Worker(porcupineWorkerScript);
+  let start = function (
+    keywordIDs,
+    sensitivities,
+    detectionCallback,
+    errorCallback,
+    initCallback,
+    porcupineWorkerScript,
+    downsamplingScript
+  ) {
+    porcupineWorker = new Worker(porcupineWorkerScript);
+
+    let engine = this;
+
+    // ppn-init message from the worker signals that the ppn wasm has fully loaded and ready for processing
+    porcupineWorker.onmessage = function (messageEvent) {
+      if (messageEvent.data.status === "ppn-init") {
         porcupineWorker.postMessage({
-            command: "init",
-            keywordIDs: keywordIDs,
-            sensitivities: sensitivities
+          command: "init",
+          keywordIDs: keywordIDs,
+          sensitivities: sensitivities,
         });
 
-        porcupineWorker.onmessage = function (e) {
-            detectionCallback(e.data.keyword);
-        };
-
-        WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
+        WebVoiceProcessor.start([engine], downsamplingScript, errorCallback);
+        initCallback();
+      } else {
+        detectionCallback(messageEvent.data.keyword);
+      }
     };
+  };
 
-    let stop = function () {
-        WebVoiceProcessor.stop();
-        porcupineWorker.postMessage({command: "release"});
-    };
+  let stop = function () {
+    WebVoiceProcessor.stop();
+    porcupineWorker.postMessage({ command: "release" });
+    porcupineWorker = null;
+  };
 
-    let processFrame = function (frame) {
-        porcupineWorker.postMessage({command: "process", inputFrame: frame});
-    };
+  let processFrame = function (frame) {
+    porcupineWorker.postMessage({ command: "process", inputFrame: frame });
+  };
 
-    return {start: start, processFrame: processFrame, stop: stop}
-});
+  return { start: start, processFrame: processFrame, stop: stop };
+})();
