@@ -13,7 +13,7 @@ let Porcupine = (function () {
   /**
    * Binding for wake word engine (Porcupine). It initializes the JavaScript binding for WebAssembly module and
    * exposes a factory method for creating new instances of the engine.
-   * 
+   *
    * When the WebAssembly module has finished loading, if a callback function was provided via the PorcupineOptions object,
    * it will be invoked. Otherwise, use `.isLoaded()` to determine if Porcupine is ready.
    */
@@ -26,8 +26,13 @@ let Porcupine = (function () {
   let sampleRate = null;
   let version = null;
 
-  if (PorcupineOptions !== undefined) {
-    callback = PorcupineOptions.callback;
+  if (typeof PorcupineOptions !== "undefined") {
+    if (
+      PorcupineOptions !== null &&
+      typeof PorcupineOptions.callback !== "undefined"
+    ) {
+      callback = PorcupineOptions.callback;
+    }
   }
 
   let porcupineModule = PorcupineModule();
@@ -51,7 +56,7 @@ let Porcupine = (function () {
     )();
     version = Module.cwrap("pv_porcupine_wasm_version", "string", [])();
 
-    if (callback !== null) {
+    if (callback !== undefined && callback !== null) {
       callback();
     }
   });
