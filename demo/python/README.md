@@ -15,7 +15,7 @@ python3 demo/python/porcupine_demo_mic.py --help
 In the simplest form, a path to a valid wake word file needs to be provided to the script.
 
 ```bash
-python3 demo/python/porcupine_demo.py --keyword_file_paths resources/keyword_files/${SYSTEM}/blueberry_${SYSTEM}.ppn
+python3 demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword_files/${SYSTEM}/blueberry_${SYSTEM}.ppn
 ``` 
 
 In the above command replace ```${SYSTEM}``` with the operating system (i.e. linux or mac). It starts recording audio
