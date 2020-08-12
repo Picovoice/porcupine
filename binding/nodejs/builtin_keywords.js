@@ -1,0 +1,114 @@
+//
+// Copyright 2020 Picovoice Inc.
+//
+// You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+// file accompanying this source.
+//
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations under the License.
+//
+"use strict";
+const path = require("path");
+
+const { PvArgumentError } = require("./errors");
+const { getPlatform } = require("./platforms");
+
+const AMERICANO = 0;
+const BLUEBERRY = 1;
+const BUMBLEBEE = 2;
+const GRAPEFRUIT = 3;
+const GRASSHOPPER = 4;
+const PICOVOICE = 5;
+const PORCUPINE = 6;
+const TERMINATOR = 7;
+
+const AMERICANO_STRING = "americano";
+const BLUEBERRY_STRING = "blueberry";
+const BUMBLEBEE_STRING = "bumblebee";
+const GRAPEFRUIT_STRING = "grapefruit";
+const GRASSHOPPER_STRING = "grasshopper";
+const PICOVOICE_STRING = "picovoice";
+const PORCUPINE_STRING = "porcupine";
+const TERMINATOR_STRING = "terminator";
+
+const BUILTIN_KEYWORDS_ENUMS = new Set();
+BUILTIN_KEYWORDS_ENUMS.add(AMERICANO);
+BUILTIN_KEYWORDS_ENUMS.add(BLUEBERRY);
+BUILTIN_KEYWORDS_ENUMS.add(BUMBLEBEE);
+BUILTIN_KEYWORDS_ENUMS.add(GRAPEFRUIT);
+BUILTIN_KEYWORDS_ENUMS.add(GRASSHOPPER);
+BUILTIN_KEYWORDS_ENUMS.add(PICOVOICE);
+BUILTIN_KEYWORDS_ENUMS.add(PORCUPINE);
+BUILTIN_KEYWORDS_ENUMS.add(TERMINATOR);
+
+const BUILTIN_KEYWORDS_STRINGS = new Set();
+BUILTIN_KEYWORDS_STRINGS.add(AMERICANO_STRING);
+BUILTIN_KEYWORDS_STRINGS.add(BLUEBERRY_STRING);
+BUILTIN_KEYWORDS_STRINGS.add(BUMBLEBEE_STRING);
+BUILTIN_KEYWORDS_STRINGS.add(GRAPEFRUIT_STRING);
+BUILTIN_KEYWORDS_STRINGS.add(GRASSHOPPER_STRING);
+BUILTIN_KEYWORDS_STRINGS.add(PICOVOICE_STRING);
+BUILTIN_KEYWORDS_STRINGS.add(PORCUPINE_STRING);
+BUILTIN_KEYWORDS_STRINGS.add(TERMINATOR_STRING);
+
+const BUILTIN_KEYWORDS_ENUM_TO_STRING = new Map();
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(AMERICANO, AMERICANO_STRING);
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(BLUEBERRY, BLUEBERRY_STRING);
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(BUMBLEBEE, BUMBLEBEE_STRING);
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(GRAPEFRUIT, GRAPEFRUIT_STRING);
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(GRASSHOPPER, GRASSHOPPER_STRING);
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(PICOVOICE, PICOVOICE_STRING);
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(PORCUPINE, PORCUPINE_STRING);
+BUILTIN_KEYWORDS_ENUM_TO_STRING.set(TERMINATOR, TERMINATOR_STRING);
+
+const BUILTIN_KEYWORDS_STRING_TO_ENUM = new Map();
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(AMERICANO_STRING, AMERICANO);
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(BLUEBERRY_STRING, BLUEBERRY);
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(BUMBLEBEE_STRING, BUMBLEBEE);
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(GRAPEFRUIT_STRING, GRAPEFRUIT);
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(GRASSHOPPER_STRING, GRASSHOPPER);
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(PICOVOICE_STRING, PICOVOICE);
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(PORCUPINE_STRING, PORCUPINE);
+BUILTIN_KEYWORDS_STRING_TO_ENUM.set(TERMINATOR_STRING, TERMINATOR);
+
+function getBuiltinKeywordPath(builtinKeyword) {
+  if (!Number.isInteger(builtinKeyword)) {
+    throw new PvArgumentError(
+      `getBuiltinKeywordPath argument '${builtinKeyword}' is not an integer (enum) value`
+    );
+  }
+
+  let platform = getPlatform();
+  let keywordString;
+  if (!BUILTIN_KEYWORDS_ENUMS.has(builtinKeyword)) {
+    throw new PvArgumentError(
+      `Keyword argument ${builtinKeyword} does not map to one of the built-in keywords: [${Array.from(
+        BUILTIN_KEYWORDS_STRINGS
+      )}]`
+    );
+  } else {
+    keywordString = BUILTIN_KEYWORDS_ENUM_TO_STRING.get(builtinKeyword);
+  }
+
+  return path.resolve(
+    __dirname,
+    `resources/keyword_files/${platform}/${keywordString}_${platform}.ppn`
+  );
+}
+
+module.exports = {
+  AMERICANO: AMERICANO,
+  BLUEBERRY: BLUEBERRY,
+  BUMBLEBEE: BUMBLEBEE,
+  GRAPEFRUIT: GRAPEFRUIT,
+  GRASSHOPPER: GRASSHOPPER,
+  PICOVOICE: PICOVOICE,
+  PORCUPINE: PORCUPINE,
+  TERMINATOR: TERMINATOR,
+  BUILTIN_KEYWORDS_ENUMS: BUILTIN_KEYWORDS_ENUMS,
+  BUILTIN_KEYWORDS_STRINGS: BUILTIN_KEYWORDS_STRINGS,
+  BUILTIN_KEYWORDS_ENUM_TO_STRING: BUILTIN_KEYWORDS_ENUM_TO_STRING,
+  BUILTIN_KEYWORDS_STRING_TO_ENUM: BUILTIN_KEYWORDS_STRING_TO_ENUM,
+  getBuiltinKeywordPath: getBuiltinKeywordPath,
+};

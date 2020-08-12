@@ -1,0 +1,41 @@
+{
+  "name": "@picovoice/porcupine-node",
+  "version": "1.8.0",
+  "description": "Picovoice Porcupine NodeJS binding",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --no-cache",
+    "prepare": "node copy.js"
+  },
+  "keywords": [
+    "porcupine, picovoice, wake word, hotword, trigger word, offline, private, voice ai, speech recognition"
+  ],
+  "author": "Picovoice, Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "ffi-napi": "^3.0.1",
+    "ref-array-napi": "^1.2.1",
+    "ref-napi": "^3.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.4.0",
+    "mkdirp": "^1.0.4",
+    "ncp": "^2.0.0",
+    "wavefile": "^11.0.0"
+  },
+  "homepage": "https://picovoice.ai/products/porcupine/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Picovoice/porcupine.git",
+    "directory": "binding/nodejs"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "cpu": [
+    "!ia32",
+    "!mips",
+    "!ppc",
+    "!ppc64"
+  ]
+}
