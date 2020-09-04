@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-demo",
-  "version": "1.8.0",
+  "version": "1.8.2",
   "description": "Picovoice Porcupine NodeJS demo",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "Picovoice, Inc.",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-node": "file:../../binding/nodejs/",
+    "@picovoice/porcupine-node": "1.8.2",
     "commander": "^6.1.0",
     "wavefile": "^11.0.0"
   },

@@ -2,8 +2,10 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-node@file:../../binding/nodejs":
-  version "1.8.0"
+"@picovoice/porcupine-node@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-1.8.2.tgz#14ffd04b7ed4099f2024ecd20f6e852ec8aaf285"
+  integrity sha512-6+NCgA8cOGESCJGIiDBtB5lWK4U+6SNm9k4+XBb1/YRHUNjHfBeBCjtHW9rQab77vRAUO8lH60gqcmlD6OE38w==
   dependencies:
     ffi-napi "^3.0.1"
     ref-array-napi "^1.2.1"
