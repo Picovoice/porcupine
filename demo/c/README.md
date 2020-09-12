@@ -45,7 +45,7 @@ provide a file with incorrect format the demo does not perform any format valida
 Compile by executing the following command from the root of the repository
 
 ```bash
-gcc -O3 -o demo/c/porcupine_demo_file -I include/ demo/c/porcupine_demo_file.c -ldl -lasound
+gcc -O3 -o demo/c/porcupine_demo_file -I include/ demo/c/porcupine_demo_file.c -ldl
 ```
 
 Running the executable without any commandline arguments prints the usage info to the console as below
