@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 //
 // Copyright 2020 Picovoice Inc.
 //
@@ -11,14 +12,8 @@
 "use strict";
 
 const { program } = require("commander");
-const fs = require("fs");
-
-const WaveFile = require("wavefile").WaveFile;
 const Porcupine = require("@picovoice/porcupine-node");
-const {
-  getInt16Frames,
-  checkWaveFile,
-} = require("@picovoice/porcupine-node/wave_util");
+const { getPlatform } = require("@picovoice/porcupine-node/platforms");
 
 const {
   BUILTIN_KEYWORDS_STRINGS,
@@ -26,11 +21,15 @@ const {
   getBuiltinKeywordPath,
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
+const PLATFORM_RECORDER_MAP = new Map();
+PLATFORM_RECORDER_MAP.set("linux", "arecord");
+PLATFORM_RECORDER_MAP.set("mac", "sox");
+PLATFORM_RECORDER_MAP.set("raspberry-pi", "arecord");
+PLATFORM_RECORDER_MAP.set("windows", "sox");
+
+const recorder = require("node-record-lpcm16");
+
 program
-  .requiredOption(
-    "-i, --input_audio_file_path <string>",
-    "input audio wave file in 16-bit 16KHz linear PCM format (mono)"
-  )
   .option(
     "-k, --keyword_file_paths <string>",
     "absolute path(s) to porcupine keyword files (.ppn)"
@@ -56,12 +55,13 @@ if (process.argv.length < 3) {
 }
 program.parse(process.argv);
 
-function frameIndexToSeconds(frameIndex, engineInstance) {
-  return (frameIndex * engineInstance.frameLength) / engineInstance.sampleRate;
+function chunkArray(array, size) {
+  return Array.from({ length: Math.ceil(array.length / size) }, (v, index) =>
+    array.slice(index * size, index * size + size)
+  );
 }
 
-function fileDemo() {
-  let audioPath = program["input_audio_file_path"];
+function micDemo() {
   let keywordPaths = program["keyword_file_paths"];
   let keywords = program["keywords"];
   let libraryFilePath = program["library_file_path"];
@@ -130,55 +130,69 @@ function fileDemo() {
     sensitivities.push(sensitivity);
   }
 
-  if (!fs.existsSync(audioPath)) {
-    console.error(`--input_audio_file_path file not found: ${audioPath}`);
-    return;
-  }
+  let handle = new Porcupine(
+    keywordPaths,
+    sensitivities,
+    modelFilePath,
+    libraryFilePath
+  );
 
-  let engineInstance;
+  let platform;
   try {
-    engineInstance = new Porcupine(
-      keywordPaths,
-      sensitivities,
-      modelFilePath,
-      libraryFilePath
-    );
+    platform = getPlatform();
   } catch (error) {
-    console.error(`Error initializing Porcupine engine: ${error}`);
-    return;
-  }
-
-  let waveBuffer = fs.readFileSync(audioPath);
-  let inputWaveFile;
-  try {
-    inputWaveFile = new WaveFile(waveBuffer);
-  } catch (error) {
-    console.error(`Exception trying to read file as wave format: ${audioPath}`);
+    console.error();
+    ("The NodeJS binding does not support this platform. Supported platforms include macOS (x86_64), Windows (x86_64), Linux (x86_64), and Raspberry Pi (1-4)");
     console.error(error);
-    return;
   }
 
-  if (!checkWaveFile(inputWaveFile, engineInstance.sampleRate)) {
-    console.error(
-      "Audio file did not meet requirements. Wave file must be 16KHz, 16-bit, linear PCM (mono)."
-    );
-  }
+  let recorderType = PLATFORM_RECORDER_MAP.get(platform);
+  console.log(
+    `Platform: '${platform}'; attempting to use '${recorderType}' to access microphone ...`
+  );
 
-  let frames = getInt16Frames(inputWaveFile, engineInstance.frameLength);
+  const frameLength = handle.frameLength;
+  const sampleRate = handle.sampleRate;
 
-  for (let i = 0; i < frames.length; i++) {
-    const frame = frames[i];
-    const keywordIndex = engineInstance.process(frame);
+  const recording = recorder.record({
+    sampleRate: sampleRate,
+    channels: 1,
+    audioType: "raw",
+    recorder: recorderType,
+  });
 
-    if (keywordIndex !== -1) {
-      const timestamp = frameIndexToSeconds(i, engineInstance);
-      console.log(
-        `Detected keyword '${keywordNames[keywordIndex]}' @ ${timestamp}s`
-      );
+  var frameAccumulator = [];
+
+  recording.stream().on("data", (data) => {
+    // Two bytes per Int16 from the data buffer
+    let newFrames16 = new Array(data.length / 2);
+    for (let i = 0; i < data.length; i += 2) {
+      newFrames16[i / 2] = data.readInt16LE(i);
     }
-  }
 
-  engineInstance.release();
+    // Split the incoming PCM integer data into arrays of size Porcupine.frameLength. If there's insufficient frames, or a remainder,
+    // store it in 'frameAccumulator' for the next iteration, so that we don't miss any audio data
+    frameAccumulator = frameAccumulator.concat(newFrames16);
+    let frames = chunkArray(frameAccumulator, frameLength);
+
+    if (frames[frames.length - 1].length !== frameLength) {
+      // store remainder from divisions of frameLength
+      frameAccumulator = frames.pop();
+    } else {
+      frameAccumulator = [];
+    }
+
+    for (let frame of frames) {
+      let index = handle.process(frame);
+      if (index !== -1) {
+        console.log(`Detected '${keywordNames[index]}'`);
+      }
+    }
+  });
+
+  console.log(`Listening for wake word(s): ${keywordNames}`);
+  process.stdin.resume();
+  console.warn("Press ctrl+c to exit.");
 }
 
-fileDemo();
+micDemo();

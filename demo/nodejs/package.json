@@ -1,22 +1,33 @@
 {
-  "name": "@picovoice/porcupine-demo",
-  "version": "1.8.2",
-  "description": "Picovoice Porcupine NodeJS demo",
-  "main": "index.js",
+  "name": "@picovoice/porcupine-node-demo",
+  "version": "1.8.0",
+  "description": "Picovoice Porcupine NodeJS file-based and microphone demos",
   "scripts": {
-    "demo": "node index.js"
+    "file": "node file.js",
+    "mic": "node mic.js"
+  },
+  "bin": {
+    "ppn-file-demo": "./file.js",
+    "ppn-mic-demo": "./mic.js"
   },
   "keywords": [
-    "porcupine, picovoice, wake word, hotword, trigger word, offline, private, voice ai, speech recognition"
+    "porcupine, picovoice, wake word, hotword, trigger word, offline, private, voice ai, speech recognition, microphone, mic, realtime"
   ],
   "author": "Picovoice, Inc.",
   "license": "Apache-2.0",
   "dependencies": {
     "@picovoice/porcupine-node": "1.8.2",
     "commander": "^6.1.0",
+    "node-record-lpcm16": "^1.0.1",
     "wavefile": "^11.0.0"
   },
   "devDependencies": {},
+  "homepage": "https://picovoice.ai/products/porcupine/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Picovoice/porcupine.git",
+    "directory": "demo/nodejs"
+  },
   "engines": {
     "node": ">=12.0.0"
   },
