@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Picovoice Inc.
+# Copyright 2018-2020 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -10,16 +10,9 @@
 #
 
 import argparse
-import os
-import sys
 
+import pvporcupine
 import soundfile
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../binding/python'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
-
-from util import *
-from porcupine import Porcupine
 
 
 def _run(input_audio_file_path, library_path, model_file_path, keyword_file_paths, sensitivity):
@@ -39,7 +32,7 @@ def _run(input_audio_file_path, library_path, model_file_path, keyword_file_path
 
     num_keywords = len(keyword_file_paths)
 
-    porcupine = Porcupine(
+    porcupine = pvporcupine.create(
         library_path=library_path,
         model_file_path=model_file_path,
         keyword_file_paths=keyword_file_paths,
@@ -75,16 +68,22 @@ def main():
         '--keywords',
         nargs='+',
         help='list of default keywords',
-        choices=KEYWORDS)
+        choices=pvporcupine.KEYWORDS)
 
     parser.add_argument(
         '--keyword_file_paths',
         nargs='+',
         help='list of absolute paths to keyword files')
 
-    parser.add_argument('--library_path', help="absolute path to Porcupine's dynamic library", default=LIBRARY_PATH)
+    parser.add_argument(
+        '--library_path',
+        help="absolute path to Porcupine's dynamic library",
+        default=pvporcupine.LIBRARY_PATH)
 
-    parser.add_argument('--model_file_path', help='absolute path to model parameter file', default=MODEL_FILE_PATH)
+    parser.add_argument(
+        '--model_file_path',
+        help='absolute path to model parameter file',
+        default=pvporcupine.MODEL_FILE_PATH)
 
     parser.add_argument('--sensitivity', help='detection sensitivity [0, 1]', default=0.5)
 
@@ -94,7 +93,7 @@ def main():
         if args.keywords is None:
             raise ValueError('either --keywords or --keyword_file_paths must be set')
 
-        keyword_file_paths = [KEYWORD_FILE_PATHS[x] for x in args.keywords]
+        keyword_file_paths = [pvporcupine.KEYWORD_FILE_PATHS[x] for x in args.keywords]
     else:
         keyword_file_paths = args.keyword_file_paths
 
