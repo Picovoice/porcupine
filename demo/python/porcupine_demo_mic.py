@@ -12,19 +12,13 @@
 import argparse
 import os
 import struct
-import sys
 from datetime import datetime
 from threading import Thread
 
 import numpy as np
+import pvporcupine
 import pyaudio
 import soundfile
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../binding/python'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
-
-from porcupine import Porcupine
-from util import *
 
 
 class PorcupineDemo(Thread):
@@ -90,7 +84,7 @@ class PorcupineDemo(Thread):
         pa = None
         audio_stream = None
         try:
-            porcupine = Porcupine(
+            porcupine = pvporcupine.create(
                 library_path=self._library_path,
                 model_file_path=self._model_file_path,
                 keyword_file_paths=self._keyword_file_paths,
@@ -152,13 +146,21 @@ class PorcupineDemo(Thread):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--keywords', help='comma-separated list of default keywords (%s)' % ', '.join(KEYWORDS))
+    parser.add_argument(
+        '--keywords',
+        help='comma-separated list of default keywords (%s)' % ', '.join(pvporcupine.KEYWORDS))
 
     parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files')
 
-    parser.add_argument('--library_path', help="absolute path to Porcupine's dynamic library", default=LIBRARY_PATH)
+    parser.add_argument(
+        '--library_path',
+        help="absolute path to Porcupine's dynamic library",
+        default=pvporcupine.LIBRARY_PATH)
 
-    parser.add_argument('--model_file_path', help='absolute path to model parameter file', default=MODEL_FILE_PATH)
+    parser.add_argument(
+        '--model_file_path',
+        help='absolute path to model parameter file',
+        default=pvporcupine.MODEL_FILE_PATH)
 
     parser.add_argument('--sensitivities', help='detection sensitivity [0, 1]', default=0.5)
 
@@ -181,11 +183,12 @@ def main():
 
             keywords = [x.strip() for x in args.keywords.split(',')]
 
-            if all(x in KEYWORDS for x in keywords):
-                keyword_file_paths = [KEYWORD_FILE_PATHS[x] for x in keywords]
+            if all(x in pvporcupine.KEYWORDS for x in keywords):
+                keyword_file_paths = [pvporcupine.KEYWORD_FILE_PATHS[x] for x in keywords]
             else:
                 raise ValueError(
-                    'selected keywords are not available by default. available keywords are: %s' % ', '.join(KEYWORDS))
+                    'selected keywords are not available by default. available keywords are: %s' %
+                    ', '.join(pvporcupine.KEYWORDS))
         else:
             keyword_file_paths = [x.strip() for x in args.keyword_file_paths.split(',')]
 

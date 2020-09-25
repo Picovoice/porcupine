@@ -1,6 +1,6 @@
 # Compatibility
 
-Python 3.4 or higher is required to use the binding and run its accompanying unit tests.
+Python 3 or higher is required to use the binding and run its accompanying unit tests.
 
 # Running Unit Tests
 
