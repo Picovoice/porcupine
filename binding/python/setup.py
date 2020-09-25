@@ -113,7 +113,7 @@ with open(os.path.join(os.path.dirname(__file__), 'MANIFEST.in'), 'w') as f:
     f.write(MANIFEST_IN.strip('\n '))
 
 LONG_DESCRIPTION = """
-#[Porcupine](https://github.com/Picovoice/porcupine).   
+# [Porcupine](https://github.com/Picovoice/porcupine).   
 
 It supports Ubuntu (x86_64), Mac (x86_64), Raspberry Pi (Zero, 1, 2, 3, 4) running Raspbian, and BeagleBone.
 
@@ -141,8 +141,6 @@ sudo apt-get install python3-all-dev
 
 ## Usage
 
-### Porcupine Class
-    
 You can create an instance of Porcupine engine for use within your application using the factory method provided below
 
 ```python
@@ -188,11 +186,5 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Sound/Audio :: Speech"
     ],
-    entry_points=dict(
-        console_scripts=[
-            'pvporcupine_file=pvporcupine.demo.python.porcupine_demo_file:main'
-            'pvporcupine_mic=pvporcupine.demo.python.porcupine_demo_mic:main',
-        ],
-    ),
     python_requires='>=3',
 )
