@@ -90,8 +90,7 @@ def _keyword_file_paths():
 
     res = dict()
     for x in os.listdir(keyword_files_dir):
-        if '_compressed' not in x:
-            res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
+        res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
 
     return res
 
