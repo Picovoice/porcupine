@@ -105,11 +105,11 @@ placeholder for data used by various applications within the repository.
 
 #### PIP
 
-Install Porcupine using [PIP](https://pypi.org/project/pvporcupine/). Then with a working microphone connected to your
-device run the following in the terminal
+Install Porcupine demo package using [PIP](https://pypi.org/project/pvporcupinedemo/). Then with a working microphone
+connected to your device run the following in the terminal
 
 ```shell
-pvporcupine_mic --keywords porcupine
+pvporcupinedemo_mic --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
@@ -118,13 +118,19 @@ utterances of wake-word "porcupine".
 In order to process audio files (e.g. WAV) run
 
 ```shell
-pvporcupine_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
+pvporcupinedemo_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
 ```
 
 Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Python
 demos go to [demo/python](/demo/python).
 
 #### Repository
+
+Install dependencies in [/demo/python](/demo/python)
+
+```bash
+sudo pip3 install -r requirements.txt
+```
 
 This [demo application](/demo/python/porcupine_demo_mic.py) allows testing Porcupine using your computer's microphone.
 It opens an input audio stream, monitors it, and logs the detection events into the console. Below is an example of
