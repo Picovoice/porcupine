@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Picovoice Inc.
+# Copyright 2018-2020 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -9,20 +9,19 @@
 # specific language governing permissions and limitations under the License.
 #
 
-import os
-import sys
 import unittest
 
 import soundfile
 from porcupine import Porcupine
+from util import *
 
 
 class PorcupineTestCase(unittest.TestCase):
     def test_process(self):
         porcupine = Porcupine(
-            library_path=LIBRARY_PATH,
-            model_file_path=MODEL_FILE_PATH,
-            keyword_file_path=KEYWORD_FILE_PATHS['porcupine'],
+            library_path=pv_library_path('../..'),
+            model_file_path=pv_model_path('../../'),
+            keyword_file_path=pv_keyword_file_paths('../..')['porcupine'],
             sensitivity=0.5)
 
         audio, sample_rate = soundfile.read(
@@ -44,15 +43,15 @@ class PorcupineTestCase(unittest.TestCase):
         keyword_file_names = \
             ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator']
 
-        keyword_file_paths = list()
+        _keyword_file_paths = list()
         for name in keyword_file_names:
-            keyword_file_paths.append(KEYWORD_FILE_PATHS[name])
+            _keyword_file_paths.append(pv_keyword_file_paths('../..')[name])
 
         porcupine = Porcupine(
-            library_path=LIBRARY_PATH,
-            model_file_path=MODEL_FILE_PATH,
-            keyword_file_paths=keyword_file_paths,
-            sensitivities=[0.5] * len(keyword_file_paths))
+            library_path=pv_library_path('../..'),
+            model_file_path=pv_model_path('../..'),
+            keyword_file_paths=_keyword_file_paths,
+            sensitivities=[0.5] * len(_keyword_file_paths))
 
         audio, sample_rate = soundfile.read(
             os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/multiple_keywords.wav'),
@@ -73,7 +72,4 @@ class PorcupineTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    sys.path.append(os.path.join(os.path.dirname(__file__), '../../resources/util/python'))
-    from util import *
-
     unittest.main()
