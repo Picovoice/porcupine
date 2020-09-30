@@ -20,9 +20,9 @@ class PorcupineTestCase(unittest.TestCase):
     def test_process(self):
         porcupine = Porcupine(
             library_path=pv_library_path('../..'),
-            model_file_path=pv_model_path('../../'),
-            keyword_file_path=pv_keyword_file_paths('../..')['porcupine'],
-            sensitivity=0.5)
+            model_path=pv_model_path('../../'),
+            keyword_file_paths=[pv_keyword_file_paths('../..')['porcupine']],
+            sensitivities=[0.5])
 
         audio, sample_rate = soundfile.read(
             os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/porcupine.wav'),
@@ -49,7 +49,7 @@ class PorcupineTestCase(unittest.TestCase):
 
         porcupine = Porcupine(
             library_path=pv_library_path('../..'),
-            model_file_path=pv_model_path('../..'),
+            model_path=pv_model_path('../..'),
             keyword_file_paths=_keyword_file_paths,
             sensitivities=[0.5] * len(_keyword_file_paths))
 
