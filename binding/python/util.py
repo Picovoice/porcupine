@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2020 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -41,7 +41,7 @@ def _pv_linux_machine(machine):
 def _pv_platform():
     pv_system = platform.system()
     if pv_system not in {'Darwin', 'Linux', 'Windows'}:
-        raise ValueError("Unsupported system '%s'" % pv_system)
+        raise ValueError("Unsupported system '%s'." % pv_system)
 
     if pv_system == 'Linux':
         pv_machine = _pv_linux_machine(platform.machine())
@@ -72,7 +72,7 @@ def pv_library_path(relative):
     elif _PV_SYSTEM == 'Windows':
         return os.path.join(os.path.dirname(__file__), relative, 'lib/windows/amd64/libpv_porcupine.dll')
 
-    raise NotImplementedError('Unsupported platform')
+    raise NotImplementedError('Unsupported platform.')
 
 
 def pv_model_path(relative):

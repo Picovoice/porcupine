@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2020 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -55,7 +55,7 @@ def create(library_path=None, model_path=None, keyword_file_paths=None, keywords
         sensitivities = [0.5] * len(keyword_file_paths)
 
     if len(sensitivities) != len(keyword_file_paths):
-        raise ValueError("'sensitivities' and 'keyword_file_paths' should have the same length")
+        raise ValueError("'sensitivities' and 'keyword_file_paths' should have the same length.")
 
     return Porcupine(
         library_path=library_path,

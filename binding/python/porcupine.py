@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Picovoice Inc.
+# Copyright 2018-2020 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -129,10 +129,7 @@ class Porcupine(object):
 
         keyword_index = result.value
 
-        if self._num_keywords == 1:
-            return keyword_index == 0
-        else:
-            return keyword_index
+        return keyword_index
 
     @property
     def version(self):

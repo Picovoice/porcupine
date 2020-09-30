@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2019-2020 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -19,6 +19,9 @@ os.system('git clean -dfx')
 package_folder = os.path.join(os.path.dirname(__file__), 'pvporcupine')
 os.mkdir(package_folder)
 
+shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
+
+shutil.copy(os.path.join(os.path.dirname(__file__), '__init__.py'), os.path.join(package_folder, '__init__.py'))
 shutil.copy(os.path.join(os.path.dirname(__file__), 'porcupine.py'), os.path.join(package_folder, 'porcupine.py'))
 shutil.copy(os.path.join(os.path.dirname(__file__), 'util.py'), os.path.join(package_folder, 'util.py'))
 
@@ -34,11 +37,6 @@ for platform in platforms:
     shutil.copytree(
         os.path.join(os.path.dirname(__file__), '../../resources/keyword_files', platform),
         os.path.join(package_folder, 'resources/keyword_files', platform))
-
-shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
-
-
-shutil.copy(os.path.join(os.path.dirname(__file__), '__init__.py'), os.path.join(package_folder, '__init__.py'))
 
 MANIFEST_IN = """
 include pvporcupine/LICENSE
@@ -69,7 +67,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="1.8.3",
+    version="1.8.4",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-Device wake word detection powered by deep learning.",
@@ -77,10 +75,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/porcupine",
     packages=["pvporcupine"],
-    install_requires=[
-        "enum34==1.1.6",
-        "numpy",
-    ],
+    install_requires=["enum34", "numpy"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

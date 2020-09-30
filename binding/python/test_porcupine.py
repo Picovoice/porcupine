@@ -33,25 +33,27 @@ class PorcupineTestCase(unittest.TestCase):
         results = []
         for i in range(num_frames):
             frame = audio[i * porcupine.frame_length:(i + 1) * porcupine.frame_length]
-            results.append(porcupine.process(frame))
+            keyword_index = porcupine.process(frame)
+            if keyword_index >= 0:
+                results.append(keyword_index)
 
         porcupine.delete()
 
-        self.assertEqual(sum(results), 1)
+        self.assertEqual(results, [0])
 
     def test_process_multiple(self):
         keyword_file_names = \
             ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator']
 
-        _keyword_file_paths = list()
-        for name in keyword_file_names:
-            _keyword_file_paths.append(pv_keyword_file_paths('../..')[name])
+        keyword_file_paths = list()
+        for x in keyword_file_names:
+            keyword_file_paths.append(pv_keyword_file_paths('../..')[x])
 
         porcupine = Porcupine(
             library_path=pv_library_path('../..'),
             model_path=pv_model_path('../..'),
-            keyword_file_paths=_keyword_file_paths,
-            sensitivities=[0.5] * len(_keyword_file_paths))
+            keyword_file_paths=keyword_file_paths,
+            sensitivities=[0.5] * len(keyword_file_paths))
 
         audio, sample_rate = soundfile.read(
             os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/multiple_keywords.wav'),
@@ -66,9 +68,9 @@ class PorcupineTestCase(unittest.TestCase):
             if result >= 0:
                 results.append(result)
 
-        self.assertEqual(results, [6, 0, 1, 2, 3, 4, 5, 6, 7])
-
         porcupine.delete()
+
+        self.assertEqual(results, [6, 0, 1, 2, 3, 4, 5, 6, 7])
 
 
 if __name__ == '__main__':
