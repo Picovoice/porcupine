@@ -1,4 +1,4 @@
-# Porcupine Python SDK
+# Porcupine Wake Word Engine
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
@@ -7,9 +7,6 @@ applications. It is
 
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient making it perfect for IoT.
-- cross-platform. It is implemented in fixed-point ANSI C. Raspberry Pi (all variants), Beagle Bone, Android, iOS,
-  watchOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
-  various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for enterprise customers.
 - scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
 - self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
 
@@ -48,18 +45,18 @@ Porcupine can detect multiple keywords concurrently
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keywords=['picovoice', 'bumblebee'])
+handle = pvporcupine.create(keywords=['bumblebee', 'picovoice'])
 ```
 
-If you wish to use a non-default keyword file, you need to use `keyword_file_paths` input argument instead
+To use non-default keyword files use `keyword_file_paths` input argument instead
 
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keyword_file_paths=['absolute/path/to/keyword/one', 'absolute/path/to/keyword/two', ...])
+handle = pvporcupine.create(keyword_file_paths=['/absolute/path/to/keyword/one', '/absolute/path/to/keyword/two', ...])
 ```
 
-The sensitivity of the engine can be tuned using the `sensitivities` input argument
+The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
 
 ```python
 import pvporcupine
@@ -67,12 +64,11 @@ import pvporcupine
 handle = pvporcupine.create(keywords=['grapefruit', 'porcupine'], sensitivities=[0.6, 0.35])
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-`[0, 1]`. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating number within
+`[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
-When initialized, valid sample rate can be obtained using `handle.sample_rate`. Expected frame length (number of audio
-samples in an input array) is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM. The object can be
-used to monitor incoming audio as below.
+When initialized, the valid sample rate is given by `handle.sample_rate`. Expected frame length (number of audio samples
+in an input array) is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM.
 
 ```python
 def get_next_audio_frame():
@@ -85,7 +81,7 @@ while True:
         pass
 ```
 
-Finally, when done be sure to explicitly release the resources
+When done resources have to be released explicitly
 
 ```python
 handle.delete()
@@ -94,8 +90,8 @@ handle.delete()
 ## Demos
 
 [pvporcupinedemo](https://pypi.org/project/pvporcupinedemo/) provides command-line utilities for processing real-time
-audio (i.e. microphone) and files using Porcupine engine. The source code for these utilities is available on
-Porcupine's GitHub repository:
+audio (i.e. microphone) and files using Porcupine. The source code for these utilities is available on Porcupine's
+GitHub repository:
 
 - [File Demo](/demo/python/porcupine_demo_file.py)
 - [Microphone Demo](/demo/python/porcupine_demo_mic.py)
