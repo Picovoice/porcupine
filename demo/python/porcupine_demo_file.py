@@ -83,7 +83,7 @@ def main():
     parser.add_argument(
         '--model_file_path',
         help='absolute path to model parameter file',
-        default=pvporcupine.MODEL_FILE_PATH)
+        default=pvporcupine.MODEL_PATH)
 
     parser.add_argument('--sensitivity', help='detection sensitivity [0, 1]', default=0.5)
 
