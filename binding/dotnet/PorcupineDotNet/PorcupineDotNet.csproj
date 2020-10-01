@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>netstandard2.0</TargetFramework>
+	  <NuspecFile>PorcupineDotNet.nuspec</NuspecFile>
+  </PropertyGroup>
+	<ItemGroup>
+		<Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll" Pack="true" PackagePath="\">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>		
+		</Content>
+		<Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so" Pack="true" PackagePath="\">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib" Pack="true" PackagePath="\" >
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>			
+		</Content>
+	</ItemGroup>
+</Project>
