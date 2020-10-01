@@ -2,6 +2,11 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
+This package contains demos and commandline utilities for processing real-time audio (i.e. microphone) and audio files
+using Porcupine wake word engine.
+
+## Porcupine
+
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
 applications. It is
 
@@ -28,9 +33,10 @@ sudo pip3 install pvporcupinedemo
 
 ### File Demo
 
-It allows testing Porcupine on a corpus of audio files. It is mainly useful for quantitative performance benchmarking.
-It accepts 16kHz audio files. Porcupine processes a single-channel audio stream if a stereo file is provided it only
-processes the first (left) channel. The following processes a file looking for instances of phrase "Picovoice"
+It allows testing Porcupine on a corpus of audio files. The demo is mainly useful for quantitative performance
+benchmarking. It accepts 16kHz audio files. Porcupine processes a single-channel audio stream if a stereo file is
+provided it only processes the first (left) channel. The following processes a file looking for instances of the phrase
+"Picovoice"
 
 ```bash
 porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keywords picovoice
@@ -43,23 +49,32 @@ can be seen in the usage string
 porcupine_demo_file --help
 ```
 
-In order to detect multiple phrases concurrently provide then as separate arguments
+To detect multiple phrases concurrently provide them as separate arguments
 
 ```bash
 porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
 ```
 
-In order to detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
-use `keyword_file_paths` argument
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+use `keyword_paths` argument
 
 ```bash
-porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keyword_file_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
+porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
+
+The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
+
+```bash
+porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine --sensitivities 0.3 0.6
+```
+
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating number within
+`[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 ### Microphone Demo
 
 It opens an audio stream from a microphone and detects utterances of a give wake word(s). The following opens the
-default microphone and detects the utterances of "Picovoice".
+default microphone and detects occurrences of "Picovoice".
 
 ```bash
 porcupine_demo_mic --keywords picovoice
@@ -69,27 +84,27 @@ porcupine_demo_mic --keywords picovoice
 can be seen in the usage string
 
 ```bash
-porcupine_demo_file --help
+porcupine_demo_mic --help
 ```
 
-In order to detect multiple phrases concurrently provide then as separate arguments
+To detect multiple phrases concurrently provide them as separate arguments
 
 ```bash
-pvporcupinedemo_mic --keywords picovoice porcupine
+porcupine_demo_mic --keywords picovoice porcupine
 ```
 
-In order to detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
-use `keyword_file_paths` argument
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+use `keyword_paths` argument
 
 ```bash
-pvporcupinedemo_mic keyword_file_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
+porcupine_demo_mic keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console
 
 ```bash
-pvporcupinedemo_mic --show_audio_devices
+porcupine_demo_mic --show_audio_devices
 ```
 
 It provides information about various audio input devices on the box. On a Linux box, this is the console output
@@ -123,13 +138,13 @@ It can be seen that the last device (index 21) is considered default. But on thi
 the input device which has an index of 10. After finding the correct index the demo application can be invoked as below
 
 ```bash
-pvporcupinedemo_mic --keywords picovoice --audio_device_index 10
+porcupine_demo_mic --keywords picovoice --audio_device_index 10
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved by
 
 ```bash
-pvporcupinedemo_mic --keywords picovoice --input_audio_device_index 10 --audio_device_index 10 --output_path ~/test.wav
+porcupine_demo_mic --keywords picovoice --audio_device_index 10 --output_path ~/test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
