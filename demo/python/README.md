@@ -1,4 +1,4 @@
-# Porcupine Wake Word Engine Demo
+# Porcupine Wake Word Engine Demos
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
@@ -15,10 +15,10 @@ applications. It is
 - Python 3
 - Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), and Beagle Bone.
 
+## Installation
+
 Microphone demo uses [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) for recording input audio. Consult the
 installation guide at [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/).
-
-## Installation
 
 ```bash
 pip3 install pvporcupinedemo

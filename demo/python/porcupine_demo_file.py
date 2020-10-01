@@ -10,6 +10,7 @@
 #
 
 import argparse
+import os
 
 import pvporcupine
 import soundfile
@@ -20,21 +21,26 @@ def main():
 
     parser.add_argument('--input_audio_path', help='Absolute path to input audio file.', required=True)
 
-    parser.add_argument('--keywords', nargs='+', help='List of default keywords.', choices=pvporcupine.KEYWORDS)
+    parser.add_argument('--keywords', nargs='+', help='Default keywords.', choices=pvporcupine.KEYWORDS)
 
-    parser.add_argument('--keyword_file_paths', nargs='+', help='List of absolute paths to keyword files.')
+    parser.add_argument('--keyword_file_paths', nargs='+', help='Absolute paths to keyword files.')
 
     parser.add_argument('--library_path', help='Absolute path to dynamic library.', default=pvporcupine.LIBRARY_PATH)
 
     parser.add_argument('--model_path', help='Absolute path to model parameter file.', default=pvporcupine.MODEL_PATH)
 
-    parser.add_argument('--sensitivities', nargs='+', help='detection sensitivity [0, 1]', type=float, default=None)
+    parser.add_argument(
+        '--sensitivities',
+        nargs='+',
+        help='Detection sensitivities. Should be within [0, 1].',
+        type=float,
+        default=None)
 
     args = parser.parse_args()
 
     if args.keyword_file_paths is None:
         if args.keywords is None:
-            raise ValueError('either --keywords or --keyword_file_paths must be set')
+            raise ValueError("Either '--keywords' or '--keyword_file_paths' must be set")
 
         keyword_file_paths = [pvporcupine.KEYWORD_FILE_PATHS[x] for x in args.keywords]
     else:
@@ -53,7 +59,15 @@ def main():
         sensitivities=args.sensitivities)
 
     audio, sample_rate = soundfile.read(args.input_audio_path, dtype='int16')
-    assert sample_rate == porcupine.sample_rate
+    if audio.ndim == 2:
+        print("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.")
+        audio = audio[0, :]
+    if sample_rate != porcupine.sample_rate:
+        raise ValueError("Audio file should have a sample rate of %d. got %d" % (porcupine.sample_rate, sample_rate))
+
+    keyword_names = list()
+    for x in keyword_file_paths:
+        keyword_names.append(os.path.basename(x).replace('.ppn', '').split('_')[0])
 
     num_frames = len(audio) // porcupine.frame_length
     for i in range(num_frames):
@@ -61,8 +75,8 @@ def main():
         result = porcupine.process(frame)
         if result >= 0:
             print(
-                'detected keyword index %d at time %f' %
-                (result, float(i * porcupine.frame_length) / float(porcupine.sample_rate)))
+                "Detected '%s' at time %.2f" %
+                (keyword_names[result], float(i * porcupine.frame_length) / float(porcupine.sample_rate)))
 
     porcupine.delete()
 
