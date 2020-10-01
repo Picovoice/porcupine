@@ -13,7 +13,7 @@ applications. It is
 ## Compatibility
 
 - Python 3
-- Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), and Beagle Bone.
+- Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), and BeagleBone.
 
 ## Installation
 
@@ -68,7 +68,7 @@ handle = pvporcupine.create(
         sensitivities=[0.6, 0.35])
 ```
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating number within
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
 `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 When initialized, the valid sample rate is given by `handle.sample_rate`. Expected frame length (number of audio samples

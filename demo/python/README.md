@@ -18,7 +18,7 @@ applications. It is
 ## Compatibility
 
 - Python 3
-- Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), and Beagle Bone.
+- Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), and BeagleBone.
 
 ## Installation
 
@@ -70,7 +70,7 @@ porcupine_demo_file --input_audio_path ${AUDIO_PATH} \
 --keywords grasshopper porcupine --sensitivities 0.3 0.6
 ```
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating number within
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
 `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 ### Microphone Demo
