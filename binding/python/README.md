@@ -53,7 +53,9 @@ To detect non-default keywords use `keyword_paths` input argument instead
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keyword_paths=['/absolute/path/to/keyword/one', '/absolute/path/to/keyword/two', ...])
+keyword_paths = ['/absolute/path/to/keyword/one', '/absolute/path/to/keyword/two', ...]
+
+handle = pvporcupine.create(keyword_paths=keyword_paths)
 ```
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
@@ -61,7 +63,9 @@ The sensitivity of the engine can be tuned per keyword using the `sensitivities`
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keywords=['grapefruit', 'porcupine'], sensitivities=[0.6, 0.35])
+handle = pvporcupine.create(
+        keywords=['grapefruit', 'porcupine'],
+        sensitivities=[0.6, 0.35])
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating number within
