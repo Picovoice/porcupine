@@ -86,7 +86,7 @@ class PorcupineDemo(Thread):
         try:
             porcupine = pvporcupine.create(
                 library_path=self._library_path,
-                model_file_path=self._model_file_path,
+                model_path=self._model_file_path,
                 keyword_file_paths=self._keyword_file_paths,
                 sensitivities=self._sensitivities)
 
@@ -107,9 +107,7 @@ class PorcupineDemo(Thread):
                     self._recorded_frames.append(pcm)
 
                 result = porcupine.process(pcm)
-                if num_keywords == 1 and result:
-                    print('[%s] detected keyword' % str(datetime.now()))
-                elif num_keywords > 1 and result >= 0:
+                if result >= 0:
                     print('[%s] detected %s' % (str(datetime.now()), keyword_names[result]))
 
         except KeyboardInterrupt:
@@ -131,7 +129,7 @@ class PorcupineDemo(Thread):
     _AUDIO_DEVICE_INFO_KEYS = ['index', 'name', 'defaultSampleRate', 'maxInputChannels']
 
     @classmethod
-    def show_audio_devices_info(cls):
+    def show_audio_devices(cls):
         """ Provides information regarding different audio devices available. """
 
         pa = pyaudio.PyAudio()
@@ -146,45 +144,33 @@ class PorcupineDemo(Thread):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        '--keywords',
-        help='comma-separated list of default keywords (%s)' % ', '.join(pvporcupine.KEYWORDS))
+    parser.add_argument('--keywords', nargs='+', help='List of default keywords', choices=pvporcupine.KEYWORDS)
 
-    parser.add_argument('--keyword_file_paths', help='comma-separated absolute paths to keyword files')
+    parser.add_argument('--keyword_file_paths', nargs='+', help='List of absolute paths to keyword files')
 
-    parser.add_argument(
-        '--library_path',
-        help="absolute path to Porcupine's dynamic library",
-        default=pvporcupine.LIBRARY_PATH)
+    parser.add_argument('--library_path', help='Absolute path to dynamic library', default=pvporcupine.LIBRARY_PATH)
 
-    parser.add_argument(
-        '--model_file_path',
-        help='absolute path to model parameter file',
-        default=pvporcupine.MODEL_PATH)
+    parser.add_argument('--model_path', help='Absolute path to model parameter file.', default=pvporcupine.MODEL_PATH)
 
-    parser.add_argument('--sensitivities', help='detection sensitivity [0, 1]', default=0.5)
+    parser.add_argument('--sensitivities', nargs='+', help='detection sensitivity [0, 1]', type=float, default=None)
 
-    parser.add_argument('--input_audio_device_index', help='index of input audio device', type=int, default=None)
+    parser.add_argument('--audio_device_index', help='Index of input audio device.', type=int, default=None)
 
-    parser.add_argument(
-        '--output_path',
-        help='absolute path to where recorded audio will be stored. If not set, it will be bypassed.')
+    parser.add_argument('--output_path', help='Absolute path to debugging audio.')
 
-    parser.add_argument('--show_audio_devices_info', action='store_true')
+    parser.add_argument('--show_audio_devices', action='store_true')
 
     args = parser.parse_args()
 
-    if args.show_audio_devices_info:
-        PorcupineDemo.show_audio_devices_info()
+    if args.show_audio_devices:
+        PorcupineDemo.show_audio_devices()
     else:
         if args.keyword_file_paths is None:
             if args.keywords is None:
                 raise ValueError('either --keywords or --keyword_file_paths must be set')
 
-            keywords = [x.strip() for x in args.keywords.split(',')]
-
-            if all(x in pvporcupine.KEYWORDS for x in keywords):
-                keyword_file_paths = [pvporcupine.KEYWORD_FILE_PATHS[x] for x in keywords]
+            if all(x in pvporcupine.KEYWORDS for x in args.keywords):
+                keyword_file_paths = [pvporcupine.KEYWORD_FILE_PATHS[x] for x in args.keywords]
             else:
                 raise ValueError(
                     'selected keywords are not available by default. available keywords are: %s' %
@@ -192,18 +178,19 @@ def main():
         else:
             keyword_file_paths = [x.strip() for x in args.keyword_file_paths.split(',')]
 
-        if isinstance(args.sensitivities, float):
-            sensitivities = [args.sensitivities] * len(keyword_file_paths)
-        else:
-            sensitivities = [float(x) for x in args.sensitivities.split(',')]
+        if args.sensitivities is None:
+            args.sensitivities = [0.5] * len(keyword_file_paths)
+
+        if len(keyword_file_paths) != len(args.sensitivities):
+            raise ValueError('Incorrect number of sensitivities.')
 
         PorcupineDemo(
             library_path=args.library_path,
-            model_file_path=args.model_file_path,
+            model_file_path=args.model_path,
             keyword_file_paths=keyword_file_paths,
-            sensitivities=sensitivities,
+            sensitivities=args.sensitivities,
             output_path=args.output_path,
-            input_device_index=args.input_audio_device_index).run()
+            input_device_index=args.audio_device_index).run()
 
 
 if __name__ == '__main__':

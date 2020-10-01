@@ -1,15 +1,69 @@
-# Prerequisites
+# Porcupine Wake Word Engine Demo
 
-First, consult the prerequisites section of [Python binding](/binding/python). Additionally, demo application
-uses [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) for recording input audio (i.e. microphone).
-Consult the installation guide at [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/).
+Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-# Microphone-Based Application
+Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
+applications. It is
+
+- using deep neural networks trained in real-world environments.
+- compact and computationally-efficient making it perfect for IoT.
+- scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
+- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+
+## Compatibility
+
+- Python 3
+- Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), and Beagle Bone.
+
+Microphone demo uses [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) for recording input audio. Consult the
+installation guide at [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/).
+
+## Installation
+
+```bash
+pip3 install pvporcupinedemo
+```
+
+## Usage
+
+# File Demo
+
+It allows testing Porcupine on a corpus of audio files. It is mainly useful for quantitative performance benchmarking.
+
+```bash
+pvporcupinedemo_file --input_audio_file_path ${AUDIO_PATH} --keywords picovoice
+```
+
+```bash
+pvporcupinedemo_file --input_audio_file_path ${AUDIO_PATH} --keywords picovoice porcupine
+```
+
+```bash
+pvporcupinedemo_file --help
+```
+
+```bash
+pvporcupionedemo_file --input_audio_file_path ${AUDIO_PATH} --keyword_file_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
+```
+
+# Microphone Demo
 
 Usage information can be found via
 
 ```bash
-python3 demo/python/porcupine_demo_mic.py --help
+pvporcupinedemo_mic --help
+```
+
+```bash
+pvporcupinedemo_mic --keywords picovoice
+```
+
+```bash
+pvporcupinedemo_mic --keywords picovoice porcupine
+```
+
+```bash
+pvporcupinedemo_mic keyword_file_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 In the simplest form, a path to a valid wake word file needs to be provided to the script.
@@ -103,7 +157,3 @@ python3 demo/python/porcupine_demo_mic.py --keyword_file_paths resources/keyword
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
-
-# File-Based Application
-
-It allows testing Porcupine on a corpus of audio files. It is mainly useful for quantitative performance benchmarking.
