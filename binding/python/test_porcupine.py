@@ -21,7 +21,7 @@ class PorcupineTestCase(unittest.TestCase):
         porcupine = Porcupine(
             library_path=pv_library_path('../..'),
             model_path=pv_model_path('../../'),
-            keyword_file_paths=[pv_keyword_file_paths('../..')['porcupine']],
+            keyword_paths=[pv_keyword_paths('../..')['porcupine']],
             sensitivities=[0.5])
 
         audio, sample_rate = soundfile.read(
@@ -42,18 +42,18 @@ class PorcupineTestCase(unittest.TestCase):
         self.assertEqual(results, [0])
 
     def test_process_multiple(self):
-        keyword_file_names = \
+        keywords = \
             ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator']
 
-        keyword_file_paths = list()
-        for x in keyword_file_names:
-            keyword_file_paths.append(pv_keyword_file_paths('../..')[x])
+        keyword_paths = list()
+        for x in keywords:
+            keyword_paths.append(pv_keyword_paths('../..')[x])
 
         porcupine = Porcupine(
             library_path=pv_library_path('../..'),
             model_path=pv_model_path('../..'),
-            keyword_file_paths=keyword_file_paths,
-            sensitivities=[0.5] * len(keyword_file_paths))
+            keyword_paths=keyword_paths,
+            sensitivities=[0.5] * len(keyword_paths))
 
         audio, sample_rate = soundfile.read(
             os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/multiple_keywords.wav'),

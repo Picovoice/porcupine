@@ -16,23 +16,26 @@ LIBRARY_PATH = pv_library_path('')
 
 MODEL_PATH = pv_model_path('')
 
-KEYWORD_FILE_PATHS = pv_keyword_file_paths('')
+KEYWORD_PATHS = pv_keyword_paths('')
 
-KEYWORDS = set(KEYWORD_FILE_PATHS.keys())
+KEYWORDS = set(KEYWORD_PATHS.keys())
 
 
-def create(library_path=None, model_path=None, keyword_file_paths=None, keywords=None, sensitivities=None):
+def create(library_path=None, model_path=None, keyword_paths=None, keywords=None, sensitivities=None):
     """
     Factory method for Porcupine Wake Word Engine.
 
-    :param library_path: Path to Porcupine's dynamic library. If not set it will be set to the default location.
-    :param model_path: Path to Porcupine's model file. If not set it will be set to the default location.
-    :param keyword_file_paths: List of absolute paths to keyword files. If not set it will be populated from
-    'keywords' argument.
-    :param keywords: List of keywords to be used with Porcupine. The list of available (default) keywords can be
-    retrieved using 'pvporcupine.KEYWORDS'.
-    :param sensitivities: List of sensitivity values for each keyword. If not set '0.5' will be used for all keywords.
-    :return: An instance of Porcupine Wake Word Engine.
+    :param library_path: Absolute path to Porcupine's dynamic library. If not set it will be set to the default
+    location.
+    :param model_path: Absolute path to the file containing model parameters. If not set it will be set to the default
+    location.
+    :param keyword_paths: Absolute paths to keyword model files. If not set it will be populated from `keywords`
+    argument.
+    :param keywords: List of keywords (phrases) for detection. The list of available (default) keywords can be
+    retrieved using `pvporcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
+    :param sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher
+    sensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
+    :return: An instance of Porcupine wake word engine.
     """
 
     if library_path is None:
@@ -41,24 +44,25 @@ def create(library_path=None, model_path=None, keyword_file_paths=None, keywords
     if model_path is None:
         model_path = MODEL_PATH
 
-    if keyword_file_paths is None:
+    if keyword_paths is None:
         if keywords is None:
-            raise ValueError("'keywords' or 'keyword_file_paths' must be set")
+            raise ValueError("Either `keywords` or `keyword_paths` must be set.")
 
         if all(x in KEYWORDS for x in keywords):
-            keyword_file_paths = [KEYWORD_FILE_PATHS[x] for x in keywords]
+            keyword_paths = [KEYWORD_PATHS[x] for x in keywords]
         else:
             raise ValueError(
-                'One or more keywords are not available by default. available keywords are:\\n%s' % ', '.join(KEYWORDS))
+                'One or more keywords are not available by default. Available default keywords are:\\n%s' %
+                ', '.join(KEYWORDS))
 
     if sensitivities is None:
-        sensitivities = [0.5] * len(keyword_file_paths)
+        sensitivities = [0.5] * len(keyword_paths)
 
-    if len(sensitivities) != len(keyword_file_paths):
-        raise ValueError("'sensitivities' and 'keyword_file_paths' should have the same length.")
+    if len(sensitivities) != len(keyword_paths):
+        raise ValueError("Number of keywords does not match the number of sensitivities.")
 
     return Porcupine(
         library_path=library_path,
         model_path=model_path,
-        keyword_file_paths=keyword_file_paths,
+        keyword_paths=keyword_paths,
         sensitivities=sensitivities)

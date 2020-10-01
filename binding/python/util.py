@@ -35,7 +35,7 @@ def _pv_linux_machine(machine):
     elif 'AM33' in hardware_info:
         return 'beaglebone'
     else:
-        raise NotImplementedError('Unsupported CPU:\n%s' % cpu_info)
+        raise NotImplementedError('Unsupported CPU.')
 
 
 def _pv_platform():
@@ -95,7 +95,7 @@ def _pv_keyword_files_subdir():
     raise NotImplementedError('Unsupported platform')
 
 
-def pv_keyword_file_paths(relative):
+def pv_keyword_paths(relative):
     keyword_files_dir = \
         os.path.join(os.path.dirname(__file__), relative, 'resources/keyword_files', _pv_keyword_files_subdir())
 

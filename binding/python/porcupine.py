@@ -15,7 +15,12 @@ from enum import Enum
 
 
 class Porcupine(object):
-    """Python binding for Porcupine Wake Word Engine."""
+    """
+    Python binding for Porcupine wake word engine. It detects utterances of given keywords within an incoming stream of
+    audio in real-time. It processes incoming audio in consecutive frames and for each frame emits the detection result.
+    The number of samples per frame can be attained by calling `.frame_length`. The incoming audio needs to have a
+    sample rate equal to `.sample_rate` and be 16-bit linearly-encoded. Porcupine operates on single-channel audio.
+    """
 
     class PicovoiceStatuses(Enum):
         SUCCESS = 0
@@ -38,36 +43,35 @@ class Porcupine(object):
     class CPorcupine(Structure):
         pass
 
-    def __init__(self, library_path, model_path, keyword_file_paths, sensitivities):
+    def __init__(self, library_path, model_path, keyword_paths, sensitivities):
         """
         Constructor.
 
         :param library_path: Absolute path to Porcupine's dynamic library.
-        :param model_path: Absolute path to file containing model parameters.
-        :param keyword_file_paths: List of absolute paths to keyword files.
-        :param sensitivities: List of sensitivity parameters.
+        :param model_path: Absolute path to the file containing model parameters.
+        :param keyword_paths: Absolute paths to keyword model files.
+        :param sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A
+        higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
         """
 
         if not os.path.exists(library_path):
-            raise IOError("Couldn't find Porcupine's library at '%s'." % library_path)
+            raise IOError("Couldn't find Porcupine's dynamic library at '%s'." % library_path)
 
         library = cdll.LoadLibrary(library_path)
 
         if not os.path.exists(model_path):
             raise IOError("Couldn't find model file at '%s'." % model_path)
 
-        if len(keyword_file_paths) != len(sensitivities):
-            raise ValueError("Different number of sensitivity and keyword file path parameters are provided.")
+        if len(keyword_paths) != len(sensitivities):
+            raise ValueError("Number of keywords does not match the number of sensitivities.")
 
-        for x in keyword_file_paths:
+        for x in keyword_paths:
             if not os.path.exists(os.path.expanduser(x)):
                 raise IOError("Couldn't find keyword file at '%s'." % x)
 
         for x in sensitivities:
             if not (0 <= x <= 1):
-                raise ValueError('Sensitivity should be within [0, 1].')
-
-        self._num_keywords = len(keyword_file_paths)
+                raise ValueError('A sensitivity value should be within [0, 1].')
 
         init_func = library.pv_porcupine_init
         init_func.argtypes = [
@@ -82,9 +86,9 @@ class Porcupine(object):
 
         status = init_func(
             model_path.encode('utf-8'),
-            self._num_keywords,
-            (c_char_p * self._num_keywords)(*[os.path.expanduser(x).encode('utf-8') for x in keyword_file_paths]),
-            (c_float * self._num_keywords)(*sensitivities),
+            len(keyword_paths),
+            (c_char_p * len(keyword_paths))(*[os.path.expanduser(x).encode('utf-8') for x in keyword_paths]),
+            (c_float * len(keyword_paths))(*sensitivities),
             byref(self._handle))
         if status is not self.PicovoiceStatuses.SUCCESS:
             raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]()
@@ -107,7 +111,7 @@ class Porcupine(object):
         self._sample_rate = library.pv_sample_rate()
 
     def delete(self):
-        """Releases resources acquired by Porcupine's library."""
+        """Releases resources acquired by Porcupine."""
 
         self._delete_func(self._handle)
 
@@ -116,10 +120,10 @@ class Porcupine(object):
         Processes a frame of the incoming audio stream and emits the detection result.
 
         :param pcm: A frame of audio samples. The number of samples per frame can be attained by calling
-        '.frame_length'. The incoming audio needs to have a sample rate equal to '.sample_rate' and be 16-bit
+        `.frame_length`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit
         linearly-encoded. Porcupine operates on single-channel audio.
-        :return: Returns the index of detected wake-word. Indexing is 0-based and according to ordering of input keyword
-        file paths. It returns -1 when no keyword is detected.
+        :return: Returns Index of observed keyword at the end of the current frame. Indexing is 0-based and matches the
+        ordering of keyword models provided to the constructor. If no keyword is detected then it returns -1.
         """
 
         result = c_int()
@@ -127,19 +131,17 @@ class Porcupine(object):
         if status is not self.PicovoiceStatuses.SUCCESS:
             raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]()
 
-        keyword_index = result.value
-
-        return keyword_index
+        return result.value
 
     @property
     def version(self):
-        """Getter for version"""
+        """Version"""
 
         return self._version
 
     @property
     def frame_length(self):
-        """Getter for number of audio samples per frame."""
+        """Number of audio samples per frame."""
 
         return self._frame_length
 
