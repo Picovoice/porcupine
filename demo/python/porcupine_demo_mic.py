@@ -107,7 +107,7 @@ class PorcupineDemo(Thread):
 
                 result = porcupine.process(pcm)
                 if result >= 0:
-                    print('[%s] detected %s' % (str(datetime.now()), keywords[result]))
+                    print('[%s] Detected %s' % (str(datetime.now()), keywords[result]))
 
         except KeyboardInterrupt:
             print('Stopping ...')
@@ -145,7 +145,7 @@ def main():
         '--keywords',
         nargs='+',
         help='List of default keywords for detection. Available keywords: %s' % ', '.join(sorted(pvporcupine.KEYWORDS)),
-        choices=sorted(list(pvporcupine.KEYWORDS)),
+        choices=sorted(pvporcupine.KEYWORDS),
         metavar='')
 
     parser.add_argument(

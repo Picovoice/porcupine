@@ -99,7 +99,7 @@ To detect non-default keywords (e.g. models created using [Picovoice Console](ht
 use `keyword_paths` argument
 
 ```bash
-porcupine_demo_mic keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
+porcupine_demo_mic --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
