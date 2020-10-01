@@ -103,13 +103,16 @@ placeholder for data used by various applications within the repository.
 
 ### Python Demos
 
-#### PIP
+Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package
 
-Install Porcupine demo package using [PIP](https://pypi.org/project/pvporcupinedemo/). Then with a working microphone
-connected to your device run the following in the terminal
+```bash
+sudo pip3 install pvporcupinedemo
+```
+
+With a working microphone connected to your device run the following in the terminal
 
 ```shell
-pvporcupinedemo_mic --keywords porcupine
+porcupine_demo_mic --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
@@ -118,29 +121,11 @@ utterances of wake-word "porcupine".
 In order to process audio files (e.g. WAV) run
 
 ```shell
-pvporcupinedemo_file --input_audio_file_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
+porcupine_demo_file --input_audio_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
 ```
 
 Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Python
 demos go to [demo/python](/demo/python).
-
-#### Repository
-
-Install dependencies in [/demo/python](/demo/python)
-
-```bash
-sudo pip3 install -r requirements.txt
-```
-
-This [demo application](/demo/python/porcupine_demo_mic.py) allows testing Porcupine using your computer's microphone.
-It opens an input audio stream, monitors it, and logs the detection events into the console. Below is an example of
-running the demo for hotword `picovoice` from the command line. Replace `${SYSTEM}` with the name of the operating
-system on your machine (e.g. linux, mac, windows, or raspberry-pi).
-
-```bash
-python3 demo/python/porcupine_demo_mic.py \
---keyword_file_paths resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn
-```
 
 ### Android Demos
 
@@ -211,9 +196,14 @@ Below are code snippets showcasing how Porcupine can be integrated into differen
 
 ### Python
 
-#### PIP
 
-The PIP package exposes a factory method to create instances of the engine as below
+Install the Python SDK
+
+```bash
+pip3 install pvporcupine
+```
+
+The SDK exposes a factory method to create instances of the engine as below
 
 ```python
 import pvporcupine
@@ -221,8 +211,8 @@ import pvporcupine
 handle = pvporcupine.create(keywords=['picovoice', 'bumblebee'])
 ```
 
-`keywords` argument is a shorthand for accessing default keyword files shipped with the library. The default keyword files
-available can be retrieved via
+`keywords` argument is a shorthand for accessing default keyword files shipped with the library. The default keyword
+files available can be retrieved via
 
 ```python
 import pvporcupine
@@ -235,30 +225,8 @@ If you wish to use a non-default keyword file you need to identify its path as b
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keyword_file_paths=['path/to/non/default/keyword/file'])
+handle = pvporcupine.create(keyword_paths=['path/to/non/default/keyword/file'])
 ```
-
-In order to learn how to use the created object continue reading the section below.
-
-#### Repository
-
-[/binding/python/porcupine.py](/binding/python/porcupine.py) provides a Python binding for Porcupine library. Below is a
-quick demonstration of how to construct an instance of it to detect multiple keywords concurrently.
-
-```python
-library_path = ... # Path to Porcupine's C library available under lib/
-model_file_path = ... # It is available at lib/common/porcupine_params.pv
-keyword_file_paths = ['path/to/keyword/1', 'path/to/keyword/2', ...]
-sensitivities = [0.5, 0.4, ...]
-handle = Porcupine(
-    library_path,
-    model_file_path,
-    keyword_file_paths=keyword_file_paths,
-    sensitivities=sensitivities)
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
 When initialized, valid sample rate can be obtained using `handle.sample_rate`. Expected frame length
 (number of audio samples in an input array) is `handle.frame_length`. The object can be used to monitor
@@ -275,8 +243,7 @@ while True:
         pass
 ```
 
-Finally, when done be sure to explicitly release the resources as the binding class does not rely on the garbage
-collector.
+Finally, when done be sure to explicitly release the resources
 
 ```python
 handle.delete()
