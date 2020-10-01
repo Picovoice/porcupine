@@ -32,7 +32,7 @@ handle = pvporcupine.create(keywords=['picovoice'])
 ```
 
 `handle` is an instance of Porcupine that detects utterances of "Picovoice". `keywords` input argument is a shorthand
-for accessing default keyword files shipped with the package. The list of default keywords can be retrieved by
+for accessing default keyword model files shipped with the package. The list of default keywords can be retrieved by
 
 ```python
 import pvporcupine
@@ -48,12 +48,12 @@ import pvporcupine
 handle = pvporcupine.create(keywords=['bumblebee', 'picovoice'])
 ```
 
-To use non-default keyword files use `keyword_file_paths` input argument instead
+To detect non-default keywords use `keyword_paths` input argument instead
 
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keyword_file_paths=['/absolute/path/to/keyword/one', '/absolute/path/to/keyword/two', ...])
+handle = pvporcupine.create(keyword_paths=['/absolute/path/to/keyword/one', '/absolute/path/to/keyword/two', ...])
 ```
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
@@ -68,7 +68,8 @@ Sensitivity is the parameter that enables trading miss rate for the false alarm 
 `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 When initialized, the valid sample rate is given by `handle.sample_rate`. Expected frame length (number of audio samples
-in an input array) is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM.
+in an input array) is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on
+single-channel audio.
 
 ```python
 def get_next_audio_frame():
