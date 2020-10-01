@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -25,11 +25,11 @@ extern "C"
 #endif
 
 /**
- * Forward declaration for keyword spotting class (Porcupine). It detects utterances of given keywords within an
- * incoming stream of audio in real-time. It processes incoming audio in consecutive frames and for each frame emits the
- * detection result. The number of samples per frame can be attained by calling 'pv_porcupine_frame_length()'. The
- * incoming audio needs to have a sample rate equal to 'pv_sample_rate()' and be 16-bit linearly-encoded. Porcupine
- * operates on single-channel audio.
+ * Forward declaration for Porcupine wake word engine. It detects utterances of given keywords within an incoming stream
+ * of audio in real-time. It processes incoming audio in consecutive frames and for each frame emits the detection
+ * result. The number of samples per frame can be attained by calling 'pv_porcupine_frame_length()'. The incoming audio
+ * needs to have a sample rate equal to 'pv_sample_rate()' and be 16-bit linearly-encoded. Porcupine operates on
+ * single-channel audio.
  */
 typedef struct pv_porcupine pv_porcupine_t;
 
@@ -41,7 +41,7 @@ typedef struct pv_porcupine pv_porcupine_t;
  * @param keyword_paths Absolute paths to keyword model files.
  * @param sensitivities Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher
  * sensitivity results in fewer misses at the cost of increasing the false alarm rate.
- * @param[out] object Constructed keyword spotting object.
+ * @param[out] object Constructed instance of Porcupine.
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_IO_ERROR', or 'PV_STATUS_OUT_OF_MEMORY' on
  * failure.
  */
@@ -55,14 +55,14 @@ PV_API pv_status_t pv_porcupine_init(
 /**
  * Destructor.
  *
- * @param object Keyword spotting object.
+ * @param object Porcupine object.
  */
 PV_API void pv_porcupine_delete(pv_porcupine_t *object);
 
 /**
  * Processes a frame of the incoming audio stream and emits the detection result.
  *
- * @param object Keyword spotting object.
+ * @param object Porcupine object.
  * @param pcm A frame of audio samples. The number of samples per frame can be attained by calling
  * 'pv_porcupine_frame_length()'. The incoming audio needs to have a sample rate equal to 'pv_sample_rate()' and be
  * 16-bit linearly-encoded. Porcupine operates on single-channel audio.
