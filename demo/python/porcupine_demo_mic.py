@@ -78,7 +78,7 @@ class PorcupineDemo(Thread):
             porcupine = pvporcupine.create(
                 library_path=self._library_path,
                 model_path=self._model_path,
-                keyword_file_paths=self._keyword_file_paths,
+                keyword_paths=self._keyword_file_paths,
                 sensitivities=self._sensitivities)
 
             pa = pyaudio.PyAudio()
@@ -168,7 +168,7 @@ def main():
             if args.keywords is None:
                 raise ValueError("Either '--keywords' or '--keyword_file_paths' must be set")
 
-            keyword_file_paths = [pvporcupine.KEYWORD_FILE_PATHS[x] for x in args.keywords]
+            keyword_file_paths = [pvporcupine.KEYWORD_PATHS[x] for x in args.keywords]
         else:
             keyword_file_paths = args.keyword_file_paths
 
