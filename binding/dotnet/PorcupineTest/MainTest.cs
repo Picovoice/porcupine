@@ -24,7 +24,7 @@ namespace PorcupineTest
     [TestClass]
     public class MainTest
     {        
-        private static readonly string rootDir = Path.GetFullPath($"{Environment.CurrentDirectory}/../../../../../../../");
+        private static readonly string rootDir = Path.GetFullPath($"{Environment.CurrentDirectory}/../../../../../../");
         private static readonly string modelFilePath = Path.Combine(rootDir, "lib/common/porcupine_params.pv");
         private static readonly string env = GetEnvironmentName();
         private static readonly Dictionary<string, string> keywordFilePaths = new Dictionary<string, string>
