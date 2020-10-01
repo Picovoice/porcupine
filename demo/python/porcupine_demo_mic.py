@@ -186,7 +186,7 @@ def main():
 
             keyword_paths = [pvporcupine.KEYWORD_PATHS[x] for x in args.keywords]
         else:
-            keyword_paths = args.keyword_file_paths
+            keyword_paths = args.keyword_paths
 
         if args.sensitivities is None:
             args.sensitivities = [0.5] * len(keyword_paths)
