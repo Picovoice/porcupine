@@ -95,8 +95,4 @@ handle.delete()
 ## Demos
 
 [pvporcupinedemo](https://pypi.org/project/pvporcupinedemo/) provides command-line utilities for processing real-time
-audio (i.e. microphone) and files using Porcupine. The source code for these utilities is available on Porcupine's
-GitHub repository:
-
-- [File Demo](/demo/python/porcupine_demo_file.py)
-- [Microphone Demo](/demo/python/porcupine_demo_mic.py)
+audio (i.e. microphone) and files using Porcupine.
