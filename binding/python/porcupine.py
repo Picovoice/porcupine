@@ -126,6 +126,9 @@ class Porcupine(object):
         ordering of keyword models provided to the constructor. If no keyword is detected then it returns -1.
         """
 
+        if len(pcm) != self.frame_length:
+            raise ValueError("Invalid frame length. expected %d but received %d" % (self.frame_length, len(pcm)))
+
         result = c_int()
         status = self.process_func(self._handle, (c_short * len(pcm))(*pcm), byref(result))
         if status is not self.PicovoiceStatuses.SUCCESS:
