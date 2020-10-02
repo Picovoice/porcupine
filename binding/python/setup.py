@@ -40,9 +40,9 @@ for platform in platforms:
 
 MANIFEST_IN = """
 include pvporcupine/LICENSE
-include __init__.py
-include porcupine.py
-include util.py
+include pvporcupine/__init__.py
+include pvporcupine/porcupine.py
+include pvporcupine/util.py
 include pvporcupine/lib/common/porcupine_params.pv
 include pvporcupine/lib/beaglebone/libpv_porcupine.so
 include pvporcupine/lib/linux/x86_64/libpv_porcupine.so
