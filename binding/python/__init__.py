@@ -23,7 +23,7 @@ KEYWORDS = set(KEYWORD_PATHS.keys())
 
 def create(library_path=None, model_path=None, keyword_paths=None, keywords=None, sensitivities=None):
     """
-    Factory method for Porcupine Wake Word Engine.
+    Factory method for Porcupine wake word engine.
 
     :param library_path: Absolute path to Porcupine's dynamic library. If not set it will be set to the default
     location.
