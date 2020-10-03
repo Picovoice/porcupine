@@ -75,8 +75,8 @@ Sensitivity is the parameter that enables trading miss rate for the false alarm 
 
 ### Microphone Demo
 
-It opens an audio stream from a microphone and detects utterances of a give wake word(s). The following opens the
-default microphone and detects occurrences of "Picovoice".
+It opens an audio stream from a microphone and detects utterances of a given wake word. The following opens the default
+microphone and detects occurrences of "Picovoice".
 
 ```bash
 porcupine_demo_mic --keywords picovoice
