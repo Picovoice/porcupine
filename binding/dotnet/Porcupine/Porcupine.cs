@@ -21,15 +21,12 @@ namespace Picovoice
     /// <summary>
     ///  Status codes returned by Picovoice library
     /// </summary>
-    public enum PvStatus
+    public enum PorcupineStatus
     {
         SUCCESS = 0,
         OUT_OF_MEMORY = 1,
         IO_ERROR = 2,
-        INVALID_ARGUMENT = 3,
-        STOP_ITERATION = 4,
-        KEY_ERROR = 5,
-        INVALID_STATE = 6,
+        INVALID_ARGUMENT = 3
     }
 
     /// <summary>
@@ -41,7 +38,7 @@ namespace Picovoice
         private IntPtr _libraryPointer = IntPtr.Zero;
 
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern PvStatus pv_porcupine_init(string modelPath, int numKeywords, string[] keywordPaths, float[] sensitivities, out IntPtr handle);
+        private static extern PorcupineStatus pv_porcupine_init(string modelPath, int numKeywords, string[] keywordPaths, float[] sensitivities, out IntPtr handle);
 
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_sample_rate();
@@ -50,7 +47,7 @@ namespace Picovoice
         private static extern void pv_porcupine_delete(IntPtr handle);
 
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern PvStatus pv_porcupine_process(IntPtr handle, short[] pcm, out int keywordIndex);
+        private static extern PorcupineStatus pv_porcupine_process(IntPtr handle, short[] pcm, out int keywordIndex);
 
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern IntPtr pv_porcupine_version();
@@ -69,11 +66,11 @@ namespace Picovoice
         /// <param name="keywordPaths"> Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>
         /// <param name="keywords">
         /// List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved 
-        /// using `pvporcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
+        /// using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
         /// </param>
         /// <param name="sensitivities">
         /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
-        /// misses at the cost of increasing the false alarm rate.If not set 0.5 will be used.
+        /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
         /// </param>
         /// <returns>An instance of Porcupine wake word engine.</returns>                             
         public static Porcupine Create(string modelPath = null, IEnumerable<string> keywordPaths = null,
@@ -89,7 +86,7 @@ namespace Picovoice
                 }
 
                 if (keywords.All(k => KEYWORDS.Contains(k)))
-                {
+                {                    
                     keywordPaths = keywords.Select(k => KEYWORD_PATHS[k]);
                 }
                 else
@@ -106,7 +103,7 @@ namespace Picovoice
 
             if (sensitivities.Count() != keywords.Count())
             {
-                throw new ArgumentException("Number of keywords does not match the number of sensitivities.");
+                throw new ArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
             }
 
             return new Porcupine(modelPath, keywordPaths, sensitivities);
@@ -119,7 +116,7 @@ namespace Picovoice
         /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
         /// <param name="sensitivities">
         /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased 
-        /// false alarm rate. A sensitivity value should be within[0, 1]. 
+        /// false alarm rate. A sensitivity value should be within [0, 1]. 
         /// </param>        
         public Porcupine(string modelPath, IEnumerable<string> keywordPaths, IEnumerable<float> sensitivities)
         {
@@ -135,28 +132,28 @@ namespace Picovoice
                 throw new IOException($"Couldn't find model file at '{modelPath}'");
             }
 
-            foreach (string p in keywordPaths)
+            foreach (string path in keywordPaths)
             {
-                if (!File.Exists(p))
+                if (!File.Exists(path))
                 {
-                    throw new IOException($"Couldn't find keyword file at '{p}'");
+                    throw new IOException($"Couldn't find keyword file at '{path}'");
                 }
             }
 
             if (sensitivities.Any(s => s < 0 || s > 1))
             {
-                throw new ArgumentException("Sensitivies should be within [0, 1].");
+                throw new ArgumentException("Sensitivities should be within [0, 1].");
             }
 
             if (keywordPaths.Count() != sensitivities.Count())
             {
-                throw new ArgumentException("Each given keyword needs a valid sensitivity value.");
+                throw new ArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
             }
 
-            PvStatus status = pv_porcupine_init(modelPath, keywordPaths.Count(), keywordPaths.ToArray(), sensitivities.ToArray(), out _libraryPointer);
-            if (status != PvStatus.SUCCESS)
+            PorcupineStatus status = pv_porcupine_init(modelPath, keywordPaths.Count(), keywordPaths.ToArray(), sensitivities.ToArray(), out _libraryPointer);
+            if (status != PorcupineStatus.SUCCESS)
             {
-                throw PvStatusToException(status);
+                throw PorcupineStatusToException(status);
             }
         }
 
@@ -168,20 +165,20 @@ namespace Picovoice
         /// sample rate and pv_porcupine_frame_length() to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
         /// </param>
         /// <returns>
-        /// Index of detected keyword, if any. Indexing is 0-based and according to ordering of input keyword file paths. 
-        /// Returns -1 if no detection is made.
+        /// Index of the detected keyword, or -1 if no detection occurred
         /// </returns>
         public int Process(short[] data)
         {
             if (data.Length != pv_porcupine_frame_length())
             {
-                throw new ArgumentException("Input audio frame was not the size specified by Porcupine engine. Use Porcupine.FrameLength.");
+                throw new ArgumentException($"Input audio frame size ({data.Length}) was not the size specified by Porcupine engine ({FrameLength}). " +
+                    $"Use Porcupine.FrameLength to get the correct size.");
             }
 
-            PvStatus status = pv_porcupine_process(_libraryPointer, data, out int index);
-            if (status != PvStatus.SUCCESS)
+            PorcupineStatus status = pv_porcupine_process(_libraryPointer, data, out int index);
+            if (status != PorcupineStatus.SUCCESS)
             {
-                throw PvStatusToException(status);
+                throw PorcupineStatusToException(status);
             }
 
             return index;
@@ -211,18 +208,18 @@ namespace Picovoice
         /// </summary>
         /// <param name="status">Picovoice library status code.</param>
         /// <returns>.NET exception</returns>
-        private static Exception PvStatusToException(PvStatus status)
+        private static Exception PorcupineStatusToException(PorcupineStatus status)
         {
             switch (status)
             {
-                case PvStatus.OUT_OF_MEMORY:
+                case PorcupineStatus.OUT_OF_MEMORY:
                     return new OutOfMemoryException();
-                case PvStatus.IO_ERROR:
+                case PorcupineStatus.IO_ERROR:
                     return new IOException();
-                case PvStatus.INVALID_ARGUMENT:
+                case PorcupineStatus.INVALID_ARGUMENT:
                     return new ArgumentException();                
                 default:
-                    return new Exception();
+                    return new Exception($"Unmapped error code returned from Porcupine.");
             }
         }
 
@@ -236,7 +233,6 @@ namespace Picovoice
                 pv_porcupine_delete(_libraryPointer);
                 _libraryPointer = IntPtr.Zero;
             }
-            GC.Collect();
         }
 
         ~Porcupine()
