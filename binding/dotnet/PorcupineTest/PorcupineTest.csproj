@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PorcupineDotNet\PorcupineDotNet.csproj" />
+    <ProjectReference Include="..\Porcupine\Porcupine.csproj" />
   </ItemGroup>
 	<ItemGroup>
 		<Content Include="..\..\..\resources\audio_samples\*">

@@ -16,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace PorcupineDotNet
+namespace Picovoice
 {
     /// <summary>
     ///  Status codes returned by Picovoice library
@@ -33,7 +33,7 @@ namespace PorcupineDotNet
     }
 
     /// <summary>
-    ///  .NET Core binding for Picovoice's wake word detection engine (Porcupine).
+    ///  .NET binding for Porcupine wake word engine.
     /// </summary>
     public class Porcupine
     {
@@ -58,9 +58,8 @@ namespace PorcupineDotNet
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_porcupine_frame_length();
 
-        private static readonly string _relativePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        public static string MODEL_PATH = Utils.PvModelPath(_relativePath);
-        public static Dictionary<string, string> KEYWORD_PATHS = Utils.PvKeywordPaths(_relativePath);
+        public static string MODEL_PATH = Utils.PvModelPath();
+        public static Dictionary<string, string> KEYWORD_PATHS = Utils.PvKeywordPaths();
         public static List<string> KEYWORDS = KEYWORD_PATHS.Keys.ToList();
 
         /// <summary>
@@ -217,17 +216,11 @@ namespace PorcupineDotNet
             switch (status)
             {
                 case PvStatus.OUT_OF_MEMORY:
-                    return new OutOfMemoryException("Porcupine library ran out of memory.");
+                    return new OutOfMemoryException();
                 case PvStatus.IO_ERROR:
-                    return new IOException("Porcupine library reported an I/O error.");
+                    return new IOException();
                 case PvStatus.INVALID_ARGUMENT:
-                    return new ArgumentException("An invalid argument was reported by the Porcupine library.");
-                case PvStatus.STOP_ITERATION:
-                    return new Exception("A stop iteration status was returned by the Porcupine library");
-                case PvStatus.KEY_ERROR:
-                    return new Exception("A key error was returned by the Porcupine library");
-                case PvStatus.INVALID_STATE:
-                    return new Exception("The Porcupine library reported an invalid state.");
+                    return new ArgumentException();                
                 default:
                     return new Exception();
             }

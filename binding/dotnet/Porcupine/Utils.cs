@@ -11,23 +11,24 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace PorcupineDotNet
+namespace Picovoice
 {
     public static class Utils
     {
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "linux" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" : "";
-        public static string PvModelPath(string relativeDir)
+        public static string PvModelPath()
         {
-            return Path.Combine(relativeDir, "lib/common/porcupine_params.pv");
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lib/common/porcupine_params.pv");
         }
 
-        public static Dictionary<string, string> PvKeywordPaths(string relativeDir)
+        public static Dictionary<string, string> PvKeywordPaths()
         {
-            string keywordFilesDir = Path.Combine(relativeDir, "resources/keyword_files", _env);
+            string keywordFilesDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/keyword_files", _env);
 
             Dictionary<string, string> keywordPaths = new Dictionary<string, string>();
             foreach (string keywordFile in Directory.GetFiles(keywordFilesDir))

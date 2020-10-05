@@ -16,35 +16,37 @@ using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PorcupineDotNet;
+using Picovoice;
 
 namespace PorcupineTest
 {
     [TestClass]
     public class MainTest
-    {   
+    {
+        [TestMethod]
+        public void TestFrameLength() 
+        {
+            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });            
+            Assert.IsTrue(p.FrameLength > 0, "Specified frame length was not a valid number.");
+            p.Dispose();
+        }
+
+        [TestMethod]
+        public void TestVersion()
+        {
+            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });
+            Assert.IsFalse(string.IsNullOrWhiteSpace(p.Version), "Porcupine did not return a valid version number.");
+            p.Dispose();
+        }
+
         [TestMethod]
         public void TestProcess()
         {                     
-            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });
-            Assert.IsFalse(string.IsNullOrWhiteSpace(p.Version), "Porcupine did not return a valid version number.");
-            
+            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });            
             int frameLen = p.FrameLength;
-            Assert.IsTrue(frameLen > 0, "Specified frame length was not a valid number.");
-
-            List<short> data = new List<short>();
+            
             string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/porcupine.wav");
-            using (BinaryReader reader = new BinaryReader(File.Open(testAudioPath, FileMode.Open)))
-            {
-                reader.ReadBytes(24);
-                Assert.AreEqual(reader.ReadInt32(), p.SampleRate, "Specified sample rate did not match test file.");
-                reader.ReadBytes(16);
-                
-                while (reader.BaseStream.Position != reader.BaseStream.Length)
-                {
-                    data.Add(reader.ReadInt16());
-                }
-            }
+            List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);
 
             int framecount = (int)Math.Floor((float)(data.Count / frameLen));
             var results = new List<int>();
@@ -54,8 +56,7 @@ namespace PorcupineTest
                 int count = p.FrameLength;
                 List<short> frame = data.GetRange(start, count);
                 int result = p.Process(frame.ToArray());
-                Assert.IsTrue(result >= -1, "Porcupine returned an unexpected result (<-1)");
-
+                Assert.IsTrue(result == -1 || result == 0, "Porcupine returned an unexpected result (should return 0 or -1)");
                 if (result >= 0)
                 {
                     results.Add(result);
@@ -75,19 +76,8 @@ namespace PorcupineTest
             int frameLen = p.FrameLength;
             Assert.IsTrue(frameLen > 0, "Specified frame length was not a valid number.");
 
-            List<short> data = new List<short>();
             string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/multiple_keywords.wav");
-            using (BinaryReader reader = new BinaryReader(File.Open(testAudioPath, FileMode.Open)))
-            {
-                reader.ReadBytes(24);
-                Assert.AreEqual(reader.ReadInt32(), p.SampleRate, "Specified sample rate did not match test file.");
-                reader.ReadBytes(16);
-
-                while (reader.BaseStream.Position != reader.BaseStream.Length)
-                {
-                    data.Add(reader.ReadInt16());
-                }
-            }
+            List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);
 
             int framecount = (int)Math.Floor((float)(data.Count / frameLen));
             var results = new List<int>();
@@ -114,6 +104,24 @@ namespace PorcupineTest
             }
 
             p.Dispose();
+        }
+
+        private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate) 
+        {
+            List<short> data = new List<short>();
+            using (BinaryReader reader = new BinaryReader(File.Open(audioFilePath, FileMode.Open)))
+            {
+                reader.ReadBytes(24);
+                Assert.AreEqual(reader.ReadInt32(), expectedSampleRate, "Specified sample rate did not match test file.");
+                reader.ReadBytes(16);
+
+                while (reader.BaseStream.Position != reader.BaseStream.Length)
+                {
+                    data.Add(reader.ReadInt16());
+                }
+            }
+
+            return data;
         }
     }
 }

@@ -4,12 +4,9 @@
 	  <TargetFrameworks>netstandard2.0</TargetFrameworks>	 
   </PropertyGroup>
 	<ItemGroup>		
-		<Content Include="PorcupineDotNet.targets">
+		<Content Include="Porcupine.targets">
 			<PackagePath>build\netstandard2.0</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Utils.cs">
-			<PackagePath>build/netstandard2.0/demo</PackagePath>
 		</Content>
 		<Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
 			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.dll</PackagePath>
