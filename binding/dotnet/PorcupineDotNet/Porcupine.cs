@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace PorcupineDotNet
@@ -36,35 +37,91 @@ namespace PorcupineDotNet
     /// </summary>
     public class Porcupine
     {
-        private const string PORCUPINE_LIBRARY = "libpv_porcupine";
+        private const string LIBRARY_PATH = "libpv_porcupine";
         private IntPtr _libraryPointer = IntPtr.Zero;
 
-        [DllImport(PORCUPINE_LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern PvStatus pv_porcupine_init(string modelPath, int numKeywords, string[] keywordPaths, float[] sensitivities, out IntPtr handle);
 
-        [DllImport(PORCUPINE_LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_sample_rate();
 
-        [DllImport(PORCUPINE_LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern void pv_porcupine_delete(IntPtr handle);
 
-        [DllImport(PORCUPINE_LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern PvStatus pv_porcupine_process(IntPtr handle, short[] pcm, out int keywordIndex);
 
-        [DllImport(PORCUPINE_LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern IntPtr pv_porcupine_version();
 
-        [DllImport(PORCUPINE_LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_porcupine_frame_length();
+
+        private static readonly string _relativePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string MODEL_PATH = Utils.PvModelPath(_relativePath);
+        public static Dictionary<string, string> KEYWORD_PATHS = Utils.PvKeywordPaths(_relativePath);
+        public static List<string> KEYWORDS = KEYWORD_PATHS.Keys.ToList();
+
+        /// <summary>
+        /// Creates an instance of the Porcupine wake word engine.
+        /// </summary>
+        /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
+        /// <param name="keywordPaths"> Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>
+        /// <param name="keywords">
+        /// List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved 
+        /// using `pvporcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
+        /// </param>
+        /// <param name="sensitivities">
+        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
+        /// misses at the cost of increasing the false alarm rate.If not set 0.5 will be used.
+        /// </param>
+        /// <returns>An instance of Porcupine wake word engine.</returns>                             
+        public static Porcupine Create(string modelPath = null, IEnumerable<string> keywordPaths = null,
+                                       IEnumerable<string> keywords = null, IEnumerable<float> sensitivities = null)
+        {
+            modelPath = modelPath ?? MODEL_PATH;
+
+            if (keywordPaths == null)
+            {
+                if (keywords == null)
+                {
+                    throw new ArgumentNullException("keywords", "Either 'keywords' or 'keywordPaths' must be set.");
+                }
+
+                if (keywords.All(k => KEYWORDS.Contains(k)))
+                {
+                    keywordPaths = keywords.Select(k => KEYWORD_PATHS[k]);
+                }
+                else
+                {
+                    throw new ArgumentException("One or more keywords are not available by default. Available default keywords are:\n" +
+                                                 string.Join(",", KEYWORDS));
+                }
+            }
+
+            if (sensitivities == null)
+            {
+                sensitivities = Enumerable.Repeat(0.5f, keywords.Count());
+            }
+
+            if (sensitivities.Count() != keywords.Count())
+            {
+                throw new ArgumentException("Number of keywords does not match the number of sensitivities.");
+            }
+
+            return new Porcupine(modelPath, keywordPaths, sensitivities);
+        }
 
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine.
         /// </summary>
         /// <param name="modelPath">Absolute path to file containing model parameters.</param>
         /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
-        /// <param name="sensitivities">A list of sensitivity values for each keyword. 
-        ///     A higher sensitivity value lowers miss rate at the cost of increased false alarm rate.
-        ///     A sensitivity value should be within[0, 1]. </param>        
+        /// <param name="sensitivities">
+        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased 
+        /// false alarm rate. A sensitivity value should be within[0, 1]. 
+        /// </param>        
         public Porcupine(string modelPath, IEnumerable<string> keywordPaths, IEnumerable<float> sensitivities)
         {
             if (string.IsNullOrWhiteSpace(modelPath) ||
@@ -108,9 +165,8 @@ namespace PorcupineDotNet
         /// Process a frame of audio with the wake word engine.
         /// </summary>
         /// <param name="data">
-        /// A frame of audio samples to be assessed by Porcupine. 
-        /// The required audio format is found by calling pv_sample_rate() to get the required sample rate and pv_porcupine_frame_length() to get the required frame size.
-        /// Audio must be single-channel and 16-bit linearly-encoded. 
+        /// A frame of audio samples to be assessed by Porcupine. The required audio format is found by calling pv_sample_rate() to get the required 
+        /// sample rate and pv_porcupine_frame_length() to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
         /// </param>
         /// <returns>
         /// Index of detected keyword, if any. Indexing is 0-based and according to ordering of input keyword file paths. 

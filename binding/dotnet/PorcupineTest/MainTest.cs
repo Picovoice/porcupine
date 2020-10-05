@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -9,53 +9,32 @@
     specific language governing permissions and limitations under the License.
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
+using System.Reflection;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PorcupineDotNet;
-using System.Linq;
 
 namespace PorcupineTest
 {
     [TestClass]
     public class MainTest
-    {        
-        private static readonly string rootDir = Path.GetFullPath($"{Environment.CurrentDirectory}/../../../../../../");
-        private static readonly string modelFilePath = Path.Combine(rootDir, "lib/common/porcupine_params.pv");
-        private static readonly string env = GetEnvironmentName();
-        private static readonly Dictionary<string, string> keywordFilePaths = new Dictionary<string, string>
-        {
-            { "americano", Path.Combine(rootDir, $"resources/keyword_files/{env}/americano_{env}.ppn") },
-            { "blueberry", Path.Combine(rootDir, $"resources/keyword_files/{env}/blueberry_{env}.ppn")},
-            { "bumblebee", Path.Combine(rootDir, $"resources/keyword_files/{env}/bumblebee_{env}.ppn")},
-            { "grapefruit", Path.Combine(rootDir, $"resources/keyword_files/{env}/grapefruit_{env}.ppn")},
-            { "grasshopper", Path.Combine(rootDir, $"resources/keyword_files/{env}/grasshopper_{env}.ppn")},
-            { "picovoice", Path.Combine(rootDir, $"resources/keyword_files/{env}/picovoice_{env}.ppn")},
-            { "porcupine", Path.Combine(rootDir, $"resources/keyword_files/{env}/porcupine_{env}.ppn")},
-            { "terminator", Path.Combine(rootDir, $"resources/keyword_files/{env}/terminator_{env}.ppn")}
-        };
-
-        private static readonly Dictionary<string, float> sensitivities = new Dictionary<string, float>
-        {
-            { "americano", 0.5f }, { "blueberry", 0.5f }, { "bumblebee", 0.5f }, { "grapefruit", 0.5f },
-            { "grasshopper", 0.5f }, { "picovoice", 0.5f }, { "porcupine", 0.5f }, { "terminator", 0.5f }
-        };
-
+    {   
         [TestMethod]
         public void TestProcess()
         {                     
-            Porcupine p = new Porcupine(modelFilePath, new List<string> { keywordFilePaths["porcupine"] }, new List<float>{ sensitivities["porcupine"] } );
+            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });
             Assert.IsFalse(string.IsNullOrWhiteSpace(p.Version), "Porcupine did not return a valid version number.");
             
             int frameLen = p.FrameLength;
             Assert.IsTrue(frameLen > 0, "Specified frame length was not a valid number.");
 
             List<short> data = new List<short>();
-            using (BinaryReader reader = new BinaryReader(File.Open(Path.Combine(rootDir, "resources/audio_samples/porcupine.wav"), FileMode.Open)))
+            string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/porcupine.wav");
+            using (BinaryReader reader = new BinaryReader(File.Open(testAudioPath, FileMode.Open)))
             {
                 reader.ReadBytes(24);
                 Assert.AreEqual(reader.ReadInt32(), p.SampleRate, "Specified sample rate did not match test file.");
@@ -89,15 +68,16 @@ namespace PorcupineTest
 
         [TestMethod]
         public void TestProcessMultiple()
-        {                        
-            Porcupine p = new Porcupine(modelFilePath, keywordFilePaths.Values.ToList(), sensitivities.Values.ToList());
+        {
+            Porcupine p = Porcupine.Create(keywords:Porcupine.KEYWORDS);
             Assert.IsFalse(string.IsNullOrWhiteSpace(p.Version), "Porcupine did not return a valid version number.");
 
             int frameLen = p.FrameLength;
             Assert.IsTrue(frameLen > 0, "Specified frame length was not a valid number.");
 
             List<short> data = new List<short>();
-            using (BinaryReader reader = new BinaryReader(File.Open(Path.Combine(rootDir, "resources/audio_samples/multiple_keywords.wav"), FileMode.Open)))
+            string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/multiple_keywords.wav");
+            using (BinaryReader reader = new BinaryReader(File.Open(testAudioPath, FileMode.Open)))
             {
                 reader.ReadBytes(24);
                 Assert.AreEqual(reader.ReadInt32(), p.SampleRate, "Specified sample rate did not match test file.");
@@ -130,28 +110,10 @@ namespace PorcupineTest
             for (int i = 0; i < results.Count; i++)
             {
                 Assert.AreEqual(expectedResults[i], results[i], 
-                    $"Expected '{keywordFilePaths.ElementAt(expectedResults[i]).Key}', but '{keywordFilePaths.ElementAt(results[i]).Key}' was detected.");
+                    $"Expected '{Porcupine.KEYWORDS[expectedResults[i]]}', but '{Porcupine.KEYWORDS[results[i]]}' was detected.");
             }
 
             p.Dispose();
-        }
-
-        private static string GetEnvironmentName()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return "mac";
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return "linux";
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return "windows";
-            }
-
-            throw new NotImplementedException("this OS has no binding logic implemented yet.");
         }
     }
 }
