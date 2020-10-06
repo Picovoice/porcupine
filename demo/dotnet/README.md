@@ -102,7 +102,7 @@ use `keyword_paths` argument
 dotnet run -c MicDemo.Release -- --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
-It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
+It is possible that the default audio input device is not the one you wish to use. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console
 
 ```bash
