@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -24,7 +24,7 @@ import ai.picovoice.porcupine.PorcupineException;
 public class PorcupineManager {
     private final AudioRecorder audioRecorder;
     private final Porcupine porcupine;
-    private final KeywordCallback keywordCallback;
+    private final PorcupineManagerCallback callback;
 
     int getSampleRate() {
         return porcupine.getSampleRate();
@@ -38,7 +38,7 @@ public class PorcupineManager {
         try {
             final int keyword_index = porcupine.process(pcm);
             if (keyword_index >= 0) {
-                keywordCallback.run(keyword_index);
+                callback.invoke(keyword_index);
             }
         } catch (PorcupineException e) {
             throw new PorcupineManagerException(e);
@@ -48,49 +48,41 @@ public class PorcupineManager {
     /**
      * Constructor for single keyword use case.
      *
-     * @param modelFilePath   Absolute path to file containing model parameters.
-     * @param keywordFilePath Absolute path to keyword file containing hyper-parameters.
+     * @param modelPath   Absolute path to file containing model parameters.
+     * @param keywordPath Absolute path to keyword file containing hyper-parameters.
      * @param sensitivity     Sensitivity parameter. A higher sensitivity value lowers miss rate
      *                        at the cost of increased false alarm rate.
-     * @param keywordCallback callback when hte keyword is detected.
+     * @param callback callback when hte keyword is detected.
      * @throws PorcupineManagerException if there is an error while initializing Porcupine.
      */
-    public PorcupineManager(
-            String modelFilePath,
-            String keywordFilePath,
-            float sensitivity,
-            KeywordCallback keywordCallback) throws PorcupineManagerException {
+    public PorcupineManager(String modelPath, String keywordPath, float sensitivity, PorcupineManagerCallback callback) throws PorcupineManagerException {
         try {
-            porcupine = new Porcupine(modelFilePath, keywordFilePath, sensitivity);
+            porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
         } catch (PorcupineException e) {
             throw new PorcupineManagerException(e);
         }
 
-        this.keywordCallback = keywordCallback;
+        this.callback = callback;
         audioRecorder = new AudioRecorder(this);
     }
 
     /**
      * Constructor for multiple keywords use case.
      *
-     * @param modelFilePath    Absolute path to file containing model parameters.
-     * @param keywordFilePaths Absolute path to keyword files.
+     * @param modelPath    Absolute path to file containing model parameters.
+     * @param keywordPaths Absolute path to keyword files.
      * @param sensitivities    Array of sensitivity parameters for each keyword.
-     * @param keywordCallback  Callback when keyword is detected.
+     * @param callback  Callback when keyword is detected.
      * @throws PorcupineManagerException if there is an error while initializing Porcupine.
      */
-    public PorcupineManager(
-            String modelFilePath,
-            String[] keywordFilePaths,
-            float[] sensitivities,
-            KeywordCallback keywordCallback) throws PorcupineManagerException {
+    public PorcupineManager(String modelPath, String[] keywordPaths, float[] sensitivities, PorcupineManagerCallback callback) throws PorcupineManagerException {
         try {
-            porcupine = new Porcupine(modelFilePath, keywordFilePaths, sensitivities);
+            porcupine = new Porcupine(modelPath, keywordPaths, sensitivities);
         } catch (PorcupineException e) {
             throw new PorcupineManagerException(e);
         }
 
-        this.keywordCallback = keywordCallback;
+        this.callback = callback;
         audioRecorder = new AudioRecorder(this);
     }
 

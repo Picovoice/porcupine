@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -12,6 +12,6 @@
 
 package ai.picovoice.porcupinemanager;
 
-public interface KeywordCallback {
-    void run(int keyword_index);
+public interface PorcupineManagerCallback {
+    void invoke(int keyword_index);
 }

@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ai.picovoice.porcupinemanager.KeywordCallback;
+import ai.picovoice.porcupinemanager.PorcupineManagerCallback;
 import ai.picovoice.porcupinemanager.PorcupineManager;
 import ai.picovoice.porcupinemanager.PorcupineManagerException;
 
@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity {
         String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
         final int detectedBackgroundColor = getResources()
                 .getColor(R.color.colorAccent);
-        return new PorcupineManager(modelFilePath, keywordFilePath, 0.5f, new KeywordCallback() {
+        return new PorcupineManager(modelFilePath, keywordFilePath, 0.5f, new PorcupineManagerCallback() {
             @Override
-            public void run(int keyword_index) {
+            public void invoke(int keyword_index) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
