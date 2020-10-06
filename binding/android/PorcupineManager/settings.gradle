@@ -1,2 +1,5 @@
 include ':porcupinemanager'
 rootProject.name = "PorcupineManager"
+
+include ':porcupine'
+project(':porcupine').projectDir = new File(settingsDir, '../Porcupine/porcupine')
