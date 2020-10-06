@@ -148,74 +148,74 @@ namespace PorcupineDemo
             bool showHelp = false;
 
             // parse command line arguments
-            int argIdx = 0;
-            while (argIdx < args.Length)
+            int argIndex = 0;
+            while (argIndex < args.Length)
             {
-                if (args[argIdx] == "--keywords")
+                if (args[argIndex] == "--keywords")
                 {
-                    argIdx++;
+                    argIndex++;
                     keywords = new List<string>();
-                    while (argIdx < args.Length && Porcupine.KEYWORDS.Contains(args[argIdx]))
+                    while (argIndex < args.Length && Porcupine.KEYWORDS.Contains(args[argIndex]))
                     {
-                        keywords.Add(args[argIdx++]);
+                        keywords.Add(args[argIndex++]);
                     }                    
                 }
-                else if (args[argIdx] == "--keyword_paths")
+                else if (args[argIndex] == "--keyword_paths")
                 {
-                    argIdx++;
+                    argIndex++;
                     keywordPaths = new List<string>();
-                    while (argIdx < args.Length && File.Exists(args[argIdx]) && args[argIdx].EndsWith(".ppn"))
+                    while (argIndex < args.Length && File.Exists(args[argIndex]) && args[argIndex].EndsWith(".ppn"))
                     {
-                        keywordPaths.Add(args[argIdx++]);
+                        keywordPaths.Add(args[argIndex++]);
                     }                    
                 }
-                else if (args[argIdx] == "--model_path")
+                else if (args[argIndex] == "--model_path")
                 {
-                    if (++argIdx < args.Length && File.Exists(args[argIdx]))
+                    if (++argIndex < args.Length && File.Exists(args[argIndex]))
                     {
-                        modelPath = args[argIdx++];
+                        modelPath = args[argIndex++];
                     }
                 }
-                else if (args[argIdx] == "--sensitivities")
+                else if (args[argIndex] == "--sensitivities")
                 {
-                    argIdx++;
+                    argIndex++;
                     sensitivities = new List<float>();
                     float f;
-                    while (argIdx < args.Length && float.TryParse(args[argIdx], out f))
+                    while (argIndex < args.Length && float.TryParse(args[argIndex], out f))
                     {
                         sensitivities.Add(f);
-                        argIdx++;
+                        argIndex++;
                     }                    
                 }
-                else if (args[argIdx] == "--show_audio_devices")
+                else if (args[argIndex] == "--show_audio_devices")
                 {
                     showAudioDevices = true;
-                    argIdx++;
+                    argIndex++;
                 }
-                else if (args[argIdx] == "--audio_device_index")
+                else if (args[argIndex] == "--audio_device_index")
                 {
                     int deviceIdx;
-                    if (++argIdx < args.Length && int.TryParse(args[argIdx], out deviceIdx))
+                    if (++argIndex < args.Length && int.TryParse(args[argIndex], out deviceIdx))
                     {
                         audioDeviceIndex = deviceIdx;
-                        argIdx++;
+                        argIndex++;
                     }
                 }
-                else if (args[argIdx] == "--output_path")
+                else if (args[argIndex] == "--output_path")
                 {
-                    if (++argIdx < args.Length)
+                    if (++argIndex < args.Length)
                     {
-                        outputPath = args[argIdx++];
+                        outputPath = args[argIndex++];
                     }
                 }
-                else if (args[argIdx] == "-h" || args[argIdx] == "--help")
+                else if (args[argIndex] == "-h" || args[argIndex] == "--help")
                 {
                     showHelp = true;
-                    argIdx++;
+                    argIndex++;
                 }
                 else
                 {
-                    argIdx++;
+                    argIndex++;
                 }
             }
 

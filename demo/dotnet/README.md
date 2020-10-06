@@ -2,7 +2,7 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-This package contains .NET Core Console demos for processing real-time audio (i.e. microphone) and audio files
+This package contains .NET Core command line demos for processing real-time audio (i.e. microphone) and audio files
 using Porcupine wake word engine.
 
 ## Porcupine
@@ -33,37 +33,36 @@ dotnet build -c FileDemo.Release
 
 ### File Demo
 
-It allows testing Porcupine on a corpus of audio files. The demo is mainly useful for quantitative performance
-benchmarking. It accepts 16kHz audio files. Porcupine processes a single-channel audio stream if a stereo file is
-provided it only processes the first (left) channel. The following processes a file looking for instances of the phrase
-"Picovoice"
+The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
+Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
+The following processes a file looking for instances of the phrase "Picovoice":
 
 ```bash
 dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
-can be seen in the usage string
+can be seen in the usage string:
 
 ```bash
 dotnet run -c FileDemo.Release -- --help
 ```
 
-To detect multiple phrases concurrently provide them as separate arguments
+To detect multiple phrases concurrently provide them as separate arguments:
 
 ```bash
 dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
-use `keyword_paths` argument
+use `keyword_paths` argument:
 
 ```bash
 dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
-The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
+The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument:
 
 ```bash
 dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} \
@@ -75,35 +74,35 @@ Sensitivity is the parameter that enables trading miss rate for the false alarm 
 
 ### Microphone Demo
 
-It opens an audio stream from a microphone and detects utterances of a given wake word. The following opens the default
-microphone and detects occurrences of "Picovoice".
+This demo opens an audio stream from a microphone and detects utterances of a given wake word. The following opens the default
+microphone and detects occurrences of "Picovoice":
 
 ```bash
 dotnet run -c MicDemo.Release -- --keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
-can be seen in the usage string
+can be seen in the usage string:
 
 ```bash
 dotnet run -c MicDemo.Release -- --help
 ```
 
-To detect multiple phrases concurrently provide them as separate arguments
+To detect multiple phrases concurrently provide them as separate arguments:
 
 ```bash
 dotnet run -c MicDemo.Release -- --keywords picovoice porcupine
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
-use `keyword_paths` argument
+use `keyword_paths` argument:
 
 ```bash
 dotnet run -c MicDemo.Release -- --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 It is possible that the default audio input device is not the one you wish to use. There are a couple
-of debugging facilities baked into the demo application to solve this. First, type the following into the console
+of debugging facilities baked into the demo application to solve this. First, type the following into the console:
 
 ```bash
 dotnet run -c MicDemo.Release -- --show_audio_devices
@@ -119,13 +118,13 @@ Available input devices:
 ``` 
 
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Headset 
-microphone in the above example, you can invoke the demo application as below
+microphone in the above example, you can invoke the demo application as below:
 
 ```bash
 dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 1
 ```
 
-If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with
+If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
 ```bash
 dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 1 --output_path ./test.wav

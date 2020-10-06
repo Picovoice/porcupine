@@ -29,7 +29,7 @@ namespace PorcupineDemo
         /// <summary>
         /// Reads through input file and, upon detecting the specified wake word(s), prints the detection timecode and the wake word.
         /// </summary>
-        /// <param name="inputAudioPath">Required arguement. Absolute path to input audio file.</param>                
+        /// <param name="inputAudioPath">Required argument. Absolute path to input audio file.</param>                
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
         /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>     
         /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>     
@@ -48,47 +48,47 @@ namespace PorcupineDemo
             try
             {
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
-                fileReader = new WaveFileReader(inputAudioPath);
-
-                if (fileReader.WaveFormat.SampleRate != porcupine.SampleRate)
+                using (fileReader = new WaveFileReader(inputAudioPath))
                 {
-                    throw new ArgumentException("SampleRate",
-                        $"Audio file should have a sample rate of {porcupine.SampleRate} got {fileReader.WaveFormat.SampleRate}");
-                }
-
-                bool readLeftChannelOnly = false;                
-                if (fileReader.WaveFormat.Channels == 2)
-                {
-                    Console.WriteLine("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.");
-                    readLeftChannelOnly = true;
-                }
-                
-                byte[] rawBuffer = new byte[porcupine.FrameLength * 2 * fileReader.WaveFormat.Channels];
-                short[] sampleBuffer = new short[porcupine.FrameLength];
-
-                int nread;
-                long totalSamplesRead = 0;
-                int step = readLeftChannelOnly ? 4 : 2;
-                while ((nread = fileReader.Read(rawBuffer, 0, rawBuffer.Length)) == rawBuffer.Length)
-                {
-                    for (int i = 0; i < nread; i += step) 
+                    if (fileReader.WaveFormat.SampleRate != porcupine.SampleRate)
                     {
-                        sampleBuffer[i / step] = BitConverter.ToInt16(rawBuffer, i);                         
+                        throw new ArgumentException("SampleRate",
+                            $"Audio file should have a sample rate of {porcupine.SampleRate} got {fileReader.WaveFormat.SampleRate}");
                     }
-                    totalSamplesRead += porcupine.FrameLength;
 
-                    int result = porcupine.Process(sampleBuffer);
-                    if (result >= 0)
+                    bool readLeftChannelOnly = false;
+                    if (fileReader.WaveFormat.Channels == 2)
                     {
-                        Console.WriteLine($"Detected {keywords[result]} at " +
-                            $"{Math.Round(totalSamplesRead / (double)fileReader.WaveFormat.SampleRate, 2)} sec");
+                        Console.WriteLine("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.");
+                        readLeftChannelOnly = true;
+                    }
+
+                    byte[] rawBuffer = new byte[porcupine.FrameLength * 2 * fileReader.WaveFormat.Channels];
+                    short[] sampleBuffer = new short[porcupine.FrameLength];
+
+                    int numBytesRead;
+                    long totalSamplesRead = 0;
+                    int step = readLeftChannelOnly ? 4 : 2;
+                    while ((numBytesRead = fileReader.Read(rawBuffer, 0, rawBuffer.Length)) == rawBuffer.Length)
+                    {
+                        for (int i = 0; i < numBytesRead; i += step)
+                        {
+                            sampleBuffer[i / step] = BitConverter.ToInt16(rawBuffer, i);
+                        }
+                        totalSamplesRead += porcupine.FrameLength;
+
+                        int result = porcupine.Process(sampleBuffer);
+                        if (result >= 0)
+                        {
+                            Console.WriteLine($"Detected {keywords[result]} at " +
+                                $"{Math.Round(totalSamplesRead / (double)fileReader.WaveFormat.SampleRate, 2)} sec");
+                        }
                     }
                 }
             }
             finally
             {
                 porcupine?.Dispose();
-                fileReader?.Dispose();
             }
         }    
 
@@ -110,60 +110,60 @@ namespace PorcupineDemo
             bool showHelp = false;
 
             // parse command line arguments
-            int argIdx = 0;
-            while (argIdx < args.Length)
+            int argIndex = 0;
+            while (argIndex < args.Length)
             {
-                if (args[argIdx] == "--input_audio_path")
+                if (args[argIndex] == "--input_audio_path")
                 {
-                    if (++argIdx < args.Length)
+                    if (++argIndex < args.Length)
                     {
-                        inputAudioPath = args[argIdx++];
+                        inputAudioPath = args[argIndex++];
                     }
                 }
-                else if (args[argIdx] == "--keywords")
+                else if (args[argIndex] == "--keywords")
                 {
-                    argIdx++;
+                    argIndex++;
                     keywords = new List<string>();
-                    while (argIdx < args.Length && Porcupine.KEYWORDS.Contains(args[argIdx]))
+                    while (argIndex < args.Length && Porcupine.KEYWORDS.Contains(args[argIndex]))
                     {
-                        keywords.Add(args[argIdx++]);
+                        keywords.Add(args[argIndex++]);
                     }                    
                 }
-                else if (args[argIdx] == "--keyword_paths")
+                else if (args[argIndex] == "--keyword_paths")
                 {
-                    argIdx++;
+                    argIndex++;
                     keywordPaths = new List<string>();
-                    while (argIdx < args.Length && File.Exists(args[argIdx]))
+                    while (argIndex < args.Length && File.Exists(args[argIndex]))
                     {
-                        keywordPaths.Add(args[argIdx++]);
+                        keywordPaths.Add(args[argIndex++]);
                     }                    
                 }
-                else if (args[argIdx] == "--model_path")
+                else if (args[argIndex] == "--model_path")
                 {
-                    if (++argIdx < args.Length && File.Exists(args[argIdx]))
+                    if (++argIndex < args.Length && File.Exists(args[argIndex]))
                     {
-                        modelPath = args[argIdx++];
+                        modelPath = args[argIndex++];
                     }
                 }
-                else if (args[argIdx] == "--sensitivities")
+                else if (args[argIndex] == "--sensitivities")
                 {
-                    argIdx++;
+                    argIndex++;
                     sensitivities = new List<float>();
-                    float f;
-                    while (argIdx < args.Length && float.TryParse(args[argIdx], out f))
+                    float sensitivity;
+                    while (argIndex < args.Length && float.TryParse(args[argIndex], out sensitivity))
                     {
-                        sensitivities.Add(f);
-                        argIdx++;
+                        sensitivities.Add(sensitivity);
+                        argIndex++;
                     }                    
                 }                
-                else if (args[argIdx] == "-h" || args[argIdx] == "--help")
+                else if (args[argIndex] == "-h" || args[argIndex] == "--help")
                 {
                     showHelp = true;
-                    argIdx++;
+                    argIndex++;
                 }
                 else
                 {
-                    argIdx++;
+                    argIndex++;
                 }
             }
 
