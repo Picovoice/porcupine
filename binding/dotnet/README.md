@@ -40,7 +40,9 @@ for accessing default keyword model files shipped with the package. The list of 
 using Picovoice
 
 foreach (string keyword in Porcupine.KEYWORDS)
+{
 	Console.WriteLine(keyword);
+}
 ```
 
 Porcupine can detect multiple keywords concurrently
@@ -67,7 +69,7 @@ The sensitivity of the engine can be tuned per keyword using the `sensitivities`
 using Picovoice
 
 Porcupine handle = Porcupine.Create(keywords: new List<string>{ "grapefruit", "porcupine" },
-									   sensitivities: new List<float>{ 0.6f, 0.35f });
+									sensitivities: new List<float>{ 0.6f, 0.35f });
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
