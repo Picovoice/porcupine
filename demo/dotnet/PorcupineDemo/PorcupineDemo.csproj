@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<Configurations>FileDemo.Debug;FileDemo.Release;MicDemo.Debug;MicDemo.Release</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'FileDemo.Debug' Or '$(Configuration)' == 'FileDemo.Release'">
+		<StartupObject>PorcupineDemo.FileDemo</StartupObject>
+		<TargetName>PorcupineFileDemo</TargetName>
+		<AssemblyName>PorcupineFileDemo</AssemblyName>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)' == 'MicDemo.Debug' Or '$(Configuration)' == 'MicDemo.Release'">
+		<StartupObject>PorcupineDemo.MicDemo</StartupObject>
+		<TargetName>PorcupineMicDemo</TargetName>
+		<AssemblyName>PorcupineMicDemo</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="NAudio" Version="1.10.0" />
+		<PackageReference Include="Porcupine" Version="1.0.0" />
+	</ItemGroup>
+
+</Project>
