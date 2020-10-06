@@ -15,5 +15,5 @@
  */
 
 include ':app', ':porcupinemanager', 'porcupine'
-project(':porcupine').projectDir = new File(settingsDir, '../../../binding/android/Porcupine/app')
+project(':porcupine').projectDir = new File(settingsDir, '../../../binding/android/Porcupine/porcupine')
 project(':porcupinemanager').projectDir = new File(settingsDir, '../../../binding/android/PorcupineManager/app')
