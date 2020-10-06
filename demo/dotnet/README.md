@@ -114,7 +114,7 @@ It provides information about various audio input devices on the box. On a Windo
 ```
 Available input devices:
 
-    Device 0: Microphone Array (Realtek(R) Au, 2 channels	
+	Device 0: Microphone Array (Realtek(R) Au, 2 channels
 	Device 1: Microphone Headset USB, 1 channel	
 ``` 
 
