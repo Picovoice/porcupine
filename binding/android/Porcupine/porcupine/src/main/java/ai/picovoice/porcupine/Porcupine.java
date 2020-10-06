@@ -78,9 +78,9 @@ public class Porcupine {
      *            calling {@link #getFrameLength()}. The incoming audio needs to have a sample rate
      *            equal to {@link #getSampleRate()} and be 16-bit linearly-encoded. Porcupine
      *            operates on single-channel audio.
-     * @return Index of observed keyword at the end of the current frame. Indexing is
-     * 0-based and matches the ordering of keyword models provided to the constructor. If no keyword
-     * is detected then it returns -1.
+     * @return Index of observed keyword at the end of the current frame. Indexing is 0-based and
+     * matches the ordering of keyword models provided to the constructor. If no keyword is detected
+     * then it returns -1.
      * @throws PorcupineException if there is an error while processing the audio sample.
      */
     public int process(short[] pcm) throws PorcupineException {
