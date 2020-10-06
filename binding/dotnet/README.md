@@ -69,7 +69,7 @@ The sensitivity of the engine can be tuned per keyword using the `sensitivities`
 using Picovoice
 
 Porcupine handle = Porcupine.Create(keywords: new List<string>{ "grapefruit", "porcupine" },
-									sensitivities: new List<float>{ 0.6f, 0.35f });
+								sensitivities: new List<float>{ 0.6f, 0.35f });
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
@@ -88,10 +88,10 @@ short[] getNextAudioFrame()
 
 while(true)
 {
-    var keywordIndex = handle.Process(getNextAudioFrame())
-    if(keywordIndex >= 0)
+	var keywordIndex = handle.Process(getNextAudioFrame())
+	if(keywordIndex >= 0)
 	{
-	   // .. detection event logic/callback
+		// .. detection event logic/callback
 	}
 }
 ```
