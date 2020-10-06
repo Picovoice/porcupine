@@ -13,49 +13,127 @@
 package ai.picovoice.porcupinemanager;
 
 
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+import android.os.Process;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
 
 
 /**
- * Records audio from microphone, processes it in real-time using Porcupine engine, and notifies the
- * client when the a keyword is detected.
+ * High-level interface for Porcupine wake word engine. It handles recording audio from microphone,
+ * processes it in real-time using Porcupine, and notifies the client when the a keyword is detected.
  */
 public class PorcupineManager {
-    private final AudioRecorder audioRecorder;
-    private final Porcupine porcupine;
-    private final PorcupineManagerCallback callback;
+    private class MicrophoneReader {
+        private AtomicBoolean started = new AtomicBoolean(false);
+        private AtomicBoolean stop = new AtomicBoolean(false);
+        private AtomicBoolean stopped = new AtomicBoolean(false);
 
-    int getSampleRate() {
-        return porcupine.getSampleRate();
-    }
-
-    int getFrameLength() {
-        return porcupine.getFrameLength();
-    }
-
-    void consume(short[] pcm) throws PorcupineManagerException {
-        try {
-            final int keyword_index = porcupine.process(pcm);
-            if (keyword_index >= 0) {
-                callback.invoke(keyword_index);
+        void start() {
+            if (started.get()) {
+                return;
             }
-        } catch (PorcupineException e) {
-            throw new PorcupineManagerException(e);
+
+            started.set(true);
+
+            Executors.newSingleThreadExecutor().submit(new Callable<Void>() {
+                @Override
+                public Void call() throws PorcupineManagerException {
+                    android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
+                    read();
+                    return null;
+                }
+            });
+        }
+
+        void stop() throws InterruptedException {
+            if (!started.get()) {
+                return;
+            }
+
+            stop.set(true);
+
+            while (!stopped.get()) {
+                Thread.sleep(10);
+            }
+
+            started.set(false);
+            stop.set(false);
+            stopped.set(false);
+        }
+
+        private void read() throws PorcupineManagerException {
+            final int minBufferSize = AudioRecord.getMinBufferSize(
+                    porcupine.getSampleRate(),
+                    AudioFormat.CHANNEL_IN_MONO,
+                    AudioFormat.ENCODING_PCM_16BIT);
+            final int bufferSize = Math.max(porcupine.getSampleRate() / 2, minBufferSize);
+
+            AudioRecord audioRecord = null;
+            short[] buffer = new short[porcupine.getFrameLength()];
+
+            try {
+                audioRecord = new AudioRecord(
+                        MediaRecorder.AudioSource.MIC,
+                        porcupine.getSampleRate(),
+                        AudioFormat.CHANNEL_IN_MONO,
+                        AudioFormat.ENCODING_PCM_16BIT,
+                        bufferSize);
+                audioRecord.startRecording();
+
+                while (!stop.get()) {
+                    if (audioRecord.read(buffer, 0, buffer.length) == buffer.length) {
+                        try {
+                            final int keywordIndex = porcupine.process(buffer);
+                            if (keywordIndex >= 0) {
+                                callback.invoke(keywordIndex);
+                            }
+                        } catch (PorcupineException e) {
+                            throw new PorcupineManagerException(e);
+                        }
+                    }
+                }
+
+                audioRecord.stop();
+            } catch (IllegalArgumentException | IllegalStateException e) {
+                throw new PorcupineManagerException(e);
+            } finally {
+                if (audioRecord != null) {
+                    audioRecord.release();
+                }
+
+                stopped.set(true);
+            }
         }
     }
 
+    private final MicrophoneReader microphoneReader;
+    private final Porcupine porcupine;
+    private final PorcupineManagerCallback callback;
+
     /**
-     * Constructor for single keyword use case.
+     * Constructor.
      *
-     * @param modelPath   Absolute path to file containing model parameters.
-     * @param keywordPath Absolute path to keyword file containing hyper-parameters.
-     * @param sensitivity     Sensitivity parameter. A higher sensitivity value lowers miss rate
-     *                        at the cost of increased false alarm rate.
-     * @param callback callback when hte keyword is detected.
+     * @param modelPath   Absolute path to the file containing model parameters.
+     * @param keywordPath Absolute path to keyword model file.
+     * @param sensitivity Sensitivity for detecting keyword. Should be a floating point number
+     *                    within [0, 1]. A higher sensitivity results in fewer misses at the cost of
+     *                    increasing false alarm rate.
+     * @param callback    The callback that is invoked upon detection of the keyword.
      * @throws PorcupineManagerException if there is an error while initializing Porcupine.
      */
-    public PorcupineManager(String modelPath, String keywordPath, float sensitivity, PorcupineManagerCallback callback) throws PorcupineManagerException {
+    public PorcupineManager(
+            String modelPath,
+            String keywordPath,
+            float sensitivity,
+            PorcupineManagerCallback callback) throws PorcupineManagerException {
         try {
             porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
         } catch (PorcupineException e) {
@@ -63,19 +141,25 @@ public class PorcupineManager {
         }
 
         this.callback = callback;
-        audioRecorder = new AudioRecorder(this);
+        microphoneReader = new MicrophoneReader();
     }
 
     /**
-     * Constructor for multiple keywords use case.
+     * Constructor.
      *
-     * @param modelPath    Absolute path to file containing model parameters.
-     * @param keywordPaths Absolute path to keyword files.
-     * @param sensitivities    Array of sensitivity parameters for each keyword.
-     * @param callback  Callback when keyword is detected.
+     * @param modelPath     Absolute path to file containing model parameters.
+     * @param keywordPaths  Absolute paths to keyword model files.
+     * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
+     *                      within [0, 1]. A higher sensitivity results in fewer misses at the cost
+     *                      of increasing the false alarm rate.
+     * @param callback      The callback that is invoked upon detection of the keyword.
      * @throws PorcupineManagerException if there is an error while initializing Porcupine.
      */
-    public PorcupineManager(String modelPath, String[] keywordPaths, float[] sensitivities, PorcupineManagerCallback callback) throws PorcupineManagerException {
+    public PorcupineManager(
+            String modelPath,
+            String[] keywordPaths,
+            float[] sensitivities,
+            PorcupineManagerCallback callback) throws PorcupineManagerException {
         try {
             porcupine = new Porcupine(modelPath, keywordPaths, sensitivities);
         } catch (PorcupineException e) {
@@ -83,29 +167,34 @@ public class PorcupineManager {
         }
 
         this.callback = callback;
-        audioRecorder = new AudioRecorder(this);
+        microphoneReader = new MicrophoneReader();
     }
 
     /**
-     * Start recording.
+     * Releases resources acquired by Porcupine. It should be called when disposing the object.
+     */
+    public void delete() {
+        porcupine.delete();
+    }
+
+    /**
+     * Starts recording.
      */
     public void start() {
-        audioRecorder.start();
+        microphoneReader.start();
     }
 
     /**
-     * Stop recording and dispose the engine.
+     * Stops recording.
      *
-     * @throws PorcupineManagerException if the {@link AudioRecorder} throws an exception while it's
-     *                                   getting stopped.
+     * @throws PorcupineManagerException if the {@link MicrophoneReader} throws an exception while
+     *                                   it's being stopped.
      */
     public void stop() throws PorcupineManagerException {
         try {
-            audioRecorder.stop();
+            microphoneReader.stop();
         } catch (InterruptedException e) {
             throw new PorcupineManagerException(e);
-        } finally {
-            porcupine.delete();
         }
     }
 }

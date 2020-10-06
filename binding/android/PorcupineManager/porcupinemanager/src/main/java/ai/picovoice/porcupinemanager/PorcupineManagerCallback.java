@@ -13,5 +13,5 @@
 package ai.picovoice.porcupinemanager;
 
 public interface PorcupineManagerCallback {
-    void invoke(int keyword_index);
+    void invoke(int keywordIndex);
 }
