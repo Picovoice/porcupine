@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -46,7 +46,6 @@ public class PorcupineService extends Service {
                     NotificationManager.IMPORTANCE_HIGH);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
-            assert manager != null;
             manager.createNotificationChannel(notificationChannel);
         }
     }
@@ -82,11 +81,10 @@ public class PorcupineService extends Service {
             porcupineManager = new PorcupineManager(
                     modelFilePath,
                     keywordFilePath,
-                    0.5f,
+                    0.7f,
                     (keywordIndex) -> {
                         numKeywordsDetected++;
 
-                        CharSequence title = "Porcupine";
                         PendingIntent contentIntent = PendingIntent.getActivity(
                                 this,
                                 0,
@@ -94,7 +92,7 @@ public class PorcupineService extends Service {
                                 0);
 
                         Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                .setContentTitle(title)
+                                .setContentTitle("Porcupine")
                                 .setContentText("num detected : " + numKeywordsDetected)
                                 .setSmallIcon(R.drawable.ic_launcher_background)
                                 .setContentIntent(contentIntent)
@@ -106,7 +104,7 @@ public class PorcupineService extends Service {
                     });
             porcupineManager.start();
         } catch (PorcupineManagerException e) {
-            Log.e("PORCUPINE_SERVICE", e.toString());
+            Log.e("PORCUPINE", e.toString());
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -122,8 +120,9 @@ public class PorcupineService extends Service {
     public void onDestroy() {
         try {
             porcupineManager.stop();
+            porcupineManager.delete();
         } catch (PorcupineManagerException e) {
-            Log.e("PORCUPINE_SERVICE", e.toString());
+            Log.e("PORCUPINE", e.toString());
         }
 
         super.onDestroy();

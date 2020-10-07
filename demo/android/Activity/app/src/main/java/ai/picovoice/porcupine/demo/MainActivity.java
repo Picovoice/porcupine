@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     if (porcupineManager != null) {
                         try {
                             porcupineManager.stop();
+                            porcupineManager.delete();
                         } catch (PorcupineManagerException e) {
                             displayError("Failed to stop Porcupine.");
                         }
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 porcupineManager.stop();
+                porcupineManager.delete();
             }
         } catch (PorcupineManagerException e) {
             displayError("Something went wrong");
