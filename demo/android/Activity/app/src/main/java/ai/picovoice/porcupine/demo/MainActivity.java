@@ -64,9 +64,12 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
     }
 
-    private void copyResourceFile(int resourceID, String filename) throws IOException {
+    private void copyResourceFile(int resourceId, String filename) throws IOException {
         Resources resources = getResources();
-        try (InputStream is = new BufferedInputStream(resources.openRawResource(resourceID), 256); OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)) {
+        try (
+                InputStream is = new BufferedInputStream(resources.openRawResource(resourceId), 256);
+                OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)
+        ) {
             int r;
             while ((r = is.read()) != -1) {
                 os.write(r);
@@ -75,23 +78,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private static int[] KEYWORD_FILE_RESOURCE_IDS = {
-            R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit,
-            R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
+    private static final int[] KEYWORD_FILE_RESOURCE_IDS = {
+            R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit, R.raw.grasshopper,
+            R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
     };
 
     private void copyPorcupineResourceFiles() throws IOException {
         Resources resources = getResources();
 
-        for (int keywordFileResourceID : KEYWORD_FILE_RESOURCE_IDS) {
-            copyResourceFile(keywordFileResourceID, resources.getResourceEntryName(keywordFileResourceID) + ".ppn");
+        for (int x : KEYWORD_FILE_RESOURCE_IDS) {
+            copyResourceFile(x, resources.getResourceEntryName(x) + ".ppn");
         }
 
         copyResourceFile(R.raw.porcupine_params, resources.getResourceEntryName(R.raw.porcupine_params) + ".pv");
     }
 
-    private void showErrorToast() {
-        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+    private void showErrorToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             copyPorcupineResourceFiles();
         } catch (IOException e) {
-            Toast.makeText(this, "Failed to copy resource files", Toast.LENGTH_SHORT).show();
+            showErrorToast("Failed to copy resource files");
         }
 
         notificationPlayer = MediaPlayer.create(this, R.raw.notification);
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 porcupineManager.stop();
             }
         } catch (PorcupineManagerException e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            showErrorToast("Something went wrong");
         }
     }
 
@@ -144,11 +147,10 @@ public class MainActivity extends AppCompatActivity {
         String keywordFilePath = new File(this.getFilesDir(), filename + ".ppn")
                 .getAbsolutePath();
         String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
-        final int detectedBackgroundColor = getResources()
-                .getColor(R.color.colorAccent);
+        final int detectedBackgroundColor = getResources().getColor(R.color.colorAccent);
         return new PorcupineManager(modelFilePath, keywordFilePath, 0.5f, new PorcupineManagerCallback() {
             @Override
-            public void invoke(int keyword_index) {
+            public void invoke(int keywordIndex) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -178,10 +180,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
             ToggleButton tbtn = findViewById(R.id.record_button);
             tbtn.toggle();
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 porcupineManager = initPorcupine();
                 porcupineManager.start();
             } catch (PorcupineManagerException e) {
-                showErrorToast();
+                showErrorToast("Something went wrong");
             }
         }
     }
@@ -215,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             porcupineManager.stop();
                         } catch (PorcupineManagerException e) {
-                            showErrorToast();
+                            showErrorToast("Something went wrong");
                         }
                     }
                     recordButton.toggle();
