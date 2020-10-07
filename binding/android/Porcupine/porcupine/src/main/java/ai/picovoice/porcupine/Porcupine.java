@@ -36,7 +36,7 @@ public class Porcupine {
      * @param sensitivity Sensitivity for detecting keyword. Should be a floating point number
      *                    within [0, 1]. A higher sensitivity results in fewer misses at the cost of
      *                    increasing false alarm rate.
-     * @throws PorcupineException If there is an error while initializing Porcupine.
+     * @throws PorcupineException if there is an error while initializing Porcupine.
      */
     public Porcupine(String modelPath, String keywordPath, float sensitivity) throws PorcupineException {
         try {
@@ -54,7 +54,7 @@ public class Porcupine {
      * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
      *                      within [0, 1]. A higher sensitivity results in fewer misses at the cost
      *                      of increasing the false alarm rate.
-     * @throws PorcupineException If there is an error while initializing Porcupine.
+     * @throws PorcupineException if there is an error while initializing Porcupine.
      */
     public Porcupine(String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
         try {

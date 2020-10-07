@@ -28,7 +28,7 @@ import ai.picovoice.porcupine.PorcupineException;
 
 /**
  * High-level interface for Porcupine wake word engine. It handles recording audio from microphone,
- * processes it in real-time using Porcupine, and notifies the client when the a keyword is detected.
+ * processes it in real-time using Porcupine, and notifies the client when a keyword is detected.
  */
 public class PorcupineManager {
     private class MicrophoneReader {
@@ -77,6 +77,7 @@ public class PorcupineManager {
             final int bufferSize = Math.max(porcupine.getSampleRate() / 2, minBufferSize);
 
             AudioRecord audioRecord = null;
+
             short[] buffer = new short[porcupine.getFrameLength()];
 
             try {
@@ -126,7 +127,7 @@ public class PorcupineManager {
      * @param sensitivity Sensitivity for detecting keyword. Should be a floating point number
      *                    within [0, 1]. A higher sensitivity results in fewer misses at the cost of
      *                    increasing false alarm rate.
-     * @param callback    The callback that is invoked upon detection of the keyword.
+     * @param callback    It is invoked upon detection of the keyword.
      * @throws PorcupineManagerException if there is an error while initializing Porcupine.
      */
     public PorcupineManager(
@@ -152,7 +153,7 @@ public class PorcupineManager {
      * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
      *                      within [0, 1]. A higher sensitivity results in fewer misses at the cost
      *                      of increasing the false alarm rate.
-     * @param callback      The callback that is invoked upon detection of the keyword.
+     * @param callback      It is invoked upon detection of any of the keywords.
      * @throws PorcupineManagerException if there is an error while initializing Porcupine.
      */
     public PorcupineManager(
