@@ -42,8 +42,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ai.picovoice.porcupinemanager.PorcupineManagerCallback;
 import ai.picovoice.porcupinemanager.PorcupineManager;
+import ai.picovoice.porcupinemanager.PorcupineManagerCallback;
 import ai.picovoice.porcupinemanager.PorcupineManagerException;
 
 
@@ -51,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private PorcupineManager porcupineManager = null;
 
     private MediaPlayer notificationPlayer;
-
-    private RelativeLayout layout;
-
-    private ToggleButton recordButton;
 
     private boolean hasRecordPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
@@ -83,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
     };
 
-    private void copyPorcupineResourceFiles() throws IOException {
+    private void copyResourceFiles() throws IOException {
         Resources resources = getResources();
 
         for (int x : KEYWORD_FILE_RESOURCE_IDS) {
@@ -103,16 +99,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            copyPorcupineResourceFiles();
+            copyResourceFiles();
         } catch (IOException e) {
-            showErrorToast("Failed to copy resource files");
+            showErrorToast("Failed to copy resource files.");
         }
 
         notificationPlayer = MediaPlayer.create(this, R.raw.notification);
-
-        layout = findViewById(R.id.layout);
-
-        recordButton = findViewById(R.id.record_button);
 
         TextView footer = findViewById(R.id.footer);
         footer.setMovementMethod(LinkMovementMethod.getInstance());
@@ -121,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void process(View view) {
+        ToggleButton recordButton = findViewById(R.id.record_button);
         try {
             if (recordButton.isChecked()) {
                 if (hasRecordPermission()) {
@@ -158,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                             notificationPlayer.start();
                         }
                         // change the background color for 1 second.
+                        final RelativeLayout layout = findViewById(R.id.layout);
                         layout.setBackgroundColor(detectedBackgroundColor);
                         new CountDownTimer(1000, 100) {
 
@@ -204,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.keyword_spinner_item);
         spinner.setAdapter(adapter);
 
+        final ToggleButton recordButton = findViewById(R.id.record_button);
         // Make sure user stopped recording before changing the keyword.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
