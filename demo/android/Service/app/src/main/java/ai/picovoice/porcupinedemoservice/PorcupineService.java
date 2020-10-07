@@ -36,13 +36,13 @@ public class PorcupineService extends Service {
 
     private PorcupineManager porcupineManager;
 
-    private int numKeywordsDetected;
+    private int numUtterances;
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_ID,
-                    "PorcupineServiceChannel",
+                    "Porcupine",
                     NotificationManager.IMPORTANCE_HIGH);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
@@ -60,12 +60,12 @@ public class PorcupineService extends Service {
                 new Intent(this, MainActivity.class),
                 0);
 
-        numKeywordsDetected = 0;
+        numUtterances = 0;
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Porcupine")
-                .setContentText("num detected : " + numKeywordsDetected)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentText("# utterances : " + numUtterances)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
 
@@ -83,7 +83,7 @@ public class PorcupineService extends Service {
                     keywordFilePath,
                     0.7f,
                     (keywordIndex) -> {
-                        numKeywordsDetected++;
+                        numUtterances++;
 
                         PendingIntent contentIntent = PendingIntent.getActivity(
                                 this,
@@ -93,7 +93,7 @@ public class PorcupineService extends Service {
 
                         Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
                                 .setContentTitle("Porcupine")
-                                .setContentText("num detected : " + numKeywordsDetected)
+                                .setContentText("# utterances : " + numUtterances)
                                 .setSmallIcon(R.drawable.ic_launcher_background)
                                 .setContentIntent(contentIntent)
                                 .build();
