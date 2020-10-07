@@ -13,8 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
-using NAudio.Wave;
+using ManagedBass;
 using Picovoice;
 
 namespace PorcupineDemo
@@ -26,7 +27,7 @@ namespace PorcupineDemo
     /// </summary>                
     public class MicDemo
     {
-        
+
         /// <summary>
         ///  Creates an input audio stream, instantiates an instance of Porcupine object, and monitors the audio stream for
         ///  occurrencec of the wake word(s). It prints the time of detection for each occurrence and the wake word.
@@ -48,66 +49,84 @@ namespace PorcupineDemo
         public static void RunDemo(string modelPath, List<string> keywordPaths, List<string> keywords, List<float> sensitivities,
                                    int? audioDeviceIndex = null, string outputPath = null)
         {
-            Porcupine porcupine = null;
-            WaveInEvent audioIn = null;
+            Porcupine porcupine = null;                        
             WaveFileWriter outputFileWriter = null;
+            FileStream outputStream = null;
             try
             {
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
-                audioIn = new WaveInEvent()
-                {
-                    NumberOfBuffers = 3,
-                    BufferMilliseconds = (int)(porcupine.FrameLength / (float)porcupine.SampleRate * 3000),
-                    WaveFormat = new WaveFormat(porcupine.SampleRate, 16, 1)
-                };
-
+                
                 if (audioDeviceIndex != null)
-                    audioIn.DeviceNumber = audioDeviceIndex.Value;
-
-                if (!string.IsNullOrWhiteSpace(outputPath))
+                {                   
+                    Bass.CurrentRecordingDevice = audioDeviceIndex.Value;                
+                    Bass.RecordInit(audioDeviceIndex.Value);
+                }
+                else
                 {
-                    outputFileWriter = new WaveFileWriter(outputPath, new WaveFormat(16000, 16, 1));
+                    Bass.RecordInit();
                 }
 
-                audioIn.DataAvailable += (s, e) =>
+                if (!string.IsNullOrWhiteSpace(outputPath)) 
                 {
-                    short[] pcmBuffer = new short[porcupine.FrameLength];
-                    for (int idx = 0; idx < e.BytesRecorded; idx += porcupine.FrameLength * 2)
+                    outputStream = new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write);
+                    outputFileWriter = new WaveFileWriter(outputStream, new WaveFormat(porcupine.SampleRate, 16, 1));
+                }
+                
+                short[] managedBuffer = null;
+                short[] porcupineFrame = new short[porcupine.FrameLength];
+                int leftoverSamples = 0;
+                bool recordCallback(int handle, IntPtr unmanagedBuffer, int samplesRecorded, IntPtr user)
+                {
+                    // copy into managed memory
+                    if (managedBuffer == null || managedBuffer.Length != samplesRecorded) 
                     {
-                        outputFileWriter?.Write(e.Buffer, idx, porcupine.FrameLength * 2);
-                        Buffer.BlockCopy(e.Buffer, idx, pcmBuffer, 0, porcupine.FrameLength * 2);
-                        int result = porcupine.Process(pcmBuffer);
+                        managedBuffer = new short[samplesRecorded];                        
+                    }
+                    Marshal.Copy(unmanagedBuffer, managedBuffer, 0, samplesRecorded);
+                    
+                    // buffer into porcupine-sized frames
+                    int bufferIndex = 0;
+                    while (bufferIndex + porcupineFrame.Length < managedBuffer.Length)
+                    {                        
+                        Buffer.BlockCopy(managedBuffer, bufferIndex, porcupineFrame, leftoverSamples, porcupineFrame.Length - leftoverSamples);
+                        outputFileWriter?.Write(porcupineFrame, porcupineFrame.Length);
+
+                        int result = porcupine.Process(porcupineFrame);
                         if (result >= 0)
                         {
                             Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywords[result]}'");
                         }
-                    }
-                };
-                audioIn.RecordingStopped += (s, e) =>
-                {
-                    if (e.Exception != null)
-                    {
-                        Console.WriteLine("Recording stopped unexpectedly:\n" + e.Exception);
-                    }
-                };
 
+                        bufferIndex += porcupineFrame.Length;
+                        leftoverSamples = 0;
+                    }
+
+                    // save any leftover samples
+                    leftoverSamples = managedBuffer.Length - bufferIndex;
+                    Buffer.BlockCopy(managedBuffer, bufferIndex, porcupineFrame, 0, leftoverSamples);
+                    return true;                    
+                }
+
+                int recordingHandle = Bass.RecordStart(16000, 1, BassFlags.RecordPause, recordCallback);                
+                
                 Console.Write("Listening for {");
                 for (int i = 0; i < keywords.Count; i++)
                 {
                     Console.Write($" {keywords[i]}({sensitivities[i]})");
                 }
-                Console.Write("  }\n");
+                Console.Write("  }\n");                
+                Bass.ChannelPlay(recordingHandle);
 
-                audioIn.StartRecording();
                 Console.ReadKey();
                 Console.WriteLine("Stopping...");
+                Bass.ChannelStop(recordingHandle);
             }
             finally
             {
-                audioIn?.StopRecording();
-                outputFileWriter?.Flush();
+                outputStream?.Flush();
                 outputFileWriter?.Dispose();
                 porcupine?.Dispose();
+                Bass.RecordFree();
             }
         }
 
@@ -116,15 +135,18 @@ namespace PorcupineDemo
         /// </summary>
         public static void ShowAudioDevices()
         {
-            int waveInDevices = WaveIn.DeviceCount;
-            if (waveInDevices > 0)
+            Console.WriteLine("Available input devices: \n");
+            DeviceInfo info;
+            for (int i = 0; Bass.RecordGetDeviceInfo(i, out info); i++)
             {
-                Console.WriteLine("Available input devices: \n");
-                for (int waveInDevice = 0; waveInDevice < waveInDevices; waveInDevice++)
-                {
-                    WaveInCapabilities deviceInfo = WaveIn.GetCapabilities(waveInDevice);
-                    Console.WriteLine($"\tDevice {waveInDevice}: {deviceInfo.ProductName}, {deviceInfo.Channels} channels");
-                }
+                if (info.Type != DeviceType.Microphone)
+                    continue;
+                               
+                string deviceInfoStr = $"\tDevice {i}: {info.Name}";
+                if (info.IsDefault)
+                    deviceInfoStr += " (default)";
+
+                Console.WriteLine(deviceInfoStr);                
             }
         }
 

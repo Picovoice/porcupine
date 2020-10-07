@@ -19,8 +19,24 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="ManagedBass" Version="3.0.0" />
 		<PackageReference Include="NAudio" Version="1.10.0" />
 		<PackageReference Include="Porcupine" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="bass.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Visible>false</Visible>
+	  </None>
+	  <None Update="libbass.dylib">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Visible>false</Visible>
+	  </None>
+	  <None Update="libbass.so">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Visible>false</Visible>
+	  </None>
 	</ItemGroup>
 
 </Project>
