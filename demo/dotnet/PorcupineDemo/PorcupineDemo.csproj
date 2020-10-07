@@ -20,8 +20,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="ManagedBass" Version="3.0.0" />
-		<PackageReference Include="NAudio" Version="1.10.0" />
-		<PackageReference Include="Porcupine" Version="1.0.0" />
+		<PackageReference Include="Porcupine" Version="1.8.7" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,5 +37,4 @@
 		  <Visible>false</Visible>
 	  </None>
 	</ItemGroup>
-
 </Project>

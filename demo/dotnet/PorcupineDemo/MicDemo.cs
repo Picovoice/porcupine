@@ -56,6 +56,7 @@ namespace PorcupineDemo
             {
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
                 
+                // choose recording device or use default
                 if (audioDeviceIndex != null)
                 {                   
                     Bass.CurrentRecordingDevice = audioDeviceIndex.Value;                
@@ -107,6 +108,7 @@ namespace PorcupineDemo
                     return true;                    
                 }
 
+                // prepare recording device
                 int recordingHandle = Bass.RecordStart(16000, 1, BassFlags.RecordPause, recordCallback);                
                 
                 Console.Write("Listening for {");
@@ -114,7 +116,9 @@ namespace PorcupineDemo
                 {
                     Console.Write($" {keywords[i]}({sensitivities[i]})");
                 }
-                Console.Write("  }\n");                
+                Console.Write("  }\n"); 
+                
+                // start recording
                 Bass.ChannelPlay(recordingHandle);
 
                 Console.ReadKey();
@@ -135,16 +139,13 @@ namespace PorcupineDemo
         /// </summary>
         public static void ShowAudioDevices()
         {
-            Console.WriteLine("Available input devices: \n");
+            Console.WriteLine("Available audio devices: \n");
             DeviceInfo info;
             for (int i = 0; Bass.RecordGetDeviceInfo(i, out info); i++)
             {
-                if (info.Type != DeviceType.Microphone)
-                    continue;
-                               
-                string deviceInfoStr = $"\tDevice {i}: {info.Name}";
+                string deviceInfoStr = $"\tDevice {i} ({info.Type}): {info.Name}";
                 if (info.IsDefault)
-                    deviceInfoStr += " (default)";
+                    deviceInfoStr += " *default*";
 
                 Console.WriteLine(deviceInfoStr);                
             }

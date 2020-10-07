@@ -13,8 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using NAudio.Wave;
+using System.Text;
+using ManagedBass;
 using Picovoice;
 
 namespace PorcupineDemo
@@ -44,46 +44,59 @@ namespace PorcupineDemo
         public static void RunDemo(string inputAudioPath, string modelPath, List<string> keywordPaths, List<string> keywords, List<float> sensitivities)
         {
             Porcupine porcupine = null;
-            WaveFileReader fileReader = null;
             try
             {
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
-                using (fileReader = new WaveFileReader(inputAudioPath))
-                {
-                    if (fileReader.WaveFormat.SampleRate != porcupine.SampleRate)
+                using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
+                {                    
+                    byte[] riffHeader = reader.ReadBytes(44);
+                   
+                    int riff = BitConverter.ToInt32(riffHeader, 0);
+                    int wave = BitConverter.ToInt32(riffHeader, 8);
+                    if (riff != BitConverter.ToInt32(Encoding.UTF8.GetBytes("RIFF"), 0) ||
+                        wave != BitConverter.ToInt32(Encoding.UTF8.GetBytes("WAVE"), 0))
                     {
-                        throw new ArgumentException("SampleRate",
-                            $"Audio file should have a sample rate of {porcupine.SampleRate} got {fileReader.WaveFormat.SampleRate}");
+                        throw new ArgumentException("input_audio_path", $"Invalid input audio file format. Input file must be a {porcupine.SampleRate}kHz, 16-bit WAV file.");
                     }
 
-                    bool readLeftChannelOnly = false;
-                    if (fileReader.WaveFormat.Channels == 2)
+                    short numChannels = BitConverter.ToInt16(riffHeader, 22);
+                    int sampleRate = BitConverter.ToInt32(riffHeader, 24);
+                    short bitDepth = BitConverter.ToInt16(riffHeader, 34);
+                    if (sampleRate != porcupine.SampleRate || bitDepth != 16)
+                    {
+                        throw new ArgumentException("input_audio_path", $"Invalid input audio file format. Input file must be a {porcupine.SampleRate}Hz, 16-bit WAV file.");
+                    }
+
+                    if (numChannels == 2) 
                     {
                         Console.WriteLine("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.");
-                        readLeftChannelOnly = true;
                     }
 
-                    byte[] rawBuffer = new byte[porcupine.FrameLength * 2 * fileReader.WaveFormat.Channels];
-                    short[] sampleBuffer = new short[porcupine.FrameLength];
-
-                    int numBytesRead;
+                    short[] porcupineFrame = new short[porcupine.FrameLength];
+                    int frameIndex = 0;
                     long totalSamplesRead = 0;
-                    int step = readLeftChannelOnly ? 4 : 2;
-                    while ((numBytesRead = fileReader.Read(rawBuffer, 0, rawBuffer.Length)) == rawBuffer.Length)
+                    while (reader.BaseStream.Position != reader.BaseStream.Length)
                     {
-                        for (int i = 0; i < numBytesRead; i += step)
-                        {
-                            sampleBuffer[i / step] = BitConverter.ToInt16(rawBuffer, i);
+                        totalSamplesRead++;
+                        porcupineFrame[frameIndex++] = reader.ReadInt16();
+                        
+                        if (frameIndex == porcupineFrame.Length)
+                        {                            
+                            int result = porcupine.Process(porcupineFrame);
+                            if (result >= 0)
+                            {
+                                Console.WriteLine($"Detected {keywords[result]} at " +
+                                    $"{Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2)} sec");
+                            }
+                            frameIndex = 0;
                         }
-                        totalSamplesRead += porcupine.FrameLength;
 
-                        int result = porcupine.Process(sampleBuffer);
-                        if (result >= 0)
+                        // skip right channel
+                        if (numChannels == 2)
                         {
-                            Console.WriteLine($"Detected {keywords[result]} at " +
-                                $"{Math.Round(totalSamplesRead / (double)fileReader.WaveFormat.SampleRate, 2)} sec");
+                            reader.ReadInt16();
                         }
-                    }
+                    }                    
                 }
             }
             finally
