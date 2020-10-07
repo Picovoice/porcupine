@@ -7,8 +7,7 @@
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-	  <PackageProjectUrl>https://github.com/Picovoice/porcupine</PackageProjectUrl>
-	  <PackageIcon>pv_circle_512.png</PackageIcon>
+	  <PackageProjectUrl>https://github.com/Picovoice/porcupine</PackageProjectUrl>	  
 	  <RepositoryUrl>https://github.com/Picovoice/porcupine.git</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <PackageTags>porcupine, picovoice, wake word, hotword, trigger word, offline, private, voice ai, speech recognition</PackageTags>
@@ -23,7 +22,8 @@ It is:
      with no added CPU/memory footprint.
   - self-service. Developers can train custom wake phrases using Picovoice Console.
 </Description>
-	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>	 
+	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	  <PackageIcon>pv_circle_512.png</PackageIcon>	 
   </PropertyGroup>
 	<ItemGroup>		
 		<Content Include="Porcupine.targets">
@@ -67,7 +67,10 @@ It is:
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-	  <None Include="..\..\..\..\..\..\Pictures\pv_icons\pv_circle_512.png">
+	  <Folder Include="Content\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Content\pv_circle_512.png">
 	    <Pack>True</Pack>
 	    <PackagePath></PackagePath>
 	  </None>
