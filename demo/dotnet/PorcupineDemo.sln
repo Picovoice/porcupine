@@ -1,0 +1,30 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorcupineDemo", "PorcupineDemo\PorcupineDemo.csproj", "{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		FileDemo.Debug|Any CPU = FileDemo.Debug|Any CPU
+		FileDemo.Release|Any CPU = FileDemo.Release|Any CPU
+		MicDemo.Debug|Any CPU = MicDemo.Debug|Any CPU
+		MicDemo.Release|Any CPU = MicDemo.Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Debug|Any CPU.ActiveCfg = FileDemo.Debug|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Debug|Any CPU.Build.0 = FileDemo.Debug|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Release|Any CPU.ActiveCfg = FileDemo.Release|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Release|Any CPU.Build.0 = FileDemo.Release|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Debug|Any CPU.ActiveCfg = MicDemo.Debug|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Debug|Any CPU.Build.0 = MicDemo.Debug|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Release|Any CPU.ActiveCfg = MicDemo.Release|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Release|Any CPU.Build.0 = MicDemo.Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {718FE840-6F27-4751-957F-382E9780BBFC}
+	EndGlobalSection
+EndGlobal
