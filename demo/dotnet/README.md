@@ -22,7 +22,23 @@ applications. It is
 
 ## Installation
 
-Both demos use [Microsoft's .NET Core framework](https://dotnet.microsoft.com/download). Once you have .NET Core installed in your environment, you can build the demos.
+Both demos use [Microsoft's .NET Core framework](https://dotnet.microsoft.com/download).
+
+MicDemo uses [OpenAL](https://openal.org/). On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
+
+On Linux use apt-get
+
+```bash
+sudo apt-get libopenal-dev
+```
+
+On Mac use Brew
+
+```bash
+brew install openal-soft
+```
+
+Once .NET Core and OpenAL have been installed, you can build with the dotnet CLI
 
 ```bash
 dotnet build -c MicDemo.Release

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ManagedBass;
+
 using Picovoice;
 
 namespace PorcupineDemo
@@ -46,9 +46,12 @@ namespace PorcupineDemo
             Porcupine porcupine = null;
             try
             {
+                // init porcupine wake word engine
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
+                
                 using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
-                {                    
+                {  
+                    // validate WAV file
                     byte[] riffHeader = reader.ReadBytes(44);
                    
                     int riff = BitConverter.ToInt32(riffHeader, 0);
@@ -72,6 +75,7 @@ namespace PorcupineDemo
                         Console.WriteLine("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.");
                     }
 
+                    // read audio and send frames to porcupine
                     short[] porcupineFrame = new short[porcupine.FrameLength];
                     int frameIndex = 0;
                     long totalSamplesRead = 0;
