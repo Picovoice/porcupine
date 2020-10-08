@@ -40,9 +40,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ai.picovoice.porcupinemanager.PorcupineManager;
-import ai.picovoice.porcupinemanager.PorcupineManagerCallback;
-import ai.picovoice.porcupinemanager.PorcupineManagerException;
+import ai.picovoice.porcupine.PorcupineException;
+import ai.picovoice.porcupine.PorcupineManager;
+import ai.picovoice.porcupine.PorcupineManagerCallback;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private PorcupineManager initPorcupine() throws PorcupineManagerException {
+    private PorcupineManager initPorcupine() throws PorcupineException {
         final Spinner mySpinner = findViewById(R.id.keyword_spinner);
         final String keyword = mySpinner.getSelectedItem().toString();
         final String filename = keyword.toLowerCase().replaceAll("\\s+", "_");
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             porcupineManager.stop();
                             porcupineManager.delete();
-                        } catch (PorcupineManagerException e) {
+                        } catch (PorcupineException e) {
                             displayError("Failed to stop Porcupine.");
                         }
                     }
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 porcupineManager = initPorcupine();
                 porcupineManager.start();
-            } catch (PorcupineManagerException e) {
+            } catch (PorcupineException e) {
                 displayError("Failed to initialize Porcupine.");
             }
         }
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 porcupineManager.stop();
                 porcupineManager.delete();
             }
-        } catch (PorcupineManagerException e) {
+        } catch (PorcupineException e) {
             displayError("Something went wrong");
         }
     }
