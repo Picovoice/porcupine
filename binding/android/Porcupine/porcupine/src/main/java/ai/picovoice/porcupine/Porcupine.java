@@ -81,7 +81,7 @@ public class Porcupine {
      * @return Index of observed keyword at the end of the current frame. Indexing is 0-based and
      * matches the ordering of keyword models provided to the constructor. If no keyword is detected
      * then it returns -1.
-     * @throws PorcupineException if there is an error while processing the audio sample.
+     * @throws PorcupineException if there is an error while processing the audio frame.
      */
     public int process(short[] pcm) throws PorcupineException {
         try {
