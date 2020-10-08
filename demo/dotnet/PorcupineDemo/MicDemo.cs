@@ -13,13 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
-using ManagedBass;
-using OpenTK;
-using OpenTK.Audio;
+
 using OpenTK.Audio.OpenAL;
 using Picovoice;
 
@@ -59,13 +55,17 @@ namespace PorcupineDemo
             int totalSamplesWritten = 0;
             try
             {
+                // init porcupine wake word engine
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
+                
+                // open stream to output file
                 if (!string.IsNullOrWhiteSpace(outputPath))
                 {
                     outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
                     WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
                 }
 
+                // choose audio device
                 string deviceName = null;
                 if(audioDeviceIndex != null) 
                 {
@@ -88,6 +88,7 @@ namespace PorcupineDemo
                 }
                 Console.Write("  }\n");
 
+                // create and start recording
                 short[] recordingBuffer = new short[porcupine.FrameLength];
                 ALCaptureDevice captureDevice = ALC.CaptureOpenDevice(deviceName, 16000, ALFormat.Mono16, porcupine.FrameLength * 2);
                 {
@@ -116,6 +117,7 @@ namespace PorcupineDemo
                         Thread.Yield();
                     }
 
+                    // stop and clean up resources
                     Console.WriteLine("Stopping...");
                     ALC.CaptureStop(captureDevice);
                     ALC.CaptureCloseDevice(captureDevice);
@@ -125,6 +127,7 @@ namespace PorcupineDemo
             {
                 if (outputFileWriter != null)
                 {
+                    // write size to header and clean up
                     WriteWavHeader(outputFileWriter, 1, 16, 16000, totalSamplesWritten);
                     outputFileWriter.Flush();
                     outputFileWriter.Dispose();
@@ -133,22 +136,33 @@ namespace PorcupineDemo
             }            
         }
 
+        /// <summary>
+        ///  Writes the RIFF header for a file in WAV format
+        /// </summary>
+        /// <param name="writer">Output stream to WAV file</param>
+        /// <param name="channelCount">Number of channels</param>     
+        /// <param name="bitDepth">Number of bits per sample</param>     
+        /// <param name="sampleRate">Sampling rate in Hz</param>
+        /// <param name="totalSampleCount">Total number of samples written to the file</param>
         private static void WriteWavHeader(BinaryWriter writer, ushort channelCount, ushort bitDepth, int sampleRate, int totalSampleCount)
         {
-            writer?.Seek(0, SeekOrigin.Begin);         
-            writer?.Write(Encoding.ASCII.GetBytes("RIFF"));
-            writer?.Write((bitDepth / 8 * totalSampleCount) + 36);
-            writer?.Write(Encoding.ASCII.GetBytes("WAVE")); 
-            writer?.Write(Encoding.ASCII.GetBytes("fmt "));
-            writer?.Write(16); 
-            writer?.Write((ushort)1);
-            writer?.Write(channelCount);
-            writer?.Write(sampleRate);
-            writer?.Write(sampleRate * channelCount * bitDepth / 8);
-            writer?.Write((ushort)(channelCount * bitDepth / 8));
-            writer?.Write(bitDepth);
-            writer?.Write(Encoding.ASCII.GetBytes("data"));
-            writer?.Write(bitDepth / 8 * totalSampleCount);            
+            if (writer == null)
+                return;
+
+            writer.Seek(0, SeekOrigin.Begin);         
+            writer.Write(Encoding.ASCII.GetBytes("RIFF"));
+            writer.Write((bitDepth / 8 * totalSampleCount) + 36);
+            writer.Write(Encoding.ASCII.GetBytes("WAVE")); 
+            writer.Write(Encoding.ASCII.GetBytes("fmt "));
+            writer.Write(16); 
+            writer.Write((ushort)1);
+            writer.Write(channelCount);
+            writer.Write(sampleRate);
+            writer.Write(sampleRate * channelCount * bitDepth / 8);
+            writer.Write((ushort)(channelCount * bitDepth / 8));
+            writer.Write(bitDepth);
+            writer.Write(Encoding.ASCII.GetBytes("data"));
+            writer.Write(bitDepth / 8 * totalSampleCount);            
         }
 
         /// <summary>
