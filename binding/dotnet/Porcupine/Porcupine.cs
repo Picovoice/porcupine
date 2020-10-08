@@ -32,7 +32,7 @@ namespace Picovoice
     /// <summary>
     ///  .NET binding for Porcupine wake word engine.
     /// </summary>
-    public class Porcupine
+    public class Porcupine : IDisposable
     {
         private const string LIBRARY_PATH = "libpv_porcupine";
         private IntPtr _libraryPointer = IntPtr.Zero;
