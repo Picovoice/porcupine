@@ -118,7 +118,8 @@ namespace PorcupineDemo
 
                     Console.WriteLine("Stopping...");
                     ALC.CaptureStop(captureDevice);
-                }
+                    ALC.CaptureCloseDevice(captureDevice);
+                }                
             }
             finally 
             {
