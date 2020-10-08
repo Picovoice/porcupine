@@ -1,4 +1,2 @@
-include ':app', ':porcupine', ':porcupinemanager'
-rootProject.name='Service'
-project(':porcupine').projectDir = new File(settingsDir, '../../../binding/android/Porcupine/porcupine')
-project(':porcupinemanager').projectDir = new File(settingsDir, '../../../binding/android/PorcupineManager/porcupinemanager')
+include ':porcupine'
+include ':app'

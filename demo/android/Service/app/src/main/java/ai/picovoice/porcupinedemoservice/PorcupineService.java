@@ -28,8 +28,8 @@ import androidx.core.app.NotificationCompat;
 
 import java.io.File;
 
-import ai.picovoice.porcupinemanager.PorcupineManager;
-import ai.picovoice.porcupinemanager.PorcupineManagerException;
+import ai.picovoice.porcupine.PorcupineManager;
+import ai.picovoice.porcupine.PorcupineException;
 
 public class PorcupineService extends Service {
     private static final String CHANNEL_ID = "PorcupineServiceChannel";
@@ -103,7 +103,7 @@ public class PorcupineService extends Service {
                         notificationManager.notify(1234, n);
                     });
             porcupineManager.start();
-        } catch (PorcupineManagerException e) {
+        } catch (PorcupineException e) {
             Log.e("PORCUPINE", e.toString());
         }
 
@@ -121,7 +121,7 @@ public class PorcupineService extends Service {
         try {
             porcupineManager.stop();
             porcupineManager.delete();
-        } catch (PorcupineManagerException e) {
+        } catch (PorcupineException e) {
             Log.e("PORCUPINE", e.toString());
         }
 
