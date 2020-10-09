@@ -1,2 +1,1 @@
-include ':app'
-rootProject.name='Porcupine'
+include ':porcupine'

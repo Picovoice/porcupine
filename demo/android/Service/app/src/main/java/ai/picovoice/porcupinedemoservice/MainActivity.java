@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -33,7 +33,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
-    private ToggleButton startButton;
+    private void copyResourceFile(int resourceID, String filename) throws IOException {
+        Resources resources = getResources();
+        try (
+                InputStream is = new BufferedInputStream(resources.openRawResource(resourceID), 256);
+                OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)
+        ){
+            int r;
+            while ((r = is.read()) != -1) {
+                os.write(r);
+            }
+            os.flush();
+        }
+    }
 
     private boolean hasRecordPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
@@ -44,25 +56,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        ToggleButton recordButton = findViewById(R.id.startButton);
+
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            startButton.toggle();
+            recordButton.toggle();
         } else {
             startService();
-        }
-    }
-
-    private void copyResourceFile(int resourceID, String filename) throws IOException {
-        Resources resources = getResources();
-        try (InputStream is = new BufferedInputStream(resources.openRawResource(resourceID), 256); OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)) {
-            int r;
-            while ((r = is.read()) != -1) {
-                os.write(r);
-            }
-            os.flush();
         }
     }
 
@@ -89,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
         }
 
-        startButton = findViewById(R.id.startButton);
+        ToggleButton recordButton = findViewById(R.id.startButton);
 
-        startButton.setOnClickListener(v -> {
-            if (startButton.isChecked()) {
+        recordButton.setOnClickListener(v -> {
+            if (recordButton.isChecked()) {
                 if (hasRecordPermission()) {
                     startService();
                 } else {
