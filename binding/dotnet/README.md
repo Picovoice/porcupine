@@ -104,5 +104,5 @@ handle.Dispose()
 
 ## Demos
 
-The [Porcupine dotnet demo project](https://github.com/Picovoice/porcupine/tree/master/demo/dotnet) is a .NET Core command line application that allows for 
+The [Porcupine dotnet demo project](/demo/dotnet) is a .NET Core command line application that allows for 
 processing real-time audio (i.e. microphone) and files using Porcupine.
