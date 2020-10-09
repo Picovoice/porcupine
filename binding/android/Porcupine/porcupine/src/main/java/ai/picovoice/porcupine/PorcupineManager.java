@@ -23,8 +23,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * High-level interface for Porcupine wake word engine. It handles recording audio from microphone,
- * processes it in real-time using Porcupine, and notifies the client when a keyword is detected.
+ * High-level Android binding for Porcupine wake word engine. It handles recording audio from
+ * microphone, processes it in real-time using Porcupine, and notifies the client when any of the
+ * given keywords are detected. For detailed information regarding Porcupine refer to
+ * ${@link Porcupine}.
  */
 public class PorcupineManager {
     private class MicrophoneReader {
@@ -175,17 +177,18 @@ public class PorcupineManager {
     }
 
     /**
-     * Starts recording.
+     * Starts recording audio from the microphone and monitors it for the utterances of the given
+     * set of keywords.
      */
     public void start() {
         microphoneReader.start();
     }
 
     /**
-     * Stops recording.
+     * Stops recording audio from the microphone.
      *
      * @throws PorcupineException if the {@link MicrophoneReader} throws an exception while
-     *                                   it's being stopped.
+     *                            it's being stopped.
      */
     public void stop() throws PorcupineException {
         try {
