@@ -71,10 +71,7 @@ namespace PorcupineTest
         public void TestProcessMultiple()
         {
             Porcupine p = Porcupine.Create(keywords:Porcupine.KEYWORDS);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(p.Version), "Porcupine did not return a valid version number.");
-
             int frameLen = p.FrameLength;
-            Assert.IsTrue(frameLen > 0, "Specified frame length was not a valid number.");
 
             string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/multiple_keywords.wav");
             List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);

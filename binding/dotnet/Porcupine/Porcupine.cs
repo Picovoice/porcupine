@@ -160,28 +160,29 @@ namespace Picovoice
         /// <summary>
         /// Process a frame of audio with the wake word engine.
         /// </summary>
-        /// <param name="data">
-        /// A frame of audio samples to be assessed by Porcupine. The required audio format is found by calling pv_sample_rate() to get the required 
-        /// sample rate and pv_porcupine_frame_length() to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
+        /// <param name="pcm">
+        /// A frame of audio samples to be assessed by Porcupine. The required audio format is found by calling `.SampleRate` to get the required 
+        /// sample rate and `.FrameLength` to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
         /// </param>
         /// <returns>
         /// Index of the detected keyword, or -1 if no detection occurred
         /// </returns>
-        public int Process(short[] data)
+        public int Process(short[] pcm)
         {
-            if (data.Length != pv_porcupine_frame_length())
+            if (pcm.Length != FrameLength)
             {
-                throw new ArgumentException($"Input audio frame size ({data.Length}) was not the size specified by Porcupine engine ({FrameLength}). " +
+                throw new ArgumentException($"Input audio frame size ({pcm.Length}) was not the size specified by Porcupine engine ({FrameLength}). " +
                     $"Use Porcupine.FrameLength to get the correct size.");
             }
 
-            PorcupineStatus status = pv_porcupine_process(_libraryPointer, data, out int index);
+            int keywordIndex;
+            PorcupineStatus status = pv_porcupine_process(_libraryPointer, pcm, out keywordIndex);
             if (status != PorcupineStatus.SUCCESS)
             {
                 throw PorcupineStatusToException(status);
             }
 
-            return index;
+            return keywordIndex;
         }
 
         /// <summary>
