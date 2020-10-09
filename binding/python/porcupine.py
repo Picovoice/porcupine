@@ -122,8 +122,8 @@ class Porcupine(object):
         :param pcm: A frame of audio samples. The number of samples per frame can be attained by calling
         `.frame_length`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit
         linearly-encoded. Porcupine operates on single-channel audio.
-        :return: Returns Index of observed keyword at the end of the current frame. Indexing is 0-based and matches the
-        ordering of keyword models provided to the constructor. If no keyword is detected then it returns -1.
+        :return: Index of observed keyword at the end of the current frame. Indexing is 0-based and matches the ordering
+        of keyword models provided to the constructor. If no keyword is detected then it returns -1.
         """
 
         if len(pcm) != self.frame_length:

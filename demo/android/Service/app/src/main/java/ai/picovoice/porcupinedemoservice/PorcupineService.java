@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -28,25 +28,24 @@ import androidx.core.app.NotificationCompat;
 
 import java.io.File;
 
-import ai.picovoice.porcupinemanager.PorcupineManager;
-import ai.picovoice.porcupinemanager.PorcupineManagerException;
+import ai.picovoice.porcupine.PorcupineManager;
+import ai.picovoice.porcupine.PorcupineException;
 
 public class PorcupineService extends Service {
     private static final String CHANNEL_ID = "PorcupineServiceChannel";
 
     private PorcupineManager porcupineManager;
 
-    private int numKeywordsDetected;
+    private int numUtterances;
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_ID,
-                    "PorcupineServiceChannel",
+                    "Porcupine",
                     NotificationManager.IMPORTANCE_HIGH);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
-            assert manager != null;
             manager.createNotificationChannel(notificationChannel);
         }
     }
@@ -61,12 +60,12 @@ public class PorcupineService extends Service {
                 new Intent(this, MainActivity.class),
                 0);
 
-        numKeywordsDetected = 0;
+        numUtterances = 0;
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Porcupine")
-                .setContentText("num detected : " + numKeywordsDetected)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentText("# utterances : " + numUtterances)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
 
@@ -82,11 +81,10 @@ public class PorcupineService extends Service {
             porcupineManager = new PorcupineManager(
                     modelFilePath,
                     keywordFilePath,
-                    0.5f,
+                    0.7f,
                     (keywordIndex) -> {
-                        numKeywordsDetected++;
+                        numUtterances++;
 
-                        CharSequence title = "Porcupine";
                         PendingIntent contentIntent = PendingIntent.getActivity(
                                 this,
                                 0,
@@ -94,8 +92,8 @@ public class PorcupineService extends Service {
                                 0);
 
                         Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                .setContentTitle(title)
-                                .setContentText("num detected : " + numKeywordsDetected)
+                                .setContentTitle("Porcupine")
+                                .setContentText("# utterances : " + numUtterances)
                                 .setSmallIcon(R.drawable.ic_launcher_background)
                                 .setContentIntent(contentIntent)
                                 .build();
@@ -105,8 +103,8 @@ public class PorcupineService extends Service {
                         notificationManager.notify(1234, n);
                     });
             porcupineManager.start();
-        } catch (PorcupineManagerException e) {
-            Log.e("PORCUPINE_SERVICE", e.toString());
+        } catch (PorcupineException e) {
+            Log.e("PORCUPINE", e.toString());
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -122,8 +120,9 @@ public class PorcupineService extends Service {
     public void onDestroy() {
         try {
             porcupineManager.stop();
-        } catch (PorcupineManagerException e) {
-            Log.e("PORCUPINE_SERVICE", e.toString());
+            porcupineManager.delete();
+        } catch (PorcupineException e) {
+            Log.e("PORCUPINE", e.toString());
         }
 
         super.onDestroy();
