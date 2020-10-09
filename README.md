@@ -27,12 +27,14 @@ applications. It is
   - [Structure of Repository](#structure-of-repository)
   - [Running Demo Applications](#running-demo-applications)
     - [Python Demos](#python-demos)
+    - [.NET Demos](#net-demos)
     - [Android Demos](#android-demos)
     - [iOS Demos](#ios-demos)
     - [JavaScript Demos](#javascript-demos)
     - [C Demos](#c-demos)
   - [Integration](#integration)
     - [Python](#python)
+    - [.NET](#net)
     - [Android](#android)
     - [iOS](#ios)
     - [JavaScript](#javascript)
@@ -126,6 +128,28 @@ porcupine_demo_file --input_audio_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumbl
 
 Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Python
 demos go to [demo/python](/demo/python).
+
+### .NET Demos
+
+Install [OpenAL](https://openal.org/) before using the demo.
+
+With a working microphone connected to your device run the following in the terminal:
+
+```bash
+dotnet run -c MicDemo.Release -- --keywords picovoice
+```
+
+The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
+utterances of wake-word "porcupine".
+
+In order to process audio files (e.g. WAV) run:
+
+```bash
+dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords bumblebee
+```
+
+Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about .NET
+demos go to [demo/dotnet](/demo/dotnet).
 
 ### Android Demos
 
@@ -247,6 +271,70 @@ Finally, when done be sure to explicitly release the resources
 
 ```python
 handle.delete()
+```
+
+### .NET
+
+
+Install the .NET SDK using Nuget or the dotnet CLI
+
+```bash
+dotnet add package Porcupine
+```
+
+The SDK exposes a factory method to create instances of the engine as below:
+
+```csharp
+using Picovoice
+
+Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
+```
+
+`keywords` argument is a shorthand for accessing default keyword files shipped with the library. The default keyword
+files available can be retrieved via
+
+```csharp
+using Picovoice
+
+foreach (string keyword in Porcupine.KEYWORDS)
+{
+    Console.WriteLine(keyword);
+}
+```
+
+If you wish to use a non-default keyword file you need to identify its path as below:
+
+```csharp
+using Picovoice
+
+Porcupine handle = Porcupine.Create(keywordPaths: new List<string>{ "path/to/non/default/keyword/file"});
+```
+
+When initialized, valid sample rate can be obtained using `handle.SampleRate`. Expected frame length
+(number of audio samples in an input array) is `handle.FrameLength`. The object can be used to monitor
+incoming audio as below:
+
+```csharp
+short[] getNextAudioFrame()
+{
+    // .. get audioFrame
+    return audioFrame;
+}
+
+while(true)
+{
+    var keywordIndex = handle.Process(getNextAudioFrame())
+    if(keywordIndex >= 0)
+    {
+	    // .. detection event logic/callback
+    }
+}
+```
+
+Finally, when done be sure to explicitly release the resources
+
+```csharp
+handle.Dispose()
 ```
 
 ### Android
