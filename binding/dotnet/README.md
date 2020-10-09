@@ -13,7 +13,7 @@ applications. It is
 ## Compatibility
 
 - .NET Standard 2.0, .NET Core 2.0+, .NET Framework 4.6.1+
-- Runs on Linux (x86_64), Mac (x86_64) and Windows (x86_64)
+- Runs on Linux (x86_64), MacOS (x86_64) and Windows (x86_64)
 
 ## Installation
 
@@ -96,10 +96,14 @@ while(true)
 }
 ```
 
-When done resources have to be released explicitly
+Porcupine will have its resources freed by the garbage collector, but to have resources freed 
+immediately after use, wrap it in a using statement: 
 
 ```csharp
-handle.Dispose()
+using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" }))
+{
+    // .. Porcupine usage here
+}
 ```
 
 ## Demos

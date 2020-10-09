@@ -89,7 +89,7 @@ namespace PorcupineDemo
 
 
         /// <summary>
-        ///  Reads RIFF header of a WAV file and validates it against required properties
+        ///  Reads RIFF header of a WAV file and validates its properties against Picovoice audio processing requirements
         /// </summary>
         /// <param name="reader">WAV file stream reader</param>
         /// <param name="requiredSampleRate">Required sample rate in Hz</param>     

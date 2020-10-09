@@ -55,9 +55,16 @@ namespace Picovoice
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_porcupine_frame_length();
 
-        public static string MODEL_PATH = Utils.PvModelPath();
-        public static Dictionary<string, string> KEYWORD_PATHS = Utils.PvKeywordPaths();
-        public static List<string> KEYWORDS = KEYWORD_PATHS.Keys.ToList();
+        public static string MODEL_PATH;
+        public static Dictionary<string, string> KEYWORD_PATHS;
+        public static List<string> KEYWORDS;
+        
+        static Porcupine()
+        {
+            MODEL_PATH = Utils.PvModelPath();
+            KEYWORD_PATHS = Utils.PvKeywordPaths();
+            KEYWORDS = KEYWORD_PATHS.Keys.ToList();
+        }
 
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine.
@@ -155,6 +162,10 @@ namespace Picovoice
             {
                 throw PorcupineStatusToException(status);
             }
+
+            Version = Marshal.PtrToStringAnsi(pv_porcupine_version());
+            SampleRate = pv_sample_rate();
+            FrameLength = pv_porcupine_frame_length();
         }
 
         /// <summary>
@@ -189,19 +200,19 @@ namespace Picovoice
         /// Get the audio sample rate required by Porcupine.
         /// </summary>
         /// <returns>Required sample rate.</returns>
-        public int SampleRate => pv_sample_rate();
+        public int SampleRate { get; private set; }
 
         /// <summary>
         /// Gets the required number of audio samples per frame.
         /// </summary>
         /// <returns>Required frame length.</returns>
-        public int FrameLength => pv_porcupine_frame_length();
+        public int FrameLength { get; private set; }
 
         /// <summary>
         /// Gets the version number of the Porcupine library.
         /// </summary>
         /// <returns>Version of Pocupine</returns>
-        public string Version => Marshal.PtrToStringAnsi(pv_porcupine_version());
+        public string Version { get; private set; }
 
 
         /// <summary>
