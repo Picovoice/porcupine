@@ -12,7 +12,7 @@ applications. It is
 
 ## Compatibility
 
-- TBD
+- .NET Standard 2.0, .NET Core 2.0+, .NET Framework 4.6.1+
 - Runs on Linux (x86_64), Mac (x86_64) and Windows (x86_64)
 
 ## Installation
@@ -41,7 +41,7 @@ using Picovoice
 
 foreach (string keyword in Porcupine.KEYWORDS)
 {
-	Console.WriteLine(keyword);
+    Console.WriteLine(keyword);
 }
 ```
 
@@ -63,13 +63,13 @@ var keywordPaths = new List<string>{ "/absolute/path/to/keyword/one", "/absolute
 Porcupine handle = Porcupine.Create(keywordPaths: keywordPaths);
 ```
 
-The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
+The sensitivity of the engine can be tuned per-keyword using the `sensitivities` input argument
 
 ```csharp
 using Picovoice
 
-Porcupine handle = Porcupine.Create(keywords: new List<string>{ "grapefruit", "porcupine" }, 
-					sensitivities: new List<float>{ 0.6f, 0.35f });
+Porcupine handle = Porcupine.Create(keywords: new List<string>{ "grapefruit", "porcupine" },  
+                                    sensitivities: new List<float>{ 0.6f, 0.35f });
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
@@ -82,17 +82,17 @@ single-channel audio.
 ```csharp
 short[] getNextAudioFrame()
 {
-	// .. get audioFrame
-	return audioFrame;
+    // .. get audioFrame
+    return audioFrame;
 }
 
 while(true)
 {
-	var keywordIndex = handle.Process(getNextAudioFrame())
-	if(keywordIndex >= 0)
-	{
-		// .. detection event logic/callback
-	}
+    var keywordIndex = handle.Process(getNextAudioFrame())
+    if(keywordIndex >= 0)
+    {
+	    // .. detection event logic/callback
+    }
 }
 ```
 
@@ -104,5 +104,5 @@ handle.Dispose()
 
 ## Demos
 
-The [Porcupine dotnet demo project](https://github.com/Picovoice/porcupine/tree/master/demo/dotnet) is a .NET Core console app that allows for 
+The [Porcupine dotnet demo project](https://github.com/Picovoice/porcupine/tree/master/demo/dotnet) is a .NET Core command line application that allows for 
 processing real-time audio (i.e. microphone) and files using Porcupine.

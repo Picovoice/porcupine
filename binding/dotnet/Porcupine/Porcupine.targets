@@ -1,5 +1,10 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)../../lib/netstandard2.0/Porcupine.dll">
+			<Link>Porcupine.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>False</Visible>
+		</Content>
 		<Content Include="$(MSBuildThisFileDirectory)content/**">
 			<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
