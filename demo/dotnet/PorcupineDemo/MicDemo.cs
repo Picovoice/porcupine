@@ -30,8 +30,8 @@ namespace PorcupineDemo
     {
 
         /// <summary>
-        ///  Creates an input audio stream, instantiates an instance of Porcupine object, and monitors the audio stream for
-        ///  occurrencec of the wake word(s). It prints the time of detection for each occurrence and the wake word.
+        /// Creates an input audio stream, instantiates an instance of Porcupine object, and monitors the audio stream for
+        /// occurrencec of the wake word(s). It prints the time of detection for each occurrence and the wake word.
         /// </summary>
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
         /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>     
@@ -46,7 +46,6 @@ namespace PorcupineDemo
         /// </param>
         /// <param name="audioDeviceIndex">Optional argument. If provided, audio is recorded from this input device. Otherwise, the default audio input device is used.</param>        
         /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>        
-        /// <returns>An instance of Porcupine wake word engine.</returns>    
         public static void RunDemo(string modelPath, List<string> keywordPaths, List<string> keywords, List<float> sensitivities,
                                    int? audioDeviceIndex = null, string outputPath = null)
         {            
@@ -137,7 +136,7 @@ namespace PorcupineDemo
         }
 
         /// <summary>
-        ///  Writes the RIFF header for a file in WAV format
+        /// Writes the RIFF header for a file in WAV format
         /// </summary>
         /// <param name="writer">Output stream to WAV file</param>
         /// <param name="channelCount">Number of channels</param>     

@@ -233,6 +233,9 @@ namespace Picovoice
             {
                 pv_porcupine_delete(_libraryPointer);
                 _libraryPointer = IntPtr.Zero;
+                
+                // ensures finalizer doesn't trigger if already manually disposed
+                GC.SuppressFinalize(this);
             }
         }
 

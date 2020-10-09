@@ -31,8 +31,7 @@ namespace PorcupineDemo
         /// </summary>
         /// <param name="inputAudioPath">Required argument. Absolute path to input audio file.</param>                
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
-        /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>     
-        /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>     
+        /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>              
         /// <param name="sensitivities">
         /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
@@ -40,7 +39,7 @@ namespace PorcupineDemo
         /// <param name="keywords">
         /// List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved 
         /// using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
-        /// </param>        
+        /// </param>
         public static void RunDemo(string inputAudioPath, string modelPath, List<string> keywordPaths, List<string> keywords, List<float> sensitivities)
         {
             Porcupine porcupine = null;
@@ -215,7 +214,7 @@ namespace PorcupineDemo
                 throw new ArgumentException($"Audio file at path {inputAudioPath} does not exist");
             }
 
-            modelPath = modelPath ?? Porcupine.MODEL_PATH;
+            modelPath ??= Porcupine.MODEL_PATH;
             
             if (keywordPaths == null || keywordPaths.Count == 0)
             {
