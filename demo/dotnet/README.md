@@ -17,7 +17,7 @@ applications. It is
 
 ## Compatibility
 
-- .NET Core 3.0+
+- .NET Core 3.1+
 - Runs on Linux (x86_64), Mac (x86_64) and Windows (x86_64)
 
 ## Installation
@@ -129,8 +129,8 @@ It provides information about various audio input devices on the box. On a Windo
 ```
 Available input devices:
 
-	Device 0: Microphone Array (Realtek(R) Au, 2 channels
-	Device 1: Microphone Headset USB, 1 channel	
+    Device 0: Microphone Array (Realtek(R) Au, 2 channels
+    Device 1: Microphone Headset USB, 1 channel	
 ``` 
 
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Headset 

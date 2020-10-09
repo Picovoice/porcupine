@@ -50,30 +50,9 @@ namespace PorcupineDemo
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
                 
                 using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
-                {  
-                    // validate WAV file
-                    byte[] riffHeader = reader.ReadBytes(44);
-                   
-                    int riff = BitConverter.ToInt32(riffHeader, 0);
-                    int wave = BitConverter.ToInt32(riffHeader, 8);
-                    if (riff != BitConverter.ToInt32(Encoding.UTF8.GetBytes("RIFF"), 0) ||
-                        wave != BitConverter.ToInt32(Encoding.UTF8.GetBytes("WAVE"), 0))
-                    {
-                        throw new ArgumentException("input_audio_path", $"Invalid input audio file format. Input file must be a {porcupine.SampleRate}kHz, 16-bit WAV file.");
-                    }
-
-                    short numChannels = BitConverter.ToInt16(riffHeader, 22);
-                    int sampleRate = BitConverter.ToInt32(riffHeader, 24);
-                    short bitDepth = BitConverter.ToInt16(riffHeader, 34);
-                    if (sampleRate != porcupine.SampleRate || bitDepth != 16)
-                    {
-                        throw new ArgumentException("input_audio_path", $"Invalid input audio file format. Input file must be a {porcupine.SampleRate}Hz, 16-bit WAV file.");
-                    }
-
-                    if (numChannels == 2) 
-                    {
-                        Console.WriteLine("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.");
-                    }
+                {
+                    short numChannels;
+                    ValidateWavFile(reader, porcupine.SampleRate, 16, out numChannels);
 
                     // read audio and send frames to porcupine
                     short[] porcupineFrame = new short[porcupine.FrameLength];
@@ -83,9 +62,9 @@ namespace PorcupineDemo
                     {
                         totalSamplesRead++;
                         porcupineFrame[frameIndex++] = reader.ReadInt16();
-                        
+
                         if (frameIndex == porcupineFrame.Length)
-                        {                            
+                        {
                             int result = porcupine.Process(porcupineFrame);
                             if (result >= 0)
                             {
@@ -100,14 +79,48 @@ namespace PorcupineDemo
                         {
                             reader.ReadInt16();
                         }
-                    }                    
+                    }
                 }
             }
             finally
             {
                 porcupine?.Dispose();
+            }           
+        }
+
+
+        /// <summary>
+        ///  Reads RIFF header of a WAV file and validates it against required properties
+        /// </summary>
+        /// <param name="reader">WAV file stream reader</param>
+        /// <param name="requiredSampleRate">Required sample rate in Hz</param>     
+        /// <param name="requiredBitDepth">Required number of bits per sample</param>             
+        /// <param name="numChannels">Number of channels can be returned by function</param>
+        public static void ValidateWavFile(BinaryReader reader, int requiredSampleRate, short requiredBitDepth, out short numChannels) 
+        {                        
+            byte[] riffHeader = reader?.ReadBytes(44);
+
+            int riff = BitConverter.ToInt32(riffHeader, 0);
+            int wave = BitConverter.ToInt32(riffHeader, 8);
+            if (riff != BitConverter.ToInt32(Encoding.UTF8.GetBytes("RIFF"), 0) ||
+                wave != BitConverter.ToInt32(Encoding.UTF8.GetBytes("WAVE"), 0))
+            {
+                throw new ArgumentException("input_audio_path", $"Invalid input audio file format. Input file must be a {requiredSampleRate}kHz, 16-bit WAV file.");
             }
-        }    
+
+            numChannels = BitConverter.ToInt16(riffHeader, 22);
+            int sampleRate = BitConverter.ToInt32(riffHeader, 24);
+            short bitDepth = BitConverter.ToInt16(riffHeader, 34);
+            if (sampleRate != requiredSampleRate || bitDepth != requiredBitDepth)
+            {
+                throw new ArgumentException("input_audio_path", $"Invalid input audio file format. Input file must be a {requiredSampleRate}Hz, 16-bit WAV file.");
+            }
+
+            if (numChannels == 2)
+            {
+                Console.WriteLine("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.");
+            }
+        }
 
         public static void Main(string[] args)
         {
@@ -199,7 +212,7 @@ namespace PorcupineDemo
             }
             if (!File.Exists(inputAudioPath)) 
             {
-                throw new ArgumentException("Provided input audio file does not exist.");
+                throw new ArgumentException($"Audio file at path {inputAudioPath} does not exist");
             }
 
             modelPath = modelPath ?? Porcupine.MODEL_PATH;
