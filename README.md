@@ -255,15 +255,15 @@ There are two possibilities for integrating Porcupine into an Android applicatio
 
 #### Low-Level API
 
-[Porcupine](/binding/android/Porcupine/app/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a binding for
-Android using [JNI](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/). It can be initialized using.
+[Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a
+binding for Android. It can be initialized using.
 
 ```java
-    final String modelFilePath = ... // It is available at lib/common/porcupine_params.pv
-    final String keywordFilePath = ...
+    final String modelPath = ... // It is available at lib/common/porcupine_params.pv
+    final String keywordPath = ...
     final float sensitivity = 0.5f;
 
-    Porcupine porcupine = new Porcupine(modelFilePath, keywordFilePath, sensitivity);
+    Porcupine porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
@@ -275,8 +275,8 @@ Once initialized, `porcupine` can be used to monitor incoming audio.
     private short[] getNextAudioFrame();
 
     while (true) {
-        final boolean result = porcupine.process(getNextAudioFrame());
-        if (result) {
+        final int keywordIndex = porcupine.process(getNextAudioFrame());
+        if (keywordIndex >= 0) {
             // detection event logic/callback
         }
     }
@@ -291,23 +291,23 @@ garbage collector for releasing native resources.
 
 #### High-Level API
 
-[PorcupineManager](binding/android/PorcupineManager/app/src/main/java/ai/picovoice/porcupinemanager/PorcupineManager.java)
+[PorcupineManager](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java)
 provides a high-level API for integrating Porcupine into Android applications. It manages all activities related to creating
 an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback. The class
 can be initialized as below.
 
 ```java
-    final String modelFilePath = ... // It is available at lib/common/porcupine_params.pv
-    final String keywordFilePath = ...
+    final String modelPath = ... // It is available at lib/common/porcupine_params.pv
+    final String keywordPath = ...
     final float sensitivity = 0.5f;
 
     PorcupineManager manager = new PorcupineManager(
-            modelFilePath,
-            keywordFilePath,
+            modelPath,
+            keywordPath,
             sensitivity,
-            new KeywordCallback() {
+            new PorcupineManagerCallback() {
                 @Override
-                public void run() {
+                public void invoke(int keywordIndex) {
                     // detection event logic/callback
                 }
             });
@@ -316,8 +316,8 @@ can be initialized as below.
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
-When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
-`manager.stop()`.
+When initialized, input audio can be monitored using `manager.start()`. Stop the manager using by invoking
+`manager.stop()`. When done be sure to release the resources using `manager.delete()`.
 
 ### iOS
 
