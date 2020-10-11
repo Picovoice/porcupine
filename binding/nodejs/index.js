@@ -112,7 +112,7 @@ class Porcupine {
 
     const packed = pv_porcupine.init(modelPath, keywordPaths.length, keywordPaths, sensitivities);
     const status = packed % 10n;
-    let handle = (status == PV_STATUS_T.SUCCESS) ? (packed / 10n) : 0;
+    this.handle = (status == PV_STATUS_T.SUCCESS) ? (packed / 10n) : 0;
     if (status != PV_STATUS_T.SUCCESS) {
       pvStatusToException(status, "Porcupine failed to initialize");
     }
