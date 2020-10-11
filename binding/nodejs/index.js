@@ -10,11 +10,8 @@
 //
 "use strict";
 
-const ArrayType = require("ref-array-napi");
-const ffi = require("ffi-napi");
 const fs = require("fs");
 const path = require("path");
-const ref = require("ref-napi");
 
 const PV_STATUS_T = require("./pv_status_t");
 const {
@@ -29,15 +26,9 @@ const {
   getBuiltinKeywordPath,
 } = require("./builtin_keywords");
 
-const MODEL_PATH_DEFAULT = "lib/common/porcupine_params.pv";
+const pv_porcupine = require(getSystemLibraryPath());
 
-// ffi types
-const int16Array = ArrayType(ref.types.int16);
-const int32Ptr = ref.refType(ref.types.int32);
-const floatArray = ArrayType(ref.types.float);
-const stringArray = ArrayType(ref.types.CString);
-const ppnObjPtr = ref.refType(ref.types.void);
-const ppnObjPtrPtr = ref.refType(ppnObjPtr);
+const MODEL_PATH_DEFAULT = "lib/common/porcupine_params.pv";
 
 class Porcupine {
   constructor(keywords, sensitivities, manualModelPath, manualLibraryPath) {
@@ -118,54 +109,15 @@ class Porcupine {
       }
     }
 
-    this.ppnPtrPtr = ref.alloc(ppnObjPtrPtr);
-    this.keywordIndexPtr = ref.alloc(ref.types.int32);
 
-    this.libPpn = ffi.Library(libraryPath, {
-      pv_porcupine_delete: [ref.types.void, [ppnObjPtr]],
-      pv_sample_rate: [ref.types.int32, []],
-      pv_porcupine_frame_length: [ref.types.int32, []],
-      pv_porcupine_init: [
-        ref.types.int32,
-        [
-          ref.types.CString,
-          ref.types.int32,
-          stringArray,
-          floatArray,
-          ppnObjPtrPtr,
-        ],
-      ],
-      pv_porcupine_version: [ref.types.CString, []],
-      pv_porcupine_process: [
-        ref.types.int32,
-        [ppnObjPtr, int16Array, int32Ptr],
-      ],
-    });
-
-    this.frameLength = this.libPpn.pv_porcupine_frame_length();
-    this.sampleRate = this.libPpn.pv_sample_rate();
-    this.version = this.libPpn.pv_porcupine_version();
-
-    const initStatus = this.libPpn.pv_porcupine_init(
-      modelPath,
-      keywordPaths.length,
-      keywordPaths,
-      sensitivities,
-      this.ppnPtrPtr
-    );
-
-    this.ppnPtr = this.ppnPtrPtr.deref();
-
-    if (initStatus !== PV_STATUS_T.SUCCESS) {
-      pvStatusToException(initStatus, "Porcupine failed to initialize");
-    }
+    this.handle = pv_porcupine.init(modelPath, keywordPaths.length, keywordPaths, sensitivities);
+    // TODO: Error handling
+    this.frameLength = pv_porcupine.frame_length();
+    this.sampleRate = pv_porcupine.sample_rate();
+    this.version = pv_porcupine.version();
   }
 
   process(frame) {
-    if (this.ppnPtr === null) {
-      throw new PvStateError("Porcupine is not initialized");
-    }
-
     if (frame === undefined || frame === null) {
       throw new PvArgumentError(
         `Frame array provided to process() is undefined or null`
@@ -188,27 +140,15 @@ class Porcupine {
       frameBuffer[i] = frame[i];
     }
 
-    const status = this.libPpn.pv_porcupine_process(
-      this.ppnPtr,
-      frameBuffer,
-      this.keywordIndexPtr
-    );
 
-    if (status !== PV_STATUS_T.SUCCESS) {
-      pvStatusToException(status, "Porcupine failed to process the frame");
-    }
+    keywordIndex = pv_porcupine.process(this.handle, frameBuffer);
+    // TODO: Error handling
 
-    return this.keywordIndexPtr.deref();
+    return keywordIndex;
   }
 
   release() {
-    if (this.ppnPtr !== null) {
-      this.libPpn.pv_porcupine_delete(this.ppnPtr);
-      this.ppnPtr = null;
-      this.ppnPtrPtr = null;
-    } else {
-      console.warn("Porcupine is not initialized; nothing to destroy");
-    }
+    pv_porcupine.delete(this.handle);
   }
 }
 

@@ -43,27 +43,27 @@ const LIBRARY_PATH_PREFIX = "lib/";
 const SYSTEM_TO_LIBRARY_PATH = new Map();
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_MAC}/${X86_64}`,
-  `${PLATFORM_MAC}/x86_64/libpv_porcupine.dylib`
+  `${PLATFORM_MAC}/x86_64/pv_porcupine.node`
 );
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_WINDOWS}/${X86_64}`,
-  `${PLATFORM_WINDOWS}/amd64/libpv_porcupine.dll`
+  `${PLATFORM_WINDOWS}/amd64/pv_porcupine.node`
 );
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_LINUX}/${X86_64}`,
-  `${PLATFORM_LINUX}/x86_64/libpv_porcupine.so`
+  `${PLATFORM_LINUX}/x86_64/pv_porcupine.node`
 );
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_LINUX}/${ARM_CPU_CORTEX_A7}`,
-  `${PLATFORM_RASPBERRY_PI}/${ARM_CPU_CORTEX_A7}/libpv_porcupine.so`
+  `${PLATFORM_RASPBERRY_PI}/${ARM_CPU_CORTEX_A7}/pv_porcupine.node`
 );
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_LINUX}/${ARM_CPU_CORTEX_A53}`,
-  `${PLATFORM_RASPBERRY_PI}/${ARM_CPU_CORTEX_A53}/libpv_porcupine.so`
+  `${PLATFORM_RASPBERRY_PI}/${ARM_CPU_CORTEX_A53}/pv_porcupine.node`
 );
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_LINUX}/${ARM_CPU_CORTEX_A72}`,
-  `${PLATFORM_RASPBERRY_PI}/${ARM_CPU_CORTEX_A72}/libpv_porcupine.so`
+  `${PLATFORM_RASPBERRY_PI}/${ARM_CPU_CORTEX_A72}/pv_porcupine.node`
 );
 
 function absoluteLibraryPath(libraryPath) {
