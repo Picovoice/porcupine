@@ -118,6 +118,10 @@ class Porcupine {
   }
 
   process(frame) {
+    if (this.handle == 0) {
+      throw new PvStateError();
+    }
+
     if (frame === undefined || frame === null) {
       throw new PvArgumentError(
         `Frame array provided to process() is undefined or null`
@@ -135,20 +139,23 @@ class Porcupine {
       );
     }
 
-    const frameBuffer = int16Array(this.frameLength);
-    for (let i = 0; i < this.frameLength; i++) {
-      frameBuffer[i] = frame[i];
-    }
+    const frameBuffer = new Int16Array(frame);
 
 
-    keywordIndex = pv_porcupine.process(this.handle, frameBuffer);
+    const keywordIndex = pv_porcupine.process(this.handle, frameBuffer);
     // TODO: Error handling
 
     return keywordIndex;
   }
 
   release() {
-    pv_porcupine.delete(this.handle);
+    if (this.handle > 0) {
+      pv_porcupine.delete(this.handle);
+      this.handle = 0;
+    } else {
+      // TODO: warning
+    }
+
   }
 }
 
