@@ -123,7 +123,7 @@ class Porcupine {
   }
 
   process(frame) {
-    if (this.handle == 0) {
+    if (this.handle === 0) {
       throw new PvStateError("Porcupine is not initialized");
     }
 
@@ -145,7 +145,6 @@ class Porcupine {
     }
 
     const frameBuffer = new Int16Array(frame);
-
 
     const packed = pv_porcupine.process(this.handle, frameBuffer);
     const status = packed % 10;
