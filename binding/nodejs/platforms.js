@@ -18,7 +18,6 @@ const { PvUnsupportedPlatformError } = require("./errors");
 
 const SYSTEM_LINUX = "linux";
 const SYSTEM_MAC = "darwin";
-const SYSTEM_WINDOWS = "win32";
 
 const X86_64 = "x64";
 const ARM_32 = "arm";
@@ -26,7 +25,6 @@ const ARM_64 = "arm64";
 
 const PLATFORM_MAC = "mac";
 const PLATFORM_LINUX = "linux";
-const PLATFORM_WINDOWS = "windows";
 const PLATFORM_RASPBERRY_PI = "raspberry-pi";
 
 const ARM_CPU_CORTEX_A7 = "cortex-a7";
@@ -36,7 +34,6 @@ const ARM_CPU_CORTEX_A72 = "cortex-a72";
 const SUPPORTED_NODEJS_SYSTEMS = new Set([
   SYSTEM_LINUX,
   SYSTEM_MAC,
-  SYSTEM_WINDOWS,
 ]);
 
 const LIBRARY_PATH_PREFIX = "lib/";
@@ -44,10 +41,6 @@ const SYSTEM_TO_LIBRARY_PATH = new Map();
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_MAC}/${X86_64}`,
   `${PLATFORM_MAC}/x86_64/pv_porcupine.node`
-);
-SYSTEM_TO_LIBRARY_PATH.set(
-  `${SYSTEM_WINDOWS}/${X86_64}`,
-  `${PLATFORM_WINDOWS}/amd64/pv_porcupine.node`
 );
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_LINUX}/${X86_64}`,
@@ -102,10 +95,6 @@ function getPlatform() {
     return PLATFORM_MAC;
   }
 
-  if (system === SYSTEM_WINDOWS && arch === X86_64) {
-    return PLATFORM_WINDOWS;
-  }
-
   if (system === SYSTEM_LINUX) {
     if (arch === X86_64) {
       return PLATFORM_LINUX;
@@ -131,13 +120,6 @@ function getSystemLibraryPath() {
         if (arch === X86_64) {
           return absoluteLibraryPath(
             SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_MAC}/${X86_64}`)
-          );
-        }
-      }
-      case SYSTEM_WINDOWS: {
-        if (arch === X86_64) {
-          return absoluteLibraryPath(
-            SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_WINDOWS}/${X86_64}`)
           );
         }
       }
