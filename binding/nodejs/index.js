@@ -26,7 +26,7 @@ const {
   getBuiltinKeywordPath,
 } = require("./builtin_keywords");
 
-const pv_porcupine = require(getSystemLibraryPath());
+const pvPorcupine = require(getSystemLibraryPath());
 
 const MODEL_PATH_DEFAULT = "lib/common/porcupine_params.pv";
 
@@ -110,16 +110,17 @@ class Porcupine {
     }
 
 
-    const packed = pv_porcupine.init(modelPath, keywordPaths.length, keywordPaths, sensitivities);
-    const status = packed % 10n;
-    this.handle = (status == PV_STATUS_T.SUCCESS) ? (packed / 10n) : 0;
-    if (status != PV_STATUS_T.SUCCESS) {
+    const packed = pvPorcupine.init(modelPath, keywordPaths.length, keywordPaths, sensitivities);
+    const status = Number(packed % 10n);
+    if (status !== PV_STATUS_T.SUCCESS) {
       pvStatusToException(status, "Porcupine failed to initialize");
     }
+    this.handle = packed / 10n;
 
-    this.frameLength = pv_porcupine.frame_length();
-    this.sampleRate = pv_porcupine.sample_rate();
-    this.version = pv_porcupine.version();
+
+    this.frameLength = pvPorcupine.frame_length();
+    this.sampleRate = pvPorcupine.sample_rate();
+    this.version = pvPorcupine.version();
   }
 
   process(frame) {
@@ -146,19 +147,19 @@ class Porcupine {
 
     const frameBuffer = new Int16Array(frame);
 
-    const packed = pv_porcupine.process(this.handle, frameBuffer);
+    const packed = pvPorcupine.process(this.handle, frameBuffer);
     const status = packed % 10;
-    const keywordIndex = (status == PV_STATUS_T.SUCCESS) ? (packed / 10) : -1;
     if (status !== PV_STATUS_T.SUCCESS) {
       pvStatusToException(status, "Porcupine failed to process the frame");
     }
+    const keywordIndex = packed / 10;
 
     return keywordIndex;
   }
 
   release() {
     if (this.handle > 0) {
-      pv_porcupine.delete(this.handle);
+      pvPorcupine.delete(this.handle);
       this.handle = 0;
     } else {
       console.warn("Porcupine is not initialized; nothing to destroy");
