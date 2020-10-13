@@ -28,25 +28,17 @@ ncp(
   }
 );
 
-let platforms = ["mac", "raspberry-pi", "windows", "linux"];
-
-function copyLibraryFilter(path) {
-  return !path.includes("arm11");
-}
-
-for (let platform of platforms) {
-  ncp(
-    `../../lib/${platform}`,
-    `./lib/${platform}`,
-    { filter: copyLibraryFilter },
-    function (err) {
-      if (err) {
-        return console.error(err);
-      }
-      console.log(`../../lib/${platform}.`);
+ncp(
+  "../../lib/node",
+  "./lib",
+  function (err) {
+    if (err) {
+      return console.error(err);
     }
-  );
-}
+  }
+);
+
+let platforms = ["mac", "raspberry-pi", "linux"];
 
 // Keywords (resources)
 // Only ship keywords that work on every platform (LCD)

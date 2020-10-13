@@ -28,7 +28,6 @@ This binding is for running Porcupine on **NodeJS 12+** on the following platfor
 - Linux (x86_64)
 - macOS (x86_64)
 - Raspberry Pi (2,3,4)
-- Windows (x86_64)
 
 ### Web Browsers
 
