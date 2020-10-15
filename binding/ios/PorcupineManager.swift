@@ -105,10 +105,6 @@ public class PorcupineManager {
             sensitivities,
             &porcupine)
         try checkInitStatus(status)
-
-        let audioSession = AVAudioSession.sharedInstance()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(onAudioSessionInterruption(_:)), name: .AVAudioSessionInterruption, object: audioSession)
     }
 
     /// Initializer for single keyword detection.
@@ -140,7 +136,7 @@ public class PorcupineManager {
 
         let audioSession = AVAudioSession.sharedInstance()
         // Only check if it's denied, permission will be automatically asked.
-        if audioSession.recordPermission() == .denied {
+        if audioSession.recordPermission == .denied {
             throw PorcupineManagerPermissionError.recordingDenied
         }
 
@@ -148,9 +144,9 @@ public class PorcupineManager {
             return
         }
 
-        try audioSession.setCategory(AVAudioSessionCategoryRecord)
-        try audioSession.setMode(AVAudioSessionModeMeasurement)
-        try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+        try audioSession.setCategory(AVAudioSession.Category.record)
+        try audioSession.setMode(AVAudioSession.Mode.measurement)
+        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
 
         try audioInputEngine.start()
 
@@ -189,7 +185,7 @@ public class PorcupineManager {
 
         guard let userInfo = notification.userInfo,
             let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-            let type = AVAudioSessionInterruptionType(rawValue: typeValue) else {
+            let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
                 return
         }
 

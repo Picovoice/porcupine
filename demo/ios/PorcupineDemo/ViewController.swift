@@ -79,21 +79,21 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 let alert = UIAlertController(
                         title: "Alert",
                         message: "Something went wrong",
-                        preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
+                        preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 return
             }
 
             wakeWordPicker.isUserInteractionEnabled = false
             isRecording = true
-            startButton.setTitle("STOP", for: UIControlState.normal)
+            startButton.setTitle("STOP", for: UIControl.State.normal)
         } else {
             porcupineManager.stopListening()
 
             wakeWordPicker.isUserInteractionEnabled = true
             isRecording = false
-            startButton.setTitle("START", for: UIControlState.normal)
+            startButton.setTitle("START", for: UIControl.State.normal)
         }
     }
 

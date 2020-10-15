@@ -25,16 +25,6 @@
 		BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		BBE66BDF205DD6F7006005B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BBE66BC2205DD6F7006005B1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BBE66BC9205DD6F7006005B1;
-			remoteInfo = ios;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		BB247359205F636700D96613 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../lib/common/porcupine_params.pv; sourceTree = "<group>"; };
 		BB24738C206312DC00D96613 /* PorcupineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PorcupineManager.swift; path = ../../../binding/ios/PorcupineManager.swift; sourceTree = "<group>"; };
@@ -47,7 +37,6 @@
 		BBE66BD4205DD6F7006005B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBE66BD7205DD6F7006005B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BBE66BD9205DD6F7006005B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PorcupineDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grasshopper_ios.ppn; path = ios/grasshopper_ios.ppn; sourceTree = "<group>"; };
 		BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grapefruit_ios.ppn; path = ios/grapefruit_ios.ppn; sourceTree = "<group>"; };
 		BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ios/porcupine_ios.ppn; sourceTree = "<group>"; };
@@ -64,13 +53,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB65C7B2205F4BF400E8770E /* libpv_porcupine.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BBE66BDB205DD6F7006005B1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +96,6 @@
 			isa = PBXGroup;
 			children = (
 				BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */,
-				BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,24 +137,6 @@
 			productReference = BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BBE66BDD205DD6F7006005B1 /* PorcupineDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BBE66BEA205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemoTests" */;
-			buildPhases = (
-				BBE66BDA205DD6F7006005B1 /* Sources */,
-				BBE66BDB205DD6F7006005B1 /* Frameworks */,
-				BBE66BDC205DD6F7006005B1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BBE66BE0205DD6F7006005B1 /* PBXTargetDependency */,
-			);
-			name = PorcupineDemoTests;
-			productName = iosTests;
-			productReference = BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -186,17 +149,13 @@
 				TargetAttributes = {
 					BBE66BC9205DD6F7006005B1 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1200;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
 						};
-					};
-					BBE66BDD205DD6F7006005B1 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = BBE66BC9205DD6F7006005B1;
 					};
 				};
 			};
@@ -214,7 +173,6 @@
 			projectRoot = "";
 			targets = (
 				BBE66BC9205DD6F7006005B1 /* PorcupineDemo */,
-				BBE66BDD205DD6F7006005B1 /* PorcupineDemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -239,13 +197,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BBE66BDC205DD6F7006005B1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -259,22 +210,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BBE66BDA205DD6F7006005B1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		BBE66BE0205DD6F7006005B1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BBE66BC9205DD6F7006005B1 /* PorcupineDemo */;
-			targetProxy = BBE66BDF205DD6F7006005B1 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		BBE66BD1205DD6F7006005B1 /* Main.storyboard */ = {
@@ -425,7 +361,7 @@
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
 				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -442,40 +378,8 @@
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
 				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		BBE66BEB205DD6F7006005B1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = iosTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.iosTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PorcupineDemo.app/PorcupineDemo";
-			};
-			name = Debug;
-		};
-		BBE66BEC205DD6F7006005B1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = iosTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.iosTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PorcupineDemo.app/PorcupineDemo";
 			};
 			name = Release;
 		};
@@ -496,15 +400,6 @@
 			buildConfigurations = (
 				BBE66BE8205DD6F7006005B1 /* Debug */,
 				BBE66BE9205DD6F7006005B1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BBE66BEA205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BBE66BEB205DD6F7006005B1 /* Debug */,
-				BBE66BEC205DD6F7006005B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
