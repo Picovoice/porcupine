@@ -39,14 +39,15 @@ public struct WakeWordConfiguration {
     }
 }
 
-/// iOS / watchOS binding for Picovoice's wake word detection engine (aka Porcupine).
+/// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, processes it in real-time using Porcupine,
+/// and notifies the client when any of the given keywords are detected.
 public class PorcupineManager {
     
     private var porcupine: OpaquePointer?
     
     private let audioInputEngine: AudioInputEngine
     
-    public let modelFilePath: String
+    public let modelPath: String
     public let wakeWordConfiguration: [WakeWordConfiguration]
     
     /// Callback when wake keyword is detected. This will be invoked on main queue.
@@ -64,9 +65,9 @@ public class PorcupineManager {
     ///   - wakeKeywordConfigurations: Keyword configurations to use.
     ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
     /// - Throws: PorcupineManagerError
-    public init(modelFilePath: String, wakeKeywordConfigurations: [WakeWordConfiguration], onDetection: ((WakeWordConfiguration) -> Void)?) throws {
+    public init(modelPath: String, wakeKeywordConfigurations: [WakeWordConfiguration], onDetection: ((WakeWordConfiguration) -> Void)?) throws {
         
-        self.modelFilePath = modelFilePath
+        self.modelPath = modelPath
         self.wakeWordConfiguration = wakeKeywordConfigurations
         self.onDetection = onDetection
         
@@ -98,7 +99,7 @@ public class PorcupineManager {
         let sensitivities = wakeKeywordConfigurations.map { $0.sensitivity }
         
         let status = pv_porcupine_init(
-            modelFilePath,
+            modelPath,
             Int32(keywordFilePaths.count),
             keywordFilePaths.map { UnsafePointer(strdup($0)) },
             sensitivities,
@@ -114,7 +115,7 @@ public class PorcupineManager {
     ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
     /// - Throws: PorcupineManagerError
     public convenience init(modelFilePath: String, wakeKeywordConfiguration: WakeWordConfiguration, onDetection: ((WakeWordConfiguration) -> Void)?) throws {
-        try self.init(modelFilePath: modelFilePath, wakeKeywordConfigurations: [wakeKeywordConfiguration], onDetection: onDetection)
+        try self.init(modelPath: modelFilePath, wakeKeywordConfigurations: [wakeKeywordConfiguration], onDetection: onDetection)
     }
     
     deinit {
@@ -214,10 +215,6 @@ private protocol AudioInputEngine: AnyObject {
     func unpause()
 }
 
-// 2 different audio input engine. watchOS requires the use of AVAudioEngine.
-// However, AVAudioEngine has limitation of input latency only going as low as 100ms.
-
-#if os(iOS) || os(macOS)
 private class AudioInputEngine_AudioQueue: AudioInputEngine {
     
     private let numBuffers = 3
@@ -297,79 +294,3 @@ private class AudioInputEngine_AudioQueue: AudioInputEngine {
         }
     }
 }
-#endif
-
-#if os(watchOS)
-private class AudioInputEngine_AVAudioEngine: AudioInputEngine {
-    
-    private let busNumber = 0
-    private lazy var audioEngine = AVAudioEngine()
-    
-    var audioInput: ((UnsafePointer<Int16>) -> Void)?
-    
-    func start() throws {
-        let inputNode = audioEngine.inputNode
-        
-        let frameLength = UInt32(pv_porcupine_frame_length())
-        let sampleRate = Double(pv_sample_rate())
-        
-        let recordingFormat = inputNode.inputFormat(forBus: busNumber)
-        
-        let duration = Double(frameLength) / sampleRate
-        
-        // Buffer of 4, porcupine reads audio in 32ms frames.
-        // Default AVAudioEngine input node will only go as low as 4410 for buffer size (100ms).
-        // So as a workaround, read 4 at once so it's 4 * 32ms, which is bigger than 100 ms.
-        let numberOfBuffer: UInt32 = 4
-        let frameCapacity = numberOfBuffer * frameLength
-        let bufferSize = AVAudioFrameCount(duration * recordingFormat.sampleRate) * numberOfBuffer
-        
-        // Format is hardcoded. It can only be nil if channels > 2 according to documentation. Assume non-nil.
-        let picoFormat = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: sampleRate, channels: 1, interleaved: true)!
-        // Output format is hardcoded. Converter will only be nil if the conversion is not possible.
-        let converter = AVAudioConverter(from: recordingFormat, to: picoFormat)
-        assert(converter != nil, "Unable to convert \(recordingFormat) to Porcupine's expected format.")
-        
-        inputNode.installTap(onBus: busNumber, bufferSize: bufferSize, format: recordingFormat) { [weak self] buffer, _ in
-            
-            guard let `self` = self,
-                  let picoBuffer = AVAudioPCMBuffer(pcmFormat: picoFormat, frameCapacity: frameCapacity),
-                  let audioInput = self.audioInput else {
-                return
-            }
-            
-            let input: AVAudioConverterInputBlock = { inNumPackets, outStatus in
-                outStatus.pointee = AVAudioConverterInputStatus.haveData
-                return buffer
-            }
-            
-            converter?.convert(to: picoBuffer, error: nil, withInputFrom: input)
-            converter?.reset()
-            
-            guard let pcm = picoBuffer.int16ChannelData?.pointee else {
-                return
-            }
-            
-            for i in 0..<Int(numberOfBuffer) {
-                let offsetPointer = pcm + i * Int(frameLength)
-                audioInput(offsetPointer)
-            }
-        }
-        
-        try audioEngine.start()
-    }
-    
-    func stop() {
-        audioEngine.inputNode.removeTap(onBus: busNumber)
-        audioEngine.stop()
-    }
-    
-    func pause() {
-        audioEngine.pause()
-    }
-    
-    func unpause() {
-        try? audioEngine.start()
-    }
-}
-#endif
