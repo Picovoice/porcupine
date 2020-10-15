@@ -47,16 +47,12 @@ public class PorcupineManager {
     
     private let audioInputEngine: AudioInputEngine
     
-    public let modelPath: String
-    public let wakeWordConfiguration: [WakeWordConfiguration]
-    
-    /// Callback when wake keyword is detected. This will be invoked on main queue.
-    public var onDetection: ((WakeWordConfiguration) -> Void)?
-    
     /// Whether current manager is listening to audio input.
     public private(set) var isListening = false
     
     private var shouldBeListening: Bool = false
+    
+    private var onDetection: ((Int32) -> Void)?
     
     /// Initializer for multiple keywords detection.
     ///
@@ -65,17 +61,10 @@ public class PorcupineManager {
     ///   - wakeKeywordConfigurations: Keyword configurations to use.
     ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
     /// - Throws: PorcupineManagerError
-    public init(modelPath: String, wakeKeywordConfigurations: [WakeWordConfiguration], onDetection: ((WakeWordConfiguration) -> Void)?) throws {
-        
-        self.modelPath = modelPath
-        self.wakeWordConfiguration = wakeKeywordConfigurations
+    public init(modelPath: String, keywordPaths: [String], sensitivities: [Float32], onDetection: ((Int32) -> Void)?) throws {
         self.onDetection = onDetection
         
-        #if os(iOS) || os(macOS)
         self.audioInputEngine = AudioInputEngine_AudioQueue()
-        #elseif os(watchOS)
-        self.audioInputEngine = AudioInputEngine_AVAudioEngine()
-        #endif
         
         audioInputEngine.audioInput = { [weak self] audio in
             
@@ -87,21 +76,16 @@ public class PorcupineManager {
             
             pv_porcupine_process(self.porcupine, audio, &result)
             if result >= 0 {
-                let index = Int(result)
-                let keyword = self.wakeWordConfiguration[index]
                 DispatchQueue.main.async {
-                    self.onDetection?(keyword)
+                    self.onDetection?(result)
                 }
             }
         }
         
-        let keywordFilePaths = wakeKeywordConfigurations.map { $0.filePath }
-        let sensitivities = wakeKeywordConfigurations.map { $0.sensitivity }
-        
         let status = pv_porcupine_init(
             modelPath,
-            Int32(keywordFilePaths.count),
-            keywordFilePaths.map { UnsafePointer(strdup($0)) },
+            Int32(keywordPaths.count),
+            keywordPaths.map { UnsafePointer(strdup($0)) },
             sensitivities,
             &porcupine)
         try checkInitStatus(status)
@@ -114,8 +98,8 @@ public class PorcupineManager {
     ///   - wakeKeywordConfiguration: Keyword configuration to use.
     ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
     /// - Throws: PorcupineManagerError
-    public convenience init(modelFilePath: String, wakeKeywordConfiguration: WakeWordConfiguration, onDetection: ((WakeWordConfiguration) -> Void)?) throws {
-        try self.init(modelPath: modelFilePath, wakeKeywordConfigurations: [wakeKeywordConfiguration], onDetection: onDetection)
+    public convenience init(modelPath: String, keywordPath: String, sensitivity: Float32, onDetection: ((Int32) -> Void)?) throws {
+        try self.init(modelPath: modelPath, keywordPaths: [keywordPath], sensitivities: [sensitivity], onDetection: onDetection)
     }
     
     deinit {

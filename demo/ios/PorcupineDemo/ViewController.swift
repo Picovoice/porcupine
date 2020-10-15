@@ -63,17 +63,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             let keywordFilePath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
 
             let originalColor = self.view.backgroundColor
-            let keywordCallback: ((WakeWordConfiguration) -> Void) = { word in
+            let keywordCallback: ((Int32) -> Void) = { keywordIndex in
                 self.view.backgroundColor = UIColor.orange
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.view.backgroundColor = originalColor
                 }
             }
-
-            let keyword = WakeWordConfiguration(name: wakeWord, filePath: keywordFilePath!, sensitivity: 0.5)
-
+            
             do {
-                porcupineManager = try PorcupineManager(modelFilePath: modelFilePath!, wakeKeywordConfiguration: keyword, onDetection: keywordCallback)
+                porcupineManager = try PorcupineManager(modelPath: modelFilePath!, keywordPath: keywordFilePath!, sensitivity: 0.5, onDetection: keywordCallback)
                 try porcupineManager.startListening()
             } catch {
                 let alert = UIAlertController(
