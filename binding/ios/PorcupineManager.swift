@@ -20,25 +20,6 @@ public enum PorcupineManagerPermissionError: Error {
     case recordingDenied
 }
 
-public struct WakeWordConfiguration {
-    let name: String
-    let filePath: String
-    let sensitivity: Float
-    
-    /// Initializer for the wake word configuration.
-    ///
-    /// - Parameters:
-    ///   - name: The name to use to help identify this configuration.
-    ///   - filePath: Absolute path to keyword file containing hyper-parameters (ppn).
-    ///   - sensitivity: Sensitivity parameter. A higher sensitivity value lowers miss rate at the cost of increased
-    ///     false alarm rate. For more information regarding this parameter refer to 'include/pv_porcupine.h'.
-    public init(name: String, filePath: String, sensitivity: Float) {
-        self.name = name
-        self.filePath = filePath
-        self.sensitivity = sensitivity
-    }
-}
-
 /// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, processes it in real-time using Porcupine,
 /// and notifies the client when any of the given keywords are detected.
 public class PorcupineManager {
@@ -49,8 +30,6 @@ public class PorcupineManager {
     
     /// Whether current manager is listening to audio input.
     public private(set) var isListening = false
-    
-    private var shouldBeListening: Bool = false
     
     private var onDetection: ((Int32) -> Void)?
     
@@ -64,7 +43,7 @@ public class PorcupineManager {
     public init(modelPath: String, keywordPaths: [String], sensitivities: [Float32], onDetection: ((Int32) -> Void)?) throws {
         self.onDetection = onDetection
         
-        self.audioInputEngine = AudioInputEngine_AudioQueue()
+        self.audioInputEngine = AudioInputEngine()
         
         audioInputEngine.audioInput = { [weak self] audio in
             
@@ -88,7 +67,7 @@ public class PorcupineManager {
             keywordPaths.map { UnsafePointer(strdup($0)) },
             sensitivities,
             &porcupine)
-        try checkInitStatus(status)
+        try checkStatus(status)
     }
     
     /// Initializer for single keyword detection.
@@ -115,9 +94,6 @@ public class PorcupineManager {
     /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineManagerPermissionError if
     ///           microphone permission is not granted.
     public func startListening() throws {
-        
-        shouldBeListening = true
-        
         let audioSession = AVAudioSession.sharedInstance()
         // Only check if it's denied, permission will be automatically asked.
         if audioSession.recordPermission == .denied {
@@ -139,9 +115,6 @@ public class PorcupineManager {
     
     /// Stop listening for wake words.
     public func stopListening() {
-        
-        shouldBeListening = false
-        
         guard isListening else {
             return
         }
@@ -150,9 +123,7 @@ public class PorcupineManager {
         isListening = false
     }
     
-    // MARK: - Private
-    
-    private func checkInitStatus(_ status: pv_status_t) throws {
+    private func checkStatus(_ status: pv_status_t) throws {
         switch status {
         case PV_STATUS_IO_ERROR:
             throw PorcupineManagerError.io
@@ -164,43 +135,9 @@ public class PorcupineManager {
             return
         }
     }
-    
-    @objc private func onAudioSessionInterruption(_ notification: Notification) {
-        
-        guard let userInfo = notification.userInfo,
-              let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
-            return
-        }
-        
-        if type == .began {
-            audioInputEngine.pause()
-        } else if type == .ended {
-            // Interruption options are ignored. AudioEngine should be restarted
-            // unless PorcupineManager is told to stop listening.
-            guard let _ = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
-                return
-            }
-            if shouldBeListening {
-                audioInputEngine.unpause()
-            }
-        }
-    }
 }
 
-private protocol AudioInputEngine: AnyObject {
-    
-    var audioInput: ((UnsafePointer<Int16>) -> Void)? { get set }
-    
-    func start() throws
-    func stop()
-    
-    func pause()
-    func unpause()
-}
-
-private class AudioInputEngine_AudioQueue: AudioInputEngine {
-    
+private class AudioInputEngine {
     private let numBuffers = 3
     private var audioQueue: AudioQueueRef?
     
@@ -244,21 +181,6 @@ private class AudioInputEngine_AudioQueue: AudioInputEngine {
         AudioQueueDispose(audioQueue, false)
     }
     
-    func pause() {
-        guard let audioQueue = audioQueue else {
-            return
-        }
-        AudioQueuePause(audioQueue)
-    }
-    
-    func unpause() {
-        guard let audioQueue = audioQueue else {
-            return
-        }
-        AudioQueueFlush(audioQueue)
-        AudioQueueStart(audioQueue, nil)
-    }
-    
     private func createAudioQueueCallback() -> AudioQueueInputCallback {
         return { userData, queue, bufferRef, startTimeRef, numPackets, packetDescriptions in
             
@@ -266,7 +188,7 @@ private class AudioInputEngine_AudioQueue: AudioInputEngine {
             guard let userData = userData else {
                 return
             }
-            let `self` = Unmanaged<AudioInputEngine_AudioQueue>.fromOpaque(userData).takeUnretainedValue()
+            let `self` = Unmanaged<AudioInputEngine>.fromOpaque(userData).takeUnretainedValue()
             
             let pcm = bufferRef.pointee.mAudioData.assumingMemoryBound(to: Int16.self)
             
