@@ -59,8 +59,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
-            let modelFilePath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
-            let keywordFilePath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
+            let modelPath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
+            let keywordPath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
 
             let originalColor = self.view.backgroundColor
             let keywordCallback: ((Int32) -> Void) = { keywordIndex in
@@ -71,7 +71,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             }
             
             do {
-                porcupineManager = try PorcupineManager(modelPath: modelFilePath!, keywordPath: keywordFilePath!, sensitivity: 0.5, onDetection: keywordCallback)
+                porcupineManager = try PorcupineManager(modelPath: modelPath!, keywordPath: keywordPath!, sensitivity: 0.7, onDetection: keywordCallback)
                 try porcupineManager.start()
             } catch {
                 let alert = UIAlertController(
