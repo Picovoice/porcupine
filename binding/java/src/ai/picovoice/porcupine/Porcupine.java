@@ -12,7 +12,10 @@
 
 package ai.picovoice.porcupine;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Java binding for Porcupine wake word engine. It detects utterances of given keywords within an
@@ -24,16 +27,23 @@ import java.util.*;
  */
 public class Porcupine {
 
+    public static String LIB_PATH;
     public static String MODEL_PATH;
     public static HashMap<String, String> KEYWORD_PATHS;
     public static Set<String> KEYWORDS;
 
     static {
-        System.loadLibrary("pv_porcupine_jni");
 
-        MODEL_PATH = Utils.pvModelPath();
-        KEYWORD_PATHS = Utils.pvKeywordPaths();
-        KEYWORDS = KEYWORD_PATHS.keySet();
+        try{
+            LIB_PATH = Utils.pvLibraryPath();
+            MODEL_PATH = Utils.pvModelPath();
+            KEYWORD_PATHS = Utils.pvKeywordPaths();
+            KEYWORDS = KEYWORD_PATHS.keySet();
+        }
+        catch (IOException ex){
+            System.err.println("Error loading Porcupine resources from jar: ");
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -41,37 +51,48 @@ public class Porcupine {
      */
     public static class Builder {
 
+        private String libPath = Porcupine.LIB_PATH;
         private String modelPath = Porcupine.MODEL_PATH;
         private String[] keywordPaths = null;
         private String[] keywords = null;
         private float[] sensitivities = null;
 
-        public Builder withModelPath(String modelPath){
+        public Builder libPath(String libPath){
+            this.libPath = libPath;
+            return this;
+        }
+
+        public Builder modelPath(String modelPath){
             this.modelPath = modelPath;
             return this;
         }
 
-        public Builder withKeywordPaths(String[] keywordPaths){
+        public Builder keywordPaths(String[] keywordPaths){
             this.keywordPaths = keywordPaths;
             return this;
         }
 
-        public Builder withKeywords(String[] keywords){
+        public Builder keywordPath(String keywordPaths){
+            this.keywordPaths = new String[]{ keywordPaths };
+            return this;
+        }
+
+        public Builder keywords(String[] keywords){
             this.keywords = keywords;
             return this;
         }
 
-        public Builder withKeyword(String keyword){
+        public Builder keyword(String keyword){
             this.keywords = new String[]{ keyword };
             return this;
         }
 
-        public Builder withSensitivities(float[] sensitivities){
+        public Builder sensitivities(float[] sensitivities){
             this.sensitivities = sensitivities;
             return this;
         }
 
-        public Builder withSensitivity(float sensitivity){
+        public Builder sensitivity(float sensitivity){
             this.sensitivities = new float[]{ sensitivity };
             return this;
         }
@@ -111,29 +132,11 @@ public class Porcupine {
                         "number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
             }
 
-            return new Porcupine(modelPath, keywordPaths, sensitivities);
+            return new Porcupine(libPath, modelPath, keywordPaths, sensitivities);
         }
     }
 
     private final long handle;
-
-    /**
-     * Constructor.
-     *
-     * @param modelPath   Absolute path to the file containing model parameters.
-     * @param keywordPath Absolute path to keyword model file.
-     * @param sensitivity Sensitivity for detecting keyword. Should be a floating point number
-     *                    within [0, 1]. A higher sensitivity results in fewer misses at the cost of
-     *                    increasing false alarm rate.
-     * @throws PorcupineException if there is an error while initializing Porcupine.
-     */
-    public Porcupine(String modelPath, String keywordPath, float sensitivity) throws PorcupineException {
-        try {
-            handle = init(modelPath, new String[]{keywordPath}, new float[]{sensitivity});
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
-    }
 
     /**
      * Constructor.
@@ -145,8 +148,10 @@ public class Porcupine {
      *                      of increasing the false alarm rate.
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
-    public Porcupine(String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
+    public Porcupine(String libPath, String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
+
         try {
+            System.load(libPath);
             handle = init(modelPath, keywordPaths, sensitivities);
         } catch (Exception e) {
             throw new PorcupineException(e);

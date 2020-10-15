@@ -1,7 +1,18 @@
+/*
+    Copyright 2018-2020 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is
+    located in the "LICENSE" file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+    express or implied. See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
 package ai.picovoice.porcupine;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.sound.sampled.AudioInputStream;
@@ -11,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,27 +36,35 @@ public class PorcupineTest {
         porcupine.delete();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getVersion() throws PorcupineException {
-        porcupine = new Porcupine.Builder().withKeyword("porcupine").build();
+        porcupine = new Porcupine.Builder()
+                .keyword("porcupine")
+                .build();
         assertTrue(porcupine.getVersion() != null && !porcupine.getVersion().equals(""));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getFrameLength() throws PorcupineException  {
-        porcupine = new Porcupine.Builder().withKeyword("porcupine").build();
+        porcupine = new Porcupine.Builder()
+                .keyword("porcupine")
+                .build();
         assertTrue(porcupine.getFrameLength() > 0);
     }
 
     @org.junit.jupiter.api.Test
     void getSampleRate() throws PorcupineException {
-        porcupine = new Porcupine.Builder().withKeyword("porcupine").build();
+        porcupine = new Porcupine.Builder()
+                .keyword("porcupine")
+                .build();
         assertEquals(porcupine.getSampleRate(), 16000);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testProcess() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        porcupine = new Porcupine.Builder().withKeyword("porcupine").build();
+        porcupine = new Porcupine.Builder()
+                .keyword("porcupine")
+                .build();
 
         int frameLen = porcupine.getFrameLength();
         File testAudioPath = new File("../../resources/audio_samples/porcupine.wav");
@@ -76,11 +94,13 @@ public class PorcupineTest {
         assertTrue(results.size() == 1 && results.get(0) == 0);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testProcessMultiple() throws IOException, UnsupportedAudioFileException, PorcupineException {
+        String[] keywords = new String[]{"americano","blueberry","bumblebee","grapefruit",
+                "grasshopper", "picovoice", "porcupine", "terminator"};
+
         porcupine = new Porcupine.Builder()
-                .withKeywords(new String[]{"americano","blueberry","bumblebee","grapefruit",
-                        "grasshopper", "picovoice", "porcupine", "terminator"})
+                .keywords(keywords)
                 .build();
 
         int frameLen = porcupine.getFrameLength();
