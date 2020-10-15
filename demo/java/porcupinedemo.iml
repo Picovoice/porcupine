@@ -17,5 +17,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
+    <orderEntry type="library" name="Porcupine" level="project" />
   </component>
 </module>
