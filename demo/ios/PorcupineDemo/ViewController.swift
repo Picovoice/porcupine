@@ -59,41 +59,39 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
-            let modelFilePath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
-            let keywordFilePath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
+            let modelPath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
+            let keywordPath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
 
             let originalColor = self.view.backgroundColor
-            let keywordCallback: ((WakeWordConfiguration) -> Void) = { word in
+            let keywordCallback: ((Int32) -> Void) = { keywordIndex in
                 self.view.backgroundColor = UIColor.orange
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.view.backgroundColor = originalColor
                 }
             }
-
-            let keyword = WakeWordConfiguration(name: wakeWord, filePath: keywordFilePath!, sensitivity: 0.5)
-
+            
             do {
-                porcupineManager = try PorcupineManager(modelFilePath: modelFilePath!, wakeKeywordConfiguration: keyword, onDetection: keywordCallback)
-                try porcupineManager.startListening()
+                porcupineManager = try PorcupineManager(modelPath: modelPath!, keywordPath: keywordPath!, sensitivity: 0.7, onDetection: keywordCallback)
+                try porcupineManager.start()
             } catch {
                 let alert = UIAlertController(
                         title: "Alert",
                         message: "Something went wrong",
-                        preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
+                        preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 return
             }
 
             wakeWordPicker.isUserInteractionEnabled = false
             isRecording = true
-            startButton.setTitle("STOP", for: UIControlState.normal)
+            startButton.setTitle("STOP", for: UIControl.State.normal)
         } else {
-            porcupineManager.stopListening()
+            porcupineManager.stop()
 
             wakeWordPicker.isUserInteractionEnabled = true
             isRecording = false
-            startButton.setTitle("START", for: UIControlState.normal)
+            startButton.setTitle("START", for: UIControl.State.normal)
         }
     }
 

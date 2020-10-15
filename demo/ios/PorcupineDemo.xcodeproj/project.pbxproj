@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		193139D82137ADCE00E57016 /* PorcupineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193139D72137ADCD00E57016 /* PorcupineManager.swift */; };
-		9226E5CE2088E4990009EE63 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9226E5CC2088E4990009EE63 /* Interface.storyboard */; };
-		9226E5D02088E49B0009EE63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9226E5CF2088E49B0009EE63 /* Assets.xcassets */; };
-		9226E5D72088E49B0009EE63 /* PorcupineWatchDemo Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9226E5D62088E49B0009EE63 /* PorcupineWatchDemo Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		9226E5DC2088E49B0009EE63 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9226E5DB2088E49B0009EE63 /* InterfaceController.swift */; };
-		9226E5DE2088E49B0009EE63 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9226E5DD2088E49B0009EE63 /* ExtensionDelegate.swift */; };
-		9226E5E02088E49B0009EE63 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9226E5DF2088E49B0009EE63 /* NotificationController.swift */; };
-		9226E5E22088E49C0009EE63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9226E5E12088E49C0009EE63 /* Assets.xcassets */; };
-		9226E5E72088E49C0009EE63 /* PorcupineWatchDemo.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9226E5CA2088E4990009EE63 /* PorcupineWatchDemo.app */; };
-		9226E5F32088EA4B0009EE63 /* libpv_porcupine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9226E5F22088EA4B0009EE63 /* libpv_porcupine.a */; };
-		9226E61B2088EB230009EE63 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = BB247359205F636700D96613 /* porcupine_params.pv */; };
 		BB24735A205F636700D96613 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = BB247359205F636700D96613 /* porcupine_params.pv */; };
 		BB24738D206312DC00D96613 /* PorcupineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB24738C206312DC00D96613 /* PorcupineManager.swift */; };
 		BB65C7B2205F4BF400E8770E /* libpv_porcupine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB65C7B1205F4BF400E8770E /* libpv_porcupine.a */; };
@@ -26,79 +15,17 @@
 		BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD1205DD6F7006005B1 /* Main.storyboard */; };
 		BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD4205DD6F7006005B1 /* Assets.xcassets */; };
 		BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD6205DD6F7006005B1 /* LaunchScreen.storyboard */; };
-		BBFFB357226ECBE100A9DA37 /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB345226ECBE000A9DA37 /* grasshopper_ios.ppn */; };
-		BBFFB359226ECBE100A9DA37 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB347226ECBE000A9DA37 /* grapefruit_ios.ppn */; };
-		BBFFB35A226ECBE100A9DA37 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB348226ECBE000A9DA37 /* porcupine_ios.ppn */; };
-		BBFFB35F226ECBE100A9DA37 /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB34D226ECBE000A9DA37 /* blueberry_ios.ppn */; };
-		BBFFB364226ECBE100A9DA37 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB352226ECBE000A9DA37 /* picovoice_ios.ppn */; };
-		BBFFB365226ECBE100A9DA37 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB353226ECBE000A9DA37 /* bumblebee_ios.ppn */; };
-		BBFFB366226ECBE100A9DA37 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB354226ECBE000A9DA37 /* americano_ios.ppn */; };
-		BBFFB368226ECBE100A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB356226ECBE000A9DA37 /* terminator_ios.ppn */; };
+		BBFFB333226EC72E00A9DA37 /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */; };
+		BBFFB335226EC72E00A9DA37 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */; };
+		BBFFB336226EC72E00A9DA37 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */; };
+		BBFFB33B226EC72E00A9DA37 /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */; };
+		BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */; };
+		BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */; };
+		BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */; };
+		BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		9226E5D82088E49B0009EE63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BBE66BC2205DD6F7006005B1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9226E5D52088E49B0009EE63;
-			remoteInfo = "PorcupineWatchDemo Extension";
-		};
-		9226E5E52088E49C0009EE63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BBE66BC2205DD6F7006005B1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9226E5C92088E4990009EE63;
-			remoteInfo = PorcupineWatchDemo;
-		};
-		BBE66BDF205DD6F7006005B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BBE66BC2205DD6F7006005B1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BBE66BC9205DD6F7006005B1;
-			remoteInfo = ios;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		9226E5EB2088E49C0009EE63 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				9226E5D72088E49B0009EE63 /* PorcupineWatchDemo Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9226E5EF2088E49C0009EE63 /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				9226E5E72088E49C0009EE63 /* PorcupineWatchDemo.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		193139D72137ADCD00E57016 /* PorcupineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PorcupineManager.swift; path = ../../../binding/ios/PorcupineManager.swift; sourceTree = "<group>"; };
-		9226E5CA2088E4990009EE63 /* PorcupineWatchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineWatchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9226E5CD2088E4990009EE63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
-		9226E5CF2088E49B0009EE63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9226E5D12088E49B0009EE63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9226E5D62088E49B0009EE63 /* PorcupineWatchDemo Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "PorcupineWatchDemo Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9226E5DB2088E49B0009EE63 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
-		9226E5DD2088E49B0009EE63 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		9226E5DF2088E49B0009EE63 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		9226E5E12088E49C0009EE63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9226E5E32088E49C0009EE63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9226E5E42088E49C0009EE63 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		9226E5F22088EA4B0009EE63 /* libpv_porcupine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_porcupine.a; path = ../../lib/watchos/libpv_porcupine.a; sourceTree = "<group>"; };
 		BB247359205F636700D96613 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../lib/common/porcupine_params.pv; sourceTree = "<group>"; };
 		BB24738C206312DC00D96613 /* PorcupineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PorcupineManager.swift; path = ../../../binding/ios/PorcupineManager.swift; sourceTree = "<group>"; };
 		BB65C7AF205EEBB300E8770E /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
@@ -110,26 +37,17 @@
 		BBE66BD4205DD6F7006005B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBE66BD7205DD6F7006005B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BBE66BD9205DD6F7006005B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PorcupineDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BBFFB345226ECBE000A9DA37 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grasshopper_ios.ppn; path = ios/grasshopper_ios.ppn; sourceTree = "<group>"; };
-		BBFFB347226ECBE000A9DA37 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grapefruit_ios.ppn; path = ios/grapefruit_ios.ppn; sourceTree = "<group>"; };
-		BBFFB348226ECBE000A9DA37 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ios/porcupine_ios.ppn; sourceTree = "<group>"; };
-		BBFFB34D226ECBE000A9DA37 /* blueberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = blueberry_ios.ppn; path = ios/blueberry_ios.ppn; sourceTree = "<group>"; };
-		BBFFB352226ECBE000A9DA37 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ios/picovoice_ios.ppn; sourceTree = "<group>"; };
-		BBFFB353226ECBE000A9DA37 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = bumblebee_ios.ppn; path = ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
-		BBFFB354226ECBE000A9DA37 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ios/americano_ios.ppn; sourceTree = "<group>"; };
-		BBFFB356226ECBE000A9DA37 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = terminator_ios.ppn; path = ios/terminator_ios.ppn; sourceTree = "<group>"; };
+		BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grasshopper_ios.ppn; path = ios/grasshopper_ios.ppn; sourceTree = "<group>"; };
+		BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grapefruit_ios.ppn; path = ios/grapefruit_ios.ppn; sourceTree = "<group>"; };
+		BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ios/porcupine_ios.ppn; sourceTree = "<group>"; };
+		BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = blueberry_ios.ppn; path = ios/blueberry_ios.ppn; sourceTree = "<group>"; };
+		BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ios/picovoice_ios.ppn; sourceTree = "<group>"; };
+		BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = bumblebee_ios.ppn; path = ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
+		BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ios/americano_ios.ppn; sourceTree = "<group>"; };
+		BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = terminator_ios.ppn; path = ios/terminator_ios.ppn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9226E5D32088E49B0009EE63 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9226E5F32088EA4B0009EE63 /* libpv_porcupine.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BBE66BC7205DD6F7006005B1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,51 +56,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BBE66BDB205DD6F7006005B1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9226E5CB2088E4990009EE63 /* PorcupineWatchDemo */ = {
-			isa = PBXGroup;
-			children = (
-				9226E5CC2088E4990009EE63 /* Interface.storyboard */,
-				9226E5CF2088E49B0009EE63 /* Assets.xcassets */,
-				9226E5D12088E49B0009EE63 /* Info.plist */,
-			);
-			path = PorcupineWatchDemo;
-			sourceTree = "<group>";
-		};
-		9226E5DA2088E49B0009EE63 /* PorcupineWatchDemo Extension */ = {
-			isa = PBXGroup;
-			children = (
-				193139D72137ADCD00E57016 /* PorcupineManager.swift */,
-				9226E5DB2088E49B0009EE63 /* InterfaceController.swift */,
-				9226E5DD2088E49B0009EE63 /* ExtensionDelegate.swift */,
-				9226E5DF2088E49B0009EE63 /* NotificationController.swift */,
-				9226E5E12088E49C0009EE63 /* Assets.xcassets */,
-				9226E5E32088E49C0009EE63 /* Info.plist */,
-				9226E5E42088E49C0009EE63 /* PushNotificationPayload.apns */,
-			);
-			path = "PorcupineWatchDemo Extension";
-			sourceTree = "<group>";
-		};
 		BB247361206164C400D96613 /* keyword_files */ = {
 			isa = PBXGroup;
 			children = (
-				BBFFB354226ECBE000A9DA37 /* americano_ios.ppn */,
-				BBFFB34D226ECBE000A9DA37 /* blueberry_ios.ppn */,
-				BBFFB353226ECBE000A9DA37 /* bumblebee_ios.ppn */,
-				BBFFB347226ECBE000A9DA37 /* grapefruit_ios.ppn */,
-				BBFFB345226ECBE000A9DA37 /* grasshopper_ios.ppn */,
-				BBFFB352226ECBE000A9DA37 /* picovoice_ios.ppn */,
-				BBFFB348226ECBE000A9DA37 /* porcupine_ios.ppn */,
-				BBFFB356226ECBE000A9DA37 /* terminator_ios.ppn */,
+				BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */,
+				BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */,
+				BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */,
+				BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */,
+				BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */,
+				BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */,
+				BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */,
+				BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */,
 			);
 			name = keyword_files;
 			path = ../../../resources/keyword_files;
@@ -191,7 +78,6 @@
 		BB65C7B0205F4BF400E8770E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9226E5F22088EA4B0009EE63 /* libpv_porcupine.a */,
 				BB65C7B1205F4BF400E8770E /* libpv_porcupine.a */,
 			);
 			name = Frameworks;
@@ -201,8 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				BBE66BCC205DD6F7006005B1 /* PorcupineDemo */,
-				9226E5CB2088E4990009EE63 /* PorcupineWatchDemo */,
-				9226E5DA2088E49B0009EE63 /* PorcupineWatchDemo Extension */,
 				BBE66BCB205DD6F7006005B1 /* Products */,
 				BB65C7B0205F4BF400E8770E /* Frameworks */,
 			);
@@ -212,9 +96,6 @@
 			isa = PBXGroup;
 			children = (
 				BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */,
-				BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */,
-				9226E5CA2088E4990009EE63 /* PorcupineWatchDemo.app */,
-				9226E5D62088E49B0009EE63 /* PorcupineWatchDemo Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -239,40 +120,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9226E5C92088E4990009EE63 /* PorcupineWatchDemo */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9226E5EC2088E49C0009EE63 /* Build configuration list for PBXNativeTarget "PorcupineWatchDemo" */;
-			buildPhases = (
-				9226E5C82088E4990009EE63 /* Resources */,
-				9226E5EB2088E49C0009EE63 /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9226E5D92088E49B0009EE63 /* PBXTargetDependency */,
-			);
-			name = PorcupineWatchDemo;
-			productName = PorcupineWatchDemo;
-			productReference = 9226E5CA2088E4990009EE63 /* PorcupineWatchDemo.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		9226E5D52088E49B0009EE63 /* PorcupineWatchDemo Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9226E5E82088E49C0009EE63 /* Build configuration list for PBXNativeTarget "PorcupineWatchDemo Extension" */;
-			buildPhases = (
-				9226E5D22088E49B0009EE63 /* Sources */,
-				9226E5D32088E49B0009EE63 /* Frameworks */,
-				9226E5D42088E49B0009EE63 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "PorcupineWatchDemo Extension";
-			productName = "PorcupineWatchDemo Extension";
-			productReference = 9226E5D62088E49B0009EE63 /* PorcupineWatchDemo Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 		BBE66BC9205DD6F7006005B1 /* PorcupineDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBE66BE7205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemo" */;
@@ -280,35 +127,15 @@
 				BBE66BC6205DD6F7006005B1 /* Sources */,
 				BBE66BC7205DD6F7006005B1 /* Frameworks */,
 				BBE66BC8205DD6F7006005B1 /* Resources */,
-				9226E5EF2088E49C0009EE63 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				9226E5E62088E49C0009EE63 /* PBXTargetDependency */,
 			);
 			name = PorcupineDemo;
 			productName = ios;
 			productReference = BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */;
 			productType = "com.apple.product-type.application";
-		};
-		BBE66BDD205DD6F7006005B1 /* PorcupineDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BBE66BEA205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemoTests" */;
-			buildPhases = (
-				BBE66BDA205DD6F7006005B1 /* Sources */,
-				BBE66BDB205DD6F7006005B1 /* Frameworks */,
-				BBE66BDC205DD6F7006005B1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BBE66BE0205DD6F7006005B1 /* PBXTargetDependency */,
-			);
-			name = PorcupineDemoTests;
-			productName = iosTests;
-			productReference = BBE66BDE205DD6F7006005B1 /* PorcupineDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -316,31 +143,19 @@
 		BBE66BC2205DD6F7006005B1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = Picovoice;
 				TargetAttributes = {
-					9226E5C92088E4990009EE63 = {
-						CreatedOnToolsVersion = 9.3;
-						ProvisioningStyle = Automatic;
-					};
-					9226E5D52088E49B0009EE63 = {
-						CreatedOnToolsVersion = 9.3;
-						ProvisioningStyle = Automatic;
-					};
 					BBE66BC9205DD6F7006005B1 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1200;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
 						};
-					};
-					BBE66BDD205DD6F7006005B1 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = BBE66BC9205DD6F7006005B1;
 					};
 				};
 			};
@@ -358,72 +173,33 @@
 			projectRoot = "";
 			targets = (
 				BBE66BC9205DD6F7006005B1 /* PorcupineDemo */,
-				BBE66BDD205DD6F7006005B1 /* PorcupineDemoTests */,
-				9226E5C92088E4990009EE63 /* PorcupineWatchDemo */,
-				9226E5D52088E49B0009EE63 /* PorcupineWatchDemo Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9226E5C82088E4990009EE63 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9226E5D02088E49B0009EE63 /* Assets.xcassets in Resources */,
-				9226E5CE2088E4990009EE63 /* Interface.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9226E5D42088E49B0009EE63 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9226E61B2088EB230009EE63 /* porcupine_params.pv in Resources */,
-				9226E5E22088E49C0009EE63 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BBE66BC8205DD6F7006005B1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBFFB359226ECBE100A9DA37 /* grapefruit_ios.ppn in Resources */,
-				BBFFB35F226ECBE100A9DA37 /* blueberry_ios.ppn in Resources */,
+				BBFFB335226EC72E00A9DA37 /* grapefruit_ios.ppn in Resources */,
+				BBFFB33B226EC72E00A9DA37 /* blueberry_ios.ppn in Resources */,
 				BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */,
-				BBFFB357226ECBE100A9DA37 /* grasshopper_ios.ppn in Resources */,
+				BBFFB333226EC72E00A9DA37 /* grasshopper_ios.ppn in Resources */,
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
-				BBFFB364226ECBE100A9DA37 /* picovoice_ios.ppn in Resources */,
-				BBFFB35A226ECBE100A9DA37 /* porcupine_ios.ppn in Resources */,
-				BBFFB365226ECBE100A9DA37 /* bumblebee_ios.ppn in Resources */,
+				BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */,
+				BBFFB336226EC72E00A9DA37 /* porcupine_ios.ppn in Resources */,
+				BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */,
 				BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */,
-				BBFFB366226ECBE100A9DA37 /* americano_ios.ppn in Resources */,
-				BBFFB368226ECBE100A9DA37 /* terminator_ios.ppn in Resources */,
+				BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */,
+				BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */,
 				BB24735A205F636700D96613 /* porcupine_params.pv in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BBE66BDC205DD6F7006005B1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9226E5D22088E49B0009EE63 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9226E5E02088E49B0009EE63 /* NotificationController.swift in Sources */,
-				193139D82137ADCE00E57016 /* PorcupineManager.swift in Sources */,
-				9226E5DE2088E49B0009EE63 /* ExtensionDelegate.swift in Sources */,
-				9226E5DC2088E49B0009EE63 /* InterfaceController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BBE66BC6205DD6F7006005B1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -434,42 +210,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BBE66BDA205DD6F7006005B1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		9226E5D92088E49B0009EE63 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9226E5D52088E49B0009EE63 /* PorcupineWatchDemo Extension */;
-			targetProxy = 9226E5D82088E49B0009EE63 /* PBXContainerItemProxy */;
-		};
-		9226E5E62088E49C0009EE63 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9226E5C92088E4990009EE63 /* PorcupineWatchDemo */;
-			targetProxy = 9226E5E52088E49C0009EE63 /* PBXContainerItemProxy */;
-		};
-		BBE66BE0205DD6F7006005B1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BBE66BC9205DD6F7006005B1 /* PorcupineDemo */;
-			targetProxy = BBE66BDF205DD6F7006005B1 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
-		9226E5CC2088E4990009EE63 /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9226E5CD2088E4990009EE63 /* Base */,
-			);
-			name = Interface.storyboard;
-			sourceTree = "<group>";
-		};
 		BBE66BD1205DD6F7006005B1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -489,86 +232,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		9226E5E92088E49C0009EE63 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SPQ2WWFD5W;
-				INFOPLIST_FILE = "PorcupineWatchDemo Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/watchos";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Debug;
-		};
-		9226E5EA2088E49C0009EE63 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SPQ2WWFD5W;
-				INFOPLIST_FILE = "PorcupineWatchDemo Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/watchos";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Release;
-		};
-		9226E5ED2088E49C0009EE63 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SPQ2WWFD5W;
-				IBSC_MODULE = PorcupineWatchDemo_Extension;
-				INFOPLIST_FILE = PorcupineWatchDemo/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Debug;
-		};
-		9226E5EE2088E49C0009EE63 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SPQ2WWFD5W;
-				IBSC_MODULE = PorcupineWatchDemo_Extension;
-				INFOPLIST_FILE = PorcupineWatchDemo/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Release;
-		};
 		BBE66BE5205DD6F7006005B1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -594,6 +257,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -603,6 +267,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = FXK66JFZWS;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -619,7 +284,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -654,6 +319,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -663,6 +329,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = FXK66JFZWS;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -673,7 +340,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "${SRCROOT}";
@@ -687,13 +354,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SPQ2WWFD5W;
+				DEVELOPMENT_TEAM = FXK66JFZWS;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine;
+				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -703,70 +371,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SPQ2WWFD5W;
+				DEVELOPMENT_TEAM = FXK66JFZWS;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.porcupine;
+				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		BBE66BEB205DD6F7006005B1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = iosTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.iosTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PorcupineDemo.app/PorcupineDemo";
-			};
-			name = Debug;
-		};
-		BBE66BEC205DD6F7006005B1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = iosTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.iosTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PorcupineDemo.app/PorcupineDemo";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9226E5E82088E49C0009EE63 /* Build configuration list for PBXNativeTarget "PorcupineWatchDemo Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9226E5E92088E49C0009EE63 /* Debug */,
-				9226E5EA2088E49C0009EE63 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9226E5EC2088E49C0009EE63 /* Build configuration list for PBXNativeTarget "PorcupineWatchDemo" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9226E5ED2088E49C0009EE63 /* Debug */,
-				9226E5EE2088E49C0009EE63 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		BBE66BC5205DD6F7006005B1 /* Build configuration list for PBXProject "PorcupineDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -781,15 +400,6 @@
 			buildConfigurations = (
 				BBE66BE8205DD6F7006005B1 /* Debug */,
 				BBE66BE9205DD6F7006005B1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BBE66BEA205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BBE66BEB205DD6F7006005B1 /* Debug */,
-				BBE66BEC205DD6F7006005B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
