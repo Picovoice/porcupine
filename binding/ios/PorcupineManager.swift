@@ -11,17 +11,14 @@ import AVFoundation
 import pv_porcupine
 
 public enum PorcupineManagerError: Error {
-    case outOfMemory
-    case io
     case invalidArgument
-}
-
-public enum PorcupineManagerPermissionError: Error {
+    case io
+    case outOfMemory
     case recordingDenied
 }
 
-/// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, processes it in real-time using Porcupine,
-/// and notifies the client when any of the given keywords are detected.
+/// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, processes it in real-time using Porcupine, and notifies the
+/// client when any of the given keywords are detected.
 public class PorcupineManager {
     private var onDetection: ((Int32) -> Void)?
     
@@ -36,7 +33,8 @@ public class PorcupineManager {
     /// - Parameters:
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - keywordPaths: Absolute paths to keyword model files.
-    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of any of the keywords.
     /// - Throws: PorcupineManagerError
     public init(modelPath: String, keywordPaths: [String], sensitivities: [Float32], onDetection: ((Int32) -> Void)?) throws {
@@ -73,7 +71,8 @@ public class PorcupineManager {
     /// - Parameters:
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - keywordPath: Absolute path to keyword model file.
-    ///   - sensitivity: Sensitivity for detecting keyword. Should be a floating point number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing false alarm rate..
+    ///   - sensitivity: Sensitivity for detecting keyword. Should be a floating point number within [0, 1]. A higher sensitivity results in fewer misses at the
+    ///   cost of increasing false alarm rate..
     ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineManagerError
     public convenience init(modelPath: String, keywordPath: String, sensitivity: Float32, onDetection: ((Int32) -> Void)?) throws {
@@ -84,6 +83,7 @@ public class PorcupineManager {
         if isListening {
             stop()
         }
+        
         pv_porcupine_delete(porcupine)
         porcupine = nil
     }
@@ -96,7 +96,7 @@ public class PorcupineManager {
         let audioSession = AVAudioSession.sharedInstance()
         // Only check if it's denied, permission will be automatically asked.
         if audioSession.recordPermission == .denied {
-            throw PorcupineManagerPermissionError.recordingDenied
+            throw PorcupineManagerError.recordingDenied
         }
         
         guard !isListening else {
@@ -119,6 +119,7 @@ public class PorcupineManager {
         }
         
         audioInputEngine.stop()
+        
         isListening = false
     }
     
