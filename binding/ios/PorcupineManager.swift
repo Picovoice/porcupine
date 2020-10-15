@@ -23,22 +23,21 @@ public enum PorcupineManagerPermissionError: Error {
 /// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, processes it in real-time using Porcupine,
 /// and notifies the client when any of the given keywords are detected.
 public class PorcupineManager {
+    private var onDetection: ((Int32) -> Void)?
     
     private var porcupine: OpaquePointer?
     
     private let audioInputEngine: AudioInputEngine
     
-    /// Whether current manager is listening to audio input.
-    public private(set) var isListening = false
+    private var isListening = false
     
-    private var onDetection: ((Int32) -> Void)?
-    
-    /// Initializer for multiple keywords detection.
+    /// Constructor.
     ///
     /// - Parameters:
-    ///   - modelFilePath: Absolute path to file containing model parameters.
-    ///   - wakeKeywordConfigurations: Keyword configurations to use.
-    ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
+    ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - keywordPaths: Absolute paths to keyword model files.
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+    ///   - onDetection: It is invoked upon detection of any of the keywords.
     /// - Throws: PorcupineManagerError
     public init(modelPath: String, keywordPaths: [String], sensitivities: [Float32], onDetection: ((Int32) -> Void)?) throws {
         self.onDetection = onDetection
@@ -52,7 +51,6 @@ public class PorcupineManager {
             }
             
             var result: Int32 = -1
-            
             pv_porcupine_process(self.porcupine, audio, &result)
             if result >= 0 {
                 DispatchQueue.main.async {
@@ -70,12 +68,13 @@ public class PorcupineManager {
         try checkStatus(status)
     }
     
-    /// Initializer for single keyword detection.
+    /// Constructor.
     ///
     /// - Parameters:
-    ///   - modelFilePath: Absolute path to file containing model parameters.
-    ///   - wakeKeywordConfiguration: Keyword configuration to use.
-    ///   - onDetection: Detection handler to call after wake word detection. The handler is executed on main thread.
+    ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - keywordPath: Absolute path to keyword model file.
+    ///   - sensitivity: Sensitivity for detecting keyword. Should be a floating point number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing false alarm rate..
+    ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineManagerError
     public convenience init(modelPath: String, keywordPath: String, sensitivity: Float32, onDetection: ((Int32) -> Void)?) throws {
         try self.init(modelPath: modelPath, keywordPaths: [keywordPath], sensitivities: [sensitivity], onDetection: onDetection)
@@ -83,17 +82,17 @@ public class PorcupineManager {
     
     deinit {
         if isListening {
-            stopListening()
+            stop()
         }
         pv_porcupine_delete(porcupine)
         porcupine = nil
     }
     
-    /// Start listening for configured wake words.
+    ///  Starts recording audio from the microphone and monitors it for the utterances of the given set of keywords.
     ///
     /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineManagerPermissionError if
     ///           microphone permission is not granted.
-    public func startListening() throws {
+    public func start() throws {
         let audioSession = AVAudioSession.sharedInstance()
         // Only check if it's denied, permission will be automatically asked.
         if audioSession.recordPermission == .denied {
@@ -114,7 +113,7 @@ public class PorcupineManager {
     }
     
     /// Stop listening for wake words.
-    public func stopListening() {
+    public func stop() {
         guard isListening else {
             return
         }

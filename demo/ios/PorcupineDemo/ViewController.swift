@@ -72,7 +72,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             
             do {
                 porcupineManager = try PorcupineManager(modelPath: modelFilePath!, keywordPath: keywordFilePath!, sensitivity: 0.5, onDetection: keywordCallback)
-                try porcupineManager.startListening()
+                try porcupineManager.start()
             } catch {
                 let alert = UIAlertController(
                         title: "Alert",
@@ -87,7 +87,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             isRecording = true
             startButton.setTitle("STOP", for: UIControl.State.normal)
         } else {
-            porcupineManager.stopListening()
+            porcupineManager.stop()
 
             wakeWordPicker.isUserInteractionEnabled = true
             isRecording = false
