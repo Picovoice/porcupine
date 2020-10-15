@@ -10,7 +10,7 @@ applications. It is
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient making it perfect for IoT.
 - cross-platform. It is implemented in fixed-point ANSI C. Raspberry Pi (all variants), Beagle Bone, Android, iOS,
-  watchOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
+  Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
   various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for enterprise customers.
 - scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
 - self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
