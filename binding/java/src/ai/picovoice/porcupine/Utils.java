@@ -48,11 +48,28 @@ public class Utils {
 
         if(resourcePath.toString().endsWith(".jar"))
         {
+            // use jar name to create versioned extraction directory
+            String extractionDirName = resourcePath.getFileName().toString().replace(".jar", "");
+
             // extract jar resources to temp directory
             String systemTempDir = System.getProperty("java.io.tmpdir");
-            resourceDirectory = new File(systemTempDir, "porcupine").toPath();
+            Path resourceDirectoryPath = new File(systemTempDir, extractionDirName).toPath();
 
-            try {
+            // try to create tmp dir for extraction
+            if (!Files.exists(resourceDirectoryPath)) {
+                try {
+                    Files.createDirectory(resourceDirectoryPath);
+                } catch (IOException ioException) {
+                    System.err.printf("Failed to create extraction directory at %s\n", resourcePath.toString());
+                    ioException.printStackTrace();
+
+                    // default extraction directly to tmp
+                    resourceDirectoryPath = new File(systemTempDir).toPath();
+                }
+            }
+            resourceDirectory = resourceDirectoryPath;
+
+            try{
                 // read jar file entries
                 JarFile jf = new JarFile(resourcePath.toFile());
                 Enumeration<JarEntry> entries = jf.entries();
@@ -61,27 +78,32 @@ public class Utils {
                     JarEntry jarEntry = entries.nextElement();
                     String jarEntryName = jarEntry.getName();
 
-                    // skip code folder
-                    if(jarEntryName.startsWith("ai/"))
-                        continue;
-
-                    // copy contents into resource directory
-                    if (jarEntry.isDirectory()) {
-                        Path dstPath = resourceDirectory.resolve(jarEntryName);
-                        if(!dstPath.toFile().exists())
-                            Files.createDirectory(dstPath);
-                    } else {
-                        Path file = resourceDirectory.resolve(jarEntryName);
-                        try (InputStream is = jf.getInputStream(jarEntry)) {
-                            Files.copy(is, file, StandardCopyOption.REPLACE_EXISTING);
+                    try {
+                        if(jarEntryName.startsWith("jniLibs") || jarEntryName.startsWith("resources") || jarEntryName.startsWith("lib")){
+                            // copy contents into resource directory
+                            if (jarEntry.isDirectory()) {
+                                Path dstPath = resourceDirectory.resolve(jarEntryName);
+                                if(!dstPath.toFile().exists())
+                                    Files.createDirectory(dstPath);
+                            } else {
+                                Path file = resourceDirectory.resolve(jarEntryName);
+                                if(!Files.exists(file)) {
+                                    try (InputStream is = jf.getInputStream(jarEntry)) {
+                                        Files.copy(is, file, StandardCopyOption.REPLACE_EXISTING);
+                                    }
+                                }
+                            }
                         }
                     }
+                    catch (IOException ex)
+                    {
+                        System.err.printf("Failed to copy resource %s from Porcupine jar.\n", jarEntryName);
+                        ex.printStackTrace();
+                    }
                 }
-
             }
-            catch (IOException ex)
-            {
-                System.err.println("Failed to copy resource from Porcupine jar.");
+            catch (IOException ex){
+                System.err.println("Failed to access resources from Porcupine jar.\n");
                 ex.printStackTrace();
             }
         }

@@ -1,10 +1,19 @@
+/*
+    Copyright 2018-2020 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is
+    located in the "LICENSE" file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+    express or implied. See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
 package ai.picovoice.porcupinedemo;
 
-import com.sun.jdi.connect.Connector;
 import org.apache.commons.cli.*;
 import ai.picovoice.porcupine.Porcupine;
-import ai.picovoice.porcupine.Porcupine.Builder;
-import ai.picovoice.porcupine.PorcupineException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -12,7 +21,6 @@ import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FileDemo {
@@ -34,7 +42,7 @@ public class FileDemo {
 
             if(audioFormat.getSampleRate() != 16000.0f || audioFormat.getSampleSizeInBits() != 16){
                 throw new IllegalArgumentException(String.format("Invalid input audio file format. " +
-                        "Input file must be a %dkHz, 16-bit WAV file.", porcupine.getSampleRate()));
+                        "Input file must be a %dkHz, 16-bit audio file.", porcupine.getSampleRate()));
             }
 
             if(audioFormat.getChannels() > 1){
@@ -83,6 +91,7 @@ public class FileDemo {
         Options options = BuildCommandLineOptions();
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
+
         CommandLine cmd;
         try {
             cmd = parser.parse(options, args);
@@ -109,19 +118,22 @@ public class FileDemo {
         float[] sensitivities = null;
         if(sensitivitiesStr != null){
             sensitivities = new float[sensitivitiesStr.length];
-            try{
-                for(int i = 0; i < sensitivitiesStr.length; i++){
-                    float sensitivity = Float.parseFloat(sensitivitiesStr[i]);
-                    if(sensitivity < 0 || sensitivity > 1){
-                        throw new IllegalArgumentException(String.format("Failed to parse sensitivity value (%s). " +
-                                "Must be a decimal value between [0,1].", sensitivitiesStr[i]));
-                    }
-                    sensitivities[i] = sensitivity;
+
+            for(int i = 0; i < sensitivitiesStr.length; i++){
+                float sensitivity;
+                try{
+                    sensitivity = Float.parseFloat(sensitivitiesStr[i]);
                 }
-            }
-            catch (Exception ex){
-                throw new IllegalArgumentException("Failed to parse sensitivity value. " +
-                        "Must be a decimal value between [0,1].");
+                catch (Exception ex){
+                    throw new IllegalArgumentException("Failed to parse sensitivity value. " +
+                            "Must be a decimal value between [0,1].");
+                }
+
+                if(sensitivity < 0 || sensitivity > 1){
+                    throw new IllegalArgumentException(String.format("Failed to parse sensitivity value (%s). " +
+                            "Must be a decimal value between [0,1].", sensitivitiesStr[i]));
+                }
+                sensitivities[i] = sensitivity;
             }
         }
 
@@ -130,7 +142,7 @@ public class FileDemo {
             throw new IllegalArgumentException(String.format("Audio file at path %s does not exits.", inputAudioPath));
         }
 
-        if(libPath ==null)
+        if(libPath == null)
             libPath = Porcupine.LIB_PATH;
 
         if(modelPath == null)
