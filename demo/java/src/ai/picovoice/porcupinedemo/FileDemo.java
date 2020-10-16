@@ -15,7 +15,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Main {
+public class FileDemo {
 
     public static void RunDemo(File inputAudioFile, String libPath, String modelPath,
                                String[] keywordPaths, String[] keywords, float[] sensitivities){
