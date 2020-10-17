@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 public class FileDemo {
 
-    public static void RunDemo(File inputAudioFile, String libPath, String modelPath,
+    public static void runDemo(File inputAudioFile, String libPath, String modelPath,
                                String[] keywordPaths, String[] keywords, float[] sensitivities){
 
         Porcupine porcupine = null;
@@ -189,7 +189,7 @@ public class FileDemo {
                     "not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
         }
 
-        RunDemo(inputAudioFile, libPath, modelPath, keywordPaths, keywords, sensitivities);
+        runDemo(inputAudioFile, libPath, modelPath, keywordPaths, keywords, sensitivities);
     }
 
     private static Options BuildCommandLineOptions(){

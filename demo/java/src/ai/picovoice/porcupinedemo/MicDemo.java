@@ -72,7 +72,7 @@ public class MicDemo {
             for(int i = 0; i< keywords.length; i++)
                 System.out.printf(" %s(%.02f)", keywords[i], sensitivities[i]);
             System.out.print(" }\n");
-            System.out.print("Press enter to stop recording...");
+            System.out.println("Press enter to stop recording...");
 
             // buffers for processing audio
             int frameLength = porcupine.getFrameLength();
