@@ -8,7 +8,9 @@ using Porcupine wake word engine.
 ## Porcupine
 
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
-applications. It is
+applications. 
+
+Porcupine is:
 
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient making it perfect for IoT.
@@ -18,7 +20,7 @@ applications. It is
 ## Compatibility
 
 - .NET Core 3.1+
-- Runs on Linux (x86_64), MacOS (x86_64) and Windows (x86_64)
+- Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
 
 ## Installation
 
