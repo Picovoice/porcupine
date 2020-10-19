@@ -29,7 +29,7 @@ MicDemo uses [OpenAL](https://openal.org/). On Windows, install using the [OpenA
 On Linux use apt-get
 
 ```bash
-sudo apt-get libopenal-dev
+sudo apt-get install libopenal-dev
 ```
 
 On Mac use Brew
