@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="porcupine-1.8.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/porcupine-1.8.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

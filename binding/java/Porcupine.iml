@@ -7,20 +7,20 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/jniLibs" type="java-resource" relativeOutputPath="jniLibs" />
-      <sourceFolder url="file://$MODULE_DIR$/jniLibs" type="java-test-resource" relativeOutputPath="jniLibs" />
     </content>
     <content url="file://$MODULE_DIR$/../../lib">
-      <sourceFolder url="file://$MODULE_DIR$/../../lib/common" type="java-resource" relativeOutputPath="lib/common" />
-      <sourceFolder url="file://$MODULE_DIR$/../../lib/common" type="java-test-resource" relativeOutputPath="lib/common" />
+      <sourceFolder url="file://$MODULE_DIR$/../../lib/common" type="java-resource" relativeOutputPath="porcupine/lib/common" />
+      <sourceFolder url="file://$MODULE_DIR$/../../lib/common" type="java-test-resource" relativeOutputPath="porcupine/lib/common" />
+      <sourceFolder url="file://$MODULE_DIR$/../../lib/java" type="java-resource" relativeOutputPath="porcupine/lib/java" />
+            <sourceFolder url="file://$MODULE_DIR$/../../lib/java" type="java-test-resource" relativeOutputPath="porcupine/lib/java" />
     </content>
     <content url="file://$MODULE_DIR$/../../resources">
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/linux" type="java-resource" relativeOutputPath="resources/keyword_files/linux" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/mac" type="java-resource" relativeOutputPath="resources/keyword_files/mac" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/windows" type="java-resource" relativeOutputPath="resources/keyword_files/windows" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/linux" type="java-test-resource" relativeOutputPath="resources/keyword_files/linux" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/mac" type="java-test-resource" relativeOutputPath="resources/keyword_files/mac" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/windows" type="java-test-resource" relativeOutputPath="resources/keyword_files/windows" />
+      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/linux" type="java-resource" relativeOutputPath="porcupine/resources/keyword_files/linux" />
+      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/mac" type="java-resource" relativeOutputPath="porcupine/resources/keyword_files/mac" />
+      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/windows" type="java-resource" relativeOutputPath="porcupine/resources/keyword_files/windows" />
+      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/linux" type="java-test-resource" relativeOutputPath="porcupine/resources/keyword_files/linux" />
+      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/mac" type="java-test-resource" relativeOutputPath="porcupine/resources/keyword_files/mac" />
+      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/windows" type="java-test-resource" relativeOutputPath="porcupine/resources/keyword_files/windows" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

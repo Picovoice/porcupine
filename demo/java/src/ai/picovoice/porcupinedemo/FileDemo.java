@@ -12,13 +12,15 @@
 
 package ai.picovoice.porcupinedemo;
 
-import org.apache.commons.cli.*;
 import ai.picovoice.porcupine.Porcupine;
+import org.apache.commons.cli.*;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -26,26 +28,37 @@ import java.util.Arrays;
 public class FileDemo {
 
     public static void runDemo(File inputAudioFile, String libPath, String modelPath,
-                               String[] keywordPaths, String[] keywords, float[] sensitivities){
+                               String[] keywordPaths, String[] keywords, float[] sensitivities) {
+
+        AudioInputStream audioInputStream;
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(inputAudioFile);
+        } catch (UnsupportedAudioFileException e) {
+            System.err.println("Audio format not supported. Please provide an input file of .au, .aiff or .wav format");
+            return;
+        } catch (IOException e) {
+            System.err.println("Could not find input audio file at " + inputAudioFile);
+            return;
+        }
 
         Porcupine porcupine = null;
-        try{
+        try {
             porcupine = new Porcupine.Builder()
-                    .libPath(libPath)
-                    .modelPath(modelPath)
-                    .keywordPaths(keywordPaths)
-                    .sensitivities(sensitivities)
+                    .setLibraryPath(libPath)
+                    .setModelPath(modelPath)
+                    .setKeywords(keywords)
+                    .setKeywordPaths(keywordPaths)
+                    .setSensitivities(sensitivities)
                     .build();
 
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputAudioFile);
-            AudioFormat audioFormat =  audioInputStream.getFormat();
+            AudioFormat audioFormat = audioInputStream.getFormat();
 
-            if(audioFormat.getSampleRate() != 16000.0f || audioFormat.getSampleSizeInBits() != 16){
+            if (audioFormat.getSampleRate() != 16000.0f || audioFormat.getSampleSizeInBits() != 16) {
                 throw new IllegalArgumentException(String.format("Invalid input audio file format. " +
                         "Input file must be a %dkHz, 16-bit audio file.", porcupine.getSampleRate()));
             }
 
-            if(audioFormat.getChannels() > 1){
+            if (audioFormat.getChannels() > 1) {
                 System.out.println("Picovoice processes single-channel audio, but a multi-channel file was provided. " +
                         "Processing leftmost channel only.");
             }
@@ -56,33 +69,32 @@ public class FileDemo {
 
             ByteBuffer sampleBuffer = ByteBuffer.allocate(audioFormat.getFrameSize());
             sampleBuffer.order(ByteOrder.LITTLE_ENDIAN);
-            while(audioInputStream.available() != 0){
+            while (audioInputStream.available() != 0) {
                 totalSamplesRead++;
 
                 int numBytesRead = audioInputStream.read(sampleBuffer.array());
-                if(numBytesRead < 2)
+                if (numBytesRead < 2) {
                     break;
+                }
 
                 porcupineFrame[frameIndex++] = sampleBuffer.getShort(0);
 
-                if(frameIndex == porcupineFrame.length){
+                if (frameIndex == porcupineFrame.length) {
                     int result = porcupine.process(porcupineFrame);
-                    if(result >= 0){
+                    if (result >= 0) {
                         System.out.printf("Detected '%s' at %.02f sec\n", keywords[result],
-                                totalSamplesRead / (float)porcupine.getSampleRate());
+                                totalSamplesRead / (float) porcupine.getSampleRate());
                     }
 
                     frameIndex = 0;
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.toString());
-        }
-        finally {
-            if(porcupine != null)
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            if (porcupine != null) {
                 porcupine.delete();
+            }
         }
     }
 
@@ -102,13 +114,13 @@ public class FileDemo {
             return;
         }
 
-        if(cmd.hasOption("help")){
+        if (cmd.hasOption("help")) {
             formatter.printHelp("porcupinefiledemo", options);
             return;
         }
 
         String inputAudioPath = cmd.getOptionValue("input_audio_path");
-        String libPath = cmd.getOptionValue("lib_path");
+        String libraryPath = cmd.getOptionValue("library_path");
         String modelPath = cmd.getOptionValue("model_path");
         String[] keywords = cmd.getOptionValues("keywords");
         String[] keywordPaths = cmd.getOptionValues("keyword_paths");
@@ -116,62 +128,60 @@ public class FileDemo {
 
         // parse sensitivity array
         float[] sensitivities = null;
-        if(sensitivitiesStr != null){
+        if (sensitivitiesStr != null) {
             sensitivities = new float[sensitivitiesStr.length];
 
-            for(int i = 0; i < sensitivitiesStr.length; i++){
+            for (int i = 0; i < sensitivitiesStr.length; i++) {
                 float sensitivity;
-                try{
+                try {
                     sensitivity = Float.parseFloat(sensitivitiesStr[i]);
-                }
-                catch (Exception ex){
+                } catch (Exception e) {
                     throw new IllegalArgumentException("Failed to parse sensitivity value. " +
-                            "Must be a decimal value between [0,1].");
+                            "Must be a floating-point number between [0,1].");
                 }
 
-                if(sensitivity < 0 || sensitivity > 1){
+                if (sensitivity < 0 || sensitivity > 1) {
                     throw new IllegalArgumentException(String.format("Failed to parse sensitivity value (%s). " +
-                            "Must be a decimal value between [0,1].", sensitivitiesStr[i]));
+                            "Must be a floating-point number between [0,1].", sensitivitiesStr[i]));
                 }
                 sensitivities[i] = sensitivity;
             }
         }
 
         File inputAudioFile = new File(inputAudioPath);
-        if(!inputAudioFile.exists()){
+        if (!inputAudioFile.exists()) {
             throw new IllegalArgumentException(String.format("Audio file at path %s does not exits.", inputAudioPath));
         }
 
-        if(libPath == null)
-            libPath = Porcupine.LIB_PATH;
+        if (libraryPath == null) {
+            libraryPath = Porcupine.LIBRARY_PATH;
+        }
 
-        if(modelPath == null)
+        if (modelPath == null) {
             modelPath = Porcupine.MODEL_PATH;
+        }
 
-        if(keywordPaths == null || keywordPaths.length == 0){
-            if(keywords == null || keywords.length == 0){
+        if (keywordPaths == null || keywordPaths.length == 0) {
+            if (keywords == null || keywords.length == 0) {
                 throw new IllegalArgumentException("Either '--keywords' or '--keyword_paths' must be set.");
             }
 
-            if(Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))){
+            if (Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))) {
                 keywordPaths = new String[keywords.length];
-                for(int i = 0; i < keywords.length; i++){
+                for (int i = 0; i < keywords.length; i++) {
                     keywordPaths[i] = Porcupine.KEYWORD_PATHS.get(keywords[i]);
                 }
-            }
-            else{
+            } else {
                 throw new IllegalArgumentException("One or more keywords are not available by default. " +
                         "Available default keywords are:\n" + String.join(",", Porcupine.KEYWORDS));
             }
-        }
-        else{
-            if(keywords == null)
-            {
+        } else {
+            if (keywords == null) {
                 // in the case that only keywords files were given, use the file names
                 keywords = new String[keywordPaths.length];
-                for(int i =0; i < keywordPaths.length; i++){
+                for (int i = 0; i < keywordPaths.length; i++) {
                     File keywordFile = new File(keywordPaths[i]);
-                    if(!keywordFile.exists())
+                    if (!keywordFile.exists())
                         throw new IllegalArgumentException(String.format("Keyword file at '%s' " +
                                 "does not exist", keywordPaths[i]));
                     keywords[i] = keywordFile.getName();
@@ -179,20 +189,20 @@ public class FileDemo {
             }
         }
 
-        if(sensitivities == null){
+        if (sensitivities == null) {
             sensitivities = new float[keywordPaths.length];
             Arrays.fill(sensitivities, 0.5f);
         }
 
-        if(sensitivities.length != keywordPaths.length){
+        if (sensitivities.length != keywordPaths.length) {
             throw new IllegalArgumentException(String.format("Number of keywords (%d) does " +
                     "not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
         }
 
-        runDemo(inputAudioFile, libPath, modelPath, keywordPaths, keywords, sensitivities);
+        runDemo(inputAudioFile, libraryPath, modelPath, keywordPaths, keywords, sensitivities);
     }
 
-    private static Options BuildCommandLineOptions(){
+    private static Options BuildCommandLineOptions() {
         Options options = new Options();
 
         options.addOption(Option.builder("i")
@@ -203,7 +213,7 @@ public class FileDemo {
                 .build());
 
         options.addOption(Option.builder("l")
-                .longOpt("lib_path")
+                .longOpt("library_path")
                 .hasArg(true)
                 .desc("Absolute path to the Porcupine native runtime library.")
                 .build());
@@ -235,7 +245,7 @@ public class FileDemo {
                         "sensitivity results in fewer misses at the cost of increasing the false alarm rate. " +
                         "If not set 0.5 will be used.")
                 .build());
-        options.addOption(new Option("h","help", false, ""));
+        options.addOption(new Option("h", "help", false, ""));
 
         return options;
     }

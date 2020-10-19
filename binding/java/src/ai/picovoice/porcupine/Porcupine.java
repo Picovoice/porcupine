@@ -120,8 +120,8 @@ public class Porcupine {
      */
     public static class Builder {
 
-        private String libraryPath = Porcupine.LIBRARY_PATH;
-        private String modelPath = Porcupine.MODEL_PATH;
+        private String libraryPath = null;
+        private String modelPath = null;
         private String[] keywordPaths = null;
         private String[] keywords = null;
         private float[] sensitivities = null;
@@ -173,21 +173,50 @@ public class Porcupine {
          * @throws PorcupineException if there is an error while initializing Porcupine.
          */
         public Porcupine build() throws PorcupineException {
+
+            if (!Utils.isEnvironmentSupported()) {
+                throw new PorcupineException(new RuntimeException("Could not initialize Porcupine. " +
+                        "Execution environment not currently supported by Porcupine Java."));
+            }
+
+            if (libraryPath == null) {
+                if (Utils.areResourcesAvailable()) {
+                    libraryPath = LIBRARY_PATH;
+                } else {
+                    throw new PorcupineException(new IllegalArgumentException("Default library unavailable. Please " +
+                            "provide a native Porcupine library path (-l <library_path>)."));
+                }
+            }
+
+            if (modelPath == null) {
+                if (Utils.areResourcesAvailable()) {
+                    modelPath = MODEL_PATH;
+                } else {
+                    throw new PorcupineException(new IllegalArgumentException("Default model unavailable. Please provide a " +
+                            "valid Porcupine model path (-m <model_path>)."));
+                }
+            }
+
             if (this.keywordPaths == null) {
                 if (this.keywords == null) {
                     throw new PorcupineException(new IllegalArgumentException("Either 'keywords' or " +
                             "'keywordPaths' must be set."));
                 }
 
-                if (Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))) {
-                    this.keywordPaths = new String[keywords.length];
-                    for (int i = 0; i < keywords.length; i++) {
-                        this.keywordPaths[i] = Porcupine.KEYWORD_PATHS.get(keywords[i]);
+                if (Utils.areResourcesAvailable()) {
+                    if (KEYWORDS.containsAll(Arrays.asList(keywords))) {
+                        this.keywordPaths = new String[keywords.length];
+                        for (int i = 0; i < keywords.length; i++) {
+                            this.keywordPaths[i] = KEYWORD_PATHS.get(keywords[i]);
+                        }
+                    } else {
+                        throw new PorcupineException(new IllegalArgumentException("One or more keywords are not " +
+                                "available by default. Available default keywords are:\n" +
+                                String.join(",", Porcupine.KEYWORDS)));
                     }
                 } else {
-                    throw new PorcupineException(new IllegalArgumentException("One or more keywords are not " +
-                            "available by default. Available default keywords are:\n" +
-                            String.join(",", Porcupine.KEYWORDS)));
+                    throw new PorcupineException(new IllegalArgumentException("Default keywords unavailable. Please provide " +
+                            "a valid Porcupine keyword path (-kp <keyword_path(s)>)."));
                 }
             }
 

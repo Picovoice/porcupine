@@ -29,48 +29,48 @@ import java.util.Arrays;
 public class MicDemo {
     public static void runDemo(String libPath, String modelPath,
                                String[] keywordPaths, String[] keywords, float[] sensitivities,
-                               int audioDeviceIndex, String outputPath){
+                               int audioDeviceIndex, String outputPath) {
 
         // for file output
         File outputFile = null;
-        ByteArrayOutputStream outputStream  = null;
+        ByteArrayOutputStream outputStream = null;
         long totalBytesCaptured = 0;
         AudioFormat format = new AudioFormat(16000f, 16, 1, true, false);
 
-        Porcupine porcupine = null;
+        // get audio capture device
+        DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, format);
+        TargetDataLine micDataLine;
+        try {
+            micDataLine = getAudioDevice(audioDeviceIndex, dataLineInfo);
+            micDataLine.open(format);
+        } catch (LineUnavailableException e) {
+            System.err.println("Failed to get a valid capture device. Use --show_audio_devices to " +
+                    "show available capture devices and their indices");
+            System.exit(1);
+            return;
+        }
 
-        try{
+        Porcupine porcupine = null;
+        try {
 
             porcupine = new Porcupine.Builder()
-                    .libPath(libPath)
-                    .modelPath(modelPath)
-                    .keywordPaths(keywordPaths)
-                    .sensitivities(sensitivities)
+                    .setLibraryPath(libPath)
+                    .setModelPath(modelPath)
+                    .setKeywords(keywords)
+                    .setKeywordPaths(keywordPaths)
+                    .setSensitivities(sensitivities)
                     .build();
 
-            // get audio capture device
-            DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, format);
-            TargetDataLine micDataLine;
-            try {
-                micDataLine = getAudioDevice(audioDeviceIndex, dataLineInfo);
-                micDataLine.open(format);
-            }
-            catch (LineUnavailableException ex){
-                System.err.println("Failed to get a valid capture device. Use --show_audio_devices to " +
-                        "show available capture devices and their indices");
-                System.exit(1);
-                return;
-            }
-
-            if(outputPath != null){
+            if (outputPath != null) {
                 outputFile = new File(outputPath);
                 outputStream = new ByteArrayOutputStream();
             }
 
             micDataLine.start();
             System.out.print("Listening for {");
-            for(int i = 0; i< keywords.length; i++)
+            for (int i = 0; i < keywords.length; i++) {
                 System.out.printf(" %s(%.02f)", keywords[i], sensitivities[i]);
+            }
             System.out.print(" }\n");
             System.out.println("Press enter to stop recording...");
 
@@ -84,35 +84,33 @@ public class MicDemo {
             while (System.in.available() == 0) {
 
                 // read a buffer of audio
-                numBytesRead =  micDataLine.read(captureBuffer.array(), 0, captureBuffer.capacity());
+                numBytesRead = micDataLine.read(captureBuffer.array(), 0, captureBuffer.capacity());
                 totalBytesCaptured += numBytesRead;
 
                 // write to output if we're recording
-                if(outputStream != null)
+                if (outputStream != null) {
                     outputStream.write(captureBuffer.array(), 0, numBytesRead);
+                }
 
                 // don't pass to porcupine if we don't have a full buffer
-                if(numBytesRead != frameLength * 2)
+                if (numBytesRead != frameLength * 2) {
                     continue;
+                }
 
                 // copy into 16-bit buffer
                 captureBuffer.asShortBuffer().get(porcupineBuffer);
 
                 // process with porcupine
                 int result = porcupine.process(porcupineBuffer);
-                if(result >= 0){
+                if (result >= 0) {
                     System.out.printf("[%s] Detected '%s'\n",
                             LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")), keywords[result]);
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.toString());
-        }
-        finally {
-
-            if(outputStream != null && outputFile != null) {
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        } finally {
+            if (outputStream != null && outputFile != null) {
 
                 // need to transfer to input stream to write
                 ByteArrayInputStream writeArray = new ByteArrayInputStream(outputStream.toByteArray());
@@ -120,18 +118,19 @@ public class MicDemo {
 
                 try {
                     AudioSystem.write(writeStream, AudioFileFormat.Type.WAVE, outputFile);
-                } catch (IOException ioException) {
+                } catch (IOException e) {
                     System.err.printf("Failed to write audio to '%s'.\n", outputFile.getPath());
-                    ioException.printStackTrace();
+                    e.printStackTrace();
                 }
             }
 
-            if(porcupine != null)
+            if (porcupine != null) {
                 porcupine.delete();
+            }
         }
     }
 
-    private static void showAudioDevices(){
+    private static void showAudioDevices() {
 
         // get available audio devices
         Mixer.Info[] allMixerInfo = AudioSystem.getMixerInfo();
@@ -141,13 +140,13 @@ public class MicDemo {
 
             // check if supports capture in the format we need
             Mixer mixer = AudioSystem.getMixer(allMixerInfo[i]);
-            if(mixer.isLineSupported(captureLine)) {
+            if (mixer.isLineSupported(captureLine)) {
                 System.out.printf("Device %d: %s\n", i, allMixerInfo[i].getName());
             }
         }
     }
 
-    private static TargetDataLine getDefaultCaptureDevice(DataLine.Info dataLineInfo) throws LineUnavailableException{
+    private static TargetDataLine getDefaultCaptureDevice(DataLine.Info dataLineInfo) throws LineUnavailableException {
 
         if (!AudioSystem.isLineSupported(dataLineInfo)) {
             throw new LineUnavailableException("Default capture device does not support the audio " +
@@ -159,18 +158,18 @@ public class MicDemo {
 
     private static TargetDataLine getAudioDevice(int deviceIndex, DataLine.Info dataLineInfo) throws LineUnavailableException {
 
-        if(deviceIndex >= 0){
+        if (deviceIndex >= 0) {
             try {
                 Mixer.Info mixerInfo = AudioSystem.getMixerInfo()[deviceIndex];
                 Mixer mixer = AudioSystem.getMixer(mixerInfo);
 
-                if (mixer.isLineSupported(dataLineInfo))
-                    return (TargetDataLine)mixer.getLine(dataLineInfo);
-                else
+                if (mixer.isLineSupported(dataLineInfo)) {
+                    return (TargetDataLine) mixer.getLine(dataLineInfo);
+                } else {
                     System.err.printf("Audio capture device at index %s does not support the audio format required by " +
                             "Picovoice. Using default capture device.", deviceIndex);
-            }
-            catch (Exception ex){
+                }
+            } catch (Exception e) {
                 System.err.printf("No capture device found at index %s. Using default capture device.", deviceIndex);
             }
         }
@@ -195,17 +194,17 @@ public class MicDemo {
             return;
         }
 
-        if(cmd.hasOption("help")){
+        if (cmd.hasOption("help")) {
             formatter.printHelp("porcupinemicdemo", options);
             return;
         }
 
-        if(cmd.hasOption("show_audio_devices")){
+        if (cmd.hasOption("show_audio_devices")) {
             showAudioDevices();
             return;
         }
 
-        String libPath = cmd.getOptionValue("lib_path");
+        String libraryPath = cmd.getOptionValue("library_path");
         String modelPath = cmd.getOptionValue("model_path");
         String[] keywords = cmd.getOptionValues("keywords");
         String[] keywordPaths = cmd.getOptionValues("keyword_paths");
@@ -215,20 +214,19 @@ public class MicDemo {
 
         // parse sensitivity array
         float[] sensitivities = null;
-        if(sensitivitiesStr != null){
+        if (sensitivitiesStr != null) {
             sensitivities = new float[sensitivitiesStr.length];
 
-            for(int i = 0; i < sensitivitiesStr.length; i++){
+            for (int i = 0; i < sensitivitiesStr.length; i++) {
                 float sensitivity;
-                try{
+                try {
                     sensitivity = Float.parseFloat(sensitivitiesStr[i]);
-                }
-                catch (Exception ex){
+                } catch (Exception e) {
                     throw new IllegalArgumentException("Failed to parse sensitivity value. " +
                             "Must be a decimal value between [0,1].");
                 }
 
-                if(sensitivity < 0 || sensitivity > 1){
+                if (sensitivity < 0 || sensitivity > 1) {
                     throw new IllegalArgumentException(String.format("Failed to parse sensitivity value (%s). " +
                             "Must be a decimal value between [0,1].", sensitivitiesStr[i]));
                 }
@@ -236,36 +234,36 @@ public class MicDemo {
             }
         }
 
-        if(libPath ==null)
-            libPath = Porcupine.LIB_PATH;
+        if (libraryPath == null) {
+            libraryPath = Porcupine.LIBRARY_PATH;
+        }
 
-        if(modelPath == null)
+        if (modelPath == null) {
             modelPath = Porcupine.MODEL_PATH;
+        }
 
-        if(keywordPaths == null || keywordPaths.length == 0){
-            if(keywords == null || keywords.length == 0){
+        if (keywordPaths == null || keywordPaths.length == 0) {
+            if (keywords == null || keywords.length == 0) {
                 throw new IllegalArgumentException("Either '--keywords' or '--keyword_paths' must be set.");
             }
 
-            if(Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))){
+            if (Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))) {
                 keywordPaths = new String[keywords.length];
-                for(int i = 0; i < keywords.length; i++){
+                for (int i = 0; i < keywords.length; i++) {
                     keywordPaths[i] = Porcupine.KEYWORD_PATHS.get(keywords[i]);
                 }
-            }
-            else{
+            } else {
                 throw new IllegalArgumentException("One or more keywords are not available by default. " +
                         "Available default keywords are:\n" + String.join(",", Porcupine.KEYWORDS));
             }
-        }
-        else {
-            if(keywords == null) {
+        } else {
+            if (keywords == null) {
 
                 // in the case that only keywords file paths were given, use the file names
                 keywords = new String[keywordPaths.length];
-                for(int i =0; i < keywordPaths.length; i++){
+                for (int i = 0; i < keywordPaths.length; i++) {
                     File keywordFile = new File(keywordPaths[i]);
-                    if(!keywordFile.exists())
+                    if (!keywordFile.exists())
                         throw new IllegalArgumentException(String.format("Keyword file at '%s' " +
                                 "does not exist", keywordPaths[i]));
                     keywords[i] = keywordFile.getName();
@@ -273,39 +271,38 @@ public class MicDemo {
             }
         }
 
-        if(sensitivities == null){
+        if (sensitivities == null) {
             sensitivities = new float[keywordPaths.length];
             Arrays.fill(sensitivities, 0.5f);
         }
 
-        if(sensitivities.length != keywordPaths.length){
+        if (sensitivities.length != keywordPaths.length) {
             throw new IllegalArgumentException(String.format("Number of keywords (%d) does " +
                     "not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
         }
 
         int audioDeviceIndex = -1;
-        if(audioDeviceIndexStr != null){
-            try{
+        if (audioDeviceIndexStr != null) {
+            try {
                 audioDeviceIndex = Integer.parseInt(audioDeviceIndexStr);
-                if(audioDeviceIndex < 0){
+                if (audioDeviceIndex < 0) {
                     throw new IllegalArgumentException(String.format("Audio device index %s is not a " +
                             "valid positive integer.", audioDeviceIndexStr));
                 }
-            }
-            catch (Exception ex){
+            } catch (Exception e) {
                 throw new IllegalArgumentException(String.format("Audio device index '%s' is not a " +
                         "valid positive integer.", audioDeviceIndexStr));
             }
         }
 
-        runDemo(libPath, modelPath, keywordPaths, keywords, sensitivities, audioDeviceIndex, outputPath);
+        runDemo(libraryPath, modelPath, keywordPaths, keywords, sensitivities, audioDeviceIndex, outputPath);
     }
 
-    private static Options BuildCommandLineOptions(){
+    private static Options BuildCommandLineOptions() {
         Options options = new Options();
 
         options.addOption(Option.builder("l")
-                .longOpt("lib_path")
+                .longOpt("library_path")
                 .hasArg(true)
                 .desc("Absolute path to the Porcupine native runtime library.")
                 .build());
@@ -350,8 +347,8 @@ public class MicDemo {
                 .desc("Index of input audio device.")
                 .build());
 
-        options.addOption(new Option("sd","show_audio_devices", false, "Print available recording devices."));
-        options.addOption(new Option("h","help", false, ""));
+        options.addOption(new Option("sd", "show_audio_devices", false, "Print available recording devices."));
+        options.addOption(new Option("h", "help", false, ""));
 
         return options;
     }

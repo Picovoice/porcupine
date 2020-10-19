@@ -37,6 +37,14 @@ class Utils {
         ENVIRONMENT_NAME = getEnvironmentName();
     }
 
+    public static boolean areResourcesAvailable() {
+        return RESOURCE_DIRECTORY != null;
+    }
+
+    public static boolean isEnvironmentSupported() {
+        return ENVIRONMENT_NAME != null;
+    }
+
     private static Path getResourceDirectory() {
         // location of resources, either a JAR file or a directory
         final URL resourceURL = Porcupine.class.getProtectionDomain().getCodeSource().getLocation();
@@ -56,10 +64,11 @@ class Utils {
             } catch (IOException e) {
                 System.err.println("Failed to extract resources from Porcupine jar.");
                 e.printStackTrace();
+                return null;
             }
         }
 
-        return resourcePath;
+        return resourcePath.resolve("porcupine");
     }
 
     private static Path extractResources(Path jarPath) throws IOException {
@@ -113,7 +122,7 @@ class Utils {
         return resourceDirectoryPath;
     }
 
-    private static String getEnvironmentName() {
+    private static String getEnvironmentName() throws RuntimeException {
         String arch = System.getProperty("os.arch");
         if (arch.equals("amd64") || arch.equals("x86_64")) {
             String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
@@ -124,12 +133,14 @@ class Utils {
             } else if (os.contains("linux")) {
                 return "linux";
             } else {
-                throw new RuntimeException("Execution environment not supported. " +
+                System.err.println("Execution environment not supported. " +
                         "Porcupine Java is supported on MacOS, Linux and Windows");
+                return null;
             }
         } else {
-            throw new RuntimeException(String.format("Platform architecture (%s) not supported. " +
-                    "Porcupine Java is only supported on 64-bit architectures.", arch));
+            System.err.println(String.format("Platform architecture (%s) not supported. " +
+                    "Porcupine Java is only supported on amd64 and x86_64 architectures.", arch));
+            return null;
         }
     }
 
@@ -154,12 +165,15 @@ class Utils {
     }
 
     public static String getPackagedLibraryPath() {
+        if (ENVIRONMENT_NAME == null) {
+            return null;
+        }
+
         return switch (ENVIRONMENT_NAME) {
-            case "windows" -> RESOURCE_DIRECTORY.resolve("jniLibs/windows/amd64/pv_porcupine_jni.dll").toString();
-            case "mac" -> RESOURCE_DIRECTORY.resolve("jniLibs/mac/x86_64/libpv_porcupine_jni.dylib").toString();
-            case "linux" -> RESOURCE_DIRECTORY.resolve("jniLibs/linux/x86_64/libpv_porcupine_jni.so").toString();
-            default -> throw new RuntimeException("Execution environment not supported. " +
-                    "Porcupine Java is supported on MacOS, Linux and Windows");
+            case "windows" -> RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
+            case "mac" -> RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
+            case "linux" -> RESOURCE_DIRECTORY.resolve("lib/java/linux/x86_64/libpv_porcupine_jni.so").toString();
+            default -> null;
         };
 
     }

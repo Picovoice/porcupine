@@ -7,16 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../binding/java/out/artifacts/Porcupine_jar/Porcupine.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
     <orderEntry type="library" name="porcupine-1.8.7" level="project" />
+    <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
   </component>
 </module>
