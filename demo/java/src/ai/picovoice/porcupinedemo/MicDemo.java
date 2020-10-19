@@ -28,8 +28,18 @@ import java.util.Arrays;
 
 public class MicDemo {
     public static void runDemo(String libPath, String modelPath,
-                               String[] keywordPaths, String[] keywords, float[] sensitivities,
+                               String[] keywordPaths, float[] sensitivities,
                                int audioDeviceIndex, String outputPath) {
+
+        // create keywords from keyword_paths
+        String[] keywords = new String[keywordPaths.length];
+        for (int i = 0; i < keywordPaths.length; i++) {
+            File keywordFile = new File(keywordPaths[i]);
+            if (!keywordFile.exists())
+                throw new IllegalArgumentException(String.format("Keyword file at '%s' " +
+                        "does not exist", keywordPaths[i]));
+            keywords[i] = keywordFile.getName().split("_")[0];
+        }
 
         // for file output
         File outputFile = null;
@@ -56,7 +66,6 @@ public class MicDemo {
             porcupine = new Porcupine.Builder()
                     .setLibraryPath(libPath)
                     .setModelPath(modelPath)
-                    .setKeywords(keywords)
                     .setKeywordPaths(keywordPaths)
                     .setSensitivities(sensitivities)
                     .build();
@@ -256,19 +265,6 @@ public class MicDemo {
                 throw new IllegalArgumentException("One or more keywords are not available by default. " +
                         "Available default keywords are:\n" + String.join(",", Porcupine.KEYWORDS));
             }
-        } else {
-            if (keywords == null) {
-
-                // in the case that only keywords file paths were given, use the file names
-                keywords = new String[keywordPaths.length];
-                for (int i = 0; i < keywordPaths.length; i++) {
-                    File keywordFile = new File(keywordPaths[i]);
-                    if (!keywordFile.exists())
-                        throw new IllegalArgumentException(String.format("Keyword file at '%s' " +
-                                "does not exist", keywordPaths[i]));
-                    keywords[i] = keywordFile.getName();
-                }
-            }
         }
 
         if (sensitivities == null) {
@@ -295,7 +291,7 @@ public class MicDemo {
             }
         }
 
-        runDemo(libraryPath, modelPath, keywordPaths, keywords, sensitivities, audioDeviceIndex, outputPath);
+        runDemo(libraryPath, modelPath, keywordPaths, sensitivities, audioDeviceIndex, outputPath);
     }
 
     private static Options BuildCommandLineOptions() {

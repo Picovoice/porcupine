@@ -28,7 +28,17 @@ import java.util.Arrays;
 public class FileDemo {
 
     public static void runDemo(File inputAudioFile, String libPath, String modelPath,
-                               String[] keywordPaths, String[] keywords, float[] sensitivities) {
+                               String[] keywordPaths, float[] sensitivities) {
+
+        // create keywords from keyword_paths
+        String[] keywords = new String[keywordPaths.length];
+        for (int i = 0; i < keywordPaths.length; i++) {
+            File keywordFile = new File(keywordPaths[i]);
+            if (!keywordFile.exists())
+                throw new IllegalArgumentException(String.format("Keyword file at '%s' " +
+                        "does not exist", keywordPaths[i]));
+            keywords[i] = keywordFile.getName().split("_")[0];
+        }
 
         AudioInputStream audioInputStream;
         try {
@@ -46,7 +56,6 @@ public class FileDemo {
             porcupine = new Porcupine.Builder()
                     .setLibraryPath(libPath)
                     .setModelPath(modelPath)
-                    .setKeywords(keywords)
                     .setKeywordPaths(keywordPaths)
                     .setSensitivities(sensitivities)
                     .build();
@@ -175,18 +184,6 @@ public class FileDemo {
                 throw new IllegalArgumentException("One or more keywords are not available by default. " +
                         "Available default keywords are:\n" + String.join(",", Porcupine.KEYWORDS));
             }
-        } else {
-            if (keywords == null) {
-                // in the case that only keywords files were given, use the file names
-                keywords = new String[keywordPaths.length];
-                for (int i = 0; i < keywordPaths.length; i++) {
-                    File keywordFile = new File(keywordPaths[i]);
-                    if (!keywordFile.exists())
-                        throw new IllegalArgumentException(String.format("Keyword file at '%s' " +
-                                "does not exist", keywordPaths[i]));
-                    keywords[i] = keywordFile.getName();
-                }
-            }
         }
 
         if (sensitivities == null) {
@@ -199,7 +196,7 @@ public class FileDemo {
                     "not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
         }
 
-        runDemo(inputAudioFile, libraryPath, modelPath, keywordPaths, keywords, sensitivities);
+        runDemo(inputAudioFile, libraryPath, modelPath, keywordPaths, sensitivities);
     }
 
     private static Options BuildCommandLineOptions() {
