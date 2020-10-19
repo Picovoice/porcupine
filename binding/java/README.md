@@ -19,7 +19,7 @@ Porcupine is:
 
 ## Installation
 
-You can install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/bin/porcupine-1.8.7.jar).
+You can install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/binding/java/bin/porcupine-1.8.7.jar).
 
 ## Build
 
@@ -119,5 +119,5 @@ handle.delete();
 
 ## Demos
 
-The [Porcupine Java demo](/demo/java) is a Java command-line application that allows for 
+The [Porcupine Java demo](/java/demo) is a Java command-line application that allows for 
 processing real-time audio (i.e. microphone) and files using Porcupine.
