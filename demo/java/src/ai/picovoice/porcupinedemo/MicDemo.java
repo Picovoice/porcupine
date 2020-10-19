@@ -117,7 +117,7 @@ public class MicDemo {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.err.println(e.toString());
         } finally {
             if (outputStream != null && outputFile != null) {
 

@@ -14,9 +14,6 @@ Porcupine is:
 
 ## Compatibility
 
-- TBD
-- Runs on Linux (x86_64), MacOS (x86_64) and Windows (x86_64)
+- Java 8
+- Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
 
-
-javac -d build -cp "junit-platform-console-standalone-1.7.0.jar" "src\ai\picovoice\porcupine\*.java"
-java -ea "-Djava.library.path=.\jniLibs\"" -jar "junit-platform-console-standalone-1.7.0.jar" -cp build -c ai.picovoice.porcupine.PorcupineTest

@@ -26,18 +26,20 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 
 class Utils {
 
     private static final Path RESOURCE_DIRECTORY;
     private static final String ENVIRONMENT_NAME;
+    private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     static {
         RESOURCE_DIRECTORY = getResourceDirectory();
         ENVIRONMENT_NAME = getEnvironmentName();
     }
 
-    public static boolean areResourcesAvailable() {
+    public static boolean isResourcesAvailable() {
         return RESOURCE_DIRECTORY != null;
     }
 
@@ -53,8 +55,6 @@ class Utils {
         try {
             resourcePath = Paths.get(resourceURL.toURI());
         } catch (URISyntaxException e) {
-            System.err.println("Couldn't convert resource path to URI, using path instead.");
-            e.printStackTrace();
             resourcePath = Paths.get(resourceURL.getPath());
         }
 
@@ -62,7 +62,7 @@ class Utils {
             try {
                 resourcePath = extractResources(resourcePath);
             } catch (IOException e) {
-                System.err.println("Failed to extract resources from Porcupine jar.");
+                logger.severe("Failed to extract resources from Porcupine jar.");
                 e.printStackTrace();
                 return null;
             }
@@ -84,7 +84,7 @@ class Utils {
             try {
                 Files.createDirectory(resourceDirectoryPath);
             } catch (IOException e) {
-                System.err.println("Failed to create extraction directory at " + jarPath.toString());
+                logger.severe("Failed to create extraction directory at " + jarPath.toString());
                 e.printStackTrace();
 
                 // default extraction directly to tmp
@@ -133,12 +133,12 @@ class Utils {
             } else if (os.contains("linux")) {
                 return "linux";
             } else {
-                System.err.println("Execution environment not supported. " +
+                logger.severe("Execution environment not supported. " +
                         "Porcupine Java is supported on MacOS, Linux and Windows");
                 return null;
             }
         } else {
-            System.err.println(String.format("Platform architecture (%s) not supported. " +
+            logger.severe(String.format("Platform architecture (%s) not supported. " +
                     "Porcupine Java is only supported on amd64 and x86_64 architectures.", arch));
             return null;
         }
@@ -154,7 +154,7 @@ class Utils {
         File[] keywordFiles = keywordFileDir.toFile().listFiles();
 
         if (keywordFiles == null || keywordFiles.length == 0) {
-            System.err.println("Couldn't find any Porcupine keywords in jar.");
+            logger.severe("Couldn't find any Porcupine keywords in jar.");
             return keywordPaths;
         }
 

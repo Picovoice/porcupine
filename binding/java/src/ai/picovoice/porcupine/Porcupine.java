@@ -15,6 +15,7 @@ package ai.picovoice.porcupine;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Java binding for Porcupine wake word engine. It detects utterances of given keywords within an
@@ -96,7 +97,7 @@ public class Porcupine {
     public native String getVersion();
 
     /**
-     * Getter for number of audio samples per frame..
+     * Getter for number of audio samples per frame.
      *
      * @return Number of audio samples per frame.
      */
@@ -180,7 +181,7 @@ public class Porcupine {
             }
 
             if (libraryPath == null) {
-                if (Utils.areResourcesAvailable()) {
+                if (Utils.isResourcesAvailable()) {
                     libraryPath = LIBRARY_PATH;
                 } else {
                     throw new PorcupineException(new IllegalArgumentException("Default library unavailable. Please " +
@@ -189,7 +190,7 @@ public class Porcupine {
             }
 
             if (modelPath == null) {
-                if (Utils.areResourcesAvailable()) {
+                if (Utils.isResourcesAvailable()) {
                     modelPath = MODEL_PATH;
                 } else {
                     throw new PorcupineException(new IllegalArgumentException("Default model unavailable. Please provide a " +
@@ -208,7 +209,7 @@ public class Porcupine {
                             "'keywordPaths' must be set."));
                 }
 
-                if (Utils.areResourcesAvailable()) {
+                if (Utils.isResourcesAvailable()) {
                     if (KEYWORDS.containsAll(Arrays.asList(keywords))) {
                         this.keywordPaths = new String[keywords.length];
                         for (int i = 0; i < keywords.length; i++) {
