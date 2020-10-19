@@ -40,13 +40,13 @@ try{
 } catch (PorcupineException e) { }
 ```
 
-`handle` is an instance of Porcupine that detects utterances of "Picovoice". The `keywords` input argument is a shorthand
+`handle` is an instance of Porcupine that detects utterances of "Picovoice". The `setKeyword()` builder argument is a shorthand
 for accessing default keyword model files shipped with the package. 
 
 The list of default keywords can be retrieved by:
 
 ```java
-import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.*;
 
 for(String keyword : Porcupine.KEYWORDS){
     System.out.println(keyword);
@@ -56,7 +56,8 @@ for(String keyword : Porcupine.KEYWORDS){
 Porcupine can detect multiple keywords concurrently:
 
 ```java
-import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.*;
+
 try{
     Porcupine handle = new Porcupine.Builder()
                         .setKeywords(new String[]{"bumblebee", "picovoice" }
@@ -64,10 +65,10 @@ try{
 } catch (PorcupineException e) { }
 ```
 
-To detect non-default keywords use the `keywordPaths` input argument instead:
+To detect non-default keywords use the `setKeywordPaths()` builder argument instead:
 
 ```java
-import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.*;
 
 String[] keywordPaths = new String[]{ "/absolute/path/to/keyword/one", "/absolute/path/to/keyword/two", ...}
 try{
@@ -77,10 +78,10 @@ try{
 } catch (PorcupineException e) { }
 ```
 
-The sensitivity of the engine can be tuned per-keyword using the `sensitivities` input argument
+The sensitivity of the engine can be tuned per-keyword using the `setSensitivities` builder argument
 
 ```java
-import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.*;
 
 try{
     Porcupine handle = new Porcupine.Builder()
