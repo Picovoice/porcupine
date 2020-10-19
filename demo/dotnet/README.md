@@ -47,6 +47,12 @@ dotnet build -c FileDemo.Release
 
 ## Usage
 
+NOTE: the working directory for all dotnet commands is:
+
+```bash
+porcupine/demo/dotnet/PorcupineDemo
+```
+
 ### File Demo
 
 The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
