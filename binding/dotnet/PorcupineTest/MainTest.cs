@@ -110,7 +110,7 @@ namespace PorcupineTest
             {
                 reader.ReadBytes(24); // skip over part of the header
                 Assert.AreEqual(reader.ReadInt32(), expectedSampleRate, "Specified sample rate did not match test file.");
-                reader.ReadBytes(16); // skip over rest of the header
+                reader.ReadBytes(16); // skip over the rest of the header
 
                 while (reader.BaseStream.Position != reader.BaseStream.Length)
                 {

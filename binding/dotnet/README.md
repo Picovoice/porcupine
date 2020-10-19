@@ -3,7 +3,9 @@
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
-applications. It is
+applications. 
+
+Porcupine is:
 
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient making it perfect for IoT.
@@ -13,7 +15,7 @@ applications. It is
 ## Compatibility
 
 - .NET Standard 2.0, .NET Core 2.0+, .NET Framework 4.6.1+
-- Runs on Linux (x86_64), MacOS (x86_64) and Windows (x86_64)
+- Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
 
 ## Installation
 
@@ -80,7 +82,7 @@ in an input array) is `handle.FrameLength`. The engine accepts 16-bit linearly-e
 single-channel audio.
 
 ```csharp
-short[] getNextAudioFrame()
+short[] GetNextAudioFrame()
 {
     // .. get audioFrame
     return audioFrame;
@@ -88,7 +90,7 @@ short[] getNextAudioFrame()
 
 while(true)
 {
-    var keywordIndex = handle.Process(getNextAudioFrame())
+    var keywordIndex = handle.Process(GetNextAudioFrame());
     if(keywordIndex >= 0)
     {
 	    // .. detection event logic/callback

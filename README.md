@@ -28,6 +28,7 @@ applications. It is
   - [Running Demo Applications](#running-demo-applications)
     - [Python Demos](#python-demos)
     - [.NET Demos](#net-demos)
+    - [Java Demos](#java-demos)
     - [Android Demos](#android-demos)
     - [iOS Demos](#ios-demos)
     - [JavaScript Demos](#javascript-demos)
@@ -35,6 +36,7 @@ applications. It is
   - [Integration](#integration)
     - [Python](#python)
     - [.NET](#net)
+    - [Java](#java)
     - [Android](#android)
     - [iOS](#ios)
     - [JavaScript](#javascript)
@@ -136,7 +138,7 @@ Install [OpenAL](https://openal.org/) before using the demo.
 With a working microphone connected to your device run the following in the terminal:
 
 ```bash
-dotnet run -c MicDemo.Release -- --keywords picovoice
+dotnet run -c MicDemo.Release -- --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
@@ -150,6 +152,26 @@ dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords bu
 
 Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about .NET
 demos go to [demo/dotnet](/demo/dotnet).
+
+### Java Demos
+
+With a working microphone connected to your device run the following in the terminal:
+
+```bash
+java -jar porcupine-mic-demo.jar -k porcupine
+```
+
+The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
+utterances of wake-word "porcupine".
+
+In order to process audio files (e.g. WAV) run:
+
+```bash
+java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k bumblebee
+```
+
+Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Java
+demos go to [demo/java](/demo/java).
 
 ### Android Demos
 
@@ -220,7 +242,6 @@ Below are code snippets showcasing how Porcupine can be integrated into differen
 
 ### Python
 
-
 Install the Python SDK
 
 ```bash
@@ -274,7 +295,6 @@ handle.delete()
 ```
 
 ### .NET
-
 
 Install the .NET SDK using Nuget or the dotnet CLI
 
@@ -331,10 +351,77 @@ while(true)
 }
 ```
 
-Finally, when done be sure to explicitly release the resources
+Porcupine will have its resources freed by the garbage collector, but to have resources freed 
+immediately after use, wrap it in a using statement: 
 
 ```csharp
-handle.Dispose()
+using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" }))
+{
+    // .. Porcupine usage here
+}
+```
+
+### Java
+
+Install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/binding/java/bin/porcupine-1.8.7.jar).
+
+The SDK exposes a builder to create instances of the engine as below:
+
+```java
+import ai.picovoice.porcupine.*;
+
+try{
+    Porcupine handle = new Porcupine.Builder()
+                        .setKeyword("picovoice")
+                        .build();
+} catch (PorcupineException e) { }
+```
+
+The `setKeyword()` builder argument is a shorthand for accessing default keyword model files shipped with the package.  
+The default keyword files available can be retrieved via:
+
+```java
+import ai.picovoice.porcupine.*;
+
+for(String keyword : Porcupine.KEYWORDS){
+    System.out.println(keyword);
+}
+```
+
+If you wish to use a non-default keyword file you need to identify its path as below:
+
+```java
+import ai.picovoice.porcupine.*;
+
+try{
+    Porcupine handle = new Porcupine.Builder()
+                        .setKeywordPath("path/to/non/default/keyword/file")
+                        .build();
+} catch (PorcupineException e) { }
+```
+
+When initialized, valid sample rate can be obtained using `handle.getSampleRate()`. Expected frame length
+(number of audio samples in an input array) is `handle.getFrameLength()`. The object can be used to monitor
+incoming audio as below:
+
+```java
+short[] getNextAudioFrame(){
+    // .. get audioFrame
+    return audioFrame;
+}
+
+while(true){
+    int keywordIndex = handle.Process(getNextAudioFrame());
+    if(keywordIndex >= 0){
+	    // .. detection event logic/callback
+    }
+}
+```
+
+Once you're done with Porcupine, ensure you release its resources explicitly:
+
+```java
+handle.delete();
 ```
 
 ### Android
