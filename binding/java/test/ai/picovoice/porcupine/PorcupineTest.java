@@ -25,7 +25,8 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PorcupineTest {
 
@@ -39,15 +40,15 @@ public class PorcupineTest {
     @Test
     void getVersion() throws PorcupineException {
         porcupine = new Porcupine.Builder()
-                .keyword("porcupine")
+                .setKeyword("porcupine")
                 .build();
         assertTrue(porcupine.getVersion() != null && !porcupine.getVersion().equals(""));
     }
 
     @Test
-    void getFrameLength() throws PorcupineException  {
+    void getFrameLength() throws PorcupineException {
         porcupine = new Porcupine.Builder()
-                .keyword("porcupine")
+                .setKeyword("porcupine")
                 .build();
         assertTrue(porcupine.getFrameLength() > 0);
     }
@@ -55,15 +56,15 @@ public class PorcupineTest {
     @org.junit.jupiter.api.Test
     void getSampleRate() throws PorcupineException {
         porcupine = new Porcupine.Builder()
-                .keyword("porcupine")
+                .setKeyword("porcupine")
                 .build();
-        assertEquals(porcupine.getSampleRate(), 16000);
+        assertTrue(porcupine.getSampleRate() > 0);
     }
 
     @Test
     void testProcess() throws IOException, UnsupportedAudioFileException, PorcupineException {
         porcupine = new Porcupine.Builder()
-                .keyword("porcupine")
+                .setKeyword("porcupine")
                 .build();
 
         int frameLen = porcupine.getFrameLength();
@@ -80,12 +81,12 @@ public class PorcupineTest {
         ArrayList<Integer> results = new ArrayList<>();
         while ((numBytesRead = audioInputStream.read(pcm)) != -1) {
 
-            if(numBytesRead / byteDepth == frameLen){
+            if (numBytesRead / byteDepth == frameLen) {
 
                 ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
                 int result = porcupine.process(porcupineFrame);
                 assertTrue(result == -1 || result == 0);
-                if(result >= 0){
+                if (result >= 0) {
                     results.add(result);
                 }
             }
@@ -96,11 +97,11 @@ public class PorcupineTest {
 
     @Test
     void testProcessMultiple() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        String[] keywords = new String[]{"americano","blueberry","bumblebee","grapefruit",
+        final String[] keywords = new String[]{"americano", "blueberry", "bumblebee", "grapefruit",
                 "grasshopper", "picovoice", "porcupine", "terminator"};
 
         porcupine = new Porcupine.Builder()
-                .keywords(keywords)
+                .setKeywords(keywords)
                 .build();
 
         int frameLen = porcupine.getFrameLength();
@@ -117,12 +118,12 @@ public class PorcupineTest {
         ArrayList<Integer> results = new ArrayList<>();
         while ((numBytesRead = audioInputStream.read(pcm)) != -1) {
 
-            if(numBytesRead / byteDepth == frameLen){
+            if (numBytesRead / byteDepth == frameLen) {
 
                 ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
                 int result = porcupine.process(porcupineFrame);
-                assertTrue(result >= -1);
-                if(result >= 0){
+                assertTrue(result >= -1 && result < keywords.length);
+                if (result >= 0) {
                     results.add(result);
                 }
             }

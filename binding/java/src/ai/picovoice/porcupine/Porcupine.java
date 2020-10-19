@@ -12,7 +12,6 @@
 
 package ai.picovoice.porcupine;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
@@ -27,120 +26,24 @@ import java.util.Set;
  */
 public class Porcupine {
 
-    public static String LIB_PATH;
-    public static String MODEL_PATH;
-    public static HashMap<String, String> KEYWORD_PATHS;
-    public static Set<String> KEYWORDS;
+    private final long libraryHandle;
+
+    public static final String LIBRARY_PATH;
+    public static final String MODEL_PATH;
+    public static final HashMap<String, String> KEYWORD_PATHS;
+    public static final Set<String> KEYWORDS;
 
     static {
-
-        try{
-            LIB_PATH = Utils.pvLibraryPath();
-            MODEL_PATH = Utils.pvModelPath();
-            KEYWORD_PATHS = Utils.pvKeywordPaths();
-            KEYWORDS = KEYWORD_PATHS.keySet();
-        }
-        catch (IOException ex){
-            System.err.println("Error loading Porcupine resources from jar: ");
-            ex.printStackTrace();
-        }
+        LIBRARY_PATH = Utils.getPackagedLibraryPath();
+        MODEL_PATH = Utils.getPackagedModelPath();
+        KEYWORD_PATHS = Utils.getPackagedKeywordPaths();
+        KEYWORDS = KEYWORD_PATHS.keySet();
     }
-
-    /**
-     * Builder for creating a instance of Porcupine with a mixture of default arguments
-     */
-    public static class Builder {
-
-        private String libPath = Porcupine.LIB_PATH;
-        private String modelPath = Porcupine.MODEL_PATH;
-        private String[] keywordPaths = null;
-        private String[] keywords = null;
-        private float[] sensitivities = null;
-
-        public Builder libPath(String libPath){
-            this.libPath = libPath;
-            return this;
-        }
-
-        public Builder modelPath(String modelPath){
-            this.modelPath = modelPath;
-            return this;
-        }
-
-        public Builder keywordPaths(String[] keywordPaths){
-            this.keywordPaths = keywordPaths;
-            return this;
-        }
-
-        public Builder keywordPath(String keywordPaths){
-            this.keywordPaths = new String[]{ keywordPaths };
-            return this;
-        }
-
-        public Builder keywords(String[] keywords){
-            this.keywords = keywords;
-            return this;
-        }
-
-        public Builder keyword(String keyword){
-            this.keywords = new String[]{ keyword };
-            return this;
-        }
-
-        public Builder sensitivities(float[] sensitivities){
-            this.sensitivities = sensitivities;
-            return this;
-        }
-
-        public Builder sensitivity(float sensitivity){
-            this.sensitivities = new float[]{ sensitivity };
-            return this;
-        }
-
-        /**
-         * Validates properties and creates an instance of the Porcupine wake word engine.
-         *
-         * @return An instance of Porcupine wake word engine
-         * @throws PorcupineException if there is an error while initializing Porcupine.
-         */
-        public Porcupine build() throws IllegalArgumentException, PorcupineException{
-            if(this.keywordPaths == null){
-
-                if(this.keywords == null){
-                    throw new IllegalArgumentException("Either 'keywords' or 'keywordPaths' must be set.");
-                }
-
-                if(Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))){
-                    this.keywordPaths = new String[keywords.length];
-                    for(int i=0; i<keywords.length; i++){
-                        this.keywordPaths[i] = Porcupine.KEYWORD_PATHS.get(keywords[i]);
-                    }
-                }
-                else{
-                    throw new IllegalArgumentException("One or more keywords are not available by default. Available default keywords are:\n" +
-                            String.join(",", Porcupine.KEYWORDS));
-                }
-            }
-
-            if(sensitivities == null){
-                sensitivities = new float[keywordPaths.length];
-                Arrays.fill(sensitivities, 0.5f);
-            }
-
-            if(sensitivities.length != keywordPaths.length){
-                throw new IllegalArgumentException(String.format("Number of keywords (%d) does not match " +
-                        "number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
-            }
-
-            return new Porcupine(libPath, modelPath, keywordPaths, sensitivities);
-        }
-    }
-
-    private final long handle;
 
     /**
      * Constructor.
      *
+     * @param libraryPath   Absolute path to the native Porcupine library.
      * @param modelPath     Absolute path to the file containing model parameters.
      * @param keywordPaths  Absolute paths to keyword model files.
      * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
@@ -148,11 +51,11 @@ public class Porcupine {
      *                      of increasing the false alarm rate.
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
-    public Porcupine(String libPath, String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
+    public Porcupine(String libraryPath, String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
 
         try {
-            System.load(libPath);
-            handle = init(modelPath, keywordPaths, sensitivities);
+            System.load(libraryPath);
+            libraryHandle = init(modelPath, keywordPaths, sensitivities);
         } catch (Exception e) {
             throw new PorcupineException(e);
         }
@@ -162,7 +65,7 @@ public class Porcupine {
      * Releases resources acquired by Porcupine.
      */
     public void delete() {
-        delete(handle);
+        delete(libraryHandle);
     }
 
     /**
@@ -179,7 +82,7 @@ public class Porcupine {
      */
     public int process(short[] pcm) throws PorcupineException {
         try {
-            return process(handle, pcm);
+            return process(libraryHandle, pcm);
         } catch (Exception e) {
             throw new PorcupineException(e);
         }
@@ -211,4 +114,94 @@ public class Porcupine {
     private native void delete(long object);
 
     private native int process(long object, short[] pcm);
+
+    /**
+     * Builder for creating a instance of Porcupine with a mixture of default arguments
+     */
+    public static class Builder {
+
+        private String libraryPath = Porcupine.LIBRARY_PATH;
+        private String modelPath = Porcupine.MODEL_PATH;
+        private String[] keywordPaths = null;
+        private String[] keywords = null;
+        private float[] sensitivities = null;
+
+        public Builder setLibraryPath(String libraryPath) {
+            this.libraryPath = libraryPath;
+            return this;
+        }
+
+        public Builder setModelPath(String modelPath) {
+            this.modelPath = modelPath;
+            return this;
+        }
+
+        public Builder setKeywordPaths(String[] keywordPaths) {
+            this.keywordPaths = keywordPaths;
+            return this;
+        }
+
+        public Builder setKeywordPath(String keywordPaths) {
+            this.keywordPaths = new String[]{keywordPaths};
+            return this;
+        }
+
+        public Builder setKeywords(String[] keywords) {
+            this.keywords = keywords;
+            return this;
+        }
+
+        public Builder setKeyword(String keyword) {
+            this.keywords = new String[]{keyword};
+            return this;
+        }
+
+        public Builder setSensitivities(float[] sensitivities) {
+            this.sensitivities = sensitivities;
+            return this;
+        }
+
+        public Builder setSensitivity(float sensitivity) {
+            this.sensitivities = new float[]{sensitivity};
+            return this;
+        }
+
+        /**
+         * Validates properties and creates an instance of the Porcupine wake word engine.
+         *
+         * @return An instance of Porcupine wake word engine
+         * @throws PorcupineException if there is an error while initializing Porcupine.
+         */
+        public Porcupine build() throws PorcupineException {
+            if (this.keywordPaths == null) {
+                if (this.keywords == null) {
+                    throw new PorcupineException(new IllegalArgumentException("Either 'keywords' or " +
+                            "'keywordPaths' must be set."));
+                }
+
+                if (Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))) {
+                    this.keywordPaths = new String[keywords.length];
+                    for (int i = 0; i < keywords.length; i++) {
+                        this.keywordPaths[i] = Porcupine.KEYWORD_PATHS.get(keywords[i]);
+                    }
+                } else {
+                    throw new PorcupineException(new IllegalArgumentException("One or more keywords are not " +
+                            "available by default. Available default keywords are:\n" +
+                            String.join(",", Porcupine.KEYWORDS)));
+                }
+            }
+
+            if (sensitivities == null) {
+                sensitivities = new float[keywordPaths.length];
+                Arrays.fill(sensitivities, 0.5f);
+            }
+
+            if (sensitivities.length != keywordPaths.length) {
+                throw new PorcupineException(new IllegalArgumentException(String.format("Number of keywords (%d) " +
+                        "does not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length)));
+            }
+
+            return new Porcupine(libraryPath, modelPath, keywordPaths, sensitivities);
+        }
+    }
 }
