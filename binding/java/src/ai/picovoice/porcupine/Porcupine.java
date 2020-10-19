@@ -197,6 +197,11 @@ public class Porcupine {
                 }
             }
 
+            if(this.keywordPaths != null && this.keywords != null){
+                throw new PorcupineException(new IllegalArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
+                        "Only one of the two arguments may be set for initialization."));
+            }
+
             if (this.keywordPaths == null) {
                 if (this.keywords == null) {
                     throw new PorcupineException(new IllegalArgumentException("Either 'keywords' or " +
