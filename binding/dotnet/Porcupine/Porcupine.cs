@@ -85,6 +85,11 @@ namespace Picovoice
         {
             modelPath = modelPath ?? MODEL_PATH;
 
+            if (keywordPaths != null && keywords != null) 
+            {
+                throw new ArgumentException("Both 'keywords' and 'keywordPaths' were set. Only one of the two arguments may be set for intializtion.");
+            }
+
             if (keywordPaths == null)
             {
                 if (keywords == null)
@@ -105,10 +110,10 @@ namespace Picovoice
 
             if (sensitivities == null)
             {
-                sensitivities = Enumerable.Repeat(0.5f, keywords.Count());
+                sensitivities = Enumerable.Repeat(0.5f, keywordPaths.Count());
             }
 
-            if (sensitivities.Count() != keywords.Count())
+            if (sensitivities.Count() != keywordPaths.Count())
             {
                 throw new ArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
             }
