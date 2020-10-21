@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
-	  <Version>1.8.7</Version>
+	  <Version>1.8.8</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>
@@ -15,7 +15,7 @@
 	  <Copyright>Picovoice 2020</Copyright>
 	  <Description>Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications. 
 
-It is:
+Porcupine is:
   - using deep neural networks trained in real-world environments. 
   - compact and computationally-efficient making it perfect for IoT.
   - scalable. It can detect multiple always-listening voice commands 
@@ -23,7 +23,8 @@ It is:
   - self-service. Developers can train custom wake phrases using Picovoice Console.
 </Description>
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-	  <PackageIcon>pv_circle_512.png</PackageIcon>	 
+	  <PackageIcon>pv_circle_512.png</PackageIcon>
+	  <Platforms>x64</Platforms>	 
   </PropertyGroup>
 	<ItemGroup>		
 		<Content Include="Porcupine.targets">
