@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
-	  <Version>1.8.8</Version>
+	  <Version>1.8.9</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>

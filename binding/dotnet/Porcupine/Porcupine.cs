@@ -16,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Picovoice
+namespace Pv
 {
     /// <summary>
     ///  Status codes returned by Picovoice library

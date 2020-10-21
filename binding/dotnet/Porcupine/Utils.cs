@@ -14,7 +14,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Picovoice
+namespace Pv
 {
     public static class Utils
     {

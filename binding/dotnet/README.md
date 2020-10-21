@@ -30,7 +30,7 @@ dotnet add package Porcupine
 Create an instance of the engine
 
 ```csharp
-using Picovoice
+using Pv;
 
 Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
 ```
@@ -39,7 +39,7 @@ Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
 for accessing default keyword model files shipped with the package. The list of default keywords can be retrieved by
 
 ```csharp
-using Picovoice
+using Pv;
 
 foreach (string keyword in Porcupine.KEYWORDS)
 {
@@ -50,7 +50,7 @@ foreach (string keyword in Porcupine.KEYWORDS)
 Porcupine can detect multiple keywords concurrently
 
 ```csharp
-using Picovoice
+using Pv;
 
 Porcupine handle = Porcupine.Create(keywords: new List<string>{ "bumblebee", "picovoice" });
 ```
@@ -58,7 +58,7 @@ Porcupine handle = Porcupine.Create(keywords: new List<string>{ "bumblebee", "pi
 To detect non-default keywords use the `keywordPaths` input argument instead
 
 ```csharp
-using Picovoice
+using Pv;
 
 var keywordPaths = new List<string>{ "/absolute/path/to/keyword/one", "/absolute/path/to/keyword/two", ...}
 
@@ -68,7 +68,7 @@ Porcupine handle = Porcupine.Create(keywordPaths: keywordPaths);
 The sensitivity of the engine can be tuned per-keyword using the `sensitivities` input argument
 
 ```csharp
-using Picovoice
+using Pv;
 
 Porcupine handle = Porcupine.Create(keywords: new List<string>{ "grapefruit", "porcupine" },  
                                     sensitivities: new List<float>{ 0.6f, 0.35f });

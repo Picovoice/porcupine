@@ -11,14 +11,13 @@
                                                                                                                
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Picovoice;
+using Pv;
 
-namespace PorcupineTest
+namespace PvTest
 {
     [TestClass]
     public class MainTest
