@@ -105,7 +105,7 @@ short[] getNextAudioFrame(){
 }
 
 while(true){
-    int keywordIndex = handle.Process(getNextAudioFrame());
+    int keywordIndex = handle.process(getNextAudioFrame());
     if(keywordIndex >= 0){
 	    // .. detection event logic/callback
     }

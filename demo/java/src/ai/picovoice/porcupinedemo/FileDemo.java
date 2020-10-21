@@ -157,6 +157,9 @@ public class FileDemo {
             }
         }
 
+        if(inputAudioPath == null){
+            throw new IllegalArgumentException("No input audio file provided. This is a required argument.");
+        }
         File inputAudioFile = new File(inputAudioPath);
         if (!inputAudioFile.exists()) {
             throw new IllegalArgumentException(String.format("Audio file at path %s does not exits.", inputAudioPath));
@@ -204,7 +207,6 @@ public class FileDemo {
 
         options.addOption(Option.builder("i")
                 .longOpt("input_audio_path")
-                .required(true)
                 .hasArg(true)
                 .desc("Absolute path to input audio file.")
                 .build());

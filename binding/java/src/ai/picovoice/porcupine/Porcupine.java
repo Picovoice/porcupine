@@ -117,7 +117,7 @@ public class Porcupine {
     private native int process(long object, short[] pcm);
 
     /**
-     * Builder for creating a instance of Porcupine with a mixture of default arguments
+     * Builder for creating an instance of Porcupine with a mixture of default arguments
      */
     public static class Builder {
 
