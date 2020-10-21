@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading;
 
 using OpenTK.Audio.OpenAL;
-using Picovoice;
+using Pv;
 
 namespace PorcupineDemo
 {

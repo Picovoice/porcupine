@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using Picovoice;
+using Pv;
 
 namespace PorcupineDemo
 {
