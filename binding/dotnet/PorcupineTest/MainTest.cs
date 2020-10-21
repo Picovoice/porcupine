@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Pv;
 
-namespace PvTest
+namespace PorcupineTest
 {
     [TestClass]
     public class MainTest
