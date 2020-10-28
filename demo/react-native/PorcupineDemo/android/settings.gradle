@@ -1,0 +1,6 @@
+rootProject.name = 'PorcupineDemo'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+
+include ':react-native-porcupine'
+project(':react-native-porcupine').projectDir = new File(rootProject.projectDir, '../../../../binding/react-native/react-native-porcupine/android')
