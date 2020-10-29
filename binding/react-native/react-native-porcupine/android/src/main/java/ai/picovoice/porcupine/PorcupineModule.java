@@ -16,6 +16,22 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReadableArray;
+
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.lang.Number;
+
 
 public class PorcupineModule extends ReactContextBaseJavaModule {
 
@@ -25,6 +41,12 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     public PorcupineModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+
+        try{
+          copyResourceFiles();
+        } catch (IOException e) {
+            System.err.println(e.toString());
+        }
     }
 
     @Override
@@ -32,57 +54,100 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
         return "Porcupine";
     }
 
+    @Override
+    public Map<String, Object> getConstants() {
+
+      // default model file
+      final File resourceDirectory = reactContext.getFilesDir();      
+      final Map<String, Object> constants = new HashMap<>();    
+      constants.put("DEFAULT_MODEL_PATH", new File(resourceDirectory, "porcupine_params.pv").getAbsolutePath());
+
+      // default keyword files
+      final Map<String,String> keywordPaths = new HashMap<>();  
+      final Resources resources = reactContext.getResources();    
+      for (final int x : KEYWORDS) {
+        final String keyword = resources.getResourceEntryName(x);
+        keywordPaths.put(keyword, new File(resourceDirectory, keyword + ".ppn").getAbsolutePath());
+      }
+      constants.put("KEYWORD_PATHS", keywordPaths);
+
+      return constants;
+    }
+
     @ReactMethod
     public void init(String modelPath, String keywordPath, float sensitivity) {
       try{
-        porcupine = new Porcupine(modelPath, keywordPath, sensitivity);        
-        System.out.println("S*******************************************************************************************D");        
+        porcupine = new Porcupine(modelPath, keywordPath, sensitivity);                 
       }
       catch(PorcupineException e){
-        System.out.println("S*******************************************************************************************a");         
+        System.err.println(e.toString());         
       }
     }
+
+    @ReactMethod
+    public void delete() {
+      porcupine.delete();
+    }
+
+    @ReactMethod
+    public void process(ReadableArray pcmArray, Callback callback) {
+      try{          
+        ArrayList<Object> pcmArrayList = pcmArray.toArrayList();
+        short[] buffer = new short[porcupine.getFrameLength()];
+        for(int i = 0; i < pcmArray.size(); i++){
+          buffer[i] = ((Number)pcmArrayList.get(i)).shortValue();
+        }
+        int result = porcupine.process(buffer);        
+        callback.invoke(result);
+      }
+      catch(PorcupineException e){
+        System.err.println(e.toString());
+      }
+    }
+
+    @ReactMethod
+    public void getFrameLength(Callback callback) {      
+      callback.invoke(porcupine.getFrameLength());
+    }
+
+    @ReactMethod
+    public void getSampleRate(Callback callback) {
+       callback.invoke(porcupine.getSampleRate());
+    }
+
+    @ReactMethod
+    public void getVersion(Callback callback) {
+      callback.invoke(porcupine.getVersion());
+    }
+
+    private static final int[] KEYWORDS = {
+            R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit, R.raw.grasshopper,
+            R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
+    };
+
+    private void copyResourceFiles() throws IOException {
+        final Resources resources = reactContext.getResources();
+        
+        for (final int x : KEYWORDS) {
+            copyResourceFile(x, resources.getResourceEntryName(x) + ".ppn");
+        }
+
+        copyResourceFile(
+                R.raw.porcupine_params,
+                resources.getResourceEntryName(R.raw.porcupine_params) + ".pv");
+    }
+
+    private void copyResourceFile(int resourceId, String filename) throws IOException {
+        final Resources resources = reactContext.getResources();
+        try (
+                InputStream is = new BufferedInputStream(resources.openRawResource(resourceId), 256);
+                OutputStream os = new BufferedOutputStream(reactContext.openFileOutput(filename, ReactApplicationContext.MODE_PRIVATE), 256)
+        ) {
+            int r;
+            while ((r = is.read()) != -1) {
+                os.write(r);
+            }
+            os.flush();
+        }
+    }
 }
-    
-
-    // @ReactMethod
-    // public void init(String modelPath, String[] keywordPaths, float[] sensitivities) {
-    //   try{
-    //     porcupine = new Porcupine(modelPath, keywordPaths, sensitivities);        
-    //     System.out.println("S*******************************************************************************************D");      
-    //   }
-    //   catch(PorcupineException e){
-    //     System.out.println("S*******************************************************************************************a");         
-    //   }
-    // }
-
-    // @ReactMethod
-    // public void delete() {
-    //   porcupine.delete();
-    // }
-
-    // @ReactMethod
-    // public void process(short[] pcm) {
-    //   try{
-    //     porcupine.process(pcm);
-    //   }
-    //   catch(PorcupineException e){
-    //     System.err.println(e.toString());        
-    //   }
-    // }
-
-    // @ReactMethod
-    // public void getFrameLength() {
-    //   porcupine.getFrameLength();
-    // }
-
-    // @ReactMethod
-    // public void getSampleRate() {
-    //    porcupine.getSampleRate();
-    // }
-
-    // @ReactMethod
-    // public void getVersion() {
-    //   porcupine.getVersion();
-    // }
-// }

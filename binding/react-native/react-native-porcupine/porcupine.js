@@ -10,35 +10,35 @@
 //
 
 import { LogBox, NativeModules } from 'react-native';
+
 const RCTPorcupine = NativeModules.Porcupine;
-import PV_STATUS_T from './pv_status_t';
+// import PV_STATUS_T from './pv_status_t';
 
-const {
-    PvArgumentError,
-    PvStateError,
-    pvStatusToException,
-} = require("./errors");
-const {
-    BUILTIN_KEYWORDS_ENUMS,
-    BUILTIN_KEYWORDS_STRINGS,
-    getBuiltinKeywordPath,
-} = require("./builtin_keywords");
+// const {
+//     PvArgumentError,
+//     PvStateError,
+//     pvStatusToException,
+// } = require("./errors");
+// const {
+//     BUILTIN_KEYWORDS_ENUMS,
+//     BUILTIN_KEYWORDS_STRINGS,
+//     getBuiltinKeywordPath,
+// } = require("./builtin_keywords");
 
 
-// const MODEL_PATH_DEFAULT = require('./assets/lib/common/porcupine_params.pv');
-// const KEYWORDS = require('./assets/resources/android/porcupine_android.ppn');
+// import params from './porcupine_params.pv';
+// const pic = require('./porcupine_params.pv');
 
 class PorcupineClass{
-    constructor(keywords, sensitivities, manualModelPath) {
+    constructor(keyword, sensitivity, manualModelPath) {
         
-        // let modelPath = manualModelPath;
-        // if (modelPath === undefined) {
-        //   modelPath = MODEL_PATH_DEFAULT;
-        // }    
-        console.log(MODEL_PATH_DEFAULT);
-        console.log(MODEL_PATH_DEFAULT);
+        let modelPath = manualModelPath;        
+        if (modelPath === undefined) {
+          modelPath = RCTPorcupine.DEFAULT_MODEL_PATH;          
+        }    
         
-        RCTPorcupine.init(MODEL_PATH_DEFAULT, KEYWORDS, 0.5);        
+        let keywordPath = RCTPorcupine.KEYWORD_PATHS[keyword];        
+        RCTPorcupine.init(modelPath, keywordPath, sensitivity);             
 
         // if (keywords === null || keywords === undefined || keywords.length === 0) {
         //   throw new PvArgumentError(
@@ -100,40 +100,32 @@ class PorcupineClass{
         //     }
         //   }        
         // }
-
- 
-        // this.frameLength = 4;//RCTPorcupine.getFrameLength();
-        // this.sampleRate = 4;//RCTPorcupine.getSampleRate();
-        // this.version = "2.3";//RCTPorcupine.getVersion();
     }
 
-    // process() {
-    //     if (this.handle === 0) {
-    //         throw new PvStateError("Porcupine is not initialized");
-    //     }
+    process(frame, callback) {
+        
+        // if (frame === undefined || frame === null) {
+        //     throw new PvArgumentError(
+        //     `Frame array provided to process() is undefined or null`
+        //     );
+        // } else if (frame.length !== this.frameLength) {
+        //     throw new PvArgumentError(
+        //     `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this.frameLength})`
+        //     );
+        // }
 
-    //     if (frame === undefined || frame === null) {
-    //         throw new PvArgumentError(
-    //         `Frame array provided to process() is undefined or null`
-    //         );
-    //     } else if (frame.length !== this.frameLength) {
-    //         throw new PvArgumentError(
-    //         `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this.frameLength})`
-    //         );
-    //     }
+        // // sample the first frame to check for non-integer values
+        // if (!Number.isInteger(frame[0])) {
+        //     throw new PvArgumentError(
+        //     `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`
+        //     );
+        // }
 
-    //     // sample the first frame to check for non-integer values
-    //     if (!Number.isInteger(frame[0])) {
-    //         throw new PvArgumentError(
-    //         `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`
-    //         );
-    //     }
+        // const frameBuffer = new Int16Array(frame);
+        RCTPorcupine.process(frame, callback);                
 
-    //     const frameBuffer = new Int16Array(frame);
-    //     const keywordIndex = RCTPorcupine.process(frameBuffer);                
-
-    //     return keywordIndex;
-    // }
+        // return keywordIndex;
+    }
 
     release() {
         RCTPorcupine.delete();

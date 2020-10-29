@@ -11,7 +11,7 @@ module.exports = {
     extraNodeModules: new Proxy(
       {},
       { get: (_, name) => path.resolve('.', 'node_modules', name) }
-    )
+    ),    
   },
 
   // quick workaround solution for issue with symlinked modules ref:
