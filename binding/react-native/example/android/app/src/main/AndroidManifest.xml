@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.example.reactnativeporcupine">
+  package="ai.picovoice.reactnativeporcupinedemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

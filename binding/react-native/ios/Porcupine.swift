@@ -1,7 +1,7 @@
 import pv_porcupine
 
 @objc(Porcupine)
-class Porcupine: NSObject {
+class RCTPorcupine: NSObject {
 
     private var porcupine: OpaquePointer?
     

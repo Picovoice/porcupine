@@ -17,9 +17,13 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Promise;
 
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -35,8 +39,9 @@ import java.lang.Number;
 
 public class PorcupineModule extends ReactContextBaseJavaModule {
 
+    private static final String LOG_TAG = "PorcupineModule";
     private final ReactApplicationContext reactContext;
-    private Porcupine porcupine;
+    private final Map<String, Porcupine> porcupinePool = new HashMap<String, Porcupine>();
 
     public PorcupineModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -45,7 +50,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
         try{
           copyResourceFiles();
         } catch (IOException e) {
-            System.err.println(e.toString());
+            Log.e(LOG_TAG, e.toString());
         }
     }
 
@@ -58,16 +63,16 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
 
       // default model file
-      final File resourceDirectory = reactContext.getFilesDir();      
+      final File resourceDirectory = reactContext.getFilesDir();
       final Map<String, Object> constants = new HashMap<>();    
-      constants.put("DEFAULT_MODEL_PATH", new File(resourceDirectory, "porcupine_params.pv").getAbsolutePath());
+      constants.put("DEFAULT_MODEL_PATH", new File(resourceDirectory, "porcupine_params.pv").getAbsolutePath());         
 
       // default keyword files
       final Map<String,String> keywordPaths = new HashMap<>();  
       final Resources resources = reactContext.getResources();    
       for (final int x : KEYWORDS) {
         final String keyword = resources.getResourceEntryName(x);
-        keywordPaths.put(keyword, new File(resourceDirectory, keyword + ".ppn").getAbsolutePath());
+        keywordPaths.put(keyword, new File(resourceDirectory, keyword + ".ppn").getAbsolutePath());        
       }
       constants.put("KEYWORD_PATHS", keywordPaths);
 
@@ -75,49 +80,62 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void init(String modelPath, String keywordPath, float sensitivity) {
+    public void create(String modelPath, ReadableArray keywordPaths, ReadableArray sensitivities, Promise promise) {
+      
+      // convert from ReadableArrays to Java types
+      String[] keywordPathsJava = new String[keywordPaths.size()];
+      for(int i = 0; i< keywordPaths.size(); i++)
+        keywordPathsJava[i] = keywordPaths.getString(i);
+
+      float[] sensitivitiesJava = new float[sensitivities.size()];
+      for(int i = 0; i< sensitivities.size(); i++)
+        sensitivitiesJava[i] = (float)sensitivities.getDouble(i);
+
       try{
-        porcupine = new Porcupine(modelPath, keywordPath, sensitivity);                 
+        Porcupine porcupine = new Porcupine(modelPath, keywordPathsJava, sensitivitiesJava);        
+        porcupinePool.put(porcupine.getHandle(), porcupine);
+        
+        WritableMap paramMap = Arguments.createMap();
+        paramMap.putString("handle", porcupine.getHandle());
+        paramMap.putInt("frameLength", porcupine.getFrameLength());
+        paramMap.putInt("sampleRate", porcupine.getSampleRate());
+        paramMap.putString("version", porcupine.getVersion());
+        promise.resolve(paramMap);
       }
-      catch(PorcupineException e){
-        System.err.println(e.toString());         
+      catch(PorcupineException e){        
+        promise.reject(e.toString());               
       }
     }
 
     @ReactMethod
-    public void delete() {
-      porcupine.delete();
+    public void delete(String handle) {
+      if(porcupinePool.containsKey(handle)){
+        porcupinePool.get(handle).delete();
+        porcupinePool.remove(handle);
+      }
     }
 
     @ReactMethod
-    public void process(ReadableArray pcmArray, Callback callback) {
+    public void process(String handle, ReadableArray pcmArray, Promise promise) {
       try{          
+
+        if(!porcupinePool.containsKey(handle)){
+          promise.reject("Invalid Porcupine handle provided to native module.");
+          return;
+        }
+        
+        Porcupine porcupine = porcupinePool.get(handle);
         ArrayList<Object> pcmArrayList = pcmArray.toArrayList();
-        short[] buffer = new short[porcupine.getFrameLength()];
+        short[] buffer = new short[pcmArray.size()];
         for(int i = 0; i < pcmArray.size(); i++){
           buffer[i] = ((Number)pcmArrayList.get(i)).shortValue();
         }
-        int result = porcupine.process(buffer);        
-        callback.invoke(result);
+        int result = porcupine.process(buffer);
+        promise.resolve(result);
       }
       catch(PorcupineException e){
-        System.err.println(e.toString());
+        promise.reject(e.toString());
       }
-    }
-
-    @ReactMethod
-    public void getFrameLength(Callback callback) {      
-      callback.invoke(porcupine.getFrameLength());
-    }
-
-    @ReactMethod
-    public void getSampleRate(Callback callback) {
-       callback.invoke(porcupine.getSampleRate());
-    }
-
-    @ReactMethod
-    public void getVersion(Callback callback) {
-      callback.invoke(porcupine.getVersion());
     }
 
     private static final int[] KEYWORDS = {

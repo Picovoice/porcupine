@@ -31,24 +31,6 @@ public class Porcupine {
     /**
      * Constructor.
      *
-     * @param modelPath   Absolute path to the file containing model parameters.
-     * @param keywordPath Absolute path to keyword model file.
-     * @param sensitivity Sensitivity for detecting keyword. Should be a floating point number
-     *                    within [0, 1]. A higher sensitivity results in fewer misses at the cost of
-     *                    increasing false alarm rate.
-     * @throws PorcupineException if there is an error while initializing Porcupine.
-     */
-    public Porcupine(String modelPath, String keywordPath, float sensitivity) throws PorcupineException {
-        try {
-            handle = init(modelPath, new String[]{keywordPath}, new float[]{sensitivity});
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
-    }
-
-    /**
-     * Constructor.
-     *
      * @param modelPath     Absolute path to the file containing model parameters.
      * @param keywordPaths  Absolute paths to keyword model files.
      * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
@@ -90,6 +72,10 @@ public class Porcupine {
             throw new PorcupineException(e);
         }
     }
+    
+    public String getHandle(){
+        return Long.toString(handle);
+    }
 
     /**
      * Getter for version.
@@ -110,11 +96,11 @@ public class Porcupine {
      *
      * @return Audio sample rate accepted by Picovoice.
      */
-    public native int getSampleRate();
+    public native int getSampleRate();    
 
     private native long init(String modelPath, String[] keywordPaths, float[] sensitivities);
 
     private native void delete(long object);
 
-    private native int process(long object, short[] pcm);
+    private native int process(long object, short[] pcm);    
 }
