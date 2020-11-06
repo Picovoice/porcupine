@@ -14,10 +14,10 @@ const RCTPorcupine = NativeModules.Porcupine;
 
 class Porcupine{
 
-  private _handle: string | undefined;
-  private _frameLength: number | undefined;
-  private _sampleRate: number | undefined;
-  private _version: string | undefined;
+  private _handle: string;
+  private _frameLength: number;
+  private _sampleRate: number;
+  private _version: string;
    
   static async fromKeywords(keywords:string[], modelPath?:string, sensitivities?:number[]){        
     

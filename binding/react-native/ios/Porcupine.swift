@@ -3,68 +3,77 @@ import pv_porcupine
 @objc(Porcupine)
 class Porcupine: NSObject {
 
-    private var porcupine: OpaquePointer?
+    private var porcupinePool:Dictionary<String, OpaquePointer?> = [:]
     
     @objc func constantsToExport() -> Dictionary<String, Any> {        
         
         let modelPath : String = Bundle.main.path(forResource: "porcupine_params", ofType: "pv") ?? "unknown"
-        NSLog(modelPath)
-
-        let keywordPath: String = Bundle.main.path(forResource: "porcupine_ios", ofType: "ppn") ?? "unknown"        
-        NSLog(keywordPath)
-
+        
+        let keywordPaths = Bundle.main.paths(forResourcesOfType: "ppn", inDirectory: nil)                        
+        var keywordDict:Dictionary<String, String> = [:]
+        for keywordPath in keywordPaths{
+            
+            let keywordName = URL(fileURLWithPath:keywordPath).lastPathComponent.components(separatedBy:"_")[0]            
+            keywordDict[keywordName] = keywordPath
+            
+        }
+        
         return [
             "DEFAULT_MODEL_PATH": modelPath,
-            "KEYWORD_PATHS": [
-                "porcupine": keywordPath
-            ]        
+            "KEYWORD_PATHS": keywordDict                 
         ]
     }
 
-    @objc(create:keywordPath:sensitivity:)
-    func create(modelPath: String, keywordPath: String, sensitivity: Float32) -> Void {        
-        let keywordPaths = [keywordPath]
+    @objc(create:keywordPaths:sensitivities:resolver:rejecter:)
+    func create(modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
+        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {                
+        
+        var porcupine:OpaquePointer?
         let status = pv_porcupine_init(
             modelPath,
-            Int32(1),
+            Int32(keywordPaths.count),
             keywordPaths.map { UnsafePointer(strdup($0)) },
-            [sensitivity],
+            sensitivities,
             &porcupine);
-        
-        let statusStr: String = String(cString: pv_status_to_string(status));
-        NSLog(statusStr);
-        
+
+        if status == PV_STATUS_SUCCESS {
+            let handle:String = String(describing:porcupine)
+            porcupinePool[handle] = porcupine;
+            
+            let porcupineParameters:Dictionary<String, Any> = [
+                "handle": handle,
+                "frameLength": UInt32(pv_porcupine_frame_length()),
+                "sampleRate": UInt32(pv_sample_rate()),
+                "version": String(cString: pv_porcupine_version())
+            ]
+            resolve(porcupineParameters)
+        }
+        else {
+            let pvStatus = String(cString: pv_status_to_string(status))
+            reject("Porcupine:create", "Could not create a new instance of Porcupine: \(pvStatus)", nil)            
+        }
     }
     
-    @objc(delete)
-    func delete() -> Void {
-        pv_porcupine_delete(porcupine)
-        porcupine = nil
+    @objc(delete:)
+    func delete(handle:String) -> Void {        
+        if var porcupine = porcupinePool.removeValue(forKey: handle){
+            pv_porcupine_delete(porcupine)
+            porcupine = nil
+        }
     }
     
-    @objc(process:callback:)
-    func process(pcm:[Int16], callback: RCTResponseSenderBlock) -> Void {
+    @objc(process:pcm:resolver:rejecter:)
+    func process(handle:String, pcm:[Int16], 
+        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
                 
-        var keywordIndex: Int32 = -1
-        pv_porcupine_process(porcupine, pcm, &keywordIndex)        
-        callback([keywordIndex])
-    }
-    
-    @objc(getFrameLength:)
-    func getFrameLength(callback: RCTResponseSenderBlock) -> Void {
-        let frameLength = UInt32(pv_porcupine_frame_length())        
-        callback([frameLength])
-    }
-    
-    @objc(getSampleRate:)
-    func getSampleRate(callback: RCTResponseSenderBlock) -> Void {
-        let sampleRate = Float64(pv_sample_rate())        
-        callback([sampleRate])
-    }
-    
-    @objc(getVersion:)
-    func getVersion(callback: RCTResponseSenderBlock) -> Void {
-        let version: String = String(cString: pv_porcupine_version())        
-        callback([version])
+        if let porcupine = porcupinePool[handle]{
+            var keywordIndex: Int32 = -1
+            pv_porcupine_process(porcupine, pcm, &keywordIndex)        
+            
+            resolve(keywordIndex)
+        }
+        else{
+            reject("Porcupine:process", "Invalid Porcupine handle provided to native module.", nil)
+        }
     }
 }

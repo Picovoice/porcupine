@@ -16,9 +16,6 @@ type State = {
 
 export default class App extends Component<Props, State>{  
   
-  porcupine:Porcupine;    
-  porcupine2:Porcupine;    
-  porcupine3:Porcupine;    
   constructor(props:Props){
     super(props);
     
@@ -44,30 +41,35 @@ export default class App extends Component<Props, State>{
 
   async _startProcessing(){        
   
+    let porcupine:Porcupine;
+    let porcupine2:Porcupine;
+    let porcupine3:Porcupine;
     try{
-      this.porcupine = await Porcupine.fromKeywords(["porcupine"]);    
-      this.porcupine2 = await Porcupine.fromKeywords(["picovoice"]);    
-      this.porcupine3 = await Porcupine.fromKeywords(["bumblebee"]);    
+      porcupine = await Porcupine.fromKeywords(["porcupine"]);    
+      porcupine2 = await Porcupine.fromKeywords(["picovoice"]);    
+      porcupine3 = await Porcupine.fromKeywords(["bumblebee"]);    
       this.setState({
-        frameLength: this.porcupine.frameLength,
-        sampleRate: this.porcupine.sampleRate,
-        version: this.porcupine.version,
+        frameLength: porcupine.frameLength,
+        sampleRate: porcupine.sampleRate,
+        version: porcupine.version,
       });
     }catch(e){
       console.error(e);
+      return;
     }
 
-    let frames = this._chunkArray(audio, this.porcupine.frameLength);
-    if (frames[frames.length - 1].length !== this.porcupine.frameLength) {
+    let audio = [0]
+    let frames = this._chunkArray(audio, porcupine.frameLength);
+    if (frames[frames.length - 1].length !== porcupine.frameLength) {
       frames.pop();
     }
     
     for (let i = 0; i < frames.length; i++) {
       const frame = frames[i];
       try{
-        let result = await this.porcupine.process(frame);  
-        let result2 = await this.porcupine2.process(frame);  
-        let result3 = await this.porcupine3.process(frame);  
+        let result = await porcupine.process(frame);  
+        let result2 = await porcupine2.process(frame);  
+        let result3 = await porcupine3.process(frame);  
         if(result == 0){                    
           console.log("Porcupine Detected!");
         }
@@ -83,9 +85,9 @@ export default class App extends Component<Props, State>{
       }
     }  
         
-    this.porcupine.release();      
-    this.porcupine2.release();  
-    this.porcupine3.release();            
+    porcupine.release();      
+    porcupine2.release();  
+    porcupine3.release();            
   }
 
   render() {
