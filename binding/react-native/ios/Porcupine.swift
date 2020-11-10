@@ -2,7 +2,7 @@ import pv_porcupine
 
 @objc(Porcupine)
 class Porcupine: NSObject {
-
+    
     private var porcupinePool:Dictionary<String, OpaquePointer?> = [:]
     
     @objc func constantsToExport() -> Dictionary<String, Any> {        
@@ -23,10 +23,10 @@ class Porcupine: NSObject {
             "KEYWORD_PATHS": keywordDict                 
         ]
     }
-
+    
     @objc(create:keywordPaths:sensitivities:resolver:rejecter:)
     func create(modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
-        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {                
+                resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
         
         var porcupine:OpaquePointer?
         let status = pv_porcupine_init(
@@ -35,7 +35,7 @@ class Porcupine: NSObject {
             keywordPaths.map { UnsafePointer(strdup($0)) },
             sensitivities,
             &porcupine);
-
+        
         if status == PV_STATUS_SUCCESS {
             let handle:String = String(describing:porcupine)
             porcupinePool[handle] = porcupine;
@@ -47,8 +47,7 @@ class Porcupine: NSObject {
                 "version": String(cString: pv_porcupine_version())
             ]
             resolve(porcupineParameters)
-        }
-        else {
+        } else {
             let pvStatus = String(cString: pv_status_to_string(status))
             reject("Porcupine:create", "Could not create a new instance of Porcupine: \(pvStatus)", nil)            
         }
@@ -64,15 +63,14 @@ class Porcupine: NSObject {
     
     @objc(process:pcm:resolver:rejecter:)
     func process(handle:String, pcm:[Int16], 
-        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
-                
+                 resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+        
         if let porcupine = porcupinePool[handle]{
             var keywordIndex: Int32 = -1
             pv_porcupine_process(porcupine, pcm, &keywordIndex)        
             
             resolve(keywordIndex)
-        }
-        else{
+        } else {
             reject("Porcupine:process", "Invalid Porcupine handle provided to native module.", nil)
         }
     }

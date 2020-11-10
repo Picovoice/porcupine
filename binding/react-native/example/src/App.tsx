@@ -3,6 +3,7 @@ import { PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import { PorcupineManager } from 'react-native-porcupine';
 import { Picker } from '@react-native-picker/picker';
+import { getSupportInfo } from 'prettier';
 
 type Props = {};
 type State = {
@@ -150,30 +151,44 @@ export default class App extends Component<Props, State> {
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>Porcupine</Text>
         </View>
-        <View style={styles.subContainer}>
-          <Text style={{ color: '#666666', marginLeft: 15, marginBottom: 5 }}>
+        <View style={{flex:1, paddingTop:'10%'}}>
+          <Text style={
+            { color: '#666666', 
+            marginLeft: 15, 
+            marginBottom: 5,
+             }}>
             Keyword
           </Text>
-          <Picker
-            selectedValue={this.state.currentKeyword}
-            mode="dropdown"
-            style={{ height: 60, width: 300, marginHorizontal: 30 }}
-            itemStyle={styles.itemStyle}
-            onValueChange={(keyword) => this._loadNewKeyword(keyword as string)}
-          >
-            {keywordOptions}
-          </Picker>
+          <View style={{width:'90%', height:'40%', alignContent:'center', justifyContent:'center', alignSelf:'center'}}>
+            <Picker
+              selectedValue={this.state.currentKeyword}
+              mode="dropdown"          
+              style={{ }}
+              itemStyle={styles.itemStyle}
+              onValueChange={(keyword) => this._loadNewKeyword(keyword as string)}
+            >
+              {keywordOptions}
+            </Picker>
+          </View>
         </View>
 
-        <View style={[styles.subContainer, { alignItems: 'center' }]}>
+        <View style={{flex:1, justifyContent:'center', alignContent:'center'}}>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={{
+              width:'50%',
+              height:'50%',
+              alignSelf:'center',
+              justifyContent:'center',
+              backgroundColor: '#377DFF',
+              borderRadius: 100,
+              
+              }}
             onPress={() => this._toggleListening()}
           >
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 10 }}>
+        <View style={{ flex: 1, justifyContent: 'flex-end', paddingBottom:25}}>
           <Text style={styles.instructions}>
             Made in Vancouver, Canada by Picovoice
           </Text>
@@ -195,21 +210,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusBar: {
-    flex: 0.25,
+    flex: 0.45,
     backgroundColor: '#377DFF',
-    justifyContent: 'center',
+    justifyContent: 'flex-end'
   },
   statusBarText: {
     fontSize: 18,
     color: 'white',
     fontWeight: 'bold',
     marginLeft: 15,
+    marginBottom:15,
   },
   buttonStyle: {
-    height: 120,
-    width: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#377DFF',
     borderRadius: 100,
   },
@@ -226,7 +238,6 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
-    color: '#666666',
-    marginBottom: 5,
+    color: '#666666'
   },
 });

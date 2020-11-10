@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -84,12 +84,14 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       
       // convert from ReadableArrays to Java types
       String[] keywordPathsJava = new String[keywordPaths.size()];
-      for(int i = 0; i< keywordPaths.size(); i++)
+      for(int i = 0; i< keywordPaths.size(); i++){
         keywordPathsJava[i] = keywordPaths.getString(i);
+      }
 
       float[] sensitivitiesJava = new float[sensitivities.size()];
-      for(int i = 0; i< sensitivities.size(); i++)
+      for(int i = 0; i< sensitivities.size(); i++){
         sensitivitiesJava[i] = (float)sensitivities.getDouble(i);
+      }
 
       try{
         Porcupine porcupine = new Porcupine(modelPath, keywordPathsJava, sensitivitiesJava);        
@@ -101,8 +103,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
         paramMap.putInt("sampleRate", porcupine.getSampleRate());
         paramMap.putString("version", porcupine.getVersion());
         promise.resolve(paramMap);
-      }
-      catch(PorcupineException e){        
+      } catch(PorcupineException e) {        
         promise.reject(e.toString());               
       }
     }
@@ -117,7 +118,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void process(String handle, ReadableArray pcmArray, Promise promise) {
-      try{          
+      try {          
 
         if(!porcupinePool.containsKey(handle)){
           promise.reject("Invalid Porcupine handle provided to native module.");
@@ -132,8 +133,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
         }
         int result = porcupine.process(buffer);
         promise.resolve(result);
-      }
-      catch(PorcupineException e){
+      } catch(PorcupineException e) {
         promise.reject(e.toString());
       }
     }

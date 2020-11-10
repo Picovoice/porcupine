@@ -32,15 +32,24 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "porcupine",
+    "picovoice",
+    "wake word",
+    "hotword",
+    "trigger word",
+    "offline",
+    "private",
+    "voice ai",
+    "speech recognition"
   ],
-  "repository": "https://github.com/laves/react-native-porcupine",
-  "author": "Picovoice <ian@picovoice.ai> (https://github.com/laves)",
-  "license": "MIT",
+  "repository": "https://github.com/Picovoice/porcupine",
+  "author": "Picovoice <hello@picovoice.ai> (https://github.com/Picovoice)",
+  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/laves/react-native-porcupine/issues"
+    "url": "https://github.com/Picovoice/porcupine/issues"
   },
-  "homepage": "https://github.com/laves/react-native-porcupine#readme",
+  "homepage": "https://github.com/Picovoice/porcupine/#readme",
   "devDependencies": {
     "@commitlint/config-conventional": "^8.3.4",
     "@react-native-community/bob": "^0.16.2",
