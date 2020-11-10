@@ -11,6 +11,7 @@
 		0212E0662550E3FC001A11F3 /* porcupine_params.pv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0212E0632550E388001A11F3 /* porcupine_params.pv */; };
 		0212E06A2550E408001A11F3 /* keyword_files in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0212E0642550E3A2001A11F3 /* keyword_files */; };
 		F4FF95D7245B92E800C19C63 /* Porcupine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* Porcupine.swift */; };
+		DA32BE4FF9614156A66622E1 /* libVoiceProcessor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA49910696C487496C514EC /* libVoiceProcessor.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +39,8 @@
 		B3E7B5891CC2AC0600A0062D /* Porcupine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Porcupine.m; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* Porcupine-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Porcupine-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4FF95D6245B92E800C19C63 /* Porcupine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Porcupine.swift; sourceTree = "<group>"; };
+		73F0228E63E844ADA523A02F /* VoiceProcessor.xcodeproj */ = {isa = PBXFileReference; name = "VoiceProcessor.xcodeproj"; path = "../node_modules/react-native-voice-processor/ios/VoiceProcessor.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		BEA49910696C487496C514EC /* libVoiceProcessor.a */ = {isa = PBXFileReference; name = "libVoiceProcessor.a"; path = "libVoiceProcessor.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0212DCE325507DFC001A11F3 /* libpv_porcupine.a in Frameworks */,
+				DA32BE4FF9614156A66622E1 /* libVoiceProcessor.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,8 +101,18 @@
 				F4FF95D5245B92E700C19C63 /* Porcupine-Bridging-Header.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				0212DAF9254CCFE1001A11F3 /* Frameworks */,
+				C0A73A08B764400F863BFF62 /* Libraries */,
 			);
 			sourceTree = "<group>";
+		};
+		C0A73A08B764400F863BFF62 /* Libraries */ = {
+			isa = "PBXGroup";
+			children = (
+				73F0228E63E844ADA523A02F /* VoiceProcessor.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -126,7 +140,7 @@
 		58B511D31A9E6C8500147676 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 920;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					58B511DA1A9E6C8500147676 = {
@@ -273,6 +287,7 @@
 					"$(inherited)",
 					"${SRCROOT}/../../../lib/ios",
 					"$(PROJECT_DIR)/pv_porcupine",
+					"\"$(SRCROOT)/Porcupine\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Porcupine;
@@ -298,6 +313,7 @@
 					"$(inherited)",
 					"${SRCROOT}/../../../lib/ios",
 					"$(PROJECT_DIR)/pv_porcupine",
+					"\"$(SRCROOT)/Porcupine\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Porcupine;

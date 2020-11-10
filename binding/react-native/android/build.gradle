@@ -117,6 +117,7 @@ repositories {
 }
 
 dependencies {
+  implementation project(':reactnativevoiceprocessor')
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
 }

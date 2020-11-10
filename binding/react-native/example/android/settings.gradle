@@ -1,4 +1,8 @@
 rootProject.name = 'PorcupineExample'
+include ':@react-native-picker_picker'
+project(':@react-native-picker_picker').projectDir = new File(rootProject.projectDir, 	'../node_modules/@react-native-picker/picker/android')
+include ':reactnativevoiceprocessor'
+project(':reactnativevoiceprocessor').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-voice-processor/android')
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 

@@ -9,8 +9,10 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@react-native-picker/picker": "^1.9.2",
     "react": "16.11.0",
-    "react-native": "0.62.2"
+    "react-native": "0.62.2",
+    "react-native-voice-processor": "../../../../react-native-voice-processor"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
