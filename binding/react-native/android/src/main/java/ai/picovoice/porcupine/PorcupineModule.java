@@ -97,8 +97,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     try {
       Porcupine porcupine = new Porcupine(modelPath, keywordPathsJava, sensitivitiesJava);
       porcupinePool.put(String.valueOf(System.identityHashCode(porcupine)), porcupine);
-      System.out.println(String.valueOf(System.identityHashCode(porcupine)));
-
+     
       WritableMap paramMap = Arguments.createMap();
       paramMap.putString("handle", String.valueOf(System.identityHashCode(porcupine)));
       paramMap.putInt("frameLength", porcupine.getFrameLength());
