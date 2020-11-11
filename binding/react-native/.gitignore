@@ -31,8 +31,7 @@ project.xcworkspace
 libpv_porcupine.a
 picovoice.h
 pv_porcupine.h
-resources/porcupine_params.pv
-resources/keyword_files/
+ios/resources/**
 
 
 # Android/IJ
@@ -41,8 +40,10 @@ resources/keyword_files/
 .gradle
 local.properties
 android.iml
-jniLibs/
-res/raw/
+android/src/main/jniLibs/**
+android/src/main/res/**
+Porcupine.java
+PorcupineException.java
 
 # Cocoapods
 #
