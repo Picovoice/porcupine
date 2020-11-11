@@ -28,6 +28,12 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+libpv_porcupine.a
+picovoice.h
+pv_porcupine.h
+resources/porcupine_params.pv
+resources/keyword_files/
+
 
 # Android/IJ
 #
@@ -35,6 +41,8 @@ project.xcworkspace
 .gradle
 local.properties
 android.iml
+jniLibs/
+res/raw/
 
 # Cocoapods
 #

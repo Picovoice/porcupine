@@ -3,7 +3,6 @@ import { PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import { PorcupineManager } from 'react-native-porcupine';
 import { Picker } from '@react-native-picker/picker';
-import { getSupportInfo } from 'prettier';
 
 type Props = {};
 type State = {
@@ -210,7 +209,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusBar: {
-    flex: 0.45,
+    flex: 0.40,
     backgroundColor: '#377DFF',
     justifyContent: 'flex-end'
   },

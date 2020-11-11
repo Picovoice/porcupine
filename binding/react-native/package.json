@@ -23,11 +23,12 @@
     "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "copy": "node copy.js",
     "prepare": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "bootstrap": "yarn copy && yarn example && yarn && yarn pods"
   },
   "keywords": [
     "react-native",
@@ -143,6 +144,7 @@
     ]
   },
   "dependencies": {
+    "ncp": "^2.0.0",
     "react-native-voice-processor": "../../../react-native-voice-processor"
   }
 }
