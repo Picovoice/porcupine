@@ -15,8 +15,8 @@ const ncp = require("ncp").ncp
 const mkdirp = require("mkdirp");
 
 // copy Android resources
-fs.copyFileSync('../android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java','./android/src/main/java/ai/picovoice/porcupine/Porcupine.java')
-fs.copyFileSync('../android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineException.java','./android/src/main/java/ai/picovoice/porcupine/PorcupineException.java')
+fs.copyFileSync('../android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java','./android/src/main/java/ai/picovoice/reactnative/porcupine/Porcupine.java')
+fs.copyFileSync('../android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineException.java','./android/src/main/java/ai/picovoice/reactnative/porcupine/PorcupineException.java')
 mkdirp.sync("./android/src/main/jniLibs")
 ncp('../../lib/android','./android/src/main/jniLibs')
 mkdirp.sync("./android/src/main/res/raw")

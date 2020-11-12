@@ -1,7 +1,7 @@
 import pv_porcupine
 
-@objc(Porcupine)
-class Porcupine: NSObject {
+@objc(PvPorcupine)
+class PvPorcupine: NSObject {
     
     private var porcupinePool:Dictionary<String, OpaquePointer?> = [:]
     
@@ -49,7 +49,7 @@ class Porcupine: NSObject {
             resolve(porcupineParameters)
         } else {
             let pvStatus = String(cString: pv_status_to_string(status))
-            reject("Porcupine:create", "Could not create a new instance of Porcupine: \(pvStatus)", nil)            
+            reject("PvPorcupine:create", "Could not create a new instance of Porcupine: \(pvStatus)", nil)            
         }
     }
     
@@ -71,7 +71,7 @@ class Porcupine: NSObject {
             
             resolve(keywordIndex)
         } else {
-            reject("Porcupine:process", "Invalid Porcupine handle provided to native module.", nil)
+            reject("PvPorcupine:process", "Invalid Porcupine handle provided to native module.", nil)
         }
     }
 }

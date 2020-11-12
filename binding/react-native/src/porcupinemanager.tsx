@@ -17,12 +17,12 @@ export type DetectionCallback = (keywordIndex: number) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
-  private _porcupine: Porcupine;
+  private _porcupine: Porcupine | null;
   private _detectionCallback: DetectionCallback;
   private _bufferListener?: EventSubscription;
   private _bufferEmitter: NativeEventEmitter;
 
-  // a list of build-in keywords
+  // a list of built-in keywords
   static KEYWORDS = Porcupine.KEYWORDS;
 
   /**
@@ -42,16 +42,12 @@ class PorcupineManager {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    try {
-      let porcupine = await Porcupine.fromKeywords(
-        keywords,
-        modelPath,
-        sensitivities
-      );
-      return new PorcupineManager(porcupine, detectionCallback);
-    } catch (e) {
-      throw e;
-    }
+    let porcupine = await Porcupine.fromKeywords(
+      keywords,
+      modelPath,
+      sensitivities
+    );
+    return new PorcupineManager(porcupine, detectionCallback);
   }
 
   /**
@@ -70,16 +66,12 @@ class PorcupineManager {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    try {
-      let porcupine = await Porcupine.fromKeywordPaths(
-        keywordPaths,
-        modelPath,
-        sensitivities
-      );
-      return new PorcupineManager(porcupine, detectionCallback);
-    } catch (e) {
-      throw e;
-    }
+    let porcupine = await Porcupine.fromKeywordPaths(
+      keywordPaths,
+      modelPath,
+      sensitivities
+    );
+    return new PorcupineManager(porcupine, detectionCallback);
   }
 
   constructor(porcupine: Porcupine, detectionCallback: DetectionCallback) {
@@ -93,6 +85,8 @@ class PorcupineManager {
     this._bufferListener = this._bufferEmitter.addListener(
       BufferEmitter.BUFFER_EMITTER_KEY,
       async (buffer: number[]) => {
+        if (this._porcupine === null) return;
+
         try {
           let keywordIndex: number = await this._porcupine.process(buffer);
           if (keywordIndex >= 0) {
@@ -124,7 +118,10 @@ class PorcupineManager {
    */
   delete() {
     this._bufferListener?.remove();
-    this._porcupine.delete();
+    if (this._porcupine != null) {
+      this._porcupine.delete();
+      this._porcupine = null;
+    }
   }
 }
 

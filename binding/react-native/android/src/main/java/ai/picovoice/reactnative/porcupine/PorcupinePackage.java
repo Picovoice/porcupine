@@ -1,4 +1,4 @@
-package ai.picovoice.porcupine;
+package ai.picovoice.reactnative.porcupine;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

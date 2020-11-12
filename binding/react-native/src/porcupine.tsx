@@ -10,7 +10,7 @@
 //
 
 import { NativeModules } from 'react-native';
-const RCTPorcupine = NativeModules.Porcupine;
+const RCTPorcupine = NativeModules.PvPorcupine;
 
 class Porcupine {
   private _handle: string;
@@ -18,7 +18,7 @@ class Porcupine {
   private _sampleRate: number;
   private _version: string;
 
-  // a list of build-in keywords
+  // a list of built-in keywords
   static KEYWORDS = Object.keys(RCTPorcupine.KEYWORD_PATHS);
 
   /**
@@ -36,17 +36,13 @@ class Porcupine {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    try {
-      var { handle, frameLength, sampleRate, version } = await Porcupine.create(
-        keywords,
-        undefined,
-        modelPath,
-        sensitivities
-      );
-      return new Porcupine(handle, frameLength, sampleRate, version);
-    } catch (e) {
-      throw e;
-    }
+    let { handle, frameLength, sampleRate, version } = await Porcupine.create(
+      keywords,
+      undefined,
+      modelPath,
+      sensitivities
+    );
+    return new Porcupine(handle, frameLength, sampleRate, version);
   }
 
   /**
@@ -63,7 +59,7 @@ class Porcupine {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    var { handle, frameLength, sampleRate, version } = await Porcupine.create(
+    let { handle, frameLength, sampleRate, version } = await Porcupine.create(
       undefined,
       keywordsPaths,
       modelPath,
@@ -170,7 +166,7 @@ class Porcupine {
    * @param frame A frame of audio samples to be assessed by Porcupine. The required audio format is found by
    * calling `.sampleRate` to get the required sample rate and `.frameLength` to get the required frame size.
    * Audio must be single-channel and 16-bit linearly-encoded.
-   * @returns <Promise>Index of the detected keyword, or -1 if no detection occurred
+   * @returns {Promise} Index of the detected keyword, or -1 if no detection occurred
    */
   async process(frame: number[]) {
     if (frame === undefined) {

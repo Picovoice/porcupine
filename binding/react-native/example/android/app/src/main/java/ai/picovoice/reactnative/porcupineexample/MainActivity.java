@@ -1,4 +1,4 @@
-package ai.picovoice.reactnativeporcupinedemo;
+package ai.picovoice.reactnative.porcupineexample;
 
 import com.facebook.react.ReactActivity;
 

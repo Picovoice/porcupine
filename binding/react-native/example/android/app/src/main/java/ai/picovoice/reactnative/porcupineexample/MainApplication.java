@@ -1,4 +1,4 @@
-package ai.picovoice.reactnativeporcupinedemo;
+package ai.picovoice.reactnative.porcupineexample;
 
 import android.app.Application;
 import android.content.Context;
@@ -14,7 +14,7 @@ import com.reactnativecommunity.picker.RNCPickerPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import ai.picovoice.porcupine.PorcupinePackage;
+import ai.picovoice.reactnative.porcupine.PorcupinePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,9 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
       @Override
       protected List<ReactPackage> getPackages() {
         @SuppressWarnings("UnnecessaryLocalVariable")
-        List<ReactPackage> packages = new PackageList(this).getPackages();
-        // Packages that cannot be autolinked yet can be added manually here, for PorcupineExample:
-        // packages.add(new MyReactNativePackage());
+        List<ReactPackage> packages = new PackageList(this).getPackages();        
         packages.add(new RNCPickerPackage());
         packages.add(new PorcupinePackage());
         return packages;
@@ -42,19 +40,10 @@ public class MainApplication extends Application implements ReactApplication {
       }
     };
 
-  /**
-   * Loads Flipper in React Native templates.
-   *
-   * @param context
-   */
   private static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
     if (BuildConfig.DEBUG) {
-      try {
-        /*
-         We use reflection here to pick up the class that initializes Flipper,
-        since Flipper library is not available in release mode
-        */
-        Class<?> aClass = Class.forName("ai.picovoice.reactnativeporcupinedemo.ReactNativeFlipper");
+      try {        
+        Class<?> aClass = Class.forName("ai.picovoice.reactnative.porcupinedemo.ReactNativeFlipper");
         aClass
           .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
           .invoke(null, context, reactInstanceManager);

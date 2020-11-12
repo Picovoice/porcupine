@@ -10,7 +10,10 @@
     limitations under the License.
 */
 
-package ai.picovoice.porcupine;
+package ai.picovoice.reactnative.porcupine;
+
+import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.PorcupineException;
 
 import android.content.res.Resources;
 import android.util.Log;
@@ -36,7 +39,7 @@ import java.util.Map;
 
 public class PorcupineModule extends ReactContextBaseJavaModule {
 
-  private static final String LOG_TAG = "PorcupineModule";
+  private static final String LOG_TAG = "PvPorcupine";
   private static final int[] KEYWORDS = {
     R.raw.americano_android, R.raw.blueberry_android, R.raw.bumblebee_android, R.raw.grapefruit_android, 
     R.raw.grasshopper_android, R.raw.picovoice_android, R.raw.porcupine_android, R.raw.terminator_android
@@ -57,7 +60,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
   @Override
   public String getName() {
-    return "Porcupine";
+    return "PvPorcupine";
   }
 
   @Override
@@ -72,8 +75,9 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     final Map<String, String> keywordPaths = new HashMap<>();
     final Resources resources = reactContext.getResources();
     for (final int x : KEYWORDS) {
-      final String keyword = resources.getResourceEntryName(x).split("_")[0];
-      keywordPaths.put(keyword, new File(resourceDirectory, keyword + ".ppn").getAbsolutePath());
+      final String fileName = resources.getResourceEntryName(x);
+      final String keyword = fileName.split("_")[0];
+      keywordPaths.put(keyword, new File(resourceDirectory, fileName + ".ppn").getAbsolutePath());
     }
     constants.put("KEYWORD_PATHS", keywordPaths);
 
