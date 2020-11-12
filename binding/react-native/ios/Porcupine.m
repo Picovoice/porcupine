@@ -1,6 +1,6 @@
 #import <React/RCTBridgeModule.h>
 
-@interface RCT_EXTERN_MODULE(Porcupine, NSObject)
+@interface RCT_EXTERN_MODULE(PvPorcupine, NSObject)
 
 RCT_EXTERN_METHOD(create: (NSString *)modelPath 
                   keywordPaths: (NSArray<NSString *>)keywordPaths 

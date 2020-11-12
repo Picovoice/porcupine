@@ -2,7 +2,7 @@ import pv_porcupine
 
 @objc(PvPorcupine)
 class PvPorcupine: NSObject {
-    
+
     private var porcupinePool:Dictionary<String, OpaquePointer?> = [:]
     
     @objc func constantsToExport() -> Dictionary<String, Any> {        
@@ -15,7 +15,6 @@ class PvPorcupine: NSObject {
             
             let keywordName = URL(fileURLWithPath:keywordPath).lastPathComponent.components(separatedBy:"_")[0]            
             keywordDict[keywordName] = keywordPath
-            
         }
         
         return [
@@ -23,10 +22,10 @@ class PvPorcupine: NSObject {
             "KEYWORD_PATHS": keywordDict                 
         ]
     }
-    
+
     @objc(create:keywordPaths:sensitivities:resolver:rejecter:)
     func create(modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
-                resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {                
         
         var porcupine:OpaquePointer?
         let status = pv_porcupine_init(
@@ -35,7 +34,7 @@ class PvPorcupine: NSObject {
             keywordPaths.map { UnsafePointer(strdup($0)) },
             sensitivities,
             &porcupine);
-        
+
         if status == PV_STATUS_SUCCESS {
             let handle:String = String(describing:porcupine)
             porcupinePool[handle] = porcupine;
@@ -47,7 +46,8 @@ class PvPorcupine: NSObject {
                 "version": String(cString: pv_porcupine_version())
             ]
             resolve(porcupineParameters)
-        } else {
+        }
+        else {
             let pvStatus = String(cString: pv_status_to_string(status))
             reject("PvPorcupine:create", "Could not create a new instance of Porcupine: \(pvStatus)", nil)            
         }
@@ -63,14 +63,15 @@ class PvPorcupine: NSObject {
     
     @objc(process:pcm:resolver:rejecter:)
     func process(handle:String, pcm:[Int16], 
-                 resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
-        
+        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+                
         if let porcupine = porcupinePool[handle]{
             var keywordIndex: Int32 = -1
             pv_porcupine_process(porcupine, pcm, &keywordIndex)        
             
             resolve(keywordIndex)
-        } else {
+        }
+        else{
             reject("PvPorcupine:process", "Invalid Porcupine handle provided to native module.", nil)
         }
     }
