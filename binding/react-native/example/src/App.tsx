@@ -124,11 +124,7 @@ export default class App extends Component<Props, State> {
           buttonPositive: 'OK',
         }
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        return true;
-      } else {
-        return false;
-      }
+      return (granted === PermissionsAndroid.RESULTS.GRANTED)        
     } catch (err) {
       console.error(err);
       return false;
