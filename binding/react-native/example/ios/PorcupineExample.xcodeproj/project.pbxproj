@@ -317,7 +317,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.porcupine.PorcupineExample;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PorcupineExample;
 				PRODUCT_NAME = PorcupineExample;
 				SWIFT_OBJC_BRIDGING_HEADER = "PorcupineExample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -345,7 +345,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.porcupine.PorcupineExample;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PorcupineExample;
 				PRODUCT_NAME = PorcupineExample;
 				SWIFT_OBJC_BRIDGING_HEADER = "PorcupineExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
