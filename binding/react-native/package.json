@@ -1,5 +1,5 @@
 {
-  "name": "react-native-porcupine",
+  "name": "@picovoice/porcupine-react-native",
   "version": "1.8.0",
   "description": "Picovoice Porcupine React Native binding",
   "main": "lib/commonjs/index",
@@ -7,18 +7,6 @@
   "types": "lib/typescript/src/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
-  "files": [
-    "src",
-    "lib",
-    "android",
-    "ios",
-    "cpp",
-    "react-native-porcupine.podspec",
-    "!lib/typescript/example",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__"
-  ],
   "scripts": {
     "test": "jest",
     "typescript": "tsc --noEmit",
@@ -45,7 +33,7 @@
     "speech recognition"
   ],
   "repository": "https://github.com/Picovoice/porcupine",
-  "author": "Picovoice <hello@picovoice.ai> (https://github.com/Picovoice)",
+  "author": "Picovoice <hello@picovoice.ai> (https://picovoice.ai)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/Picovoice/porcupine/issues"
@@ -70,11 +58,15 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "release-it": "^13.5.8",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "mkdirp": "^1.0.4",
+    "ncp": "^2.0.0",
+    "@picovoice/react-native-voice-processor": "^1.0.0" 
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@picovoice/react-native-voice-processor": "^1.0.0" 
   },
   "jest": {
     "preset": "react-native",
@@ -142,10 +134,5 @@
       "module",
       "typescript"
     ]
-  },
-  "dependencies": {
-    "mkdirp": "^1.0.4",
-    "ncp": "^2.0.0",
-    "react-native-voice-processor": "../../../react-native-voice-processor"
   }
 }

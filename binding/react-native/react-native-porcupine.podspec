@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
   s.subspec 'pv_porcupine' do |sc|    
     sc.pod_target_xcconfig = {
       'SWIFT_INCLUDE_PATHS' => '$(PODS_TARGET_SRCROOT)/ios/pv_porcupine',
+      'OTHER_CFLAGS' => '-Xcc -fmodule-map-file="${PODS_TARGET_SRCROOT}/ios/pv_porcupine/module.private.modulemap"',
       'OTHER_SWIFT_FLAGS' => '-Xcc -fmodule-map-file="${PODS_TARGET_SRCROOT}/ios/pv_porcupine/module.private.modulemap"'
     }
     
