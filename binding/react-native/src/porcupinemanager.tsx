@@ -9,7 +9,7 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import { VoiceProcessor, BufferEmitter } from 'react-native-voice-processor';
+import { VoiceProcessor, BufferEmitter } from '@picovoice/react-native-voice-processor';
 import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
