@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
-import { PorcupineManager } from 'react-native-porcupine';
+import { PorcupineManager } from '@picovoice/porcupine-react-native';
 import { Picker } from '@react-native-picker/picker';
 
 type Props = {};

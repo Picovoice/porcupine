@@ -53,7 +53,7 @@ target 'PorcupineExample' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'react-native-porcupine', :path => '../..', :modular_headers => true
+  pod 'porcupine-react-native', :path => '../..', :modular_headers => true
 
   use_native_modules!
 
@@ -62,7 +62,6 @@ target 'PorcupineExample' do
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
   add_flipper_pods!
-  pod 'react-native-voice-processor', :path => '../node_modules/react-native-voice-processor'
 
   post_install do |installer|
     flipper_post_install(installer)

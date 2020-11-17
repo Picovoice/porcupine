@@ -9,6 +9,7 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@picovoice/react-native-voice-processor": "^1.0.0",
     "@react-native-picker/picker": "^1.9.2",
     "react": "16.11.0",
     "react-native": "0.62.2"

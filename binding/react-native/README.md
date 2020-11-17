@@ -30,21 +30,25 @@ This binding is for running Porcupine on **React Native 0.62.2+** on the followi
 
 ## Installation
 
-To start install be sure you have installed yarn and cocoapods.
+To start install be sure you have installed yarn and cocoapods. Then add these two native modules to your react-native project.
 
 ```sh
-yarn add @picovoice/react-native-porcupine
+yarn add @picovoice/react-native-voice-processor
+yarn add @picovoice/porcupine-react-native
 ```
 or
 ```sh
-npm i @picovoice/react-native-porcupine --save
+npm i @picovoice/react-native-voice-processor --save
+npm i @picovoice/porcupine-react-native --save
 ```
 
 Link the iOS package
 
 ```sh
-npx pod-install
+cd ios && pod install && cd ..
 ```
+
+**NOTE**: Due to a limitation in React Native CLI autolinking, these two native modules cannot be included as transitive depedencies. If you are creating a module that depends on porcupine-react-native and/or react-native-voice-processor, you will have to list these as peer dependencies and require developers to install them alongside.
 
 ## Permissions
 
