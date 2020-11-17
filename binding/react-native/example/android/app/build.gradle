@@ -209,8 +209,6 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':reactnativeporcupine')
-    implementation project(path: ':@react-native-picker_picker')
 }
 
 // Run this once to be able to run the application with BUCK

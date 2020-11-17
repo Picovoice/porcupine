@@ -14,8 +14,6 @@ import com.reactnativecommunity.picker.RNCPickerPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import ai.picovoice.reactnative.porcupine.PorcupinePackage;
-
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -29,8 +27,6 @@ public class MainApplication extends Application implements ReactApplication {
       protected List<ReactPackage> getPackages() {
         @SuppressWarnings("UnnecessaryLocalVariable")
         List<ReactPackage> packages = new PackageList(this).getPackages();        
-        packages.add(new RNCPickerPackage());
-        packages.add(new PorcupinePackage());
         return packages;
       }
 

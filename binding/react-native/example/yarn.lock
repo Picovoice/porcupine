@@ -760,6 +760,9 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@picovoice/porcupine-react-native@file:..":
+  version "1.8.0"
+
 "@picovoice/react-native-voice-processor@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.0.0.tgz#55763d76f558f994a548a0add7426e6cf0b1a0d0"
