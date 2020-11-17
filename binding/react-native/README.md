@@ -101,21 +101,20 @@ async _requestRecordAudioPermission() {
 
 ## Usage
 
-The binding provides two JS classes for you to use in your projects:
+The module provides you with two levels of API to choose from depending on your needs.
 
--   **PorcupineManager**: Provides a high-level API that takes care of audio recording. This class is the quickest way to get started. 
+#### High-Level API
 
--   **Porcupine**: Provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
+[PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of
+audio recording. This class is the quickest way to get started.
 
-### PorcupineManager Class
-
-The quickest way to start with Porcupine is to create a instance of PorcupineManager using one of its static constructors. Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords. 
-
+Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager
+using one or more of the built-in keywords.
 ```javascript
 async createPorcupineManager(){
     try{
         this._porcupineManager = await PorcupineManager.fromKeywords(
-            ["picovoice", "porcupine"], 
+            ["picovoice", "porcupine"],
             detectionCallback);
     } catch (err) {
         // handle error
@@ -124,10 +123,11 @@ async createPorcupineManager(){
 ```
 NOTE: the call is asynchronous and therefore should be called in an async block with a try/catch.
 
-The `detectionCallback` parameter is a function that you want to execute when Porcupine has detected one of the keywords. The function should accept a single integer, keywordIndex, which specifies which wake word has been detected.
+The `detectionCallback` parameter is a function that you want to execute when Porcupine has detected one of the keywords.
+The function should accept a single integer, keywordIndex, which specifies which wake word has been detected.
 
 ```javascript
-detectionCallback(keywordIndex){    
+detectionCallback(keywordIndex){
     if(keywordIndex === 0){
         // picovoice detected
     }
@@ -139,15 +139,17 @@ detectionCallback(keywordIndex){
 
 Available built-in keywords are stored in the constants `PorcupineManager.KEYWORDS` and `Porcupine.KEYWORDS`.
 
-To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths` static constructor and provide the paths to the `.ppn` file(s).
+To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths`
+static constructor and provide the paths to the `.ppn` file(s).
 ```javascript
 this._porcupineManager = await PorcupineManager.fromKeywords(["/path/to/keyword.ppn"], detectionCallback);
 ```
 
-In addition to custom keywords, you can override the default Porcupine model file and/or keyword sensitivities. These optional parameters can be passed in like so:
+In addition to custom keywords, you can override the default Porcupine model file and/or keyword sensitivities.
+These optional parameters can be passed in like so:
 ```javascript
 this._porcupineManager = await PorcupineManager.fromKeywords(
-    ["/path/to/keyword/file/one.ppn", "/path/to/keyword/file/two.ppn"], 
+    ["/path/to/keyword/file/one.ppn", "/path/to/keyword/file/two.ppn"],
     detectionCallback,
     'path/to/model/file.pv',
     [0.25, 0.6]);
@@ -170,11 +172,17 @@ Once the app is done with using PorcupineManager, be sure you explicitly release
 this._porcupineManager.delete();
 ```
 
-As you may have noticed, there is no need to deal with audio capture to enable wake word detection with PorcupineManager. This is because it uses out [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/) module to capture frames of audio and automatically pass it to the wake word engine.
+As you may have noticed, there is no need to deal with audio capture to enable wake word detection with PorcupineManager.
+This is because it uses our
+[@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/)
+module to capture frames of audio and automatically pass it to the wake word engine.
 
-### Porcupine Class
+#### Low-Level API
 
-In the case that you have an existing audio processing pipeline, or want more direct control over incoming frames of audio, you can use the `Porcupine` class directly. `Porcupine` also has `fromKeywords` and `fromKeywordPaths` static constructors.
+[Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
+who want to incorporate wake word detection into a already existing audio processing pipeline.
+
+`Porcupine` also has `fromKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
 async createPorcupine(){
@@ -200,7 +208,9 @@ try {
 }
 ```
 
-For process to work correctly, it must be in the audio format required by Picovoice. The required audio format is found by calling `.sampleRate` to get the required sample rate and `.frameLength` to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
+For process to work correctly, the audio data must be in the audio format required by Picovoice.
+The required audio format is found by calling `.sampleRate` to get the required sample rate and `.frameLength` to
+get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
 
 Finally, once you no longer need the wake word engine, be sure to explicitly release the resources allocated to Porcupine:
 
@@ -208,14 +218,15 @@ Finally, once you no longer need the wake word engine, be sure to explicitly rel
 this._porcupine.delete();
 ```
 
-## Example App
+## Demo App
 
-The example app can be found in the `/example` directory. To run it, from the `/binding/react-native` directory, first run the following:
+The demo app can be found in the `/example` directory. To run it, from the `/binding/react-native` directory, first run the following:
 ```sh
 yarn bootstrap
 ```
 
-This will prepare the demo app for running on your chosen platform. Once this has completed, you can build and launch it for your platform by running:
+This will prepare the demo app for running on your chosen platform.
+Once this has completed, you can build and launch it for your platform by running:
 
 ```sh
 yarn example ios

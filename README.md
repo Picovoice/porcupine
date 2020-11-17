@@ -29,6 +29,7 @@ applications. It is
     - [Python Demos](#python-demos)
     - [.NET Demos](#net-demos)
     - [Java Demos](#java-demos)
+    - [React Native Demos](#react-native-demos)
     - [Android Demos](#android-demos)
     - [iOS Demos](#ios-demos)
     - [JavaScript Demos](#javascript-demos)
@@ -37,6 +38,7 @@ applications. It is
     - [Python](#python)
     - [.NET](#net)
     - [Java](#java)
+    - [React Native](#react-native)
     - [Android](#android)
     - [iOS](#ios)
     - [JavaScript](#javascript)
@@ -172,6 +174,27 @@ java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k bumblebee
 
 Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Java
 demos go to [demo/java](/demo/java).
+
+### React Native Demos
+
+To run the React Native Porcupine demo app you'll first need to setup your React Native environment. For this, 
+please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup).
+
+To install packages, run:
+```sh
+yarn install
+```
+
+To run on Android:
+```sh
+npx react-native run-android
+```
+
+To run on iOS:
+
+```sh
+npx react-native run-ios
+```
 
 ### Android Demos
 
@@ -422,6 +445,102 @@ Once you're done with Porcupine, ensure you release its resources explicitly:
 
 ```java
 handle.delete();
+```
+
+### React Native
+
+For React Native integration, you can install our 
+[@picovoice/react-native-voice-processor](https://www.npmjs.com/package/@picovoice/react-native-voice-processor) and 
+[@picovoice/porcupine-react-native](https://www.npmjs.com/package/@picovoice/porcupine-react-native) native modules into 
+your project using yarn or npm. The module provides you with two levels of API to choose from depending 
+on your needs.  
+
+#### High-Level API
+
+[PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of 
+audio recording. This class is the quickest way to get started. 
+
+Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager 
+using one or more of the built-in keywords. 
+
+```javascript
+async createPorcupineManager(){
+    try{
+        this._porcupineManager = await PorcupineManager.fromKeywords(
+            ["picovoice", "porcupine"], 
+            detectionCallback);
+    } catch (err) {
+        // handle error
+    }
+}
+```
+NOTE: the call is asynchronous and therefore should be called in an async block with a try/catch.
+
+To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths` 
+static constructor and provide the paths to the `.ppn` file(s).
+```javascript
+this._porcupineManager = await PorcupineManager.fromKeywords(["/path/to/keyword.ppn"], detectionCallback);
+```
+
+Once you have instaiated a Porcupine manager, you can start audio capture and wake word detection by calling:
+
+```javascript
+this._porcupineManager.start();
+```
+
+And then stop it by calling:
+
+```javascript
+this._porcupineManager.stop();
+```
+
+Once the app is done with using PorcupineManager, be sure you explicitly release the resources allocated to Porcupine:
+```javascript
+this._porcupineManager.delete();
+```
+
+As you may have noticed, there is no need to deal with audio capture to enable wake word detection with PorcupineManager. 
+This is because it uses our [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/) 
+module to capture frames of audio and automatically pass it to the wake word engine.
+
+#### Low-Level API
+
+[Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those 
+who want to incorporate wake word detection into a already existing audio processing pipeline. 
+`Porcupine` also has `fromKeywords` and `fromKeywordPaths` static constructors.
+
+```javascript
+async createPorcupine(){
+    try{
+        this._porcupine = await Porcupine.fromKeywords(["picovoice"]);
+    } catch (err) {
+        // handle error
+    }
+}
+```
+As you can see, in this case you don't pass in a detection callback as you will be passing in audio frames directly using the process function:
+
+```javascript
+let buffer = getAudioFrame();
+
+try {
+    let keywordIndex = await this._porcupine.process(buffer);
+    if (keywordIndex >= 0) {
+        // detection made!
+    }
+} catch (e) {
+    // handle error
+}
+```
+
+For process to work correctly, the audio data must be in the audio format required by Picovoice. 
+The required audio format is found by calling `.sampleRate` to get the required sample rate and `.frameLength` to 
+get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
+
+Finally, once you no longer need the wake word engine, be sure to explicitly release the resources allocated to Porcupine:
+
+```javascript
+this._porcupine.delete();
 ```
 
 ### Android
