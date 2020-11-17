@@ -19,7 +19,7 @@ Porcupine is:
 
 ## Compatibility
 
-- Java 8+
+- Java 11+
 - Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
 
 ## Installation

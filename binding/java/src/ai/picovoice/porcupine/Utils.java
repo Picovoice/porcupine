@@ -169,12 +169,15 @@ class Utils {
             return null;
         }
 
-        return switch (ENVIRONMENT_NAME) {
-            case "windows" -> RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
-            case "mac" -> RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
-            case "linux" -> RESOURCE_DIRECTORY.resolve("lib/java/linux/x86_64/libpv_porcupine_jni.so").toString();
-            default -> null;
-        };
-
+        switch (ENVIRONMENT_NAME) {
+            case "windows":
+                return RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
+            case "mac":
+                return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
+            case "linux":
+                return RESOURCE_DIRECTORY.resolve("lib/java/linux/x86_64/libpv_porcupine_jni.so").toString();
+            default:
+                return null;
+        }
     }
 }
