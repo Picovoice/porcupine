@@ -178,7 +178,8 @@ demos go to [demo/java](/demo/java).
 ### React Native Demos
 
 To run the React Native Porcupine demo app you'll first need to setup your React Native environment. For this, 
-please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup).
+please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has 
+been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands. 
 
 To install packages, run:
 ```sh
