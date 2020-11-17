@@ -1,0 +1,24 @@
+{
+  "name": "react-native-porcupine-example",
+  "description": "Example app for react-native-porcupine",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "@picovoice/react-native-voice-processor": "^1.0.0",
+    "@picovoice/porcupine-react-native": "file:../",
+    "@react-native-picker/picker": "^1.9.2",
+    "react": "16.11.0",
+    "react-native": "0.62.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/runtime": "^7.9.6",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "metro-react-native-babel-preset": "^0.59.0"
+  }
+}
