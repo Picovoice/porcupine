@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.porcupinedemo"
+        applicationId "ai.picovoice.reactnative.porcupinedemo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

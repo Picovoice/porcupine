@@ -1,6 +1,5 @@
 # JS
 node_modules
-lib/typescript/example
 copy.js
 
 # Config files
@@ -19,9 +18,6 @@ jsconfig.json
 .circleci
 .eslintignore
 codecov.yml
-
-# Example
-example/
 
 # Android
 android/.project

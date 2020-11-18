@@ -45,10 +45,6 @@ android/src/main/res/**
 Porcupine.java
 PorcupineException.java
 
-# Cocoapods
-#
-example/ios/Pods
-
 # node.js
 #
 node_modules/

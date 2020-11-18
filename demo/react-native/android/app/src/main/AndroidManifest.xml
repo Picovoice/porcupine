@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.porcupinedemo">
+  package="ai.picovoice.reactnative.porcupinedemo">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 

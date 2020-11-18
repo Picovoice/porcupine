@@ -220,18 +220,4 @@ this._porcupine.delete();
 
 ## Demo App
 
-The demo app can be found in the `/example` directory. To run it, from the `/binding/react-native` directory, first run the following:
-```sh
-yarn bootstrap
-```
-
-This will prepare the demo app for running on your chosen platform.
-Once this has completed, you can build and launch it for your platform by running:
-
-```sh
-yarn example ios
-```
-or
-```sh
-yarn example android
-```
+Check out the [Porcupine React Native demo](/demo/react-native) to see what it looks like to use Porcupine in a cross-platform app!
