@@ -155,7 +155,7 @@ this._porcupineManager = await PorcupineManager.fromKeywords(
     [0.25, 0.6]);
 ```
 
-Once you have instaiated a Porcupine manager, you can start audio capture and wake word detection by calling:
+Once you have instantiated a PorcupineManager, you can start audio capture and wake word detection by calling:
 
 ```javascript
 this._porcupineManager.start();
