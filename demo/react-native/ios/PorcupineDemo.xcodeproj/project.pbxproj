@@ -17,29 +17,19 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		01D1F2B2878972D918EF3B9C /* libPods-PorcupineDemo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		025843D625645A6900D323FD /* PorcupineDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PorcupineDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		025843D725645A6A00D323FD /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		11319B4828D557C2965C4AA6 /* libPods-PorcupineDemo-PorcupineDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo-PorcupineDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* PorcupineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PorcupineDemo/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PorcupineDemo/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PorcupineDemo/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PorcupineDemo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PorcupineDemo/main.m; sourceTree = "<group>"; };
-		1B018710573328386F1914DC /* Pods-PorcupineDemo-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo-tvOS.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo-tvOS/Pods-PorcupineDemo-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		262FE5E535CF9CF9DD6AEBC8 /* libPods-PorcupineDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43ED59E665B01E99A2746971 /* Pods-PorcupineDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.release.xcconfig"; sourceTree = "<group>"; };
-		4B5051F655BC9E3426B86475 /* Pods-PorcupineDemo-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo-tvOSTests/Pods-PorcupineDemo-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		7D8EBDAD22C8A81CF7779601 /* Pods-PorcupineDemo-PorcupineDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo-PorcupineDemoTests.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo-PorcupineDemoTests/Pods-PorcupineDemo-PorcupineDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PorcupineDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8BD5802FEFE17D4565B835AF /* Pods-PorcupineDemo-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo-tvOSTests/Pods-PorcupineDemo-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BA49C397C5FD7969D255A666 /* Pods-PorcupineDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		CDC5BCB5167C8EA79C2D33FD /* Pods-PorcupineDemo-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo-tvOS/Pods-PorcupineDemo-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		E0E04BA33819267B81E3442D /* Pods-PorcupineDemo-PorcupineDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo-PorcupineDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo-PorcupineDemoTests/Pods-PorcupineDemo-PorcupineDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
-		E271235A888D4DE92CE222A8 /* libPods-PorcupineDemo-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,11 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				262FE5E535CF9CF9DD6AEBC8 /* libPods-PorcupineDemo.a */,
-				11319B4828D557C2965C4AA6 /* libPods-PorcupineDemo-PorcupineDemoTests.a */,
-				01D1F2B2878972D918EF3B9C /* libPods-PorcupineDemo-tvOS.a */,
-				E271235A888D4DE92CE222A8 /* libPods-PorcupineDemo-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -88,12 +74,6 @@
 			children = (
 				BA49C397C5FD7969D255A666 /* Pods-PorcupineDemo.debug.xcconfig */,
 				43ED59E665B01E99A2746971 /* Pods-PorcupineDemo.release.xcconfig */,
-				E0E04BA33819267B81E3442D /* Pods-PorcupineDemo-PorcupineDemoTests.debug.xcconfig */,
-				7D8EBDAD22C8A81CF7779601 /* Pods-PorcupineDemo-PorcupineDemoTests.release.xcconfig */,
-				CDC5BCB5167C8EA79C2D33FD /* Pods-PorcupineDemo-tvOS.debug.xcconfig */,
-				1B018710573328386F1914DC /* Pods-PorcupineDemo-tvOS.release.xcconfig */,
-				8BD5802FEFE17D4565B835AF /* Pods-PorcupineDemo-tvOSTests.debug.xcconfig */,
-				4B5051F655BC9E3426B86475 /* Pods-PorcupineDemo-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -160,6 +140,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = QCN89N76LX;
 						LastSwiftMigration = 1210;
 					};
 				};
@@ -309,6 +290,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QCN89N76LX;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PorcupineDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -317,7 +299,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PorcupineDemo;
 				PRODUCT_NAME = PorcupineDemo;
 				SWIFT_OBJC_BRIDGING_HEADER = "PorcupineDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -333,6 +315,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QCN89N76LX;
 				INFOPLIST_FILE = PorcupineDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -340,7 +323,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PorcupineDemo;
 				PRODUCT_NAME = PorcupineDemo;
 				SWIFT_OBJC_BRIDGING_HEADER = "PorcupineDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

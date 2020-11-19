@@ -8,11 +8,6 @@ target 'PorcupineDemo' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'PorcupineDemoTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -20,14 +15,5 @@ target 'PorcupineDemo' do
   use_flipper!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'PorcupineDemo-tvOS' do
-  # Pods for PorcupineDemo-tvOS
-
-  target 'PorcupineDemo-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end
