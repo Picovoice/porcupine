@@ -77,7 +77,7 @@ class PorcupineManager {
   constructor(porcupine: Porcupine, detectionCallback: DetectionCallback) {
     this._detectionCallback = detectionCallback;
     this._porcupine = porcupine;
-    this._voiceProcessor = new VoiceProcessor(
+    this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
       porcupine.frameLength,
       porcupine.sampleRate
     );
@@ -100,17 +100,17 @@ class PorcupineManager {
   }
 
   /**
-   * Opens audio input stream and sends frames to Porcupine for wake word detection
+   * Opens audio input stream and sends audio frames to Rhino
    */
-  start() {
-    this._voiceProcessor.start();
+  async start() {
+    return this._voiceProcessor.start();
   }
 
   /**
    * Closes audio stream
    */
-  stop() {
-    this._voiceProcessor.stop();
+  async stop() {
+    return this._voiceProcessor.stop();
   }
 
   /**

@@ -9,17 +9,18 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import React, { Component } from 'react';
-import { PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
-import { StyleSheet, Text, View } from 'react-native';
-import { PorcupineManager } from '@picovoice/porcupine-react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, {Component} from 'react';
+import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import {PorcupineManager} from '@picovoice/porcupine-react-native';
+import {Picker} from '@react-native-picker/picker';
 
 type Props = {};
 type State = {
   currentKeyword: string;
   keywordOptions: string[];
   buttonText: string;
+  buttonDisabled: boolean;
   isListening: boolean;
   backgroundColour: string;
 
@@ -38,6 +39,7 @@ export default class App extends Component<Props, State> {
       keywordOptions: keywordOptions,
       currentKeyword: keywordOptions[0],
       buttonText: 'Start',
+      buttonDisabled: false,
       isListening: false,
       backgroundColour: this._defaultColour,
 
@@ -57,6 +59,10 @@ export default class App extends Component<Props, State> {
   }
 
   async _startProcessing() {
+    this.setState({
+      buttonDisabled: true,
+    });
+
     let recordAudioRequest;
     if (Platform.OS == 'android') {
       recordAudioRequest = this._requestRecordAudioPermission();
@@ -68,23 +74,40 @@ export default class App extends Component<Props, State> {
 
     recordAudioRequest.then((hasPermission) => {
       if (!hasPermission) {
-        console.error("Required permissions (Microphone) we're not found. Please add to platform code.")
+        console.error(
+          "Required permissions (Microphone) we're not found. Please add to platform code.",
+        );
+        this.setState({
+          buttonDisabled: false,
+        });
         return;
       }
 
-      this._porcupineManager?.start();
-      this.setState({
-        buttonText: 'Stop',
-        isListening: true,
+      this._porcupineManager?.start().then((didStart) => {
+        if (didStart) {
+          this.setState({
+            buttonText: 'Stop',
+            buttonDisabled: false,
+            isListening: true,
+          });
+        }
       });
     });
   }
 
   _stopProcessing() {
-    this._porcupineManager?.stop();
     this.setState({
-      buttonText: 'Start',
-      isListening: false,
+      buttonDisabled: true,
+    });
+
+    this._porcupineManager?.stop().then((didStop) => {
+      if (didStop) {
+        this.setState({
+          buttonText: 'Start',
+          buttonDisabled: false,
+          isListening: false,
+        });
+      }
     });
   }
 
@@ -99,12 +122,12 @@ export default class App extends Component<Props, State> {
     }
     this._porcupineManager?.delete();
 
-    this.setState({ currentKeyword: keyword });
+    this.setState({currentKeyword: keyword});
     try {
       this._porcupineManager = await PorcupineManager.fromKeywords(
         [keyword],
         (keywordIndex: number) => {
-          console.log('[wake word detected]');
+                    
           if (keywordIndex >= 0) {
             this.setState({
               backgroundColour: this._detectionColour,
@@ -116,7 +139,7 @@ export default class App extends Component<Props, State> {
               });
             }, 1000);
           }
-        }
+        },
       );
     } catch (err) {
       console.error(err);
@@ -134,9 +157,9 @@ export default class App extends Component<Props, State> {
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
-        }
+        },
       );
-      return (granted === PermissionsAndroid.RESULTS.GRANTED)        
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
       console.error(err);
       return false;
@@ -152,50 +175,53 @@ export default class App extends Component<Props, State> {
       <View
         style={[
           styles.container,
-          { backgroundColor: this.state.backgroundColour },
-        ]}
-      >
+          {backgroundColor: this.state.backgroundColour},
+        ]}>
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>Porcupine</Text>
         </View>
-        <View style={{flex:1, paddingTop:'10%'}}>
-          <Text style={
-            { color: '#666666', 
-            marginLeft: 15, 
-            marginBottom: 5,
-             }}>
+        <View style={{flex: 1, paddingTop: '10%'}}>
+          <Text style={{color: '#666666', marginLeft: 15, marginBottom: 5}}>
             Keyword
           </Text>
-          <View style={{width:'90%', height:'40%', alignContent:'center', justifyContent:'center', alignSelf:'center'}}>
+          <View
+            style={{
+              width: '90%',
+              height: '40%',
+              alignContent: 'center',
+              justifyContent: 'center',
+              alignSelf: 'center',
+            }}>
             <Picker
               selectedValue={this.state.currentKeyword}
-              mode="dropdown"          
-              style={{ }}
+              mode="dropdown"
+              style={{}}
               itemStyle={styles.itemStyle}
-              onValueChange={(keyword) => this._loadNewKeyword(keyword as string)}
-            >
+              onValueChange={(keyword) =>
+                this._loadNewKeyword(keyword as string)
+              }>
               {keywordOptions}
             </Picker>
           </View>
         </View>
 
-        <View style={{flex:1, justifyContent:'center', alignContent:'center'}}>
+        <View
+          style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
           <TouchableOpacity
             style={{
-              width:'50%',
-              height:'50%',
-              alignSelf:'center',
-              justifyContent:'center',
+              width: '50%',
+              height: '50%',
+              alignSelf: 'center',
+              justifyContent: 'center',
               backgroundColor: '#377DFF',
               borderRadius: 100,
-              
-              }}
+            }}
             onPress={() => this._toggleListening()}
-          >
+            disabled={this.state.buttonDisabled}>
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, justifyContent: 'flex-end', paddingBottom:25}}>
+        <View style={{flex: 1, justifyContent: 'flex-end', paddingBottom: 25}}>
           <Text style={styles.instructions}>
             Made in Vancouver, Canada by Picovoice
           </Text>
@@ -217,16 +243,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusBar: {
-    flex: 0.40,
+    flex: 0.4,
     backgroundColor: '#377DFF',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   statusBarText: {
     fontSize: 18,
     color: 'white',
     fontWeight: 'bold',
     marginLeft: 15,
-    marginBottom:15,
+    marginBottom: 15,
   },
   buttonStyle: {
     backgroundColor: '#377DFF',
@@ -245,6 +271,6 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
-    color: '#666666'
+    color: '#666666',
   },
 });

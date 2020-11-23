@@ -15,7 +15,7 @@ import pv_porcupine
 class PvPorcupine: NSObject {
 
     private var porcupinePool:Dictionary<String, OpaquePointer?> = [:]
-    
+
     @objc func constantsToExport() -> Dictionary<String, Any> {        
         
         let modelPath : String = Bundle.main.path(forResource: "porcupine_params", ofType: "pv") ?? "unknown"
