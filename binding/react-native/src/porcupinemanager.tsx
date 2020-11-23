@@ -23,7 +23,7 @@ class PorcupineManager {
   private _bufferEmitter: NativeEventEmitter;
 
   // a list of built-in keywords
-  static KEYWORDS = Porcupine.KEYWORDS;
+  public static KEYWORDS = Porcupine.KEYWORDS;
 
   /**
    * Static creator for initializing a Porcupine Manager from built-in keywords
@@ -36,7 +36,7 @@ class PorcupineManager {
    * [0, 1].
    * @returns An instance of the Porcupine Manager
    */
-  static async fromKeywords(
+  public static async fromKeywords(
     keywords: string[],
     detectionCallback: DetectionCallback,
     modelPath?: string,
@@ -60,7 +60,7 @@ class PorcupineManager {
    * [0, 1].
    * @returns An instance of the Porcupine Manager
    */
-  static async fromKeywordPaths(
+  public static async fromKeywordPaths(
     keywordPaths: string[],
     detectionCallback: DetectionCallback,
     modelPath?: string,
@@ -74,7 +74,7 @@ class PorcupineManager {
     return new PorcupineManager(porcupine, detectionCallback);
   }
 
-  constructor(porcupine: Porcupine, detectionCallback: DetectionCallback) {
+  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback) {
     this._detectionCallback = detectionCallback;
     this._porcupine = porcupine;
     this._voiceProcessor = VoiceProcessor.getVoiceProcessor(

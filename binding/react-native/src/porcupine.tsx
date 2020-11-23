@@ -19,7 +19,7 @@ class Porcupine {
   private _version: string;
 
   // a list of built-in keywords
-  static KEYWORDS = Object.keys(RCTPorcupine.KEYWORD_PATHS);
+  public static KEYWORDS = Object.keys(RCTPorcupine.KEYWORD_PATHS);
 
   /**
    * Static creator for initializing Porcupine from one of the built-in keywords
@@ -31,7 +31,7 @@ class Porcupine {
    * [0, 1].
    * @returns An instance of the engine.
    */
-  static async fromKeywords(
+  public static async fromKeywords(
     keywords: string[],
     modelPath?: string,
     sensitivities?: number[]
@@ -54,7 +54,7 @@ class Porcupine {
    * [0, 1].
    * @returns An instance of the engine.
    */
-  static async fromKeywordPaths(
+  public static async fromKeywordPaths(
     keywordsPaths: string[],
     modelPath?: string,
     sensitivities?: number[]
@@ -66,18 +66,6 @@ class Porcupine {
       sensitivities
     );
     return new Porcupine(handle, frameLength, sampleRate, version);
-  }
-
-  constructor(
-    handle: string,
-    frameLength: number,
-    sampleRate: number,
-    version: string
-  ) {
-    this._handle = handle;
-    this._frameLength = frameLength;
-    this._sampleRate = sampleRate;
-    this._version = version;
   }
 
   /**
@@ -159,6 +147,18 @@ class Porcupine {
     }
 
     return RCTPorcupine.create(modelPath, keywordPaths, sensitivities);
+  }
+
+  private constructor(
+    handle: string,
+    frameLength: number,
+    sampleRate: number,
+    version: string
+  ) {
+    this._handle = handle;
+    this._frameLength = frameLength;
+    this._sampleRate = sampleRate;
+    this._version = version;
   }
 
   /**

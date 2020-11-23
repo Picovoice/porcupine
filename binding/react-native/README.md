@@ -158,13 +158,13 @@ this._porcupineManager = await PorcupineManager.fromKeywords(
 Once you have instantiated a PorcupineManager, you can start audio capture and wake word detection by calling:
 
 ```javascript
-this._porcupineManager.start();
+let didStart = await this._porcupineManager.start();
 ```
 
 And then stop it by calling:
 
 ```javascript
-this._porcupineManager.stop();
+let didStop = await this._porcupineManager.stop();
 ```
 
 Once the app is done with using PorcupineManager, be sure you explicitly release the resources allocated to Porcupine:
