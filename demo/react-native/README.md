@@ -4,19 +4,15 @@ please refer to [React Native's documentation](https://reactnative.dev/docs/envi
 
 ## Usage
 
-To install packages, run:
-```sh
-yarn install
-```
-
 ### Running On Android
-
 ```sh
-npx react-native run-android
+yarn android-install    # sets up environment
+yarn android-run        # builds and deploys to Android
 ```
 
 ### Running On iOS
 
 ```sh
-npx react-native run-ios
+yarn ios-install        # sets up environment
+yarn ios-run            # builds and deploys to iOS
 ```

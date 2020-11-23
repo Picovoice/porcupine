@@ -173,23 +173,18 @@ demos go to [demo/java](/demo/java).
 
 To run the React Native Porcupine demo app you'll first need to setup your React Native environment. For this, 
 please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has 
-been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands. 
+been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands: 
 
-To install packages, run:
+For Android:
 ```sh
-yarn install
+yarn android-install    # sets up environment
+yarn android-run        # builds and deploys to Android
 ```
 
-To run on Android:
+For iOS:
 ```sh
-npx react-native run-android
-```
-
-To run on iOS:
-
-```sh
-npx react-native run-ios
-```
+yarn ios-install        # sets up environment
+yarn ios-run            # builds and deploys to iOS
 
 ### Android Demos
 
@@ -480,13 +475,13 @@ this._porcupineManager = await PorcupineManager.fromKeywords(["/path/to/keyword.
 Once you have instaiated a Porcupine manager, you can start audio capture and wake word detection by calling:
 
 ```javascript
-this._porcupineManager.start();
+let didStart = this._porcupineManager.start();
 ```
 
 And then stop it by calling:
 
 ```javascript
-this._porcupineManager.stop();
+let didStop = this._porcupineManager.stop();
 ```
 
 Once the app is done with using PorcupineManager, be sure you explicitly release the resources allocated to Porcupine:
