@@ -23,8 +23,6 @@ type State = {
   buttonDisabled: boolean;
   isListening: boolean;
   backgroundColour: string;
-
-  error: string | null;
 };
 
 export default class App extends Component<Props, State> {
@@ -42,8 +40,6 @@ export default class App extends Component<Props, State> {
       buttonDisabled: false,
       isListening: false,
       backgroundColour: this._defaultColour,
-
-      error: null,
     };
   }
 
