@@ -19,7 +19,7 @@ Porcupine is:
 
 ## Installation
 
-You can install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/binding/java/bin/porcupine-1.8.7.jar).
+You can install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/binding/java/bin/).
 
 ## Build
 
