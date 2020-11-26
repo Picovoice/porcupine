@@ -185,6 +185,7 @@ For iOS:
 ```sh
 yarn ios-install        # sets up environment
 yarn ios-run            # builds and deploys to iOS
+```
 
 ### Android Demos
 
