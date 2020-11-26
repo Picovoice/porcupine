@@ -822,6 +822,16 @@ pv_porcupine_delete(handle);
 
 ## Releases
 
+### v1.9.0 - December 3rd, 2020
+
+- Added *Alexa*, *Computer*, *Hey Google*, *Hey Siri*, *Jarvis*, and *Okay Google* models under Apache 2.0.
+- Added React Native SDK.
+- Added Java SDK.
+- Added .NET SDK.
+- Added NodeJS SDK.
+- Improved accuracy.
+- Runtime optimization.
+
 ### v1.8.0 - May 27th, 2020
 
 - Improved accuracy.
@@ -845,26 +855,25 @@ pv_porcupine_delete(handle);
 
 ### v1.5.0 - November 13, 2018
 
-- Improved optimizer's accuracy.
+- Improved accuracy.
 - Runtime optimization.
 - Added support for running within web browsers (WebAssembly).
 
 ### v1.4.0 - July 20, 2018
 
-- Improved accuracy across all models (specifically compressed variant).
+- Improved accuracy.
 - Runtime optimizations.
 - Updated documentation.
 
 ### v1.3.0 - June 19, 2018
 
-- Added compressed model (200 KB) for deeply-embedded platforms.
 - Improved accuracy.
-- Runtime optimizations and bug fixes.
+- Runtime optimizations
+- Bug fixes.
 
 ### v1.2.0 - April 21, 2018
 
-- Runtime optimizations across platforms.
-- Added support for watchOS.
+- Runtime optimizations.
 
 ### v1.1.0 - April 11, 2018
 
