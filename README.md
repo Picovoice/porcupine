@@ -229,8 +229,8 @@ The last command will launch a local server running the demo. Open http://localh
 
 ### C Demos
 
-[This demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone) and
-Mac. You need `GCC` and `ALSA` installed to compile it. Compile the demo using
+[This demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone). You
+need `GCC` and `ALSA` installed to compile it. Compile the demo using
 
 ```bash
 gcc -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound -std=c99
