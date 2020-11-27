@@ -198,9 +198,8 @@ In order to learn about how to use Porcupine in long running services go to
 
 ### iOS Demos
 
-Using [Xcode](https://developer.apple.com/xcode/), open
-[demo/ios/PorcupineDemoNoWatch.xcodeproj](/demo/ios/PorcupineDemoNoWatch.xcodeproj) and run the application. You will
-need an iOS device connected to your machine and a valid Apple developer account.
+Using [Xcode](https://developer.apple.com/xcode/), open [PorcupineDemo](/demo/ios/PorcupineDemo.xcodeproj) and run the
+application. You will need an iOS device connected to your machine and a valid Apple developer account.
 
 ### JavaScript Demos
 
@@ -614,15 +613,15 @@ Porcupine is shipped as a precompiled ANSI C library and can directly be used in
 initialized to detect multiple wake words concurrently using:
 
 ```swift
-let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordFilePaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
-let sensitivities: [Float] = [0.3, 0.7, ...];
+let modelPath: String = ... // It is available at lib/common/porcupine_params.pv
+let keywordPaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
+let sensitivities: [Float32] = [0.3, 0.7, ...];
 var handle: OpaquePointer?
 
 let status = pv_porcupine_init(
-    modelFilePath,
+    modelPath,
     Int32(keywordFilePaths.count), // Number of different keywords to monitor for
-    keywordFilePaths.map{ UnsafePointer(strdup($0)) },
+    keywordPaths.map{ UnsafePointer(strdup($0)) },
     sensitivities,
     &handle)
 if status != PV_STATUS_SUCCESS {
@@ -664,29 +663,22 @@ stream, feeding it into Porcupine's library, and invoking a user-provided detect
 initialized as below:
 
 ```swift
-let modelFilePath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordCallback: ((WakeWordConfiguration) -> Void) = {
+let modelPath: String = ... // It is available at lib/common/porcupine_params.pv
+let keywordPaths: [String] = ...
+let sensitivities: [Float32] = ...
+let keywordCallback: ((Int32) -> Void) = {
     // detection event callback
 }
 
-let wakeWordConfiguration1 = WakeWordConfiguration(
-    name: "1",
-    filePath: "path/to/keyword/1",
-    sensitivity: 0.5)
-let wakewordConfiguration2 = WakeWordConfiguration(
-    name: "2",
-    filePath: "path/to/keyword/2",
-    sensitivity: 0.7)
-let configurations = [ wakeWordConfiguration1, wakewordConfiguration2 ]
-
 let manager = try PorcupineManager(
-    modelFilePath: modelFilePath,
-    wakeKeywordConfigurations: configurations,
+    modelPath: modelPath,
+    keywordPaths: keywordPaths,
+    sensitivities: sensitivities
     onDetection: keywordCallback)
 ```
 
-When initialized, input audio can be monitored using `manager.startListening()`. When done be sure to stop the manager using
-`manager.stopListening()`.
+When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
+`manager.stop()`.
 
 ### JavaScript
 
