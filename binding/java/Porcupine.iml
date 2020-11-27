@@ -10,51 +10,15 @@
     </content>
     <content url="file://$MODULE_DIR$/../../lib">
       <sourceFolder url="file://$MODULE_DIR$/../../lib/common" type="java-resource" relativeOutputPath="porcupine/lib/common" />
-      <sourceFolder url="file://$MODULE_DIR$/../../lib/common" type="java-test-resource" relativeOutputPath="porcupine/lib/common" />
       <sourceFolder url="file://$MODULE_DIR$/../../lib/java" type="java-resource" relativeOutputPath="porcupine/lib/java" />
-            <sourceFolder url="file://$MODULE_DIR$/../../lib/java" type="java-test-resource" relativeOutputPath="porcupine/lib/java" />
     </content>
     <content url="file://$MODULE_DIR$/../../resources">
       <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/linux" type="java-resource" relativeOutputPath="porcupine/resources/keyword_files/linux" />
       <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/mac" type="java-resource" relativeOutputPath="porcupine/resources/keyword_files/mac" />
       <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/windows" type="java-resource" relativeOutputPath="porcupine/resources/keyword_files/windows" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/linux" type="java-test-resource" relativeOutputPath="porcupine/resources/keyword_files/linux" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/mac" type="java-test-resource" relativeOutputPath="porcupine/resources/keyword_files/mac" />
-      <sourceFolder url="file://$MODULE_DIR$/../../resources/keyword_files/windows" type="java-test-resource" relativeOutputPath="porcupine/resources/keyword_files/windows" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" scope="TEST">
-      <library name="JUnit5.4">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter/5.4.2/junit-jupiter-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.4.2/junit-jupiter-api-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.1.1/opentest4j-1.1.1.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.4.2/junit-platform-commons-1.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.4.2/junit-jupiter-params-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.4.2/junit-jupiter-engine-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.4.2/junit-platform-engine-1.4.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter/5.4.2/junit-jupiter-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.4.2/junit-jupiter-api-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.1.1/opentest4j-1.1.1.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.4.2/junit-platform-commons-1.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.4.2/junit-jupiter-params-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.4.2/junit-jupiter-engine-5.4.2.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.4.2/junit-platform-engine-1.4.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="org.junit.jupiter:junit-jupiter:5.4.2" level="project" />
   </component>
 </module>
