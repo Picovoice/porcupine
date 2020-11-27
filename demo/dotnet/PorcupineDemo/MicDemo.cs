@@ -48,7 +48,7 @@ namespace PorcupineDemo
         /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>        
         public static void RunDemo(string modelPath, List<string> keywordPaths, List<string> keywords, List<float> sensitivities,
                                    int? audioDeviceIndex = null, string outputPath = null)
-        {            
+        {
             Porcupine porcupine = null;
             BinaryWriter outputFileWriter = null;
             int totalSamplesWritten = 0;
@@ -57,6 +57,10 @@ namespace PorcupineDemo
                 // init porcupine wake word engine
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
                 
+                if (keywords == null) {
+                    keywords = keywordPaths.Select(k=>Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
+                }
+
                 // open stream to output file
                 if (!string.IsNullOrWhiteSpace(outputPath))
                 {
@@ -296,6 +300,7 @@ namespace PorcupineDemo
                 if (keywords.All(k => Porcupine.KEYWORDS.Contains(k)))
                 {
                     keywordPaths = keywords.Select(k => Porcupine.KEYWORD_PATHS[k]).ToList();
+                    keywords = null;
                 }
                 else
                 {
@@ -306,12 +311,12 @@ namespace PorcupineDemo
 
             if (sensitivities == null)
             {
-                sensitivities = Enumerable.Repeat(0.5f, keywords.Count()).ToList();
+                sensitivities = Enumerable.Repeat(0.5f, keywordPaths.Count()).ToList();
             }
 
-            if (sensitivities.Count() != keywords.Count())
+            if (sensitivities.Count() != keywordPaths.Count())
             {
-                throw new ArgumentException($"Number of keywords ({keywords.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
+                throw new ArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
             }
 
             // run demo with validated arguments

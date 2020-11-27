@@ -103,13 +103,13 @@ placeholder for data used by various applications within the repository.
 
 ### Python Demos
 
-Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package
+Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package:
 
 ```bash
 sudo pip3 install pvporcupinedemo
 ```
 
-With a working microphone connected to your device run the following in the terminal
+With a working microphone connected to your device run the following in the terminal:
 
 ```shell
 porcupine_demo_mic --keywords porcupine

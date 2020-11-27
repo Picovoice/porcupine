@@ -48,6 +48,10 @@ namespace PorcupineDemo
                 // init porcupine wake word engine
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
                 
+                if (keywords == null) {
+                    keywords = keywordPaths.Select(k=>Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
+                }
+
                 using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
                 {
                     short numChannels;
@@ -216,32 +220,11 @@ namespace PorcupineDemo
 
             modelPath ??= Porcupine.MODEL_PATH;
             
-            if (keywordPaths == null || keywordPaths.Count == 0)
-            {
-                if (keywords == null || keywords.Count == 0)
-                {
-                    throw new ArgumentNullException("keywords", "Either '--keywords' or '--keyword_paths' must be set.");
-                }
-
-                if (keywords.All(k => Porcupine.KEYWORDS.Contains(k)))
-                {
-                    keywordPaths = keywords.Select(k => Porcupine.KEYWORD_PATHS[k]).ToList();
-                }
-                else
-                {
-                    throw new ArgumentException("One or more keywords are not available by default. Available default keywords are:\n" +
-                                                 string.Join(",", Porcupine.KEYWORDS));
-                }
-            }
+            int numKeywords = keywordPaths == null ?  keywords.Count() : keywordPaths.Count();
 
             if (sensitivities == null)
             {
-                sensitivities = Enumerable.Repeat(0.5f, keywords.Count()).ToList();
-            }
-
-            if (sensitivities.Count() != keywords.Count())
-            {
-                throw new ArgumentException($"Number of keywords ({keywords.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
+                sensitivities = Enumerable.Repeat(0.5f, numKeywords).ToList();
             }
 
             // run demo with validated arguments
