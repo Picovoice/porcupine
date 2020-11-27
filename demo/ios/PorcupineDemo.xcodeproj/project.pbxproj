@@ -23,6 +23,12 @@
 		BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */; };
 		BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */; };
 		BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */; };
+		E301BFA12570C08100F85308 /* alexa_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9B2570C08000F85308 /* alexa_ios.ppn */; };
+		E301BFA22570C08100F85308 /* hey siri_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9C2570C08000F85308 /* hey siri_ios.ppn */; };
+		E301BFA32570C08100F85308 /* computer_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9D2570C08000F85308 /* computer_ios.ppn */; };
+		E301BFA42570C08100F85308 /* jarvis_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9E2570C08100F85308 /* jarvis_ios.ppn */; };
+		E301BFA52570C08100F85308 /* ok google_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9F2570C08100F85308 /* ok google_ios.ppn */; };
+		E301BFA62570C08100F85308 /* hey google_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BFA02570C08100F85308 /* hey google_ios.ppn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +51,12 @@
 		BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = bumblebee_ios.ppn; path = ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
 		BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ios/americano_ios.ppn; sourceTree = "<group>"; };
 		BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = terminator_ios.ppn; path = ios/terminator_ios.ppn; sourceTree = "<group>"; };
+		E301BF9B2570C08000F85308 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = alexa_ios.ppn; path = ios/alexa_ios.ppn; sourceTree = "<group>"; };
+		E301BF9C2570C08000F85308 /* hey siri_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey siri_ios.ppn"; path = "ios/hey siri_ios.ppn"; sourceTree = "<group>"; };
+		E301BF9D2570C08000F85308 /* computer_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = computer_ios.ppn; path = ios/computer_ios.ppn; sourceTree = "<group>"; };
+		E301BF9E2570C08100F85308 /* jarvis_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = jarvis_ios.ppn; path = ios/jarvis_ios.ppn; sourceTree = "<group>"; };
+		E301BF9F2570C08100F85308 /* ok google_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ok google_ios.ppn"; path = "ios/ok google_ios.ppn"; sourceTree = "<group>"; };
+		E301BFA02570C08100F85308 /* hey google_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey google_ios.ppn"; path = "ios/hey google_ios.ppn"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +74,12 @@
 		BB247361206164C400D96613 /* keyword_files */ = {
 			isa = PBXGroup;
 			children = (
+				E301BF9B2570C08000F85308 /* alexa_ios.ppn */,
+				E301BF9D2570C08000F85308 /* computer_ios.ppn */,
+				E301BFA02570C08100F85308 /* hey google_ios.ppn */,
+				E301BF9C2570C08000F85308 /* hey siri_ios.ppn */,
+				E301BF9E2570C08100F85308 /* jarvis_ios.ppn */,
+				E301BF9F2570C08100F85308 /* ok google_ios.ppn */,
 				BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */,
 				BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */,
 				BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */,
@@ -184,7 +202,11 @@
 			files = (
 				BBFFB335226EC72E00A9DA37 /* grapefruit_ios.ppn in Resources */,
 				BBFFB33B226EC72E00A9DA37 /* blueberry_ios.ppn in Resources */,
+				E301BFA12570C08100F85308 /* alexa_ios.ppn in Resources */,
+				E301BFA62570C08100F85308 /* hey google_ios.ppn in Resources */,
+				E301BFA42570C08100F85308 /* jarvis_ios.ppn in Resources */,
 				BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */,
+				E301BFA32570C08100F85308 /* computer_ios.ppn in Resources */,
 				BBFFB333226EC72E00A9DA37 /* grasshopper_ios.ppn in Resources */,
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
 				BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */,
@@ -192,8 +214,10 @@
 				BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */,
 				BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */,
 				BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */,
+				E301BFA22570C08100F85308 /* hey siri_ios.ppn in Resources */,
 				BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */,
 				BB24735A205F636700D96613 /* porcupine_params.pv in Resources */,
+				E301BFA52570C08100F85308 /* ok google_ios.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,12 +378,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FXK66JFZWS;
+				DEVELOPMENT_TEAM = DXS28SLTD3;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo;
+				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -371,12 +395,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FXK66JFZWS;
+				DEVELOPMENT_TEAM = DXS28SLTD3;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo;
+				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
