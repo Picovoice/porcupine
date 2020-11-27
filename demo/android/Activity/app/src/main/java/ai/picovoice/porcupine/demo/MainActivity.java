@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static final int[] KEYWORDS = {
-            R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit, R.raw.grasshopper,
-            R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
+            R.raw.alexa, R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.computer, R.raw.grapefruit,
+            R.raw.grasshopper, R.raw.heygoogle, R.raw.heysiri, R.raw.jarvis, R.raw.okgoogle, R.raw.picovoice,
+            R.raw.porcupine, R.raw.terminator,
     };
 
     private void copyResourceFiles() throws IOException {
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private PorcupineManager initPorcupine() throws PorcupineException {
         final Spinner mySpinner = findViewById(R.id.keyword_spinner);
         final String keyword = mySpinner.getSelectedItem().toString();
-        final String filename = keyword.toLowerCase().replaceAll("\\s+", "_");
+        final String filename = keyword.toLowerCase().replaceAll("\\s+", "");
         final String keywordFilePath = new File(this.getFilesDir(), filename + ".ppn").getAbsolutePath();
 
         final String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
