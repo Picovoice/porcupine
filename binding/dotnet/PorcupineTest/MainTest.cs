@@ -91,7 +91,7 @@ namespace PorcupineTest
                 }
             }
 
-            var expectedResults = new[] { 6, 0, 1, 2, 3, 4, 5, 6, 7 };
+            var expectedResults = new[] { 16, 9, 11, 1, 7, 2, 0, 15, 16, 8 };
             Assert.AreEqual(expectedResults.Length, results.Count, $"Should have found {expectedResults.Length} keywords, but {results.Count} were found.");
             for (int i = 0; i < results.Count; i++)
             {
