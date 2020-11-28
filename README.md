@@ -95,58 +95,44 @@ porcupine_demo_mic --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
-utterances of wake-word "porcupine".
+utterances of `Porcupine`.
 
-In order to process audio files (e.g. WAV) run
-
-```shell
-porcupine_demo_file --input_audio_path ${PATH_TO_AN_AUDIO_FILE} --keywords bumblebee
-```
-
-Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Python
-demos go to [demo/python](/demo/python).
+For more information about Python demos go to [demo/python](/demo/python).
 
 ### .NET Demos
 
-Install [OpenAL](https://openal.org/) before using the demo.
+Install [OpenAL](https://openal.org/) and then from [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
+following in the terminal to build the demo:
 
-With a working microphone connected to your device run the following in the terminal:
+```bash
+dotnet build -c MicDemo.Release
+```
+
+Make sure there is a working microphone connected to your device. From [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
+following in the terminal:
 
 ```bash
 dotnet run -c MicDemo.Release -- --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
-utterances of wake-word "porcupine".
+utterances `Porcupine`.
 
-In order to process audio files (e.g. WAV) run:
-
-```bash
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords bumblebee
-```
-
-Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about .NET
-demos go to [demo/dotnet](/demo/dotnet).
+For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
 
 ### Java Demos
 
-With a working microphone connected to your device run the following in the terminal:
+Make sure there is a working microphone connected to your device. From the root of the repository run the following in
+the terminal:
 
 ```bash
-java -jar porcupine-mic-demo.jar -k porcupine
+java -jar demo/java/bin/porcupine-mic-demo.jar -k porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
-utterances of wake-word "porcupine".
+utterances of `Porcupine`.
 
-In order to process audio files (e.g. WAV) run:
-
-```bash
-java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k bumblebee
-```
-
-Then the engine scans the given audio file for occurrences of keyword "bumblebee". For more information about Java
-demos go to [demo/java](/demo/java).
+For more information about Java demos go to [demo/java](/demo/java).
 
 ### React Native Demos
 
@@ -820,9 +806,9 @@ pv_porcupine_delete(handle);
 
 ### v1.6.0 - April 25th, 2019
 
-- Improved accuracy across all models.
-- Runtime optimization across all models
-- Added support for Beagle Bone
+- Improved accuracy.
+- Runtime optimization.
+- Added support for BeagleBone.
 - iOS build can run on simulator now.
 
 ### v1.5.0 - November 13, 2018
@@ -841,7 +827,6 @@ pv_porcupine_delete(handle);
 
 - Improved accuracy.
 - Runtime optimizations
-- Bug fixes.
 
 ### v1.2.0 - April 21, 2018
 
@@ -849,8 +834,7 @@ pv_porcupine_delete(handle);
 
 ### v1.1.0 - April 11, 2018
 
-- Added multiple command detection capability. Porcupine can now detect multiple commands with virtually no added
-  CPU/memory footprint.
+- Added multiple command detection capability.
 
 ### v1.0.0 - March 13, 2018
 
