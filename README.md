@@ -8,24 +8,21 @@ Porcupine is a highly-accurate and lightweight wake word engine. It enables buil
 applications. It is
 
 - using deep neural networks trained in real-world environments.
-- compact and computationally-efficient making it perfect for IoT.
-- cross-platform. It is implemented in fixed-point ANSI C. Raspberry Pi (all variants), Beagle Bone, Android, iOS,
-  Linux (x86_64), Mac (x86_64), Windows (x86_64), and web browsers are supported. Furthermore, Support for
-  various ARM Cortex-A microprocessors and ARM Cortex-M microcontrollers is available for enterprise customers.
-- scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+- compact and computationally-efficient. It is perfect for IoT.
+- cross-platform. Raspberry Pi, BeagleBone, Android, iOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and web
+browsers are supported. Additionally, enterprise customers have access to ARM Cortex-M SDK.
+- scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
+- self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
 
 ## Table of Contents
 
 - [Porcupine](#porcupine)
   - [Table of Contents](#table-of-contents)
-  - [License](#license)
+  - [License & Terms](#license--terms)
   - [Use Cases](#use-cases)
   - [Try It Out](#try-it-out)
   - [Performance](#performance)
-  - [Model Variants](#model-variants)
-  - [Structure of Repository](#structure-of-repository)
-  - [Running Demo Applications](#running-demo-applications)
+  - [Demos](#demos)
     - [Python Demos](#python-demos)
     - [.NET Demos](#net-demos)
     - [Java Demos](#java-demos)
@@ -34,7 +31,7 @@ applications. It is
     - [iOS Demos](#ios-demos)
     - [JavaScript Demos](#javascript-demos)
     - [C Demos](#c-demos)
-  - [Integration](#integration)
+  - [SDKs](#sdks)
     - [Python](#python)
     - [.NET](#net)
     - [Java](#java)
@@ -47,25 +44,21 @@ applications. It is
   - [Releases](#releases)
   - [FAQ](#faq)
 
-## License
+## License & Terms
 
-This repository is licensed under Apache 2.0 which allows running the engine on all supported platforms (except
-microcontrollers) using a set of freely-available [models](/resources/keyword_files). You may create custom wake-word
-models using [Picovoice Console](https://picovoice.ai/console/).
-
-There are two types of Picovoice Console accounts: Personal and Enterprise. Personal accounts empower researchers,
-hobbyists, and tinkerers to experiment. Personal accounts are not permitted for any commercial usage, including internal
-prototyping and proofs-of-concept. Enterprise accounts can unlock all capabilities of Picovoice Console, are permitted
-for use in commercial settings, and have a path to graduate to commercial distribution. For more information check
-[here](https://picovoice.ai/pricing/).
+Porcupine SDK is free and licensed under Apache 2.0 including the [models](/resources/keyword_files) released within the
+repository. [Picovoice Console](https://picovoice.ai/console/) offers two types of subscriptions: Personal and Enterprise.
+Personal accounts can train custom wake word models that run on x86_64, subject to limitations and strictly for
+non-commercial purposes. Personal accounts empower researchers, hobbyists, and tinkerers to experiment. Enterprise
+accounts can unlock all capabilities of Picovoice Console, are permitted for use in commercial settings, and have a path
+to graduate to commercial distribution[<sup>*</sup>](https://picovoice.ai/pricing/).
 
 ## Use Cases
 
-Porcupine is the right product if you need to detect one or a few simple voice commands. Voice activation (wake word detection),
-music control (e.g. volume up/down, play next/last), and voice navigation are a few examples.
+Porcupine is the right product if you need to detect one or a few static (always-listening) voice commands.
 
 - If you want to create voice experiences similar to Alexa or Google, checkout
-[Picovoice SDK](https://github.com/Picovoice/picovoice).
+[Picovoice platform](https://github.com/Picovoice/picovoice).
 - If you need to understand complex and naturally-spoken voice commands within a specific domain, check out
 [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino).
 
@@ -83,23 +76,9 @@ music control (e.g. volume up/down, play next/last), and voice navigation are a 
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
 Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of
-these two, Porcupine's standard model is **5.4 times more accurate** and **6.5 times faster** (on Raspberry Pi 3).
+these two, Porcupine is **5.4 times more accurate** and **6.5 times faster** (on Raspberry Pi 3).
 
-## Model Variants
-
-The library in this repository is the standard trim of the engine. The standard trim is suitable for applications
-running on microprocessors (e.g. Raspberry Pi and BeagleBone) and mobile devices (Android and iOS). Picovoice has
-developed several trims of the engine targeted at a wide range of applications. These are only available to enterprise
-customers.
-
-## Structure of Repository
-
-Porcupine is shipped as an ANSI C precompiled library. The binary files for supported platforms are located under
-[lib](/lib) and header files are at [include](/include). Bindings are available at [binding](/binding) to facilitate
-usage from higher-level languages. Demo applications are located at [demo](/demo). Finally, [resources](/resources) is a
-placeholder for data used by various applications within the repository.
-
-## Running Demo Applications
+## Demos
 
 ### Python Demos
 
@@ -249,7 +228,7 @@ the name of your microphone device. The demo opens an audio stream and detects u
 
 In order to learn more about file-based C demo go to [demo/c](/demo/c).
 
-## Integration
+## SDKs
 
 Below are code snippets showcasing how Porcupine can be integrated into different applications.
 
