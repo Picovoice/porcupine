@@ -155,29 +155,26 @@ yarn ios-run            # builds and deploys to iOS
 ### Android Demos
 
 Using [Android Studio](https://developer.android.com/studio/index.html), open
-[demo/android/Activity](/demo/android/Activity) as an Android project and then run the application. You will need an
-Android device (with developer options enabled) connected to your machine.
+[demo/android/Activity](/demo/android/Activity) as an Android project and then run the application.
 
-In order to learn about how to use Porcupine in long running services go to
-[demo/android/Service](/demo/android/Service).
+To learn about how to use Porcupine in long running services go to [demo/android/Service](/demo/android/Service).
 
 ### iOS Demos
 
 Using [Xcode](https://developer.apple.com/xcode/), open [PorcupineDemo](/demo/ios/PorcupineDemo.xcodeproj) and run the
-application. You will need an iOS device connected to your machine and a valid Apple developer account.
+application.
 
 ### JavaScript Demos
 
-You need `yarn` or `npm` installed first. Install the demo dependencies by executing either of the following sets of `yarn` or `npm` commands from
-[demo/javascript](/demo/javascript):
-
-#### Yarn
+From [demo/javascript](/demo/javascript) run the following in the terminal:
 
 ```bash
 yarn
 yarn copy
 yarn start
 ```
+
+If you prefer to use NPM instead, use the following:
 
 #### NPM
 
@@ -188,31 +185,31 @@ copy-files-from-to
 npx serve
 ```
 
-#### Web Browser
-
-The last command will launch a local server running the demo. Open http://localhost:5000 in your web browser and follow the instructions on the page.
+It will launch a local server running the demo. Open http://localhost:5000 in your web browser and follow the
+instructions on the page.
 
 ### C Demos
 
-[This demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone). You
-need `GCC` and `ALSA` installed to compile it. Compile the demo using
+[Microphone demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone).
+Build the demo:
 
 ```bash
 gcc -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound -std=c99
 ```
 
-Find the name of audio input device (microphone) on your computer using `arecord -L`. Finally execute the following
+Find the name of audio input device (microphone) on your computer using `arecord -L` and then from the root of the
+repository run the demo:
 
 ```bash
-demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
+./demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
 resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${INPUT_AUDIO_DEVICE}
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the
-name of the operating system on your machine (e.g. linux, mac, windows, or raspberry-pi), and `${INPUT_AUDIO_DEVICE}` with
-the name of your microphone device. The demo opens an audio stream and detects utterances of keyword "porcupine".
+name of the platform you are running on (`linux`, `raspberry-pi`, or `beaglebone`), and `${INPUT_AUDIO_DEVICE}` with
+the name of your microphone device. The demo opens an audio stream and detects utterances of `Porcupine`.
 
-In order to learn more about file-based C demo go to [demo/c](/demo/c).
+For more information about C demos go to [demo/c](/demo/c).
 
 ## SDKs
 
