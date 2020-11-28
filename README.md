@@ -30,6 +30,7 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
     - [Android Demos](#android-demos)
     - [iOS Demos](#ios-demos)
     - [JavaScript Demos](#javascript-demos)
+    - [NodeJS Demos](#nodejs-demos)
     - [C Demos](#c-demos)
   - [SDKs](#sdks)
     - [Python](#python)
@@ -188,6 +189,26 @@ npx serve
 It will launch a local server running the demo. Open http://localhost:5000 in your web browser and follow the
 instructions on the page.
 
+### NodeJS Demos
+
+Install [node-record-lpcm16](https://www.npmjs.com/package/node-record-lpcm16) NPM package and following the instructions
+there for setting up your microphone. Then install the demo package:
+
+```bash
+yarn global add @picovoice/porcupine-node-demo
+```
+
+With a working microphone connected to your device run the following in the terminal:
+
+```shell
+ppn-mic-demo --keywords porcupine
+```
+
+The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
+utterances of `Porcupine`.
+
+For more information about Python demos go to [demo/nodejs](/demo/nodejs).
+
 ### C Demos
 
 [Microphone demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone).
@@ -213,17 +234,15 @@ For more information about C demos go to [demo/c](/demo/c).
 
 ## SDKs
 
-Below are code snippets showcasing how Porcupine can be integrated into different applications.
-
 ### Python
 
-Install the Python SDK
+Install the Python SDK:
 
 ```bash
 pip3 install pvporcupine
 ```
 
-The SDK exposes a factory method to create instances of the engine as below
+The SDK exposes a factory method to create instances of the engine:
 
 ```python
 import pvporcupine
@@ -240,7 +259,7 @@ import pvporcupine
 print(pvporcupine.KEYWORDS)
 ```
 
-If you wish to use a non-default keyword file you need to identify its path as below
+If you wish to use a non-default keyword file you need to identify its path:
 
 ```python
 import pvporcupine
@@ -250,24 +269,24 @@ handle = pvporcupine.create(keyword_paths=['path/to/non/default/keyword/file'])
 
 When initialized, valid sample rate can be obtained using `handle.sample_rate`. Expected frame length
 (number of audio samples in an input array) is `handle.frame_length`. The object can be used to monitor
-incoming audio as below.
+incoming audio as follows:
 
 ```python
+import pvporcupine
+
+handle = pvporcupine.create(keywords=['porcupine'])
+
 def get_next_audio_frame():
     pass
 
 while True:
     keyword_index = handle.process(get_next_audio_frame())
     if keyword_index >= 0:
-        # detection event logic/callback
+        # Insert detection event callback here
         pass
 ```
 
-Finally, when done be sure to explicitly release the resources
-
-```python
-handle.delete()
-```
+Finally, when done be sure to explicitly release the resources using `handle.delete()`.
 
 ### .NET
 
@@ -277,10 +296,10 @@ Install the .NET SDK using Nuget or the dotnet CLI
 dotnet add package Porcupine
 ```
 
-The SDK exposes a factory method to create instances of the engine as below:
+The SDK exposes a factory method to create instances of the engine:
 
 ```csharp
-using Picovoice
+using Pv
 
 Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
 ```
@@ -289,7 +308,7 @@ Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
 files available can be retrieved via
 
 ```csharp
-using Picovoice
+using Pv
 
 foreach (string keyword in Porcupine.KEYWORDS)
 {
@@ -297,10 +316,10 @@ foreach (string keyword in Porcupine.KEYWORDS)
 }
 ```
 
-If you wish to use a non-default keyword file you need to identify its path as below:
+If you wish to use a non-default keyword file you need to identify its path:
 
 ```csharp
-using Picovoice
+using Pv
 
 Porcupine handle = Porcupine.Create(keywordPaths: new List<string>{ "path/to/non/default/keyword/file"});
 ```
@@ -312,7 +331,7 @@ incoming audio as below:
 ```csharp
 short[] getNextAudioFrame()
 {
-    // .. get audioFrame
+    // .. get a frame of audio
     return audioFrame;
 }
 
@@ -321,13 +340,13 @@ while(true)
     var keywordIndex = handle.Process(getNextAudioFrame())
     if(keywordIndex >= 0)
     {
-	    // .. detection event logic/callback
+	    // .. Insert detection event callback here
     }
 }
 ```
 
-Porcupine will have its resources freed by the garbage collector, but to have resources freed 
-immediately after use, wrap it in a using statement: 
+Porcupine will have its resources freed by the garbage collector, but to have resources freed  immediately after use,
+wrap it in a using statement: 
 
 ```csharp
 using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" }))
@@ -338,9 +357,8 @@ using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoic
 
 ### Java
 
-Install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/binding/java/bin/porcupine-1.8.7.jar).
-
-The SDK exposes a builder to create instances of the engine as below:
+Install the Porcupine Java binding by downloading and referencing the latest Porcupine JAR file available
+[here](/binding/java/bin). The SDK exposes a builder to create instances of the engine:
 
 ```java
 import ai.picovoice.porcupine.*;
@@ -401,18 +419,16 @@ handle.delete();
 
 ### React Native
 
-For React Native integration, you can install our 
-[@picovoice/react-native-voice-processor](https://www.npmjs.com/package/@picovoice/react-native-voice-processor) and 
-[@picovoice/porcupine-react-native](https://www.npmjs.com/package/@picovoice/porcupine-react-native) native modules into 
-your project using yarn or npm. The module provides you with two levels of API to choose from depending 
-on your needs.  
+Install [@picovoice/react-native-voice-processor](https://www.npmjs.com/package/@picovoice/react-native-voice-processor)
+and  [@picovoice/porcupine-react-native](https://www.npmjs.com/package/@picovoice/porcupine-react-native). The SDK
+provides two APIs:
 
 #### High-Level API
 
 [PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of 
 audio recording. This class is the quickest way to get started. 
 
-Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager 
+Using the constructor `PorcupineManager.fromKeywords` will create an instance of the `PorcupineManager` 
 using one or more of the built-in keywords. 
 
 ```javascript
@@ -434,7 +450,7 @@ static constructor and provide the paths to the `.ppn` file(s).
 this._porcupineManager = await PorcupineManager.fromKeywords(["/path/to/keyword.ppn"], detectionCallback);
 ```
 
-Once you have instaiated a Porcupine manager, you can start audio capture and wake word detection by calling:
+Once you have instantiated a Porcupine manager, you can start audio capture and wake word detection by calling:
 
 ```javascript
 let didStart = this._porcupineManager.start();
@@ -728,43 +744,42 @@ Porcupine is implemented in ANSI C and therefore can be directly linked to C app
 object can be constructed as follows.
 
 ```c
-const char *model_file_path = ... // The file is available at lib/common/porcupine_params.pv
-const char *keyword_file_path = ...
+const char *model_path = ... // Available at lib/common/porcupine_params.pv
+const char *keyword_path = ...
 const float sensitivity = 0.5f;
 
-pv_porcupine_t *handle;
-
+pv_porcupine_t *handle = NULL;
 const pv_status_t status = pv_porcupine_init(
-    model_file_path,
+    model_path,
     1,
-    &keyword_file_path,
+    &keyword_path,
     &sensitivity,
     &handle);
-
 if (status != PV_STATUS_SUCCESS) {
-    // error handling logic
+    // Insert error handling logic
 }
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
-within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
+within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of (potentially) increased false alarm
+rate.
 
-Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio.
-The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in consecutive chunks
-(aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
+Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit linearly-encoded
+PCM audio. The sample rate can be retrieved using `pv_sample_rate()`. Finally, Porcupine accepts input audio in
+consecutive chunks (aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
 
 ```c
 extern const int16_t *get_next_audio_frame(void);
 
 while (true) {
     const int16_t *pcm = get_next_audio_frame();
-    int32_t keyword_index;
+    int32_t keyword_index = -1;
     const pv_status_t status = pv_porcupine_process(handle, pcm, &keyword_index);
     if (status != PV_STATUS_SUCCESS) {
         // error handling logic
     }
     if (keyword_index != -1) {
-        // detection event logic/callback
+        // Insert detection event callback
     }
 }
 ```
