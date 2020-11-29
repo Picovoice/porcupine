@@ -207,7 +207,7 @@ ppn-mic-demo --keywords porcupine
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
 utterances of `Porcupine`.
 
-For more information about Python demos go to [demo/nodejs](/demo/nodejs).
+For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### C Demos
 
