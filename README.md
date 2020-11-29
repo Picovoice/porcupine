@@ -447,7 +447,9 @@ NOTE: the call is asynchronous and therefore should be called in an async block 
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths` 
 static constructor and provide the paths to the `.ppn` file(s).
 ```javascript
-this._porcupineManager = await PorcupineManager.fromKeywords(["/path/to/keyword.ppn"], detectionCallback);
+this._porcupineManager = await PorcupineManager.fromKeywords(
+    ["/path/to/keyword.ppn"],
+    detectionCallback);
 ```
 
 Once you have instantiated a Porcupine manager, you can start audio capture and wake word detection by calling:
@@ -468,14 +470,14 @@ this._porcupineManager.delete();
 ```
 
 As you may have noticed, there is no need to deal with audio capture to enable wake word detection with PorcupineManager. 
-This is because it uses our [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/) 
+This is because it uses [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/) 
 module to capture frames of audio and automatically pass it to the wake word engine.
 
 #### Low-Level API
 
 [Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those 
-who want to incorporate wake word detection into a already existing audio processing pipeline. 
-`Porcupine` also has `fromKeywords` and `fromKeywordPaths` static constructors.
+who want to incorporate wake word detection into a already existing audio processing pipeline.  `Porcupine` also has
+`fromKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
 async createPorcupine(){
@@ -486,7 +488,8 @@ async createPorcupine(){
     }
 }
 ```
-As you can see, in this case you don't pass in a detection callback as you will be passing in audio frames directly using the process function:
+As you can see, in this case you don't pass in a detection callback as you will be passing in audio frames directly
+using the process function:
 
 ```javascript
 let buffer = getAudioFrame();
@@ -515,51 +518,14 @@ this._porcupine.delete();
 
 There are two possibilities for integrating Porcupine into an Android application.
 
-#### Low-Level API
-
-[Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a
-binding for Android. It can be initialized using.
-
-```java
-    final String modelPath = ... // It is available at lib/common/porcupine_params.pv
-    final String keywordPath = ...
-    final float sensitivity = 0.5f;
-
-    Porcupine porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
-
-Once initialized, `porcupine` can be used to monitor incoming audio.
-
-```java
-    private short[] getNextAudioFrame();
-
-    while (true) {
-        final int keywordIndex = porcupine.process(getNextAudioFrame());
-        if (keywordIndex >= 0) {
-            // detection event logic/callback
-        }
-    }
-```
-
-Finally, be sure to explicitly release resources acquired by porcupine as the binding class does not rely on the
-garbage collector for releasing native resources.
-
-```java
-    porcupine.delete();
-```
-
 #### High-Level API
 
 [PorcupineManager](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java)
 provides a high-level API for integrating Porcupine into Android applications. It manages all activities related to creating
-an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback. The class
-can be initialized as below.
+an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback.
 
 ```java
-    final String modelPath = ... // It is available at lib/common/porcupine_params.pv
+    final String modelPath = ... // Available at lib/common/porcupine_params.pv
     final String keywordPath = ...
     final float sensitivity = 0.5f;
 
@@ -581,9 +547,68 @@ Sensitivity is the parameter that enables developers to trade miss rate for fals
 When initialized, input audio can be monitored using `manager.start()`. Stop the manager using by invoking
 `manager.stop()`. When done be sure to release the resources using `manager.delete()`.
 
+#### Low-Level API
+
+[Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a
+binding for Android. It can be initialized using.
+
+```java
+    final String modelPath = ... // Available at lib/common/porcupine_params.pv
+    final String keywordPath = ...
+    final float sensitivity = 0.5f;
+
+    Porcupine porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+
+Once initialized, `porcupine` can be used to monitor incoming audio.
+
+```java
+    private short[] getNextAudioFrame();
+
+    while (true) {
+        final int keywordIndex = porcupine.process(getNextAudioFrame());
+        if (keywordIndex != -1) {
+            // detection event logic/callback
+        }
+    }
+```
+
+Finally, be sure to explicitly release resources acquired by porcupine as the binding class does not rely on the
+garbage collector for releasing native resources.
+
+```java
+    porcupine.delete();
+```
+
 ### iOS
 
 There are two approaches for integrating Porcupine into an iOS application.
+
+#### High-Level API
+
+[PorcupineManager](/binding/ios/PorcupineManager.swift) manages audio recording, feeding it into Porcupine, and invoking
+the user-provided detection callback.
+
+```swift
+let modelPath: String = ... // Available at lib/common/porcupine_params.pv
+let keywordPaths: [String] = ["/path/to/keyword/file/a", "/path/to/keyword/file/b"]
+let sensitivities: [Float32] = [0.35, 0.64]
+let keywordCallback: ((Int32) -> Void) = { keywordIndex in
+    // Insert detection event logic
+}
+
+let manager = try PorcupineManager(
+    modelPath: modelPath,
+    keywordPaths: keywordPaths,
+    sensitivities: sensitivities
+    onDetection: keywordCallback)
+```
+
+When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
+`manager.stop()`.
 
 #### Direct
 
@@ -591,14 +616,14 @@ Porcupine is shipped as a precompiled ANSI C library and can directly be used in
 initialized to detect multiple wake words concurrently using:
 
 ```swift
-let modelPath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordPaths: [String] = ["path/to/keyword/1", "path/to/keyword/2", ...]
-let sensitivities: [Float32] = [0.3, 0.7, ...];
-var handle: OpaquePointer?
+let modelPath: String = ... // Available at lib/common/porcupine_params.pv
+let keywordPaths: [String] = ["/path/to/keyword/file/a", "/path/to/keyword/file/b"]
+let sensitivities: [Float32] = [0.35, 0.64]
 
+var handle: OpaquePointer?
 let status = pv_porcupine_init(
     modelPath,
-    Int32(keywordFilePaths.count), // Number of different keywords to monitor for
+    Int32(keywordFilePaths.count),
     keywordPaths.map{ UnsafePointer(strdup($0)) },
     sensitivities,
     &handle)
@@ -634,30 +659,6 @@ When finished, release the resources via
     pv_porcupine_delete(handle)
 ```
 
-#### Binding
-
-The [PorcupineManager](/binding/ios/PorcupineManager.swift) class manages all activities related to creating an input audio
-stream, feeding it into Porcupine's library, and invoking a user-provided detection callback. The class can be
-initialized as below:
-
-```swift
-let modelPath: String = ... // It is available at lib/common/porcupine_params.pv
-let keywordPaths: [String] = ...
-let sensitivities: [Float32] = ...
-let keywordCallback: ((Int32) -> Void) = {
-    // detection event callback
-}
-
-let manager = try PorcupineManager(
-    modelPath: modelPath,
-    keywordPaths: keywordPaths,
-    sensitivities: sensitivities
-    onDetection: keywordCallback)
-```
-
-When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
-`manager.stop()`.
-
 ### JavaScript
 
 Porcupine is available on modern web browsers via [WebAssembly](https://webassembly.org/). The
@@ -682,7 +683,7 @@ let getNextAudioFrame = function() {
 while (true) {
     let keywordIndex = handle.process(getNextAudioFrame());
     if (keywordIndex !== -1) {
-        // detection event callback
+        // Insert detection callback
     }
 }
 ```
@@ -695,15 +696,13 @@ handle.release();
 
 ### NodeJS
 
-Porcupine is available for NodeJS via the `@picovoice/porcupine-node` NPM package. See [binding/nodejs](/binding/nodejs) for the source.
-
-Use yarn or npm to install:
+Install NodeJS SDK:
 
 ```bash
 yarn add @picovoice/porcupine-node
 ```
 
-Create instances of the Porcupine class by specifying which keywords you want it to listen for, and at which respective sensitivities:
+Create instances of the Porcupine class by specifying which keywords you want it to listen for:
 
 ```javascript
 const Porcupine = require("@picovoice/porcupine-node");
@@ -714,6 +713,14 @@ const {
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
 let handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
+```
+
+`GRASSHOPPER` and `BUMBLEBEE` are builtin keywords. If you wish to use a non-default keyword file you need to identify its path:
+
+```javascript
+const Porcupine = require("@picovoice/porcupine-node");
+
+let handle = new Porcupine(["/path/to/non/default/keyword/file"], [0.5]);
 ```
 
 When instantiated, `handle` can process audio via its `.process` method.
