@@ -117,7 +117,7 @@ dotnet run -c MicDemo.Release -- --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
-utterances `Porcupine`.
+utterances of `Porcupine`.
 
 For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
 
@@ -186,12 +186,12 @@ copy-files-from-to
 npx serve
 ```
 
-It will launch a local server running the demo. Open http://localhost:5000 in your web browser and follow the
+It will launch a local server running the demo. Open `http://localhost:5000` in your web browser and follow the
 instructions on the page.
 
 ### NodeJS Demos
 
-Install [node-record-lpcm16](https://www.npmjs.com/package/node-record-lpcm16) NPM package and following the instructions
+Install [node-record-lpcm16](https://www.npmjs.com/package/node-record-lpcm16) NPM package and follow the instructions
 there for setting up your microphone. Then install the demo package:
 
 ```bash
@@ -215,7 +215,8 @@ For more information about Python demos go to [demo/nodejs](/demo/nodejs).
 Build the demo:
 
 ```bash
-gcc -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound -std=c99
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic \
+-I include/ demo/c/porcupine_demo_mic.c -ldl -lasound
 ```
 
 Find the name of audio input device (microphone) on your computer using `arecord -L` and then from the root of the
@@ -321,7 +322,8 @@ If you wish to use a non-default keyword file you need to identify its path:
 ```csharp
 using Pv
 
-Porcupine handle = Porcupine.Create(keywordPaths: new List<string>{ "path/to/non/default/keyword/file"});
+Porcupine handle = Porcupine.Create(
+    keywordPaths: new List<string>{ "path/to/non/default/keyword/file"});
 ```
 
 When initialized, valid sample rate can be obtained using `handle.SampleRate`. Expected frame length
@@ -340,7 +342,7 @@ while(true)
     var keywordIndex = handle.Process(getNextAudioFrame())
     if(keywordIndex >= 0)
     {
-	    // .. Insert detection event callback here
+        // .. Insert detection event callback here
     }
 }
 ```
@@ -406,7 +408,7 @@ short[] getNextAudioFrame(){
 while(true){
     int keywordIndex = handle.Process(getNextAudioFrame());
     if(keywordIndex >= 0){
-	    // .. detection event logic/callback
+        // .. detection event logic/callback
     }
 }
 ```
@@ -525,20 +527,20 @@ provides a high-level API for integrating Porcupine into Android applications. I
 an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback.
 
 ```java
-    final String modelPath = ... // Available at lib/common/porcupine_params.pv
-    final String keywordPath = ...
-    final float sensitivity = 0.5f;
+final String modelPath = ... // Available at lib/common/porcupine_params.pv
+final String keywordPath = ...
+final float sensitivity = 0.5f;
 
-    PorcupineManager manager = new PorcupineManager(
-            modelPath,
-            keywordPath,
-            sensitivity,
-            new PorcupineManagerCallback() {
-                @Override
-                public void invoke(int keywordIndex) {
-                    // detection event logic/callback
-                }
-            });
+PorcupineManager manager = new PorcupineManager(
+        modelPath,
+        keywordPath,
+        sensitivity,
+        new PorcupineManagerCallback() {
+            @Override
+            public void invoke(int keywordIndex) {
+                // detection event logic/callback
+            }
+        });
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
@@ -553,11 +555,11 @@ When initialized, input audio can be monitored using `manager.start()`. Stop the
 binding for Android. It can be initialized using.
 
 ```java
-    final String modelPath = ... // Available at lib/common/porcupine_params.pv
-    final String keywordPath = ...
-    final float sensitivity = 0.5f;
+final String modelPath = ... // Available at lib/common/porcupine_params.pv
+final String keywordPath = ...
+final float sensitivity = 0.5f;
 
-    Porcupine porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
+Porcupine porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
@@ -566,21 +568,21 @@ Sensitivity is the parameter that enables developers to trade miss rate for fals
 Once initialized, `porcupine` can be used to monitor incoming audio.
 
 ```java
-    private short[] getNextAudioFrame();
+private short[] getNextAudioFrame();
 
-    while (true) {
-        final int keywordIndex = porcupine.process(getNextAudioFrame());
-        if (keywordIndex != -1) {
-            // detection event logic/callback
-        }
+while (true) {
+    final int keywordIndex = porcupine.process(getNextAudioFrame());
+    if (keywordIndex != -1) {
+        // detection event logic/callback
     }
+}
 ```
 
 Finally, be sure to explicitly release resources acquired by porcupine as the binding class does not rely on the
 garbage collector for releasing native resources.
 
 ```java
-    porcupine.delete();
+porcupine.delete();
 ```
 
 ### iOS
@@ -656,7 +658,7 @@ while true {
 When finished, release the resources via
 
 ```swift
-    pv_porcupine_delete(handle)
+pv_porcupine_delete(handle)
 ```
 
 ### JavaScript
