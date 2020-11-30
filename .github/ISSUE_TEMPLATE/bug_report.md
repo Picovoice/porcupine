@@ -1,7 +1,7 @@
 ---
 name: Bug report
-about: Bugs in Picovoice SDK (or Picovoice Console)
-title: 'Picovoice Issue: '
+about: Bugs in Porcupine
+title: 'Porcupine Issue: '
 labels: bug
 assignees: ''
 

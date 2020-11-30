@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Picovoice SDK (or Picovoice Console) suggestion
+about: Porcupine suggestion
 title: ''
 labels: enhancement
 assignees: ''

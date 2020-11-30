@@ -1,7 +1,7 @@
 ---
 name: Documentation
-about: Issues around documentation of Picovoice
-title: Picovoice Documentation Issue
+about: Issues around documentation of Porcupine
+title: Porcupine Documentation Issue
 labels: documentation
 assignees: ''
 
