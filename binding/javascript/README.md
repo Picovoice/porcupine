@@ -2,15 +2,17 @@
 
 ## Compatibility
 
-The binding uses [WebAssembly](https://webassembly.org/) which is supported on
-[almost all](https://caniuse.com/#feat=wasm) modern browsers.
+The binding uses [WebAssembly](https://webassembly.org/) which is supported on [almost all](https://caniuse.com/#feat=wasm)
+modern browsers.
 
 ## Initialization
 
-Typically, the Porcupine WASM module is loaded asynchronously, and is therefore not guaranteed to be ready the first time you wish use `Porcupine.create()`. There are two options for handling this:
+Typically, the Porcupine WASM module is loaded asynchronously, and is therefore not guaranteed to be ready the first time
+you wish use `Porcupine.create()`. There are two options for handling this:
 
 1. Poll the Porcupine `isLoaded()` method until it is true
-2. Supply a callback to `Porcupine` using the `PorcupineOptions` method with your function assigned to the `callback` key; it will be invoked when `isLoaded()` becomes true
+2. Supply a callback to `Porcupine` using the `PorcupineOptions` method with your function assigned to the
+`callback` key; it will be invoked when `isLoaded()` becomes true
 
 ```javascript
 let callback = function callback() {
