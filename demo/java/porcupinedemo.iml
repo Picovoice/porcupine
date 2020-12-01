@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="porcupine-1.8.7" level="project" />
+    <orderEntry type="library" name="porcupine-1.9.0" level="project" />
     <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
   </component>
 </module>

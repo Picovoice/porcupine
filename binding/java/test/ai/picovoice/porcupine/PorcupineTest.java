@@ -97,7 +97,7 @@ public class PorcupineTest {
 
     @Test
     void testProcessMultiple() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String[] keywords = new String[]{"americano", "blueberry", "bumblebee", "grapefruit",
+        final String[] keywords = new String[]{ "alexa", "americano", "blueberry", "bumblebee", "grapefruit",
                 "grasshopper", "picovoice", "porcupine", "terminator"};
 
         porcupine = new Porcupine.Builder()
@@ -129,7 +129,7 @@ public class PorcupineTest {
             }
         }
 
-        ArrayList<Integer> expectedResults = new ArrayList<>(Arrays.asList(6, 0, 1, 2, 3, 4, 5, 6, 7));
+        ArrayList<Integer> expectedResults = new ArrayList<>(Arrays.asList(7, 0, 1, 2, 3, 4, 5, 6, 7, 8));
         assertEquals(results, expectedResults);
     }
 }

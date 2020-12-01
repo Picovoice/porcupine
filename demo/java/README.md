@@ -54,10 +54,10 @@ can be seen in the usage string:
 java -jar porcupine-file-demo.jar -h
 ```
 
-To detect multiple phrases concurrently provide them as separate arguments:
+To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```bash
-java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k grasshopper porcupine
+java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k grasshopper "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
@@ -92,10 +92,10 @@ can be seen in the usage string:
 java -jar porcupine-mic-demo.jar -h
 ```
 
-To detect multiple phrases concurrently provide them as separate arguments:
+To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks: 
 
 ```bash
-java -jar porcupine-mic-demo.jar -k picovoice porcupine
+java -jar porcupine-mic-demo.jar -k picovoice "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))

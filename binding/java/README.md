@@ -8,9 +8,9 @@ applications.
 Porcupine is:
 
 - using deep neural networks trained in real-world environments.
-- compact and computationally-efficient making it perfect for IoT.
-- scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+- compact and computationally-efficient. It is perfect for IoT.
+- scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
+- self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
 
 ## Compatibility
 
@@ -19,12 +19,12 @@ Porcupine is:
 
 ## Installation
 
-You can install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/binding/java/bin/).
+You can install the Porcupine Java binding by downloading and referencing the latest [Porcupine JAR file](/binding/java/bin).
 
 ## Build
 
-To build from source, we recommend using the [IntelliJ IDE](https://www.jetbrains.com/idea/download/). Open the .iml file with IntelliJ and
-click "Build > Build Project" to build or "Build > Build Artifacts" to package as a JAR file.
+To build from source, we recommend using the [IntelliJ IDE](https://www.jetbrains.com/idea/download/). Open the `.iml`
+file with IntelliJ and click `Build > Build Project` to build or `Build > Build Artifacts` to package as a JAR file.
 
 ## Usage
 
@@ -120,5 +120,5 @@ handle.delete();
 
 ## Demos
 
-The [Porcupine Java demo](/demo/java) is a Java command-line application that allows for 
-processing real-time audio (i.e. microphone) and files using Porcupine.
+The [Porcupine Java demo](/demo/java) is a Java command-line application that allows for  processing real-time audio
+(i.e. microphone) and files using Porcupine.
