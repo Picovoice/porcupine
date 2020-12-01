@@ -42,7 +42,9 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
   private static final String LOG_TAG = "PvPorcupine";
   private static final int[] KEYWORDS = {
     R.raw.americano_android, R.raw.blueberry_android, R.raw.bumblebee_android, R.raw.grapefruit_android, 
-    R.raw.grasshopper_android, R.raw.picovoice_android, R.raw.porcupine_android, R.raw.terminator_android
+    R.raw.grasshopper_android, R.raw.picovoice_android, R.raw.porcupine_android, R.raw.terminator_android,
+    R.raw.alexa_android, R.raw.computer_android, R.raw.hey_google_android, R.raw.hey_siri_android,
+    R.raw.jarvis_android, R.raw.ok_google_android
   };
   private final ReactApplicationContext reactContext;
   private final Map<String, Porcupine> porcupinePool = new HashMap<String, Porcupine>();
