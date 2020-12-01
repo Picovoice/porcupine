@@ -74,10 +74,10 @@ can be seen in the usage string:
 dotnet run -c FileDemo.Release -- --help
 ```
 
-To detect multiple phrases concurrently provide them as separate arguments:
+To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```bash
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
+dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords grasshopper "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
