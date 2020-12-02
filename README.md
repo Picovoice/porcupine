@@ -10,7 +10,7 @@ applications. It is
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient. It is perfect for IoT.
 - cross-platform. Raspberry Pi, BeagleBone, Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and web
-browsers are supported. Additionally, enterprise customers have access to ARM Cortex-M SDK.
+  browsers are supported. Additionally, enterprise customers have access to the ARM Cortex-M SDK.
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
 - self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
 
@@ -52,16 +52,16 @@ repository. [Picovoice Console](https://picovoice.ai/console/) offers two types 
 Personal accounts can train custom wake word models that run on x86_64, subject to limitations and strictly for
 non-commercial purposes. Personal accounts empower researchers, hobbyists, and tinkerers to experiment. Enterprise
 accounts can unlock all capabilities of Picovoice Console, are permitted for use in commercial settings, and have a path
-to graduate to commercial distribution[<sup>*</sup>](https://picovoice.ai/pricing/).
+to graduate to commercial distribution[<sup>\*</sup>](https://picovoice.ai/pricing/).
 
 ## Use Cases
 
 Porcupine is the right product if you need to detect one or a few static (always-listening) voice commands.
 
-- If you want to create voice experiences similar to Alexa or Google, checkout
-[Picovoice platform](https://github.com/Picovoice/picovoice).
-- If you need to understand complex and naturally-spoken voice commands within a specific domain, check out
-[Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino).
+- If you want to create voice experiences similar to Alexa or Google, see the
+  [Picovoice platform](https://github.com/Picovoice/picovoice).
+- If you need to understand complex and naturally-spoken voice commands within a specific domain, see the
+  [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino).
 
 ## Try It Out
 
@@ -137,17 +137,19 @@ For more information about Java demos go to [demo/java](/demo/java).
 
 ### React Native Demos
 
-To run the React Native Porcupine demo app you'll first need to setup your React Native environment. For this, 
-please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has 
-been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands: 
+To run the React Native Porcupine demo app you will first need to setup your React Native environment. For this,
+please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has
+been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands:
 
 For Android:
+
 ```sh
 yarn android-install    # sets up environment
 yarn android-run        # builds and deploys to Android
 ```
 
 For iOS:
+
 ```sh
 yarn ios-install        # sets up environment
 yarn ios-run            # builds and deploys to iOS
@@ -171,7 +173,6 @@ From [demo/javascript](/demo/javascript) run the following in the terminal:
 
 ```bash
 yarn
-yarn copy
 yarn start
 ```
 
@@ -184,7 +185,7 @@ copy-files-from-to
 npx serve
 ```
 
-It will launch a local server running the demo. Open `http://localhost:5000` in your web browser and follow the
+This will launch a local server running the demo. Open `http://localhost:5000` in your web browser and follow the
 instructions on the page.
 
 ### NodeJS Demos
@@ -266,7 +267,7 @@ import pvporcupine
 handle = pvporcupine.create(keyword_paths=['path/to/non/default/keyword/file'])
 ```
 
-When initialized, valid sample rate can be obtained using `handle.sample_rate`. Expected frame length
+When initialized, valid sample rate can be obtained using `handle.sample_rate`. The required frame length
 (number of audio samples in an input array) is `handle.frame_length`. The object can be used to monitor
 incoming audio as follows:
 
@@ -289,7 +290,7 @@ Finally, when done be sure to explicitly release the resources using `handle.del
 
 ### .NET
 
-Install the .NET SDK using Nuget or the dotnet CLI
+Install the .NET SDK using NuGet or the dotnet CLI:
 
 ```bash
 dotnet add package Porcupine
@@ -303,8 +304,8 @@ using Pv
 Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
 ```
 
-`keywords` argument is a shorthand for accessing default keyword files shipped with the library. The default keyword
-files available can be retrieved via
+The `keywords` argument is a shorthand for accessing built-in keyword files shipped with the library. The built-in keyword
+files available can be retrieved via:
 
 ```csharp
 using Pv
@@ -315,16 +316,16 @@ foreach (string keyword in Porcupine.KEYWORDS)
 }
 ```
 
-If you wish to use a non-default keyword file you need to identify its path:
+If you wish to use a custom keyword file (i.e. a keyword file generated by Picovoice Console, with a `.ppn` extension), you need to specify its path:
 
 ```csharp
 using Pv
 
 Porcupine handle = Porcupine.Create(
-    keywordPaths: new List<string>{ "path/to/non/default/keyword/file"});
+    keywordPaths: new List<string>{ "path/to/custom/keyword/file"});
 ```
 
-When initialized, valid sample rate can be obtained using `handle.SampleRate`. Expected frame length
+When initialized, the required sample rate can be obtained using `handle.SampleRate`. Expected frame length
 (number of audio samples in an input array) is `handle.FrameLength`. The object can be used to monitor
 incoming audio as below:
 
@@ -345,8 +346,8 @@ while(true)
 }
 ```
 
-Porcupine will have its resources freed by the garbage collector, but to have resources freed  immediately after use,
-wrap it in a using statement: 
+Porcupine will have its resources freed by the garbage collector, but to have resources freed immediately after use,
+wrap it in a `using` statement:
 
 ```csharp
 using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" }))
@@ -370,8 +371,9 @@ try{
 } catch (PorcupineException e) { }
 ```
 
-The `setKeyword()` builder argument is a shorthand for accessing default keyword model files shipped with the package.  
-The default keyword files available can be retrieved via:
+The `setKeyword()` builder argument is a shorthand for accessing built-in keyword model files shipped with the package.
+
+The built-in keyword files available can be retrieved via:
 
 ```java
 import ai.picovoice.porcupine.*;
@@ -381,14 +383,14 @@ for(String keyword : Porcupine.KEYWORDS){
 }
 ```
 
-If you wish to use a non-default keyword file you need to identify its path as below:
+If you wish to use a custom keyword file (i.e. a keyword file generated by Picovoice Console, with a `.ppn` extension) you need to identify its path as below:
 
 ```java
 import ai.picovoice.porcupine.*;
 
 try{
     Porcupine handle = new Porcupine.Builder()
-                        .setKeywordPath("path/to/non/default/keyword/file")
+                        .setKeywordPath("path/to/custom/keyword/file")
                         .build();
 } catch (PorcupineException e) { }
 ```
@@ -420,36 +422,39 @@ handle.delete();
 ### React Native
 
 Install [@picovoice/react-native-voice-processor](https://www.npmjs.com/package/@picovoice/react-native-voice-processor)
-and  [@picovoice/porcupine-react-native](https://www.npmjs.com/package/@picovoice/porcupine-react-native). The SDK
+and [@picovoice/porcupine-react-native](https://www.npmjs.com/package/@picovoice/porcupine-react-native). The SDK
 provides two APIs:
 
 #### High-Level API
 
-[PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of 
-audio recording. This class is the quickest way to get started. 
+[PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of
+audio recording. This class is the quickest way to get started.
 
-Using the constructor `PorcupineManager.fromKeywords` will create an instance of the `PorcupineManager` 
-using one or more of the built-in keywords. 
+Using the constructor `PorcupineManager.fromKeywords` will create an instance of the `PorcupineManager`
+using one or more of the built-in keywords.
 
 ```javascript
 async createPorcupineManager(){
     try{
         this._porcupineManager = await PorcupineManager.fromKeywords(
-            ["picovoice", "porcupine"], 
+            ["picovoice", "porcupine"],
             detectionCallback);
     } catch (err) {
         // handle error
     }
 }
 ```
-NOTE: the call is asynchronous and therefore should be called in an async block with a try/catch.
 
-To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths` 
+NOTE: the call is asynchronous and therefore should be called in an `async` block with a `try/catch`.
+
+To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
+
 ```javascript
 this._porcupineManager = await PorcupineManager.fromKeywords(
-    ["/path/to/keyword.ppn"],
-    detectionCallback);
+  ["/path/to/keyword.ppn"],
+  detectionCallback
+);
 ```
 
 Once you have instantiated a Porcupine manager, you can start audio capture and wake word detection by calling:
@@ -458,25 +463,26 @@ Once you have instantiated a Porcupine manager, you can start audio capture and 
 let didStart = this._porcupineManager.start();
 ```
 
-And then stop it by calling:
+Stop it by calling:
 
 ```javascript
 let didStop = this._porcupineManager.stop();
 ```
 
 Once the app is done with using PorcupineManager, be sure you explicitly release the resources allocated to Porcupine:
+
 ```javascript
 this._porcupineManager.delete();
 ```
 
-As you may have noticed, there is no need to deal with audio capture to enable wake word detection with PorcupineManager. 
-This is because it uses [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/) 
+There is no need to deal with audio capture to enable wake word detection with PorcupineManager.
+This is because it uses [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/)
 module to capture frames of audio and automatically pass it to the wake word engine.
 
 #### Low-Level API
 
-[Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those 
-who want to incorporate wake word detection into a already existing audio processing pipeline.  `Porcupine` also has
+[Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
+who want to incorporate wake word detection into a already existing audio processing pipeline. `Porcupine` also has
 `fromKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
@@ -488,24 +494,25 @@ async createPorcupine(){
     }
 }
 ```
-As you can see, in this case you don't pass in a detection callback as you will be passing in audio frames directly
+
+In this case you do not pass in a detection callback as you will be passing in audio frames directly
 using the process function:
 
 ```javascript
 let buffer = getAudioFrame();
 
 try {
-    let keywordIndex = await this._porcupine.process(buffer);
-    if (keywordIndex >= 0) {
-        // detection made!
-    }
+  let keywordIndex = await this._porcupine.process(buffer);
+  if (keywordIndex >= 0) {
+    // detection made!
+  }
 } catch (e) {
-    // handle error
+  // handle error
 }
 ```
 
-For process to work correctly, the audio data must be in the audio format required by Picovoice. 
-The required audio format is found by calling `.sampleRate` to get the required sample rate and `.frameLength` to 
+For `process` to work correctly, the audio data must be in the audio format required by Picovoice.
+The required audio format is found by calling `.sampleRate` to get the required sample rate and `.frameLength` to
 get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
 
 Finally, once you no longer need the wake word engine, be sure to explicitly release the resources allocated to Porcupine:
@@ -541,7 +548,7 @@ PorcupineManager manager = new PorcupineManager(
         });
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
 When initialized, input audio can be monitored using `manager.start()`. Stop the manager using by invoking
@@ -560,7 +567,7 @@ final float sensitivity = 0.5f;
 Porcupine porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
 Once initialized, `porcupine` can be used to monitor incoming audio.
@@ -589,7 +596,7 @@ There are two approaches for integrating Porcupine into an iOS application.
 
 #### High-Level API
 
-[PorcupineManager](/binding/ios/PorcupineManager.swift) manages audio recording, feeding it into Porcupine, and invoking
+[PorcupineManager](/binding/ios/PorcupineManager.swift) manages audio recording, passing it into Porcupine, and invoking
 the user-provided detection callback.
 
 ```swift
@@ -715,12 +722,12 @@ const {
 let handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
 ```
 
-`GRASSHOPPER` and `BUMBLEBEE` are builtin keywords. If you wish to use a non-default keyword file you need to identify its path:
+`GRASSHOPPER` and `BUMBLEBEE` are built-in keywords. If you wish to use a custom keyword file, you need to identify its path:
 
 ```javascript
 const Porcupine = require("@picovoice/porcupine-node");
 
-let handle = new Porcupine(["/path/to/non/default/keyword/file"], [0.5]);
+let handle = new Porcupine(["/path/to/custom/keyword/file"], [0.5]);
 ```
 
 When instantiated, `handle` can process audio via its `.process` method.
@@ -767,7 +774,7 @@ if (status != PV_STATUS_SUCCESS) {
 }
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number
 within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of (potentially) increased false alarm
 rate.
 
@@ -791,7 +798,7 @@ while (true) {
 }
 ```
 
-Finally, when done be sure to release the acquired resources.
+Finally, when done be sure to release the acquired resources:
 
 ```c
 pv_porcupine_delete(handle);
@@ -801,7 +808,7 @@ pv_porcupine_delete(handle);
 
 ### v1.9.0 - December 2nd, 2020
 
-- Added *Alexa*, *Computer*, *Hey Google*, *Hey Siri*, *Jarvis*, and *Okay Google* models under Apache 2.0.
+- Added _Alexa_, _Computer_, _Hey Google_, _Hey Siri_, _Jarvis_, and _Okay Google_ models under Apache 2.0.
 - Added React Native SDK.
 - Added Java SDK.
 - Added .NET SDK.
