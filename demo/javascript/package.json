@@ -15,7 +15,7 @@
     "serve": "11.3.1"
   },
   "scripts": {
-    "copy": "yarn run copy-files-from-to",
+    "prepare": "yarn run copy-files-from-to",
     "start": "yarn run serve"
   },
   "copyFiles": [
