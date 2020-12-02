@@ -801,7 +801,7 @@ pv_porcupine_delete(handle);
 
 ## Releases
 
-### v1.9.0 - December 3rd, 2020
+### v1.9.0 - December 2nd, 2020
 
 - Added *Alexa*, *Computer*, *Hey Google*, *Hey Siri*, *Jarvis*, and *Okay Google* models under Apache 2.0.
 - Added React Native SDK.
