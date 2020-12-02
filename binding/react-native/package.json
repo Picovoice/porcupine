@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react-native",
-  "version": "1.8.2",
+  "version": "1.9.0",
   "description": "Picovoice Porcupine React Native binding",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -12,9 +12,9 @@
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "copy": "node copy.js",
-    "prepare": "bob build",
-    "release": "release-it",
-    "bootstrap": "yarn && yarn copy"
+    "prepare": "bob build",    
+    "bootstrap": "yarn && yarn copy",
+    "pkg": "cd pkg && npm pack .. && cd .."
   },
   "keywords": [
     "react-native",

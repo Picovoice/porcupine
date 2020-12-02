@@ -1,16 +1,16 @@
 # Compatibility
 
 You need a C99-compatible compiler to build these demos. The microphone based demo can only run on Linux-based systems
-such as Ubuntu, Raspberry Pi, and Beagle Bone as it depends on ALSA.
+such as `Ubuntu`, `Raspberry Pi`, and `BeagleBone` as it depends on `ALSA`.
 
 # Usage
 
-## Microphone-Based
+## Microphone Demo
 
 Compile by executing the following command from the root of the repository
 
 ```bash
-gcc -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound
 ```
 
 Running the executable without any commandline arguments prints the usage info to the console as below
@@ -37,7 +37,7 @@ The following achieves the same on a Raspberry Pi 4
 resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 plughw:CARD=AK5371
 ```
 
-## File-Based
+## File Demo
 
 **Note that the demo expect a single-channel WAV file with a sampling rate of 16000 and 16-bit linear PCM encoding. If you
 provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**
@@ -45,7 +45,7 @@ provide a file with incorrect format the demo does not perform any format valida
 Compile by executing the following command from the root of the repository
 
 ```bash
-gcc -O3 -o demo/c/porcupine_demo_file -I include/ demo/c/porcupine_demo_file.c -ldl
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_file -I include/ demo/c/porcupine_demo_file.c -ldl
 ```
 
 Running the executable without any commandline arguments prints the usage info to the console as below

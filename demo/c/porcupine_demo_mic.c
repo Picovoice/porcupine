@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Picovoice Inc.
+    Copyright 2018-2020 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -43,61 +43,61 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    char *error;
+    char *error = NULL;
 
-    const char *(*pv_status_to_string)(pv_status_t) = dlsym(porcupine_library, "pv_status_to_string");
+    const char *(*pv_status_to_string_func)(pv_status_t) = dlsym(porcupine_library, "pv_status_to_string");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_status_to_string' with '%s'.\n", error);
         exit(1);
     }
 
-    int32_t (*pv_sample_rate)() = dlsym(porcupine_library, "pv_sample_rate");
+    int32_t (*pv_sample_rate_func)() = dlsym(porcupine_library, "pv_sample_rate");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_sample_rate' with '%s'.\n", error);
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_init)(const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
-    dlsym(porcupine_library, "pv_porcupine_init");
+    pv_status_t (*pv_porcupine_init_func)(const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
+            dlsym(porcupine_library, "pv_porcupine_init");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_porcupine_init' with '%s'.\n", error);
         exit(1);
     }
 
-    void (*pv_porcupine_delete)(pv_porcupine_t *) = dlsym(porcupine_library, "pv_porcupine_delete");
+    void (*pv_porcupine_delete_func)(pv_porcupine_t *) = dlsym(porcupine_library, "pv_porcupine_delete");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_porcupine_delete' with '%s'.\n", error);
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_process)(pv_porcupine_t *, const int16_t *, int32_t *) =
-    dlsym(porcupine_library, "pv_porcupine_process");
+    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) =
+            dlsym(porcupine_library, "pv_porcupine_process");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_porcupine_process' with '%s'.\n", error);
         exit(1);
     }
 
-    int32_t (*pv_porcupine_frame_length)() = dlsym(porcupine_library, "pv_porcupine_frame_length");
+    int32_t (*pv_porcupine_frame_length_func)() = dlsym(porcupine_library, "pv_porcupine_frame_length");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_porcupine_frame_length' with '%s'.\n", error);
         exit(1);
     }
 
-    pv_porcupine_t *porcupine;
-    pv_status_t status = pv_porcupine_init(model_path, 1, &keyword_path, &sensitivity, &porcupine);
+    pv_porcupine_t *porcupine = NULL;
+    pv_status_t status = pv_porcupine_init_func(model_path, 1, &keyword_path, &sensitivity, &porcupine);
     if (status != PV_STATUS_SUCCESS) {
-        fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string(status));
+        fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string_func(status));
         exit(1);
     }
 
-    snd_pcm_t *alsa_handle;
+    snd_pcm_t *alsa_handle = NULL;
     int error_code = snd_pcm_open(&alsa_handle, input_audio_device, SND_PCM_STREAM_CAPTURE, 0);
     if (error_code != 0) {
         fprintf(stderr, "'snd_pcm_open' failed with '%s'\n", snd_strerror(error_code));
         exit(1);
     }
 
-    snd_pcm_hw_params_t *hardware_params;
+    snd_pcm_hw_params_t *hardware_params = NULL;
     error_code = snd_pcm_hw_params_malloc(&hardware_params);
     if (error_code != 0) {
         fprintf(stderr, "'snd_pcm_hw_params_malloc' failed with '%s'\n", snd_strerror(error_code));
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    error_code = snd_pcm_hw_params_set_rate(alsa_handle, hardware_params, pv_sample_rate(), 0);
+    error_code = snd_pcm_hw_params_set_rate(alsa_handle, hardware_params, pv_sample_rate_func(), 0);
     if (error_code != 0) {
         fprintf(stderr, "'snd_pcm_hw_params_set_rate' failed with '%s'\n", snd_strerror(error_code));
         exit(1);
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    const int32_t frame_length = pv_porcupine_frame_length();
+    const int32_t frame_length = pv_porcupine_frame_length_func();
 
     int16_t *pcm = malloc(frame_length * sizeof(int16_t));
     if (!pcm) {
@@ -166,10 +166,10 @@ int main(int argc, char *argv[]) {
             exit(1);
         }
 
-        int32_t keyword_index;
-        status = pv_porcupine_process(porcupine, pcm, &keyword_index);
+        int32_t keyword_index = -1;
+        status = pv_porcupine_process_func(porcupine, pcm, &keyword_index);
         if (status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n", pv_status_to_string(status));
+            fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n", pv_status_to_string_func(status));
             exit(1);
         }
         if (keyword_index != -1) {
@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
 
     free(pcm);
     snd_pcm_close(alsa_handle);
-    pv_porcupine_delete(porcupine);
+    pv_porcupine_delete_func(porcupine);
     dlclose(porcupine_library);
 
     return 0;

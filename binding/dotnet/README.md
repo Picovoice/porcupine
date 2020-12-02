@@ -8,9 +8,9 @@ applications.
 Porcupine is:
 
 - using deep neural networks trained in real-world environments.
-- compact and computationally-efficient making it perfect for IoT.
-- scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+- compact and computationally-efficient. It is perfect for IoT.
+- scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
+- self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
 
 ## Compatibility
 
@@ -19,7 +19,8 @@ Porcupine is:
 
 ## Installation
 
-You can install the latest version of Porcupine by getting the latest [Porcupine Nuget package](https://www.nuget.org/packages/Porcupine/) in Visual Studio or using the .NET CLI.
+You can install the latest version of Porcupine by getting the latest [Porcupine Nuget package](https://www.nuget.org/packages/Porcupine/)
+in Visual Studio or using the .NET CLI.
 
 ```bash
 dotnet add package Porcupine
@@ -98,8 +99,8 @@ while(true)
 }
 ```
 
-Porcupine will have its resources freed by the garbage collector, but to have resources freed 
-immediately after use, wrap it in a using statement: 
+Porcupine will have its resources freed by the garbage collector, but to have resources freed  immediately after use,
+wrap it in a using statement: 
 
 ```csharp
 using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" }))

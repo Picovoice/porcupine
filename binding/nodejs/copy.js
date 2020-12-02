@@ -43,11 +43,17 @@ let platforms = ["mac", "raspberry-pi", "linux"];
 // Keywords (resources)
 // Only ship keywords that work on every platform (LCD)
 let lcdKeywords = [
+  "alexa",
   "americano",
   "blueberry",
   "bumblebee",
+  "computer",
   "grapefruit",
   "grasshopper",
+  "hey google",
+  "hey siri",
+  "jarvis",
+  "ok google",
   "picovoice",
   "porcupine",
   "terminator",

@@ -47,37 +47,40 @@ namespace PorcupineDemo
             {
                 // init porcupine wake word engine
                 porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
-                
-                using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
+
+                // get keyword names for labeling detection results
+                if (keywords == null)
                 {
-                    short numChannels;
-                    ValidateWavFile(reader, porcupine.SampleRate, 16, out numChannels);
+                    keywords = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
+                }
 
-                    // read audio and send frames to porcupine
-                    short[] porcupineFrame = new short[porcupine.FrameLength];
-                    int frameIndex = 0;
-                    long totalSamplesRead = 0;
-                    while (reader.BaseStream.Position != reader.BaseStream.Length)
+                using BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open));
+                ValidateWavFile(reader, porcupine.SampleRate, 16, out short numChannels);
+
+                // read audio and send frames to porcupine
+                short[] porcupineFrame = new short[porcupine.FrameLength];
+                int frameIndex = 0;
+                long totalSamplesRead = 0;
+                while (reader.BaseStream.Position != reader.BaseStream.Length)
+                {
+                    totalSamplesRead++;
+                    porcupineFrame[frameIndex++] = reader.ReadInt16();
+
+                    if (frameIndex == porcupineFrame.Length)
                     {
-                        totalSamplesRead++;
-                        porcupineFrame[frameIndex++] = reader.ReadInt16();
-
-                        if (frameIndex == porcupineFrame.Length)
+                        int result = porcupine.Process(porcupineFrame);
+                        if (result >= 0)
                         {
-                            int result = porcupine.Process(porcupineFrame);
-                            if (result >= 0)
-                            {
-                                Console.WriteLine($"Detected {keywords[result]} at " +
-                                    $"{Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2)} sec");
-                            }
-                            frameIndex = 0;
+                            Console.WriteLine($"Detected {keywords[result]} at " +
+                                $"{Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2)} sec");
                         }
+                        frameIndex = 0;
+                    }
 
-                        // skip right channel
-                        if (numChannels == 2)
-                        {
-                            reader.ReadInt16();
-                        }
+                    // skip right channel
+                    if (numChannels == 2)
+                    {
+                        reader.ReadInt16();
                     }
                 }
             }
@@ -153,7 +156,7 @@ namespace PorcupineDemo
                 {
                     argIndex++;
                     keywords = new List<string>();
-                    while (argIndex < args.Length && Porcupine.KEYWORDS.Contains(args[argIndex]))
+                    while (argIndex < args.Length && !args[argIndex].StartsWith("--"))
                     {
                         keywords.Add(args[argIndex++]);
                     }                    
@@ -162,14 +165,14 @@ namespace PorcupineDemo
                 {
                     argIndex++;
                     keywordPaths = new List<string>();
-                    while (argIndex < args.Length && File.Exists(args[argIndex]))
+                    while (argIndex < args.Length && !args[argIndex].StartsWith("--"))
                     {
                         keywordPaths.Add(args[argIndex++]);
                     }                    
                 }
                 else if (args[argIndex] == "--model_path")
                 {
-                    if (++argIndex < args.Length && File.Exists(args[argIndex]))
+                    if (++argIndex < args.Length)
                     {
                         modelPath = args[argIndex++];
                     }
@@ -178,12 +181,12 @@ namespace PorcupineDemo
                 {
                     argIndex++;
                     sensitivities = new List<float>();
-                    float sensitivity;
-                    while (argIndex < args.Length && float.TryParse(args[argIndex], out sensitivity))
+                    while (argIndex < args.Length && !args[argIndex].StartsWith("--") && 
+                           float.TryParse(args[argIndex], out float sensitivity))
                     {
                         sensitivities.Add(sensitivity);
                         argIndex++;
-                    }                    
+                    }
                 }                
                 else if (args[argIndex] == "-h" || args[argIndex] == "--help")
                 {
@@ -214,34 +217,22 @@ namespace PorcupineDemo
                 throw new ArgumentException($"Audio file at path {inputAudioPath} does not exist");
             }
 
-            modelPath ??= Porcupine.MODEL_PATH;
-            
-            if (keywordPaths == null || keywordPaths.Count == 0)
+            // argument validation            
+            if ((keywordPaths == null || keywordPaths.Count == 0) && (keywords == null || keywords.Count == 0))
             {
-                if (keywords == null || keywords.Count == 0)
-                {
-                    throw new ArgumentNullException("keywords", "Either '--keywords' or '--keyword_paths' must be set.");
-                }
-
-                if (keywords.All(k => Porcupine.KEYWORDS.Contains(k)))
-                {
-                    keywordPaths = keywords.Select(k => Porcupine.KEYWORD_PATHS[k]).ToList();
-                }
-                else
-                {
-                    throw new ArgumentException("One or more keywords are not available by default. Available default keywords are:\n" +
-                                                 string.Join(",", Porcupine.KEYWORDS));
-                }
+                throw new ArgumentNullException("keywords", "Either '--keywords' or '--keyword_paths' must be set.");
             }
+
+            int keywordCount = keywordPaths?.Count ?? keywords.Count;
 
             if (sensitivities == null)
             {
-                sensitivities = Enumerable.Repeat(0.5f, keywords.Count()).ToList();
+                sensitivities = Enumerable.Repeat(0.5f, keywordCount).ToList();
             }
 
-            if (sensitivities.Count() != keywords.Count())
+            if (sensitivities.Count != keywordCount)
             {
-                throw new ArgumentException($"Number of keywords ({keywords.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
+                throw new ArgumentException($"Number of keywords ({keywordCount}) does not match number of sensitivities ({sensitivities.Count})");
             }
 
             // run demo with validated arguments

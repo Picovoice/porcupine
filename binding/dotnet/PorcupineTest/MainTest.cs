@@ -51,8 +51,8 @@ namespace PorcupineTest
             var results = new List<int>();
             for (int i = 0; i < framecount; i++)
             {
-                int start = i * p.FrameLength;
-                int count = p.FrameLength;
+                int start = i * frameLen;
+                int count = frameLen;
                 List<short> frame = data.GetRange(start, count);
                 int result = p.Process(frame.ToArray());
                 Assert.IsTrue(result == -1 || result == 0, "Porcupine returned an unexpected result (should return 0 or -1)");
@@ -69,7 +69,15 @@ namespace PorcupineTest
         [TestMethod]
         public void TestProcessMultiple()
         {
-            Porcupine p = Porcupine.Create(keywords:Porcupine.KEYWORDS);
+            List<string> inputKeywords = new List<string> 
+            { 
+                "alexa", "americano", "blueberry", 
+                "bumblebee", "grapefruit", "grasshopper", 
+                "picovoice", "porcupine", "terminator" 
+            };
+            List<int> expectedResults = new List<int>() { 7, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+
+            Porcupine p = Porcupine.Create(keywords: inputKeywords);
             int frameLen = p.FrameLength;
 
             string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/multiple_keywords.wav");
@@ -79,8 +87,8 @@ namespace PorcupineTest
             var results = new List<int>();
             for (int i = 0; i < framecount; i++)
             {
-                int start = i * p.FrameLength;
-                int count = p.FrameLength;
+                int start = i * frameLen;
+                int count = frameLen;
                 List<short> frame = data.GetRange(start, count);
                 int result = p.Process(frame.ToArray());
                 Assert.IsTrue(result >= -1, "Porcupine returned an unexpected result (<-1)");
@@ -89,10 +97,9 @@ namespace PorcupineTest
                 {
                     results.Add(result);
                 }
-            }
+            }            
 
-            var expectedResults = new[] { 6, 0, 1, 2, 3, 4, 5, 6, 7 };
-            Assert.AreEqual(expectedResults.Length, results.Count, $"Should have found {expectedResults.Length} keywords, but {results.Count} were found.");
+            Assert.AreEqual(expectedResults.Count, results.Count, $"Should have found {expectedResults.Count} keywords, but {results.Count} were found.");
             for (int i = 0; i < results.Count; i++)
             {
                 Assert.AreEqual(expectedResults[i], results[i], 

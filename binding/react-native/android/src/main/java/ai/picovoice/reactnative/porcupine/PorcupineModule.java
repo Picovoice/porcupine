@@ -41,8 +41,10 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
   private static final String LOG_TAG = "PvPorcupine";
   private static final int[] KEYWORDS = {
-    R.raw.americano_android, R.raw.blueberry_android, R.raw.bumblebee_android, R.raw.grapefruit_android, 
-    R.raw.grasshopper_android, R.raw.picovoice_android, R.raw.porcupine_android, R.raw.terminator_android
+    R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit, 
+    R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
+    R.raw.alexa, R.raw.computer, R.raw.hey_google, R.raw.hey_siri,
+    R.raw.jarvis, R.raw.ok_google
   };
   private final ReactApplicationContext reactContext;
   private final Map<String, Porcupine> porcupinePool = new HashMap<String, Porcupine>();
@@ -76,7 +78,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     final Resources resources = reactContext.getResources();
     for (final int x : KEYWORDS) {
       final String fileName = resources.getResourceEntryName(x);
-      final String keyword = fileName.split("_")[0];
+      String keyword = fileName.replace('_', ' ');
       keywordPaths.put(keyword, new File(resourceDirectory, fileName + ".ppn").getAbsolutePath());
     }
     constants.put("KEYWORD_PATHS", keywordPaths);

@@ -80,6 +80,14 @@ let Porcupine = (function () {
      * @returns An instance of the engine.
      */
 
+    if (keywordModels.length !== sensitivities.length) {
+      throw new Error(`Got ${keywordModels.length} keyword models and ${sensitivities.length} sensitivity values. These numbers should be equal.`)
+    }
+
+    if (sensitivities.constructor !== Float32Array) {
+      throw new Error("Sensitivities should be passed as a Float32Array.");
+    }
+
     let keywordModelSizes = Int32Array.from(
       keywordModels.map((x) => x.byteLength)
     );

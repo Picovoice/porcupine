@@ -26,7 +26,9 @@ Porcupine is:
 
 Both demos use [Microsoft's .NET Core framework](https://dotnet.microsoft.com/download).
 
-MicDemo uses [OpenAL](https://openal.org/). On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
+MicDemo uses [OpenAL](https://openal.org/). 
+
+On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
 
 On Linux use apt-get
 
@@ -49,7 +51,7 @@ dotnet build -c FileDemo.Release
 
 ## Usage
 
-NOTE: the working directory for all dotnet commands is:
+NOTE: File path arguments must be absolute paths. The working directory for the following dotnet commands is:
 
 ```bash
 porcupine/demo/dotnet/PorcupineDemo
@@ -72,10 +74,10 @@ can be seen in the usage string:
 dotnet run -c FileDemo.Release -- --help
 ```
 
-To detect multiple phrases concurrently provide them as separate arguments:
+To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```bash
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
+dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords grasshopper "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
@@ -112,10 +114,10 @@ can be seen in the usage string:
 dotnet run -c MicDemo.Release -- --help
 ```
 
-To detect multiple phrases concurrently provide them as separate arguments:
+To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```bash
-dotnet run -c MicDemo.Release -- --keywords picovoice porcupine
+dotnet run -c MicDemo.Release -- --keywords picovoice "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
