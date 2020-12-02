@@ -177,8 +177,6 @@ yarn start
 
 If you prefer to use NPM instead, use the following:
 
-#### NPM
-
 ```bash
 npm install
 npm install -g copy-files-from-to
