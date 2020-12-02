@@ -27,8 +27,8 @@ fs.copyFileSync('../../lib/common/porcupine_params.pv','./android/src/main/res/r
 const androidKeywordDir = '../../resources/keyword_files/android' 
 const androidKeywords = fs.readdirSync(androidKeywordDir);
 androidKeywords.forEach(k => {
-    if(k.endsWith(".ppn")){
-        fs.copyFileSync(`${androidKeywordDir}/${k}`, `${androidResDir}/${k.replace(' ', '_')}`)
+    if(k.endsWith("_android.ppn")){
+        fs.copyFileSync(`${androidKeywordDir}/${k}`, `${androidResDir}/${k.replace("_android.ppn", ".ppn").replace(' ', '_')}`)
     }
 });
 
