@@ -39,7 +39,7 @@ The binding provides the Porcupine class. Create instances of the Porcupine clas
 
 ### Quick Start: Built-in keywords
 
-The built-in keywords give a quick way to get started. Here we can specify that we want to listen for the wake words "grasshopper" and "bumblebee" with [sensitivities](https://picovoice.ai/faq/porcupine/#what-should-i-set-the-sensitivity-value-to) of 0.5 and 0.65, respectively. Since Porcupine can listen to many keywords, they are provided as an array argument.
+The built-in keywords give a quick way to get started. Here we can specify that we want to listen for the wake words "grasshopper" and "bumblebee" with [sensitivities](https://picovoice.ai/docs/faq/porcupine/#what-should-i-set-the-sensitivity-value-to) of 0.5 and 0.65, respectively. Since Porcupine can listen to many keywords, they are provided as an array argument.
 
 ```javascript
 const Porcupine = require("@picovoice/porcupine-node");
@@ -49,11 +49,11 @@ const {
   BUMBLEBEE,
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
-let engineInstance = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
+let handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
 
 // process a single frame of audio
 // the keywordIndex provies the index of the keyword detected, or -1 if no keyword was detected
-let keywordIndex = engineInstance.process(frame);
+let keywordIndex = handle.process(frame);
 ```
 
 #### List of built-in keywords
@@ -78,10 +78,7 @@ let keywordIndex = engineInstance.process(frame);
 Providing an array of strings instead of the built-in enums allows you to specify an aboslute path to a keyword PPN file:
 
 ```javascript
-let engineInstance = new Porcupine(
-  ["/absolute/path/to/your/keyword.ppn"],
-  [0.5]
-);
+let handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
 ```
 
 ### Override model and library paths
@@ -89,7 +86,7 @@ let engineInstance = new Porcupine(
 The Porcupine constructor accepts two optional positional parameters for the absolute paths to the model and dynamic library, should you need to override them (typically, you will not).
 
 ```javascript
-let engineInstance = new Porcupine(
+let handle = new Porcupine(
   keywordPaths,
   sensitivities,
   modelFilePath,

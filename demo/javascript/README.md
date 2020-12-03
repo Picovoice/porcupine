@@ -8,7 +8,6 @@ Install the demo's dependencies by using either yarn or npm. Execute the command
 
 ```bash
 yarn
-yarn copy
 yarn start
 ```
 
