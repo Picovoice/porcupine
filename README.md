@@ -123,7 +123,7 @@ For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
 
 ### Java Demos
 
-Make sure there is a working microphone connected to your device. From [demo/java/bin](/demo/java/bin) run the following command from the terminal:
+Make sure there is a working microphone connected to your device. From the root of the repository, run the following command from the terminal:
 
 ```bash
 java -jar demo/java/bin/porcupine-mic-demo.jar -k porcupine
