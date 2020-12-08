@@ -14,6 +14,9 @@ applications. It is
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
 - self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
 
+> Porcupine wake word models for all major voice assistants (`Alexa`, `Hey Google`, `Ok Google`, and `Hey Siri`) are
+> available for free (under Apache 2.0) in this repo.
+
 ## Table of Contents
 
 - [Porcupine](#porcupine)
