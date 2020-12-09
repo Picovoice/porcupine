@@ -5,7 +5,8 @@
 .pub/
 .idea/
 .vscode/
-
+.flutter-plugins
+.flutter-plugins-dependencies
 build/
 ./assets/
 jniLibs/
