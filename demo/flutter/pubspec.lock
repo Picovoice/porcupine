@@ -82,7 +82,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_voice_processor:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "../../../flutter-voice-processor"
       relative: true

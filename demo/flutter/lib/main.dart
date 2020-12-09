@@ -25,21 +25,20 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     try {
       Porcupine p = await Porcupine.fromKeywords(["porcupine"]);
-      // VoiceProcessor v =
-      //     VoiceProcessor.getVoiceProcessor(p.frameLength, p.sampleRate);
+      VoiceProcessor v =
+          VoiceProcessor.getVoiceProcessor(p.frameLength, p.sampleRate);
 
-      // v.addListener((buffer) {
-      //   List<int> bufferData = (buffer as List<dynamic>).cast<int>();
-      //   int keywordIdx = p.process(bufferData);
-      //   if (keywordIdx == 0) {
-      //     print("[wake word detected]");
-      //   }
-      // });
-      // if (await v.hasRecordAudioPermission()) {
-      //   await v.start();
-      // }
+      v.addListener((buffer) {
+        List<int> bufferData = (buffer as List<dynamic>).cast<int>();
+        int keywordIdx = p.process(bufferData);
+        if (keywordIdx == 0) {
+          print("[wake word detected]");
+        }
+      });
+      if (await v.hasRecordAudioPermission()) {
+        await v.start();
+      }
       // p.delete();
-      p.delete();
     } on Exception {
       print("oops");
     }

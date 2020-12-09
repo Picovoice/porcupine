@@ -33,3 +33,4 @@ flutter:
   assets:
     - ../../lib/common/porcupine_params.pv
     - ../../resources/keyword_files/android/porcupine_android.ppn
+    - ../../resources/keyword_files/ios/porcupine_ios.ppn

@@ -1,0 +1,37 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_voice_processor (1.0.0):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - porcupine (1.9.0):
+    - Flutter
+    - porcupine/pv_porcupine (= 1.9.0)
+  - porcupine/pv_porcupine (1.9.0):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - porcupine (from `.symlinks/plugins/porcupine/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_voice_processor:
+    :path: ".symlinks/plugins/flutter_voice_processor/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  porcupine:
+    :path: ".symlinks/plugins/porcupine/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_voice_processor: b4295092e5365b517b75f2af026c05d897ce4450
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  porcupine: 598419d461102eee81f8e0bd762329ad8cc1e908
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.0
