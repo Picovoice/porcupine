@@ -100,7 +100,7 @@ class PorcupineManager {
   }
 
   /**
-   * Opens audio input stream and sends audio frames to Rhino
+   * Opens audio input stream and sends audio frames to Porcupine
    */
   async start() {
     return this._voiceProcessor.start();
