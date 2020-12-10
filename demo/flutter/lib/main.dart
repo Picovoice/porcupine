@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_voice_processor/flutter_voice_processor.dart';
 import 'dart:async';
 
-import 'package:porcupine/porcupine.dart';
+import 'package:porcupine/porcupine_manager.dart';
+import 'package:porcupine/porcupine_error.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,33 +14,64 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  bool _isButtonDisabled = false;
+  bool _isProcessing = false;
+  PorcupineManager _porcupineManager;
+  List<String> _keywords = ["porcupine", "alexa", "computer", "hey google"];
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    initPorcupineManager();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
+  Future<void> initPorcupineManager() async {
     try {
-      Porcupine p = await Porcupine.fromKeywords(["porcupine"]);
-      VoiceProcessor v =
-          VoiceProcessor.getVoiceProcessor(p.frameLength, p.sampleRate);
+      _porcupineManager = await PorcupineManager.fromKeywords(
+          _keywords,
+          (keywordIndex) =>
+              print("${DateTime.now()}: ${_keywords[keywordIndex]} detected"));
+    } on PvError catch (ex) {
+      print("Failed to initialize Porcupine: ${ex.message}");
+    }
+  }
 
-      v.addListener((buffer) {
-        List<int> bufferData = (buffer as List<dynamic>).cast<int>();
-        int keywordIdx = p.process(bufferData);
-        if (keywordIdx == 0) {
-          print("[wake word detected]");
-        }
+  Future<void> _startProcessing() async {
+    this.setState(() {
+      _isButtonDisabled = true;
+    });
+
+    try {
+      await _porcupineManager.start();
+      this.setState(() {
+        _isProcessing = true;
       });
-      if (await v.hasRecordAudioPermission()) {
-        await v.start();
-      }
-      // p.delete();
-    } on Exception {
-      print("oops");
+    } on PvAudioException catch (ex) {
+      print("Failed to start audio capture: " + ex.message);
+    } finally {
+      this.setState(() {
+        _isButtonDisabled = false;
+      });
+    }
+  }
+
+  Future<void> _stopProcessing() async {
+    this.setState(() {
+      _isButtonDisabled = true;
+    });
+
+    await _porcupineManager.stop();
+
+    this.setState(() {
+      _isButtonDisabled = false;
+      _isProcessing = false;
+    });
+  }
+
+  void _toggleProcessing() async {
+    if (_isProcessing) {
+      await _stopProcessing();
+    } else {
+      await _startProcessing();
     }
   }
 
@@ -49,12 +80,20 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Porcupine Demo'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: _buildToggleProcessingButton(),
         ),
       ),
+    );
+  }
+
+  Widget _buildToggleProcessingButton() {
+    return new RaisedButton(
+      onPressed: _isButtonDisabled ? null : _toggleProcessing,
+      child: Text(_isProcessing ? "Stop" : "Start",
+          style: TextStyle(fontSize: 20)),
     );
   }
 }
