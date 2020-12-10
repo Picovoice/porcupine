@@ -41,6 +41,9 @@ class PorcupineManager {
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
   ///
+  /// [errorCallback] is an optional callback that triggers if Porcupine
+  /// experiences a problem while processing audio
+  ///
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywords(
       List<String> keywords, WakeWordCallback wakeWordCallback,
@@ -62,6 +65,9 @@ class PorcupineManager {
   /// [sensitivities] sensitivities for each keywords model. A higher sensitivity
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
+  ///
+  /// [errorCallback] is an optional callback that triggers if Porcupine
+  /// experiences a problem while processing audio
   ///
   /// Thows a `PvError` if not initialized correctly
   ///
