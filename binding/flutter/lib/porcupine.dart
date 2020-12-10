@@ -59,7 +59,7 @@ class Porcupine {
   /// The audio sample rate required by Porcupine
   int get sampleRate => _sampleRate;
 
-  /// Static creator for initializing Porcupine a selection of built-in keywords
+  /// Static creator for initializing Porcupine from a selection of built-in keywords
   ///
   /// [keywords] is a List of (phrases) for detection. The list of available
   /// keywords can be retrieved using [Porcupine.BUILT_IN_KEYWORDS]
@@ -102,21 +102,7 @@ class Porcupine {
           modelPath: modelPath,
           sensitivities: sensitivities);
 
-  /// Static creator for initializing Porcupine from a list of paths to custom keyword files
-  ///
-  /// [keywords] is a List of (phrases) for detection. The list of available
-  /// keywords can be retrieved using [Porcupine.BUILT_IN_KEYWORDS]
-  ///
-  /// [keywordPaths] A List of absolute paths to keyword model files.
-  ///
-  /// [modelPath] is a path to the file containing model parameters. If not set
-  /// it will be set to the default location.
-  ///
-  /// [sensitivities] sensitivities for each keywords model. A higher sensitivity
-  /// reduces miss rate at the cost of potentially higher false alarm rate.
-  /// Sensitivity should be a floating-point number within 0 and 1.
-  ///
-  /// returns an instance of the wake word engine
+  /// private static creator
   static Future<Porcupine> _create(
       {List<String> keywords,
       List<String> keywordPaths,
@@ -185,9 +171,9 @@ class Porcupine {
     // init porcupine
     int status = _porcupineInit(cModelPath, keywordPaths.length, cKeywordPaths,
         cSensitivities, handlePtr);
-
-    if (status != 0) {
-      pvStatusToException(status, "Failed to initialize Porcupine.");
+    PvStatus pvStatus = PvStatus.values[status];
+    if (pvStatus != PvStatus.SUCCESS) {
+      pvStatusToException(pvStatus, "Failed to initialize Porcupine.");
     }
 
     String version = Utf8.fromUtf8(_porcupineVersion());
@@ -229,9 +215,10 @@ class Porcupine {
     Pointer<Int32> keywordIndexPtr = allocate(count: 1);
 
     int status = _porcupineProcess(_handle, _cFrame, keywordIndexPtr);
-    if (status != 0) {
+    PvStatus pvStatus = PvStatus.values[status];
+    if (pvStatus != PvStatus.SUCCESS) {
       pvStatusToException(
-          status, "Porcupine failed to process an audio frame.");
+          pvStatus, "Porcupine failed to process an audio frame.");
     }
 
     return keywordIndexPtr.value;
@@ -258,9 +245,7 @@ class Porcupine {
       String keywordAssetPath = "$keywordAssetDir/${keyword}_$_platform.ppn";
       String extractedPath = await _extractResource(keywordAssetPath);
 
-      if (extractedPath != null) {
-        _builtInKeywordPaths[keyword] = extractedPath;
-      }
+      _builtInKeywordPaths[keyword] = extractedPath;
     }
   }
 

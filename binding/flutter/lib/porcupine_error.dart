@@ -42,8 +42,8 @@ class PvStatusInvalidArgumentError extends PvError {
 
 enum PvStatus { SUCCESS, OUT_OF_MEMORY, IO_ERROR, INVALID_ARGUMENT }
 
-pvStatusToException(int pvStatus, String errorMessage) {
-  switch (PvStatus.values[pvStatus]) {
+pvStatusToException(PvStatus pvStatus, String errorMessage) {
+  switch (pvStatus) {
     case PvStatus.OUT_OF_MEMORY:
       throw new PvStatusOutOfMemoryError(errorMessage);
     case PvStatus.IO_ERROR:

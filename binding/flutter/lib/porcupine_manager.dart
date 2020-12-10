@@ -17,16 +17,19 @@ import 'package:porcupine/porcupine.dart';
 import 'package:porcupine/porcupine_error.dart';
 
 typedef WakeWordCallback(int keywordIndex);
+typedef ErrorCallback(PvError error);
 
 class PorcupineManager {
+  /// a list of built-in keywords
   static const List<String> BUILT_IN_KEYWORDS = Porcupine.BUILT_IN_KEYWORDS;
 
   VoiceProcessor _voiceProcessor;
-  final WakeWordCallback _wakeWordCallback;
   Porcupine _porcupine;
+
+  final WakeWordCallback _wakeWordCallback;
   RemoveListener _removeVoiceProcessorListener;
 
-  /// Static creator for initializing PorcupineManager a selection of built-in keywords
+  /// Static creator for initializing PorcupineManager from a selection of built-in keywords
   ///
   /// [keywords] is a List of (phrases) for detection. The list of available
   /// keywords can be retrieved using [Porcupine.BUILT_IN_KEYWORDS]
@@ -41,10 +44,12 @@ class PorcupineManager {
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywords(
       List<String> keywords, WakeWordCallback wakeWordCallback,
-      {String modelPath, List<double> sensitivities}) async {
+      {String modelPath,
+      List<double> sensitivities,
+      ErrorCallback errorCallback}) async {
     Porcupine porcupine = await Porcupine.fromKeywords(keywords,
         modelPath: modelPath, sensitivities: sensitivities);
-    return new PorcupineManager._(porcupine, wakeWordCallback);
+    return new PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
   }
 
   /// Static creator for initializing PorcupineManager from a list of paths to custom keyword files
@@ -63,25 +68,41 @@ class PorcupineManager {
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywordPaths(
       List<String> keywordPaths, WakeWordCallback wakeWordCallback,
-      {String modelPath, List<double> sensitivities}) async {
+      {String modelPath,
+      List<double> sensitivities,
+      ErrorCallback errorCallback}) async {
     Porcupine porcupine = await Porcupine.fromKeywordPaths(keywordPaths,
         modelPath: modelPath, sensitivities: sensitivities);
-    return new PorcupineManager._(porcupine, wakeWordCallback);
+    return new PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
   }
 
-  PorcupineManager._(this._porcupine, this._wakeWordCallback)
+  // private constructor
+  PorcupineManager._(
+      this._porcupine, this._wakeWordCallback, ErrorCallback errorCallback)
       : _voiceProcessor = VoiceProcessor.getVoiceProcessor(
             _porcupine.frameLength, _porcupine.sampleRate) {
     _removeVoiceProcessorListener = _voiceProcessor.addListener((buffer) {
-      if (buffer == null) return;
-      List<int> bufferData = (buffer as List<dynamic>).cast<int>();
+      // cast from dynamic to int array
+      List<int> porcupineFrame;
       try {
-        int keywordIndex = _porcupine.process(bufferData);
+        porcupineFrame = (buffer as List<dynamic>).cast<int>();
+      } on Error {
+        PvError castError = new PvError(
+            "flutter_voice_processor sent an unexpected data type.");
+        errorCallback == null
+            ? print(castError.message)
+            : errorCallback(castError);
+        return;
+      }
+
+      // process frame with Porcupine
+      try {
+        int keywordIndex = _porcupine.process(porcupineFrame);
         if (keywordIndex >= 0) {
           _wakeWordCallback(keywordIndex);
         }
-      } on PvError catch (e) {
-        print(e.toString());
+      } on PvError catch (error) {
+        errorCallback == null ? print(error.message) : errorCallback(error);
       }
     });
   }
