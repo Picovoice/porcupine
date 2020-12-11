@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:porcupine/porcupine_manager.dart';
 import 'package:porcupine/porcupine_error.dart';
 
@@ -14,86 +15,180 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isButtonDisabled = false;
-  bool _isProcessing = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool isButtonDisabled = false;
+  bool isProcessing = false;
+  Color detectionColour = new Color(0xff00e5c3);
+  Color defaultColour = new Color(0xfff5fcff);
+  Color backgroundColour;
+  String currentKeyword = "Click to choose a keyword";
   PorcupineManager _porcupineManager;
-  List<String> _keywords = ["porcupine", "alexa", "computer", "hey google"];
   @override
   void initState() {
     super.initState();
-    initPorcupineManager();
+    this.setState(() {
+      isButtonDisabled = true;
+      backgroundColour = defaultColour;
+    });
   }
 
-  Future<void> initPorcupineManager() async {
+  Future<void> loadNewKeyword(String keyword) async {
+    this.setState(() {
+      isButtonDisabled = true;
+    });
+
+    if (isProcessing) {
+      _stopProcessing();
+    }
+
+    if (_porcupineManager != null) {
+      _porcupineManager.delete();
+    }
     try {
       _porcupineManager = await PorcupineManager.fromKeywords(
-          _keywords,
-          (keywordIndex) =>
-              print("${DateTime.now()}: ${_keywords[keywordIndex]} detected"));
+        [keyword],
+        wakeWordCallback,
+      );
+      this.setState(() {
+        currentKeyword = keyword;
+      });
     } on PvError catch (ex) {
       print("Failed to initialize Porcupine: ${ex.message}");
+    } finally {
+      this.setState(() {
+        isButtonDisabled = false;
+      });
+    }
+  }
+
+  void wakeWordCallback(int keywordIndex) {
+    if (keywordIndex >= 0) {
+      this.setState(() {
+        backgroundColour = detectionColour;
+      });
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        this.setState(() {
+          backgroundColour = defaultColour;
+        });
+      });
     }
   }
 
   Future<void> _startProcessing() async {
     this.setState(() {
-      _isButtonDisabled = true;
+      isButtonDisabled = true;
     });
 
     try {
       await _porcupineManager.start();
       this.setState(() {
-        _isProcessing = true;
+        isProcessing = true;
       });
     } on PvAudioException catch (ex) {
-      print("Failed to start audio capture: " + ex.message);
+      print("Failed to start audio capture: ${ex.message}");
     } finally {
       this.setState(() {
-        _isButtonDisabled = false;
+        isButtonDisabled = false;
       });
     }
   }
 
   Future<void> _stopProcessing() async {
     this.setState(() {
-      _isButtonDisabled = true;
+      isButtonDisabled = true;
     });
 
     await _porcupineManager.stop();
 
     this.setState(() {
-      _isButtonDisabled = false;
-      _isProcessing = false;
+      isButtonDisabled = false;
+      isProcessing = false;
     });
   }
 
   void _toggleProcessing() async {
-    if (_isProcessing) {
+    if (isProcessing) {
       await _stopProcessing();
     } else {
       await _startProcessing();
     }
   }
 
+  Color picoBlue = Color.fromRGBO(55, 125, 255, 1);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: backgroundColour,
         appBar: AppBar(
           title: const Text('Porcupine Demo'),
+          backgroundColor: picoBlue,
         ),
-        body: Center(
-          child: _buildToggleProcessingButton(),
+        body: Column(
+          children: [buildPicker(context), buildStartButton(context), footer],
         ),
       ),
     );
   }
 
-  Widget _buildToggleProcessingButton() {
-    return new RaisedButton(
-      onPressed: _isButtonDisabled ? null : _toggleProcessing,
-      child: Text(_isProcessing ? "Stop" : "Start",
-          style: TextStyle(fontSize: 20)),
+  buildPicker(BuildContext context) {
+    return new Expanded(
+      flex: 1,
+      child: Container(
+          alignment: Alignment.bottomCenter,
+          // color: Colors.blue,
+          child: FractionallySizedBox(
+              widthFactor: 0.9,
+              child: OutlineButton(
+                child: Text(currentKeyword,
+                    style: TextStyle(fontSize: 20, color: picoBlue)),
+                onPressed: () {
+                  showPicker(context);
+                },
+              ))),
     );
+  }
+
+  buildStartButton(BuildContext context) {
+    return new Expanded(
+      flex: 2,
+      child: Container(
+          child: SizedBox(
+              width: 150,
+              height: 150,
+              child: RaisedButton(
+                shape: CircleBorder(),
+                textColor: Colors.white,
+                color: picoBlue,
+                onPressed: isButtonDisabled ? null : _toggleProcessing,
+                child: Text(isProcessing ? "Stop" : "Start",
+                    style: TextStyle(fontSize: 30)),
+              ))),
+    );
+  }
+
+  Widget footer = Expanded(
+      flex: 1,
+      child: Container(
+          alignment: Alignment.bottomCenter,
+          padding: EdgeInsets.only(bottom: 20),
+          child: const Text(
+            "Made in Vancouver, Canada by Picovoice",
+            style: TextStyle(color: Color(0xff666666)),
+          )));
+
+  showPicker(BuildContext context) {
+    Picker picker = new Picker(
+        adapter: PickerDataAdapter<String>(
+            pickerdata: PorcupineManager.BUILT_IN_KEYWORDS),
+        changeToFirst: true,
+        textAlign: TextAlign.left,
+        columnPadding: const EdgeInsets.all(8.0),
+        onConfirm: (Picker picker, List value) {
+          loadNewKeyword(picker.getSelectedValues()[0]);
+        });
+    picker.show(_scaffoldKey.currentState);
   }
 }
