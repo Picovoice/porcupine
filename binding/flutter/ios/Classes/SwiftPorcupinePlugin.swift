@@ -18,9 +18,36 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
     
   }
 
-  // this function call is required to prevent the linker from 
+  // these function calls are required to prevent the linker from 
   // stripping the porcupine static library
-  public func bindPorcupine(){
+  public func bindPorcupineVersion(){
     pv_porcupine_version();
+  }
+
+  public func bindPorcupineInit(modelPath: String, keywordPaths: [String], sensitivities: [Float32]){
+    var porcupine:OpaquePointer?
+    let status = pv_porcupine_init(
+        modelPath,
+        Int32(keywordPaths.count),
+        keywordPaths.map { UnsafePointer(strdup($0)) },
+        sensitivities,
+        &porcupine)
+  }
+  
+  public func bindPorcupineFrameLength(){
+    pv_porcupine_frame_length()
+  }
+
+  public func bindPorcupineSampleRate(){
+    pv_sample_rate()
+  }
+
+  public func bindPorcupineProcess(porcupine:OpaquePointer?, pcm:[Int16]){
+    var keywordIndex: Int32 = -1
+    pv_porcupine_process(porcupine, pcm, &keywordIndex)   
+  }
+
+  public func bindPorcupineDelete(porcupine:OpaquePointer?){
+    pv_porcupine_delete(porcupine);
   }
 }

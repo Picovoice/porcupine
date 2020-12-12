@@ -30,7 +30,7 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_voice_processor: b4295092e5365b517b75f2af026c05d897ce4450
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  porcupine: 598419d461102eee81f8e0bd762329ad8cc1e908
+  porcupine: 476d79c15cb5884dd2852c9ad508c9b2e6db68ed
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
