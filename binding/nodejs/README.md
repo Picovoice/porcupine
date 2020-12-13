@@ -2,7 +2,7 @@
 
 ## Porcupine
 
-Porcupine is is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
+Porcupine is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
 
 Porcupine is:
 
@@ -75,7 +75,7 @@ let keywordIndex = handle.process(frame);
 
 ### Custom keywords
 
-Providing an array of strings instead of the built-in enums allows you to specify an aboslute path to a keyword PPN file:
+Providing an array of strings instead of the built-in enums allows you to specify an absolute path to a keyword PPN file:
 
 ```javascript
 let handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
