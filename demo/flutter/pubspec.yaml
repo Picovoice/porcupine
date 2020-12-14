@@ -1,4 +1,4 @@
-name: porcupine_example
+name: porcupine_demo
 description: Demonstrates how to use the porcupine plugin.
 
 publish_to: 'none'

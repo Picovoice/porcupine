@@ -14,8 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_voice_processor:
-    path: ../../../flutter-voice-processor
+  flutter_voice_processor: ^1.0.0
 
 dev_dependencies:
   flutter_test:

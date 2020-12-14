@@ -77,9 +77,9 @@ packages:
   flutter_voice_processor:
     dependency: "direct main"
     description:
-      path: "../../../flutter-voice-processor"
-      relative: true
-    source: path
+      name: flutter_voice_processor
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0"
   intl:
     dependency: transitive

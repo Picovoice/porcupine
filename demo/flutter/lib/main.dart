@@ -46,10 +46,8 @@ class _MyAppState extends State<MyApp> {
       _porcupineManager.delete();
     }
     try {
-      _porcupineManager = await PorcupineManager.fromKeywords(
-        [keyword],
-        wakeWordCallback,
-      );
+      _porcupineManager =
+          await PorcupineManager.fromKeywords([keyword], wakeWordCallback);
       this.setState(() {
         currentKeyword = keyword;
       });
@@ -73,6 +71,10 @@ class _MyAppState extends State<MyApp> {
         });
       });
     }
+  }
+
+  void errorCallback(PvError error) {
+    print(error.message);
   }
 
   Future<void> _startProcessing() async {

@@ -142,13 +142,13 @@ Available built-in keywords are stored in the constants `PorcupineManager.KEYWOR
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
 ```javascript
-this._porcupineManager = await PorcupineManager.fromKeywords(["/path/to/keyword.ppn"], detectionCallback);
+this._porcupineManager = await PorcupineManager.fromKeywordPaths(["/path/to/keyword.ppn"], detectionCallback);
 ```
 
 In addition to custom keywords, you can override the default Porcupine model file and/or keyword sensitivities.
 These optional parameters can be passed in like so:
 ```javascript
-this._porcupineManager = await PorcupineManager.fromKeywords(
+this._porcupineManager = await PorcupineManager.fromKeywordPaths(
     ["/path/to/keyword/file/one.ppn", "/path/to/keyword/file/two.ppn"],
     detectionCallback,
     'path/to/model/file.pv',
