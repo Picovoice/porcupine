@@ -18,13 +18,14 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
     
   }
 
+
   // these dummy function calls are required to prevent the linker from 
   // stripping the porcupine static library
-  public func bindPorcupineVersion(){
+  public func doNotCallThisFunction_porcpuineVersion(){
     pv_porcupine_version();
   }
 
-  public func bindPorcupineInit(modelPath: String, keywordPaths: [String], sensitivities: [Float32]){
+  public func doNotCallThisFunction_porcupineInit(modelPath: String, keywordPaths: [String], sensitivities: [Float32]){
     var porcupine:OpaquePointer?
     let status = pv_porcupine_init(
         modelPath,
@@ -34,20 +35,20 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
         &porcupine)
   }
   
-  public func bindPorcupineFrameLength(){
+  public func doNotCallThisFunction_porcupineFrameLength(){
     pv_porcupine_frame_length()
   }
 
-  public func bindPorcupineSampleRate(){
+  public func doNotCallThisFunction_porcupineSampleRate(){
     pv_sample_rate()
   }
 
-  public func bindPorcupineProcess(porcupine:OpaquePointer?, pcm:[Int16]){
+  public func doNotCallThisFunction_porcupineProcess(porcupine:OpaquePointer?, pcm:[Int16]){
     var keywordIndex: Int32 = -1
     pv_porcupine_process(porcupine, pcm, &keywordIndex)   
   }
 
-  public func bindPorcupineDelete(porcupine:OpaquePointer?){
+  public func doNotCallThisFunction_porcupineDelete(porcupine:OpaquePointer?){
     pv_porcupine_delete(porcupine);
   }
 }

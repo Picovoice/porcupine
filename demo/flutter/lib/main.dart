@@ -46,8 +46,9 @@ class _MyAppState extends State<MyApp> {
       _porcupineManager.delete();
     }
     try {
-      _porcupineManager =
-          await PorcupineManager.fromKeywords([keyword], wakeWordCallback);
+      _porcupineManager = await PorcupineManager.fromKeywords(
+          [keyword], wakeWordCallback,
+          errorCallback: errorCallback);
       this.setState(() {
         currentKeyword = keyword;
       });
