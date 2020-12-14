@@ -29,33 +29,7 @@ sudo pip3 install ppnrespeakerdemo
 
 ## Usage
 
-Run the demo:
-
-```bash
-porcupine_respeaker_demo
-```
-
-Wait for the demo to initialize and print `[Listening]` in the terminal. Then say:
-
-> Picovoice
-
-The demo outputs:
-
-```text
-detected 'Picovoice'
-```
-
-The lights are now set to `green`. Then say:
-
-> Alexa
-
-The lights are set to `yellow` now. Say:
-
-> Terminator
-
-to turn off the lights.
-
-Below please find the colors associated with supported wake words for this demo:
+Below are the colors associated with supported wake words for this demo:
 
 - ![#ffff33](https://via.placeholder.com/15/ffff33/000000?text=+) `Alexa`
 - ![#ffffff](https://via.placeholder.com/15/ffffff/000000?text=+) `Computer`
@@ -66,3 +40,29 @@ Below please find the colors associated with supported wake words for this demo:
 - ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Porcupine`
 - ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Bumblebee`
 - ![#000000](https://via.placeholder.com/15/000000/000000?text=+) `Terminator`
+
+Run the demo:
+
+```bash
+porcupine_respeaker_demo
+```
+
+Wait for the demo to initialize and print `[Listening]` in the terminal. Say:
+
+> Picovoice
+
+The demo outputs:
+
+```text
+detected 'Picovoice'
+```
+
+The lights are now set to `green`. Say:
+
+> Alexa
+
+The lights are set to `yellow` now. Say:
+
+> Terminator
+
+to turn off the lights.

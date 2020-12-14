@@ -82,8 +82,8 @@ class PorcupineDemo(Thread):
                 pcm = struct.unpack_from("h" * self._porcupine.frame_length, pcm)
 
                 keyword_index = self._porcupine.process(pcm)
-                print("detected '%s'" % self._keywords[keyword_index])
                 if keyword_index >= 0:
+                    print("detected '%s'" % self._keywords[keyword_index])
                     self._set_color(COLORS_RGB[KEYWORDS_COLOR[self._keywords[keyword_index]]])
         except KeyboardInterrupt:
             sys.stdout.write('\b' * 2)
@@ -99,7 +99,7 @@ class PorcupineDemo(Thread):
 
 
 def main():
-    o = PorcupineDemo(sensitivity=0.75)
+    o = PorcupineDemo(sensitivity=0.5)
     o.run()
 
 
