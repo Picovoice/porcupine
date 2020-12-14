@@ -1,0 +1,23 @@
+name: porcupine_demo
+description: Demonstrates how to use the porcupine plugin.
+
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  flutter_picker: ^1.1.5
+
+  porcupine:
+    path: ../../binding/flutter
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
