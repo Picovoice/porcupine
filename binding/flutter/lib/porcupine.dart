@@ -279,36 +279,41 @@ typedef NativeInit = Int32 Function(Pointer<Utf8>, Int32,
     Pointer<Pointer<Utf8>>, Pointer<Float>, Pointer<IntPtr>);
 typedef Init = int Function(Pointer<Utf8>, int, Pointer<Pointer<Utf8>>,
     Pointer<Float>, Pointer<IntPtr>);
-final Init _porcupineInit =
-    _porcupineLib.lookupFunction<NativeInit, Init>('pv_porcupine_init');
+final Init _porcupineInit = _porcupineLib
+    .lookup<NativeFunction<NativeInit>>('pv_porcupine_init')
+    .asFunction();
 
 // pv_porcupine_process
 typedef NativeProcess = Int32 Function(IntPtr, Pointer<Int16>, Pointer<Int32>);
 typedef Process = int Function(int, Pointer<Int16>, Pointer<Int32>);
 final Process _porcupineProcess = _porcupineLib
-    .lookupFunction<NativeProcess, Process>('pv_porcupine_process');
+    .lookup<NativeFunction<NativeProcess>>('pv_porcupine_process')
+    .asFunction();
 
 // pv_porcupine_delete
 typedef NativeDelete = Void Function(IntPtr);
 typedef Delete = void Function(int);
-final Delete _porcupineDelete =
-    _porcupineLib.lookupFunction<NativeDelete, Delete>('pv_porcupine_delete');
+final Delete _porcupineDelete = _porcupineLib
+    .lookup<NativeFunction<NativeDelete>>('pv_porcupine_delete')
+    .asFunction();
 
 // pv_porcupine_version
 typedef NativeVersion = Pointer<Utf8> Function();
 typedef Version = Pointer<Utf8> Function();
 final Version _porcupineVersion = _porcupineLib
-    .lookupFunction<NativeVersion, Version>('pv_porcupine_version');
+    .lookup<NativeFunction<NativeVersion>>('pv_porcupine_version')
+    .asFunction();
 
 // pv_porcupine_frame_length
 typedef NativeFrameLength = Int32 Function();
 typedef FrameLength = int Function();
-final FrameLength _porcupineFrameLength =
-    _porcupineLib.lookupFunction<NativeFrameLength, FrameLength>(
-        'pv_porcupine_frame_length');
+final FrameLength _porcupineFrameLength = _porcupineLib
+    .lookup<NativeFunction<NativeFrameLength>>('pv_porcupine_frame_length')
+    .asFunction();
 
 // pv_sample_rate
 typedef NativeSampleRate = Int32 Function();
 typedef SampleRate = int Function();
 final SampleRate _porcupineSampleRate = _porcupineLib
-    .lookupFunction<NativeSampleRate, SampleRate>('pv_sample_rate');
+    .lookup<NativeFunction<NativeSampleRate>>('pv_sample_rate')
+    .asFunction();

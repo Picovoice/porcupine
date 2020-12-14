@@ -16,19 +16,19 @@ Pod::Spec.new do |s|
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 
-    'OTHER_LDFLAGS' => '-ObjC', 
+    'OTHER_LDFLAGS' => '-ObjC',
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386'}
 
     s.subspec 'pv_porcupine' do |sc|    
       sc.pod_target_xcconfig = {
-        'DEAD_CODE_STRIPPING' => 'NO',
         'SWIFT_INCLUDE_PATHS' => '$(PODS_TARGET_SRCROOT)/pv_porcupine',
         'OTHER_CFLAGS' => '-Xcc -fmodule-map-file="${PODS_TARGET_SRCROOT}/pv_porcupine/module.private.modulemap"',
-        'OTHER_SWIFT_FLAGS' => '-Xcc -fmodule-map-file="${PODS_TARGET_SRCROOT}/pv_porcupine/module.private.modulemap"'
+        'OTHER_SWIFT_FLAGS' => '-Xcc -fmodule-map-file="${PODS_TARGET_SRCROOT}/pv_porcupine/module.private.modulemap"',        
       }
       
       sc.vendored_libraries = 'pv_porcupine/libpv_porcupine.a'
       sc.source_files = 'pv_porcupine/pv_porcupine.h', 'pv_porcupine/picovoice.h'
+      sc.public_header_files = 'pv_porcupine/pv_porcupine.h', 'pv_porcupine/picovoice.h'
       sc.preserve_paths = 'pv_porcupine/libpv_porcupine.a', 'pv_porcupine/module.private.modulemap'
     end
 
