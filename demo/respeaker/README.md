@@ -32,13 +32,13 @@ sudo pip3 install ppnrespeakerdemo
 Below are the colors associated with supported wake words for this demo:
 
 - ![#ffff33](https://via.placeholder.com/15/ffff33/000000?text=+) `Alexa`
+- ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Bumblebee`
 - ![#ffffff](https://via.placeholder.com/15/ffffff/000000?text=+) `Computer`
 - ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `Hey Google`
 - ![#800080](https://via.placeholder.com/15/800080/000000?text=+) `Hey Siri`
 - ![#ff3399](https://via.placeholder.com/15/ff3399/000000?text=+) `Jarvis`
 - ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Picovoice`
 - ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Porcupine`
-- ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Bumblebee`
 - ![#000000](https://via.placeholder.com/15/000000/000000?text=+) `Terminator`
 
 Run the demo:

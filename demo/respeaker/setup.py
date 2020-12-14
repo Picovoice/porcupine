@@ -25,7 +25,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="ppnrespeakerdemo",
-    version="1.9.3",
+    version="1.9.4",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine demo for ReSpeaker 4-mic hat.",
