@@ -1,0 +1,4 @@
+include ppnrespeakerdemo/LICENSE
+include ppnrespeakerdemo/__init__.py
+include ppnrespeakerdemo/apa102.py
+include ppnrespeakerdemo/porcupine_demo.py
