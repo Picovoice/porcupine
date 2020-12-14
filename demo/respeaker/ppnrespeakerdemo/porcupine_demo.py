@@ -99,7 +99,7 @@ class PorcupineDemo(Thread):
 
 
 def main():
-    o = PorcupineDemo(sensitivity=0.5)
+    o = PorcupineDemo(sensitivity=0.6)
     o.run()
 
 
