@@ -29,6 +29,7 @@ applications. It is
     - [Python](#python-demos)
     - [.NET](#net-demos)
     - [Java](#java-demos)
+    - [Flutter](#flutter-demos)
     - [React Native](#react-native-demos)
     - [Android](#android-demos)
     - [iOS](#ios-demos)
@@ -39,6 +40,7 @@ applications. It is
     - [Python](#python)
     - [.NET](#net)
     - [Java](#java)
+    - [Flutter](#flutter)
     - [React Native](#react-native)
     - [Android](#android)
     - [iOS](#ios)
@@ -136,6 +138,15 @@ The engine starts processing the audio input from the microphone in realtime and
 utterances of `Porcupine`.
 
 For more information about Java demos go to [demo/java](/demo/java).
+
+### Flutter Demos
+
+To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
+
+Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
+```sh
+flutter run
+```
 
 ### React Native Demos
 
@@ -421,6 +432,105 @@ Once you're done with Porcupine, ensure you release its resources explicitly:
 handle.delete();
 ```
 
+### Flutter
+
+Add the [Porcupine Flutter plugin](https://pub.dev/packages/porcupine) to your pub.yaml.
+```yaml
+dependencies:  
+  porcupine: ^<version>
+```
+The SDK provides two APIs:
+
+#### High-Level API
+
+[PorcupineManager](/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
+
+The static constructor `PorcupineManager.fromKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
+
+```dart
+import 'package:porcupine/porcupine_manager.dart';
+import 'package:porcupine/porcupine_error.dart';
+
+void createPorcupineManager() async {
+    try{
+        _porcupineManager = await PorcupineManager.fromKeywords(
+            ["picovoice", "porcupine"],
+            _wakeWordCallback);
+    } on PvError catch (err) {
+        // handle porcupine init error
+    }
+}
+```
+
+To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths` static constructor and provide the paths to the `.ppn` file(s).
+
+```dart
+_porcupineManager = await PorcupineManager.fromKeywordPaths(
+    ["/path/to/keyword.ppn"], 
+    _wakeWordCallback);
+```
+
+Once you have instantiated a PorcupineManager, you can start/stop audio capture and wake word detection by calling:
+
+```dart
+try{
+    await _porcupineManager.start();
+} on PvAudioException catch (ex) {
+    // deal with either audio exception     
+}
+// .. use porcupine
+await _porcupineManager.stop();
+```
+
+Once the app is done with using PorcupineManager, be sure you explicitly release the resources allocated to Porcupine:
+
+```dart
+await _porcupineManager.stop();
+```
+
+There is no need to deal with audio capture to enable wake word detection with PorcupineManager.
+This is because it uses [flutter_voice_processor](https://github.com/Picovoice/flutter-voice-processor/) plugin to capture frames of audio and automatically pass it to the wake word engine.
+
+#### Low-Level API
+
+[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.`Porcupine` has `fromKeywords` and `fromKeywordPaths` static constructors.
+
+```dart
+import 'package:porcupine/porcupine_manager.dart';
+import 'package:porcupine/porcupine_error.dart';
+
+void createPorcupine() async {
+    try{
+        _porcupine = await Porcupine.fromKeywords(["picovoice"]);
+    } on PvError catch (err) {
+        // handle porcupine init error
+    }
+}
+```
+
+To search for a keyword in audio, you must pass frames of audio to Porcupine using the `process` function. The `keywordIndex` returned will either be -1 if no detection was made or an integer specifying which keyword was detected.
+
+```dart
+List<int> buffer = getAudioFrame();
+
+try {
+    int keywordIndex = _porcupine.process(buffer);
+    if (keywordIndex >= 0) {
+        // detection made!
+    }
+} on PvError catch (error) {
+    // handle error
+}
+```
+
+For `process` to work correctly, the provided audio must be single-channel and 16-bit linearly-encoded.
+
+Finally, once you no longer need the wake word engine, be sure to explicitly release the resources allocated to Porcupine:
+
+```dart
+_porcupine.delete();
+```
+
 ### React Native
 
 Install [@picovoice/react-native-voice-processor](https://www.npmjs.com/package/@picovoice/react-native-voice-processor)
@@ -491,8 +601,7 @@ async createPorcupine(){
 }
 ```
 
-In this case you do not pass in a detection callback as you will be passing in audio frames directly
-using the process function:
+To search for a keyword in audio, you must pass frames of audio to Porcupine using the `process` function. The `keywordIndex` returned will either be -1 if no detection was made or an integer specifying which keyword was detected.
 
 ```javascript
 let buffer = getAudioFrame();

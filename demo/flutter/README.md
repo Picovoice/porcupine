@@ -4,7 +4,7 @@ To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flu
 
 ## Usage
 
-Run the following command from [demo/flutter](demo/flutter/) to build and deploy the demo to your device:
+Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
 ```sh
 flutter run
 ```

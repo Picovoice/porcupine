@@ -38,7 +38,7 @@ dependencies:
   porcupine: ^<version>
 ```
 
-If you prefer to clone the repo and use it locally, first run `copy_libs.sh` (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the libs into the project.). Then you can reference the local binding location:
+If you prefer to clone the repo and use it locally, first run `copy_resources.sh` (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the libs into the project.). Then you can reference the local binding location:
 ```yaml
 dependencies:  
   porcupine:
@@ -66,8 +66,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PorcupineManager](/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of
-audio recording. This class is the quickest way to get started.
+[PorcupineManager](/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
 Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords.
 ```dart
@@ -170,7 +169,7 @@ void createPorcupine() async {
     }
 }
 ```
-In this case you don't pass in a detection callback as you will be passing in audio frames directly using the process function:
+To search for a keyword in audio, you must pass frames of audio to Porcupine using the `process` function. The `keywordIndex` returned will either be -1 if no detection was made or an integer specifying which keyword was detected.
 
 ```dart
 List<int> buffer = getAudioFrame();

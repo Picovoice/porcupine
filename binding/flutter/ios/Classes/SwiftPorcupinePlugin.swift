@@ -21,7 +21,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
 
   // these dummy function calls are required to prevent the linker from 
   // stripping the porcupine static library
-  public func doNotCallThisFunction_porcpuineVersion(){
+  public func doNotCallThisFunction_porcupineVersion(){
     pv_porcupine_version();
   }
 

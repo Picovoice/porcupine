@@ -232,14 +232,14 @@ class Porcupine {
     }
   }
 
-  static final _platform = Platform.isAndroid ? "android" : "ios";
-
+  static final String _platform = Platform.isAndroid ? "android" : "ios";
+  static const String _assetDir = "packages/porcupine/assets";
   static Future<void> _extractPorcupineResources() async {
     _defaultModelPath =
-        await _extractResource("lib/common/porcupine_params.pv");
+        await _extractResource("$_assetDir/lib/common/porcupine_params.pv");
 
     _builtInKeywordPaths = new Map();
-    String keywordAssetDir = "resources/keyword_files/$_platform";
+    String keywordAssetDir = "$_assetDir/resources/keyword_files/$_platform";
     for (var i = 0; i < BUILT_IN_KEYWORDS.length; i++) {
       String keyword = BUILT_IN_KEYWORDS[i];
       String keywordAssetPath = "$keywordAssetDir/${keyword}_$_platform.ppn";
