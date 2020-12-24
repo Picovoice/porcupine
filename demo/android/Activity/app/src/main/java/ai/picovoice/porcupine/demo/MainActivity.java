@@ -178,6 +178,24 @@ public class MainActivity extends AppCompatActivity {
         configureKeywordSpinner();
     }
 
+    @Override
+    protected void onStop(){
+        ToggleButton recordButton = findViewById(R.id.record_button);
+        if (recordButton.isChecked()) {
+            if (porcupineManager != null) {
+                try {
+                    porcupineManager.stop();
+                    porcupineManager.delete();
+                } catch (PorcupineException e) {
+                    displayError("Failed to stop Porcupine.");
+                }
+            }
+            recordButton.toggle();
+        }
+
+        super.onStop();
+    }
+
     private boolean hasRecordPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
