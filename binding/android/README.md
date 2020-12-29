@@ -7,3 +7,9 @@ pipelines.
 
 Provides a high-level API that takes care of audio recording as well. For example usage refer to
 [Activity demo](/demo/android/Activity) or [Service demo](/demo/android/Service).
+
+## Resouce Usage 
+
+The following profile graph was captured running the [Porcupine Activity demo](/demo/android/Activity/) on a Google Pixel 3:
+
+![](/binding/android/android_profiling.gif)
