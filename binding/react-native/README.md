@@ -145,6 +145,8 @@ static constructor and provide the paths to the `.ppn` file(s).
 this._porcupineManager = await PorcupineManager.fromKeywordPaths(["/path/to/keyword.ppn"], detectionCallback);
 ```
 
+To add custom keywords to your app, copy the ppn files to your platform's asset folder and get the paths using [react-native-fs](https://www.npmjs.com/package/react-native-fs). An example of this can be found in our [Rhino demo](https://github.com/Picovoice/rhino/tree/master/demo/react-native).
+
 In addition to custom keywords, you can override the default Porcupine model file and/or keyword sensitivities.
 These optional parameters can be passed in like so:
 ```javascript
