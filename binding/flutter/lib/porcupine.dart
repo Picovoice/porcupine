@@ -126,7 +126,7 @@ class Porcupine {
             "No built-in or custom keywords provided. Either 'keywords' or 'keywordPaths' must be set.");
       }
 
-      keywordPaths = new List(keywords.length);
+      keywordPaths = List.filled(keywords.length, "");
       for (var i = 0; i < keywords.length; i++) {
         if (BUILT_IN_KEYWORDS.contains(keywords[i])) {
           keywordPaths[i] = _builtInKeywordPaths[keywords[i]];
