@@ -1,6 +1,6 @@
 name: porcupine
 description: A Flutter plugin for Picovoice's Porcupine offline wake word engine.
-version: 1.9.2
+version: 1.9.3
 homepage: https://picovoice.ai/
 
 environment:
