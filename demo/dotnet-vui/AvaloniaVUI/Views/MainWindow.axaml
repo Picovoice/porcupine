@@ -1,0 +1,37 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AvaloniaVUI.ViewModels;assembly=AvaloniaVUI"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaVUI.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaVUI"
+        Width="400"
+        Height="400">
+    <Window.Background>
+        <SolidColorBrush Color="{Binding BackgroundColor}"/>
+    </Window.Background>
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+        <RadioButton GroupName="WakeWords" 
+                     Margin="5" 
+                     Content="Grapefruit" 
+                     IsChecked="{Binding IsGrapefruit}"/>
+        <RadioButton GroupName="WakeWords" 
+                     Margin="5" 
+                     Content="Grasshopper" 
+                     IsChecked="{Binding IsGrasshopper}"/>
+        <RadioButton GroupName="WakeWords"
+                     Margin="5"
+                     Content="Bumblebee"
+                     IsChecked="{Binding IsBumblebee}"/>
+        <RadioButton GroupName="WakeWords" 
+                     Margin="5" 
+                     Content="Blueberry" 
+                     IsChecked="{Binding IsBlueberry}"/>
+    </StackPanel>
+</Window>
