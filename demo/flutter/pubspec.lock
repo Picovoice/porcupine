@@ -87,7 +87,7 @@ packages:
       name: flutter_voice_processor
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   intl:
     dependency: transitive
     description:
@@ -171,7 +171,7 @@ packages:
       name: porcupine
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.1"
+    version: "1.9.3"
   process:
     dependency: transitive
     description:
