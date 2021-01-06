@@ -1577,10 +1577,10 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@picovoice/react-native-voice-processor@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.0.1.tgz#9e7be10a22acf8675e6f285b4b5b3b1fbfec917a"
-  integrity sha512-SFF2tzc655v91YlgI/UhG8c74l0GmCyR7AthMkMps+16xpd/sSnEloedH+cKh4dHT/wTnhLpo7xpdfhmASVfRg==
+"@picovoice/react-native-voice-processor@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.0.2.tgz#8d2d013714e4ab21e626468e6922b37b631b111f"
+  integrity sha512-adkiX4UHxLzKTH38MzjDlyVYVHGBFpt72J6qNNsCMb8CosCBJh/ujnbu3NIRWrSmOTesVvb/qXc6yrVBhfehRw==
 
 "@react-native-community/bob@^0.16.2":
   version "0.16.2"
