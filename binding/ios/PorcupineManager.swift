@@ -103,7 +103,7 @@ public class PorcupineManager {
             return
         }
         
-        try audioSession.setCategory(AVAudioSession.Category.record)
+        try audioSession.setCategory(AVAudioSession.Category.playAndRecord)
         try audioSession.setMode(AVAudioSession.Mode.measurement)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         
@@ -119,6 +119,13 @@ public class PorcupineManager {
         }
         
         audioInputEngine.stop()
+        
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        }
+        catch {
+            NSLog("Unable to explicitly deactivate AVAudioSession: \(error)");
+        }
         
         isListening = false
     }
