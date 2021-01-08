@@ -1,8 +1,0 @@
-# files that we don't want in our flutter package
-flutter/LICENSE
-flutter/assets/lib/
-flutter/assets/resources/
-flutter/android/src/main/jniLibs
-flutter/ios/pv_porcupine/picovoice.h
-flutter/ios/pv_porcupine/pv_porcupine.h
-flutter/ios/pv_porcupine/libpv_porcupine.a
