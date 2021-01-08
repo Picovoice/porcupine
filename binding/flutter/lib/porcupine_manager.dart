@@ -133,10 +133,12 @@ class PorcupineManager {
   Future<void> stop() async => await _voiceProcessor.stop();
 
   /// Releases Porcupine and audio resouces
-  void delete() {
+  void delete() async {
     if (_voiceProcessor != null) {
-      _voiceProcessor.stop();
-      _removeVoiceProcessorListener();
+      if (_voiceProcessor.isRecording) {
+        _voiceProcessor.stop();
+      }
+      _removeVoiceProcessorListener?.call();
       _voiceProcessor = null;
     }
 
