@@ -9,11 +9,3 @@
 .flutter-plugins-dependencies
 
 build/
-
-# comment out the following lines to publish to pub.dev
-assets/lib/
-assets/resources/
-jniLibs/
-picovoice.h
-pv_porcupine.h
-libpv_porcupine.a

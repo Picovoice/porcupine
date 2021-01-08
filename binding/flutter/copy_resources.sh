@@ -38,3 +38,6 @@ fi
 
 echo "Copying iOS keyword files..."
 cp -rp ../../resources/keyword_files/ios/* ./assets/resources/keyword_files/ios
+
+echo "Copying license file..."
+cp ../../LICENSE ./LICENSE
