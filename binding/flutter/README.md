@@ -143,7 +143,7 @@ await _porcupineManager.stop();
 
 Once the app is done with using an instance of PorcupineManager, be sure you explicitly release the resources allocated to Porcupine:
 ```dart
-_porcupineManager.delete();
+await _porcupineManager.delete();
 ```
 
 There is no need to deal with audio capture to enable wake word detection with PorcupineManager.

@@ -3,3 +3,6 @@
 
 ## [1.9.3] - 2021-01-05
 * Version bump of voice processor
+
+## [1.9.4] - 2021-01-08
+* Minor fix
