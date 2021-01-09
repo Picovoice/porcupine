@@ -116,6 +116,11 @@ class PorcupineManager {
   /// Opens audio input stream and sends audio frames to Porcupine
   /// Throws a `PvAudioException` if there was a problem starting the audio engine
   Future<void> start() async {
+    if (_porcupine == null || _voiceProcessor == null) {
+      throw new PvStateError(
+          "Cannot start Porcupine - resources have already been released");
+    }
+
     if (await _voiceProcessor.hasRecordAudioPermission()) {
       try {
         await _voiceProcessor.start();
@@ -136,7 +141,7 @@ class PorcupineManager {
   void delete() async {
     if (_voiceProcessor != null) {
       if (_voiceProcessor.isRecording) {
-        _voiceProcessor.stop();
+        await _voiceProcessor.stop();
       }
       _removeVoiceProcessorListener?.call();
       _voiceProcessor = null;
