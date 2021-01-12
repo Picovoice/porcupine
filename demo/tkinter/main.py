@@ -38,7 +38,7 @@ class PorcupineThread(Thread):
         audio_stream = None
 
         try:
-            porcupine = pvporcupine.create(keywords=KEYWORDS)
+            porcupine = pvporcupine.create(keywords=KEYWORDS, sensitivities=[0.75] * len(KEYWORDS))
 
             py_audio = pyaudio.PyAudio()
             audio_stream = py_audio.open(
