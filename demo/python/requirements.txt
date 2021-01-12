@@ -1,4 +1,4 @@
 numpy
-pvporcupine==1.8.7
+pvporcupine==1.9.0
 pyaudio
 soundfile
