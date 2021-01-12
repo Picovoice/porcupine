@@ -28,6 +28,7 @@ class PorcupineThread(Thread):
 
         self._keyword_var = keyword_var
 
+        self._is_ready = False
         self._stop = False
         self._is_stopped = False
 
@@ -37,7 +38,7 @@ class PorcupineThread(Thread):
         audio_stream = None
 
         try:
-            ppn = pvporcupine.create(keywords=KEYWORDS)
+            ppn = pvporcupine.create(keywords=KEYWORDS, sensitivities=[0.75] * len(KEYWORDS))
 
             py_audio = pyaudio.PyAudio()
             audio_stream = py_audio.open(
@@ -47,6 +48,8 @@ class PorcupineThread(Thread):
                 input=True,
                 frames_per_buffer=ppn.frame_length)
 
+            self._is_ready = True
+
             while not self._stop:
                 pcm = audio_stream.read(ppn.frame_length)
                 pcm = struct.unpack_from("h" * ppn.frame_length, pcm)
@@ -54,12 +57,9 @@ class PorcupineThread(Thread):
                 if keyword_index >= 0:
                     self._keyword_var.set(KEYWORDS[keyword_index])
                     print(self._keyword_var.get())
-        except KeyboardInterrupt:
-            print('Stopping ...')
         finally:
             if audio_stream is not None:
                 audio_stream.close()
-
             if py_audio is not None:
                 py_audio.terminate()
 
@@ -67,6 +67,9 @@ class PorcupineThread(Thread):
                 ppn.delete()
 
         self._is_stopped = True
+
+    def is_ready(self):
+        return self._is_ready
 
     def stop(self):
         self._stop = True
@@ -96,6 +99,9 @@ def main():
     window.protocol('WM_DELETE_WINDOW', on_close)
 
     porcupine_thread.start()
+    while not porcupine_thread.is_ready():
+        pass
+
     window.mainloop()
 
 
