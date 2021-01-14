@@ -380,7 +380,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DXS28SLTD3;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
 				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo2;
@@ -397,7 +397,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DXS28SLTD3;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
 				PRODUCT_BUNDLE_IDENTIFIER = picovoicedemo2;
