@@ -16,7 +16,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     let wakeWords = [
         "Alexa", "Americano", "Blueberry", "Bumblebee", "Computer", "Grapefruit", "Grasshopper", "Hey Google", "Hey Siri", "Jarvis", "Picovoice", "Porcupine", "Ok Google", "Terminator"
     ]
-    var wakeWord = "Porcupine"
+    var wakeWord = "Alexa"
 
     var porcupineManager: PorcupineManager!
     var isRecording = false
