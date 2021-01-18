@@ -70,10 +70,10 @@ PODS:
   - OpenSSL-Universal (1.0.2.20):
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
-  - porcupine-react-native (1.8.2):
-    - porcupine-react-native/pv_porcupine (= 1.8.2)
+  - porcupine-react-native (1.9.2):
+    - porcupine-react-native/pv_porcupine (= 1.9.2)
     - React
-  - porcupine-react-native/pv_porcupine (1.8.2):
+  - porcupine-react-native/pv_porcupine (1.9.2):
     - React
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
@@ -241,7 +241,7 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
-  - react-native-voice-processor (1.0.1):
+  - react-native-voice-processor (1.0.2):
     - React
   - React-RCTActionSheet (0.63.3):
     - React-Core/RCTActionSheetHeaders (= 0.63.3)
@@ -303,7 +303,7 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - RNCPicker (1.9.2):
+  - RNCPicker (1.9.10):
     - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -453,7 +453,7 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
-  porcupine-react-native: 6a07fdede3945c8bad423e5dc08b9cacf897af50
+  porcupine-react-native: 2853558dd1443e234622be1b52cfd9ef90093744
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -464,7 +464,7 @@ SPEC CHECKSUMS:
   React-jsi: df07aa95b39c5be3e41199921509bfa929ed2b9d
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
-  react-native-voice-processor: 92645e3f09ba21e332d7891790d138f7ddb5087f
+  react-native-voice-processor: 709bc90582d5f05884456cca3a1bbce2342946db
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
@@ -475,7 +475,7 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  RNCPicker: 4850f485a2b6a51788c7582d90d4b7d0e1644036
+  RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
