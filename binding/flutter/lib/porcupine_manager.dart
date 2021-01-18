@@ -34,6 +34,9 @@ class PorcupineManager {
   /// [keywords] is a List of (phrases) for detection. The list of available
   /// keywords can be retrieved using [Porcupine.BUILT_IN_KEYWORDS]
   ///
+  /// [wakeWordCallback] A callback that is triggered when one of the given keywords
+  /// has been detected by Porcupine
+  ///
   /// [modelPath] is a path to the file containing model parameters. If not set
   /// it will be set to the default location.
   ///
@@ -58,6 +61,9 @@ class PorcupineManager {
   /// Static creator for initializing PorcupineManager from a list of paths to custom keyword files
   ///
   /// [keywordPaths] A List of absolute paths to keyword model files.
+  ///
+  /// [wakeWordCallback] A callback that is triggered when one of the given keywords
+  /// has been detected by Porcupine
   ///
   /// [modelPath] is a path to the file containing model parameters. If not set
   /// it will be set to the default location.
