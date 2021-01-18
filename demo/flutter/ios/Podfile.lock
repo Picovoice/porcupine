@@ -4,10 +4,10 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
-  - porcupine (1.9.0):
+  - porcupine (1.9.5):
     - Flutter
-    - porcupine/pv_porcupine (= 1.9.0)
-  - porcupine/pv_porcupine (1.9.0):
+    - porcupine/pv_porcupine (= 1.9.5)
+  - porcupine/pv_porcupine (1.9.5):
     - Flutter
 
 DEPENDENCIES:
@@ -30,7 +30,7 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_voice_processor: b4295092e5365b517b75f2af026c05d897ce4450
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  porcupine: df4caaef244071b3d3f5c8a73595ba3a62442411
+  porcupine: 62bb2ea5f3806a602062ad0e6c92e71fbe7b6317
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

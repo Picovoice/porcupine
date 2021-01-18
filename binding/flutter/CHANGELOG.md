@@ -6,3 +6,6 @@
 
 ## [1.9.4] - 2021-01-08
 * Minor fix
+
+## [1.9.5] - 2021-01-18
+* update iOS porcupine lib
