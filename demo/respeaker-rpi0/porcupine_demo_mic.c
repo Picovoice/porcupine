@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    fprintf(stdout, "[Listening]\n")
+    fprintf(stdout, "[Listening]\n");
 
     while (!is_interrupted) {
         const int count = snd_pcm_readi(alsa_handle, pcm, frame_length);
