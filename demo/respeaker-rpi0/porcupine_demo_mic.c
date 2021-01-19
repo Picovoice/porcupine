@@ -166,6 +166,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    fprintf(stdout, "[Listening]\n")
+
     while (!is_interrupted) {
         const int count = snd_pcm_readi(alsa_handle, pcm, frame_length);
         if (count < 0) {
@@ -183,6 +185,20 @@ int main(int argc, char *argv[]) {
             exit(1);
         }
         if (keyword_index != -1) {
+            static const char *KEYWORDS[] = {
+                "Alexa",
+                "Computer",
+                "Hey Google",
+                "Hey Siri",
+                "Jarvis",
+                "Picovoice",
+                "Porcupine",
+                "Bumblebee",
+                "Terminator"
+            };
+
+            fprintf(stdout, "detected '%s'\n", KEYWORDS[keyword_index]);
+
             static const char *COLORS[] = {
                 "yellow",
                 "white",
