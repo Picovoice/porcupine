@@ -1,10 +1,17 @@
+## Requirements
+
+```bash
+sudo apt-get install wiringpi
+```
+
 ## Build
 
 From the root of the repository run:
 
 ```bash
 gcc -std=c99 -O3 -o demo/respeaker-rpi0/porcupine_demo_mic \
--I include/ demo/respeaker-rpi0/porcupine_demo_mic.c -ldl -lasound
+-I include/ demo/respeaker-rpi0/porcupine_demo_mic.c \
+-ldl -lasound -lwiringPi
 ```
 
 ## Run
