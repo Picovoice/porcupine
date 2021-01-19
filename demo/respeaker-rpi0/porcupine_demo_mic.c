@@ -25,7 +25,7 @@ void interrupt_handler(int _) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 6) {
+    if (argc != 14) {
         fprintf(
             stderr,
             "usage : %s library_path model_path sensitivity input_audio_device alexa_keyword_path "
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     const char *model_path = argv[2];
     const float sensitivity = (float) atof(argv[3]);
     const char *input_audio_device = argv[4];
-    const char **keyword_paths = &argv[5];
+    const char **keyword_paths = (const char **) &argv[5];
     const int32_t num_keywords = 9;
 
     void *porcupine_library = dlopen(library_path, RTLD_NOW);
@@ -183,7 +183,7 @@ int main(int argc, char *argv[]) {
             exit(1);
         }
         if (keyword_index != -1) {
-            const char **color = {
+            static const char *COLORS[] = {
                 "yellow",
                 "white",
                 "red",
@@ -196,7 +196,7 @@ int main(int argc, char *argv[]) {
             };
 
             char command[1024];
-            sprintf(command, "python3 demo/respeaker-rpi0/change_color.py %s", color[keyword_index]);
+            sprintf(command, "python3 demo/respeaker-rpi0/change_color.py %s", COLORS[keyword_index]);
             const int res = system(command);
             if (res < 0) {
                 fprintf(stderr, "failed to change LED colors with %d\n", res);
