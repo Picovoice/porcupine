@@ -23,7 +23,7 @@ namespace Pv.Unity
     public class Porcupine : IDisposable
     {
         /// <summary>
-        ///  Status codes returned by Picovoice library
+        ///  Status codes returned by Porcupine library
         /// </summary>
         public enum PorcupineStatus
         {
@@ -229,7 +229,7 @@ namespace Pv.Unity
                 case PorcupineStatus.INVALID_ARGUMENT:
                     return new ArgumentException();
                 default:
-                    return new Exception("Unmapped error code returned from Porcupine.");
+                    return new Exception(string.Format("Unmapped error code '{0}' returned from Porcupine.", status));
             }
         }
 
@@ -271,7 +271,7 @@ namespace Pv.Unity
                 case RuntimePlatform.Android:
                     return "android";
                 default:
-                    throw new NotSupportedException("Platform not supported by Porcupine Unity binding");
+                    throw new NotSupportedException(string.Format("Platform '{0}' not supported by Porcupine Unity binding", Application.platform));
             } 
         }
 
