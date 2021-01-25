@@ -57,11 +57,3 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
-
-*.pv
-*.ppn
-Assets/Porcupine/Plugins/**/*.so
-Assets/Porcupine/Plugins/**/*.a
-Assets/Porcupine/Plugins/**/*.dylib
-Assets/Porcupine/Plugins/**/*.dll
-Assets/Porcupine/VoiceProcessor/**
