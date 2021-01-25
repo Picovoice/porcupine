@@ -54,6 +54,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+!porcupine.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
