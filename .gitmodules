@@ -1,3 +1,3 @@
 [submodule "binding/unity/Assets/Porcupine/VoiceProcessor"]
 	path = binding/unity/Assets/Porcupine/VoiceProcessor
-	url = git@github.com:Picovoice/unity-voice-processor.git
+	url = ../unity-voice-processor.git
