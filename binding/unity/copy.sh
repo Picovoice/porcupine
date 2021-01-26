@@ -1,7 +1,6 @@
 echo "Copying Android resouces..."
 cp ../../lib/android/arm64-v8a/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/arm64-v8a/libpv_porcupine.so
 cp ../../lib/android/armeabi-v7a/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/armeabi-v7a/libpv_porcupine.so
-cp ../../lib/android/x86/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/x86/libpv_porcupine.so
 
 echo "Copying iOS lib..."
 cp ../../lib/ios/libpv_porcupine.a ./Assets/Porcupine/Plugins/ios/libpv_porcupine.a
