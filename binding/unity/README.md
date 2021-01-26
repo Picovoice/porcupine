@@ -145,7 +145,7 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 [Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
 
-To create an instance of `Porcupine`, use the `.Create` static constructor.
+To create an instance of `Porcupine`, use the `.Create` static constructor. You can pass a list of built-in keywords as its `keywords` argument or a list or paths to custom keywords using its `keywordPaths` arguement. 
 
 ```csharp
 using Pv.Unity;
@@ -159,8 +159,8 @@ catch (Exception ex)
 {
     // handle porcupine init error
 }
-
 ```
+
 To search for a keyword in audio, you must pass frames of audio to Porcupine using the `Process` function. The `keywordIndex` returned will either be -1 if no detection was made or an integer specifying which keyword was detected.
 
 ```csharp
