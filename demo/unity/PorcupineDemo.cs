@@ -14,7 +14,7 @@ public class PorcupineDemo : MonoBehaviour {
     
     Button _startButton;
     RawImage _outputImg;
-    Color _alphaSubtract = new Color(0, 0, 0, 0.008f);\
+    Color _alphaSubtract = new Color(0, 0, 0, 0.008f);
 
     private bool _isProcessing;
     PorcupineManager _porcupineManager;
