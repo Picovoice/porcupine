@@ -7,28 +7,28 @@ using UnityEngine.UI;
 
 using Pv.Unity;
 
-public class PorcupineDemo : MonoBehaviour {
-    
+public class PorcupineDemo : MonoBehaviour
+{
+
     public Texture[] _imgs = new Texture[7];
     List<string> _keywords = new List<string> { "americano", "grasshopper", "grapefruit", "computer", "blueberry", "bumblebee", "porcupine" };
-    
+
     Button _startButton;
     RawImage _outputImg;
     Color _alphaSubtract = new Color(0, 0, 0, 0.008f);
 
     private bool _isProcessing;
     PorcupineManager _porcupineManager;
-    
-    void Start() 
+
+    void Start()
     {
         _startButton = gameObject.GetComponentInChildren<Button>();
-        _startButton.onClick.AddListener(ToggleProcessing);        
+        _startButton.onClick.AddListener(ToggleProcessing);
         _outputImg = gameObject.GetComponentInChildren<RawImage>();
 
         try
         {
             _porcupineManager = PorcupineManager.FromKeywords(_keywords, OnWakeWordDetected);
-            StartProcessing();
         }
         catch (Exception ex)
         {
@@ -36,13 +36,13 @@ public class PorcupineDemo : MonoBehaviour {
         }
     }
 
-    private void ToggleProcessing() 
-    {		
+    private void ToggleProcessing()
+    {
         if (!_isProcessing)
         {
             StartProcessing();
         }
-        else 
+        else
         {
             StopProcessing();
         }
@@ -55,30 +55,32 @@ public class PorcupineDemo : MonoBehaviour {
         _isProcessing = true;
     }
 
-    private void StopProcessing() 
+    private void StopProcessing()
     {
         (_startButton.targetGraphic as Text).text = "Start Listening";
         _porcupineManager.Stop();
         _isProcessing = false;
     }
 
-    private void OnWakeWordDetected(int keywordIndex) 
-    {		
-        if (keywordIndex >= 0) {
-            string keyword = _keywords[keywordIndex];			
+    private void OnWakeWordDetected(int keywordIndex)
+    {
+        if (keywordIndex >= 0)
+        {
+            string keyword = _keywords[keywordIndex];
             _outputImg.color = Color.white;
             _outputImg.texture = _imgs.First(img => img.name == keyword);
-            
-        }	
-    }	
-    void Update () {
+
+        }
+    }
+    void Update()
+    {
         if (_outputImg.texture != null)
         {
             _outputImg.color -= _alphaSubtract;
         }
     }
 
-    void OnApplicationQuit() 
+    void OnApplicationQuit()
     {
         if (_porcupineManager != null)
         {
