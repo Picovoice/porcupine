@@ -65,3 +65,4 @@ Assets/Porcupine/Plugins/**/*.a
 Assets/Porcupine/Plugins/**/*.dylib
 Assets/Porcupine/Plugins/**/*.dll
 Assets/Porcupine/VoiceProcessor/**
+Assets/Porcupine/Demo/**

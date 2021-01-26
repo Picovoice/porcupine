@@ -1,5 +1,7 @@
 echo "Copying Android resouces..."
-cp -rp ../../lib/android/* ./Assets/Porcupine/Plugins/android
+cp ../../lib/android/arm64-v8a/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/arm64-v8a/libpv_porcupine.so
+cp ../../lib/android/armeabi-v7a/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/armeabi-v7a/libpv_porcupine.so
+cp ../../lib/android/x86/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/x86/libpv_porcupine.so
 
 echo "Copying iOS lib..."
 cp ../../lib/ios/libpv_porcupine.a ./Assets/Porcupine/Plugins/ios/libpv_porcupine.a
@@ -22,5 +24,12 @@ cp -rp ../../resources/keyword_files/ios/* ./Assets/StreamingAssets/keyword_file
 cp -rp ../../resources/keyword_files/linux/* ./Assets/StreamingAssets/keyword_files/linux
 cp -rp ../../resources/keyword_files/mac/* ./Assets/StreamingAssets/keyword_files/mac
 cp -rp ../../resources/keyword_files/windows/* ./Assets/StreamingAssets/keyword_files/windows
+
+echo "Copying demo files..."
+if [ ! -d "./Assets/Porcupine/Demo" ]
+then 
+    mkdir -p ./Assets/Porcupine/Demo
+fi
+cp -rp ../../demo/unity/* ./Assets/Porcupine/Demo
 
 echo "Copy complete!"
