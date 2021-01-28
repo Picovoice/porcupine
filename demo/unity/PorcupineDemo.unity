@@ -190,22 +190,25 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Try saying:
+  m_Text: 'Press ''Start Listening'' and
+
+    then try saying:
 
     - "americano"
 
-    - "blueberry"
+    -
+    "blueberry"
 
     - "bumblebee"
 
-    -
-    "computer"
+    - "computer"
 
     - "grapefruit"
 
     - "grasshopper"
 
-    - "porcupine"'
+    -
+    "porcupine"'
 --- !u!222 &11966359
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -682,7 +685,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Stop Listening
+  m_Text: Start Listening
 --- !u!222 &1018113880
 CanvasRenderer:
   m_ObjectHideFlags: 0
