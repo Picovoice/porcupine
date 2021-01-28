@@ -35,6 +35,8 @@ This binding is for running Porcupine on **Unity 2017.4+** on the following plat
 
 The easiest way to install the Porcupine Unity SDK is to import [porcupine.unitypackage](/binding/unity/porcupine.unitypackage) into your Unity project by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
+**NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from github. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
+
 ## Packaging
 To build the package from source, you have first have to clone the repo with submodules:
 ```bash
