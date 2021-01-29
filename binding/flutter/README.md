@@ -45,6 +45,8 @@ dependencies:
     path: /path/to/porcupine/flutter/binding
 ```
 
+**NOTE:** When archiving for release on iOS, you may have to change the build settings of your project in order to prevent stripping of the Porcupine library. To do this open the Runner project in XCode and change build setting Deployment -> Strip Style to 'Non-Global Symbols'.
+
 ## Permissions
 
 To enable recording with the hardware's microphone, you must first ensure that you have enabled the proper permission on both iOS and Android.
