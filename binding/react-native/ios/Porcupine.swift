@@ -9,7 +9,7 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import pv_porcupine
+import PvPorcupine
 
 @objc(PvPorcupine)
 class PvPorcupine: NSObject {
