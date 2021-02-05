@@ -33,6 +33,52 @@ extern "C"
  */
 typedef struct pv_porcupine pv_porcupine_t;
 
+#if defined(__PV_NO_DYNAMIC_MEMORY__) && defined(__PV_NO_FILE_SYSTEM__)
+
+/**
+ * Constructor.
+ *
+ * @param memory_size Memory size in bytes.
+ * @param memory_buffer Memory buffer needs to be 8-byte aligned.
+ * @param num_keywords Number of keywords to monitor.
+ * @param keyword_model_sizes Size of each keyword model in bytes.
+ * @param keyword_models Keyword models.
+ * @param sensitivities Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher
+ * sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+ * @param[out] object Constructed instance of Porcupine.
+ * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' or 'PV_STATUS_OUT_OF_MEMORY' on failure.
+ */
+PV_API pv_status_t pv_porcupine_init(
+    int32_t memory_size,
+    void *memory_buffer,
+    int32_t num_keywords,
+    const int32_t *keyword_model_sizes,
+    const void * const *keyword_models,
+    const float *sensitivities,
+    pv_porcupine_t **object);
+
+#elif !defined(__PV_NO_DYNAMIC_MEMORY__) && defined(__PV_NO_FILE_SYSTEM__)
+
+/**
+ * Constructor.
+ *
+ * @param num_keywords Number of keywords to monitor.
+ * @param keyword_model_sizes Size of each keyword model in bytes.
+ * @param keyword_models Keyword models.
+ * @param sensitivities Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher
+ * sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+ * @param[out] object Constructed instance of Porcupine.
+ * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' or 'PV_STATUS_OUT_OF_MEMORY' on failure.
+ */
+PV_API pv_status_t pv_porcupine_init(
+    int32_t num_keywords,
+    const int32_t *keyword_model_sizes,
+    const void * const *keyword_models,
+    const float *sensitivities,
+    pv_porcupine_t **object);
+
+#elif !defined(__PV_NO_DYNAMIC_MEMORY__) && !defined(__PV_NO_FILE_SYSTEM__)
+
 /**
  * Constructor.
  *
@@ -51,6 +97,12 @@ PV_API pv_status_t pv_porcupine_init(
         const char *const *keyword_paths,
         const float *sensitivities,
         pv_porcupine_t **object);
+
+#else
+
+#error
+
+#endif
 
 /**
  * Destructor.

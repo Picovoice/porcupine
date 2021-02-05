@@ -8,9 +8,7 @@ echo "Copying Android libs..."
 cp -rp ../../lib/android/* ./android/src/main/jniLibs
 
 echo "Copying iOS libs..."
-cp ../../lib/ios/libpv_porcupine.a ./ios/pv_porcupine/libpv_porcupine.a
-cp ../../include/picovoice.h ./ios/pv_porcupine/picovoice.h
-cp ../../include/pv_porcupine.h ./ios/pv_porcupine/pv_porcupine.h
+cp -R ../../lib/ios/PvPorcupine.xcframework ./ios/PvPorcupine.xcframework
 
 echo "Creating model resources directory..."
 if [ ! -d "./assets/lib/common" ]
