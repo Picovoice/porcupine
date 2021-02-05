@@ -122,6 +122,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				C9C2B1E2C304016346BE7D3F /* [CP] Copy Pods Resources */,
+				4D3D817D760327303A462870 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -141,7 +142,6 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = W85R5D2UG6;
 						LastSwiftMigration = 1210;
 					};
 				};
@@ -212,6 +212,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4D3D817D760327303A462870 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvPorcupine.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C9C2B1E2C304016346BE7D3F /* [CP] Copy Pods Resources */ = {
@@ -304,7 +322,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W85R5D2UG6;
+				DEVELOPMENT_TEAM = 65723695GD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PorcupineDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -313,7 +331,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PorcupineDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.porcupinereactnativedemo;
 				PRODUCT_NAME = PorcupineDemo;
 				SWIFT_OBJC_BRIDGING_HEADER = "PorcupineDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -329,7 +347,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W85R5D2UG6;
+				DEVELOPMENT_TEAM = 65723695GD;
 				INFOPLIST_FILE = PorcupineDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -337,7 +355,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PorcupineDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.porcupinereactnativedemo;
 				PRODUCT_NAME = PorcupineDemo;
 				SWIFT_OBJC_BRIDGING_HEADER = "PorcupineDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
