@@ -9,3 +9,6 @@
 
 ## [1.9.5] - 2021-01-18
 * update iOS porcupine lib
+
+## [1.9.6] - 2021-02-04
+* iOS lib -> xcframework

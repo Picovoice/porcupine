@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'porcupine'
-  s.version          = '1.9.5'
+  s.version          = '1.9.6'
   s.summary          = 'A Flutter package plugin for Picovoice\'s Porcupine wake word engine'
   s.description      = <<-DESC
   A Flutter package plugin for Picovoice\'s Porcupine wake word engine.
@@ -12,25 +12,13 @@ Pod::Spec.new do |s|
   s.source_files = 'Classes/**/*'
   s.platform = :ios, '9.0'
   s.dependency 'Flutter'
-  s.static_framework = true
+  s.vendored_frameworks = "PvPorcupine.xcframework"
 
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 
-    'OTHER_LDFLAGS' => '-ObjC',
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386'}
-
-    s.subspec 'pv_porcupine' do |sc|    
-      sc.pod_target_xcconfig = {
-        'SWIFT_INCLUDE_PATHS' => '$(PODS_TARGET_SRCROOT)/pv_porcupine',
-        'OTHER_CFLAGS' => '-Xcc -fmodule-map-file="${PODS_TARGET_SRCROOT}/pv_porcupine/module.private.modulemap"',
-        'OTHER_SWIFT_FLAGS' => '-Xcc -fmodule-map-file="${PODS_TARGET_SRCROOT}/pv_porcupine/module.private.modulemap"',        
-      }
-      
-      sc.vendored_libraries = 'pv_porcupine/libpv_porcupine.a'
-      sc.source_files = 'pv_porcupine/pv_porcupine.h', 'pv_porcupine/picovoice.h'
-      sc.public_header_files = 'pv_porcupine/pv_porcupine.h', 'pv_porcupine/picovoice.h'
-      sc.preserve_paths = 'pv_porcupine/libpv_porcupine.a', 'pv_porcupine/module.private.modulemap'
-    end
+  s.pod_target_xcconfig = 
+  {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386'
+  }
 
   s.swift_version = '5.0'
 end

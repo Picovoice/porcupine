@@ -12,6 +12,8 @@
 #ifndef PICOVOICE_H
 #define PICOVOICE_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 
 extern "C"
@@ -24,7 +26,7 @@ extern "C"
 /**
  * Audio sample rate accepted by Picovoice.
  */
-PV_API int pv_sample_rate(void);
+PV_API int32_t pv_sample_rate(void);
 
 /**
  * Status codes.
