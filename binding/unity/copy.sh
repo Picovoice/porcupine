@@ -3,7 +3,7 @@ cp ../../lib/android/arm64-v8a/libpv_porcupine.so ./Assets/Porcupine/Plugins/and
 cp ../../lib/android/armeabi-v7a/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/armeabi-v7a/libpv_porcupine.so
 
 echo "Copying iOS lib..."
-cp ../../lib/ios/libpv_porcupine.a ./Assets/Porcupine/Plugins/ios/libpv_porcupine.a
+cp -R ../../lib/ios/PvPorcupine.xcframework/ios-arm64_armv7/PvPorcupine.framework ./Assets/Porcupine/Plugins/ios/PvPorcupine.framework
 
 echo "Copying Linux lib..."
 cp ../../lib/linux/x86_64/libpv_porcupine.so ./Assets/Porcupine/Plugins/linux/x86_64/libpv_porcupine.so
