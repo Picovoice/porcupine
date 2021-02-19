@@ -1,0 +1,7 @@
+framework module PvPorcupine {
+  umbrella header "PvPorcupine.h"
+  header "pv_porcupine.h"
+  header "picovoice.h"
+  export *
+  module * {export *}
+}

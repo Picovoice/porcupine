@@ -24,6 +24,7 @@ applications. It is
   - [License & Terms](#license--terms)
   - [Use Cases](#use-cases)
   - [Try It Out](#try-it-out)
+  - [Language Support](#language-support)
   - [Performance](#performance)
   - [Demos](#demos)
     - [Python](#python-demos)
@@ -76,9 +77,15 @@ Porcupine is the right product if you need to detect one or a few static (always
 
 - [Android Demo Application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en)
 
-- Porcupine and [Rhino](https://github.com/Picovoice/rhino) on an ARM Cortex-M7
+- Porcupine on a Raspberry Pi Zero
 
-[![Porcupine in Action](https://img.youtube.com/vi/WadKhfLyqTQ/0.jpg)](https://www.youtube.com/watch?v=WadKhfLyqTQ)
+[![Porcupine in Action](https://img.youtube.com/vi/Fi_IJEcNr3I/0.jpg)](https://www.youtube.com/watch?v=Fi_IJEcNr3I)
+
+## Language Support
+
+- English and German
+- French and Spanish coming soon.
+- Support for additional languages is available for commercial customers on a case-by-case basis.
 
 ## Performance
 
@@ -151,7 +158,7 @@ To browse the demo source go to [demo/unity](/demo/unity).
 
 To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
 
-Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
+Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
 ```sh
 flutter run
 ```

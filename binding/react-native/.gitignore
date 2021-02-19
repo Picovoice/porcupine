@@ -28,9 +28,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-libpv_porcupine.a
-picovoice.h
-pv_porcupine.h
+PvPorcupine.xcframework
 ios/resources/**
 
 

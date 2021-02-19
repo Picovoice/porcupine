@@ -60,6 +60,15 @@ use `keyword_paths` argument
 porcupine_demo_mic --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
+To detect non-English keywords provide the respective model path:
+
+```bash
+porcupine_demo_mic --model_path ${NON_ENGLISH_MODEL_PATH} --keyword_paths ${NON_ENGLISH_KEYWORD_PATH} 
+```
+
+The model files for all supported languages are available 
+[here](https://github.com/Picovoice/porcupine/tree/master/lib/common) on Porcupine's GitHub repository.
+
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console
 
@@ -140,6 +149,17 @@ use `keyword_paths` argument
 porcupine_demo_file --input_audio_path ${AUDIO_PATH} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
+
+To detect non-English keywords provide the respective model path:
+
+```bash
+porcupine_demo_mic --input_audio_path ${AUDIO_PATH} \
+--model_path ${NON_ENGLISH_MODEL_PATH} \
+--keyword_paths ${NON_ENGLISH_KEYWORD_PATH} 
+```
+
+The model files for all supported languages are available 
+[here](https://github.com/Picovoice/porcupine/tree/master/lib/common) on Porcupine's GitHub repository.
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
 

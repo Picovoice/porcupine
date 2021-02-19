@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react-native",
-  "version": "1.9.2",
+  "version": "1.9.5",
   "description": "Picovoice Porcupine React Native binding",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/Picovoice/porcupine/#readme",
   "devDependencies": {
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",    
     "@react-native-community/bob": "^0.16.2",
     "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^1.1.4",
@@ -59,12 +59,12 @@
     "react-native": "0.62.2",
     "release-it": "^13.5.8",
     "typescript": "^3.8.3",
-    "@picovoice/react-native-voice-processor": "^1.0.2"
+    "@picovoice/react-native-voice-processor": "^1.0.3"
   },
   "peerDependencies": {
+    "@picovoice/react-native-voice-processor": "*",
     "react": "*",
-    "react-native": "*",
-    "@picovoice/react-native-voice-processor": "*"
+    "react-native": "*"
   },
   "jest": {
     "preset": "react-native",
@@ -131,5 +131,6 @@
       "module",
       "typescript"
     ]
-  }
+  },
+  "dependencies": {}
 }

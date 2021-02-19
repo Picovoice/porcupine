@@ -3,25 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0212DCE325507DFC001A11F3 /* libpv_porcupine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0212DCA225507849001A11F3 /* libpv_porcupine.a */; };
+		02112C5B25CCC1C800003A93 /* PvPorcupine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02112C5A25CCC1C800003A93 /* PvPorcupine.xcframework */; };
 		0212E0662550E3FC001A11F3 /* porcupine_params.pv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0212E0632550E388001A11F3 /* porcupine_params.pv */; };
 		0212E06A2550E408001A11F3 /* keyword_files in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0212E0642550E3A2001A11F3 /* keyword_files */; };
 		F4FF95D7245B92E800C19C63 /* Porcupine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* Porcupine.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
 			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
+			dstSubfolderSpec = 7;
 			files = (
 				0212E06A2550E408001A11F3 /* keyword_files in CopyFiles */,
 				0212E0662550E3FC001A11F3 /* porcupine_params.pv in CopyFiles */,
@@ -31,10 +28,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0212DAFC254CDFE9001A11F3 /* module.private.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.private.modulemap; sourceTree = "<group>"; };
-		0212DCA225507849001A11F3 /* libpv_porcupine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpv_porcupine.a; sourceTree = "<group>"; };
-		0212DCC225507BDF001A11F3 /* pv_porcupine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pv_porcupine.h; sourceTree = "<group>"; };
-		0212DCC325507BDF001A11F3 /* picovoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = picovoice.h; sourceTree = "<group>"; };
+		02112C5A25CCC1C800003A93 /* PvPorcupine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = PvPorcupine.xcframework; sourceTree = "<group>"; };
 		0212E0632550E388001A11F3 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; path = porcupine_params.pv; sourceTree = "<group>"; };
 		0212E0642550E3A2001A11F3 /* keyword_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = keyword_files; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libPorcupine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPorcupine.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,7 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0212DCE325507DFC001A11F3 /* libpv_porcupine.a in Frameworks */,
+				02112C5B25CCC1C800003A93 /* PvPorcupine.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,19 +52,9 @@
 		0212DAF9254CCFE1001A11F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				02112C5A25CCC1C800003A93 /* PvPorcupine.xcframework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		0212DC7E254D5A08001A11F3 /* pv_porcupine */ = {
-			isa = PBXGroup;
-			children = (
-				0212DAFC254CDFE9001A11F3 /* module.private.modulemap */,
-				0212DCC325507BDF001A11F3 /* picovoice.h */,
-				0212DCC225507BDF001A11F3 /* pv_porcupine.h */,
-				0212DCA225507849001A11F3 /* libpv_porcupine.a */,
-			);
-			path = pv_porcupine;
 			sourceTree = "<group>";
 		};
 		0212E0622550E33F001A11F3 /* resources */ = {
@@ -85,7 +69,6 @@
 		02C03F26255B122800D91214 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				BEA49910696C487496C514EC /* libVoiceProcessor.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -102,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				0212E0622550E33F001A11F3 /* resources */,
-				0212DC7E254D5A08001A11F3 /* pv_porcupine */,
 				F4FF95D6245B92E800C19C63 /* Porcupine.swift */,
 				B3E7B5891CC2AC0600A0062D /* Porcupine.m */,
 				F4FF95D5245B92E700C19C63 /* Porcupine-Bridging-Header.h */,
@@ -165,17 +147,12 @@
 			mainGroup = 58B511D21A9E6C8500147676;
 			productRefGroup = 58B511D21A9E6C8500147676;
 			projectDirPath = "";
-			projectReferences = (
-			);
 			projectRoot = "";
 			targets = (
 				58B511DA1A9E6C8500147676 /* Porcupine */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
