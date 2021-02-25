@@ -1,0 +1,4 @@
+node_modules
+dist
+*.worker.js
+**/rollup.config.js

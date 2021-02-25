@@ -1,0 +1,25 @@
+{
+  "name": "porcupine-web-demo",
+  "version": "1.9.0-alpha.0",
+  "description": "A basic demo to show how to use Porcupine for web browsers, using the IIFE version of the library",
+  "main": "index.js",
+  "scripts": {
+    "start": "yarn run serve"
+  },
+  "keywords": [
+    "Picovoice",
+    "Porcupine",
+    "browser",
+    "voice ai",
+    "speech recognition"
+  ],
+  "author": "Picovoice Inc",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@picovoice/porcupine-web-en-worker": "file:../../binding/web",
+    "@picovoice/web-voice-processor": "^2.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "serve": "^11.3.2"
+  }
+}
