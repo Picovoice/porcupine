@@ -1,5 +1,5 @@
 {
-  "name": "porcupine-web-en-worker",
+  "name": "@picovoice/porcupine-web-en-worker",
   "version": "1.9.0-alpha.0",
   "description": "Porcupine web worker library for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
