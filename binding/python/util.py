@@ -17,23 +17,24 @@ import subprocess
 def _pv_linux_machine(machine):
     if machine == 'x86_64':
         return machine
+    elif machine == 'aarch64':
+        arch_info = '-' + machine
+    else:
+        arch_info = ''
 
-    cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
+    cpu_info = subprocess.check_output(['lscpu']).decode()
+    model_info = [x for x in cpu_info.split('\n') if 'Model name' in x][0].split(' ')[-1]
 
-    hardware_info = [x for x in cpu_info.split('\n') if 'Hardware' in x][0]
-    model_info = [x for x in cpu_info.split('\n') if 'model name' in x][0]
-
-    if 'BCM' in hardware_info:
-        if 'rev 7' in model_info:
-            return 'arm11'
-        elif 'rev 5' in model_info:
-            return 'cortex-a7'
-        elif 'rev 4' in model_info:
-            return 'cortex-a53'
-        elif 'rev 3' in model_info:
-            return 'cortex-a72'
-    elif 'AM33' in hardware_info:
-        return 'beaglebone'
+    if 'ARM1176' == model_info: 
+        return 'arm11' + arch_info
+    elif 'Cortex-A53' == model_info:
+        return 'cortex-a53' + arch_info
+    elif 'Cortex-A72' == model_info:
+        return 'cortex-a72' + arch_info
+    elif 'Cortex-A7' == model_info:
+        return 'cortex-a7' + arch_info
+    elif 'Cortex-A8' == model_info:
+        return 'beaglebone' + arch_info
     else:
         raise NotImplementedError('Unsupported CPU.')
 
@@ -53,7 +54,7 @@ def _pv_platform():
 
 _PV_SYSTEM, _PV_MACHINE = _pv_platform()
 
-_RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72'}
+_RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72', 'cortex-a53-aarch64', 'cortex-a72-aarch64'}
 
 
 def pv_library_path(relative):
@@ -104,3 +105,4 @@ def pv_keyword_paths(relative):
         res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
 
     return res
+
