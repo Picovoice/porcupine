@@ -10,13 +10,13 @@
 */
 
 import {
-  GenericWorkerCommand,
   PorcupineEngine,
   PorcupineKeyword,
-  PorcupineWorkerInit,
-  PorcupineWorkerMessageOut,
-  WorkerCommand,
-  WorkerProcessCommand,
+  PorcupineWorkerRequestInit,
+  PorcupineWorkerResponseReady,
+  PorcupineWorkerResponseKeyword,
+  WorkerRequestProcess,
+  WorkerRequestVoid,
 } from './porcupine_types';
 
 // @ts-ignore
@@ -28,7 +28,9 @@ let porcupineEngine: PorcupineEngine = null;
 async function init(keywords: Array<PorcupineKeyword | string>): Promise<void> {
   porcupineEngine = await PorcupineEn.create(keywords);
   paused = false; // TODO option to start paused?
-  const ppnReadyMessage: PorcupineWorkerMessageOut = { command: 'ppn-ready' };
+  const ppnReadyMessage: PorcupineWorkerResponseReady = {
+    command: 'ppn-ready',
+  };
   postMessage(ppnReadyMessage, undefined);
 }
 
@@ -36,7 +38,7 @@ function process(inputFrame: Int16Array): void {
   if (porcupineEngine !== null && !paused) {
     const keywordIndex = porcupineEngine.process(inputFrame);
     if (keywordIndex !== -1) {
-      const ppnKeywordMessage: PorcupineWorkerMessageOut = {
+      const ppnKeywordMessage: PorcupineWorkerResponseKeyword = {
         command: 'ppn-keyword',
         keywordLabel: porcupineEngine.keywordLabels.get(keywordIndex),
       };
@@ -56,26 +58,28 @@ function release(): void {
 
 onmessage = function (
   event: MessageEvent<
-    WorkerProcessCommand | GenericWorkerCommand | PorcupineWorkerInit
+    WorkerRequestVoid | WorkerRequestProcess | PorcupineWorkerRequestInit
   >
 ): void {
   switch (event.data.command) {
-    case WorkerCommand.Init:
+    case 'init':
       init(event.data.keywords);
       break;
-    case WorkerCommand.Process:
+    case 'process':
       process(event.data.inputFrame);
       break;
-    case WorkerCommand.Pause:
+    case 'pause':
       paused = true;
       break;
-    case WorkerCommand.Resume:
+    case 'resume':
       paused = false;
       break;
-    case WorkerCommand.Release:
+    case 'release':
       release();
       break;
     default:
-      console.warn("Unhandled command in porcupine_worker_en: " + event.data.command)
+      console.warn(
+        'Unhandled command in porcupine_worker_en: ' + event.data.command
+      );
   }
 };

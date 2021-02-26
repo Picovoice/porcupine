@@ -11,28 +11,6 @@
 
 import { BuiltInKeywordEn } from './built_in_keywords_en';
 
-export enum WorkerCommand {
-  Process = 'process',
-  Init = 'init',
-  Reset = 'reset',
-  Pause = 'pause',
-  Resume = 'resume',
-  Release = 'release',
-}
-
-export type GenericWorkerCommand = {
-  command:
-    | WorkerCommand.Pause
-    | WorkerCommand.Release
-    | WorkerCommand.Reset
-    | WorkerCommand.Resume;
-};
-
-export type WorkerProcessCommand = {
-  command: WorkerCommand.Process;
-  inputFrame: Int16Array;
-};
-
 export type PorcupineKeywordCustom = {
   base64: string;
   custom: string;
@@ -46,15 +24,27 @@ export type PorcupineKeywordBuiltin = {
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
+export type WorkerRequestProcess = {
+  command: 'process';
+  inputFrame: Int16Array;
+};
 
-export type PorcupineWorkerInit = {
-  command: WorkerCommand.Init;
+export type WorkerRequestVoid = {
+  command: 'reset' | 'pause' | 'resume' | 'release';
+};
+
+export type PorcupineWorkerRequestInit = {
+  command: 'init';
   keywords: Array<PorcupineKeyword | string>;
 };
 
-export type PorcupineWorkerMessageOut = {
-  command: 'ppn-keyword' | 'ppn-ready';
-  keywordLabel?: string;
+export type PorcupineWorkerResponseReady = {
+  command: 'ppn-ready';
+};
+
+export type PorcupineWorkerResponseKeyword = {
+  command: 'ppn-keyword';
+  keywordLabel: string;
 };
 
 export interface PorcupineEngine {
@@ -65,4 +55,3 @@ export interface PorcupineEngine {
   frameLength: number;
   keywordLabels: Map<number, string>;
 }
-

@@ -12,9 +12,9 @@
 import PorcupineWorkerEn from 'web-worker:./porcupine_worker_en.ts';
 import {
   PorcupineKeyword,
-  PorcupineWorkerInit,
-  PorcupineWorkerMessageOut,
-  WorkerCommand,
+  PorcupineWorkerRequestInit,
+  PorcupineWorkerResponseReady,
+  PorcupineWorkerResponseKeyword,
 } from './porcupine_types';
 
 import { BuiltInKeywordEn } from './built_in_keywords_en';
@@ -22,7 +22,7 @@ import { BuiltInKeywordEn } from './built_in_keywords_en';
 export default class PorcupineWorkerFactory {
   private constructor() {}
 
-  public static get BuiltInKeywordEn() : typeof BuiltInKeywordEn {
+  public static get BuiltInKeywordEn(): typeof BuiltInKeywordEn {
     return BuiltInKeywordEn;
   }
 
@@ -45,15 +45,17 @@ export default class PorcupineWorkerFactory {
 
     const keywordArray = Array.isArray(keywords) ? keywords : [keywords];
 
-    const ppnInitCmd: PorcupineWorkerInit = {
-      command: WorkerCommand.Init,
+    const ppnInitCmd: PorcupineWorkerRequestInit = {
+      command: 'init',
       keywords: keywordArray,
     };
     porcupineWorker.postMessage(ppnInitCmd);
 
     const workerPromise = new Promise<Worker>((resolve, reject) => {
       porcupineWorker.onmessage = function (
-        event: MessageEvent<PorcupineWorkerMessageOut>
+        event: MessageEvent<
+          PorcupineWorkerResponseReady | PorcupineWorkerResponseKeyword
+        >
       ): void {
         if (event.data.command === 'ppn-ready') {
           resolve(porcupineWorker);

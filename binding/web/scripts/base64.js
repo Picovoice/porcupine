@@ -53,7 +53,6 @@ for (const language of ['en']) {
     SOURCE_DIRECTORY_MAP.get(language)
   );
 
-
   let outputDirectory = path.join(__dirname, '..', 'src', 'dist', language);
 
   // Convert all WASM PPN binary model files to base64 strings;
