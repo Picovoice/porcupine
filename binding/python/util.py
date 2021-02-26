@@ -25,7 +25,7 @@ def _pv_linux_machine(machine):
     cpu_info = subprocess.check_output(['lscpu']).decode()
     model_info = [x for x in cpu_info.split('\n') if 'Model name' in x][0].split(' ')[-1]
 
-    if 'rev 7' in model_info: 
+    if 'ARM1176' == model_info: 
         return 'arm11' + arch_info
     elif 'Cortex-A53' == model_info:
         return 'cortex-a53' + arch_info
