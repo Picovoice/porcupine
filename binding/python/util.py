@@ -30,12 +30,12 @@ def _pv_linux_machine(machine):
     if 'BCM' in hardware_info:
         if 'rev 7' in model_info: #check pi2
             return 'arm11' + arch_info
-        elif 'Cortex-A7' in model_info:
-            return 'cortex-a7' + arch_info
         elif 'Cortex-A53' in model_info:
             return 'cortex-a53' + arch_info
         elif 'Cortex-A72' in model_info:
             return 'cortex-a72' + arch_info
+        elif 'Cortex-A7' in model_info:
+            return 'cortex-a7' + arch_info
     elif 'AM33' in hardware_info: #check beaglebone
         return 'beaglebone'
     else:
