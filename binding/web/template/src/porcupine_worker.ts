@@ -20,13 +20,13 @@ import {
 } from './porcupine_types';
 
 // @ts-ignore
-import PorcupineEn from './porcupine_en';
+import Porcupine from './porcupine';
 
 let paused = true;
 let porcupineEngine: PorcupineEngine = null;
 
 async function init(keywords: Array<PorcupineKeyword | string>): Promise<void> {
-  porcupineEngine = await PorcupineEn.create(keywords);
+  porcupineEngine = await Porcupine.create(keywords);
   paused = false; // TODO option to start paused?
   const ppnReadyMessage: PorcupineWorkerResponseReady = {
     command: 'ppn-ready',
@@ -79,7 +79,7 @@ onmessage = function (
       break;
     default:
       console.warn(
-        'Unhandled command in porcupine_worker_en: ' + event.data.command
+        'Unhandled command in porcupine_worker: ' + event.data.command
       );
   }
 };

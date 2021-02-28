@@ -12,12 +12,12 @@
 import { PorcupineKeyword, PorcupineEngine } from './porcupine_types';
 
 // @ts-ignore
-import PorcupineEmscriptenModule from './wasm/pv_porcupine_b64_en';
+import PorcupineEmscriptenModule from './lang/pv_porcupine_b64';
 
 import {
-  BuiltInKeywordEn,
-  BUILT_IN_KEYWORD_BYTES_EN,
-} from './built_in_keywords_en';
+  BuiltInKeyword,
+  BUILT_IN_KEYWORD_BYTES,
+} from './lang/built_in_keywords';
 
 const DEFAULT_SENSITIVITY = 0.5;
 
@@ -165,7 +165,7 @@ class Porcupine implements PorcupineEngine {
       // We need to infer what type of argument this is, because strings are ambiguous
       if (typeof keywordArg === 'string') {
         keywordArgNormalized = {
-          builtin: keywordArg as BuiltInKeywordEn,
+          builtin: keywordArg as BuiltInKeyword,
           sensitivity: DEFAULT_SENSITIVITY,
         };
       } else if (typeof keywordArg !== 'object') {
@@ -190,16 +190,16 @@ class Porcupine implements PorcupineEngine {
         break;
       } else if ('builtin' in keywordArgNormalized) {
         // Built-in keyword: Look up the bytes from the map and convert
-        const validEnums = Object.values(BuiltInKeywordEn);
+        const validEnums = Object.values(BuiltInKeyword);
         const builtInName = keywordArgNormalized.builtin;
-        const keywordEnum = BuiltInKeywordEn[builtInName.replace(' ', '')];
+        const keywordEnum = BuiltInKeyword[builtInName.replace(' ', '')];
         if (!validEnums.includes(keywordEnum)) {
           throw new Error(
             `Keyword ${builtInName} does not map to list of built-in keywords (${validEnums})`
           );
         }
         keywordModels.push(
-          Uint8Array.from(atob(BUILT_IN_KEYWORD_BYTES_EN.get(keywordEnum)), c =>
+          Uint8Array.from(atob(BUILT_IN_KEYWORD_BYTES.get(keywordEnum)), c =>
             c.charCodeAt(0)
           )
         );

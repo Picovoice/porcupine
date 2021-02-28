@@ -9,7 +9,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@picovoice/porcupine-web-en-worker@file:../../binding/web":
+"@picovoice/porcupine-web-de-worker@file:../../binding/web/porcupine-web-de-worker":
+  version "1.9.0-alpha.0"
+
+"@picovoice/porcupine-web-en-worker@file:../../binding/web/porcupine-web-en-worker":
   version "1.9.0-alpha.0"
 
 "@picovoice/web-voice-processor@^2.0.0-alpha.1":

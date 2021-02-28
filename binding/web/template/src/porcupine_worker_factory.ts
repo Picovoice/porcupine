@@ -9,7 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-import PorcupineWorkerEn from 'web-worker:./porcupine_worker_en.ts';
+import PorcupineWorker from 'web-worker:./porcupine_worker.ts';
 import {
   PorcupineKeyword,
   PorcupineWorkerRequestInit,
@@ -17,13 +17,13 @@ import {
   PorcupineWorkerResponseKeyword,
 } from './porcupine_types';
 
-import { BuiltInKeywordEn } from './built_in_keywords_en';
+import { BuiltInKeyword } from './lang/built_in_keywords';
 
 export default class PorcupineWorkerFactory {
   private constructor() {}
 
-  public static get BuiltInKeywordEn(): typeof BuiltInKeywordEn {
-    return BuiltInKeywordEn;
+  public static get BuiltInKeyword(): typeof BuiltInKeyword {
+    return BuiltInKeyword;
   }
 
   /**
@@ -41,7 +41,7 @@ export default class PorcupineWorkerFactory {
     // method of PorcupineFactory which is initializing. This means the worker is not actually ready
     // for voice processing immediately after intantiation. When its initialization completes,
     // we receive a special PorcupineWorkerMessageOut message and resolve the worker promise.
-    const porcupineWorker = new PorcupineWorkerEn();
+    const porcupineWorker = new PorcupineWorker();
 
     const keywordArray = Array.isArray(keywords) ? keywords : [keywords];
 

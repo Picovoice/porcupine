@@ -23,9 +23,9 @@ import {
   PICOVOICE_64,
   PORCUPINE_64,
   TERMINATOR_64,
-} from './dist/en/built_in_keywords_en_64';
+} from './dist/built_in_keywords_64';
 
-export enum BuiltInKeywordEn {
+export enum BuiltInKeyword {
   Alexa = 'Alexa',
   Americano = 'Americano',
   Blueberry = 'Bluebery',
@@ -42,17 +42,17 @@ export enum BuiltInKeywordEn {
   Terminator = 'Terminator',
 }
 
-export const BUILT_IN_KEYWORD_BYTES_EN = new Map<BuiltInKeywordEn, string>();
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Alexa, ALEXA_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Americano, AMERICANO_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Blueberry, BLUEBERRY_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Bumblebee, BUMBLEBEE_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Computer, COMPUTER_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Grapefruit, GRAPEFRUIT_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Grasshopper, GRASSHOPPER_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.HeyGoogle, HEY_GOOGLE_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.HeySiri, HEY_SIRI_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.OkayGoogle, OK_GOOGLE_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Picovoice, PICOVOICE_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Porcupine, PORCUPINE_64);
-BUILT_IN_KEYWORD_BYTES_EN.set(BuiltInKeywordEn.Terminator, TERMINATOR_64);
+export const BUILT_IN_KEYWORD_BYTES = new Map<BuiltInKeyword, string>();
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Alexa, ALEXA_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Americano, AMERICANO_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Blueberry, BLUEBERRY_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Bumblebee, BUMBLEBEE_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Computer, COMPUTER_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Grapefruit, GRAPEFRUIT_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Grasshopper, GRASSHOPPER_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.HeyGoogle, HEY_GOOGLE_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.HeySiri, HEY_SIRI_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.OkayGoogle, OK_GOOGLE_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Picovoice, PICOVOICE_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Porcupine, PORCUPINE_64);
+BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Terminator, TERMINATOR_64);

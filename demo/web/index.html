@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <script src="node_modules/@picovoice/porcupine-web-en-worker/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/porcupine-web-de-worker/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
       function writeMessage(message) {
@@ -14,7 +15,7 @@
 
       async function startPorcupine() {
         writeMessage('Porcupine is loading. Please wait...');
-        let ppnWorkerAlexa = await PorcupineWebEnWorker.create([
+        let ppnEnPicovoice = await PorcupineWebEnWorker.create([
           {
             builtin: PorcupineWebEnWorker.BuiltInKeywordEn.Picovoice,
             sensitivity: 0.65,
@@ -26,9 +27,17 @@
           },
         ]);
 
+        let ppnAnanas = await PorcupineWebDeWorker.create(['Ananas'])
+
+        ppnAnanas.onmessage = msg => {
+          if (msg.data.command === 'ppn-keyword') {
+            writeMessage('Keyword detected: ' + msg.data.keywordLabel);
+          }
+        };
+
         writeMessage('Porcupine worker ready!');
 
-        ppnWorkerAlexa.onmessage = msg => {
+        ppnEnPicovoice.onmessage = msg => {
           if (msg.data.command === 'ppn-keyword') {
             writeMessage('Keyword detected: ' + msg.data.keywordLabel);
           }
@@ -40,7 +49,7 @@
 
         try {
           let webVp = await WebVoiceProcessor.init({
-            engines: [ppnWorkerAlexa],
+            engines: [ppnEnPicovoice, ppnAnanas],
           });
           writeMessage('WebVoiceProcessor ready and listening!');
         } catch (e) {

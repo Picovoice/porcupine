@@ -9,7 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-import { BuiltInKeywordEn } from './built_in_keywords_en';
+import { BuiltInKeyword } from './lang/built_in_keywords';
 
 export type PorcupineKeywordCustom = {
   base64: string;
@@ -18,7 +18,7 @@ export type PorcupineKeywordCustom = {
 };
 
 export type PorcupineKeywordBuiltin = {
-  builtin: BuiltInKeywordEn;
+  builtin: BuiltInKeyword;
   sensitivity?: number;
 };
 
