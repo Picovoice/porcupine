@@ -5,14 +5,15 @@
   "description": "Template project for building porcupine-web-* packages",
   "main": ".eslintrc.js",
   "scripts": {
-    "template": "node scripts/template.js",
-    "base64": "node scripts/base64.js"
+    "base64": "node scripts/base64.js",
+    "build": "yarn base64 && yarn template",
+    "template": "node scripts/template.js"
   },
   "keywords": [],
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "devDependencies": {
-    "json": "^10.0.0",
+    "edit-json-file": "^1.5.0",
     "ncp": "^2.0.0"
   }
 }

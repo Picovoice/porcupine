@@ -5,3 +5,5 @@ dist/
 *.log
 .DS_Store
 porcupine-web-*
+en/dist
+de/dist

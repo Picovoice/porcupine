@@ -14,6 +14,16 @@ const extensions = [...DEFAULT_EXTENSIONS, '.ts'];
 console.log(process.env.TARGET);
 console.log(extensions);
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const iifeBundleName = pkg.name
+  .split('-')
+  .map(word => capitalizeFirstLetter(word))
+  .join('');
+console.log(iifeBundleName);
+
 export default {
   input: [path.resolve(__dirname, pkg.entry)],
   output: [
@@ -31,13 +41,13 @@ export default {
     {
       file: path.resolve(__dirname, pkg.iife),
       format: 'iife',
-      name: 'PorcupineWebEnWorker',
+      name: iifeBundleName,
       sourcemap: false,
     },
     {
       file: path.resolve(__dirname, 'dist', 'iife', 'index.min.js'),
       format: 'iife',
-      name: 'PorcupineWebEnWorker',
+      name: iifeBundleName,
       sourcemap: false,
       plugins: [terser()],
     },

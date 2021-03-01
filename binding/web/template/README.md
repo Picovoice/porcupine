@@ -1,4 +1,4 @@
-# porcupine-web-en
+# porcupine-web
 
 The Picovoice Porcupine library for web browsers, powered by WebAssembly. Intended (but not required) to be used with the [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor).
 
