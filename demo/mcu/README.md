@@ -5,6 +5,7 @@ This package provides demo projects for the following development boards:
 - [STM32F469I-DISCO](/demo/mcu/stm32f469)
 - [STM32F411E-DISCO](/demo/mcu/stm32f411)
 - [STM32F407G-DISC1](/demo/mcu/stm32f407)
+- [IMXRT1050-EVKB](/demo/mcu/imxrt1050)
 
 ## Usage
 
