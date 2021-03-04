@@ -17,7 +17,7 @@ In order to compile and run the demo project on a STM32f469 discovery board, per
 1. Open STM32CubeIDE
 2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f469i-disco](./stm32f469i-disco) folder from this repository, and then press the `Finish` button.
 3. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f469i-disco/Middlewares/ST/STM32_Audio/Addons/PDM)
-4. Select the `stm32f469i-disco-demo_CM7` inner project inside the `Project Explorer` window
+4. Select the `stm32f469i-disco-demo` project inside the `Project Explorer` window
 5. Click `Project` > `Build All`
 6. Connect the board to the computer and press `Run` > `Run`
 7. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one of them in the `Qualifier` window and press `ok`
