@@ -5,4 +5,4 @@ This package provides demo projects for the following development boards:
 
 ## Usage
 
-For these demos, the default wake word is `Picovoice`.
+For these demos, the default wake word is `Porcupine`.

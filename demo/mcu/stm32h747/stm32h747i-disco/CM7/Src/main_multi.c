@@ -21,19 +21,19 @@
 #include "pv_params.h"
 #include "pv_stm32h747.h"
 
-#define MEMORY_BUFFER_SIZE (70 * 1024)
+#define MEMORY_BUFFER_SIZE (50 * 1024)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-int32_t num_keywords = 4;
-int32_t keyword_model_sizes[] = {
-        sizeof(porcupine_keyword_array),
+static const int32_t num_keywords = 4;
+static const int32_t keyword_model_sizes[] = {
+        sizeof(default_keyword_array),
         sizeof(picovoice_keyword_array),
         sizeof(bumblebee_keyword_array),
         sizeof(alexa_keyword_array)
 };
-const void *keyword_models[] = {
-        porcupine_keyword_array,
+static const void *keyword_models[] = {
+        default_keyword_array,
         picovoice_keyword_array,
         bumblebee_keyword_array,
         alexa_keyword_array
@@ -45,7 +45,7 @@ static const float sensitivities[] = {
         0.75f
 };
 
-const char *keywords_name[] = {
+static const char *keywords_name[] = {
         "Porcupine",
         "Picovoice",
         "Bumblebee",
@@ -54,6 +54,7 @@ const char *keywords_name[] = {
 
 static void wake_word_callback(int32_t keyword_index) {
     printf("[wake word] %s\n", keywords_name[keyword_index]);
+    BSP_LED_On(keyword_index);
 }
 
 static void error_handler(void) {
@@ -107,17 +108,26 @@ int main(void) {
         error_handler();
     }
 
+    uint32_t frame_number = 0;
     while (true) {
         const int16_t *buffer = pv_audio_rec_get_new_buffer();
         if (buffer) {
-         int32_t keyword_index;
-         const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
+            int32_t keyword_index;
+            const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
             if (status != PV_STATUS_SUCCESS) {
                 printf("Porcupine process failed with '%s'", pv_status_to_string(status));
                 error_handler();
             }
             if (keyword_index != -1) {
-             wake_word_callback(keyword_index);
+                frame_number = 0;
+                wake_word_callback(keyword_index);
+            }
+            if (frame_number++ > 20) {
+                BSP_LED_Off(LED1);
+                BSP_LED_Off(LED2);
+                BSP_LED_Off(LED3);
+                BSP_LED_Off(LED4);
+                frame_number = 0;
             }
         }
 

@@ -21,16 +21,17 @@
 #include "pv_params.h"
 #include "pv_stm32h747.h"
 
-#define MEMORY_BUFFER_SIZE (70 * 1024)
+#define MEMORY_BUFFER_SIZE (20 * 1024)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-int32_t keyword_model_sizes = sizeof(porcupine_keyword_array);
-const void *keyword_models = porcupine_keyword_array;
+static int32_t keyword_model_sizes = sizeof(default_keyword_array);
+static const void *keyword_models = default_keyword_array;
 static const float sensitivity = 0.75f;
 
 static void wake_word_callback(void) {
     printf("[wake word]\n");
+    BSP_LED_On(LED1);
 }
 
 static void error_handler(void) {
@@ -84,9 +85,10 @@ int main(void) {
         error_handler();
     }
 
+    uint32_t frame_number = 0;
     while (true) {
-        const int16_t *buffer = pv_audio_rec_get_new_buffer();
-        if (buffer) {
+         const int16_t *buffer = pv_audio_rec_get_new_buffer();
+         if (buffer) {
          int32_t keyword_index;
          const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
             if (status != PV_STATUS_SUCCESS) {
@@ -94,7 +96,12 @@ int main(void) {
                 error_handler();
             }
             if (keyword_index != -1) {
-             wake_word_callback();
+                frame_number = 0;
+                wake_word_callback();
+            }
+            if (frame_number++ > 20) {
+                BSP_LED_Off(LED1);
+                frame_number = 0;
             }
         }
 
