@@ -1,0 +1,7 @@
+pv_stm32f469.c:98:13:pv_message_init	48	static
+pv_stm32f469.c:102:16:pv_get_uuid	0	static
+pv_stm32f469.c:106:16:pv_get_uuid_size	0	static
+pv_stm32f469.c:110:13:pv_board_init	96	static
+pv_stm32f469.c:127:6:pv_board_deinit	0	static
+pv_stm32f469.c:134:6:assert_failed	0	static
+pv_stm32f469.c:141:5:__io_putchar	16	static

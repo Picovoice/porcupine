@@ -1,0 +1,2 @@
+system_stm32f4xx.c:160:6:SystemInit	4	static
+system_stm32f4xx.c:233:6:SystemCoreClockUpdate	0	static
