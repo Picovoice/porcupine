@@ -1,9 +1,0 @@
-stm32f4xx_hal_pwr_ex.c:143:19:HAL_PWREx_EnableBkUpReg	16	static
-stm32f4xx_hal_pwr_ex.c:167:19:HAL_PWREx_DisableBkUpReg	16	static
-stm32f4xx_hal_pwr_ex.c:191:6:HAL_PWREx_EnableFlashPowerDown	0	static
-stm32f4xx_hal_pwr_ex.c:200:6:HAL_PWREx_DisableFlashPowerDown	0	static
-stm32f4xx_hal_pwr_ex.c:213:10:HAL_PWREx_GetVoltageRange	0	static
-stm32f4xx_hal_pwr_ex.c:290:19:HAL_PWREx_ControlVoltageScaling	24	static
-stm32f4xx_hal_pwr_ex.c:415:19:HAL_PWREx_EnableOverDrive	24	static
-stm32f4xx_hal_pwr_ex.c:462:19:HAL_PWREx_DisableOverDrive	24	static
-stm32f4xx_hal_pwr_ex.c:538:19:HAL_PWREx_EnterUnderDriveSTOPMode	24	static,ignoring_inline_asm
