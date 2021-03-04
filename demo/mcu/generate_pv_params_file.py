@@ -32,13 +32,13 @@ HEADER = """
 """
 
 
-def generate_pv_params(ppn_files, header_file_paths):
+def generate_pv_params(ppn_files, header_file_folders):
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     repo_dir = os.path.join(script_dir, '../..')
     ppn_dir = os.path.join(repo_dir, 'resources/keyword_files/cortexm')
 
-    for header_file_path in header_file_paths:
+    for header_file_path in header_file_folders:
         header_file = os.path.join(header_file_path, 'pv_params.h')
         with open(header_file, 'w') as f_out:
             f_out.write(HEADER)
@@ -79,6 +79,7 @@ def ppn_to_c_array(ppn_file_path):
 
 if __name__ == '__main__':
     wake_words = ('porcupine', 'picovoice', 'bumblebee', 'alexa',)
-    header_file_paths = ('stm32h747/stm32h747i-disco/CM7/Inc/',)
+    include_folders = ('stm32h747/stm32h747i-disco/CM7/Inc/',
+    			'stm32f469/stm32f469i-disco/Inc/',)
 
-    generate_pv_params(wake_words, header_file_paths)
+    generate_pv_params(wake_words, include_folders)
