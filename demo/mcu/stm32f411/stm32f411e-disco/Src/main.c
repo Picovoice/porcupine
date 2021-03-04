@@ -31,7 +31,7 @@ static const float SENSITIVITY = 0.75f;
 
 static void wake_word_callback(void) {
     printf("[wake word]\n");
-    BSP_LED_On(LED3);
+    BSP_LED_On(LED4);
 }
 
 static void error_handler(void) {
@@ -95,7 +95,7 @@ int main(void) {
                 wake_word_callback();
             }
             if (frame_number++ > 20) {
-                BSP_LED_Off(LED3);
+                BSP_LED_Off(LED4);
                 frame_number = 0;
             }
         }
