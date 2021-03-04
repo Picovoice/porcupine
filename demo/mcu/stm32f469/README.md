@@ -29,8 +29,6 @@ For the single wake word demo, the default wake word is `Porcupine`; and below a
 - ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `Bumblebee`
 - ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Alexa`
 
-> :warning: **This project exclusively utilizes the Cortex-M7 core of the STM32f469XIH6 microcontroller. If you would like to use the Cortex-M4 core along with the Cortex-M7 core, set the BOOT_CM4_ADD0 option byte in STM32CubeProgrammer to 0x818**
-
 ## Create Custom Wake Word
 
 1. Copy the UUID of the board printed at the beginning of the session to the serial port monitor.
