@@ -23,9 +23,9 @@
 
 #define MEMORY_BUFFER_SIZE (20 * 1024)
 
-static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
+static const int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static int32_t keyword_model_sizes = sizeof(default_keyword_array);
+static const int32_t keyword_model_sizes = sizeof(default_keyword_array);
 static const void *keyword_models = default_keyword_array;
 static const float sensitivity = 0.75f;
 
