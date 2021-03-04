@@ -3,3 +3,4 @@
 ReleaseSingleWakeWord/
 ReleaseMultipleWakeWord/
 .idea/
+/Middlewares/ST/STM32_Audio/Addons/PDM/

@@ -25,9 +25,9 @@
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static int32_t keyword_model_sizes = sizeof(default_keyword_array);
-static const void *keyword_models = default_keyword_array;
-static const float sensitivity = 0.75f;
+static const int32_t KEYWORD_MODEL_SIZES = sizeof(DEFAULT_KEYWORD_ARRAY);
+static const void *KEYWORD_MODELS = DEFAULT_KEYWORD_ARRAY;
+static const float SENSITIVITY = 0.75f;
 
 static void wake_word_callback(void) {
     printf("[wake word]\n");
@@ -75,9 +75,9 @@ int main(void) {
             MEMORY_BUFFER_SIZE,
             memory_buffer,
             1,
-            &keyword_model_sizes,
-            &keyword_models,
-            &sensitivity,
+            &KEYWORD_MODEL_SIZES,
+            &KEYWORD_MODELS,
+            &SENSITIVITY,
             &handle);
 
     if (status != PV_STATUS_SUCCESS) {
