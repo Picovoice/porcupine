@@ -7,7 +7,7 @@ This package contains a demo project for the STM32H747 Discovery kit using Porcu
 
 For this demo, you need to: 
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-1. Download [STM32Cube middleware for audio PDM to PCM conversion](https://www.st.com/en/licensed-software/audiopdm-mw.html) and copy it to the project folder. A more detailed guide can be found on [STM32CubeH7's GitHub repository](https://github.com/STMicroelectronics/STM32CubeH7/tree/master/Middlewares/ST/STM32_Audio/Addons/PDM).
+1. Download [STM32Cube middleware for audio PDM to PCM conversion](https://www.st.com/en/licensed-software/audiopdm-mw.html) and copy it to the project folder. A more detailed guide can be found in the [readme](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) file.
 1. Install a serial port monitor on your system to be able to communicate with the board. [Arduino environment's built-in serial monitor](https://www.arduino.cc/en/software) and [Coolterm](https://freeware.the-meiers.org/) are two free options available on all platforms (Windows, Linux, and macOS).
 
 ## Usage
@@ -22,7 +22,12 @@ In order to compile and run the demo project on a STM32H747 discovery board, per
 6. Connect the board to the computer and press `Run` > `Run`
 7. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one of them in the `Qualifier` window and press `ok`
 
-For the single wake word demo, the default wake word is `Porcupine`, and for the multiple wake words demo the wake words are: `Porcupine`, `Picovoice`, `Bumblebee`, and `Alexa`.
+For the single wake word demo, the default wake word is `Porcupine`; and below are the LED colors associated with supported wake words for the multiple wake words demo:
+
+- ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Porcupine`
+- ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Picovoice`
+- ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `Bumblebee`
+- ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Alexa`
 
 > :warning: **This project exclusively utilizes the Cortex-M7 core of the STM32H747XIH6 microcontroller. If you would like to use the Cortex-M4 core along with the Cortex-M7 core, set the BOOT_CM4_ADD0 option byte in STM32CubeProgrammer to 0x818**
 
