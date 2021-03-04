@@ -25,27 +25,27 @@
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static const int32_t num_keywords = 4;
-static const int32_t keyword_model_sizes[] = {
-        sizeof(default_keyword_array),
-        sizeof(picovoice_keyword_array),
-        sizeof(bumblebee_keyword_array),
-        sizeof(alexa_keyword_array)
+static const int32_t NUM_KEYWORDS = 4;
+static const int32_t KEYWORD_MODEL_SIZES[] = {
+        sizeof(DEFAULT_KEYWORD_ARRAY),
+        sizeof(PICOVOICE_KEYWORD_ARRAY),
+        sizeof(BUMBLEBEE_KEYWORD_ARRAY),
+        sizeof(ALEXA_KEYWORD_ARRAY)
 };
-static const void *keyword_models[] = {
-        default_keyword_array,
-        picovoice_keyword_array,
-        bumblebee_keyword_array,
-        alexa_keyword_array
+static const void *KEYWORD_MODELS[] = {
+        DEFAULT_KEYWORD_ARRAY,
+        PICOVOICE_KEYWORD_ARRAY,
+        BUMBLEBEE_KEYWORD_ARRAY,
+        ALEXA_KEYWORD_ARRAY
 };
-static const float sensitivities[] = {
+static const float SENSITIVITIES[] = {
         0.75f,
         0.75f,
         0.75f,
         0.75f
 };
 
-static const char *keywords_name[] = {
+static const char *KEYWORDS_NAME[] = {
         "Porcupine",
         "Picovoice",
         "Bumblebee",
@@ -53,7 +53,7 @@ static const char *keywords_name[] = {
 };
 
 static void wake_word_callback(int32_t keyword_index) {
-    printf("[wake word] %s\n", keywords_name[keyword_index]);
+    printf("[wake word] %s\n", KEYWORDS_NAME[keyword_index]);
     BSP_LED_On(keyword_index);
 }
 
@@ -97,10 +97,10 @@ int main(void) {
     status = pv_porcupine_init(
             MEMORY_BUFFER_SIZE,
             memory_buffer,
-            num_keywords,
-            keyword_model_sizes,
-            keyword_models,
-            sensitivities,
+            NUM_KEYWORDS,
+            KEYWORD_MODEL_SIZES,
+            KEYWORD_MODELS,
+            SENSITIVITIES,
             &handle);
 
     if (status != PV_STATUS_SUCCESS) {
