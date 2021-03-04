@@ -46,9 +46,9 @@ def generate_pv_params(ppn_files, header_file_folders):
                 keyword_file_path = os.path.join(ppn_dir, keyword + '_cortexm.ppn')
                 ppn_c_array = ppn_to_c_array(keyword_file_path)
                 if (keyword == 'porcupine'):
-                    f_out.write('static const uint8_t default_keyword_array[] = {\n')
+                    f_out.write('static const uint8_t DEFAULT_KEYWORD_ARRAY[] = {\n')
                 else:
-                    f_out.write('static const uint8_t %s_keyword_array[] = {\n' % keyword)
+                    f_out.write('static const uint8_t %s_KEYWORD_ARRAY[] = {\n' % keyword.upper())
                 f_out.write('\n'.join(ppn_c_array))
                 f_out.write('};\n\n')
 
