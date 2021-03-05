@@ -9,8 +9,8 @@ applications. It is
 
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient. It is perfect for IoT.
-- cross-platform. Raspberry Pi, BeagleBone, Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and web
-  browsers are supported. Additionally, enterprise customers have access to the ARM Cortex-M SDK.
+- cross-platform. Raspberry Pi, BeagleBone, Arm Cortex-M, Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and web
+  browsers are supported.
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
 - self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
 
@@ -38,6 +38,7 @@ applications. It is
     - [JavaScript](#javascript-demos)
     - [NodeJS](#nodejs-demos)
     - [C](#c-demos)
+    - [Microcontroller](#microcontroller-demos)
   - [SDKs](#sdks)
     - [Python](#python)
     - [.NET](#net)
@@ -50,6 +51,7 @@ applications. It is
     - [JavaScript](#javascript)
     - [NodeJS](#nodejs)
     - [C](#c)
+    - [Microcontroller](#microcontroller)
   - [Releases](#releases)
   - [FAQ](#faq)
 
@@ -258,6 +260,10 @@ name of the platform you are running on (`linux`, `raspberry-pi`, or `beaglebone
 the name of your microphone device. The demo opens an audio stream and detects utterances of `Porcupine`.
 
 For more information about C demos go to [demo/c](/demo/c).
+
+### Microcontroller Demos
+
+There are several projects for various development boards inside the [mcu demo](./demo/mcu) folder.
 
 ## SDKs
 
@@ -1015,6 +1021,63 @@ while (true) {
 ```
 
 Finally, when done be sure to release the acquired resources:
+
+```c
+pv_porcupine_delete(handle);
+```
+
+### Microcontroller
+
+Porcupine is implemented in ANSI C and therefore can be directly linked to embedded C projects. Its public header file contains relevant information. An instance of the Porcupine object can be constructed as follows.
+
+```c
+#define MEMORY_BUFFER_SIZE ...
+uint8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
+
+const uint8_t keyword_array[] = {...};
+
+const int32_t keyword_model_sizes = sizeof(keyword_array);
+const void *keyword_models = keyword_array;
+const float sensitivity = 0.5f;
+
+pv_porcupine_t *handle = NULL;
+
+const pv_status_t status = pv_porcupine_init(
+        MEMORY_BUFFER_SIZE,
+        memory_buffer,
+        1,
+        &keyword_model_sizes,
+        &keyword_models,
+        &sensitivity,
+        &handle);
+
+if (status != PV_STATUS_SUCCESS) {
+    // error handling logic
+}
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
+within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
+
+Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio. The sample rate can be retrieved using `pv_sample_rate()`. Finally, Picovoice accepts input audio in consecutive chunks (aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
+
+```c
+extern const int16_t *get_next_audio_frame(void);
+
+while (true) {
+    const int16_t *pcm = get_next_audio_frame();
+    int32_t keyword_index;
+    const pv_status_t status = pv_porcupine_process(handle, pcm, &keyword_index);
+    if (status != PV_STATUS_SUCCESS) {
+        // error handling logic
+    }
+    if (keyword_index != -1) {
+        // detection event logic/callback
+    }
+}
+```
+
+Finally, when done be sure to release the acquired resources.
 
 ```c
 pv_porcupine_delete(handle);
