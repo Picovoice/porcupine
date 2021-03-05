@@ -25,7 +25,7 @@ shutil.copy(os.path.join(os.path.dirname(__file__), '__init__.py'), os.path.join
 shutil.copy(os.path.join(os.path.dirname(__file__), 'porcupine.py'), os.path.join(package_folder, 'porcupine.py'))
 shutil.copy(os.path.join(os.path.dirname(__file__), 'util.py'), os.path.join(package_folder, 'util.py'))
 
-platforms = ('beaglebone', 'linux', 'mac', 'raspberry-pi', 'windows')
+platforms = ('beaglebone', 'jetson', 'linux', 'mac', 'raspberry-pi', 'windows')
 
 os.mkdir(os.path.join(package_folder, 'lib'))
 for platform in ('common',) + platforms:
@@ -45,11 +45,13 @@ include pvporcupine/porcupine.py
 include pvporcupine/util.py
 include pvporcupine/lib/common/porcupine_params.pv
 include pvporcupine/lib/beaglebone/libpv_porcupine.so
+recursive-include pvporcupine/lib/jetson *
 include pvporcupine/lib/linux/x86_64/libpv_porcupine.so
 include pvporcupine/lib/mac/x86_64/libpv_porcupine.dylib
 recursive-include pvporcupine/lib/raspberry-pi *
 include pvporcupine/lib/windows/amd64/libpv_porcupine.dll
 recursive-include pvporcupine/resources/keyword_files/beaglebone *
+recursive-include pvporcupine/resources/keyword_files/jetson *
 recursive-include pvporcupine/resources/keyword_files/linux *
 recursive-include pvporcupine/resources/keyword_files/mac/ *
 recursive-include pvporcupine/resources/keyword_files/raspberry-pi *
@@ -64,7 +66,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="1.9.3",
+    version="1.9.4",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",
