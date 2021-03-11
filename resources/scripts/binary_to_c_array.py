@@ -17,7 +17,7 @@ from argparse import ArgumentParser
 
 
 def main():
-    parser = ArgumentParser(prefix_chars='--')
+    parser = ArgumentParser()
 
     parser.add_argument('--binary_file_path',
                         metavar='INPUT_PATH',
@@ -28,7 +28,7 @@ def main():
     parser.add_argument('--array_file_path',
                         metavar='OUTPUT_PATH',
                         type=str,
-                        default=os.path.dirname(__file__),
+                        default=os.path.join(os.path.dirname(__file__), "c_array.txt"),
                         help='the path to the output text file')
 
     args = parser.parse_args()
