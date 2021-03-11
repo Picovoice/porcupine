@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #
 # Copyright 2020-2021 Picovoice Inc.
 #
@@ -9,16 +10,38 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import os
 import struct
 import sys
+from argparse import ArgumentParser
 
-if __name__ == '__main__':
+
+def main():
+    parser = ArgumentParser()
+
+    parser.add_argument('--binary_file_path',
+                        metavar='INPUT_PATH',
+                        type=str,
+                        help='the path to the binary file',
+                        required=True)
+
+    parser.add_argument('--array_file_path',
+                        metavar='OUTPUT_PATH',
+                        type=str,
+                        default=os.path.join(os.path.dirname(__file__), "c_array.txt"),
+                        help='the path to the output text file')
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.binary_file_path):
+        print("[ERROR] Please enter a valid file as the input!")
+        return
+
     indent = 8
     line_width = 120
 
-    with open(sys.argv[1], 'rb') as f:
+    with open(args.binary_file_path, 'rb') as f:
         array = f.read()
-
         res = list()
 
         array = ['0x%s' % z.hex() for z in struct.unpack('%dc' % len(array), array)]
@@ -41,5 +64,9 @@ if __name__ == '__main__':
             res.append(row)
         res.append('')
 
-        with open(sys.argv[2], 'w') as f_out:
+        with open(args.array_file_path, 'w') as f_out:
             f_out.write('\n'.join(res))
+
+
+if __name__ == '__main__':
+    main()
