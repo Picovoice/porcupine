@@ -1,6 +1,6 @@
 {
   "name": "$",
-  "version": "1.9.0-alpha.1",
+  "version": "1.9.0-alpha.2",
   "description": "Porcupine web worker library for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",

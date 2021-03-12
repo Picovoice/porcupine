@@ -2,7 +2,7 @@ const ncp = require("ncp");
 const path = require("path");
 const editJsonFile = require("edit-json-file");
 
-for (const language of ["en","de"]) {
+for (const language of ["en", "de"]) {
   console.log("Template: " + language);
 
   // 1. Copy language-agnostic project: i.e., the 'template' folder, to target
@@ -12,7 +12,7 @@ for (const language of ["en","de"]) {
   const buildTarget = `porcupine-web-${language}-worker`;
   const outputDirectory = path.join(projectRootPath, buildTarget);
   ncp(templateDirectory, outputDirectory, (err) => {
-    console.error("ncp done");
+    console.log(`${language}: ncp done`);
     if (err) {
       console.error(err);
     } else {
@@ -29,9 +29,9 @@ for (const language of ["en","de"]) {
           const packageJson = editJsonFile(
             path.join(outputDirectory, "package.json")
           );
-          packageJson.set("name", buildTarget);
+          packageJson.set("name", `@picovoice/${buildTarget}`);
           packageJson.save((e) => {
-            console.log("Package JSON updated");
+            console.log(`${buildTarget} Package JSON updated`);
           });
         }
       );
