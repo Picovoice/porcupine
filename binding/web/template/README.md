@@ -14,21 +14,120 @@ Looking for Porcupine on NodeJS? See the [@picovoice/porcupine-node](https://www
 
 This library requires several modern browser features: WebAssembly, Web Workers, and promises. Internet Explorer will _not_ work.
 
-If you are using this library with the [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor) to access the microphone, it requires some additional browser features like Web Audio API. Its overall browser support is approximately the same.
+If you are using this library with the [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor) to access the microphone, that requires some additional browser features like Web Audio API. Its overall browser support is approximately the same.
 
-## Installation
+## Packages / Installation
 
-Using `yarn` or `npm`:
+Porcupine for Web is split into multiple packages due to each language including the entire Voice AI model which is of nontrivial size. There are separate worker and factory pacakges as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
+
+### Workers 
+
+* @picovoice/porcupine-web-en-worker
+* @picovoice/porcupine-web-de-worker
+
+### Factories
+
+* @picovoice/porcupine-web-en-factory
+* @picovoice/porcupine-web-de-factory
+
+
+### Worker
+
+For typical cases, use the worker packages. These are compatible with the framework packages for Angular, React, and Vue. The workers are complete with everything you need to run Porcupine off the main thread. If you are using the workers with the Angular/React/Vue packages, you will load them and pass them into those services/hooks/components as an argument.
+
+To obtain a Porcupine Worker, we can use the static `create` factory method from the PorcupineWorkerFactory. Here is a complete example that:
+
+1. Obtains a Worker from the PorcupineWorkerFactory (in this case, English) to listen for the built-in English wake word "Picovoice"
+1. Customizes the wake word detection by setting the worker's `onmessage` event handler
+1. Starts up the WebVoiceProcessor to forward microphone audio to the Porcupine Worker
+
+E.g.:
 
 ```bash
-yarn add @picovoice/porcupine-web-en
+yarn add @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
 ```
 
-(or)
+```javascript
+import WebVoiceProcessor from "@picovoice/web-voice-processor"
+import PorcupineWorkerFactoryEn from "@picovoice/porcupine-web-en-worker";
 
-```bash
-npm install @picovoice/porcupine-web-en
+async startPorcupine()
+  // Create a Porcupine Worker (English language) to listen for 
+  // the built-in keyword "Picovoice", at a sensitivity of 0.65
+  // Note: you receive a Worker object, _not_ an individual Porcupine instance
+  const porcupineWorker = await PorcupineWorkerFactoryEn.create(
+    [{builtin: "Picovoice", sensitivity: 0.65}]
+  );
+
+  // The worker will send a message with data.command = "ppn-keyword" upon a detection event
+  // Here we tell it to log it to the console
+  porcupineWorker.onmessage = (msg) => {
+    switch (msg.data.command) {
+      case 'ppn-keyword':
+        // Porcupine keyword detection
+        console.log("Porcupine detected " + msg.data.keywordLabel);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Start up the web voice processor. It will request microphone permission 
+  // and immediately (start: true) start listening.
+  // It downsamples the audio to voice recognition standard format (16-bit 16kHz linear PCM, single-channel)
+  // The incoming microphone audio frames will then be forwarded to the Porcupine Worker
+  // n.b. This promise will reject if the user refuses permission! Make sure you handle that possibility.
+  const webVp = await WebVoiceProcessor.init({
+    engines: [porcupineWorker],
+    start: true,
+  });
+  }
+
+
+}
+startPorcupine()
+
+...
+
+// Finished with Porcupine? Release the WebVoiceProcessor and the worker.
+if (done) {
+  webVp.release()
+  porcupineWorker.sendMessage({command: "release"}) 
+}
+
 ```
+
+**Important Note**: Because the workers are all-in-one packages that run an entire machine learning inference model in WebAssembly, they are approximately 1-2MB in size. While this is tiny for a speech recognition model, it's large for web delivery. Because of this, you likely will want to use dynamic `import()` instead of static `import {}` to reduce your app's starting bundle size. See e.g. https://webpack.js.org/guides/code-splitting/ for more information.
+
+### Factory
+
+If you wish to build your own worker, or perhaps not use workers at all, use the factory packages. This will let you instantiate Porcupine engine instances directly.
+
+#### Usage
+
+The audio passed to the worker must be of the correct format. The WebVoiceProcessor handles downsampling in the examples above. If you are not using that, you must ensure you do it yourself.
+
+E.g.:
+
+```javascript
+import { Porcupine } from "@picovoice/porcupine-web-en-worker";
+
+async function startPorcupine() {
+  const handle = await Porcupine.create([
+    {builtin: "Bumblebee", sensitivity: 0.7}
+  ]);
+
+  // Send Porcupine frames of audio (check handle.frameLength for size of array)
+  const audioFrames = new Int16Array(/* Provide data with correct format and size */)
+  const porcupineResult = handle.process(audioFrames)
+  // porcupineResult: -1 if no detection occurred, otherwise returns the index of the item in the array 
+  // (0 in this case for "Bumblebee")
+}
+
+startPorcupine()
+```
+
+**Important Note**: Because the factories are all-in-one packages that run an entire machine learning inference model in WebAssembly, they are approximately 1-2MB in size. While this is tiny for a speech recognition, it's nontrivial for web delivery. Because of this, you likely will want to use dynamic `import()` instead of static `import {}` to reduce your app's starting bundle size. See e.g. https://webpack.js.org/guides/code-splitting/ for more information.
 
 ## Build from source (IIFE + ESM outputs)
 
