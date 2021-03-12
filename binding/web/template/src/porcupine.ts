@@ -83,10 +83,14 @@ class Porcupine implements PorcupineEngine {
    * of frame (number of audio samples per frame) can be retrieved from '.frameLength'. The audio needs to be
    * 16-bit linearly-encoded. Furthermore, the engine operates on single-channel audio.
    *
-   * @param {Int16Array} pcm - A frame of audio with properties described above.
-   * @returns {number} - Index of detected keyword (phrase). When no keyword is detected, it returns -1.
+   * @param pcm - A frame of audio with properties described above.
+   * @returns - Index of detected keyword (phrase). When no keyword is detected, it returns -1.
    */
   process(pcm: Int16Array): number {
+    if (!(pcm instanceof Int16Array)) {
+      throw new Error("The argument 'pcm' must be provided as an Int16Array")
+    }
+
     const pcmWasmBuffer = new Uint8Array(
       Porcupine._porcupineModule.HEAPU8.buffer,
       this._pcmWasmPointer,
@@ -126,10 +130,11 @@ class Porcupine implements PorcupineEngine {
    * Behind the scenes, it requires the WebAssembly code to load and initialize before
    * it can create an instance.
    *
-   * @param {Array<PorcupineKeyword | string>} keywords - Built-in or Base64
+   * @param keywords - Built-in or Base64
    * representations of keywords and their sensitivities.
+   * Can be provided as an array or a single keyword.
    *
-   * @returns {Promise<Porcupine>} An instance of the Porcupine engine.
+   * @returns An instance of the Porcupine engine.
    */
   public static async create(
     keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string
@@ -171,9 +176,9 @@ class Porcupine implements PorcupineEngine {
       } else if (typeof keywordArg !== 'object') {
         throw new Error(
           'Invalid keyword argument type: ' +
-            keywordArg +
-            ' : ' +
-            typeof keywordArg
+          keywordArg +
+          ' : ' +
+          typeof keywordArg
         );
       } else {
         keywordArgNormalized = keywordArg;
