@@ -1,5 +1,7 @@
 # porcupine-web-angular
 
+Angular service for Porcupine for Web.
+
 ## Porcupine
 
 Porcupine is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled
@@ -11,6 +13,14 @@ applications.
 ## Introduction
 
 The Porcupine SDK for Angular is based on the Porcupine SDK for Web. The library provides an Angular service called `PorcupineService`. The package will take care of microphone access and audio downsampling (via `@picovoice/web-voice-processor`) and provide a wake word detection event to which your application can subscribe.
+
+## Compatibility
+
+The Picovoice SDKs for Web are powered by WebAssembly (WASM), the Web Audio API, and Web Workers.
+
+All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, including on mobile. Internet Explorer is _not_ supported.
+
+Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
 
 ## Installation
 
