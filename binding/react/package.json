@@ -1,5 +1,5 @@
 {
-  "name": "porcupine-web-react",
+  "name": "@picovoice/porcupine-web-react",
   "version": "1.0.0-alpha.0",
   "description": "React component for Porcupine Web SDK",
   "entry": "src/index.ts",

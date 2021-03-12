@@ -1,5 +1,5 @@
 {
-  "name": "porcupine-web-vue",
+  "name": "@picovoice/porcupine-web-vue",
   "version": "1.0.0-alpha.0",
   "description": "Vue component (renderless) for Porcupine Web SDK",
   "entry": "src/index.js",
