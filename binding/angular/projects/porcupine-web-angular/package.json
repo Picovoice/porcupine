@@ -1,0 +1,13 @@
+{
+  "name": "porcupine-web-angular",
+  "version": "1.0.0-alpha.0",
+  "peerDependencies": {
+    "@angular/common": "^11.0.9",
+    "@angular/core": "^11.0.9",
+    "@picovoice/web-voice-processor": "^2.0.0-alpha.2",
+    "rxjs": "~6.6.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}
