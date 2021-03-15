@@ -18,6 +18,7 @@ function capitalizeFirstLetter(string) {
 }
 
 const iifeBundleName = pkg.name
+  .split('@picovoice/')[1]
   .split('-')
   .map(word => capitalizeFirstLetter(word))
   .join('');
