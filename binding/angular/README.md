@@ -12,7 +12,7 @@ Run `yarn` to install the Angular workspace dependencies:
 yarn
 ```
 
-Run `ng build porcupine-web-angular` to build the project.
+Run `ng build porcupine-web-angular --prod` to build the project.
 
 ## Commands
 
