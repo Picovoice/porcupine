@@ -1,0 +1,4 @@
+stm32f7xx_hal_i2c_ex.c:92:19:HAL_I2CEx_ConfigAnalogFilter	12	static
+stm32f7xx_hal_i2c_ex.c:136:19:HAL_I2CEx_ConfigDigitalFilter	12	static
+stm32f7xx_hal_i2c_ex.c:199:6:HAL_I2CEx_EnableFastModePlus	8	static
+stm32f7xx_hal_i2c_ex.c:228:6:HAL_I2CEx_DisableFastModePlus	8	static

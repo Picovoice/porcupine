@@ -1,0 +1,7 @@
+stm32f769i_discovery_eeprom.c:157:10:BSP_EEPROM_Init	8	static
+stm32f769i_discovery_eeprom.c:180:9:BSP_EEPROM_DeInit	0	static
+stm32f769i_discovery_eeprom.c:456:13:BSP_EEPROM_TIMEOUT_UserCallback	0	static
+stm32f769i_discovery_eeprom.c:201:10:BSP_EEPROM_ReadBuffer	16	static
+stm32f769i_discovery_eeprom.c:440:10:BSP_EEPROM_WaitEepromStandbyState	8	static
+stm32f769i_discovery_eeprom.c:248:10:BSP_EEPROM_WritePage	16	static
+stm32f769i_discovery_eeprom.c:283:10:BSP_EEPROM_WriteBuffer	40	static
