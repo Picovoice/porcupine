@@ -80,9 +80,10 @@ def ppn_to_c_array(ppn_file_path):
 if __name__ == '__main__':
     wake_words = ('porcupine', 'picovoice', 'bumblebee', 'alexa',)
     include_folders = ('stm32h747/stm32h747i-disco/CM7/Inc/',
-    			'stm32f469/stm32f469i-disco/Inc/',
-    			'stm32f411/stm32f411e-disco/Inc/',
-    			'stm32f407/stm32f407g-disc1/Inc/',
-    			'imxrt1050/imxrt1050-evkb/inc',)
+                'stm32f469/stm32f469i-disco/Inc/',
+                'stm32f769/stm32f769i-disco/Inc/',
+                'stm32f411/stm32f411e-disco/Inc/',
+                'stm32f407/stm32f407g-disc1/Inc/',
+                'imxrt1050/imxrt1050-evkb/inc',)
 
     generate_pv_params(wake_words, include_folders)

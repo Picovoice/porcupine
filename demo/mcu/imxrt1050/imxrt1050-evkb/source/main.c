@@ -86,8 +86,8 @@ int main(void) {
     while (true) {
         const int16_t *buffer = pv_audio_rec_get_new_buffer();
         if (buffer) {
-        	int32_t keyword_index;
-        	const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
+            int32_t keyword_index;
+            const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
             if (status != PV_STATUS_SUCCESS) {
                 printf("Porcupine process failed with '%s'", pv_status_to_string(status));
                 error_handler();
