@@ -1,2 +1,0 @@
-system_stm32f7xx.c:140:6:SystemInit	12	static
-system_stm32f7xx.c:213:6:SystemCoreClockUpdate	0	static

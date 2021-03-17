@@ -1,7 +1,0 @@
-stm32f7xx_hal_uart_ex.c:150:19:HAL_RS485Ex_Init	24	static
-stm32f7xx_hal_uart_ex.c:265:19:HAL_UARTEx_EnableClockStopMode	4	static
-stm32f7xx_hal_uart_ex.c:284:19:HAL_UARTEx_DisableClockStopMode	4	static
-stm32f7xx_hal_uart_ex.c:312:19:HAL_MultiProcessorEx_AddressLength_Set	4	static
-stm32f7xx_hal_uart_ex.c:351:19:HAL_UARTEx_StopModeWakeUpSourceConfig	24	static
-stm32f7xx_hal_uart_ex.c:406:19:HAL_UARTEx_EnableStopMode	4	static
-stm32f7xx_hal_uart_ex.c:425:19:HAL_UARTEx_DisableStopMode	4	static

@@ -1,8 +1,0 @@
-pv_st_f769.c:95:13:pv_message_init	48	static
-pv_st_f769.c:102:16:pv_get_uuid	0	static
-pv_st_f769.c:106:16:pv_get_uuid_size	0	static
-pv_st_f769.c:110:13:pv_board_init	96	static,ignoring_inline_asm
-pv_st_f769.c:127:6:pv_board_deinit	0	static
-pv_st_f769.c:130:6:pv_error_handler	0	static
-pv_st_f769.c:134:6:assert_failed	0	static
-pv_st_f769.c:141:5:__io_putchar	16	static
