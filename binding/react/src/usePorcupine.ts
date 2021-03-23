@@ -1,40 +1,47 @@
+/*
+    Copyright 2021 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+    file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations under the License.
+*/
+
 import { useState, useEffect, useRef } from 'react';
 
 import WebVoiceProcessor from '@picovoice/web-voice-processor';
 
-type PorcupineFactoryArgs = {
-  keywords: any; // TODO shared porcupine type
-}
-
-type PorcupineHookArgs = {
-  /* Immediately start the microphone upon initialization */
-  start: boolean,
-  /* Arguments forwarded to PorcupineWorkerFactory */
-  porcupineFactoryArgs: PorcupineFactoryArgs
-}
+import {
+  PorcupineHookArgs,
+  PorcupineWorker,
+  PorcupineWorkerFactory,
+  PorcupineWorkerResponse,
+} from './porcupine_types';
 
 export function usePorcupine(
-  porcupineWorkerFactory: any, // TODO shared porcupine type
+  porcupineWorkerFactory: PorcupineWorkerFactory,
   porcupineArgs: PorcupineHookArgs,
   detectionCallback: (label: string) => void
 ): {
   isLoaded: boolean,
   isListening: boolean,
-  isError: boolean,
-  errorMessage: string
+  isError: boolean | null,
+  errorMessage: string | null,
   start: () => void,
   pause: () => void,
   resume: () => void,
 } {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [webVoiceProcessor, setWebVoiceProcessor] = useState(null);
-  const [isError, setIsError] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [webVoiceProcessor, setWebVoiceProcessor] = useState<WebVoiceProcessor>();
+  const [isError, setIsError] = useState<boolean | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const callback = useRef(detectionCallback);
 
   const start = (): boolean => {
-    if (webVoiceProcessor !== null) {
+    if (webVoiceProcessor !== undefined) {
       webVoiceProcessor.start();
       setIsListening(true);
       return true;
@@ -43,7 +50,7 @@ export function usePorcupine(
   };
 
   const pause = (): boolean => {
-    if (webVoiceProcessor !== null) {
+    if (webVoiceProcessor !== undefined) {
       webVoiceProcessor.pause();
       setIsListening(false);
       return true;
@@ -52,7 +59,7 @@ export function usePorcupine(
   };
 
   const resume = (): boolean => {
-    if (webVoiceProcessor !== null) {
+    if (webVoiceProcessor !== undefined) {
       webVoiceProcessor.resume();
       setIsListening(true);
       return true;
@@ -62,7 +69,7 @@ export function usePorcupine(
 
   useEffect(() => {
     async function startPorcupine():
-      Promise<{ webVp: WebVoiceProcessor, ppnWorker: Worker }> {
+      Promise<{ webVp: WebVoiceProcessor, ppnWorker: PorcupineWorker }> {
       const { porcupineFactoryArgs, start: startOnInit } = porcupineArgs;
 
       const ppnWorker: Worker = await porcupineWorkerFactory.create(
@@ -74,7 +81,7 @@ export function usePorcupine(
         start: startOnInit,
       });
 
-      ppnWorker.onmessage = (msg: MessageEvent): void => {
+      ppnWorker.onmessage = (msg: MessageEvent<PorcupineWorkerResponse>): void => {
         switch (msg.data.command) {
           case 'ppn-keyword':
             callback.current(msg.data.keywordLabel);
@@ -102,12 +109,8 @@ export function usePorcupine(
 
     return (): void => {
       startPorcupinePromise.then(({ webVp, ppnWorker }) => {
-        if (webVp !== undefined) {
-          webVp.release();
-        }
-        if (ppnWorker !== undefined) {
-          ppnWorker.postMessage({ command: 'release' });
-        }
+        webVp.release();
+        ppnWorker.postMessage({ command: 'release' });
       });
     };
   }, [

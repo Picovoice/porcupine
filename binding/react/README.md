@@ -42,7 +42,7 @@ Make sure you handle the possibility of errors with the `isError` and `errorMess
 
 ```javascript
 import React, { useState } from 'react';
-import PorcupineWorkerFactoryEn from '@picovoice/porcupine-web-en-worker';
+import { PorcupineWorkerFactory } from '@picovoice/porcupine-web-en-worker';
 import { usePorcupine } from '@picovoice/porcupine-web-react';
 
 const porcupineFactoryArgs = [{ builtin: 'Picovoice', sensitivity: 0.65 }];
@@ -61,7 +61,7 @@ function VoiceWidget(props) {
     resume,
     pause,
   } = usePorcupine(
-    PorcupineWorkerFactoryEn,
+    PorcupineWorkerFactory,
     { porcupineFactoryArgs: porcupineFactoryArgs, start: true },
     keywordEventHandler
   );
