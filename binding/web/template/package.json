@@ -1,6 +1,6 @@
 {
   "name": "$",
-  "version": "1.9.0-alpha.4",
+  "version": "1.9.0",
   "description": "Porcupine library for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",

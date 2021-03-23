@@ -2,7 +2,7 @@ const ncp = require("ncp");
 const path = require("path");
 const editJsonFile = require("edit-json-file");
 
-for (const language of ["en", "de"]) {
+for (const language of ["en", "de", "es", "fr"]) {
   for (const flavour of ["factory", "worker"]) {
     console.log(`Template: ${language} ${flavour}`);
 
@@ -27,9 +27,7 @@ for (const language of ["en", "de"]) {
             if (err) {
               console.error(error);
             } else {
-              // 4. README?
-
-              // 5. index.ts: Rollup's entry point is different for workers/factories
+              // 3. index.ts: Rollup's entry point is different for workers/factories
               console.log(path.join(projectRootPath, flavour, "index.ts"));
               console.log(path.join(outputDirectory, "src"));
               ncp(
@@ -41,7 +39,7 @@ for (const language of ["en", "de"]) {
                   } else {
                     console.log("index.ts copied");
 
-                    // 3. Customize the package.json to have the correct names and build targets
+                    // 4. Customize the package.json to have the correct names and build targets
                     const packageJson = editJsonFile(
                       path.join(outputDirectory, "package.json")
                     );

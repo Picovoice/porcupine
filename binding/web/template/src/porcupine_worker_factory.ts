@@ -17,14 +17,8 @@ import {
   PorcupineWorkerResponseKeyword,
 } from './porcupine_types';
 
-import { BuiltInKeyword } from './lang/built_in_keywords';
-
 export default class PorcupineWorkerFactory {
   private constructor() {}
-
-  public static get BuiltInKeyword(): typeof BuiltInKeyword {
-    return BuiltInKeyword;
-  }
 
   /**
    * Create Porcupine web worker instances. The promise resolves when the worker is ready to process

@@ -16,24 +16,33 @@ This library requires several modern browser features: WebAssembly, Web Workers,
 
 If you are using this library with the [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor) to access the microphone, that requires some additional browser features like Web Audio API. Its overall browser support is approximately the same.
 
-## Packages / Installation
+## Packages
 
-Porcupine for Web is split into multiple packages due to each language including the entire Voice AI model which is of nontrivial size. There are separate worker and factory pacakges as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
+The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model which is of nontrivial size. There are separate worker and factory pacakges as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
+
+Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create.
 
 ### Workers 
 
-* @picovoice/porcupine-web-en-worker
-* @picovoice/porcupine-web-de-worker
+For typical cases, use the worker packages. Worker packages create complete Porcupine Worker instances that can be immediately used with [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor) and with the [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vuue) packages.
+
+* [@picovoice/porcupine-web-de-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-de-worker)
+* [@picovoice/porcupine-web-en-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker)
+* [@picovoice/porcupine-web-es-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-es-worker)
+* [@picovoice/porcupine-web-fr-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-fr-worker)
 
 ### Factories
 
-* @picovoice/porcupine-web-en-factory
-* @picovoice/porcupine-web-de-factory
+Factory packages allow you to create instances of Porcupine directly. Useful for building your own custom Worker/Worklet, or some other bespoke purpose.
 
+* [@picovoice/porcupine-web-de-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-de-factory)
+* [@picovoice/porcupine-web-en-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-en-factory)
+* [@picovoice/porcupine-web-es-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-es-factory)
+* [@picovoice/porcupine-web-fr-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-fr-factory)
+
+## Installation & Usage
 
 ### Worker
-
-For typical cases, use the worker packages. These are compatible with the framework packages for Angular, React, and Vue. The workers are complete with everything you need to run Porcupine off the main thread. If you are using the workers with the Angular/React/Vue packages, you will load them and pass them into those services/hooks/components as an argument.
 
 To obtain a Porcupine Worker, we can use the static `create` factory method from the PorcupineWorkerFactory. Here is a complete example that:
 
@@ -48,14 +57,14 @@ yarn add @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
 ```
 
 ```javascript
-import WebVoiceProcessor from "@picovoice/web-voice-processor"
-import PorcupineWorkerFactoryEn from "@picovoice/porcupine-web-en-worker";
+import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
+import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 
 async startPorcupine()
   // Create a Porcupine Worker (English language) to listen for 
   // the built-in keyword "Picovoice", at a sensitivity of 0.65
   // Note: you receive a Worker object, _not_ an individual Porcupine instance
-  const porcupineWorker = await PorcupineWorkerFactoryEn.create(
+  const porcupineWorker = await PorcupineWorkerFactory.create(
     [{builtin: "Picovoice", sensitivity: 0.65}]
   );
 
@@ -102,8 +111,6 @@ if (done) {
 ### Factory
 
 If you wish to build your own worker, or perhaps not use workers at all, use the factory packages. This will let you instantiate Porcupine engine instances directly.
-
-#### Usage
 
 The audio passed to the worker must be of the correct format. The WebVoiceProcessor handles downsampling in the examples above. If you are not using that, you must ensure you do it yourself.
 

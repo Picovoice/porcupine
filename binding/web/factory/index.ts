@@ -11,3 +11,4 @@
 
 import Porcupine from "./porcupine"
 export { Porcupine }
+export { BuiltInKeyword } from "./lang/built_in_keywords"
