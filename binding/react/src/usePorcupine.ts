@@ -11,7 +11,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-import WebVoiceProcessor from '@picovoice/web-voice-processor';
+import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
   PorcupineHookArgs,

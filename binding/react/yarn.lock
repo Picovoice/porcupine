@@ -879,10 +879,10 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@picovoice/web-voice-processor@^2.0.0-alpha.2":
-  version "2.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.0-alpha.2.tgz#b73f4a7dd8ce7627098ff183745cc38025f2562f"
-  integrity sha512-T1Qzx/uSAhL0symX/wYefcjuVzhY13H2DHVm5du04h5Wi3KEwHAuhipmbFOXMcVKVkPh3fpMB5IGfJlHdG98FA==
+"@picovoice/web-voice-processor@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.0.tgz#e4743389e846f42c7532e1ae4c32a45f6f9feff6"
+  integrity sha512-WWSpb/HCdJknpdcSYTbzMzmWnXIiM7jP96EhTR7FG92PGERyhhyWc+vem7+Ne59uEb1JtNlUdH8hQv64sf+vmw==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
