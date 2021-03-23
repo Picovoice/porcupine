@@ -1,8 +1,9 @@
 {
   "name": "porcupine-web-demo",
-  "version": "1.9.0-alpha.0",
+  "version": "1.9.0",
   "description": "A basic demo to show how to use Porcupine for web browsers, using the IIFE version of the library",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "yarn run serve"
   },
@@ -16,10 +17,10 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web-de-worker": "file:../../binding/web/porcupine-web-de-worker",
-    "@picovoice/porcupine-web-en-worker": "file:../../binding/web/porcupine-web-en-worker",
-    "@picovoice/porcupine-web-es-worker": "file:../../binding/web/porcupine-web-es-worker",
-    "@picovoice/porcupine-web-fr-worker": "file:../../binding/web/porcupine-web-fr-worker",
+    "@picovoice/porcupine-web-de-worker": "^1.9.0",
+    "@picovoice/porcupine-web-en-worker": "^1.9.0",
+    "@picovoice/porcupine-web-es-worker": "^1.9.0",
+    "@picovoice/porcupine-web-fr-worker": "^1.9.0",
     "@picovoice/web-voice-processor": "^2.0.0"
   },
   "devDependencies": {

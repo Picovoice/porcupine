@@ -9,17 +9,25 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@picovoice/porcupine-web-de-worker@file:../../binding/web/porcupine-web-de-worker":
+"@picovoice/porcupine-web-de-worker@^1.9.0":
   version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.0.tgz#e043c5fcdc12609f90018099cd05a02cedfeb2aa"
+  integrity sha512-J4tEtie0rUWAkbE9WbKLH6Mh+tVQ4KnitAb/Al3oEnlEnLMv5CM0uIPRzhy4uQckrkLvw+mmO+1q5ijS+OkQbQ==
 
-"@picovoice/porcupine-web-en-worker@file:../../binding/web/porcupine-web-en-worker":
+"@picovoice/porcupine-web-en-worker@^1.9.0":
   version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.0.tgz#a97755d72071a468489c50ee0c57effdf296be2b"
+  integrity sha512-JfWz3lhxWlzx+QBVWJpIr45YU6W0WXhMlkOaR00bBnMGdMY2WiOz032pmj8XRApUJmpjxpjPqMcoz8voUjI+fQ==
 
-"@picovoice/porcupine-web-es-worker@file:../../binding/web/porcupine-web-es-worker":
+"@picovoice/porcupine-web-es-worker@^1.9.0":
   version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-es-worker/-/porcupine-web-es-worker-1.9.0.tgz#e8bf52689c2855bddac36326bf8fcc5fe9a99bbc"
+  integrity sha512-V53IDbomwkvJW/F1Dv8wgUnuTCC1Pp/+e7vOudHEiimbxnxNFv4Bcr6CoC+f5neoGcjt1HWoU5AGMr4dfL8c4Q==
 
-"@picovoice/porcupine-web-fr-worker@file:../../binding/web/porcupine-web-fr-worker":
+"@picovoice/porcupine-web-fr-worker@^1.9.0":
   version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-fr-worker/-/porcupine-web-fr-worker-1.9.0.tgz#72c867db4cba0654a330805fbd027cc26f821813"
+  integrity sha512-6k4QNGARATVgZxcnJ22zEQSQq2GLrZstjXKON/wN8Ssguq+CWAUfNxBdStrh7Rg7LPgu4EzIC9GTr9wCFL9RWA==
 
 "@picovoice/web-voice-processor@^2.0.0":
   version "2.0.0"
