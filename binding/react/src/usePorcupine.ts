@@ -21,7 +21,7 @@ import {
 } from './porcupine_types';
 
 export function usePorcupine(
-  porcupineWorkerFactory: PorcupineWorkerFactory,
+  porcupineWorkerFactory: PorcupineWorkerFactory | null,
   porcupineArgs: PorcupineHookArgs,
   detectionCallback: (label: string) => void
 ): {
@@ -68,11 +68,16 @@ export function usePorcupine(
   };
 
   useEffect(() => {
+    // If using dynamic import() on porcupine-web-xx-worker,
+    // initially the worker factory may not exist yet; do nothing
+    if (porcupineWorkerFactory === null || porcupineWorkerFactory === undefined) { return (): void => { /* NOOP */ }; }
+
     async function startPorcupine():
       Promise<{ webVp: WebVoiceProcessor, ppnWorker: PorcupineWorker }> {
       const { porcupineFactoryArgs, start: startOnInit } = porcupineArgs;
 
-      const ppnWorker: Worker = await porcupineWorkerFactory.create(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const ppnWorker: Worker = await porcupineWorkerFactory!.create(
         porcupineFactoryArgs
       );
 
