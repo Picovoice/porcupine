@@ -6,12 +6,12 @@ export type PorcupineWorkerResponse = {
 export interface PorcupineWorkerFactory {
   create: (
     porcupineWorkerFactoryArgs: PorcupineWorkerFactoryArgs
-  ) => Promise<Worker>;
+  ) => Promise<PorcupineWorker>;
 }
 
 export type PorcupineServiceArgs = {
-  /** Immediately start the microphone upon initialization? */
-  start: boolean;
+  /** Immediately start the microphone upon initialization? (defaults to true) */
+  start?: boolean;
   /** Arguments forwarded to PorcupineWorkerFactory */
   porcupineFactoryArgs: PorcupineWorkerFactoryArgs;
 };
@@ -33,3 +33,26 @@ export type PorcupineKeywordBuiltin = {
 };
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
+
+export type WorkerRequestProcess = {
+  command: 'process';
+  inputFrame: Int16Array;
+};
+
+export type WorkerRequestVoid = {
+  command: 'reset' | 'pause' | 'resume' | 'release';
+};
+
+export type PorcupineWorkerRequestInit = {
+  command: 'init';
+  keywords: Array<PorcupineKeyword | string>;
+};
+
+export type PorcupineWorkerRequest =
+  | PorcupineWorkerRequestInit
+  | WorkerRequestProcess
+  | WorkerRequestVoid;
+
+export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
+  postMessage(command: PorcupineWorkerRequest): void;
+}
