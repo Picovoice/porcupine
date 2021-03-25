@@ -1,0 +1,23 @@
+.voice-widget {
+  button {
+    padding: 1rem;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
+
+  border: 2px double #377dff;
+  padding: 2rem;
+
+  .error-message {
+    background-color: maroon;
+    color: white;
+    padding: 1rem;
+    border-left: 5px solid red;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
