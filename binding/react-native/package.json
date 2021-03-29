@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react-native",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "description": "Picovoice Porcupine React Native binding",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -59,7 +59,7 @@
     "react-native": "0.62.2",
     "release-it": "^13.5.8",
     "typescript": "^3.8.3",
-    "@picovoice/react-native-voice-processor": "^1.0.3"
+    "@picovoice/react-native-voice-processor": "^1.0.4"
   },
   "peerDependencies": {
     "@picovoice/react-native-voice-processor": "*",
