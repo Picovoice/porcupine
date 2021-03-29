@@ -107,6 +107,22 @@ namespace Pv.Unity {
         }
 
         /// <summary>
+        /// Checks to see whether PorcupineManager is capturing audio or not
+        /// </summary>
+        /// <returns>whether PorcupineManager  is capturing audio or not</returns>
+        public bool IsRecording => _voiceProcessor.IsRecording;
+
+        /// <summary>
+        /// Checks to see whether there are any audio capture devices available
+        /// </summary>
+        /// <returns>whether there are any audio capture devices available</returns>
+        public bool IsAudioDeviceAvailable()
+        {
+            _voiceProcessor.UpdateDevices();
+            return _voiceProcessor.CurrentDeviceIndex >= 0;
+        }
+
+        /// <summary>
         /// Starts audio capture and wake word detection
         /// </summary>
         public void Start() 

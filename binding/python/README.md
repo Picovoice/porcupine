@@ -15,7 +15,7 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
 ## Compatibility
 
 - Python 3
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64), Raspberry Pi, and BeagleBone.
+- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone.
 
 ## Installation
 

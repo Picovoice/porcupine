@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for BSP Common Components Drivers</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<div class="card fluid">
+<div class="sectione dark">
+<center>
+<h1 id="release-notes-for-bsp-common-components-drivers"><small>Release Notes for</small> <mark>BSP Common Components Drivers</mark></h1>
+<p>Copyright © 2014 STMicroelectronics<br />
+</p>
+<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo.png" alt="ST logo" /></a>
+</center>
+</div>
+</div>
+<h1 id="license">License</h1>
+<p>Licensed by ST under BSD 3-Clause license (the "License"). You may not use this package except in compliance with the License. You may obtain a copy of the License at:</p>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">https://opensource.org/licenses/BSD-3-Clause</a></p>
+<h1 id="purpose">Purpose</h1>
+<p>This directory contains the BSP Common components drivers.</p>
+</div>
+<div class="col-sm-12 col-lg-8">
+<h1 id="update-history">Update History</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section16" checked aria-hidden="true"> <label for="collapse-section16" aria-hidden="true">V7.0.0 / 25-February-2020</label>
+<div>
+<h2 id="main-changes">Main Changes</h2>
+<h3 id="component-release">Component release</h3>
+<ul>
+<li>Rename GUI_Drv_t structure into UTILS_LCD_Drv_t</li>
+</ul>
+<h2 id="backward-compatibility">Backward Compatibility</h2>
+<ul>
+<li>This release breaks compatibility with previous versions.</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section15" aria-hidden="true"> <label for="collapse-section15" aria-hidden="true">V6.0.1 / 15-October-2019</label>
+<div>
+<h2 id="main-changes-1">Main Changes</h2>
+<h3 id="component-release-1">Component release</h3>
+<ul>
+<li>Update st_logo.png inclusion path in Release notes.</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section14" aria-hidden="true"> <label for="collapse-section14" aria-hidden="true">V6.0.0 / 12-April-2019</label>
+<div>
+<h2 id="main-changes-2">Main Changes</h2>
+<h3 id="component-release-2">Component release</h3>
+<p>Official release of BSP Common components drivers in line with STM32Cube BSP drivers development guidelines (UM2298).</p>
+<h2 id="backward-compatibility-1">Backward Compatibility</h2>
+<p>This release breaks compatibility with previous versions.</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section13" aria-hidden="true"> <label for="collapse-section13" aria-hidden="true">V5.1.1 / 31-August-2018</label>
+<div>
+<h2 id="main-changes-3">Main Changes</h2>
+<p>Reformat the BSD 3-Clause license declaration in the files header (replace license terms by a web reference to OSI website where those terms lie)<br />
+Correct sensor names in headers files hsensor.h and psensor.h</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section12" aria-hidden="true"> <label for="collapse-section12" aria-hidden="true">V5.1.0 / 21-November-2017</label>
+<div>
+<h2 id="main-changes-4">Main Changes</h2>
+<p>Add dpredriver.h: support of DP redriver class<br />
+Add pwrmon.h: support of power monitor class<br />
+Add usbtypecswitch.h: support of USB type C switch class</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section11" aria-hidden="true"> <label for="collapse-section11" aria-hidden="true">V5.0.0 / 01-March-2017</label>
+<div>
+<h2 id="main-changes-5">Main Changes</h2>
+<p>Add hsensor.h: support of humidity class<br />
+Add psensor.h: support of pressure class<br />
+Update tsensor.h: Temperature can be negative<br />
+Update accelero.h: LowPower API can enable or disable the low power mode<br />
+Update magneto.h: LowPower API can enable or disable the low power mode</p>
+<h2 id="backward-compatibility-2">Backward Compatibility</h2>
+<p>This release breaks compatibility with previous versions.</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section10" aria-hidden="true"> <label for="collapse-section10" aria-hidden="true">V4.0.1 / 21-July-2015</label>
+<div>
+<h2 id="main-changes-6">Main Changes</h2>
+<p>tsensor.h: Fix compilation issue on <em>TSENSOR_InitTypeDef</em></p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section9" aria-hidden="true"> <label for="collapse-section9" aria-hidden="true">V4.0.0 / 22-June-2015</label>
+<div>
+<h2 id="main-changes-7">Main Changes</h2>
+<p>accelero.h: add <em>DeInit</em> field in <em>ACCELERO_DrvTypeDef</em> structure<br />
+audio.h: add <em>DeInit</em> field in <em>AUDIO_DrvTypeDef</em> structure<br />
+idd.h:</p>
+<ul>
+<li>add <em>Shunt0StabDelay</em>, <em>Shunt1StabDelay</em>, <em>Shunt2StabDelay</em>, <em>Shunt3StabDelay</em>, <em>Shunt4StabDelay</em> and <em>ShuntNbOnBoard</em> fields in <em>IDD_ConfigTypeDef</em> structure<br />
+</li>
+<li>rename <em>ShuntNumber</em> field to <em>ShuntNbUsed</em> in <em>IDD_ConfigTypeDef</em> structure</li>
+</ul>
+<p>magneto.h: add <em>DeInit</em> field in <em>MAGNETO_DrvTypeDef</em> structure</p>
+<h2 id="backward-compatibility-3">Backward Compatibility</h2>
+<p>This release breaks compatibility with previous versions.</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section8" aria-hidden="true"> <label for="collapse-section8" aria-hidden="true">V3.0.0 / 28-April-2015</label>
+<div>
+<h2 id="main-changes-8">Main Changes</h2>
+<p>accelero.h: add <em>LowPower</em> field in <em>ACCELERO_DrvTypeDef</em> structure<br />
+magneto.h: add <em>LowPower</em> field in <em>MAGNETO_DrvTypeDef</em> structure<br />
+gyro.h: add <em>DeInit</em> and <em>LowPower</em> fields in <em>GYRO_DrvTypeDef</em> structure<br />
+camera.h: add CAMERA_COLOR_EFFECT_NONE define<br />
+idd.h:</p>
+<ul>
+<li>add <em>MeasureNb</em>, <em>DeltaDelayUnit</em> and <em>DeltaDelayValue</em> fields in <em>IDD_ConfigTypeDef</em> structure<br />
+</li>
+<li>rename <em>PreDelay</em> field to <em>PreDelayUnit</em> in <em>IDD_ConfigTypeDef</em> structure</li>
+</ul>
+<h2 id="backward-compatibility-4">Backward Compatibility</h2>
+<p>This release breaks compatibility with previous versions.</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section7" aria-hidden="true"> <label for="collapse-section7" aria-hidden="true">V2.2.0 / 09-February-2015</label>
+<div>
+<h2 id="main-changes-9">Main Changes</h2>
+<p>Magnetometer driver function prototypes added (magneto.h file)<br />
+Update “idd.h” file to provide DeInit() and WakeUp() services in IDD current measurement driver</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section6" aria-hidden="true"> <label for="collapse-section6" aria-hidden="true">V2.1.0 / 06-February-2015</label>
+<div>
+<h2 id="main-changes-10">Main Changes</h2>
+<p>IDD current measurement driver function prototypes added (idd.h file)<br />
+io.h: add new typedef enum IO_PinState with IO_PIN_RESET and IO_PIN_SET values</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section5" aria-hidden="true"> <label for="collapse-section5" aria-hidden="true">V2.0.0 / 15-December-2014</label>
+<div>
+<h2 id="main-changes-11">Main Changes</h2>
+<p>Update “io.h” file to support MFX (Multi Function eXpander) device available on some STM32 boards</p>
+<ul>
+<li>add new entries for <em>IO_ModeTypedef</em> enumeration structure</li>
+<li>update the <em>IO_DrvTypeDef</em> structure</li>
+<li>Update all return values and function parameters to uint32_t</li>
+<li>Add a return value for <em>Config</em> field</li>
+</ul>
+<h2 id="backward-compatibility-5">Backward Compatibility</h2>
+<p>This release breaks compatibility with previous versions.</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section4" aria-hidden="true"> <label for="collapse-section4" aria-hidden="true">V1.2.1 / 02-December-2014</label>
+<div>
+<h2 id="main-changes-12">Main Changes</h2>
+<p>gyro.h: change “__GIRO_H” by “__GYRO_H” to fix compilation issue under Mac OS</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section3" aria-hidden="true"> <label for="collapse-section3" aria-hidden="true">V1.2.0 / 18-June-2014</label>
+<div>
+<h2 id="main-changes-13">Main Changes</h2>
+<p>EPD (E Paper Display) driver function prototype added (epd.h file)</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2" aria-hidden="true"> <label for="collapse-section2" aria-hidden="true">V1.1.0 / 21-March-2014</label>
+<div>
+<h2 id="main-changes-14">Main Changes</h2>
+<p>Temperature Sensor driver function prototype added</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1" aria-hidden="true"> <label for="collapse-section1" aria-hidden="true">V1.0.0 / 18-February-2014</label>
+<div>
+<h2 id="main-changes-15">Main Changes</h2>
+<p>First official release with Accelerometer, Audio, Camera, Gyroscope, IO, LCD and Touch Screen drivers function prototypes</p>
+</div>
+</div>
+</div>
+</div>
+<footer class="sticky">
+For complete documentation on <mark>STM32 Microcontrollers</mark> , visit: <a href="http://www.st.com/STM32">http://www.st.com/STM32</a>
+</footer>
+</body>
+</html>

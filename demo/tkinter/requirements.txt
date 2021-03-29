@@ -1,2 +1,2 @@
 pyaudio
-pvporcupine==1.9.0
+pvporcupine==1.9.3

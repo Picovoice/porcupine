@@ -17,23 +17,26 @@ import subprocess
 def _pv_linux_machine(machine):
     if machine == 'x86_64':
         return machine
+    elif machine == 'aarch64':
+        arch_info = '-' + machine
+    else:
+        arch_info = ''
 
-    cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
+    cpu_info = subprocess.check_output(['lscpu']).decode()
+    model_info = [x for x in cpu_info.split('\n') if 'Model name' in x][0].split(' ')[-1]
 
-    hardware_info = [x for x in cpu_info.split('\n') if 'Hardware' in x][0]
-    model_info = [x for x in cpu_info.split('\n') if 'model name' in x][0]
-
-    if 'BCM' in hardware_info:
-        if 'rev 7' in model_info:
-            return 'arm11'
-        elif 'rev 5' in model_info:
-            return 'cortex-a7'
-        elif 'rev 4' in model_info:
-            return 'cortex-a53'
-        elif 'rev 3' in model_info:
-            return 'cortex-a72'
-    elif 'AM33' in hardware_info:
-        return 'beaglebone'
+    if 'ARM1176' == model_info: 
+        return 'arm11' + arch_info
+    elif 'Cortex-A7' == model_info:
+        return 'cortex-a7' + arch_info
+    elif 'Cortex-A53' == model_info:
+        return 'cortex-a53' + arch_info
+    elif 'Cortex-A57' == model_info:
+        return 'cortex-a57' + arch_info
+    elif 'Cortex-A72' == model_info:
+        return 'cortex-a72' + arch_info
+    elif 'Cortex-A8' == model_info:
+        return 'beaglebone' + arch_info
     else:
         raise NotImplementedError('Unsupported CPU.')
 
@@ -53,8 +56,8 @@ def _pv_platform():
 
 _PV_SYSTEM, _PV_MACHINE = _pv_platform()
 
-_RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72'}
-
+_RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72', 'cortex-a53-aarch64', 'cortex-a72-aarch64'}
+_JETSON_MACHINES = {'cortex-a57-aarch64'}
 
 def pv_library_path(relative):
     if _PV_SYSTEM == 'Darwin':
@@ -62,6 +65,11 @@ def pv_library_path(relative):
     elif _PV_SYSTEM == 'Linux':
         if _PV_MACHINE == 'x86_64':
             return os.path.join(os.path.dirname(__file__), relative, 'lib/linux/x86_64/libpv_porcupine.so')
+        elif _PV_MACHINE in _JETSON_MACHINES:
+            return os.path.join(
+                os.path.dirname(__file__),
+                relative,
+                'lib/jetson/%s/libpv_porcupine.so' % _PV_MACHINE)
         elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
             return os.path.join(
                 os.path.dirname(__file__),
@@ -85,6 +93,8 @@ def _pv_keyword_files_subdir():
     elif _PV_SYSTEM == 'Linux':
         if _PV_MACHINE == 'x86_64':
             return 'linux'
+        elif _PV_MACHINE in _JETSON_MACHINES:
+            return 'jetson'
         elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
             return 'raspberry-pi'
         elif _PV_MACHINE == 'beaglebone':
@@ -104,3 +114,4 @@ def pv_keyword_paths(relative):
         res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
 
     return res
+
