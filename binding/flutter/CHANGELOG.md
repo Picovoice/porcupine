@@ -14,4 +14,4 @@
 * iOS lib -> xcframework
 
 ## [1.9.7] - 2021-03-29
-* iOS lib -> xcframework
+* Updated Voice Processor

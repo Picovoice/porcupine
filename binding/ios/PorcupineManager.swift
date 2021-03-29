@@ -104,8 +104,6 @@ public class PorcupineManager {
         }
         
         try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
-        try audioSession.setMode(AVAudioSession.Mode.voiceChat)
-        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         
         try audioInputEngine.start()
         
@@ -119,13 +117,6 @@ public class PorcupineManager {
         }
         
         audioInputEngine.stop()
-        
-        do {
-            try AVAudioSession.sharedInstance().setActive(false)
-        }
-        catch {
-            NSLog("Unable to explicitly deactivate AVAudioSession: \(error)");
-        }
         
         isListening = false
     }
@@ -184,8 +175,10 @@ private class AudioInputEngine {
         guard let audioQueue = audioQueue else {
             return
         }
+        AudioQueueFlush(audioQueue)
         AudioQueueStop(audioQueue, true)
-        AudioQueueDispose(audioQueue, false)
+        AudioQueueDispose(audioQueue, true)
+        audioInput = nil
     }
     
     private func createAudioQueueCallback() -> AudioQueueInputCallback {
