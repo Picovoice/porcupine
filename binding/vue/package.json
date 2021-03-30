@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-web-vue",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0",
   "description": "Vue component (renderless) for Porcupine Web SDK",
   "entry": "src/index.js",
   "module": "dist/esm/index.js",
@@ -49,7 +49,7 @@
     "rollup-plugin-vue": "^6.0.0"
   },
   "dependencies": {
-    "@picovoice/web-voice-processor": "^2.0.0-alpha.2"
+    "@picovoice/web-voice-processor": "^2.0.0"
   },
   "peerDependencies": {
     "vue": "^3.0.0"

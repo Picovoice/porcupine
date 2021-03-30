@@ -60,7 +60,7 @@ In this example we're passing in two keywords: "Grasshopper" and "Grapefruit" wi
 ```javascript
 <script>
 import Porcupine from "@picovoice/porcupine-web-vue";
-import PorcupineWorkerFactoryEn from "@picovoice/porcupine-web-en-worker";
+import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
 
 export default {
   name: "VoiceWidget",

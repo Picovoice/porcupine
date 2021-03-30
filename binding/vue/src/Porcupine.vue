@@ -5,15 +5,15 @@
 </template>
 
 <script>
-import WebVoiceProcessor from "@picovoice/web-voice-processor";
+import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 export default {
-  name: "Porcupine",
+  name: 'Porcupine',
   props: {
     porcupineFactoryArgs: [Object, Array],
-    porcupineFactory: [Function]
+    porcupineFactory: [Function],
   },
-  data: function() {
+  data: function () {
     return { webVp: null, ppnWorker: null };
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
     },
   },
   async created() {
-    this.$emit("ppn-init");
+    this.$emit('ppn-loading');
 
     try {
       this.ppnWorker = await this.porcupineFactory.create(
@@ -51,26 +51,25 @@ export default {
       });
       let _this = this;
 
-      this.ppnWorker.onmessage = function(messageEvent) {
+      this.ppnWorker.onmessage = function (messageEvent) {
         switch (messageEvent.data.command) {
-          case "ppn-keyword":
-            _this.$emit("ppn-keyword", messageEvent.data.keywordLabel,
-            );
+          case 'ppn-keyword':
+            _this.$emit('ppn-keyword', messageEvent.data.keywordLabel);
             break;
         }
       };
     } catch (error) {
-      this.$emit("ppn-error", error);
+      this.$emit('ppn-error', error);
     }
 
-    this.$emit("ppn-ready");
+    this.$emit('ppn-ready');
   },
-  beforeUnmount: function() {
+  beforeUnmount: function () {
     if (this.webVp !== null) {
       this.webVp.release();
     }
     if (this.ppnWorker !== null) {
-      this.ppnWorker.postMessage({ command: "release" });
+      this.ppnWorker.postMessage({ command: 'release' });
     }
   },
 };
