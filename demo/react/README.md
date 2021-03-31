@@ -15,7 +15,26 @@ yarn
 yarn start
 ```
 
+(or)
+
+```bash
+npm install
+npm run start
+```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+## Try Porcupine
+
+The demo is listening for the built-in wake words "Picovoice" and "Alexa". Say:
+
+> "Picovoice"
+
+or
+
+> "Alexa"
+
+The detections will appear on the page.

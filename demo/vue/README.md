@@ -12,13 +12,27 @@ This project was bootstrapped with Vue CLI. See the [Configuration Reference](ht
 
 ## Install & run
 
-```
+```bash
 yarn
 yarn serve
 ```
 
+(or)
+
+```bash
+npm install
+npm run serve
+```
+
 The command-line output will provide you with a localhost link and port to open in your browser.
 
-## Test the wake words
+## Try Porcupine
 
-Say "Grapefruit" or "Grasshopper" and the detections will appear on screen.
+Say the wake phrases:
+
+> "Grapefruit" 
+or
+
+> "Grasshopper"
+
+The detections will appear on screen.

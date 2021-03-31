@@ -10,6 +10,28 @@ The widget shows the various loading and error events, as well as mounting/unmou
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-## Development server
+## Install and run
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Use `yarn` or `npm`:
+
+```bash
+yarn
+yarn start
+```
+
+(or)
+
+```bash
+npm install
+npm run start
+```
+
+Open `http://localhost:4200/` to view it in the browser.
+
+## Try Porcupine
+
+The demo is listening for the wake word "Deep Sky Blue". Say the wake word:
+
+> "Deep Sky Blue"
+
+Detections will appear on the page.
