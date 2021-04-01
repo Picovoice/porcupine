@@ -46,7 +46,7 @@ import { PorcupineService } from "@picovoice/porcupine-web-angular"
     // Subscribe to Porcupine Keyword detections
     // Store each detection so we can display it in an HTML list
     this.porcupineDetection = porcupineService.detection$.subscribe(
-      keywordLabel => console.log(`Porcupuine Detected "${keywordLabel}"`))
+      keywordLabel => console.log(`Porcupine Detected "${keywordLabel}"`))
   }
 ```
 
@@ -57,7 +57,7 @@ We need to initialize Porcupine to tell it which keywords we want to listen to (
 ```typescript
   async ngOnInit() {
     // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; dynamically imported)
-    const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker') as any).default
+    const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
     // Initialize Porcupine Service
     try {
       await this.porcupineService.init(porcupineFactoryEn,

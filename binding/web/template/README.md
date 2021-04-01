@@ -47,7 +47,7 @@ Factory packages allow you to create instances of Porcupine directly. Useful for
 To obtain a Porcupine Worker, we can use the static `create` factory method from the PorcupineWorkerFactory. Here is a complete example that:
 
 1. Obtains a Worker from the PorcupineWorkerFactory (in this case, English) to listen for the built-in English wake word "Picovoice"
-1. Customizes the wake word detection by setting the worker's `onmessage` event handler
+1. Responds to the wake word detection event by setting the worker's `onmessage` event handler
 1. Starts up the WebVoiceProcessor to forward microphone audio to the Porcupine Worker
 
 E.g.:

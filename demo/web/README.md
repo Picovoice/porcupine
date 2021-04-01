@@ -11,6 +11,13 @@ yarn
 yarn start
 ```
 
+(or)
+
+```bash
+npm
+npm run start
+```
+
 Open `localhost:5000` in your web browser, as hinted at in the output:
 
 ```bash
