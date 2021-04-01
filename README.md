@@ -745,6 +745,14 @@ this._porcupine.delete();
 
 ### Android
 
+To include the package in your Android project, ensure you have included `mavenCentral()` in your top-level `build.gradle` file and then add the following to your app's `build.gradle`:
+
+```groovy
+dependencies {    
+    implementation 'ai.picovoice:porcupine-android:1.9.0'
+}
+```
+
 There are two possibilities for integrating Porcupine into an Android application.
 
 #### High-Level API
@@ -754,20 +762,23 @@ provides a high-level API for integrating Porcupine into Android applications. I
 an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback.
 
 ```java
-final String modelPath = ... // Available at lib/common/porcupine_params.pv
-final String keywordPath = ...
-final float sensitivity = 0.5f;
+import ai.picovoice.porcupine.*;
 
-PorcupineManager manager = new PorcupineManager(
-        modelPath,
-        keywordPath,
-        sensitivity,
-        new PorcupineManagerCallback() {
-            @Override
-            public void invoke(int keywordIndex) {
-                // detection event logic/callback
-            }
-        });
+final String keywordPath = "/path/to/keyword.ppn"
+try {    
+    
+
+    PorcupineManager porcupineManager = new PorcupineManager.Builder()
+                        .setKeywordPath(keywordPath)
+                        .setSensitivity(0.5f)
+                        .build(context, 
+                        new PorcupineManagerCallback() {
+                            @Override
+                            public void invoke(int keywordIndex) {
+                                // detection event logic/callback
+                            }
+                        });
+} catch (PorcupineException e) { }
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
@@ -782,16 +793,16 @@ When initialized, input audio can be monitored using `manager.start()`. Stop the
 binding for Android. It can be initialized using.
 
 ```java
-final String modelPath = ... // Available at lib/common/porcupine_params.pv
-final String keywordPath = ...
-final float sensitivity = 0.5f;
+import ai.picovoice.porcupine.*;
 
-Porcupine porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
+final String keywordPath = "/path/to/keyword.ppn"
+try {    
+    Porcupine porcupine = new Porcupine.Builder()
+                        .setKeywordPath(keywordPath)
+                        .setSensitivity(0.5f)
+                        .build(context);
+} catch (PorcupineException e) { }
 ```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
-
 Once initialized, `porcupine` can be used to monitor incoming audio.
 
 ```java
@@ -805,8 +816,7 @@ while (true) {
 }
 ```
 
-Finally, be sure to explicitly release resources acquired by porcupine as the binding class does not rely on the
-garbage collector for releasing native resources.
+Finally, be sure to explicitly release resources acquired by porcupine as the binding class does not rely on the garbage collector for releasing native resources.
 
 ```java
 porcupine.delete();
