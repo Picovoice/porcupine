@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void startService() {
         Intent serviceIntent = new Intent(this, PorcupineService.class);
-        serviceIntent.putExtra("keyword", "porcupine");
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
