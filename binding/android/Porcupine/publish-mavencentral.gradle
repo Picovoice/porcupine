@@ -1,0 +1,109 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+    }
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.srcDirs
+    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+    classpath += configurations.compile + files(ext.androidJar)
+}
+
+// build a jar with javadoc
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives javadocJar
+}
+
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+} else {
+    ext["signing.keyId"] = System.getenv('SIGNING_KEY_ID')
+    ext["signing.password"] = System.getenv('SIGNING_PASSWORD')
+    ext["signing.secretKeyRingFile"] = System.getenv('SIGNING_SECRET_KEY_RING_FILE')
+    ext["ossrhUsername"] = System.getenv('OSSRH_USERNAME')
+    ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId group
+            artifactId PUBLISH_ARTIFACT_ID
+            version PUBLISH_VERSION
+            if (project.plugins.findPlugin("com.android.library")) {
+                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            }
+
+            artifact androidSourcesJar
+            artifact javadocJar
+
+            pom {
+                name = PUBLISH_ARTIFACT_ID
+                description = 'Android SDK for Picovoice\'s Porcupine Wake Word engine'
+                url = 'https://github.com/picovoice/porcupine'
+                licenses {
+                    license {
+                        name = 'Apache License - v2.0'
+                        url = 'https://github.com/Picovoice/porcupine/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'ilavery'
+                        name = 'Ian Lavery'
+                        email = 'ian@picovoice.ai'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:github.com/picovoice/porcupine.git'
+                    developerConnection = 'scm:git:ssh://github.com/picovoice/porcupine.git'
+                    url = 'https://github.com/picovoice/porcupine/tree/main'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "sonatype"
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+            credentials {
+                username ossrhUsername
+                password ossrhPassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications
+}

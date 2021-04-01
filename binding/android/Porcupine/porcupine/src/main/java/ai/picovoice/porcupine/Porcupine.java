@@ -12,6 +12,17 @@
 
 package ai.picovoice.porcupine;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Android binding for Porcupine wake word engine. It detects utterances of given keywords within an
@@ -22,29 +33,22 @@ package ai.picovoice.porcupine;
  * audio.
  */
 public class Porcupine {
+
+    private static final int[] KEYWORDS_RESOURCES = {
+            R.raw.alexa, R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.computer, R.raw.grapefruit,
+            R.raw.grasshopper, R.raw.hey_google, R.raw.hey_siri, R.raw.jarvis, R.raw.ok_google, R.raw.picovoice,
+            R.raw.porcupine, R.raw.terminator,
+    };
+    private static final HashMap<BuiltInKeyword, String> BUILT_IN_KEYWORD_PATHS = new HashMap<>();
+
+    private static String DEFAULT_MODEL_PATH;
+    private static boolean isExtracted;
+
     static {
         System.loadLibrary("pv_porcupine");
     }
 
     private final long handle;
-
-    /**
-     * Constructor.
-     *
-     * @param modelPath   Absolute path to the file containing model parameters.
-     * @param keywordPath Absolute path to keyword model file.
-     * @param sensitivity Sensitivity for detecting keyword. Should be a floating point number
-     *                    within [0, 1]. A higher sensitivity results in fewer misses at the cost of
-     *                    increasing false alarm rate.
-     * @throws PorcupineException if there is an error while initializing Porcupine.
-     */
-    public Porcupine(String modelPath, String keywordPath, float sensitivity) throws PorcupineException {
-        try {
-            handle = init(modelPath, new String[]{keywordPath}, new float[]{sensitivity});
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
-    }
 
     /**
      * Constructor.
@@ -56,7 +60,7 @@ public class Porcupine {
      *                      of increasing the false alarm rate.
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
-    public Porcupine(String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
+    private Porcupine(String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
         try {
             handle = init(modelPath, keywordPaths, sensitivities);
         } catch (Exception e) {
@@ -117,4 +121,149 @@ public class Porcupine {
     private native void delete(long object);
 
     private native int process(long object, short[] pcm);
+
+    public enum BuiltInKeyword {
+        ALEXA,
+        AMERICANO,
+        BLUEBERRY,
+        BUMBLEBEE,
+        COMPUTER,
+        GRAPEFRUIT,
+        GRASSHOPPER,
+        HEY_GOOGLE,
+        HEY_SIRI,
+        JARVIS,
+        OK_GOOGLE,
+        PICOVOICE,
+        PORCUPINE,
+        TERMINATOR
+    }
+
+    /**
+     * Builder for creating an instance of Porcupine with a mixture of default arguments
+     */
+    public static class Builder {
+
+        private String modelPath = null;
+        private String[] keywordPaths = null;
+        private BuiltInKeyword[] keywords = null;
+        private float[] sensitivities = null;
+
+        public Builder setModelPath(String modelPath) {
+            this.modelPath = modelPath;
+            return this;
+        }
+
+        public Builder setKeywordPaths(String[] keywordPaths) {
+            this.keywordPaths = keywordPaths;
+            return this;
+        }
+
+        public Builder setKeywordPath(String keywordPaths) {
+            this.keywordPaths = new String[]{keywordPaths};
+            return this;
+        }
+
+        public Builder setKeywords(BuiltInKeyword[] keywords) {
+            this.keywords = keywords;
+            return this;
+        }
+
+        public Builder setKeyword(BuiltInKeyword keyword) {
+            this.keywords = new BuiltInKeyword[]{keyword};
+            return this;
+        }
+
+        public Builder setSensitivities(float[] sensitivities) {
+            this.sensitivities = sensitivities;
+            return this;
+        }
+
+        public Builder setSensitivity(float sensitivity) {
+            this.sensitivities = new float[]{sensitivity};
+            return this;
+        }
+
+        private void extractResources(Context context) throws PorcupineException {
+            final Resources resources = context.getResources();
+
+            try {
+                for (final int x : KEYWORDS_RESOURCES) {
+                    final String keywordName = resources.getResourceEntryName(x);
+                    final String keywordPath = copyResourceFile(context, x, keywordName + ".ppn");
+                    BUILT_IN_KEYWORD_PATHS.put(BuiltInKeyword.valueOf(keywordName.toUpperCase()), keywordPath);
+                }
+
+                DEFAULT_MODEL_PATH = copyResourceFile(context,
+                        R.raw.porcupine_params,
+                        resources.getResourceEntryName(R.raw.porcupine_params) + ".pv");
+
+                isExtracted = true;
+            } catch (IOException ex) {
+                throw new PorcupineException(ex);
+            }
+        }
+
+        private String copyResourceFile(Context context, int resourceId, String filename) throws IOException {
+            InputStream is = new BufferedInputStream(context.getResources().openRawResource(resourceId), 256);
+            OutputStream os = new BufferedOutputStream(context.openFileOutput(filename, Context.MODE_PRIVATE), 256);
+            int r;
+            while ((r = is.read()) != -1) {
+                os.write(r);
+            }
+            os.flush();
+
+            is.close();
+            os.close();
+
+            return new File(context.getFilesDir(), filename).getAbsolutePath();
+        }
+
+        /**
+         * Validates properties and creates an instance of the Porcupine wake word engine.
+         *
+         * @param context Android app context (for extracting Porcupine resources)
+         * @return An instance of Porcupine wake word engine
+         * @throws PorcupineException if there is an error while initializing Porcupine.
+         */
+        public Porcupine build(Context context) throws PorcupineException {
+
+            if (!isExtracted) {
+                extractResources(context);
+            }
+
+            if (modelPath == null) {
+                modelPath = DEFAULT_MODEL_PATH;
+            }
+
+            if (this.keywordPaths != null && this.keywords != null) {
+                throw new PorcupineException(new IllegalArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
+                        "Only one of the two arguments may be set for initialization."));
+            }
+
+            if (this.keywordPaths == null) {
+                if (this.keywords == null) {
+                    throw new PorcupineException(new IllegalArgumentException("Either 'keywords' or " +
+                            "'keywordPaths' must be set."));
+                }
+
+                this.keywordPaths = new String[keywords.length];
+                for (int i = 0; i < keywords.length; i++) {
+                    this.keywordPaths[i] = BUILT_IN_KEYWORD_PATHS.get(keywords[i]);
+                }
+            }
+
+            if (sensitivities == null) {
+                sensitivities = new float[keywordPaths.length];
+                Arrays.fill(sensitivities, 0.5f);
+            }
+
+            if (sensitivities.length != keywordPaths.length) {
+                throw new PorcupineException(new IllegalArgumentException(String.format("Number of keywords (%d) " +
+                        "does not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length)));
+            }
+
+            return new Porcupine(modelPath, keywordPaths, sensitivities);
+        }
+    }
 }

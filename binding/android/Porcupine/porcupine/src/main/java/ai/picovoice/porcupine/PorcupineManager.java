@@ -13,6 +13,7 @@
 package ai.picovoice.porcupine;
 
 
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -29,12 +30,126 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * ${@link Porcupine}.
  */
 public class PorcupineManager {
+    private final MicrophoneReader microphoneReader;
+    private final Porcupine porcupine;
+    private final PorcupineManagerCallback callback;
+
+    /**
+     * Private constructor.
+     *
+     * @param porcupine An instance of the Porcupine wake word engine.
+     * @param callback  A callback function that is invoked upon detection of any of the keywords.
+     */
+    private PorcupineManager(Porcupine porcupine,
+                             PorcupineManagerCallback callback) {
+
+
+        this.porcupine = porcupine;
+        this.callback = callback;
+        microphoneReader = new MicrophoneReader();
+    }
+
+    /**
+     * Releases resources acquired by Porcupine. It should be called when disposing the object.
+     */
+    public void delete() {
+        porcupine.delete();
+    }
+
+    /**
+     * Starts recording audio from the microphone and monitors it for the utterances of the given
+     * set of keywords.
+     */
+    public void start() {
+        microphoneReader.start();
+    }
+
+    /**
+     * Stops recording audio from the microphone.
+     *
+     * @throws PorcupineException if the {@link MicrophoneReader} throws an exception while
+     *                            it's being stopped.
+     */
+    public void stop() throws PorcupineException {
+        try {
+            microphoneReader.stop();
+        } catch (InterruptedException e) {
+            throw new PorcupineException(e);
+        }
+    }
+
+    /**
+     * Builder for creating an instance of Porcupine with a mixture of default arguments
+     */
+    public static class Builder {
+
+        private String modelPath = null;
+        private String[] keywordPaths = null;
+        private Porcupine.BuiltInKeyword[] keywords = null;
+        private float[] sensitivities = null;
+
+        public PorcupineManager.Builder setModelPath(String modelPath) {
+            this.modelPath = modelPath;
+            return this;
+        }
+
+        public PorcupineManager.Builder setKeywordPaths(String[] keywordPaths) {
+            this.keywordPaths = keywordPaths;
+            return this;
+        }
+
+        public PorcupineManager.Builder setKeywordPath(String keywordPaths) {
+            this.keywordPaths = new String[]{keywordPaths};
+            return this;
+        }
+
+        public PorcupineManager.Builder setKeywords(Porcupine.BuiltInKeyword[] keywords) {
+            this.keywords = keywords;
+            return this;
+        }
+
+        public PorcupineManager.Builder setKeyword(Porcupine.BuiltInKeyword keyword) {
+            this.keywords = new Porcupine.BuiltInKeyword[]{keyword};
+            return this;
+        }
+
+        public PorcupineManager.Builder setSensitivities(float[] sensitivities) {
+            this.sensitivities = sensitivities;
+            return this;
+        }
+
+        public PorcupineManager.Builder setSensitivity(float sensitivity) {
+            this.sensitivities = new float[]{sensitivity};
+            return this;
+        }
+
+        /**
+         * Creates an instance of PorcupineManager.
+         *
+         * @param context  Android app context (for extracting Porcupine resources)
+         * @param callback A callback function that is invoked upon detection of any of the keywords.
+         * @return A PorcupineManager instance
+         * @throws PorcupineException if there is an error while initializing Porcupine.
+         */
+        public PorcupineManager build(Context context, PorcupineManagerCallback callback) throws PorcupineException {
+
+            Porcupine porcupine = new Porcupine.Builder()
+                    .setModelPath(modelPath)
+                    .setKeywordPaths(keywordPaths)
+                    .setKeywords(keywords)
+                    .setSensitivities(sensitivities)
+                    .build(context);
+            return new PorcupineManager(porcupine, callback);
+        }
+    }
+
     private class MicrophoneReader {
-        private AtomicBoolean started = new AtomicBoolean(false);
-        private AtomicBoolean stop = new AtomicBoolean(false);
-        private AtomicBoolean stopped = new AtomicBoolean(false);
+        private final AtomicBoolean started = new AtomicBoolean(false);
+        private final AtomicBoolean stop = new AtomicBoolean(false);
+        private final AtomicBoolean stopped = new AtomicBoolean(false);
 
         void start() {
+
             if (started.get()) {
                 return;
             }
@@ -110,91 +225,6 @@ public class PorcupineManager {
 
                 stopped.set(true);
             }
-        }
-    }
-
-    private final MicrophoneReader microphoneReader;
-    private final Porcupine porcupine;
-    private final PorcupineManagerCallback callback;
-
-    /**
-     * Constructor.
-     *
-     * @param modelPath   Absolute path to the file containing model parameters.
-     * @param keywordPath Absolute path to keyword model file.
-     * @param sensitivity Sensitivity for detecting keyword. Should be a floating point number
-     *                    within [0, 1]. A higher sensitivity results in fewer misses at the cost of
-     *                    increasing false alarm rate.
-     * @param callback    It is invoked upon detection of the keyword.
-     * @throws PorcupineException if there is an error while initializing Porcupine.
-     */
-    public PorcupineManager(
-            String modelPath,
-            String keywordPath,
-            float sensitivity,
-            PorcupineManagerCallback callback) throws PorcupineException {
-        try {
-            porcupine = new Porcupine(modelPath, keywordPath, sensitivity);
-        } catch (PorcupineException e) {
-            throw new PorcupineException(e);
-        }
-
-        this.callback = callback;
-        microphoneReader = new MicrophoneReader();
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param modelPath     Absolute path to file containing model parameters.
-     * @param keywordPaths  Absolute paths to keyword model files.
-     * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
-     *                      within [0, 1]. A higher sensitivity results in fewer misses at the cost
-     *                      of increasing the false alarm rate.
-     * @param callback      It is invoked upon detection of any of the keywords.
-     * @throws PorcupineException if there is an error while initializing Porcupine.
-     */
-    public PorcupineManager(
-            String modelPath,
-            String[] keywordPaths,
-            float[] sensitivities,
-            PorcupineManagerCallback callback) throws PorcupineException {
-        try {
-            porcupine = new Porcupine(modelPath, keywordPaths, sensitivities);
-        } catch (PorcupineException e) {
-            throw new PorcupineException(e);
-        }
-
-        this.callback = callback;
-        microphoneReader = new MicrophoneReader();
-    }
-
-    /**
-     * Releases resources acquired by Porcupine. It should be called when disposing the object.
-     */
-    public void delete() {
-        porcupine.delete();
-    }
-
-    /**
-     * Starts recording audio from the microphone and monitors it for the utterances of the given
-     * set of keywords.
-     */
-    public void start() {
-        microphoneReader.start();
-    }
-
-    /**
-     * Stops recording audio from the microphone.
-     *
-     * @throws PorcupineException if the {@link MicrophoneReader} throws an exception while
-     *                            it's being stopped.
-     */
-    public void stop() throws PorcupineException {
-        try {
-            microphoneReader.stop();
-        } catch (InterruptedException e) {
-            throw new PorcupineException(e);
         }
     }
 }
