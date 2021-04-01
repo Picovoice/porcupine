@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
 import ai.picovoice.porcupine.PorcupineManager;
 import ai.picovoice.porcupine.PorcupineManagerCallback;
@@ -50,53 +51,21 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer notificationPlayer;
 
-    private void copyResourceFile(int resourceId, String filename) throws IOException {
-        Resources resources = getResources();
-        try (
-                InputStream is = new BufferedInputStream(resources.openRawResource(resourceId), 256);
-                OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)
-        ) {
-            int r;
-            while ((r = is.read()) != -1) {
-                os.write(r);
-            }
-            os.flush();
-        }
-    }
-
-    private static final int[] KEYWORDS = {
-            R.raw.alexa, R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.computer, R.raw.grapefruit,
-            R.raw.grasshopper, R.raw.heygoogle, R.raw.heysiri, R.raw.jarvis, R.raw.okgoogle, R.raw.picovoice,
-            R.raw.porcupine, R.raw.terminator,
-    };
-
-    private void copyResourceFiles() throws IOException {
-        final Resources resources = getResources();
-
-        for (final int x : KEYWORDS) {
-            copyResourceFile(x, resources.getResourceEntryName(x) + ".ppn");
-        }
-
-        copyResourceFile(
-                R.raw.porcupine_params,
-                resources.getResourceEntryName(R.raw.porcupine_params) + ".pv");
-    }
-
     private void displayError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private PorcupineManager initPorcupine() throws PorcupineException {
         final Spinner mySpinner = findViewById(R.id.keyword_spinner);
-        final String keyword = mySpinner.getSelectedItem().toString();
-        final String filename = keyword.toLowerCase().replaceAll("\\s+", "");
-        final String keywordFilePath = new File(this.getFilesDir(), filename + ".ppn").getAbsolutePath();
-
-        final String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
+        final String keywordName = mySpinner.getSelectedItem().toString();
 
         final int detectedBackgroundColor = getResources().getColor(R.color.colorAccent);
 
-        return new PorcupineManager(modelFilePath, keywordFilePath, 0.7f, new PorcupineManagerCallback() {
+        Porcupine.BuiltInKeyword keyword = Porcupine.BuiltInKeyword.valueOf(keywordName.toUpperCase().replace(" ", "_"));
+        return new PorcupineManager.Builder()
+                .setKeyword(keyword)
+                .setSensitivity(0.7f)
+                .build(getApplicationContext(), new PorcupineManagerCallback() {
             @Override
             public void invoke(int keywordIndex) {
                 runOnUiThread(new Runnable() {
@@ -166,12 +135,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        try {
-            copyResourceFiles();
-        } catch (IOException e) {
-            displayError("Failed to copy resource files.");
-        }
 
         notificationPlayer = MediaPlayer.create(this, R.raw.notification);
 
