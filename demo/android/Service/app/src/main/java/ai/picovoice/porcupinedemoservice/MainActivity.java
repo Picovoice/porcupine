@@ -33,19 +33,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
-    private void copyResourceFile(int resourceID, String filename) throws IOException {
-        Resources resources = getResources();
-        try (
-                InputStream is = new BufferedInputStream(resources.openRawResource(resourceID), 256);
-                OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)
-        ){
-            int r;
-            while ((r = is.read()) != -1) {
-                os.write(r);
-            }
-            os.flush();
-        }
-    }
 
     private boolean hasRecordPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
@@ -68,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startService() {
         Intent serviceIntent = new Intent(this, PorcupineService.class);
-        serviceIntent.putExtra("keywordFileName", "porcupine_android.ppn");
+        serviceIntent.putExtra("keyword", "porcupine");
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
@@ -81,13 +68,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        try {
-            copyResourceFile(R.raw.porcupine_params, "porcupine_params.pv");
-            copyResourceFile(R.raw.porcupine_android, "porcupine_android.ppn");
-        } catch (IOException e) {
-            Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
-        }
 
         ToggleButton recordButton = findViewById(R.id.startButton);
 

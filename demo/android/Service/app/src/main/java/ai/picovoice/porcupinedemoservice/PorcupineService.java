@@ -26,10 +26,9 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import java.io.File;
-
-import ai.picovoice.porcupine.PorcupineManager;
+import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
+import ai.picovoice.porcupine.PorcupineManager;
 
 public class PorcupineService extends Service {
     private static final String CHANNEL_ID = "PorcupineServiceChannel";
@@ -71,37 +70,31 @@ public class PorcupineService extends Service {
 
         startForeground(1234, notification);
 
-        String modelFilePath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
-
-        String keywordFileName = intent.getStringExtra("keywordFileName");
-        assert keywordFileName != null;
-        String keywordFilePath = new File(this.getFilesDir(), keywordFileName).getAbsolutePath();
-
         try {
-            porcupineManager = new PorcupineManager(
-                    modelFilePath,
-                    keywordFilePath,
-                    0.7f,
-                    (keywordIndex) -> {
-                        numUtterances++;
+            porcupineManager = new PorcupineManager.Builder()
+                    .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                    .setSensitivity(0.7f).build(
+                            getApplicationContext(),
+                            (keywordIndex) -> {
+                                numUtterances++;
 
-                        PendingIntent contentIntent = PendingIntent.getActivity(
-                                this,
-                                0,
-                                new Intent(this, MainActivity.class),
-                                0);
+                                PendingIntent contentIntent = PendingIntent.getActivity(
+                                        this,
+                                        0,
+                                        new Intent(this, MainActivity.class),
+                                        0);
 
-                        Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                .setContentTitle("Porcupine")
-                                .setContentText("# utterances : " + numUtterances)
-                                .setSmallIcon(R.drawable.ic_launcher_background)
-                                .setContentIntent(contentIntent)
-                                .build();
+                                Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
+                                        .setContentTitle("Porcupine")
+                                        .setContentText("# utterances : " + numUtterances)
+                                        .setSmallIcon(R.drawable.ic_launcher_background)
+                                        .setContentIntent(contentIntent)
+                                        .build();
 
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        assert notificationManager != null;
-                        notificationManager.notify(1234, n);
-                    });
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                assert notificationManager != null;
+                                notificationManager.notify(1234, n);
+                            });
             porcupineManager.start();
         } catch (PorcupineException e) {
             Log.e("PORCUPINE", e.toString());
