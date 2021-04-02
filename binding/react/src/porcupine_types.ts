@@ -40,6 +40,11 @@ export type PorcupineWorkerFactoryArgs =
   | PorcupineKeyword
   | string;
 
+export type PorcupineKeywordArgs =
+  | Array<PorcupineKeyword | string>
+  | PorcupineKeyword
+  | string;
+
 export interface PorcupineWorkerFactory {
   create: (
     porcupineWorkerFactoryArgs: PorcupineWorkerFactoryArgs
@@ -83,5 +88,5 @@ export type PorcupineHookArgs = {
   /** Immediately start the microphone upon initialization? */
   start: boolean;
   /** Arguments forwarded to PorcupineWorkerFactory */
-  porcupineFactoryArgs: PorcupineWorkerFactoryArgs;
+  keywords: PorcupineKeywordArgs;
 };

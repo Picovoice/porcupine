@@ -22,7 +22,7 @@ import {
 
 export function usePorcupine(
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
-  porcupineArgs: PorcupineHookArgs,
+  porcupineHookArgs: PorcupineHookArgs,
   detectionCallback: (label: string) => void
 ): {
   isLoaded: boolean,
@@ -74,16 +74,14 @@ export function usePorcupine(
 
     async function startPorcupine():
       Promise<{ webVp: WebVoiceProcessor, ppnWorker: PorcupineWorker }> {
-      const { porcupineFactoryArgs, start: startOnInit } = porcupineArgs;
+      const { keywords, start: startWebVp = true } = porcupineHookArgs;
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const ppnWorker: Worker = await porcupineWorkerFactory!.create(
-        porcupineFactoryArgs
-      );
+      const ppnWorker: Worker = await porcupineWorkerFactory!.create(keywords);
 
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
-        start: startOnInit,
+        start: startWebVp,
       });
 
       ppnWorker.onmessage = (msg: MessageEvent<PorcupineWorkerResponse>): void => {
@@ -124,7 +122,7 @@ export function usePorcupine(
     // ".... we know our data structure is relatively shallow, doesn't have cycles,
     // and is easily serializable ... doesn't have functions or weird objects like Dates.
     // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
-    JSON.stringify(porcupineArgs),
+    JSON.stringify(porcupineHookArgs),
   ]);
 
   return {

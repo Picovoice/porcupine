@@ -49,7 +49,7 @@ import React, { useState } from 'react';
 import { PorcupineWorkerFactory } from '@picovoice/porcupine-web-en-worker';
 import { usePorcupine } from '@picovoice/porcupine-web-react';
 
-const porcupineFactoryArgs = [{ builtin: 'Picovoice', sensitivity: 0.65 }];
+const keywords = [{ builtin: 'Picovoice', sensitivity: 0.65 }];
 
 function VoiceWidget(props) {
   const keywordEventHandler = keywordLabel => {
@@ -66,7 +66,7 @@ function VoiceWidget(props) {
     pause,
   } = usePorcupine(
     PorcupineWorkerFactory,
-    { porcupineFactoryArgs: porcupineFactoryArgs, start: true },
+    { keywords: keywords, start: true },
     keywordEventHandler
   );
 }
@@ -85,33 +85,36 @@ We add a `useEffect` hook to kick off the dynamic import. We store the result of
 See the [Webpack docs](https://webpack.js.org/guides/code-splitting/) for more information about Code Splitting.
 
 ```javascript
-import { useEffect, useState } from "react";
-import { usePorcupine } from "@picovoice/porcupine-web-react";
+import { useEffect, useState } from 'react';
+import { usePorcupine } from '@picovoice/porcupine-web-react';
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [workerChunk, setWorkerChunk] = useState({ workerFactory: null });
-  const [porcupineFactoryArgs] = useState([
-    { builtin: "Alexa", sensitivity: 0.7 },
-    "Picovoice",
+  const [keywords] = useState([
+    { builtin: 'Alexa', sensitivity: 0.7 },
+    'Picovoice',
   ]);
 
   useEffect(() => {
     async function loadPorcupineWorkerChunk() {
-      const ppnWorkerFactory = (await import("@picovoice/porcupine-web-en-worker")).PorcupineWorkerFactory; // <-- Dynamically import the worker
-      console.log("Porcupine worker chunk is loaded.");
+      const ppnWorkerFactory = (
+        await import('@picovoice/porcupine-web-en-worker')
+      ).PorcupineWorkerFactory; // <-- Dynamically import the worker
+      console.log('Porcupine worker chunk is loaded.');
       return ppnWorkerFactory;
     }
 
-    if (workerChunk.factory === null) { // <-- We only want to load once!
-      loadPorcupineWorkerChunk().then((ppnWorkerFactory) => {
+    if (workerChunk.factory === null) {
+      // <-- We only want to load once!
+      loadPorcupineWorkerChunk().then(ppnWorkerFactory => {
         setWorkerChunk({ workerFactory: ppnWorkerFactory });
       });
     }
   }, [workerChunk]);
 
-  const keywordEventHandler = (porcupineKeywordLabel) => {
-    setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
+  const keywordEventHandler = porcupineKeywordLabel => {
+    setKeywordDetections(x => [...x, porcupineKeywordLabel]);
   };
 
   const {
@@ -124,9 +127,8 @@ export default function VoiceWidget() {
     pause,
   } = usePorcupine(
     workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePorcupine will start.
-    { porcupineFactoryArgs: porcupineFactoryArgs, start: true },
+    { keywords: keywords },
     keywordEventHandler
   );
 }
-
 ```
