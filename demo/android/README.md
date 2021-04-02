@@ -8,7 +8,7 @@ This demo is intended for application that need to do voice recognition and for 
 
 **NOTE:** If running the Porcupine as a service on Android < 10, you will need to stop the service before attempting to record audio in another application. This is a limitation of the Android OS that is documented [here](https://developer.android.com/guide/topics/media/sharing-audio-input).
 
-## How to Use Custom Wake Words (.ppn files)
+## How to Integrate Custom Wake Words (.ppn files)
 
 To add a custom wake word to your Android application a couple of extra steps must be taken. First, add your .ppn file to the `/res/raw` folder. All resources are compressed when the build system creates an APK, so you will have to extract your ppn file first before using it:
 
