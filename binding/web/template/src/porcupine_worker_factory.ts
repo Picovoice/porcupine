@@ -13,12 +13,11 @@ import PorcupineWorker from 'web-worker:./porcupine_worker.ts';
 import {
   PorcupineKeyword,
   PorcupineWorkerRequestInit,
-  PorcupineWorkerResponseReady,
-  PorcupineWorkerResponseKeyword,
+  PorcupineWorkerResponse,
 } from './porcupine_types';
 
 export default class PorcupineWorkerFactory {
-  private constructor() {}
+  private constructor() { }
 
   /**
    * Create Porcupine web worker instances. The promise resolves when the worker is ready to process
@@ -29,7 +28,8 @@ export default class PorcupineWorkerFactory {
    *
    */
   public static async create(
-    keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string
+    keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
+    start?: boolean
   ): Promise<Worker> {
     // n.b. The *worker* creation is itself synchronous. But, inside the worker is an async
     // method of PorcupineFactory which is initializing. This means the worker is not actually ready
@@ -42,14 +42,13 @@ export default class PorcupineWorkerFactory {
     const ppnInitCmd: PorcupineWorkerRequestInit = {
       command: 'init',
       keywords: keywordArray,
+      start,
     };
     porcupineWorker.postMessage(ppnInitCmd);
 
     const workerPromise = new Promise<Worker>((resolve, reject) => {
       porcupineWorker.onmessage = function (
-        event: MessageEvent<
-          PorcupineWorkerResponseReady | PorcupineWorkerResponseKeyword
-        >
+        event: MessageEvent<PorcupineWorkerResponse>
       ): void {
         if (event.data.command === 'ppn-ready') {
           resolve(porcupineWorker);

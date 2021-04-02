@@ -36,7 +36,10 @@ export type WorkerRequestVoid = {
 export type PorcupineWorkerRequestInit = {
   command: 'init';
   keywords: Array<PorcupineKeyword | string>;
+  start?: boolean;
 };
+
+export type PorcupineWorkerRequest = PorcupineWorkerRequestInit | WorkerRequestProcess | WorkerRequestVoid
 
 export type PorcupineWorkerResponseReady = {
   command: 'ppn-ready';
@@ -46,6 +49,8 @@ export type PorcupineWorkerResponseKeyword = {
   command: 'ppn-keyword';
   keywordLabel: string;
 };
+
+export type PorcupineWorkerResponse = PorcupineWorkerResponseReady | PorcupineWorkerResponseKeyword
 
 export interface PorcupineEngine {
   release(): void;

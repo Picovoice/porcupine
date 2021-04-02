@@ -12,11 +12,9 @@
 import {
   PorcupineEngine,
   PorcupineKeyword,
-  PorcupineWorkerRequestInit,
   PorcupineWorkerResponseReady,
   PorcupineWorkerResponseKeyword,
-  WorkerRequestProcess,
-  WorkerRequestVoid,
+  PorcupineWorkerRequest,
 } from './porcupine_types';
 
 // @ts-ignore
@@ -25,9 +23,9 @@ import Porcupine from './porcupine';
 let paused = true;
 let porcupineEngine: PorcupineEngine = null;
 
-async function init(keywords: Array<PorcupineKeyword | string>): Promise<void> {
+async function init(keywords: Array<PorcupineKeyword | string>, start = true): Promise<void> {
   porcupineEngine = await Porcupine.create(keywords);
-  paused = false; // TODO option to start paused?
+  paused = !start;
   const ppnReadyMessage: PorcupineWorkerResponseReady = {
     command: 'ppn-ready',
   };
@@ -57,13 +55,11 @@ function release(): void {
 }
 
 onmessage = function (
-  event: MessageEvent<
-    WorkerRequestVoid | WorkerRequestProcess | PorcupineWorkerRequestInit
-  >
+  event: MessageEvent<PorcupineWorkerRequest>
 ): void {
   switch (event.data.command) {
     case 'init':
-      init(event.data.keywords);
+      init(event.data.keywords, event.data.start);
       break;
     case 'process':
       process(event.data.inputFrame);
