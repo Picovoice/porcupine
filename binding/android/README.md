@@ -34,7 +34,7 @@ dependencies {
 
 ## Permissions
 
-To enable recording with your Android device's microphone you must add the follwing line to your `AndroidManifest.xml` file:
+To enable recording with your Android device's microphone you must add the following line to your `AndroidManifest.xml` file:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 ```
@@ -136,7 +136,7 @@ porcupineManager.delete();
 
 [Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
 
-`Porcupine` uses the a Builder pattern to contruct instances. Creating an instance of Porcupine
+`Porcupine` uses the a Builder pattern to construct instances. Creating an instance of Porcupine
 
 ```java
 import ai.picovoice.porcupine.*;
