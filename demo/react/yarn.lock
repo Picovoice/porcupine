@@ -1418,14 +1418,20 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-web-de-worker@file:../../binding/web/porcupine-web-de-worker":
-  version "1.9.0"
+"@picovoice/porcupine-web-de-worker@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.1.tgz#e0574f66ea7bc8cc60829114a70d0ebc07623ae5"
+  integrity sha512-cfUL2FwSGLORCJtt5NqZ6RV1xz5EgFAw0zyKy/EIjvt/ayv06wMg6Tg0Avi634SG6aY0o82OKTJTQgm6Th/P7g==
 
-"@picovoice/porcupine-web-en-worker@file:../../binding/web/porcupine-web-en-worker":
-  version "1.9.0"
+"@picovoice/porcupine-web-en-worker@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.1.tgz#e0049479574f8bd86f66da7ec563ac580140c2f4"
+  integrity sha512-aQR83c2pQqPOdsp3EgSWZaMlnr4W7L5H67DAviBqLX0yRxURqSCLg5o3SC/BwjcotJawZEEYj9oBMC2jJj2dsA==
 
-"@picovoice/porcupine-web-react@file:../../binding/react":
-  version "1.0.0"
+"@picovoice/porcupine-web-react@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.2.0.tgz#e06e155e517a0b81d4632a487935c341512af51b"
+  integrity sha512-Ute/06a0GtfJkqwWf20H+MTprNzd2I91YODE+5K77++LJBSizmezyOOiQwIECU2YQOBQEDDRQ3nJhvMFnmjS0A==
   dependencies:
     "@picovoice/web-voice-processor" "^2.0.0"
 

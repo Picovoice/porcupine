@@ -4,7 +4,7 @@ import { usePorcupine } from "@picovoice/porcupine-web-react";
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [workerChunk, setWorkerChunk] = useState({ factory: null });
-  const [porcupineFactoryArgs] = useState([
+  const [keywords] = useState([
     { builtin: "Alexa", sensitivity: 0.7 },
     "Picovoice",
   ]);
@@ -39,7 +39,7 @@ export default function VoiceWidget() {
     pause,
   } = usePorcupine(
     workerChunk.factory,
-    { porcupineFactoryArgs: porcupineFactoryArgs, start: true },
+    { keywords, start: true },
     keywordEventHandler
   );
 
@@ -52,7 +52,7 @@ export default function VoiceWidget() {
       {isError && (
         <p className="error-message">{JSON.stringify(errorMessage)}</p>
       )}
-      <h3>Keywords: {JSON.stringify(porcupineFactoryArgs)}</h3>
+      <h3>Keywords: {JSON.stringify(keywords)}</h3>
       <br />
       <button
         onClick={() => start()}
