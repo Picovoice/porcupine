@@ -84,6 +84,7 @@ if __name__ == '__main__':
                 'stm32f769/stm32f769i-disco/Inc/',
                 'stm32f411/stm32f411e-disco/Inc/',
                 'stm32f407/stm32f407g-disc1/Inc/',
+                'stm32h735/stm32h735g-dk/Inc/',
                 'imxrt1050/imxrt1050-evkb/inc',)
 
     generate_pv_params(wake_words, include_folders)
