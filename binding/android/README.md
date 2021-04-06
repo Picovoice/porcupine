@@ -43,7 +43,7 @@ To enable recording with your Android device's microphone you must add the follo
 
 The module provides you with two levels of API to choose from depending on your needs.
 
-#### High-Level API
+### High-Level API
 
 [PorcupineManager](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java) provides a high-level API that takes care of audio recording and wake word detection. This class is the quickest way to get started.
 
@@ -132,11 +132,11 @@ Once the app is done with using an instance of PorcupineManager, be sure you exp
 porcupineManager.delete();
 ```
 
-#### Low-Level API
+### Low-Level API
 
 [Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
 
-`Porcupine` uses the a Builder pattern to construct instances. Creating an instance of Porcupine
+`Porcupine` uses a Builder pattern to construct instances. 
 
 ```java
 import ai.picovoice.porcupine.*;
@@ -166,7 +166,7 @@ while(true) {
 }
 ```
 
-For process to work correctly, the audio data must be in the audio format required by Picovoice.
+For `process` to work correctly, the audio data must be in the audio format required by Picovoice.
 The required audio format is found by calling `.getSampleRate()` to get the required sample rate and `.getFrameLength()` to get the required number of samples per input frame. Audio must be single-channel and 16-bit linearly-encoded.
 
 Once you're done with Porcupine, ensure you release its resources explicitly:
