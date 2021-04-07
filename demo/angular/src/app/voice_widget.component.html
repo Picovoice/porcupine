@@ -7,12 +7,12 @@
 
   <p class="error-message" *ngIf="isError">{{ errorMessage }}</p>
 
-  <h3>Keywords: {{ porcupineFactoryArgs | json }}</h3>
+  <h3>Keywords: {{ porcupineServiceArgs | json }}</h3>
   <br />
   <button (click)="start()" [disabled]="isError || isListening">Start</button>
   <button (click)="pause()" [disabled]="isError || !isListening">Pause</button>
   <button (click)="resume()" [disabled]="isError || isListening">Resume</button>
-  <h3>Keyword Detections:</h3>
+  <h3>Keyword Detections (listening for "Deep Sky Blue"):</h3>
   <ul>
     <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>
   </ul>

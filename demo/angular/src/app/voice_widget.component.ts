@@ -4,7 +4,7 @@ import { Subscription } from "rxjs"
 import { PorcupineService } from "@picovoice/porcupine-web-angular"
 
 import { DEEP_SKY_BLUE_PPN_64 } from "./porcupine_keywords"
-import { PorcupineWorkerFactoryArgs } from "@picovoice/porcupine-web-angular/lib/porcupine_types"
+import { PorcupineServiceArgs } from "@picovoice/porcupine-web-angular/lib/porcupine_types"
 
 @Component({
   selector: 'voice-widget',
@@ -25,7 +25,7 @@ export class VoiceWidget {
   isListening: boolean | null = null
   errorMessage: string
   detections: Array<string> = []
-  porcupineFactoryArgs: PorcupineWorkerFactoryArgs = { custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }
+  porcupineServiceArgs: PorcupineServiceArgs = { keywords: { custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64, sensitivity: 0.75 } }
 
   constructor(private porcupineService: PorcupineService) {
     // Subscribe to Porcupine Keyword detections
@@ -58,9 +58,8 @@ export class VoiceWidget {
     // Initialize Porcupine Service
     try {
       await this.porcupineService.init(porcupineFactoryEn,
-        {
-          porcupineFactoryArgs: this.porcupineFactoryArgs
-        })
+        this.porcupineServiceArgs
+      )
       console.info("Porcupine is ready!")
       this.isLoaded = true;
     }
@@ -69,7 +68,6 @@ export class VoiceWidget {
       this.isError = true;
       this.errorMessage = error.toString();
     }
-
   }
 
   ngOnDestroy() {

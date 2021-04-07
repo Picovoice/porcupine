@@ -14,14 +14,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Use `yarn` or `npm`:
 
-```bash
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```bash
+```console
 npm install
 npm run start
 ```
