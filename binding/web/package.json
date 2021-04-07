@@ -2,6 +2,7 @@
   "name": "porcupine-web-template",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "description": "Template project for building porcupine-web-* packages",
   "main": ".eslintrc.js",
   "scripts": {

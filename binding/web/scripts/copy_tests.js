@@ -1,6 +1,9 @@
-const ncp = require("ncp");
-const path = require("path");
-const editJsonFile = require("edit-json-file");
+import fs from "fs";
+import ncp from "ncp";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 for (const language of ["en"]) {
   for (const flavour of ["factory"]) {
@@ -8,17 +11,20 @@ for (const language of ["en"]) {
 
     // Workers
     // 1. Copy test files into applicable project
-    const projectRootPath = path.join(__dirname, "..");
-    const testFile = path.join(
+    const projectRootPath = join(__dirname, "..");
+    const testFile = join(
       projectRootPath,
-      "test",
-      `porcupine-web-${language}-${flavour}`
+      "tests",
+      `${language}-${flavour}`
     );
-    const projectLocation = path.join(
+    const projectLocation = join(
       projectRootPath,
       `porcupine-web-${language}-${flavour}`,
       "test"
     );
+
+    // Create the output directory structure, if it doesn't exist
+    fs.mkdirSync(projectLocation, { recursive: true });
 
     ncp(testFile, projectLocation, (err) => {
       if (err) {
