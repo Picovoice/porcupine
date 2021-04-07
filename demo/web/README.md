@@ -6,21 +6,21 @@ This is a basic demo to show how to use Porcupine for web browsers, using the II
 
 Use `yarn` or `npm` to install the dependencies, and the `start` script to start a local web server hosting the demo.
 
-```bash
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```bash
+```console
 npm
 npm run start
 ```
 
 Open `localhost:5000` in your web browser, as hinted at in the output:
 
-```bash
+```console
    ┌──────────────────────────────────────────────────┐
    │                                                  │
    │   Serving!                                       │

@@ -26,11 +26,15 @@ Using the Web Audio API requires a secure context (HTTPS connection), with the e
 
 Use `npm` or `yarn` to install the package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English:
 
-`yarn add @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker`
+```console
+yarn add @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
+```
 
 (or)
 
-`npm install @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker`
+```console
+npm install @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
+```
 
 ## Usage
 

@@ -1,25 +1,33 @@
-# PorcupineWebAngular
+## porcupine-web-angular
 
 This is the Angular workspace for building the `porcupine-web-angular` package.
 
-## porcupine-web-angular
-
-## Install dependencies
+## Install
 
 Run `yarn` to install the Angular workspace dependencies:
 
-```bash
+```console
 yarn
 ```
 
-Run `ng build porcupine-web-angular --prod` to build the project.
+## Build
 
-## Commands
+To build the project:
+
+```console
+yarn build porcupine-web-angular --prod
+```
+
+## Lint and Format
 
 Format code with Prettier:
 
-`yarn format`
+```console
+yarn format
+```
 
 Lint code with ESLint:
 
-`ng lint`
+```console
+yarn lint
+```

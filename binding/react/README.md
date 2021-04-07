@@ -28,11 +28,15 @@ Using the Web Audio API requires a secure context (HTTPS connection), with the e
 
 Use `npm` or `yarn` to install the package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English:
 
-`yarn add @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker`
+```console
+yarn add @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker`
+```
 
 (or)
 
-`npm install @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker`
+```console
+npm install @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker`
+```
 
 ## Usage
 
@@ -42,7 +46,7 @@ Make sure you handle the possibility of errors with the `isError` and `errorMess
 
 ### Static Import
 
-Using static imports for the porcupine-web-xx-worker packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
+Using static imports for the `@picovoice/porcupine-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
 
 ```javascript
 import React, { useState } from 'react';

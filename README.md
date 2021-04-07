@@ -207,14 +207,14 @@ application.
 
 From [demo/web](/demo/web) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run start
 ```
@@ -225,14 +225,14 @@ Open http://localhost:5000 in your browser to try the demo.
 
 From [demo/angular](/demo/angular) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run start
 ```
@@ -243,14 +243,14 @@ Open http://localhost:4200 in your browser to try the demo.
 
 From [demo/react](/demo/react) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run start
 ```
@@ -261,14 +261,14 @@ Open http://localhost:3000 in your browser to try the demo.
 
 From [demo/vue](/demo/vue) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn serve
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run serve
 ```
@@ -972,8 +972,8 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="node_modules/@picovoice/porcupine-web-en-worker/dist/iife/index.js"></script>
-    <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
+    <script src="https://unpkg.com/@picovoice/porcupine-web-en-worker/dist/iife/index.js"></script>
+    <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
       async function startPorcupine() {
         console.log("Porcupine is loading. Please wait...");
@@ -986,13 +986,13 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
 
         console.log("Porcupine worker ready!");
 
-        const keywordDetection = (msg) => {
+        const keywordDetectionCallback = (msg) => {
           if (msg.data.command === "ppn-keyword") {
             console.log("Keyword detected: " + msg.data.keywordLabel);
           }
         };
 
-        ppnEn.onmessage = keywordDetection;
+        ppnEn.onmessage = keywordDetectionCallback;
 
         console.log(
           "WebVoiceProcessor initializing. Microphone permissions requested ..."
@@ -1013,20 +1013,19 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
       });
     </script>
   </head>
-  <body>
-  </body>
+  <body></body>
 </html>
 ```
 
 #### Vanilla JavaScript and HTML (ES Modules)
 
-```
+```console
 yarn add @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor
 ```
 
@@ -1038,7 +1037,7 @@ async startPorcupine()
   const porcupineWorker = await PorcupineWorkerFactory.create(
     [{builtin: "Picovoice", sensitivity: 0.65}]
   );
- 
+
   porcupineWorker.onmessage = (msg) => {
     switch (msg.data.command) {
       case 'ppn-keyword':
@@ -1049,26 +1048,26 @@ async startPorcupine()
         break;
     }
   };
- 
+
   const webVp = await WebVoiceProcessor.init({
     engines: [porcupineWorker],
     start: true,
   });
   }
- 
+
 }
 startPorcupine()
 ```
 
 #### Angular
 
-```
+```console
 yarn add @picovoice/porcupine-web-angular
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/porcupine-web-angular
 ```
 
@@ -1086,7 +1085,7 @@ async ngOnInit() {
       console.error(error)
     }
   }
- 
+
   ngOnDestroy() {
     this.porcupineDetection.unsubscribe()
     this.porcupineService.release()
@@ -1095,28 +1094,28 @@ async ngOnInit() {
 
 #### React
 
-```
+```console
 yarn add @picovoice/porcupine-web-react
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/porcupine-web-react
 ```
 
 ```javascript
-import React, { useState } from "react"
-import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker"
-import { usePorcupine } from "@picovoice/porcupine-web-react"
- 
-const keywords = [{ builtin: "Picovoice", sensitivity: 0.65 }]
- 
+import React, { useState } from "react";
+import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
+import { usePorcupine } from "@picovoice/porcupine-web-react";
+
+const keywords = [{ builtin: "Picovoice", sensitivity: 0.65 }];
+
 function VoiceWidget(props) {
-  const keywordEventHandler = keywordLabel => {
-    console.log(`Porcupine detected ${keywordLabel}`)
-  }
- 
+  const keywordEventHandler = (keywordLabel) => {
+    console.log(`Porcupine detected ${keywordLabel}`);
+  };
+
   const {
     isLoaded,
     isListening,
@@ -1129,19 +1128,19 @@ function VoiceWidget(props) {
     PorcupineWorkerFactory,
     { keywords, start: true },
     keywordEventHandler
-  )
+  );
 }
 ```
 
 #### Vue
 
-```
+```console
 yarn add @picovoice/porcupine-web-vue
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/porcupine-web-vue
 ```
 
@@ -1165,35 +1164,35 @@ npm install @picovoice/porcupine-web-vue
   </div>
 </template>
 <script>
-import Porcupine from "@picovoice/porcupine-web-vue";
-import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
- 
-export default {
-  name: "VoiceWidget",
-  components: {
-    Porcupine,
-  },
-  data: function() {
-    return {
-      detections: [],
-      isError: null,
-      isLoaded: false,
-      factory: PorcupineWorkerFactoryEn,
-    };
-  },
-  methods: {
-    ppnReadyFn: function() {
-      this.isLoaded = true;
+  import Porcupine from "@picovoice/porcupine-web-vue";
+  import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+
+  export default {
+    name: "VoiceWidget",
+    components: {
+      Porcupine,
     },
-    ppnKeywordFn: function(data) {
-      this.detections = [...this.detections, data.keywordLabel];
+    data: function () {
+      return {
+        detections: [],
+        isError: null,
+        isLoaded: false,
+        factory: PorcupineWorkerFactoryEn,
+      };
     },
-    ppnErrorFn: function(data) {
-      this.isError = true;
-      this.errorMessage = data.toString();
+    methods: {
+      ppnReadyFn: function () {
+        this.isLoaded = true;
+      },
+      ppnKeywordFn: function (data) {
+        this.detections = [...this.detections, data.keywordLabel];
+      },
+      ppnErrorFn: function (data) {
+        this.isError = true;
+        this.errorMessage = data.toString();
+      },
     },
-  },
-};
+  };
 </script>
 ```
 
