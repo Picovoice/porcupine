@@ -1,0 +1,6 @@
+source 'git@gitlab.com:picovoice/podspec-test.git'
+# source 'https://cdn.cocoapods.org/'
+
+target 'PorcupineDemo' do    
+    pod 'Porcupine-iOS'
+end
