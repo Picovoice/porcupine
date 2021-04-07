@@ -219,6 +219,15 @@ class Porcupine implements PorcupineEngine {
       );
     }
 
+    for (const sensitivity of keywordSensitivities) {
+      if (typeof sensitivity !== "number") {
+        throw new Error('Sensitivity is not a number (in range [0,1]): ' + sensitivity)
+      }
+      if (sensitivity < 0 || sensitivity > 1) {
+        throw new Error('Sensitivity is outside of range [0, 1]: ' + sensitivity)
+      }
+    }
+
     const sensitivities = new Float32Array(keywordSensitivities);
 
     const keywordModelSizes = Int32Array.from(

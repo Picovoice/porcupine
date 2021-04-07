@@ -23,9 +23,7 @@ export default class PorcupineWorkerFactory {
    * Create Porcupine web worker instances. The promise resolves when the worker is ready to process
    * voice data (perhaps from WebVoiceProcessor).
    *
-   * @param {Array<PorcupineKeyword | string>} keywords - Built-in or Base64
-   * representations of keywords and their sensitivities.
-   *
+   * @param keywords - Builtin or Base64 representations of keywords and their sensitivities.
    */
   public static async create(
     keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
