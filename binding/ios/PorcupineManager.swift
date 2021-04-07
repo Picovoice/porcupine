@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2020 Picovoice Inc.
+//  Copyright 2018-2021 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -8,95 +8,125 @@
 //
 
 import AVFoundation
-import PvPorcupine
-
-public enum PorcupineManagerError: Error {
-    case invalidArgument
-    case io
-    case outOfMemory
-    case recordingDenied
-}
 
 /// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, processes it in real-time using Porcupine, and notifies the
 /// client when any of the given keywords are detected.
 public class PorcupineManager {
     private var onDetection: ((Int32) -> Void)?
     
-    private var porcupine: OpaquePointer?
+    private var porcupine: Porcupine?
     
     private let audioInputEngine: AudioInputEngine
     
     private var isListening = false
     
-    /// Constructor.
-    ///
-    /// - Parameters:
-    ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - keywordPaths: Absolute paths to keyword model files.
-    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
-    ///   the cost of increasing the false alarm rate.
-    ///   - onDetection: It is invoked upon detection of any of the keywords.
-    /// - Throws: PorcupineManagerError
-    public init(modelPath: String, keywordPaths: [String], sensitivities: [Float32], onDetection: ((Int32) -> Void)?) throws {
+    /// Private constructor.
+    private init(porcupine:Porcupine, onDetection: ((Int32) -> Void)?) throws {
         self.onDetection = onDetection
+        self.porcupine = porcupine
         
         self.audioInputEngine = AudioInputEngine()
-        
         audioInputEngine.audioInput = { [weak self] audio in
             
             guard let `self` = self else {
                 return
             }
             
-            var result: Int32 = -1
-            pv_porcupine_process(self.porcupine, audio, &result)
+            guard self.porcupine != nil else {
+                return
+            }
+            
+            let result:Int32 = self.porcupine!.process(pcm: audio)
             if result >= 0 {
                 DispatchQueue.main.async {
                     self.onDetection?(result)
                 }
             }
         }
-        
-        let status = pv_porcupine_init(
-            modelPath,
-            Int32(keywordPaths.count),
-            keywordPaths.map { UnsafePointer(strdup($0)) },
-            sensitivities,
-            &porcupine)
-        try checkStatus(status)
     }
     
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - keywordPath: Absolute path to keyword model file.
-    ///   - sensitivity: Sensitivity for detecting keyword. Should be a floating point number within [0, 1]. A higher sensitivity results in fewer misses at the
-    ///   cost of increasing false alarm rate..
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
-    /// - Throws: PorcupineManagerError
-    public convenience init(modelPath: String, keywordPath: String, sensitivity: Float32, onDetection: ((Int32) -> Void)?) throws {
-        try self.init(modelPath: modelPath, keywordPaths: [keywordPath], sensitivities: [sensitivity], onDetection: onDetection)
+    /// - Throws: PorcupineError
+    public convenience init(keywordPaths: [String], modelPath:String = Porcupine.defaultModelPath, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
+        try self.init(porcupine:Porcupine(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
+    }
+    
+    /// Constructor.
+    ///
+    /// - Parameters:
+    ///   - keywordPath: Absolute paths to a keyword model file.
+    ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
+    ///   - onDetection: It is invoked upon detection of the keyword.
+    /// - Throws: PorcupineError
+    public convenience init(keywordPath: String, modelPath:String = Porcupine.defaultModelPath, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
+        try self.init(porcupine:Porcupine(keywordPath: keywordPath, modelPath: modelPath, sensitivity: sensitivity), onDetection:onDetection)
+    }
+    
+    /// Constructor.
+    ///
+    /// - Parameters:
+    ///   - keywords: An array of built-in keywords from the Porcupine.BuiltInKeyword enum.
+    ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
+    ///   - onDetection: It is invoked upon detection of the keyword.
+    /// - Throws: PorcupineError
+    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath: String = Porcupine.defaultModelPath, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
+        
+        try self.init(porcupine:Porcupine(keywords: keywords, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
+    }
+    
+    /// Constructor.
+    ///
+    /// - Parameters:
+    ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
+    ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
+    ///   - onDetection: It is invoked upon detection of the keyword.
+    /// - Throws: PorcupineError
+    public convenience init(keyword: Porcupine.BuiltInKeyword, modelPath: String = Porcupine.defaultModelPath, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
+        try self.init(porcupine:Porcupine(keyword: keyword, modelPath: modelPath, sensitivity: sensitivity), onDetection:onDetection)
     }
     
     deinit {
+        self.delete()
+    }
+    
+    /// Stops recording and releases Porcupine resources
+    public func delete() {
         if isListening {
             stop()
         }
         
-        pv_porcupine_delete(porcupine)
-        porcupine = nil
+        if porcupine != nil {
+            self.porcupine!.delete()
+            self.porcupine = nil
+        }
     }
     
     ///  Starts recording audio from the microphone and monitors it for the utterances of the given set of keywords.
     ///
-    /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineManagerPermissionError if
-    ///           microphone permission is not granted.
+    /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineError if
+    ///           microphone permission is not granted or Porcupine has been disposed.
     public func start() throws {
         let audioSession = AVAudioSession.sharedInstance()
         // Only check if it's denied, permission will be automatically asked.
         if audioSession.recordPermission == .denied {
-            throw PorcupineManagerError.recordingDenied
+            throw PorcupineError.recordingDenied
+        }
+        
+        if porcupine == nil {
+            throw PorcupineError.objectDisposed
         }
         
         guard !isListening else {
@@ -120,19 +150,6 @@ public class PorcupineManager {
         
         isListening = false
     }
-    
-    private func checkStatus(_ status: pv_status_t) throws {
-        switch status {
-        case PV_STATUS_IO_ERROR:
-            throw PorcupineManagerError.io
-        case PV_STATUS_OUT_OF_MEMORY:
-            throw PorcupineManagerError.outOfMemory
-        case PV_STATUS_INVALID_ARGUMENT:
-            throw PorcupineManagerError.invalidArgument
-        default:
-            return
-        }
-    }
 }
 
 private class AudioInputEngine {
@@ -143,7 +160,7 @@ private class AudioInputEngine {
     
     func start() throws {
         var format = AudioStreamBasicDescription(
-            mSampleRate: Float64(pv_sample_rate()),
+            mSampleRate: Float64(Porcupine.sampleRate),
             mFormatID: kAudioFormatLinearPCM,
             mFormatFlags: kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked,
             mBytesPerPacket: 2,
@@ -159,7 +176,7 @@ private class AudioInputEngine {
             return
         }
         
-        let bufferSize = UInt32(pv_porcupine_frame_length()) * 2
+        let bufferSize = UInt32(Porcupine.frameLength) * 2
         for _ in 0..<numBuffers {
             var bufferRef: AudioQueueBufferRef? = nil
             AudioQueueAllocateBuffer(queue, bufferSize, &bufferRef)
