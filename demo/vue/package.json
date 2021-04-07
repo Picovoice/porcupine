@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@picovoice/porcupine-web-en-worker": "^1.9.0",
-    "@picovoice/porcupine-web-vue": "file:../../binding/vue",
+    "@picovoice/porcupine-web-vue": "^1.0.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },

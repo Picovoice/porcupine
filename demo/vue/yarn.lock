@@ -946,8 +946,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.0.tgz#a97755d72071a468489c50ee0c57effdf296be2b"
   integrity sha512-JfWz3lhxWlzx+QBVWJpIr45YU6W0WXhMlkOaR00bBnMGdMY2WiOz032pmj8XRApUJmpjxpjPqMcoz8voUjI+fQ==
 
-"@picovoice/porcupine-web-vue@file:../../binding/vue":
+"@picovoice/porcupine-web-vue@^1.0.0":
   version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-vue/-/porcupine-web-vue-1.0.0.tgz#0db0d98d2bf60d6d880d52cb67b1026044f0697f"
+  integrity sha512-PEnxaDEpk72A8MNtap1qpW6IKGGZGD/ngW9pEwCOMnHDZnkxR8MaPW3TxFlFdD7Uj8E3AJ84CMvC6CXgyPJW5A==
   dependencies:
     "@picovoice/web-voice-processor" "^2.0.0"
 
