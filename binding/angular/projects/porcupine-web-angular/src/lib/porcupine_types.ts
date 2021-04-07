@@ -4,22 +4,11 @@ export type PorcupineWorkerResponse = {
 };
 
 export interface PorcupineWorkerFactory {
-  create: (
-    porcupineWorkerFactoryArgs: PorcupineWorkerFactoryArgs
-  ) => Promise<PorcupineWorker>;
+  create(
+    keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
+    start?: boolean
+  ): Promise<PorcupineWorker>;
 }
-
-export type PorcupineServiceArgs = {
-  /** Immediately start the microphone upon initialization? (defaults to true) */
-  start?: boolean;
-  /** Arguments forwarded to PorcupineWorkerFactory */
-  porcupineFactoryArgs: PorcupineWorkerFactoryArgs;
-};
-
-export type PorcupineWorkerFactoryArgs =
-  | Array<PorcupineKeyword | string>
-  | PorcupineKeyword
-  | string;
 
 export type PorcupineKeywordCustom = {
   base64: string;
@@ -56,3 +45,10 @@ export type PorcupineWorkerRequest =
 export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PorcupineWorkerRequest): void;
 }
+
+export type PorcupineServiceArgs = {
+  /** Immediately start the microphone upon initialization? (defaults to true) */
+  start?: boolean;
+  /** Arguments forwarded to PorcupineWorkerFactory */
+  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
+};

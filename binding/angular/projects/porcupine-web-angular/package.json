@@ -1,7 +1,7 @@
 {
   "name": "@picovoice/porcupine-web-angular",
   "description": "Angular service for Porcupine Web SDK",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "peerDependencies": {
     "@angular/common": "^11.0.9",
     "@angular/core": "^11.0.9",
@@ -12,12 +12,10 @@
     "porcupine",
     "web",
     "voice",
-    "speech",
-    "recognition",
+    "speech recognition",
     "ai",
     "hotword",
-    "wake",
-    "word",
+    "wake word",
     "offline"
   ],
   "author": "Picovoice Inc",

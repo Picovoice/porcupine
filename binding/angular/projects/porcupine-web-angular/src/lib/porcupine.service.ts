@@ -67,12 +67,12 @@ export class PorcupineService implements OnDestroy {
     if (this.isInit) {
       throw new Error('Porcupine is already initialized');
     }
-    const { porcupineFactoryArgs, start = true } = porcupineServiceArgs;
+    const { keywords, start = true } = porcupineServiceArgs;
     this.isInit = true;
 
     try {
       this.porcupineWorker = await porcupineWorkerFactory.create(
-        porcupineFactoryArgs
+        keywords
       );
       this.porcupineWorker.onmessage = (
         message: MessageEvent<PorcupineWorkerResponse>

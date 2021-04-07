@@ -65,7 +65,7 @@ We need to initialize Porcupine to tell it which keywords we want to listen to (
     // Initialize Porcupine Service
     try {
       await this.porcupineService.init(porcupineFactoryEn,
-      {porcupineFactoryArgs: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
+      {keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
       console.log("Porcupine is now loaded and listening")
     }
     catch (error) {
@@ -99,7 +99,7 @@ const DEEP_SKY_BLUE_PPN_64 = "AklWNdN7pFTLWC9noES7tqn1CkTKz+msV2W/MKTek8aPuV54PD
 ...
   // Listen for "Deep Sky Blue": pass in a base64-encoded string of the .ppn file:
   await this.porcupineService.init(porcupineFactoryEn,
-  {porcupineFactoryArgs: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
+  {keywords: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
 
 ...
 ```
