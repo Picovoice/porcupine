@@ -108,7 +108,7 @@ public class PorcupineManager {
             stop()
         }
         
-        if porcupine != nil {
+        if self.porcupine != nil {
             self.porcupine!.delete()
             self.porcupine = nil
         }
@@ -119,19 +119,20 @@ public class PorcupineManager {
     /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineError if
     ///           microphone permission is not granted or Porcupine has been disposed.
     public func start() throws {
-        let audioSession = AVAudioSession.sharedInstance()
-        // Only check if it's denied, permission will be automatically asked.
-        if audioSession.recordPermission == .denied {
-            throw PorcupineError.recordingDenied
-        }
-        
-        if porcupine == nil {
-            throw PorcupineError.objectDisposed
-        }
         
         guard !isListening else {
             return
         }
+
+        if porcupine == nil {
+            throw PorcupineError.objectDisposed
+        }
+
+        // Only check if it's denied, permission will be automatically asked.
+        let audioSession = AVAudioSession.sharedInstance()
+        if audioSession.recordPermission == .denied {
+            throw PorcupineError.recordingDenied
+        }                
         
         try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
         

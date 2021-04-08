@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
   s.ios.framework = 'AVFoundation'
   s.vendored_frameworks = 'lib/ios/PvPorcupine.xcframework'
-  s.resources = 'resources/keyword_files/ios/*.ppn', 'lib/common/*.pv'
+  s.resources = 'resources/keyword_files/ios/*.ppn', 'lib/common/porcupine_params.pv'
   s.source_files = 'binding/ios/*.{swift}'
 end

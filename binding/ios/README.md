@@ -114,7 +114,7 @@ porcupineManager.stop()
 
 Once the app is done with using an instance of PorcupineManager you can release the native resources manually rather than waiting for the garbage collector:
 ```swift
-porcupineManager.delete();
+porcupineManager.delete()
 ```
 
 ### Low-Level API
@@ -141,7 +141,7 @@ func getNextAudioFrame() -> [Int16] {
 
 while true {
     do {
-        let keywordIndex = try porcupine.process(getNextAudioFrame());
+        let keywordIndex = try porcupine.process(getNextAudioFrame())
         if keywordIndex >= 0 {
             // .. detection made!
         }
@@ -156,7 +156,19 @@ Once you're done with Porcupine you can force it to release its native resources
 ```swift
 porcupine.delete();
 ```
+## How to Integrate Custom Wake Words (.ppn files)
+
+To add a custom wake word to your iOS application you must include it in your app as a bundled resource (found by selecting in Build Phases > Copy Bundle Resources). Then in code, get its path like so:
+
+```swift
+// file is called keyword_ios.ppn
+let keywordPath = Bundle.main.path(forResource: "keyword_ios", ofType: "ppn")
+```
+
+## Non-English Contexts
+
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
 
 ## Demo App
 
-For example usage refer to our [iOS demo application](/demo/ios/PorcupineDemo).
+For example usage refer to our [iOS demo application](/demo/ios).

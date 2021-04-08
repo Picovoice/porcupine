@@ -69,7 +69,7 @@ public class Porcupine {
         
         for keywordPath in keywordPaths {
             if !FileManager().fileExists(atPath: keywordPath){
-                throw PorcupineError.invalidArgument(message: "Keyword file at does not exist at '\(modelPath)'")
+                throw PorcupineError.invalidArgument(message: "Keyword file at does not exist at '\(keywordPath)'")
             }
         }
         

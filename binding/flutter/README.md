@@ -66,7 +66,7 @@ On Android, open your AndroidManifest.xml and add the following line:
 
 The module provides you with two levels of API to choose from depending on your needs.
 
-#### High-Level API
+### High-Level API
 
 [PorcupineManager](/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
@@ -153,7 +153,7 @@ This is because it uses our
 [flutter_voice_processor](https://github.com/Picovoice/flutter-voice-processor/)
 Flutter plugin to capture frames of audio and automatically pass it to the wake word engine.
 
-#### Low-Level API
+### Low-Level API
 
 [Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
 
