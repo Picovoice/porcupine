@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
     * scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
     * self-service. Developers can train custom wake word models using Picovoice Console.
   DESC
+  s.documentation_url = 'https://picovoice.ai/docs/api/porcupine-ios/'
   s.homepage = 'https://picovoice.ai/'
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }
   s.source = { :git => "https://github.com/Picovoice/porcupine.git"}

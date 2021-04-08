@@ -9,6 +9,11 @@
 
 import AVFoundation
 
+public enum PorcupineManagerError: Error {    
+    case recordingDenied
+    case objectDisposed
+}
+
 /// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, processes it in real-time using Porcupine, and notifies the
 /// client when any of the given keywords are detected.
 public class PorcupineManager {
@@ -116,7 +121,7 @@ public class PorcupineManager {
     
     ///  Starts recording audio from the microphone and monitors it for the utterances of the given set of keywords.
     ///
-    /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineError if
+    /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineManagerError if
     ///           microphone permission is not granted or Porcupine has been disposed.
     public func start() throws {
         
@@ -125,13 +130,13 @@ public class PorcupineManager {
         }
 
         if porcupine == nil {
-            throw PorcupineError.objectDisposed
+            throw PorcupineManagerError.objectDisposed
         }
 
         // Only check if it's denied, permission will be automatically asked.
         let audioSession = AVAudioSession.sharedInstance()
         if audioSession.recordPermission == .denied {
-            throw PorcupineError.recordingDenied
+            throw PorcupineManagerError.recordingDenied
         }                
         
         try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
