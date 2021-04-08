@@ -3,33 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02AE027825CCB28D00E58B21 /* PvPorcupine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02AE027625CCB27B00E58B21 /* PvPorcupine.xcframework */; };
-		02AE027925CCB28D00E58B21 /* PvPorcupine.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 02AE027625CCB27B00E58B21 /* PvPorcupine.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BB24735A205F636700D96613 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = BB247359205F636700D96613 /* porcupine_params.pv */; };
-		BB24738D206312DC00D96613 /* PorcupineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB24738C206312DC00D96613 /* PorcupineManager.swift */; };
 		BBE66BCE205DD6F7006005B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */; };
 		BBE66BD0205DD6F7006005B1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCF205DD6F7006005B1 /* ViewController.swift */; };
 		BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD1205DD6F7006005B1 /* Main.storyboard */; };
 		BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD4205DD6F7006005B1 /* Assets.xcassets */; };
 		BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD6205DD6F7006005B1 /* LaunchScreen.storyboard */; };
-		BBFFB333226EC72E00A9DA37 /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */; };
-		BBFFB335226EC72E00A9DA37 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */; };
-		BBFFB336226EC72E00A9DA37 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */; };
-		BBFFB33B226EC72E00A9DA37 /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */; };
-		BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */; };
-		BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */; };
-		BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */; };
-		BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */; };
-		E301BFA12570C08100F85308 /* alexa_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9B2570C08000F85308 /* alexa_ios.ppn */; };
-		E301BFA22570C08100F85308 /* hey siri_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9C2570C08000F85308 /* hey siri_ios.ppn */; };
-		E301BFA32570C08100F85308 /* computer_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9D2570C08000F85308 /* computer_ios.ppn */; };
-		E301BFA42570C08100F85308 /* jarvis_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9E2570C08100F85308 /* jarvis_ios.ppn */; };
-		E301BFA52570C08100F85308 /* ok google_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BF9F2570C08100F85308 /* ok google_ios.ppn */; };
-		E301BFA62570C08100F85308 /* hey google_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = E301BFA02570C08100F85308 /* hey google_ios.ppn */; };
+		FB37A93D0849A971922BA960 /* libPods-PorcupineDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B925C1859FB604659FF53E64 /* libPods-PorcupineDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,7 +22,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				02AE027925CCB28D00E58B21 /* PvPorcupine.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,9 +29,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		02AE027625CCB27B00E58B21 /* PvPorcupine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PvPorcupine.xcframework; path = ../../lib/ios/PvPorcupine.xcframework; sourceTree = "<group>"; };
-		BB247359205F636700D96613 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../lib/common/porcupine_params.pv; sourceTree = "<group>"; };
-		BB24738C206312DC00D96613 /* PorcupineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PorcupineManager.swift; path = ../../../binding/ios/PorcupineManager.swift; sourceTree = "<group>"; };
+		3D8CB74E3D4DCC249542D487 /* Pods-PorcupineDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.release.xcconfig"; sourceTree = "<group>"; };
+		7F750B1C72E20584E2241AAB /* Pods-PorcupineDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		B925C1859FB604659FF53E64 /* libPods-PorcupineDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBE66BCF205DD6F7006005B1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -57,20 +39,6 @@
 		BBE66BD4205DD6F7006005B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBE66BD7205DD6F7006005B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BBE66BD9205DD6F7006005B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grasshopper_ios.ppn; path = ios/grasshopper_ios.ppn; sourceTree = "<group>"; };
-		BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grapefruit_ios.ppn; path = ios/grapefruit_ios.ppn; sourceTree = "<group>"; };
-		BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ios/porcupine_ios.ppn; sourceTree = "<group>"; };
-		BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = blueberry_ios.ppn; path = ios/blueberry_ios.ppn; sourceTree = "<group>"; };
-		BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ios/picovoice_ios.ppn; sourceTree = "<group>"; };
-		BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = bumblebee_ios.ppn; path = ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
-		BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = americano_ios.ppn; path = ios/americano_ios.ppn; sourceTree = "<group>"; };
-		BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = terminator_ios.ppn; path = ios/terminator_ios.ppn; sourceTree = "<group>"; };
-		E301BF9B2570C08000F85308 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = alexa_ios.ppn; path = ios/alexa_ios.ppn; sourceTree = "<group>"; };
-		E301BF9C2570C08000F85308 /* hey siri_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey siri_ios.ppn"; path = "ios/hey siri_ios.ppn"; sourceTree = "<group>"; };
-		E301BF9D2570C08000F85308 /* computer_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = computer_ios.ppn; path = ios/computer_ios.ppn; sourceTree = "<group>"; };
-		E301BF9E2570C08100F85308 /* jarvis_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = jarvis_ios.ppn; path = ios/jarvis_ios.ppn; sourceTree = "<group>"; };
-		E301BF9F2570C08100F85308 /* ok google_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ok google_ios.ppn"; path = "ios/ok google_ios.ppn"; sourceTree = "<group>"; };
-		E301BFA02570C08100F85308 /* hey google_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey google_ios.ppn"; path = "ios/hey google_ios.ppn"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,39 +46,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02AE027825CCB28D00E58B21 /* PvPorcupine.xcframework in Frameworks */,
+				FB37A93D0849A971922BA960 /* libPods-PorcupineDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BB247361206164C400D96613 /* keyword_files */ = {
+		2BBD9051A599A3751D329DE8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E301BF9B2570C08000F85308 /* alexa_ios.ppn */,
-				E301BF9D2570C08000F85308 /* computer_ios.ppn */,
-				E301BFA02570C08100F85308 /* hey google_ios.ppn */,
-				E301BF9C2570C08000F85308 /* hey siri_ios.ppn */,
-				E301BF9E2570C08100F85308 /* jarvis_ios.ppn */,
-				E301BF9F2570C08100F85308 /* ok google_ios.ppn */,
-				BBFFB330226EC72E00A9DA37 /* americano_ios.ppn */,
-				BBFFB329226EC72E00A9DA37 /* blueberry_ios.ppn */,
-				BBFFB32F226EC72E00A9DA37 /* bumblebee_ios.ppn */,
-				BBFFB323226EC72D00A9DA37 /* grapefruit_ios.ppn */,
-				BBFFB321226EC72D00A9DA37 /* grasshopper_ios.ppn */,
-				BBFFB32E226EC72E00A9DA37 /* picovoice_ios.ppn */,
-				BBFFB324226EC72D00A9DA37 /* porcupine_ios.ppn */,
-				BBFFB332226EC72E00A9DA37 /* terminator_ios.ppn */,
+				7F750B1C72E20584E2241AAB /* Pods-PorcupineDemo.debug.xcconfig */,
+				3D8CB74E3D4DCC249542D487 /* Pods-PorcupineDemo.release.xcconfig */,
 			);
-			name = keyword_files;
-			path = ../../../resources/keyword_files;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		BB65C7B0205F4BF400E8770E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				02AE027625CCB27B00E58B21 /* PvPorcupine.xcframework */,
+				B925C1859FB604659FF53E64 /* libPods-PorcupineDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -121,6 +76,7 @@
 				BBE66BCC205DD6F7006005B1 /* PorcupineDemo */,
 				BBE66BCB205DD6F7006005B1 /* Products */,
 				BB65C7B0205F4BF400E8770E /* Frameworks */,
+				2BBD9051A599A3751D329DE8 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,9 +91,6 @@
 		BBE66BCC205DD6F7006005B1 /* PorcupineDemo */ = {
 			isa = PBXGroup;
 			children = (
-				BB24738C206312DC00D96613 /* PorcupineManager.swift */,
-				BB247361206164C400D96613 /* keyword_files */,
-				BB247359205F636700D96613 /* porcupine_params.pv */,
 				BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */,
 				BBE66BCF205DD6F7006005B1 /* ViewController.swift */,
 				BBE66BD1205DD6F7006005B1 /* Main.storyboard */,
@@ -155,10 +108,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBE66BE7205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemo" */;
 			buildPhases = (
+				366C592559590A6E9A1F5227 /* [CP] Check Pods Manifest.lock */,
 				BBE66BC6205DD6F7006005B1 /* Sources */,
 				BBE66BC7205DD6F7006005B1 /* Frameworks */,
 				BBE66BC8205DD6F7006005B1 /* Resources */,
 				02FB765E25CA0965004826D5 /* Embed Frameworks */,
+				C8E61340A52986F60AA2E20A /* [CP] Embed Pods Frameworks */,
+				8C03AE0C4AD1B63F5CD9A217 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -214,35 +170,110 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBFFB335226EC72E00A9DA37 /* grapefruit_ios.ppn in Resources */,
-				BBFFB33B226EC72E00A9DA37 /* blueberry_ios.ppn in Resources */,
-				E301BFA12570C08100F85308 /* alexa_ios.ppn in Resources */,
-				E301BFA62570C08100F85308 /* hey google_ios.ppn in Resources */,
-				E301BFA42570C08100F85308 /* jarvis_ios.ppn in Resources */,
 				BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */,
-				E301BFA32570C08100F85308 /* computer_ios.ppn in Resources */,
-				BBFFB333226EC72E00A9DA37 /* grasshopper_ios.ppn in Resources */,
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
-				BBFFB340226EC72E00A9DA37 /* picovoice_ios.ppn in Resources */,
-				BBFFB336226EC72E00A9DA37 /* porcupine_ios.ppn in Resources */,
-				BBFFB341226EC72E00A9DA37 /* bumblebee_ios.ppn in Resources */,
 				BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */,
-				BBFFB342226EC72E00A9DA37 /* americano_ios.ppn in Resources */,
-				E301BFA22570C08100F85308 /* hey siri_ios.ppn in Resources */,
-				BBFFB344226EC72E00A9DA37 /* terminator_ios.ppn in Resources */,
-				BB24735A205F636700D96613 /* porcupine_params.pv in Resources */,
-				E301BFA52570C08100F85308 /* ok google_ios.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		366C592559590A6E9A1F5227 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PorcupineDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8C03AE0C4AD1B63F5CD9A217 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-resources.sh",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/bumblebee_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/pico clock_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params.pv",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/alexa_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/americano_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/blueberry_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/bumblebee_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pico clock_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C8E61340A52986F60AA2E20A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvPorcupine.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BBE66BC6205DD6F7006005B1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB24738D206312DC00D96613 /* PorcupineManager.swift in Sources */,
 				BBE66BD0205DD6F7006005B1 /* ViewController.swift in Sources */,
 				BBE66BCE205DD6F7006005B1 /* AppDelegate.swift in Sources */,
 			);
@@ -381,26 +412,22 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_INCLUDE_PATHS = "${SRCROOT}";
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		BBE66BE8205DD6F7006005B1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F750B1C72E20584E2241AAB /* Pods-PorcupineDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65723695GD;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.porcupineiosnativedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -410,17 +437,14 @@
 		};
 		BBE66BE9205DD6F7006005B1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3D8CB74E3D4DCC249542D487 /* Pods-PorcupineDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65723695GD;
 				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = "${SRCROOT}/../../lib/ios";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.porcupineiosnativedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

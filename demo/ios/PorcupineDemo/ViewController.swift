@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2020 Picovoice Inc.
+//  Copyright 2018-2021 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -8,25 +8,29 @@
 //
 
 import UIKit
+import Porcupine
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var wakeWordPicker: UIPickerView!
     @IBOutlet weak var startButton: UIButton!
 
-    let wakeWords = [
-        "Alexa", "Americano", "Blueberry", "Bumblebee", "Computer", "Grapefruit", "Grasshopper", "Hey Google", "Hey Siri", "Jarvis", "Picovoice", "Porcupine", "Ok Google", "Terminator"
-    ]
-    var wakeWord = "Alexa"
+    var wakeWordDict = [String:Porcupine.BuiltInKeyword]()
+    var wakeWordKeys = [String]()
+    var wakeWord = Porcupine.BuiltInKeyword.alexa
 
     var porcupineManager: PorcupineManager!
     var isRecording = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        for w in Porcupine.BuiltInKeyword.allCases {
+            wakeWordDict[w.rawValue] = w
+        }
+        wakeWordKeys = [String](wakeWordDict.keys.sorted())
+        
         wakeWordPicker.delegate = self
         wakeWordPicker.dataSource = self
-        
+
         let viewSize = view.frame.size
         let startButtonSize = CGSize(width: 120, height: 120)
         startButton.frame.size = startButtonSize
@@ -44,21 +48,19 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return wakeWords.count
+        return wakeWordKeys.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return wakeWords[row]
+        return wakeWordKeys[row]
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        wakeWord = wakeWords[row]
+        wakeWord = wakeWordDict[wakeWordKeys[row]]!
     }
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
-            let modelPath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
-            let keywordPath = Bundle.main.path(forResource: wakeWord.lowercased() + "_ios", ofType: "ppn")
 
             let originalColor = self.view.backgroundColor
             let keywordCallback: ((Int32) -> Void) = { keywordIndex in
@@ -67,9 +69,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     self.view.backgroundColor = originalColor
                 }
             }
-            
+
             do {
-                porcupineManager = try PorcupineManager(modelPath: modelPath!, keywordPath: keywordPath!, sensitivity: 0.7, onDetection: keywordCallback)
+                porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
                 try porcupineManager.start()
             } catch {
                 let alert = UIAlertController(
@@ -92,5 +94,4 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             startButton.setTitle("START", for: UIControl.State.normal)
         }
     }
-
 }
