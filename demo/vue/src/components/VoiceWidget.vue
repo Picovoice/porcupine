@@ -28,7 +28,7 @@
     <button v-on:click="resume" :disabled="!isLoaded || isError || isListening">
       Resume
     </button>
-    <h3>Keyword Detections:</h3>
+    <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
         {{ item }}
