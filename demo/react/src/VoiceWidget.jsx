@@ -4,6 +4,7 @@ import { usePorcupine } from "@picovoice/porcupine-web-react";
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [workerChunk, setWorkerChunk] = useState({ factory: null });
+  const [isChunkLoaded, setIsChunkLoaded] = useState(false);
   const [keywords] = useState([
     { builtin: "Alexa", sensitivity: 0.7 },
     "Picovoice",
@@ -21,6 +22,7 @@ export default function VoiceWidget() {
     if (workerChunk.factory === null) {
       loadPorcupine().then((workerFactory) => {
         setWorkerChunk({ factory: workerFactory });
+        setIsChunkLoaded(true);
       });
     }
   }, [workerChunk]);
@@ -46,7 +48,8 @@ export default function VoiceWidget() {
   return (
     <div className="voice-widget">
       <h2>VoiceWidget</h2>
-      <h3>Loaded: {JSON.stringify(isLoaded)}</h3>
+      <h3>Dynamic Import Loaded: {JSON.stringify(isChunkLoaded)}</h3>
+      <h3>Porcupine Loaded: {JSON.stringify(isLoaded)}</h3>
       <h3>Listening: {JSON.stringify(isListening)}</h3>
       <h3>Error: {JSON.stringify(isError)}</h3>
       {isError && (
@@ -72,7 +75,7 @@ export default function VoiceWidget() {
       >
         Resume
       </button>
-      <h3>Keyword Detections:</h3>
+      <h3>Keyword Detections (listening for "Picovoice" and "Alexa"):</h3>
       {keywordDetections.length > 0 && (
         <ul>
           {keywordDetections.map((label, index) => (

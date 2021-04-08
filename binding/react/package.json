@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-web-react",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "React component for Porcupine Web SDK",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",

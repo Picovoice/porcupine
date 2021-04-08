@@ -1418,20 +1418,20 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-web-de-worker@^1.9.1":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.1.tgz#e0574f66ea7bc8cc60829114a70d0ebc07623ae5"
-  integrity sha512-cfUL2FwSGLORCJtt5NqZ6RV1xz5EgFAw0zyKy/EIjvt/ayv06wMg6Tg0Avi634SG6aY0o82OKTJTQgm6Th/P7g==
+"@picovoice/porcupine-web-de-worker@^1.9.2":
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.2.tgz#f9684201a4f14ac27550a8d1b2ffb385ad0e2f2f"
+  integrity sha512-BlEDA6hnAXfBuCq+2yyj7WdiO3etlNMGCB8p2U+0SMV6+45heiI8N4sUlMKKpZJnpG/1bWR8xRGTWLx1hfHg5g==
 
-"@picovoice/porcupine-web-en-worker@^1.9.1":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.1.tgz#e0049479574f8bd86f66da7ec563ac580140c2f4"
-  integrity sha512-aQR83c2pQqPOdsp3EgSWZaMlnr4W7L5H67DAviBqLX0yRxURqSCLg5o3SC/BwjcotJawZEEYj9oBMC2jJj2dsA==
+"@picovoice/porcupine-web-en-worker@^1.9.2":
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.2.tgz#f5ea774601979ac2a1e69c0d363bb3f4d0a2d4f9"
+  integrity sha512-vqgewwMh5vRvRXLVxHNmI0T49qCkleHuQYEWXHuuynYue/VkJncYUPXr9w4g7NiHQ1YvuYgNy2ZCnlzvx0LQlg==
 
-"@picovoice/porcupine-web-react@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.2.0.tgz#e06e155e517a0b81d4632a487935c341512af51b"
-  integrity sha512-Ute/06a0GtfJkqwWf20H+MTprNzd2I91YODE+5K77++LJBSizmezyOOiQwIECU2YQOBQEDDRQ3nJhvMFnmjS0A==
+"@picovoice/porcupine-web-react@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.2.1.tgz#f6e384284212c67202b1540429a38f116e73f895"
+  integrity sha512-eERr/Svq4pxhpxhwlkEb3QjFnM9CapjXySFmlUDiHH/YZIaaUSEwGWaNPqOSD6nh8KeIa/SNVk4QUC75htqYmw==
   dependencies:
     "@picovoice/web-voice-processor" "^2.0.0"
 
