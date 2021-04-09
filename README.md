@@ -36,6 +36,7 @@ applications. It is
     - [Android](#android-demos)
     - [iOS](#ios-demos)
     - [Web](#web-demos)
+      - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
       - [Angular](#angular-demos)
       - [React](#react-demos)
       - [Vue](#vue-demos)
@@ -52,6 +53,8 @@ applications. It is
     - [Android](#android)
     - [iOS](#ios)
     - [Web](#web)
+      - [Vanilla JavaScript and HTML (CDN Script Tag)](#vanilla-javascript-and-html-cdn-script-tag)
+      - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
       - [Angular](#angular)
       - [React](#react)
       - [Vue](#vue)
@@ -204,6 +207,8 @@ Using [Xcode](https://developer.apple.com/xcode/), open [PorcupineDemo](/demo/io
 application.
 
 ### Web Demos
+
+#### Vanilla JavaScript and HTML
 
 From [demo/web](/demo/web) run the following in the terminal:
 
@@ -966,7 +971,7 @@ Porcupine is available on modern web browsers (i.e. not Internet Explorer) via [
 
 Each spoken language is available as a dedicated npm package (e.g. @picovoice/porcupine-web-en-worker). These packages can be used with the @picovoice/web-voice-processor. They can also be used with the Angular, React, and Vue bindings, which abstract and hide the web worker communication details.
 
-#### Vanilla JavaScript and HTML (CDN Script Tag / IIFE)
+#### Vanilla JavaScript and HTML (CDN Script Tag)
 
 ```html
 <!DOCTYPE html>
