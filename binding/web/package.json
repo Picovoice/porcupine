@@ -1,0 +1,21 @@
+{
+  "name": "porcupine-web-template",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Template project for building porcupine-web-* packages",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "base64": "node scripts/base64.js",
+    "build": "yarn base64 && yarn template && yarn copytests",
+    "template": "node scripts/template.js",
+    "copytests": "node scripts/copy_tests.js"
+  },
+  "keywords": [],
+  "author": "Picovoice Inc",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "edit-json-file": "^1.5.0",
+    "ncp": "^2.0.0"
+  }
+}

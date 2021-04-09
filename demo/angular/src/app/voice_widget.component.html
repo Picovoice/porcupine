@@ -1,0 +1,19 @@
+<div class="voice-widget">
+  <h1>VoiceWidget</h1>
+  <h3>Dynamic Import Loaded: {{ isChunkLoaded }}</h3>
+  <h3>Porcupine Loaded: {{ isLoaded }}</h3>
+  <h3>Listening: {{ isListening }}</h3>
+  <h3>Error: {{ isError }}</h3>
+
+  <p class="error-message" *ngIf="isError">{{ errorMessage }}</p>
+
+  <h3>Keywords: {{ porcupineServiceArgs | json }}</h3>
+  <br />
+  <button (click)="start()" [disabled]="isError || isListening">Start</button>
+  <button (click)="pause()" [disabled]="isError || !isListening">Pause</button>
+  <button (click)="resume()" [disabled]="isError || isListening">Resume</button>
+  <h3>Keyword Detections (listening for "Deep Sky Blue"):</h3>
+  <ul>
+    <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>
+  </ul>
+</div>

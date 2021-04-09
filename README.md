@@ -35,7 +35,11 @@ applications. It is
     - [React Native](#react-native-demos)
     - [Android](#android-demos)
     - [iOS](#ios-demos)
-    - [JavaScript](#javascript-demos)
+    - [Web](#web-demos)
+      - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
+      - [Angular](#angular-demos)
+      - [React](#react-demos)
+      - [Vue](#vue-demos)
     - [NodeJS](#nodejs-demos)
     - [C](#c-demos)
     - [Microcontroller](#microcontroller-demos)
@@ -48,7 +52,12 @@ applications. It is
     - [React Native](#react-native)
     - [Android](#android)
     - [iOS](#ios)
-    - [JavaScript](#javascript)
+    - [Web](#web)
+      - [Vanilla JavaScript and HTML (CDN Script Tag)](#vanilla-javascript-and-html-cdn-script-tag)
+      - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
+      - [Angular](#angular)
+      - [React](#react)
+      - [Vue](#vue)
     - [NodeJS](#nodejs)
     - [C](#c)
     - [Microcontroller](#microcontroller)
@@ -157,9 +166,10 @@ To browse the demo source go to [demo/unity](/demo/unity).
 
 ### Flutter Demos
 
-To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
+To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device.
 
 Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
+
 ```sh
 flutter run
 ```
@@ -196,26 +206,79 @@ To learn about how to use Porcupine in long running services go to [demo/android
 Using [Xcode](https://developer.apple.com/xcode/), open [PorcupineDemo](/demo/ios/PorcupineDemo.xcodeproj) and run the
 application.
 
-### JavaScript Demos
+### Web Demos
 
-From [demo/javascript](/demo/javascript) run the following in the terminal:
+#### Vanilla JavaScript and HTML
 
-```bash
+From [demo/web](/demo/web) run the following in the terminal:
+
+```console
 yarn
 yarn start
 ```
 
-If you prefer to use NPM instead, use the following:
+(or)
 
-```bash
+```console
 npm install
-npm install -g copy-files-from-to
-copy-files-from-to
-npx serve
+npm run start
 ```
 
-This will launch a local server running the demo. Open `http://localhost:5000` in your web browser and follow the
-instructions on the page.
+Open http://localhost:5000 in your browser to try the demo.
+
+#### Angular Demos
+
+From [demo/angular](/demo/angular) run the following in the terminal:
+
+```console
+yarn
+yarn start
+```
+
+(or)
+
+```console
+npm install
+npm run start
+```
+
+Open http://localhost:4200 in your browser to try the demo.
+
+#### React Demos
+
+From [demo/react](/demo/react) run the following in the terminal:
+
+```console
+yarn
+yarn start
+```
+
+(or)
+
+```console
+npm install
+npm run start
+```
+
+Open http://localhost:3000 in your browser to try the demo.
+
+#### Vue Demos
+
+From [demo/vue](/demo/vue) run the following in the terminal:
+
+```console
+yarn
+yarn serve
+```
+
+(or)
+
+```console
+npm install
+npm run serve
+```
+
+Open http://localhost:8080 in your browser to try the demo.
 
 ### NodeJS Demos
 
@@ -481,14 +544,16 @@ catch (Exception ex)
 
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.FromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
+
 ```csharp
 List<string> keywordPaths = new List<string>(){ "/path/to/keyword.ppn" };
-PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths( 
-                                        keywordPaths, 
+PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths(
+                                        keywordPaths,
                                         OnWakeWordDetected);
 ```
 
 Once you have instantiated a PorcupineManager, you can start/stop audio capture and wake word detection by calling:
+
 ```csharp
 _porcupineManager.Start();
 // .. use porcupine
@@ -517,8 +582,8 @@ try
 {
     List<string> keywords = new List<string>(){ "porcupine", "picovoice" };
     Porcupine _porcupine = Porcupine.Create(keywords: keywords);
-} 
-catch (Exception ex) 
+}
+catch (Exception ex)
 {
     // handle porcupine init error
 }
@@ -529,10 +594,10 @@ To search for a keyword in audio, you must pass frames of audio to Porcupine usi
 ```csharp
 short[] frame = getAudioFrame();
 
-try 
+try
 {
     int keywordIndex = _porcupine.Process(frame);
-    if (keywordIndex >= 0) 
+    if (keywordIndex >= 0)
     {
         // detection made!
     }
@@ -540,7 +605,7 @@ try
 catch (Exception ex)
 {
     Debug.LogError(ex.ToString());
-}  
+}
 ```
 
 For `Process` to work correctly, the provided audio must be single-channel and 16-bit linearly-encoded.
@@ -554,10 +619,12 @@ _porcupine.Dispose();
 ### Flutter
 
 Add the [Porcupine Flutter plugin](https://pub.dev/packages/porcupine) to your pub.yaml.
+
 ```yaml
-dependencies:  
+dependencies:
   porcupine: ^<version>
 ```
+
 The SDK provides two APIs:
 
 #### High-Level API
@@ -585,7 +652,7 @@ To create an instance of PorcupineManager that detects custom keywords, you can 
 
 ```dart
 _porcupineManager = await PorcupineManager.fromKeywordPaths(
-    ["/path/to/keyword.ppn"], 
+    ["/path/to/keyword.ppn"],
     _wakeWordCallback);
 ```
 
@@ -595,7 +662,7 @@ Once you have instantiated a PorcupineManager, you can start/stop audio capture 
 try{
     await _porcupineManager.start();
 } on PvAudioException catch (ex) {
-    // deal with either audio exception     
+    // deal with either audio exception
 }
 // .. use porcupine
 await _porcupineManager.stop();
@@ -898,39 +965,240 @@ When finished, release the resources via
 pv_porcupine_delete(handle)
 ```
 
-### JavaScript
+### Web
 
-Porcupine is available on modern web browsers via [WebAssembly](https://webassembly.org/). The
-[JavaScript binding](/binding/javascript/porcupine.js) makes it easy to use Porcupine within a browser environment.
+Porcupine is available on modern web browsers (i.e. not Internet Explorer) via [WebAssembly](https://webassembly.org/). Microphone audio is handled via the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) and is abstracted by the WebVoiceProcessor, which also handles downsampling to the correct format. Porcupine is provided pre-packaged as a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers).
 
-Instantiate a new instance of engine using the factory method:
+Each spoken language is available as a dedicated npm package (e.g. @picovoice/porcupine-web-en-worker). These packages can be used with the @picovoice/web-voice-processor. They can also be used with the Angular, React, and Vue bindings, which abstract and hide the web worker communication details.
 
-```javascript
-let keywordModels = [new Uint8Array([...]), ...];
-let sensitivities = new Float32Array([0.5, ...]);
+#### Vanilla JavaScript and HTML (CDN Script Tag)
 
-let handle = Porcupine.create(keywordModels, sensitivities)
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/@picovoice/porcupine-web-en-worker/dist/iife/index.js"></script>
+    <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
+    <script type="application/javascript">
+      async function startPorcupine() {
+        console.log("Porcupine is loading. Please wait...");
+        let ppnEn = await PorcupineWebEnWorker.PorcupineWorkerFactory.create([
+          {
+            builtin: "Picovoice",
+            sensitivity: 0.65,
+          },
+        ]);
+
+        console.log("Porcupine worker ready!");
+
+        const keywordDetectionCallback = (msg) => {
+          if (msg.data.command === "ppn-keyword") {
+            console.log("Keyword detected: " + msg.data.keywordLabel);
+          }
+        };
+
+        ppnEn.onmessage = keywordDetectionCallback;
+
+        console.log(
+          "WebVoiceProcessor initializing. Microphone permissions requested ..."
+        );
+
+        try {
+          let webVp = await window.WebVoiceProcessor.WebVoiceProcessor.init({
+            engines: [ppnEn],
+          });
+          console.log("WebVoiceProcessor ready and listening!");
+        } catch (e) {
+          console.log("WebVoiceProcessor failed to initialize: " + e);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        startPorcupine();
+      });
+    </script>
+  </head>
+  <body></body>
+</html>
 ```
 
-When instantiated, `handle` can process audio via its `.process` method.
+#### Vanilla JavaScript and HTML (ES Modules)
+
+```console
+yarn add @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor
+```
+
+(or)
+
+```console
+npm install @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor
+```
 
 ```javascript
-let getNextAudioFrame = function() {
-    ...
-};
+import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker"
+import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 
-while (true) {
-    let keywordIndex = handle.process(getNextAudioFrame());
-    if (keywordIndex !== -1) {
-        // Insert detection callback
+async startPorcupine()
+  const porcupineWorker = await PorcupineWorkerFactory.create(
+    [{builtin: "Picovoice", sensitivity: 0.65}]
+  );
+
+  porcupineWorker.onmessage = (msg) => {
+    switch (msg.data.command) {
+      case 'ppn-keyword':
+        // Porcupine keyword detection
+        console.log("Porcupine detected " + msg.data.keywordLabel);
+        break;
+      default:
+        break;
     }
+  };
+
+  const webVp = await WebVoiceProcessor.init({
+    engines: [porcupineWorker],
+    start: true,
+  });
+  }
+
+}
+startPorcupine()
+```
+
+#### Angular
+
+```console
+yarn add @picovoice/porcupine-web-angular
+```
+
+(or)
+
+```console
+npm install @picovoice/porcupine-web-angular
+```
+
+```typescript
+async ngOnInit() {
+    // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; dynamically imported)
+    const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
+    // Initialize Porcupine Service
+    try {
+      await this.porcupineService.init(porcupineFactoryEn,
+      {porcupineFactoryArgs: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
+      console.log("Porcupine is now loaded and listening")
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
+
+  ngOnDestroy() {
+    this.porcupineDetection.unsubscribe()
+    this.porcupineService.release()
+  }
+```
+
+#### React
+
+```console
+yarn add @picovoice/porcupine-web-react
+```
+
+(or)
+
+```console
+npm install @picovoice/porcupine-web-react
+```
+
+```javascript
+import React, { useState } from "react";
+import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
+import { usePorcupine } from "@picovoice/porcupine-web-react";
+
+const keywords = [{ builtin: "Picovoice", sensitivity: 0.65 }];
+
+function VoiceWidget(props) {
+  const keywordEventHandler = (keywordLabel) => {
+    console.log(`Porcupine detected ${keywordLabel}`);
+  };
+
+  const {
+    isLoaded,
+    isListening,
+    isError,
+    errorMessage,
+    start,
+    resume,
+    pause,
+  } = usePorcupine(
+    PorcupineWorkerFactory,
+    { keywords, start: true },
+    keywordEventHandler
+  );
 }
 ```
 
-When done be sure to release resources acquired by WebAssembly using `release()`:
+#### Vue
 
-```javascript
-handle.release();
+```console
+yarn add @picovoice/porcupine-web-vue
+```
+
+(or)
+
+```console
+npm install @picovoice/porcupine-web-vue
+```
+
+```html
+<template>
+  <div class="voice-widget">
+    <Porcupine
+      v-bind:porcupineFactoryArgs="[
+        { builtin: 'Grasshopper', sensitivity: 0.65 },
+        { builtin: 'Grapefruit', sensitivity: 0.4 },
+      ]"
+      v-bind:porcupineFactory="factory"
+      v-on:ppn-ready="ppnReadyFn"
+      v-on:ppn-keyword="ppnKeywordFn"
+      v-on:ppn-error="ppnErrorFn"
+    />
+    <h3>Keyword Detections:</h3>
+    <ul v-if="detections.length > 0">
+      <li v-for="(item, index) in detections" :key="index">{{ item }}</li>
+    </ul>
+  </div>
+</template>
+<script>
+  import Porcupine from "@picovoice/porcupine-web-vue";
+  import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+
+  export default {
+    name: "VoiceWidget",
+    components: {
+      Porcupine,
+    },
+    data: function () {
+      return {
+        detections: [],
+        isError: null,
+        isLoaded: false,
+        factory: PorcupineWorkerFactoryEn,
+      };
+    },
+    methods: {
+      ppnReadyFn: function () {
+        this.isLoaded = true;
+      },
+      ppnKeywordFn: function (data) {
+        this.detections = [...this.detections, data.keywordLabel];
+      },
+      ppnErrorFn: function (data) {
+        this.isError = true;
+        this.errorMessage = data.toString();
+      },
+    },
+  };
+</script>
 ```
 
 ### NodeJS

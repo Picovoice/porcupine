@@ -1,0 +1,6 @@
+node_modules
+.rts2_cache/
+.idea/
+*.log
+.DS_Store
+porcupine-web-*

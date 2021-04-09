@@ -1,0 +1,6 @@
+node_modules
+dist
+*.worker.js
+**/rollup.config.js
+.eslintrc.js
+src/wasm/pv_porcupine_b64_en.js
