@@ -1,6 +1,6 @@
 # Porcupine iOS Demo
 
-Before building the demo app, run the following from this directory to install the Rhino Cocoapod:
+Before building the demo app, run the following from this directory to install the Porcupine Cocoapod:
 ```ruby
 pod install
 ```

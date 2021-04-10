@@ -203,8 +203,12 @@ To learn about how to use Porcupine in long running services go to [demo/android
 
 ### iOS Demos
 
-Using [Xcode](https://developer.apple.com/xcode/), open [PorcupineDemo](/demo/ios/PorcupineDemo.xcodeproj) and run the
-application.
+Before building the demo app, run the following from this directory to install the Porcupine-iOS Cocoapod:
+```ruby
+pod install
+```
+
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineDemo.xcworkspace` and run the application.
 
 ### Web Demos
 
