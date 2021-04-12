@@ -144,7 +144,7 @@ class _MyAppState extends State<MyApp> {
           // color: Colors.blue,
           child: FractionallySizedBox(
               widthFactor: 0.9,
-              child: OutlineButton(
+              child: OutlinedButton(
                 child: Text(currentKeyword,
                     style: TextStyle(fontSize: 20, color: picoBlue)),
                 onPressed: () {
@@ -155,16 +155,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   buildStartButton(BuildContext context) {
+    final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+        primary: picoBlue,
+        shape: CircleBorder(),
+        textStyle: TextStyle(color: Colors.white));
+
     return new Expanded(
       flex: 2,
       child: Container(
           child: SizedBox(
               width: 150,
               height: 150,
-              child: RaisedButton(
-                shape: CircleBorder(),
-                textColor: Colors.white,
-                color: picoBlue,
+              child: ElevatedButton(
+                style: buttonStyle,
                 onPressed: isButtonDisabled ? null : _toggleProcessing,
                 child: Text(isProcessing ? "Stop" : "Start",
                     style: TextStyle(fontSize: 30)),

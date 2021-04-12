@@ -45,19 +45,16 @@ class Porcupine {
   static Map<String, String> _builtInKeywordPaths;
 
   int _handle;
-  final int _frameLength;
-  final int _sampleRate;
-  final String _version;
   final Pointer<Int16> _cFrame;
 
   /// Porcupine version string
-  String get version => _version;
+  static String get version => Utf8.fromUtf8(_porcupineVersion());
 
   /// The number of audio samples per frame required by Porcupine
-  int get frameLength => _frameLength;
+  static int get frameLength => _porcupineFrameLength();
 
   /// The audio sample rate required by Porcupine
-  int get sampleRate => _sampleRate;
+  static int get sampleRate => _porcupineSampleRate();
 
   /// Static creator for initializing Porcupine from a selection of built-in keywords
   ///
@@ -176,16 +173,12 @@ class Porcupine {
       pvStatusToException(pvStatus, "Failed to initialize Porcupine.");
     }
 
-    String version = Utf8.fromUtf8(_porcupineVersion());
-    int frameLength = _porcupineFrameLength();
-    int sampleRate = _porcupineSampleRate();
     int handle = handlePtr.value;
-    return new Porcupine._(handle, frameLength, sampleRate, version);
+    return new Porcupine._(handle);
   }
 
   // private constructor
-  Porcupine._(this._handle, this._frameLength, this._sampleRate, this._version)
-      : _cFrame = allocate<Int16>(count: _frameLength);
+  Porcupine._(this._handle) : _cFrame = allocate<Int16>(count: frameLength);
 
   /// Process a frame of audio with the wake word engine.
   ///
@@ -205,9 +198,9 @@ class Porcupine {
           "Frame array provided to Porcupine process was null.");
     }
 
-    if (frame.length != _frameLength) {
+    if (frame.length != frameLength) {
       throw new PvArgumentError(
-          "Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' ($_frameLength)");
+          "Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' ($frameLength)");
     }
 
     // generate arguments for ffi

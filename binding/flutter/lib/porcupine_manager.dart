@@ -92,7 +92,7 @@ class PorcupineManager {
   PorcupineManager._(
       this._porcupine, this._wakeWordCallback, ErrorCallback errorCallback)
       : _voiceProcessor = VoiceProcessor.getVoiceProcessor(
-            _porcupine.frameLength, _porcupine.sampleRate) {
+            Porcupine.frameLength, Porcupine.sampleRate) {
     _removeVoiceProcessorListener = _voiceProcessor.addListener((buffer) {
       // cast from dynamic to int array
       List<int> porcupineFrame;
