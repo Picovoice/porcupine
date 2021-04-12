@@ -48,7 +48,7 @@ class Porcupine {
   final Pointer<Int16> _cFrame;
 
   /// Porcupine version string
-  static String get version => Utf8.fromUtf8(_porcupineVersion());
+  static String get version => _porcupineVersion().toDartString();
 
   /// The number of audio samples per frame required by Porcupine
   static int get frameLength => _porcupineFrameLength();
@@ -151,19 +151,18 @@ class Porcupine {
     }
 
     // generate arguments for ffi
-    Pointer<Utf8> cModelPath = Utf8.toUtf8(modelPath);
-    Pointer<Pointer<Utf8>> cKeywordPaths = allocate(count: keywordPaths.length);
+    Pointer<Utf8> cModelPath = modelPath.toNativeUtf8();
+    Pointer<Pointer<Utf8>> cKeywordPaths = malloc(keywordPaths.length);
     for (var i = 0; i < keywordPaths.length; i++) {
-      cKeywordPaths[i] = Utf8.toUtf8(keywordPaths[i]);
+      cKeywordPaths[i] = keywordPaths[i].toNativeUtf8();
     }
 
-    Pointer<Float> cSensitivities =
-        allocate<Float>(count: sensitivities.length);
+    Pointer<Float> cSensitivities = malloc<Float>(sensitivities.length);
     cSensitivities
         .asTypedList(sensitivities.length)
         .setRange(0, sensitivities.length, sensitivities);
 
-    Pointer<IntPtr> handlePtr = allocate<IntPtr>(count: 1);
+    Pointer<IntPtr> handlePtr = malloc<IntPtr>(1);
 
     // init porcupine
     int status = _porcupineInit(cModelPath, keywordPaths.length, cKeywordPaths,
@@ -178,7 +177,7 @@ class Porcupine {
   }
 
   // private constructor
-  Porcupine._(this._handle) : _cFrame = allocate<Int16>(count: frameLength);
+  Porcupine._(this._handle) : _cFrame = malloc<Int16>(frameLength);
 
   /// Process a frame of audio with the wake word engine.
   ///
@@ -205,7 +204,7 @@ class Porcupine {
 
     // generate arguments for ffi
     _cFrame.asTypedList(frame.length).setAll(0, frame);
-    Pointer<Int32> keywordIndexPtr = allocate(count: 1);
+    Pointer<Int32> keywordIndexPtr = malloc(1);
 
     int status = _porcupineProcess(_handle, _cFrame, keywordIndexPtr);
     PvStatus pvStatus = PvStatus.values[status];
