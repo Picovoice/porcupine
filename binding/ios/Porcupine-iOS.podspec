@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name = 'Porcupine-iOS'
   s.module_name = 'Porcupine'
-  s.version = '1.9.0'
+  s.version = '1.9.1'
   s.license = {:type => 'Apache 2.0', :file => 'LICENSE'}
   s.summary = 'iOS SDK for Picovoice\'s Porcupine wake word engine'
   s.description = 
@@ -15,8 +15,7 @@ Pod::Spec.new do |s|
     * scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
     * self-service. Developers can train custom wake word models using Picovoice Console.
   DESC
-  s.documentation_url = 'https://picovoice.ai/docs/api/porcupine-ios/'
-  s.homepage = 'https://picovoice.ai/'
+  s.homepage = 'https://github.com/Picovoice/porcupine/tree/master/binding/ios'
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }
   s.source = { :git => "https://github.com/Picovoice/porcupine.git"}
   s.ios.deployment_target = '9.0'
