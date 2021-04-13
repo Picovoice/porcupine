@@ -31,15 +31,15 @@ This binding is for running Porcupine on **NodeJS 10+** on the following platfor
 
 ### Web Browsers
 
-This binding is for NodeJS and **does not work in a browser**. Looking to run Porcupine in-browser? Use the [JavaScript WebAssembly](https://github.com/Picovoice/porcupine/tree/master/binding/javascript) binding instead.
+This npm package is for NodeJS and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vue).
 
 ## Usage
 
-The binding provides the Porcupine class. Create instances of the Porcupine class to detect specific keywords.
+The binding provides the `Porcupine` class. Create instances of the `Porcupine` class to detect specific keywords.
 
 ### Quick Start: Built-in keywords
 
-The built-in keywords give a quick way to get started. Here we can specify that we want to listen for the wake words "grasshopper" and "bumblebee" with [sensitivities](https://picovoice.ai/docs/faq/porcupine/#what-should-i-set-the-sensitivity-value-to) of 0.5 and 0.65, respectively. Since Porcupine can listen to many keywords, they are provided as an array argument.
+The built-in keywords give a quick way to get started. Here we can specify that we want to listen for the wake words "grasshopper" and "bumblebee" with [sensitivities](https://picovoice.ai/docs/faq/porcupine/#what-should-i-set-the-sensitivity-value-to) of 0.5 and 0.65, respectively. Since Porcupine can listen to multiple keywords simultaneously, they are provided as an array argument.
 
 ```javascript
 const Porcupine = require("@picovoice/porcupine-node");
@@ -49,11 +49,11 @@ const {
   BUMBLEBEE,
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
-let handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
+const handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
 
 // process a single frame of audio
 // the keywordIndex provies the index of the keyword detected, or -1 if no keyword was detected
-let keywordIndex = handle.process(frame);
+const keywordIndex = handle.process(frame);
 ```
 
 #### List of built-in keywords
@@ -78,7 +78,7 @@ let keywordIndex = handle.process(frame);
 Providing an array of strings instead of the built-in enums allows you to specify an absolute path to a keyword PPN file:
 
 ```javascript
-let handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
+const handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
 ```
 
 ### Override model and library paths
@@ -86,7 +86,7 @@ let handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
 The Porcupine constructor accepts two optional positional parameters for the absolute paths to the model and dynamic library, should you need to override them (typically, you will not).
 
 ```javascript
-let handle = new Porcupine(
+const handle = new Porcupine(
   keywordPaths,
   sensitivities,
   modelFilePath,

@@ -53,13 +53,13 @@ See [this quick start](https://picovoice.ai/quick-start/wake-word-raspberrypi/) 
 
 To install the demos and make them available on the command line, use either of the following `yarn` or `npm` commands:
 
-```bash
+```console
 yarn global add @picovoice/porcupine-node-demo
 ```
 
 (or)
 
-```bash
+```console
 npm install -g @picovoice/porcupine-node-demo
 ```
 
@@ -69,13 +69,13 @@ Use `ppn-mic-demo` to run the mic demo. Specify either built-in keywords with `-
 
 Here is an example which will listen for "grapefruit" keyword:
 
-```bash
+```console
 ppn-mic-demo --keywords grapefruit
 ```
 
 Wake word detections will display in the console:
 
-```bash
+```console
 $ ppn-mic-demo --keywords grapefruit
 Platform: 'mac'; attempting to use 'sox' to access microphone ...
 Listening for wake word(s): grapefruit
@@ -94,13 +94,13 @@ To run the file-based demo,
 
 e.g. check the input wave file for the built-in keywords "grasshopper" and "bumblebee" against the audio sample that is included with the porcupine repository:
 
-```bash
+```console
 ppn-file-demo --input_audio_file_path ../../resources/audio_samples/multiple_keywords.wav --keywords grasshopper,bumblebee
 ```
 
 Detections of each keyword will be output in the terminal, along with their time location in the file:
 
-```bash
+```console
 ppn-file-demo --input_audio_file_path ../../resources/audio_samples/multiple_keywords.wav --keywords grasshopper
 Detected keyword 'bumblebee' @ 16.096s
 Detected keyword 'grasshopper' @ 28.896s
@@ -112,15 +112,15 @@ The microphone and file demos both have additional options.
 
 To see the full set of options, use `--help`:
 
-```bash
+```console
 ppn-mic-demo --help
 ```
 
-```bash
+```console
 ppn-file-demo --help
 ```
 
-```bash
+```console
 Usage: ppn-file-demo [options]
 
 Options:
@@ -138,7 +138,7 @@ Options:
 
 The sensitivity is a floating point value in the range [0,1] which specifies the tradeoff between miss rate and false alarm. The demo defaults to 0.5. You can override this with `--sensitivity`:
 
-```bash
+```console
 ppn-mic-demo --input_audio_file_path ../../resources/audio_samples/multiple_keywords.wav --keywords bumblebee --sensitivity 0.65
 ```
 
@@ -154,7 +154,7 @@ You can specify non-builtin keywords as absolute paths to `.ppn` keyword files, 
 
 e.g. for Linux (x86_64), using two keywords: "bumblebee" and "grasshopper":
 
-```bash
+```console
 ppn-file-demo \
 --input_audio_file_path ../../resources/audio_samples/multiple_keywords.wav \
 --keyword_file_paths ../../resources/keyword_files/linux/grasshopper_linux.ppn,../../resources/keyword_files/linux/bumblebee_linux.ppn
@@ -166,7 +166,7 @@ You may override the porcupine model and dynamic libraries by specifying their a
 
 e.g. for macOS (x86_64):
 
-```bash
+```console
 ppn-file-demo \
 --input_audio_file_path ../../resources/audio_samples/multiple_keywords.wav \
 --keywords terminator \
@@ -178,14 +178,14 @@ ppn-file-demo \
 
 Use one of `yarn` or `npm` to install the package dependencies from the demo/nodejs folder:
 
-```bash
+```console
 cd demo/nodejs
 yarn
 ```
 
 (or)
 
-```bash
+```console
 cd demo/nodejs
 npm install
 ```
@@ -194,26 +194,26 @@ npm install
 
 Use `yarn mic` (or `npm run mic`) to run the mic demo from the demos/nodejs directory. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script.
 
-```bash
+```console
 yarn mic --keywords grapefruit
 ```
 
 (or)
 
-```bash
+```console
 npm run mic -- --keywords grapefruit
 ```
 
 ### File demo
 
-Use `yarn file` or `npm run file` from the demos/nodejs directory. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script.
+Use `yarn file` or `npm run file` from the `demos/nodejs` directory. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script.
 
-```bash
+```console
 yarn file --input_audio_file_path ../../resources/audio_samples/multiple_keywords.wav --keywords grasshopper
 ```
 
 (or)
 
-```bash
+```console
 npm run file -- --input_audio_file_path ../../resources/audio_samples/multiple_keywords.wav --keywords grasshopper
 ```
