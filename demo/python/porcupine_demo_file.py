@@ -80,7 +80,11 @@ def main():
 
     keywords = list()
     for x in keyword_paths:
-        keywords.append(os.path.basename(x).replace('.ppn', '').split('_')[0])
+        keyword_phrase_part = os.path.basename(x).replace('.ppn', '').split('_')
+        if len(keyword_phrase_part) > 6:
+            keywords.append(' '.join(keyword_phrase_part[0:-6]))
+        else:
+            keywords.append(keyword_phrase_part[0])
 
     num_frames = len(audio) // porcupine.frame_length
     for i in range(num_frames):
