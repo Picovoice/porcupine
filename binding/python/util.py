@@ -23,22 +23,20 @@ def _pv_linux_machine(machine):
     else:
         arch_info = ''
 
-    cpu_ls = subprocess.check_output(['lscpu']).decode()
-    model_info = [x for x in cpu_ls.split('\n') if 'Model name' in x][0].split(' ')[-1].lower()
     cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
     cpu_part = [x for x in cpu_info.split('\n') if 'CPU part' in x][0].split(' ')[-1].lower()
 
-    if 'arm1176' == model_info or '0xb76' == cpu_part:
+    if '0xb76' == cpu_part:
         return 'arm11' + arch_info
-    elif 'cortex-a7' == model_info or '0xc07' == cpu_part:
+    elif '0xc07' == cpu_part:
         return 'cortex-a7' + arch_info
-    elif 'cortex-a53' == model_info or '0xd03' == cpu_part:
+    elif '0xd03' == cpu_part:
         return 'cortex-a53' + arch_info
-    elif 'cortex-a57' == model_info or '0xd07' == cpu_part:
+    elif '0xd07' == cpu_part:
         return 'cortex-a57' + arch_info
-    elif 'cortex-a72' == model_info or '0xd08' == cpu_part:
+    elif '0xd08' == cpu_part:
         return 'cortex-a72' + arch_info
-    elif 'cortex-a8' == model_info or '0xc08' == cpu_part:
+    elif '0xc08' == cpu_part:
         return 'beaglebone' + arch_info
     else:
         logging.warning('Please be advised that this device (CPU part = %s) is not officially supported' % cpu_part)
