@@ -71,7 +71,8 @@ class PorcupineDemo(Thread):
 
         keywords = list()
         for x in self._keyword_paths:
-            keywords.append(os.path.basename(x).replace('.ppn', '').split('_')[0])
+            keyword_phrase_part = os.path.basename(x).replace('.ppn', '').split('_')
+            keywords.append(' '.join(keyword_phrase_part[0:-6]))
 
         porcupine = None
         pa = None
