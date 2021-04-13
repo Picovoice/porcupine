@@ -72,7 +72,10 @@ class PorcupineDemo(Thread):
         keywords = list()
         for x in self._keyword_paths:
             keyword_phrase_part = os.path.basename(x).replace('.ppn', '').split('_')
-            keywords.append(' '.join(keyword_phrase_part[0:-6]))
+            if (len(keyword_phrase_part) > 6):
+                keywords.append(' '.join(keyword_phrase_part[0:-6]))
+            else:
+                keywords.append(keyword_phrase_part[0])
 
         porcupine = None
         pa = None

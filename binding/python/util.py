@@ -14,6 +14,8 @@ import os
 import platform
 import subprocess
 
+pv_logger = logging.getLogger('picovoice logger')
+pv_logger.setLevel(logging.WARNING)
 
 def _pv_linux_machine(machine):
     if machine == 'x86_64':
@@ -24,24 +26,26 @@ def _pv_linux_machine(machine):
         arch_info = ''
 
     cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
-    cpu_part = [x for x in cpu_info.split('\n') if 'CPU part' in x][0].split(' ')[-1].lower()
-
-    if '0xb76' == cpu_part:
-        return 'arm11' + arch_info
-    elif '0xc07' == cpu_part:
-        return 'cortex-a7' + arch_info
-    elif '0xd03' == cpu_part:
-        return 'cortex-a53' + arch_info
-    elif '0xd07' == cpu_part:
-        return 'cortex-a57' + arch_info
-    elif '0xd08' == cpu_part:
-        return 'cortex-a72' + arch_info
-    elif '0xc08' == cpu_part:
-        return 'beaglebone' + arch_info
+    cpu_part_list = [x for x in cpu_info.split('\n') if 'CPU part' in x]
+    if (len(cpu_part_list) > 0):
+        cpu_part = cpu_part[0].split(' ')[-1].lower()
+        if '0xb76' == cpu_part:
+            return 'arm11' + arch_info
+        elif '0xc07' == cpu_part:
+            return 'cortex-a7' + arch_info
+        elif '0xd03' == cpu_part:
+            return 'cortex-a53' + arch_info
+        elif '0xd07' == cpu_part:
+            return 'cortex-a57' + arch_info
+        elif '0xd08' == cpu_part:
+            return 'cortex-a72' + arch_info
+        elif '0xc08' == cpu_part:
+            return 'beaglebone' + arch_info
+        else:
+            pv_logger.warning('Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. Falling back to the armv6-based library. This is not tested nor optimal.' % cpu_part)
+            return 'arm11' + arch_info
     else:
-        logging.warning('Please be advised that this device (CPU part = %s) is not officially supported' % cpu_part)
-        return 'arm11' + arch_info
-
+        raise NotImplementedError('Unsupported CPU.')
 
 def _pv_platform():
     pv_system = platform.system()
