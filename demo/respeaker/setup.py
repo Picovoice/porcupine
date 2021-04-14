@@ -25,7 +25,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="ppnrespeakerdemo",
-    version="1.9.6",
+    version="1.9.7",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine demo for ReSpeaker 4-mic hat.",
@@ -33,7 +33,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/porcupine",
     packages=["ppnrespeakerdemo"],
-    install_requires=["pvporcupine==1.9.3", "spidev", "gpiozero"],
+    install_requires=["pvporcupine==1.9.5", "spidev", "gpiozero"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
