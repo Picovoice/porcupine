@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-node@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-1.9.0.tgz#81b6195df3e5cd71a280ac00f002ded548cfe413"
-  integrity sha512-paONSGLf8NZh4wjZqO0PEUWMH0BUwP8B6zIfCyYxtDJLRGiLG2oLHy5IkgGLpvF3qxAvm2QmWAhf1CgEEtSXnw==
+"@picovoice/porcupine-node@1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-1.9.1.tgz#500d268a13160813bc98a32b85e72b2d9e53f55a"
+  integrity sha512-f8w4bl/Wo8F2+lJIAOStaE7xd3rQX28csskW4wFzE4mlG94U6EEm4jglBnq+YujMTbBKxMYjek9CXw2FFtwzsg==
 
 commander@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
-  integrity sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
+  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
 
 debug@^2.6.8:
   version "2.6.9"
