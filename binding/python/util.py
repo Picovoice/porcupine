@@ -29,7 +29,7 @@ def _pv_linux_machine(machine):
     cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
     cpu_part_list = [x for x in cpu_info.split('\n') if 'CPU part' in x]
     if len(cpu_part_list) == 0:
-        raise NotImplementedError('Unsupported CPU.')
+        raise RuntimeError('Unsupported CPU.')
 
     cpu_part = cpu_part_list[0].split(' ')[-1].lower()
     if '0xb76' == cpu_part:
