@@ -9,42 +9,44 @@
     specific language governing permissions and limitations under the License.
 */
 
-// Porcupine
-
 export type PorcupineKeywordCustom = {
-  base64: string;
-  custom: string;
-  sensitivity?: number;
-};
+  /** Base64 representation of a trained Porcupine keyword (`.ppn` file) */
+  base64: string
+  /** An arbitrary label that you want Picovoice to report when the detection occurs */
+  custom: string
+  /** Value in range [0,1] that trades off miss rate for false alarm */
+  sensitivity?: number
+}
 
 export type PorcupineKeywordBuiltin = {
-  builtin: string;
-  sensitivity?: number;
-};
+  /** Name of a builtin keyword for the specific language (e.g. "Grasshopper" for English, or "Ananas" for German) */
+  builtin: string
+  /** Value in range [0,1] that trades off miss rate for false alarm */
+  sensitivity?: number
+}
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
 export interface PorcupineEngine {
+  /** Release all resources acquired by Porcupine */
   release(): void;
-  process(frames: Int16Array): number;
-  version: string;
-  sampleRate: number;
-  frameLength: number;
-  keywordLabels: Map<number, string>;
+  /** Process a single frame of 16-bit 16kHz PCM audio */
+  process(frame: Int16Array): number;
+  /** The version of the Porcupine engine */
+  readonly version: string;
+  /** The sampling rate of audio expected by the Porcupine engine */
+  readonly sampleRate: number;
+  /** The frame length of audio expected by the Porcupine engine */
+  readonly frameLength: number;
+  /** Maps the keyword detection index (e.g. 0, 1) returned by Porcupine to the label (e.g. "Hey Pico", "Grasshopper") */
+  readonly keywordLabels: Map<number, string>;
 }
-
 // Worker
 
 export type PorcupineWorkerFactoryArgs =
   | Array<PorcupineKeyword | string>
   | PorcupineKeyword
   | string;
-
-export interface PorcupineWorkerFactory {
-  create: (
-    porcupineWorkerFactoryArgs: PorcupineWorkerFactoryArgs
-  ) => Promise<Worker>;
-}
 
 export type WorkerRequestProcess = {
   command: 'process';
@@ -75,6 +77,12 @@ export type PorcupineWorkerResponse = PorcupineWorkerResponseReady | PorcupineWo
 
 export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PorcupineWorkerRequest): void;
+}
+
+export interface PorcupineWorkerFactory {
+  create: (
+    porcupineWorkerFactoryArgs: PorcupineWorkerFactoryArgs
+  ) => Promise<PorcupineWorker>;
 }
 
 // React

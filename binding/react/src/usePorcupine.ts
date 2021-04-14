@@ -29,19 +29,20 @@ export function usePorcupine(
   isListening: boolean,
   isError: boolean | null,
   errorMessage: string | null,
+  webVoiceProcessor: WebVoiceProcessor | null,
   start: () => void,
   pause: () => void,
   resume: () => void,
 } {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [webVoiceProcessor, setWebVoiceProcessor] = useState<WebVoiceProcessor>();
+  const [webVoiceProcessor, setWebVoiceProcessor] = useState<WebVoiceProcessor | null>(null);
   const [isError, setIsError] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const callback = useRef(detectionCallback);
 
   const start = (): boolean => {
-    if (webVoiceProcessor !== undefined) {
+    if (webVoiceProcessor !== null) {
       webVoiceProcessor.start();
       setIsListening(true);
       return true;
@@ -50,7 +51,7 @@ export function usePorcupine(
   };
 
   const pause = (): boolean => {
-    if (webVoiceProcessor !== undefined) {
+    if (webVoiceProcessor !== null) {
       webVoiceProcessor.pause();
       setIsListening(false);
       return true;
@@ -59,7 +60,7 @@ export function usePorcupine(
   };
 
   const resume = (): boolean => {
-    if (webVoiceProcessor !== undefined) {
+    if (webVoiceProcessor !== null) {
       webVoiceProcessor.resume();
       setIsListening(true);
       return true;
@@ -77,7 +78,7 @@ export function usePorcupine(
       const { keywords, start: startWebVp = true } = porcupineHookArgs;
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const ppnWorker: Worker = await porcupineWorkerFactory!.create(keywords);
+      const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(keywords);
 
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
@@ -130,6 +131,7 @@ export function usePorcupine(
     isListening,
     isError,
     errorMessage,
+    webVoiceProcessor,
     start,
     pause,
     resume,
