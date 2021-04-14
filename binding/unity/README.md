@@ -191,6 +191,17 @@ Porcupine implements the `IDisposable` interface, so you can use Porcupine in a 
 _porcupine.Dispose();
 ```
 
+## Custom Wake Word Integration
+
+To add a custom wake word to your Unity app, you'll need to add it to your project root under `/StreamingAssets`. Then, in a script, retrieve them like so:
+```csharp
+string keywordPath = Path.Combine(Application.streamingAssetsPath, "keyword.ppn");
+```
+
+## Non-English Wake Words
+
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+
 ## Demo
 
 The Porcupine Unity demo can be imported along with the SDK when you import the Porcupine Unity package. Browse the source of the demo [here](/demo/unity).

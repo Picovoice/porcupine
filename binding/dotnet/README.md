@@ -109,6 +109,10 @@ using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoic
 }
 ```
 
+## Non-English Wake Words
+
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+
 ## Demos
 
 The [Porcupine dotnet demo project](/demo/dotnet) is a .NET Core command line application that allows for 

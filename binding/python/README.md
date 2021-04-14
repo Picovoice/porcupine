@@ -94,6 +94,10 @@ When done resources have to be released explicitly
 handle.delete()
 ```
 
+## Non-English Wake Words
+
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+
 ## Demos
 
 [pvporcupinedemo](https://pypi.org/project/pvporcupinedemo/) provides command-line utilities for processing real-time

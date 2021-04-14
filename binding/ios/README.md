@@ -156,7 +156,8 @@ Once you're done with Porcupine you can force it to release its native resources
 ```swift
 porcupine.delete();
 ```
-## How to Integrate Custom Wake Words (.ppn files)
+
+## Custom Wake Word Integration
 
 To add a custom wake word to your iOS application you must include it in your app as a bundled resource (found by selecting in Build Phases > Copy Bundle Resources). Then in code, get its path like so:
 
