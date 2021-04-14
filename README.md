@@ -920,53 +920,41 @@ let manager = try PorcupineManager(
 When initialized, input audio can be monitored using `manager.start()`. When done be sure to stop the manager using
 `manager.stop()`.
 
-#### Direct
+#### Low-Level API
 
-Porcupine is shipped as a precompiled ANSI C library and can directly be used in Swift using module maps. It can be
-initialized to detect multiple wake words concurrently using:
+[Porcupine.swift](/binding/ios/Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
+
+To construct an instance of Porcupine, pass it a keyword. 
 
 ```swift
-let modelPath: String = ... // Available at lib/common/porcupine_params.pv
-let keywordPaths: [String] = ["/path/to/keyword/file/a", "/path/to/keyword/file/b"]
-let sensitivities: [Float32] = [0.35, 0.64]
+import Porcupine
 
-var handle: OpaquePointer?
-let status = pv_porcupine_init(
-    modelPath,
-    Int32(keywordFilePaths.count),
-    keywordPaths.map{ UnsafePointer(strdup($0)) },
-    sensitivities,
-    &handle)
-if status != PV_STATUS_SUCCESS {
-    // error handling logic
-}
+do {
+    Porcupine porcupine = try Porcupine(keyword: Porcupine.BuiltInKeyword.picovoice)
+} catch { }
 ```
 
-Then `handle` can be used to monitor incoming audio stream.
+To search for a keyword in audio, you must pass frames of audio to Porcupine using the `process` function. The `keywordIndex` returned will either be -1 if no detection was made or an integer specifying which keyword was detected.
 
 ```swift
-func getNextAudioFrame() -> UnsafeMutablePointer<Int16> {
-    //
+func getNextAudioFrame() -> [Int16] {
+    // .. get audioFrame
+    return audioFrame;
 }
 
 while true {
-    let pcm = getNextAudioFrame()
-    var keyword_index: Int32 = -1
-
-    let status = pv_porcupine_process(handle, pcm, &keyword_index)
-    if status != PV_STATUS_SUCCESS {
-        // error handling logic
-    }
-    if keyword_index >= 0 {
-        // detection event logic/callback
-    }
+    do {
+        let keywordIndex = try porcupine.process(getNextAudioFrame())
+        if keywordIndex >= 0 {
+            // .. detection made!
+        }
+    } catch { }
 }
 ```
 
-When finished, release the resources via
-
+Once you're done with Porcupine you can force it to release its native resources rather than waiting for the garbage collector:
 ```swift
-pv_porcupine_delete(handle)
+porcupine.delete();
 ```
 
 ### Web
