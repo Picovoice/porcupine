@@ -33,7 +33,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/porcupine",
     packages=["ppnrespeakerdemo"],
-    install_requires=["pvporcupine==1.9.4", "spidev", "gpiozero"],
+    install_requires=["pvporcupine==1.9.5", "spidev", "gpiozero"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
