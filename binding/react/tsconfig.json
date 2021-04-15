@@ -14,7 +14,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "noImplicitAny": true,
+    "noImplicitAny": true
   },
   "exclude": ["node_modules", "dist"]
 }

@@ -11,19 +11,19 @@
 
 export type PorcupineKeywordCustom = {
   /** Base64 representation of a trained Porcupine keyword (`.ppn` file) */
-  base64: string
+  base64: string;
   /** An arbitrary label that you want Picovoice to report when the detection occurs */
-  custom: string
+  custom: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
-  sensitivity?: number
-}
+  sensitivity?: number;
+};
 
 export type PorcupineKeywordBuiltin = {
   /** Name of a builtin keyword for the specific language (e.g. "Grasshopper" for English, or "Ananas" for German) */
-  builtin: string
+  builtin: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
-  sensitivity?: number
-}
+  sensitivity?: number;
+};
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
@@ -41,8 +41,8 @@ export interface PorcupineEngine {
   /** Maps the keyword detection index (e.g. 0, 1) returned by Porcupine to the label (e.g. "Hey Pico", "Grasshopper") */
   readonly keywordLabels: Map<number, string>;
 }
-// Worker
 
+// Worker
 export type PorcupineWorkerFactoryArgs =
   | Array<PorcupineKeyword | string>
   | PorcupineKeyword
@@ -62,7 +62,10 @@ export type PorcupineWorkerRequestInit = {
   keywords: Array<PorcupineKeyword | string>;
 };
 
-export type PorcupineWorkerRequest = PorcupineWorkerRequestInit | WorkerRequestProcess | WorkerRequestVoid
+export type PorcupineWorkerRequest =
+  | PorcupineWorkerRequestInit
+  | WorkerRequestProcess
+  | WorkerRequestVoid;
 
 export type PorcupineWorkerResponseReady = {
   command: 'ppn-ready';
@@ -73,7 +76,9 @@ export type PorcupineWorkerResponseKeyword = {
   keywordLabel: string;
 };
 
-export type PorcupineWorkerResponse = PorcupineWorkerResponseReady | PorcupineWorkerResponseKeyword
+export type PorcupineWorkerResponse =
+  | PorcupineWorkerResponseReady
+  | PorcupineWorkerResponseKeyword;
 
 export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PorcupineWorkerRequest): void;
@@ -91,7 +96,5 @@ export type PorcupineHookArgs = {
   /** Immediately start the microphone upon initialization? */
   start: boolean;
   /** Keywords to listen for */
-  keywords: Array<PorcupineKeyword | string>
-  | PorcupineKeyword
-  | string;
+  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
 };

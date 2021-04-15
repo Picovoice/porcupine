@@ -9,7 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -25,21 +25,27 @@ export function usePorcupine(
   porcupineHookArgs: PorcupineHookArgs,
   detectionCallback: (label: string) => void
 ): {
-  isLoaded: boolean,
-  isListening: boolean,
-  isError: boolean | null,
-  errorMessage: string | null,
-  webVoiceProcessor: WebVoiceProcessor | null,
-  start: () => void,
-  pause: () => void,
-  resume: () => void,
+  isLoaded: boolean;
+  isListening: boolean;
+  isError: boolean | null;
+  errorMessage: string | null;
+  webVoiceProcessor: WebVoiceProcessor | null;
+  start: () => void;
+  pause: () => void;
+  resume: () => void;
 } {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [webVoiceProcessor, setWebVoiceProcessor] = useState<WebVoiceProcessor | null>(null);
+  const [
+    webVoiceProcessor,
+    setWebVoiceProcessor,
+  ] = useState<WebVoiceProcessor | null>(null);
+  const [
+    porcupineWorker,
+    setPorcupineWorker,
+  ] = useState<PorcupineWorker | null>(null);
   const [isError, setIsError] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const callback = useRef(detectionCallback);
 
   const start = (): boolean => {
     if (webVoiceProcessor !== null) {
@@ -68,27 +74,57 @@ export function usePorcupine(
     return false;
   };
 
+  // Refresh the detection callback when it changes (avoid stale closure)
+  useEffect(() => {
+    if (porcupineWorker !== null) {
+      porcupineWorker.onmessage = (
+        msg: MessageEvent<PorcupineWorkerResponse>
+      ): void => {
+        switch (msg.data.command) {
+          case 'ppn-keyword':
+            detectionCallback(msg.data.keywordLabel);
+            break;
+          default:
+            break;
+        }
+      };
+    }
+  }, [detectionCallback]);
+
   useEffect(() => {
     // If using dynamic import() on porcupine-web-xx-worker,
     // initially the worker factory may not exist yet; do nothing
-    if (porcupineWorkerFactory === null || porcupineWorkerFactory === undefined) { return (): void => { /* NOOP */ }; }
+    if (
+      porcupineWorkerFactory === null ||
+      porcupineWorkerFactory === undefined
+    ) {
+      return (): void => {
+        /* NOOP */
+      };
+    }
 
-    async function startPorcupine():
-      Promise<{ webVp: WebVoiceProcessor, ppnWorker: PorcupineWorker }> {
+    async function startPorcupine(): Promise<{
+      webVp: WebVoiceProcessor;
+      ppnWorker: PorcupineWorker;
+    }> {
       const { keywords, start: startWebVp = true } = porcupineHookArgs;
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(keywords);
+      const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(
+        keywords
+      );
 
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
         start: startWebVp,
       });
 
-      ppnWorker.onmessage = (msg: MessageEvent<PorcupineWorkerResponse>): void => {
+      ppnWorker.onmessage = (
+        msg: MessageEvent<PorcupineWorkerResponse>
+      ): void => {
         switch (msg.data.command) {
           case 'ppn-keyword':
-            callback.current(msg.data.keywordLabel);
+            detectionCallback(msg.data.keywordLabel);
             break;
           default:
             break;
@@ -97,13 +133,15 @@ export function usePorcupine(
 
       return { webVp, ppnWorker };
     }
+
     const startPorcupinePromise = startPorcupine();
 
     startPorcupinePromise
-      .then(({ webVp }) => {
+      .then(({ webVp, ppnWorker }) => {
         setIsLoaded(true);
         setIsListening(webVp.isRecording);
         setWebVoiceProcessor(webVp);
+        setPorcupineWorker(ppnWorker);
         setIsError(false);
       })
       .catch(error => {
