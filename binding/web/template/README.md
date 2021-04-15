@@ -1,6 +1,6 @@
 # porcupine-web
 
-The Picovoice Porcupine library for web browsers, powered by WebAssembly. Intended (but not required) to be used with the [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor).
+The Picovoice Porcupine library for web browsers, powered by WebAssembly. Intended (but not required) to be used with the [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor), [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vue) packages.
 
 This library processes always-listening voice commands in-browser, offline. All processing is done via WebAssembly and Workers in a separate thread.
 
@@ -18,13 +18,13 @@ If you are using this library with the [@picovoice/web-voice-processor](https://
 
 ## Packages
 
-The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model which is of nontrivial size. There are separate worker and factory pacakges as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
+The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model, which is of nontrivial size. There are separate worker and factory pacakges as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
 
-Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create.
+Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create. The `.ppn` files can be encoded with Base64 and then passed to the Porcupine `create` function as arguments.
 
 ### Workers 
 
-For typical cases, use the worker packages. Worker packages create complete Porcupine Worker instances that can be immediately used with [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor) and with the [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vuue) packages.
+For typical cases, use the worker packages. Worker packages create complete `PorcupineWorker` instances that can be immediately used with [@picovoice/web-voice-processor](https://www.npmjs.com/package/@picovoice/web-voice-processor) and with the [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vue) packages.
 
 * [@picovoice/porcupine-web-de-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-de-worker)
 * [@picovoice/porcupine-web-en-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker)
@@ -33,7 +33,7 @@ For typical cases, use the worker packages. Worker packages create complete Porc
 
 ### Factories
 
-Factory packages allow you to create instances of Porcupine directly. Useful for building your own custom Worker/Worklet, or some other bespoke purpose.
+Factory packages allow you to create instances of `Porcupine` directly. Useful for building your own custom Worker/Worklet, or some other bespoke purpose.
 
 * [@picovoice/porcupine-web-de-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-de-factory)
 * [@picovoice/porcupine-web-en-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-en-factory)
@@ -44,15 +44,15 @@ Factory packages allow you to create instances of Porcupine directly. Useful for
 
 ### Worker
 
-To obtain a Porcupine Worker, we can use the static `create` factory method from the PorcupineWorkerFactory. Here is a complete example that:
+To obtain a `PorcupineWorker`, we can use the static `create` factory method from the PorcupineWorkerFactory. Here is a complete example that:
 
-1. Obtains a Worker from the PorcupineWorkerFactory (in this case, English) to listen for the built-in English wake word "Picovoice"
+1. Obtains a `PorcupineWorker` from the `PorcupineWorkerFactory` (in this case, English) to listen for the built-in English wake word "Picovoice"
 1. Responds to the wake word detection event by setting the worker's `onmessage` event handler
-1. Starts up the WebVoiceProcessor to forward microphone audio to the Porcupine Worker
+1. Creates a `WebVoiceProcessor` to obtain microphone permission and forward microphone audio to the `PorcupineWorker`
 
 E.g.:
 
-```bash
+```console
 yarn add @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
 ```
 
@@ -112,12 +112,12 @@ if (done) {
 
 If you wish to build your own worker, or perhaps not use workers at all, use the factory packages. This will let you instantiate Porcupine engine instances directly.
 
-The audio passed to the worker must be of the correct format. The WebVoiceProcessor handles downsampling in the examples above. If you are not using that, you must ensure you do it yourself.
+The audio passed to the worker in the `process` function must be of the correct format. The `WebVoiceProcessor` handles downsampling in the examples above to standard voice recognition format (16-bit, 16kHz linear PCM, single-channel). Use an `Int16Array` [typed array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays). If you are not using `WebVoiceProcessor`, you must ensure the audio passed to Porcupine is of that format. The Porcupine instance provides the length of the array required via `.frameLength`.
 
 E.g.:
 
 ```javascript
-import { Porcupine } from "@picovoice/porcupine-web-en-worker";
+import { Porcupine } from "@picovoice/porcupine-web-en-factory";
 
 async function startPorcupine() {
   const handle = await Porcupine.create([
@@ -138,9 +138,9 @@ startPorcupine()
 
 ## Build from source (IIFE + ESM outputs)
 
-This library uses Rollup and TypeScript along with Babel and other popular rollup plugins. There are two outputs: an IIFE version intended for script tags / CDN usage, and an ESM version intended for use with modern JavaScript/TypeScript development (e.g. Create React App, Webpack).
+This library uses Rollup and TypeScript along with Babel and other popular rollup plugins. There are two outputs: an IIFE version intended for script tags / CDN usage, and a JavaScript module version intended for use with modern JavaScript/TypeScript development (e.g. Angular, Create React App, Webpack).
 
-```
+```console
 yarn
 yarn build
 ```

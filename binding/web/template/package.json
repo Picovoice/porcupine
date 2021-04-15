@@ -1,6 +1,6 @@
 {
   "name": "$",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "Porcupine library for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
@@ -8,6 +8,21 @@
   "module": "dist/esm/index.js",
   "iife": "dist/iife/index.js",
   "types": "dist/types/index.d.ts",
+  "keywords": [
+    "porcupine",
+    "web",
+    "voice",
+    "speech",
+    "recognition",
+    "ai",
+    "hotword",
+    "wake",
+    "word",
+    "offline",
+    "hooks",
+    "react",
+    "dom"
+  ],
   "scripts": {
     "build:all": "rollup --config",
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --outDir ./dist/types",

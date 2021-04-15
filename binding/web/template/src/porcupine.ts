@@ -192,7 +192,6 @@ class Porcupine implements PorcupineEngine {
           )
         );
         keywordLabels.push(keywordArgNormalized.custom);
-        break;
       } else if ('builtin' in keywordArgNormalized) {
         // Built-in keyword: Look up the bytes from the map and convert
         const validEnums = Object.values(BuiltInKeyword);
@@ -214,6 +213,7 @@ class Porcupine implements PorcupineEngine {
           'Unknown keyword argument: ' + JSON.stringify(keywordArg)
         );
       }
+
       keywordSensitivities.push(
         keywordArgNormalized.sensitivity ?? DEFAULT_SENSITIVITY
       );
@@ -226,6 +226,10 @@ class Porcupine implements PorcupineEngine {
       if (sensitivity < 0 || sensitivity > 1) {
         throw new Error('Sensitivity is outside of range [0, 1]: ' + sensitivity)
       }
+    }
+
+    if (keywordSensitivities.length !== keywordModels.length) {
+      throw new Error(`keywordSensitivities (${keywordSensitivities.length}) and keywordModels (${keywordModels.length}) length differs`)
     }
 
     const sensitivities = new Float32Array(keywordSensitivities);
