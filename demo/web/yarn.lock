@@ -3,36 +3,36 @@
 
 
 "@babel/runtime@^7.12.18":
-  version "7.13.9"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.9.tgz#97dbe2116e2630c489f22e0656decd60aaa1fcee"
-  integrity sha512-aY2kU+xgJ3dJ1eU6FMB9EH8dIe8dmusF1xEku52joLvw6eAFN0AI+WxCLDnpev2LEejWBAy2sBvBOBAjI3zmvA==
+  version "7.13.10"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
+  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@picovoice/porcupine-web-de-worker@^1.9.2":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.2.tgz#f9684201a4f14ac27550a8d1b2ffb385ad0e2f2f"
-  integrity sha512-BlEDA6hnAXfBuCq+2yyj7WdiO3etlNMGCB8p2U+0SMV6+45heiI8N4sUlMKKpZJnpG/1bWR8xRGTWLx1hfHg5g==
+"@picovoice/porcupine-web-de-worker@^1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.3.tgz#9a2bf20a45c0ddc52984a53b460611cbaa0cf8d1"
+  integrity sha512-ONelbfaT9ntji4pOVgEjS554+umLuWh6VfyFkeXPlNRFWO/JhaX+u0hmvdeu5/2IfDiEirLOtaUA7/OGKCd1Bw==
 
-"@picovoice/porcupine-web-en-worker@^1.9.2":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.2.tgz#f5ea774601979ac2a1e69c0d363bb3f4d0a2d4f9"
-  integrity sha512-vqgewwMh5vRvRXLVxHNmI0T49qCkleHuQYEWXHuuynYue/VkJncYUPXr9w4g7NiHQ1YvuYgNy2ZCnlzvx0LQlg==
+"@picovoice/porcupine-web-en-worker@^1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.3.tgz#8f6f1059d3cf432a0c9a3da885db138d963b19c2"
+  integrity sha512-NweCrlsBBspwWwJZcbort6nZ/ltotSQdHVTuaHT2tMBt4UO296U9SD+6NN7qRsBQIiByNuLc+cL+WHOdeuGM7g==
 
-"@picovoice/porcupine-web-es-worker@^1.9.2":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-es-worker/-/porcupine-web-es-worker-1.9.2.tgz#279812cdbcc08cfde46d62ef591ad2a7c9867895"
-  integrity sha512-mM6rjc68HQ0zOeqm+uM8PhUg99vIoJDIqVTPbmhAj+e422KOcwboq5/JgU7+7D0VnRNpLjIvCyTEfZJivelyRQ==
+"@picovoice/porcupine-web-es-worker@^1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-es-worker/-/porcupine-web-es-worker-1.9.3.tgz#857044ba438b33ef0786a60c87956aa4836de13c"
+  integrity sha512-MFUcP6NxCCI0XzKE+pySzRxmHOU8C+pMGq50l4hrtvCdk1inFggelqQAgKEzh4avg8/NrBfMmsGHrvChj6mAdA==
 
-"@picovoice/porcupine-web-fr-worker@^1.9.2":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-fr-worker/-/porcupine-web-fr-worker-1.9.2.tgz#7bf2813a68fe1e79718b497b2d9b3f7a2dfca2d4"
-  integrity sha512-uMIWTAi67h3ILiO5a6nJGTVe0Bz+iHYmt0CpSIS/t8oy1Rn490t45dwMz/G9BSDcZ9P/2zsk/k8C78sQItXfHw==
+"@picovoice/porcupine-web-fr-worker@^1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-fr-worker/-/porcupine-web-fr-worker-1.9.3.tgz#75c86b8632dfa65444db98ed5ec1e6ca933d7414"
+  integrity sha512-L45uiy0sinjmTdr1b320o4cukKA5+891h4P8iGMJmvbRrN/N2Op8gunTVFuA6LH3XBfRCp3opCTSgmiYsNoJuA==
 
-"@picovoice/web-voice-processor@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.0.tgz#e4743389e846f42c7532e1ae4c32a45f6f9feff6"
-  integrity sha512-WWSpb/HCdJknpdcSYTbzMzmWnXIiM7jP96EhTR7FG92PGERyhhyWc+vem7+Ne59uEb1JtNlUdH8hQv64sf+vmw==
+"@picovoice/web-voice-processor@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.2.tgz#51ec2838c95d741ecb843ca1fb3401559485fdf2"
+  integrity sha512-4L+WLjEZQLSssSzBNlznuIfLurETJsukPlIdZXYIJqK+H1P0oi5BLDwncKC+VmkywNonQxY/w3ZbBsDL7pfemQ==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
