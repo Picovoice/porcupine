@@ -12,13 +12,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <limits.h>
 
 #include "stm32f769i_discovery_audio.h"
 
 #include "picovoice.h"
 
-#define SaturaLH(N, L, H) (((N)<(L))?(L):(((N)>(H))?(H):(N)))
+#define PV_INT16_MAX (32767)
+#define PV_INT16_MIN (-32767 - 1)
+
+#define pv_int32_to_int16(N) (((N)<(PV_INT16_MIN))?(PV_INT16_MIN):(((N)>(PV_INT16_MAX))?(PV_INT16_MAX):(N)))
 
 __IO uint32_t SdmmcTest = 0;
 __IO uint32_t SdramTest = 0;
@@ -97,8 +99,7 @@ const int16_t *pv_audio_rec_get_new_buffer(void) {
 static inline int16_t pv_hpf(int16_t s_int16, int16_t s_old_int16) {
     //0xFC and 0x100 are the tuning parameters come from st for high pass filter
     pv_audio_rec.filter_old_output = (0xFC * (pv_audio_rec.filter_old_output + (int32_t) s_int16 - (int32_t) s_old_int16)) / 0x100;
-    return (int16_t)SaturaLH(pv_audio_rec.filter_old_output, SHRT_MIN, SHRT_MAX);
-
+    return (int16_t)pv_int32_to_int16(pv_audio_rec.filter_old_output);
 }
 
 void BSP_AUDIO_IN_TransferComplete_CallBack(void) {
