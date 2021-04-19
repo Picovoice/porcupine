@@ -12,10 +12,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "stm32f769i_discovery_audio.h"
 
 #include "picovoice.h"
+
+#define SaturaLH(N, L, H) (((N)<(L))?(L):(((N)>(H))?(H):(N)))
 
 __IO uint32_t SdmmcTest = 0;
 __IO uint32_t SdramTest = 0;
@@ -43,6 +46,7 @@ struct {
     uint32_t record_buffer_size;
     uint16_t *record_pcm_buffer;
     bool is_recording;
+    int32_t filter_old_output;
 } pv_audio_rec;
 
 pv_status_t pv_audio_rec_init(void) {
@@ -50,6 +54,7 @@ pv_status_t pv_audio_rec_init(void) {
     pv_audio_rec.audio_frequency = PV_AUDIO_REC_AUDIO_FREQUENCY;
     pv_audio_rec.record_buffer_size = PV_AUDIO_REC_RECORD_BUFFER_SIZE;
     pv_audio_rec.record_pcm_buffer = record_pcm_buffer;
+    pv_audio_rec.filter_old_output = 0;
 
     if (BSP_AUDIO_IN_Init(PV_AUDIO_REC_AUDIO_FREQUENCY, DEFAULT_AUDIO_IN_BIT_RESOLUTION, PV_AUDIO_REC_CHANNEL_NUMBER) != AUDIO_OK) {
         return PV_STATUS_INVALID_STATE;
@@ -89,10 +94,20 @@ const int16_t *pv_audio_rec_get_new_buffer(void) {
     return ping_pong_buffer[read_index];
 }
 
+static inline int16_t pv_hpf(int16_t s_int16, int16_t s_old_int16) {
+    //0xFC and 0x100 are the tuning parameters come from st for high pass filter
+    pv_audio_rec.filter_old_output = (0xFC * (pv_audio_rec.filter_old_output + (int32_t) s_int16 - (int32_t) s_old_int16)) / 0x100;
+    return (int16_t)SaturaLH(pv_audio_rec.filter_old_output, SHRT_MIN, SHRT_MAX);
+
+}
+
 void BSP_AUDIO_IN_TransferComplete_CallBack(void) {
     for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE / 4; i++) {
-        ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[(AUDIO_IN_PCM_BUFFER_SIZE / 2) + i * 2];
+        ping_pong_buffer[write_index][buffer_index++] = pv_hpf(
+                record_pcm_buffer[(AUDIO_IN_PCM_BUFFER_SIZE / 2) + i * 2],
+                record_pcm_buffer[(AUDIO_IN_PCM_BUFFER_SIZE / 2) + (i - 1) * 2]);
     }
+    
     if (buffer_index >= AUDIO_IN_PCM_BUFFER_SIZE) {
         read_index = write_index;
         write_index = 1 - write_index;
@@ -101,8 +116,11 @@ void BSP_AUDIO_IN_TransferComplete_CallBack(void) {
 }
 
 void BSP_AUDIO_IN_HalfTransfer_CallBack(void) {
-    for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE / 4; i++) {
-        ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2];
+    ping_pong_buffer[write_index][buffer_index++] = pv_hpf(record_pcm_buffer[0], record_pcm_buffer[AUDIO_IN_PCM_BUFFER_SIZE-2]);
+    for (uint32_t i = 1; i < AUDIO_IN_PCM_BUFFER_SIZE / 4; i++) {
+        ping_pong_buffer[write_index][buffer_index++] = pv_hpf(
+                record_pcm_buffer[i * 2],
+                record_pcm_buffer[(i - 1) * 2]);
     }
     if (buffer_index >= AUDIO_IN_PCM_BUFFER_SIZE) {
         read_index = write_index;
