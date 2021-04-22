@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { usePorcupine } from "@picovoice/porcupine-web-react";
+// import type { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
+import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 
 export default function VoiceWidget() {
-  const [keywordDetections, setKeywordDetections] = useState([]);
-  const [workerChunk, setWorkerChunk] = useState({ factory: null });
+  const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
+  const [workerChunk, setWorkerChunk] = useState<
+    Record<string, PorcupineWorkerFactory | null>
+  >({ factory: null });
   const [isChunkLoaded, setIsChunkLoaded] = useState(false);
   const [keywords] = useState([
     { builtin: "Alexa", sensitivity: 0.7 },
@@ -27,7 +31,7 @@ export default function VoiceWidget() {
     }
   }, [workerChunk]);
 
-  const keywordEventHandler = (porcupineKeywordLabel) => {
+  const keywordEventHandler = (porcupineKeywordLabel: string) => {
     setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
   };
 
@@ -40,7 +44,7 @@ export default function VoiceWidget() {
     resume,
     pause,
   } = usePorcupine(
-    workerChunk.factory,
+    PorcupineWorkerFactory,
     { keywords, start: true },
     keywordEventHandler
   );
@@ -78,7 +82,7 @@ export default function VoiceWidget() {
       <h3>Keyword Detections (listening for "Picovoice" and "Alexa"):</h3>
       {keywordDetections.length > 0 && (
         <ul>
-          {keywordDetections.map((label, index) => (
+          {keywordDetections.map((label: string, index: number) => (
             <li key={index}>{label}</li>
           ))}
         </ul>
