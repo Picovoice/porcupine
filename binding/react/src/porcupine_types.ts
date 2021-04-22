@@ -43,13 +43,10 @@ export interface PorcupineEngine {
 }
 
 // Worker
-export type PorcupineWorkerFactoryArgs =
-  | Array<PorcupineKeyword | string>
-  | PorcupineKeyword
-  | string;
 
 export type WorkerRequestProcess = {
   command: 'process';
+  /** A frame of 16-bit 16kHz PCM audio */
   inputFrame: Int16Array;
 };
 
@@ -86,7 +83,8 @@ export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
 
 export interface PorcupineWorkerFactory {
   create: (
-    porcupineWorkerFactoryArgs: PorcupineWorkerFactoryArgs
+    keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
+    start?: boolean
   ) => Promise<PorcupineWorker>;
 }
 
