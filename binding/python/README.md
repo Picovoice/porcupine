@@ -19,7 +19,7 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
 
 ## Installation
 
-```bash
+```console
 pip3 install pvporcupine
 ```
 

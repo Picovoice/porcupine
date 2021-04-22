@@ -23,7 +23,7 @@ to install and set up the microphone array.
 
 Then install the demo:
 
-```bash
+```console
 sudo pip3 install ppnrespeakerdemo
 ```
 
@@ -43,7 +43,7 @@ Below are the colors associated with supported wake words for this demo:
 
 Run the demo:
 
-```bash
+```console
 porcupine_respeaker_demo
 ```
 

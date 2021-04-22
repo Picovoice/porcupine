@@ -5,14 +5,14 @@ please refer to [React Native's documentation](https://reactnative.dev/docs/envi
 ## Usage
 
 ### Running On Android
-```sh
+```console
 yarn android-install    # sets up environment
 yarn android-run        # builds and deploys to Android
 ```
 
 ### Running On iOS
 
-```sh
+```console
 yarn ios-install        # sets up environment
 yarn ios-run            # builds and deploys to iOS
 ```

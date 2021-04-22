@@ -25,7 +25,7 @@ applications. It is
 Microphone demo uses [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) for recording input audio. Consult the
 installation guide at [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/).
 
-```bash
+```console
 sudo pip3 install pvporcupinedemo
 ```
 
@@ -36,33 +36,33 @@ sudo pip3 install pvporcupinedemo
 It opens an audio stream from a microphone and detects utterances of a given wake word. The following opens the default
 microphone and detects occurrences of "Picovoice".
 
-```bash
+```console
 porcupine_demo_mic --keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
 can be seen in the usage string
 
-```bash
+```console
 porcupine_demo_mic --help
 ```
 
 To detect multiple phrases concurrently provide them as separate arguments
 
-```bash
+```console
 porcupine_demo_mic --keywords picovoice porcupine
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument
 
-```bash
+```console
 porcupine_demo_mic --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 To detect non-English keywords provide the respective model path:
 
-```bash
+```console
 porcupine_demo_mic --model_path ${NON_ENGLISH_MODEL_PATH} --keyword_paths ${NON_ENGLISH_KEYWORD_PATH} 
 ```
 
@@ -72,7 +72,7 @@ The model files for all supported languages are available
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console
 
-```bash
+```console
 porcupine_demo_mic --show_audio_devices
 ```
 
@@ -106,13 +106,13 @@ It provides information about various audio input devices on the box. On a Linux
 It can be seen that the last device (index 21) is considered default. But on this machine, a headset is being used as 
 the input device which has an index of 10. After finding the correct index the demo application can be invoked as below
 
-```bash
+```console
 porcupine_demo_mic --keywords picovoice --audio_device_index 10
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved by
 
-```bash
+```console
 porcupine_demo_mic --keywords picovoice --audio_device_index 10 --output_path ~/test.wav
 ```
 
@@ -125,34 +125,34 @@ benchmarking. It accepts 16kHz audio files. Porcupine processes a single-channel
 provided it only processes the first (left) channel. The following processes a file looking for instances of the phrase
 "Picovoice"
 
-```bash
+```console
 porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
 can be seen in the usage string
 
-```bash
+```console
 porcupine_demo_file --help
 ```
 
 To detect multiple phrases concurrently provide them as separate arguments
 
-```bash
+```console
 porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument
 
-```bash
+```console
 porcupine_demo_file --input_audio_path ${AUDIO_PATH} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 To detect non-English keywords provide the respective model path:
 
-```bash
+```console
 porcupine_demo_mic --input_audio_path ${AUDIO_PATH} \
 --model_path ${NON_ENGLISH_MODEL_PATH} \
 --keyword_paths ${NON_ENGLISH_KEYWORD_PATH} 
@@ -163,7 +163,7 @@ The model files for all supported languages are available
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
 
-```bash
+```console
 porcupine_demo_file --input_audio_path ${AUDIO_PATH} \
 --keywords grasshopper porcupine --sensitivities 0.3 0.6
 ```

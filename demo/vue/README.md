@@ -12,14 +12,14 @@ This project was bootstrapped with Vue CLI. See the [Configuration Reference](ht
 
 ## Install & run
 
-```bash
+```console
 yarn
 yarn serve
 ```
 
 (or)
 
-```bash
+```console
 npm install
 npm run serve
 ```

@@ -10,14 +10,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Install and Run
 
-```bash
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```bash
+```console
 npm install
 npm run start
 ```

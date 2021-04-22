@@ -39,7 +39,7 @@ The easiest way to install the Porcupine Unity SDK is to import [porcupine.unity
 
 ## Packaging
 To build the package from source, you have first have to clone the repo with submodules:
-```bash
+```console
 git clone --recurse-submodules git@github.com:Picovoice/porcupine.git
 # or 
 git clone --recurse-submodules https://github.com/Picovoice/porcupine.git

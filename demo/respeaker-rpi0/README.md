@@ -1,6 +1,6 @@
 ## Requirements
 
-```bash
+```console
 sudo apt-get install wiringpi
 ```
 
@@ -8,7 +8,7 @@ sudo apt-get install wiringpi
 
 From the root of the repository run:
 
-```bash
+```console
 gcc -std=c99 -O3 -o demo/respeaker-rpi0/porcupine_demo_mic \
 -I include/ demo/respeaker-rpi0/porcupine_demo_mic.c \
 -ldl -lasound -lwiringPi
@@ -30,7 +30,7 @@ Below are the colors associated with supported wake words for this demo:
 
 From the root of the repository run:
 
-```bash
+```console
 ./demo/respeaker-rpi0/porcupine_demo_mic \
 lib/raspberry-pi/arm11/libpv_porcupine.so \
 lib/common/porcupine_params.pv \

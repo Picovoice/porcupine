@@ -9,13 +9,13 @@ such as `Ubuntu`, `Raspberry Pi`, and `BeagleBone` as it depends on `ALSA`.
 
 Compile by executing the following command from the root of the repository
 
-```bash
+```console
 gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound
 ```
 
 Running the executable without any commandline arguments prints the usage info to the console as below
 
-```bash
+```console
 $ ./demo/c/porcupine_demo_mic 
 usage : ./demo/c/porcupine_demo_mic library_path model_path keyword_path sensitivity input_audio_device
 ```
@@ -25,14 +25,14 @@ Then you need to find the name of audio input device on your machine using `arec
 The following starts an audio steaming from the microphone available on an Ubuntu 18.04 machine and listens for wake phrase
 "porcupine"
 
-```bash
+```console
 ./demo/c/porcupine_demo_mic lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/linux/porcupine_linux.ppn 0.5 plughw:CARD=AK5371
 ```
 
 The following achieves the same on a Raspberry Pi 4
 
-```bash
+```console
 ./demo/c/porcupine_demo_mic lib/raspberry-pi/cortex-a72/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 plughw:CARD=AK5371
 ```
@@ -44,13 +44,13 @@ provide a file with incorrect format the demo does not perform any format valida
 
 Compile by executing the following command from the root of the repository
 
-```bash
+```console
 gcc -std=c99 -O3 -o demo/c/porcupine_demo_file -I include/ demo/c/porcupine_demo_file.c -ldl
 ```
 
 Running the executable without any commandline arguments prints the usage info to the console as below
 
-```bash
+```console
 $ ./demo/c/porcupine_demo_file
 usage : ./demo/c/porcupine_demo_file library_path model_path keyword_path sensitivity wav_path
 ```
@@ -58,14 +58,14 @@ usage : ./demo/c/porcupine_demo_file library_path model_path keyword_path sensit
 For example the following processes one of the WAV files under resources folder and scans it for keyword "Americano" on 
 an Ubuntu 18.04
 
-```bash
+```console
 ./demo/c/porcupine_demo_file lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/linux/americano_linux.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
 ```
 
 The following achieves the same on a Raspberry Pi 4
 
-```bash
+```console
 ./demo/c/porcupine_demo_file lib/raspberry-pi/cortex-a72/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/raspberry--pi.ppn 0.5 resources/audio_samples/multiple_keywords.wav
 ```

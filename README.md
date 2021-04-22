@@ -109,13 +109,13 @@ these two, Porcupine is **6.0 times more accurate** and **6.5 times faster** (on
 
 Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package:
 
-```bash
+```console
 sudo pip3 install pvporcupinedemo
 ```
 
 With a working microphone connected to your device run the following in the terminal:
 
-```shell
+```console
 porcupine_demo_mic --keywords porcupine
 ```
 
@@ -129,14 +129,14 @@ For more information about Python demos go to [demo/python](/demo/python).
 Install [OpenAL](https://openal.org/) and then from [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
 following in the terminal to build the demo:
 
-```bash
+```console
 dotnet build -c MicDemo.Release
 ```
 
 Make sure there is a working microphone connected to your device. From [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
 following in the terminal:
 
-```bash
+```console
 dotnet run -c MicDemo.Release -- --keywords porcupine
 ```
 
@@ -149,7 +149,7 @@ For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
 
 Make sure there is a working microphone connected to your device. From the root of the repository, run the following command from the terminal:
 
-```bash
+```console
 java -jar demo/java/bin/porcupine-mic-demo.jar -k porcupine
 ```
 
@@ -170,7 +170,7 @@ To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flu
 
 Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
 
-```sh
+```console
 flutter run
 ```
 
@@ -182,14 +182,14 @@ been set up, navigate to [demo/react-native](/demo/react-native) to run the foll
 
 For Android:
 
-```sh
+```console
 yarn android-install    # sets up environment
 yarn android-run        # builds and deploys to Android
 ```
 
 For iOS:
 
-```sh
+```console
 yarn ios-install        # sets up environment
 yarn ios-run            # builds and deploys to iOS
 ```
@@ -289,13 +289,13 @@ Open http://localhost:8080 in your browser to try the demo.
 Install [node-record-lpcm16](https://www.npmjs.com/package/node-record-lpcm16) NPM package and follow the instructions
 there for setting up your microphone. Then install the demo package:
 
-```bash
+```console
 yarn global add @picovoice/porcupine-node-demo
 ```
 
 With a working microphone connected to your device run the following in the terminal:
 
-```shell
+```console
 ppn-mic-demo --keywords porcupine
 ```
 
@@ -309,7 +309,7 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 [Microphone demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone).
 Build the demo:
 
-```bash
+```console
 gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic \
 -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound
 ```
@@ -317,7 +317,7 @@ gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic \
 Find the name of audio input device (microphone) on your computer using `arecord -L` and then from the root of the
 repository run the demo:
 
-```bash
+```console
 ./demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
 resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${INPUT_AUDIO_DEVICE}
 ```
@@ -338,7 +338,7 @@ There are several projects for various development boards inside the [mcu demo](
 
 Install the Python SDK:
 
-```bash
+```console
 pip3 install pvporcupine
 ```
 
@@ -392,7 +392,7 @@ Finally, when done be sure to explicitly release the resources using `handle.del
 
 Install the .NET SDK using NuGet or the dotnet CLI:
 
-```bash
+```console
 dotnet add package Porcupine
 ```
 
@@ -1197,7 +1197,7 @@ npm install @picovoice/porcupine-web-vue
 
 Install NodeJS SDK:
 
-```bash
+```console
 yarn add @picovoice/porcupine-node
 ```
 

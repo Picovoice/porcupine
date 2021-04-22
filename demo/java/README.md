@@ -33,7 +33,7 @@ Select "Build > Build Project" to build the two demo classes or "Build > Build A
 
 NOTE: the working directory for java commands is:
 
-```bash
+```console
 porcupine/demo/java/bin
 ```
 
@@ -43,33 +43,33 @@ The file demo uses Porcupine to scan for keywords in a wave file. The demo is ma
 Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
 The following processes a file looking for instances of the phrase "Picovoice":
 
-```bash
+```console
 java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k picovoice
 ```
 
 `-k` or `--keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
 can be seen in the usage string:
 
-```bash
+```console
 java -jar porcupine-file-demo.jar -h
 ```
 
 To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
-```bash
+```console
 java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k grasshopper "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use the `-kp` or `--keyword_paths` argument:
 
-```bash
+```console
 java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -kp ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 The sensitivity of the engine can be tuned per keyword using the `-s` or `--sensitivities` input argument:
 
-```bash
+```console
 java -jar porcupine-file-demo.jar -i ${AUDIO_PATH} -k grasshopper porcupine -s 0.3 0.6
 ```
 
@@ -81,34 +81,34 @@ Sensitivity is the parameter that enables trading miss rate for the false alarm 
 This demo opens an audio stream from a microphone and detects utterances of a given wake word. The following opens the default
 microphone and detects occurrences of "Picovoice":
 
-```bash
+```console
 java -jar porcupine-mic-demo.jar -k picovoice
 ```
 
 `-k` or `--keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
 can be seen in the usage string:
 
-```bash
+```console
 java -jar porcupine-mic-demo.jar -h
 ```
 
 To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks: 
 
-```bash
+```console
 java -jar porcupine-mic-demo.jar -k picovoice "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use the `-kp` or `--keyword_paths` argument:
 
-```bash
+```console
 java -jar porcupine-mic-demo.jar -kp ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 It is possible that the default audio input device is not the one you wish to use. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console:
 
-```bash
+```console
 java -jar porcupine-mic-demo.jar -sd
 ```
 
@@ -124,13 +124,13 @@ Available input devices:
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Headset 
 microphone in the above example, you can invoke the demo application as below:
 
-```bash
+```console
 java -jar porcupine-mic-demo.jar -k picovoice -di 5
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
-```bash
+```console
 java -jar porcupine-mic-demo.jar -k picovoice -di 5 -o ./test.wav
 ```
 

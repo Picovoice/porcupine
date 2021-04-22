@@ -22,7 +22,7 @@ Porcupine is:
 You can install the latest version of Porcupine by getting the latest [Porcupine Nuget package](https://www.nuget.org/packages/Porcupine/)
 in Visual Studio or using the .NET CLI.
 
-```bash
+```console
 dotnet add package Porcupine
 ```
 
