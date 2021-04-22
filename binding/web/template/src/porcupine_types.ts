@@ -9,16 +9,19 @@
     specific language governing permissions and limitations under the License.
 */
 
-import { BuiltInKeyword } from './lang/built_in_keywords';
-
 export type PorcupineKeywordCustom = {
+  /** Base64 representation of a trained Porcupine keyword (`.ppn` file) */
   base64: string;
+  /** An arbitrary label that you want Picovoice to report when the detection occurs */
   custom: string;
+  /** Value in range [0,1] that trades off miss rate for false alarm */
   sensitivity?: number;
 };
 
 export type PorcupineKeywordBuiltin = {
-  builtin: BuiltInKeyword;
+  /** Name of a builtin keyword for the specific language (e.g. "Grasshopper" for English, or "Ananas" for German) */
+  builtin: string;
+  /** Value in range [0,1] that trades off miss rate for false alarm */
   sensitivity?: number;
 };
 
@@ -53,10 +56,16 @@ export type PorcupineWorkerResponseKeyword = {
 export type PorcupineWorkerResponse = PorcupineWorkerResponseReady | PorcupineWorkerResponseKeyword
 
 export interface PorcupineEngine {
+  /** Release all resources acquired by Porcupine */
   release(): void;
-  process(frames: Int16Array): number;
-  version: string;
-  sampleRate: number;
-  frameLength: number;
-  keywordLabels: Map<number, string>;
+  /** Process a single frame of 16-bit 16kHz PCM audio */
+  process(frame: Int16Array): number;
+  /** The version of the Porcupine engine */
+  readonly version: string;
+  /** The sampling rate of audio expected by the Porcupine engine */
+  readonly sampleRate: number;
+  /** The frame length of audio expected by the Porcupine engine */
+  readonly frameLength: number;
+  /** Maps the keyword detection index (e.g. 0, 1) returned by Porcupine to the label (e.g. "Hey Pico", "Grasshopper") */
+  readonly keywordLabels: Map<number, string>;
 }
