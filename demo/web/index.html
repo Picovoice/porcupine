@@ -19,7 +19,7 @@
         writeMessage("Porcupine is loading. Please wait...");
         let ppnEn = await PorcupineWebEnWorker.PorcupineWorkerFactory.create([
           {
-            builtin: PorcupineWebEnWorker.BuiltInKeyword.Picovoice,
+            builtin: "Picovoice",
             sensitivity: 0.65,
           },
           {

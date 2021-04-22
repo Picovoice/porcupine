@@ -9,25 +9,25 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@picovoice/porcupine-web-de-worker@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.3.tgz#9a2bf20a45c0ddc52984a53b460611cbaa0cf8d1"
-  integrity sha512-ONelbfaT9ntji4pOVgEjS554+umLuWh6VfyFkeXPlNRFWO/JhaX+u0hmvdeu5/2IfDiEirLOtaUA7/OGKCd1Bw==
+"@picovoice/porcupine-web-de-worker@^1.9.4":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-1.9.4.tgz#203512b1ad639d8072d08f1891b630e2484b3900"
+  integrity sha512-tlKF3t4FfalzPW6l1IORAS0ktaHu9/JXUeXLPwzQLWnKbojmxxYULX6G5hajxRtrNWb1A1Py5qrAWBago3IVYQ==
 
-"@picovoice/porcupine-web-en-worker@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.3.tgz#8f6f1059d3cf432a0c9a3da885db138d963b19c2"
-  integrity sha512-NweCrlsBBspwWwJZcbort6nZ/ltotSQdHVTuaHT2tMBt4UO296U9SD+6NN7qRsBQIiByNuLc+cL+WHOdeuGM7g==
+"@picovoice/porcupine-web-en-worker@^1.9.4":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.4.tgz#ec2a04fa009aff8bbd6b9dcb84191c0a745c2395"
+  integrity sha512-fzVCSa1wL7YikLAMOq2Quzcz2o4BlxsPmK2HEaAFBZte3ne/6a9h6YzkNKtbSKEmyPMnaxF9X5hCGlFqYUFedQ==
 
-"@picovoice/porcupine-web-es-worker@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-es-worker/-/porcupine-web-es-worker-1.9.3.tgz#857044ba438b33ef0786a60c87956aa4836de13c"
-  integrity sha512-MFUcP6NxCCI0XzKE+pySzRxmHOU8C+pMGq50l4hrtvCdk1inFggelqQAgKEzh4avg8/NrBfMmsGHrvChj6mAdA==
+"@picovoice/porcupine-web-es-worker@^1.9.4":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-es-worker/-/porcupine-web-es-worker-1.9.4.tgz#07eedf82d158ff3f853eb490fc3b1252f14316e5"
+  integrity sha512-koyfQ2Oa8RU+Ux2fm1tERmIyALqcdbcf4gNC6f7fxbH70FJ35cQBsm3wgBrBBYwZQQ53m1fWgk+Cnu/S5pHfEA==
 
-"@picovoice/porcupine-web-fr-worker@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-fr-worker/-/porcupine-web-fr-worker-1.9.3.tgz#75c86b8632dfa65444db98ed5ec1e6ca933d7414"
-  integrity sha512-L45uiy0sinjmTdr1b320o4cukKA5+891h4P8iGMJmvbRrN/N2Op8gunTVFuA6LH3XBfRCp3opCTSgmiYsNoJuA==
+"@picovoice/porcupine-web-fr-worker@^1.9.4":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-fr-worker/-/porcupine-web-fr-worker-1.9.4.tgz#1b07375d3219afa0afc987e896c78fef7f7f9339"
+  integrity sha512-3QdgmT3It6r/jIequzDuQ2DMAaJVDKLx0dAojKRC77v4GJ5kfqC+AbqTQW0K5nIqY0+NSAsG83GapdDxIomtoQ==
 
 "@picovoice/web-voice-processor@^2.0.2":
   version "2.0.2"
