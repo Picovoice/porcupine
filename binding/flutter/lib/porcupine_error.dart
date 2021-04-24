@@ -10,12 +10,12 @@
 //
 
 class PvAudioException implements Exception {
-  final String message;
+  final String? message;
   PvAudioException([this.message]);
 }
 
 class PvError extends Error {
-  final String message;
+  final String? message;
   PvError([this.message]);
 }
 
