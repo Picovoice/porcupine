@@ -18,6 +18,3 @@
 
 ## [1.9.9] - 2021-04-12
 * Flutter 2.0 upgrade
-
-## [2.0.0] - 2021-04-24
-* Migrate to null safety
