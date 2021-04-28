@@ -23,11 +23,11 @@ class PorcupineManager {
   /// a list of built-in keywords
   static const List<String> BUILT_IN_KEYWORDS = Porcupine.BUILT_IN_KEYWORDS;
 
-  VoiceProcessor _voiceProcessor;
-  Porcupine _porcupine;
+  VoiceProcessor? _voiceProcessor;
+  Porcupine? _porcupine;
 
   final WakeWordCallback _wakeWordCallback;
-  RemoveListener _removeVoiceProcessorListener;
+  RemoveListener? _removeVoiceProcessorListener;
 
   /// Static creator for initializing PorcupineManager from a selection of built-in keywords
   ///
@@ -50,9 +50,9 @@ class PorcupineManager {
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywords(
       List<String> keywords, WakeWordCallback wakeWordCallback,
-      {String modelPath,
-      List<double> sensitivities,
-      ErrorCallback errorCallback}) async {
+      {String? modelPath,
+      List<double>? sensitivities,
+      ErrorCallback? errorCallback}) async {
     Porcupine porcupine = await Porcupine.fromKeywords(keywords,
         modelPath: modelPath, sensitivities: sensitivities);
     return new PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
@@ -80,9 +80,9 @@ class PorcupineManager {
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywordPaths(
       List<String> keywordPaths, WakeWordCallback wakeWordCallback,
-      {String modelPath,
-      List<double> sensitivities,
-      ErrorCallback errorCallback}) async {
+      {String? modelPath,
+      List<double>? sensitivities,
+      ErrorCallback? errorCallback}) async {
     Porcupine porcupine = await Porcupine.fromKeywordPaths(keywordPaths,
         modelPath: modelPath, sensitivities: sensitivities);
     return new PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
@@ -90,10 +90,10 @@ class PorcupineManager {
 
   // private constructor
   PorcupineManager._(
-      this._porcupine, this._wakeWordCallback, ErrorCallback errorCallback)
+      this._porcupine, this._wakeWordCallback, ErrorCallback? errorCallback)
       : _voiceProcessor = VoiceProcessor.getVoiceProcessor(
             Porcupine.frameLength, Porcupine.sampleRate) {
-    _removeVoiceProcessorListener = _voiceProcessor.addListener((buffer) {
+    _removeVoiceProcessorListener = _voiceProcessor?.addListener((buffer) {
       // cast from dynamic to int array
       List<int> porcupineFrame;
       try {
@@ -109,8 +109,8 @@ class PorcupineManager {
 
       // process frame with Porcupine
       try {
-        int keywordIndex = _porcupine.process(porcupineFrame);
-        if (keywordIndex >= 0) {
+        int? keywordIndex = _porcupine?.process(porcupineFrame);
+        if (keywordIndex != null && keywordIndex >= 0) {
           _wakeWordCallback(keywordIndex);
         }
       } on PvError catch (error) {
@@ -127,9 +127,9 @@ class PorcupineManager {
           "Cannot start Porcupine - resources have already been released");
     }
 
-    if (await _voiceProcessor.hasRecordAudioPermission()) {
+    if (await _voiceProcessor?.hasRecordAudioPermission() ?? false) {
       try {
-        await _voiceProcessor.start();
+        await _voiceProcessor?.start();
       } on PlatformException {
         throw new PvAudioException(
             "Audio engine failed to start. Hardware may not be supported.");
@@ -141,20 +141,20 @@ class PorcupineManager {
   }
 
   /// Closes audio stream
-  Future<void> stop() async => await _voiceProcessor.stop();
+  Future<void> stop() async => await _voiceProcessor?.stop();
 
   /// Releases Porcupine and audio resouces
   void delete() async {
     if (_voiceProcessor != null) {
-      if (_voiceProcessor.isRecording) {
-        await _voiceProcessor.stop();
+      if (_voiceProcessor?.isRecording ?? false) {
+        await _voiceProcessor?.stop();
       }
       _removeVoiceProcessorListener?.call();
       _voiceProcessor = null;
     }
 
     if (_porcupine != null) {
-      _porcupine.delete();
+      _porcupine?.delete();
       _porcupine = null;
     }
   }
