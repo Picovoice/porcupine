@@ -21,9 +21,9 @@ class _MyAppState extends State<MyApp> {
   bool isProcessing = false;
   Color detectionColour = new Color(0xff00e5c3);
   Color defaultColour = new Color(0xfff5fcff);
-  Color backgroundColour;
+  Color? backgroundColour;
   String currentKeyword = "Click to choose a keyword";
-  PorcupineManager _porcupineManager;
+  PorcupineManager? _porcupineManager;
   @override
   void initState() {
     super.initState();
@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     if (_porcupineManager != null) {
-      _porcupineManager.delete();
+      _porcupineManager?.delete();
     }
     try {
       _porcupineManager = await PorcupineManager.fromKeywords(
@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     try {
-      await _porcupineManager.start();
+      await _porcupineManager?.start();
       this.setState(() {
         isProcessing = true;
       });
@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> {
       isButtonDisabled = true;
     });
 
-    await _porcupineManager.stop();
+    await _porcupineManager?.stop();
 
     this.setState(() {
       isButtonDisabled = false;
@@ -195,6 +195,6 @@ class _MyAppState extends State<MyApp> {
         onConfirm: (Picker picker, List value) {
           loadNewKeyword(picker.getSelectedValues()[0]);
         });
-    picker.show(_scaffoldKey.currentState);
+    picker.show(_scaffoldKey.currentState!);
   }
 }

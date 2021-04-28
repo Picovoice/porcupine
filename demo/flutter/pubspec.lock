@@ -75,7 +75,7 @@ packages:
       name: flutter_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.5"
+    version: "2.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -87,7 +87,7 @@ packages:
       name: flutter_voice_processor
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.4"
   matcher:
     dependency: transitive
     description:
@@ -164,7 +164,7 @@ packages:
       name: porcupine
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.9"
+    version: "1.9.10"
   process:
     dependency: transitive
     description:
