@@ -14,9 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_voice_processor:
-    git:
-      url: https://github.com/jtmuller5/flutter-voice-processor
+  flutter_voice_processor: ^1.0.4  
 
 dev_dependencies:
   flutter_test:

@@ -77,12 +77,10 @@ packages:
   flutter_voice_processor:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: b9e14396d24573b64d62e20e640614e064d2c950
-      url: "https://github.com/jtmuller5/flutter-voice-processor"
-    source: git
-    version: "2.0.0"
+      name: flutter_voice_processor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   matcher:
     dependency: transitive
     description:
@@ -138,7 +136,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   platform:
     dependency: transitive
     description:
