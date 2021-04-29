@@ -3,7 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '1.9.0'
+    PUBLISH_VERSION = '1.9.1'
     PUBLISH_ARTIFACT_ID = 'porcupine-android'
 }
 
