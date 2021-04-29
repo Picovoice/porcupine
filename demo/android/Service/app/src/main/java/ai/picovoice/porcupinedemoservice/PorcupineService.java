@@ -62,8 +62,8 @@ public class PorcupineService extends Service {
         numUtterances = 0;
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Porcupine")
-                .setContentText("# utterances : " + numUtterances)
+                .setContentTitle("Wake word")
+                .setContentText("Service running")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
@@ -72,7 +72,7 @@ public class PorcupineService extends Service {
 
         try {
             porcupineManager = new PorcupineManager.Builder()
-                    .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                    .setKeyword(Porcupine.BuiltInKeyword.COMPUTER)
                     .setSensitivity(0.7f).build(
                             getApplicationContext(),
                             (keywordIndex) -> {
@@ -84,9 +84,10 @@ public class PorcupineService extends Service {
                                         new Intent(this, MainActivity.class),
                                         0);
 
+                                final String contentText = numUtterances == 1 ? " time!" : " times!";
                                 Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                        .setContentTitle("Porcupine")
-                                        .setContentText("# utterances : " + numUtterances)
+                                        .setContentTitle("Wake word")
+                                        .setContentText("Detected " + numUtterances + contentText)
                                         .setSmallIcon(R.drawable.ic_launcher_background)
                                         .setContentIntent(contentIntent)
                                         .build();
