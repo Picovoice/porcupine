@@ -22,7 +22,7 @@ import {
 
 export function usePorcupine(
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
-  porcupineHookArgs: PorcupineHookArgs,
+  porcupineHookArgs: PorcupineHookArgs | null,
   detectionCallback: (label: string) => void
 ): {
   isLoaded: boolean;
@@ -103,11 +103,19 @@ export function usePorcupine(
       };
     }
 
+    // When these are null, don't start Porcupine.
+    // If they previously were non-null, the useEffect cleanup will run and terminate the extant worker/webvp.
+    if (porcupineHookArgs === null || porcupineHookArgs === undefined) {
+      return (): void => {
+        /* NOOP */
+      };
+    }
+
     async function startPorcupine(): Promise<{
       webVp: WebVoiceProcessor;
       ppnWorker: PorcupineWorker;
     }> {
-      const { keywords, start: startWebVp = true } = porcupineHookArgs;
+      const { keywords, start: startWebVp = true } = porcupineHookArgs!;
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(
@@ -149,11 +157,15 @@ export function usePorcupine(
         setErrorMessage(error.toString());
       });
 
-    return (): void => {
-      startPorcupinePromise.then(({ webVp, ppnWorker }) => {
+    return async (): Promise<void> => {
+      try {
+        const { webVp, ppnWorker } = await startPorcupinePromise;
         webVp.release();
         ppnWorker.postMessage({ command: 'release' });
-      });
+      } finally {
+        setPorcupineWorker(null);
+        setWebVoiceProcessor(null);
+      }
     };
   }, [
     porcupineWorkerFactory,

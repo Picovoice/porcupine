@@ -1423,10 +1423,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.4.tgz#ec2a04fa009aff8bbd6b9dcb84191c0a745c2395"
   integrity sha512-fzVCSa1wL7YikLAMOq2Quzcz2o4BlxsPmK2HEaAFBZte3ne/6a9h6YzkNKtbSKEmyPMnaxF9X5hCGlFqYUFedQ==
 
-"@picovoice/porcupine-web-react@^1.2.4":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.2.4.tgz#f2af41df23d1890659d9cec63c007d473212d5e1"
-  integrity sha512-n3NeTAn1xJ5dQcKUuOeUCE81tUZcdFWufkaPfOcy57l3+OQCwGmFCBLQ5c2nOiN1W0JnhHuYocysJwwRQf2+bg==
+"@picovoice/porcupine-web-react@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.2.5.tgz#1b57407bf78ec6d8c5f42b9ab53ab270aafb0745"
+  integrity sha512-N95jjfkWfRb0NXJm+TBDCyXhc7T0W6wQlRPmDXfkzk0NUpWjT0/+E151OTOWvh1Bpz8TMYSsk5Kn9dntsqLaTg==
   dependencies:
     "@picovoice/web-voice-processor" "^2.0.2"
 

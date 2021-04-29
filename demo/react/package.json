@@ -1,11 +1,11 @@
 {
   "name": "porcupine-web-react-demo",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "private": true,
   "description": "Porcupine React demo (made with Create React App)",
   "dependencies": {
     "@picovoice/porcupine-web-en-worker": "^1.9.4",
-    "@picovoice/porcupine-web-react": "^1.2.4",
+    "@picovoice/porcupine-web-react": "^1.2.5",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
