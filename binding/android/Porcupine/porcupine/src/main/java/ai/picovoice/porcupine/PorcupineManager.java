@@ -79,7 +79,7 @@ public class PorcupineManager {
     }
 
     /**
-     * Builder for creating an instance of Porcupine with a mixture of default arguments
+     * Builder for creating an instance of PorcupineManager with a mixture of default arguments
      */
     public static class Builder {
 
