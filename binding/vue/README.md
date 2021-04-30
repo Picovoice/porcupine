@@ -27,7 +27,7 @@ Install the package using `npm` or `yarn`. You will also need to add one of the 
 E.g. English:
 
 ```console
-yarn add @picovoice/porcupine-web-vue @picovoice/porcupine-web-en-worker
+yarn add @picovoice/porcupine-web-vue @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor
 ```
 
 ## Usage

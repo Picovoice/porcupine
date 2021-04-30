@@ -858,10 +858,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@picovoice/web-voice-processor@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.0.tgz#e4743389e846f42c7532e1ae4c32a45f6f9feff6"
-  integrity sha512-WWSpb/HCdJknpdcSYTbzMzmWnXIiM7jP96EhTR7FG92PGERyhhyWc+vem7+Ne59uEb1JtNlUdH8hQv64sf+vmw==
+"@picovoice/web-voice-processor@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.3.tgz#72d089e19eaf7f782c0338ef8751fc91e8662b2d"
+  integrity sha512-lvEsEvpUXbMUsEcrJ+pmCF6+O/jWyzhs9Gu24jNlVs/yFKjuLAckusdTWeURLjYMzOLwcvdMCD+aK2fcNRhOSw==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
