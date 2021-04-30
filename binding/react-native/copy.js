@@ -14,24 +14,6 @@ const fs = require("fs")
 const ncp = require("ncp").ncp
 const mkdirp = require("mkdirp");
 
-// copy Android resources
-fs.copyFileSync('../android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java','./android/src/main/java/ai/picovoice/reactnative/porcupine/Porcupine.java')
-fs.copyFileSync('../android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineException.java','./android/src/main/java/ai/picovoice/reactnative/porcupine/PorcupineException.java')
-mkdirp.sync("./android/src/main/jniLibs")
-ncp('../../lib/android','./android/src/main/jniLibs')
-
-const androidResDir = "./android/src/main/res/raw"
-mkdirp.sync(androidResDir)
-fs.copyFileSync('../../lib/common/porcupine_params.pv','./android/src/main/res/raw/porcupine_params.pv')
-
-const androidKeywordDir = '../../resources/keyword_files/android' 
-const androidKeywords = fs.readdirSync(androidKeywordDir);
-androidKeywords.forEach(k => {
-    if(k.endsWith("_android.ppn")){
-        fs.copyFileSync(`${androidKeywordDir}/${k}`, `${androidResDir}/${k.replace("_android.ppn", ".ppn").replace(' ', '_')}`)
-    }
-});
-
 // copy iOS resources
 mkdirp.sync("./ios/resources/keyword_files")
 fs.copyFileSync('../../lib/common/porcupine_params.pv','./ios/resources/porcupine_params.pv')
