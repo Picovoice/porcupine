@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react-native",
-  "version": "1.9.7",
+  "version": "1.9.8",
   "description": "Picovoice Porcupine React Native binding",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

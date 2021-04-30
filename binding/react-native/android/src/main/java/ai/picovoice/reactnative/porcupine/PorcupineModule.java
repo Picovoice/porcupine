@@ -40,24 +40,12 @@ import java.util.Map;
 public class PorcupineModule extends ReactContextBaseJavaModule {
 
   private static final String LOG_TAG = "PvPorcupine";
-  private static final int[] KEYWORDS = {
-    R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.grapefruit, 
-    R.raw.grasshopper, R.raw.picovoice, R.raw.porcupine, R.raw.terminator,
-    R.raw.alexa, R.raw.computer, R.raw.hey_google, R.raw.hey_siri,
-    R.raw.jarvis, R.raw.ok_google
-  };
   private final ReactApplicationContext reactContext;
   private final Map<String, Porcupine> porcupinePool = new HashMap<String, Porcupine>();
 
   public PorcupineModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
-
-    try {
-      copyResourceFiles();
-    } catch (IOException e) {
-      Log.e(LOG_TAG, e.toString());
-    }
   }
 
   @Override
@@ -75,9 +63,8 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
     // default keyword files
     final Map<String, String> keywordPaths = new HashMap<>();
-    final Resources resources = reactContext.getResources();
-    for (final int x : KEYWORDS) {
-      final String fileName = resources.getResourceEntryName(x);
+    for (Porcupine.BuiltInKeyword x : Porcupine.BuiltInKeyword.values()) {
+      String fileName = x.name().toLowerCase();      
       String keyword = fileName.replace('_', ' ');
       keywordPaths.put(keyword, new File(resourceDirectory, fileName + ".ppn").getAbsolutePath());
     }
@@ -101,7 +88,11 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     }
 
     try {
-      Porcupine porcupine = new Porcupine(modelPath, keywordPathsJava, sensitivitiesJava);
+      Porcupine porcupine = new Porcupine.Builder()
+                              .setModelPath(modelPath)
+                              .setKeywordPaths(keywordPathsJava)
+                              .setSensitivities(sensitivitiesJava)
+                              .build(reactContext);
       porcupinePool.put(String.valueOf(System.identityHashCode(porcupine)), porcupine);
      
       WritableMap paramMap = Arguments.createMap();
@@ -142,32 +133,6 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       promise.resolve(result);
     } catch (PorcupineException e) {
       promise.reject(e.toString());
-    }
-  }
-
-  private void copyResourceFiles() throws IOException {
-    final Resources resources = reactContext.getResources();
-
-    for (final int x : KEYWORDS) {
-      copyResourceFile(x, resources.getResourceEntryName(x) + ".ppn");
-    }
-
-    copyResourceFile(
-      R.raw.porcupine_params,
-      resources.getResourceEntryName(R.raw.porcupine_params) + ".pv");
-  }
-
-  private void copyResourceFile(int resourceId, String filename) throws IOException {
-    final Resources resources = reactContext.getResources();
-    try (
-      InputStream is = new BufferedInputStream(resources.openRawResource(resourceId), 256);
-      OutputStream os = new BufferedOutputStream(reactContext.openFileOutput(filename, ReactApplicationContext.MODE_PRIVATE), 256)
-    ) {
-      int r;
-      while ((r = is.read()) != -1) {
-        os.write(r);
-      }
-      os.flush();
     }
   }
 }
