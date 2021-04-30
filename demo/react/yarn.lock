@@ -1092,9 +1092,9 @@
     regenerator-runtime "^0.13.4"
 
 "@babel/runtime@^7.12.18":
-  version "7.13.10"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
-  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
+  integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1423,12 +1423,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.4.tgz#ec2a04fa009aff8bbd6b9dcb84191c0a745c2395"
   integrity sha512-fzVCSa1wL7YikLAMOq2Quzcz2o4BlxsPmK2HEaAFBZte3ne/6a9h6YzkNKtbSKEmyPMnaxF9X5hCGlFqYUFedQ==
 
-"@picovoice/porcupine-web-react@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.2.5.tgz#1b57407bf78ec6d8c5f42b9ab53ab270aafb0745"
-  integrity sha512-N95jjfkWfRb0NXJm+TBDCyXhc7T0W6wQlRPmDXfkzk0NUpWjT0/+E151OTOWvh1Bpz8TMYSsk5Kn9dntsqLaTg==
-  dependencies:
-    "@picovoice/web-voice-processor" "^2.0.2"
+"@picovoice/porcupine-web-react@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.3.0.tgz#5c96ff208221cb97647360ee6f7768c69d098a70"
+  integrity sha512-KQaaxFkH/q97B7mSVGZipxuA8kNALgX4wf4Hvt/mO2FURwMj9EhHPidkvl2SSfRE94IWzgzcr3RCURG+EzXUoQ==
 
 "@picovoice/web-voice-processor@^2.0.2":
   version "2.0.2"
