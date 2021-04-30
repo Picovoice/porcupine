@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isButtonDisabled = false;
@@ -31,6 +31,22 @@ class _MyAppState extends State<MyApp> {
       isButtonDisabled = true;
       backgroundColour = defaultColour;
     });
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.inactive) {
+      await _stopProcessing();
+      _porcupineManager?.delete();
+      _porcupineManager = null;
+    }
   }
 
   Future<void> loadNewKeyword(String keyword) async {
@@ -39,11 +55,12 @@ class _MyAppState extends State<MyApp> {
     });
 
     if (isProcessing) {
-      _stopProcessing();
+      await _stopProcessing();
     }
 
     if (_porcupineManager != null) {
       _porcupineManager?.delete();
+      _porcupineManager = null;
     }
     try {
       _porcupineManager = await PorcupineManager.fromKeywords(
@@ -82,6 +99,10 @@ class _MyAppState extends State<MyApp> {
     this.setState(() {
       isButtonDisabled = true;
     });
+
+    if (_porcupineManager == null) {
+      await loadNewKeyword(currentKeyword);
+    }
 
     try {
       await _porcupineManager?.start();
