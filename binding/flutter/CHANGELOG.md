@@ -21,3 +21,6 @@
 
 ## [1.9.10] - 2021-04-28
 * Migrated to null safety
+
+## [1.9.11] - 2021-04-30
+* Android lib update

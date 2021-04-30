@@ -145,17 +145,13 @@ class PorcupineManager {
 
   /// Releases Porcupine and audio resouces
   void delete() async {
-    if (_voiceProcessor != null) {
-      if (_voiceProcessor?.isRecording ?? false) {
-        await _voiceProcessor?.stop();
-      }
-      _removeVoiceProcessorListener?.call();
-      _voiceProcessor = null;
+    if (_voiceProcessor?.isRecording ?? false) {
+      await _voiceProcessor?.stop();
     }
+    _removeVoiceProcessorListener?.call();
+    _voiceProcessor = null;
 
-    if (_porcupine != null) {
-      _porcupine?.delete();
-      _porcupine = null;
-    }
+    _porcupine?.delete();
+    _porcupine = null;
   }
 }
