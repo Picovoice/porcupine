@@ -115,6 +115,7 @@ export function usePorcupine(
       webVp: WebVoiceProcessor;
       ppnWorker: PorcupineWorker;
     }> {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const { keywords, start: startWebVp = true } = porcupineHookArgs!;
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -158,14 +159,9 @@ export function usePorcupine(
       });
 
     return async (): Promise<void> => {
-      try {
-        const { webVp, ppnWorker } = await startPorcupinePromise;
-        webVp.release();
-        ppnWorker.postMessage({ command: 'release' });
-      } finally {
-        setPorcupineWorker(null);
-        setWebVoiceProcessor(null);
-      }
+      const { webVp, ppnWorker } = await startPorcupinePromise;
+      webVp.release();
+      ppnWorker.postMessage({ command: 'release' });
     };
   }, [
     porcupineWorkerFactory,
