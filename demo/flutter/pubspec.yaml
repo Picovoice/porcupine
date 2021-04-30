@@ -12,7 +12,7 @@ dependencies:
   
   flutter_picker: ^2.0.1
 
-  porcupine: ^1.9.10
+  porcupine: ^1.9.11
   
 dev_dependencies:
   flutter_test:
