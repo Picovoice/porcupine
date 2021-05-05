@@ -47,7 +47,7 @@ def _pv_linux_machine(machine):
     else:
         log.warning(
             'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
-            'Falling back to the armv6-based library. This is not tested nor optimal.' % cpu_part)
+            'Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models' % cpu_part)
         return 'arm11' + arch_info
 
 
