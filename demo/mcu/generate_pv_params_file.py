@@ -35,7 +35,6 @@ HEADER = """
 """
 
 FOOTER = """
-
 #endif // PV_PARAMS
 
 """
@@ -58,7 +57,7 @@ def generate_pv_params(ppn_files, header_file_folders):
                 else:
                     f_out.write('static const uint8_t %s_KEYWORD_ARRAY[] = {\n' % keyword.upper())
                 f_out.write('\n'.join(ppn_c_array))
-                f_out.write('};\n')
+                f_out.write('};\n\n')
 
             f_out.write(FOOTER)
 
