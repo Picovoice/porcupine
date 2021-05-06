@@ -27,10 +27,18 @@ HEADER = """
     specific language governing permissions and limitations under the License.
 */
 
+#ifndef PV_PRAMS_H
+#define PV_PRAMS_H
+
 #include <stdint.h>
 
 """
 
+FOOTER = """
+
+#endif // PV_PARAMS
+
+"""
 
 def generate_pv_params(ppn_files, header_file_folders):
 
@@ -50,8 +58,9 @@ def generate_pv_params(ppn_files, header_file_folders):
                 else:
                     f_out.write('static const uint8_t %s_KEYWORD_ARRAY[] = {\n' % keyword.upper())
                 f_out.write('\n'.join(ppn_c_array))
-                f_out.write('};\n\n')
+                f_out.write('};\n')
 
+            f_out.write(FOOTER)
 
 def ppn_to_c_array(ppn_file_path):
     indent = 8
