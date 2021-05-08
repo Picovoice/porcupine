@@ -7,3 +7,6 @@
 /captures
 .externalNativeBuild
 release
+porcupinedemo.jks
+private_key.pepk
+upload_certificate.pem
