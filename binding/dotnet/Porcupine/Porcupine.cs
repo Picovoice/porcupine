@@ -53,7 +53,7 @@ namespace Pv
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) 
         {
             IntPtr libHandle = IntPtr.Zero;
-            NativeLibrary.TryLoad(Utils.PvLibraryPath(), out libHandle);
+            NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
 
             return libHandle;
         }        
