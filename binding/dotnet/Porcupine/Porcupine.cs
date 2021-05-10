@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
 
 namespace Pv
 {
@@ -34,38 +35,46 @@ namespace Pv
     /// </summary>
     public class Porcupine : IDisposable
     {
-        private const string LIBRARY_PATH = "libpv_porcupine";
+        private const string LIBRARY = "libpv_porcupine";
         private IntPtr _libraryPointer = IntPtr.Zero;
-
-        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern PorcupineStatus pv_porcupine_init(string modelPath, int numKeywords, string[] keywordPaths, float[] sensitivities, out IntPtr handle);
-
-        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern int pv_sample_rate();
-
-        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void pv_porcupine_delete(IntPtr handle);
-
-        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern PorcupineStatus pv_porcupine_process(IntPtr handle, short[] pcm, out int keywordIndex);
-
-        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern IntPtr pv_porcupine_version();
-
-        [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern int pv_porcupine_frame_length();
-
+        
         public static string MODEL_PATH;
         public static Dictionary<string, string> KEYWORD_PATHS;
         public static List<string> KEYWORDS;
-        
+      
         static Porcupine()
         {
+            NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
             MODEL_PATH = Utils.PvModelPath();
             KEYWORD_PATHS = Utils.PvKeywordPaths();
             KEYWORDS = KEYWORD_PATHS.Keys.ToList();
         }
 
+        private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) 
+        {
+            IntPtr libHandle = IntPtr.Zero;
+            NativeLibrary.TryLoad(Utils.PvLibraryPath(), out libHandle);
+
+            return libHandle;
+        }        
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern PorcupineStatus pv_porcupine_init(string modelPath, int numKeywords, string[] keywordPaths, float[] sensitivities, out IntPtr handle);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int pv_sample_rate();
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void pv_porcupine_delete(IntPtr handle);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern PorcupineStatus pv_porcupine_process(IntPtr handle, short[] pcm, out int keywordIndex);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern IntPtr pv_porcupine_version();
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int pv_porcupine_frame_length();
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine.
         /// </summary>

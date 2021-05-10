@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
+	  <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
 	  <Version>1.9.0</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
@@ -34,16 +34,19 @@ Porcupine is:
 		<Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
 			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.dll</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\windows\amd64\libpv_porcupine.dll</Link>
 			<Visible>false</Visible>
 		</Content>
 		<Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">
 			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\linux\x86_64\libpv_porcupine.so</Link>
 			<Visible>false</Visible>
 		</Content>
 		<Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
 			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.dylib</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
 			<Visible>false</Visible>
 		</Content>
 		<Content Include="..\..\..\resources\keyword_files\windows\*">
