@@ -44,7 +44,9 @@ namespace Pv
       
         static Porcupine()
         {
+            Console.WriteLine("Hi");
 #if NETCOREAPP3_0_OR_GREATER
+            Console.WriteLine("Hi2");
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
 #endif
             MODEL_PATH = Utils.PvModelPath();
@@ -55,8 +57,9 @@ namespace Pv
 #if NETCOREAPP3_0_OR_GREATER
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) 
         {
-            IntPtr libHandle = IntPtr.Zero;
+            IntPtr libHandle = IntPtr.Zero;           
             string libPath = Utils.PvLibraryPath(libraryName);
+            Console.WriteLine(libPath);
             Console.WriteLine(libPath);
             NativeLibrary.TryLoad(libPath, out libHandle);
             return libHandle;
