@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
-	  <Version>1.9.1</Version>
+	  <Version>1.9.2</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>
@@ -23,8 +23,7 @@ Porcupine is:
   - self-service. Developers can train custom wake phrases using Picovoice Console.
 </Description>
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-	  <PackageIcon>pv_circle_512.png</PackageIcon>
-	  <Platforms>x64</Platforms>	 
+	  <PackageIcon>pv_circle_512.png</PackageIcon>	  
   </PropertyGroup>
 	<ItemGroup>		
 		<Content Include="Porcupine.targets">
