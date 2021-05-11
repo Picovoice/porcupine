@@ -43,10 +43,8 @@ namespace Pv
         public static List<string> KEYWORDS;
       
         static Porcupine()
-        {
-            Console.WriteLine("Hi");
-#if NETCOREAPP3_1
-            Console.WriteLine("Hi2");
+        {            
+#if NETCOREAPP3_1            
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
 #endif
             MODEL_PATH = Utils.PvModelPath();
@@ -57,11 +55,8 @@ namespace Pv
 #if NETCOREAPP3_1
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) 
         {
-            IntPtr libHandle = IntPtr.Zero;           
-            string libPath = Utils.PvLibraryPath(libraryName);
-            Console.WriteLine(libPath);
-            Console.WriteLine(libPath);
-            NativeLibrary.TryLoad(libPath, out libHandle);
+            IntPtr libHandle = IntPtr.Zero;                                   
+            NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
             return libHandle;
         }
 #endif
