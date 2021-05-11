@@ -58,11 +58,12 @@ namespace Pv
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
+                Console.WriteLine(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/{_env}/{PvLinuxMachine()}/{libName}.so"));
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/{_env}/{PvLinuxMachine()}/{libName}.so");
             }
             else
             {
-                throw new PlatformNotSupportedException($"Unsupported Platform.\n");
+                throw new PlatformNotSupportedException($"Unsupported platform.");
             }
         }
 
