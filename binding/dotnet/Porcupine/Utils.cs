@@ -50,17 +50,15 @@ namespace Pv
         {            
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return $"./lib/windows/amd64/{libName}.dll";
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/windows/amd64/{libName}.dll");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                return $"./lib/mac/x86_64/{libName}.dylib";                
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/mac/x86_64/{libName}.dylib");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                string path = $"./lib/{_env}/{PvLinuxMachine()}/{libName}.so";
-                Console.WriteLine(path);
-                return path;
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/{_env}/{PvLinuxMachine()}/{libName}.so");
             }
             else
             {
