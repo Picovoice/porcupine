@@ -43,6 +43,42 @@ Porcupine is:
 			<Link>lib\linux\x86_64\libpv_porcupine.so</Link>
 			<Visible>false</Visible>
 		</Content>
+		<Content Include="..\..\..\lib\raspberry-pi\arm11\libpv_porcupine.so">
+			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\raspberry-pi\arm11\libpv_porcupine.so</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\raspberry-pi\cortex-a53-aarch64\libpv_porcupine.so">
+			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\raspberry-pi\cortex-a53-aarch64\libpv_porcupine.so</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\raspberry-pi\cortex-a53\libpv_porcupine.so">
+			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\raspberry-pi\cortex-a53\libpv_porcupine.so</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\raspberry-pi\cortex-a7\libpv_porcupine.so">
+			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\raspberry-pi\cortex-a7\libpv_porcupine.so</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\raspberry-pi\cortex-a72-aarch64\libpv_porcupine.so">
+			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\raspberry-pi\cortex-a72-aarch64\libpv_porcupine.so</Link>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\..\..\lib\raspberry-pi\cortex-a72\libpv_porcupine.so">
+			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>lib\raspberry-pi\cortex-a72\libpv_porcupine.so</Link>
+			<Visible>false</Visible>
+		</Content>
 		<Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
 			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.dylib</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
