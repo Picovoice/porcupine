@@ -47,19 +47,18 @@ namespace Pv
         }
 
         public static string PvLibraryPath(string libName)
-        {            
+        {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/windows/amd64/{libName}.dll");
+            {                
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/windows/amd64/{libName}.dll");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/mac/x86_64/{libName}.dylib");
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/mac/x86_64/{libName}.dylib");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Console.WriteLine(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/{_env}/{PvLinuxMachine()}/{libName}.so"));
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"/lib/{_env}/{PvLinuxMachine()}/{libName}.so");
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/{PvLinuxMachine()}/{libName}.so");
             }
             else
             {
