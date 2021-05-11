@@ -100,6 +100,11 @@ Porcupine is:
 			<Link>resources\keyword_files\linux\%(Filename)%(Extension)</Link>			
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>			
 		</Content>
+		<Content Include="..\..\..\resources\keyword_files\raspberry-pi\*">
+			<PackagePath>build/netstandard2.0/content/resources/keyword_files/raspberry-pi</PackagePath>
+			<Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="..\..\..\lib\common\porcupine_params.pv">
 			<PackagePath>build/netstandard2.0/content/lib/common/porcupine_params.pv</PackagePath>
 			<Link>lib\common\porcupine_params.pv</Link>
