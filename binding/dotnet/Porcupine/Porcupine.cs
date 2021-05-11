@@ -44,19 +44,22 @@ namespace Pv
       
         static Porcupine()
         {
+#if NETCOREAPP3_0_OR_GREATER
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
+#endif
             MODEL_PATH = Utils.PvModelPath();
             KEYWORD_PATHS = Utils.PvKeywordPaths();
             KEYWORDS = KEYWORD_PATHS.Keys.ToList();
         }
 
+#if NETCOREAPP3_0_OR_GREATER
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) 
         {
             IntPtr libHandle = IntPtr.Zero;
             NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
-
             return libHandle;
-        }        
+        }
+#endif
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern PorcupineStatus pv_porcupine_init(string modelPath, int numKeywords, string[] keywordPaths, float[] sensitivities, out IntPtr handle);

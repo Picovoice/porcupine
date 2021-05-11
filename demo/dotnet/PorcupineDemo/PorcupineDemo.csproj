@@ -21,6 +21,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="OpenTK" Version="4.0.1" />
-		<PackageReference Include="Porcupine" Version="1.9.0" />
+		<PackageReference Include="Porcupine" Version="1.9.1" />
 	</ItemGroup>
 </Project>

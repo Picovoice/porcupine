@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-	  <Version>1.9.0</Version>
+	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
+	  <Version>1.9.1</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>
@@ -28,85 +28,85 @@ Porcupine is:
   </PropertyGroup>
 	<ItemGroup>		
 		<Content Include="Porcupine.targets">
-			<PackagePath>build\netstandard2.0</PackagePath>
+			<PackagePath>
+				build/netstandard2.0;
+				build/netcoreapp3.1
+			</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.dll</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/lib/windows/amd64/libpv_porcupine.dll;
+				build/netcoreapp3.1/lib/windows/amd64/libpv_porcupine.dll
+			</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Link>lib\windows\amd64\libpv_porcupine.dll</Link>
 			<Visible>false</Visible>
 		</Content>
 		<Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/lib/linux/x86_64/libpv_porcupine.so;
+				build/netcoreapp3.1/lib/linux/x86_64/libpv_porcupine.so
+			</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Link>lib\linux\x86_64\libpv_porcupine.so</Link>
 			<Visible>false</Visible>
 		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\arm11\libpv_porcupine.so">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
+		<Content Include="..\..\..\lib\raspberry-pi\**\*">
+			<PackagePath>
+				build/netstandard2.0/lib/raspberry-pi;
+				build/netcoreapp3.1/lib/raspberry-pi
+			</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\raspberry-pi\arm11\libpv_porcupine.so</Link>
+			<Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<Visible>false</Visible>
-		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\cortex-a53-aarch64\libpv_porcupine.so">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\raspberry-pi\cortex-a53-aarch64\libpv_porcupine.so</Link>
-			<Visible>false</Visible>
-		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\cortex-a53\libpv_porcupine.so">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\raspberry-pi\cortex-a53\libpv_porcupine.so</Link>
-			<Visible>false</Visible>
-		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\cortex-a7\libpv_porcupine.so">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\raspberry-pi\cortex-a7\libpv_porcupine.so</Link>
-			<Visible>false</Visible>
-		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\cortex-a72-aarch64\libpv_porcupine.so">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\raspberry-pi\cortex-a72-aarch64\libpv_porcupine.so</Link>
-			<Visible>false</Visible>
-		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\cortex-a72\libpv_porcupine.so">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.so</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\raspberry-pi\cortex-a72\libpv_porcupine.so</Link>
-			<Visible>false</Visible>
-		</Content>
+		</Content>		
 		<Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
-			<PackagePath>build/netstandard2.0/lib/libpv_porcupine.dylib</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/lib/mac/x86_64/libpv_porcupine.dylib;
+				build/netcoreapp3.1/lib/mac/x86_64/libpv_porcupine.dylib;
+			</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
 			<Visible>false</Visible>
 		</Content>
 		<Content Include="..\..\..\resources\keyword_files\windows\*">
-			<PackagePath>build/netstandard2.0/content/resources\keyword_files/windows</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/windows;
+				build/netcoreapp3.1/resources/keyword_files/windows
+			</PackagePath>
 			<Link>resources\keyword_files\windows\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>		
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
 		<Content Include="..\..\..\resources\keyword_files\mac\*">
-			<PackagePath>build/netstandard2.0/content/resources/keyword_files/mac</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/mac;
+				build/netcoreapp3.1/resources/keyword_files/mac;
+			</PackagePath>
 			<Link>resources\keyword_files\mac\%(Filename)%(Extension)</Link>			
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>			
 		</Content>
 		<Content Include="..\..\..\resources\keyword_files\linux\*">
-			<PackagePath>build/netstandard2.0/content/resources/keyword_files/linux</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/linux;
+				build/netcoreapp3.1/resources/keyword_files/linux	
+			</PackagePath>
 			<Link>resources\keyword_files\linux\%(Filename)%(Extension)</Link>			
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>			
 		</Content>
 		<Content Include="..\..\..\resources\keyword_files\raspberry-pi\*">
-			<PackagePath>build/netstandard2.0/content/resources/keyword_files/raspberry-pi</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/raspberry-pi;
+				build/netcoreapp3.1/resources/keyword_files/raspberry-pi
+			</PackagePath>
 			<Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="..\..\..\lib\common\porcupine_params.pv">
-			<PackagePath>build/netstandard2.0/content/lib/common/porcupine_params.pv</PackagePath>
+			<PackagePath>
+				build/netstandard2.0/lib/common/porcupine_params.pv;
+				build/netcoreapp3.1/lib/common/porcupine_params.pv;
+			</PackagePath>
 			<Link>lib\common\porcupine_params.pv</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>			
 		</Content>

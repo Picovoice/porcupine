@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -57,10 +58,13 @@ namespace PorcupineDemo
                 using BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open));
                 ValidateWavFile(reader, porcupine.SampleRate, 16, out short numChannels);
 
-                // read audio and send frames to porcupine
+                // read audio and send frames to porcupine                
                 short[] porcupineFrame = new short[porcupine.FrameLength];
                 int frameIndex = 0;
                 long totalSamplesRead = 0;
+
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
                 while (reader.BaseStream.Position != reader.BaseStream.Length)
                 {
                     totalSamplesRead++;
@@ -83,6 +87,10 @@ namespace PorcupineDemo
                         reader.ReadInt16();
                     }
                 }
+                stopWatch.Stop();
+                double audioLen = Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2);                
+                double realtimeFactor = Math.Round(audioLen / stopWatch.Elapsed.TotalSeconds, 2);
+                Console.WriteLine($"Realtime factor: {realtimeFactor}x");
             }
             finally
             {

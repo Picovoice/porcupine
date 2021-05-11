@@ -81,7 +81,7 @@ namespace Pv
             if (cpuPartList.Length == 0)
                 throw new PlatformNotSupportedException($"Unsupported CPU.\n{cpuInfo}");
 
-            string cpuPart = cpuPartList[0].Split(" ").Last().ToLower();
+            string cpuPart = cpuPartList[0].Split(' ').Last().ToLower();
             switch (cpuPart)
             {
                 case "0xb76": return "arm11" + archInfo;
