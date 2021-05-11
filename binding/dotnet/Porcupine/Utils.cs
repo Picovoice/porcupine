@@ -48,13 +48,13 @@ namespace Pv
 
         public static string PvLibraryPath(string libName)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && _arch == Architecture.X64)
             {                
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/windows/amd64/{libName}.dll");
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/amd64/{libName}.dll");
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _arch == Architecture.X64)
             {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/mac/x86_64/{libName}.dylib");
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/x86_64/{libName}.dylib");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -62,7 +62,8 @@ namespace Pv
             }
             else
             {
-                throw new PlatformNotSupportedException($"Unsupported platform.");
+                throw new PlatformNotSupportedException($"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture}) is not currently supported.\n" +
+                                                        "Visit https://picovoice.ai/docs/api/porcupine-dotnet/ to see a list of supported platforms.");
             }
         }
 
