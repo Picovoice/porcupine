@@ -20,11 +20,14 @@ namespace Pv
 {
     public static class Utils
     {
-        private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
-                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "linux" :
-                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" : "";
-
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
+
+        private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" : 
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && 
+                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? "raspberry-pi": "";
+        
         public static string PvModelPath()
         {
             return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lib/common/porcupine_params.pv");
@@ -55,7 +58,7 @@ namespace Pv
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                string path = $"./lib/{PvLinuxMachine()}/{libName}.so";
+                string path = $"./lib/{_env}/{PvLinuxMachine()}/{libName}.so";
                 Console.WriteLine(path);
                 return path;
             }
@@ -69,7 +72,7 @@ namespace Pv
         {
             string archInfo = "";
             if (_arch == Architecture.X64)
-                return Path.Combine("linux", "x86_64");
+                return "x86_64";
             else if (_arch == Architecture.Arm64)
                 archInfo = "-aarch64";
 
@@ -81,16 +84,16 @@ namespace Pv
             string cpuPart = cpuPartList[0].Split(" ").Last().ToLower();
             switch (cpuPart)
             {
-                case "0xb76": return Path.Combine("raspberry-pi", "arm11" + archInfo);
-                case "0xc07": return Path.Combine("raspberry-pi", "cortex-a7" + archInfo);
-                case "0xd03": return Path.Combine("raspberry-pi", "cortex-a53" + archInfo);
-                case "0xd07": return Path.Combine("raspberry-pi", "cortex-a57" + archInfo);
-                case "0xd08": return Path.Combine("raspberry-pi", "cortex-a72" + archInfo);
+                case "0xb76": return "arm11" + archInfo;
+                case "0xc07": return "cortex-a7" + archInfo;
+                case "0xd03": return "cortex-a53" + archInfo;
+                case "0xd07": return "cortex-a57" + archInfo;
+                case "0xd08": return "cortex-a72" + archInfo;
                 default:
                     Console.WriteLine(
                         $"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice. " +
                         "Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models");
-                    return Path.Combine("raspberry-pi", "arm11" + archInfo);
+                    return "arm11" + archInfo;
             }
         }
     }
