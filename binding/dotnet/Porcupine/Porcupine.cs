@@ -44,7 +44,7 @@ namespace Pv
       
         static Porcupine()
         {            
-#if NETCOREAPP3_1            
+#if NETCOREAPP3_1
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
 #endif
             MODEL_PATH = Utils.PvModelPath();

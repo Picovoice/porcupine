@@ -12,7 +12,7 @@
 	  <RepositoryType>git</RepositoryType>
 	  <PackageTags>porcupine, picovoice, wake word, hotword, trigger word, offline, private, voice ai, speech recognition</PackageTags>
 	  <PackageReleaseNotes>See https://github.com/Picovoice/porcupine/ </PackageReleaseNotes>
-	  <Copyright>Picovoice 2020</Copyright>
+	  <Copyright>Picovoice 2020-2021</Copyright>
 	  <Description>Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications. 
 
 Porcupine is:
