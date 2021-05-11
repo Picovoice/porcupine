@@ -1,16 +1,25 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ItemGroup>
+	<ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
 		<Content Include="$(MSBuildThisFileDirectory)../../lib/netstandard2.0/Porcupine.dll">
 			<Link>Porcupine.dll</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Visible>False</Visible>
 		</Content>
-		<Content Include="$(MSBuildThisFileDirectory)content/**">
-			<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+	</ItemGroup>
+	<ItemGroup Condition="$(TargetFramework) == 'netcoreapp3.1'">
+		<Content Include="$(MSBuildThisFileDirectory)../../lib/netcoreapp3.1/Porcupine.dll">
+			<Link>Porcupine.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>False</Visible>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)resources/**">
+			<Link>resources/%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="$(MSBuildThisFileDirectory)lib/**">
-			<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<Link>lib/%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Visible>false</Visible>
 		</Content>
