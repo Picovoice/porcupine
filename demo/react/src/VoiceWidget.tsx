@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { usePorcupine } from "@picovoice/porcupine-web-react";
-// import type { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 
 export default function VoiceWidget() {
@@ -15,19 +14,26 @@ export default function VoiceWidget() {
   ]);
 
   useEffect(() => {
-    async function loadPorcupine() {
-      // Dynamically import the worker
-      const ppnEnFactory = (await import("@picovoice/porcupine-web-en-worker"))
-        .PorcupineWorkerFactory;
-      console.log("Porcupine worker (EN) chunk is loaded.");
-      return ppnEnFactory;
-    }
-
     if (workerChunk.factory === null) {
-      loadPorcupine().then((workerFactory) => {
-        setWorkerChunk({ factory: workerFactory });
-        setIsChunkLoaded(true);
-      });
+      let isCanceled = false;
+      const loadPorcupine = async () => {
+        // Dynamically import the worker
+        const ppnEnFactory = (
+          await import("@picovoice/porcupine-web-en-worker")
+        ).PorcupineWorkerFactory;
+        console.log("Porcupine worker (EN) chunk is loaded.");
+
+        if (!isCanceled) {
+          setWorkerChunk({ factory: ppnEnFactory });
+          setIsChunkLoaded(true);
+        }
+      };
+
+      loadPorcupine();
+
+      return () => {
+        isCanceled = true;
+      };
     }
   }, [workerChunk]);
 
@@ -35,19 +41,12 @@ export default function VoiceWidget() {
     setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
   };
 
-  const {
-    isLoaded,
-    isListening,
-    isError,
-    errorMessage,
-    start,
-    resume,
-    pause,
-  } = usePorcupine(
-    PorcupineWorkerFactory,
-    { keywords, start: true },
-    keywordEventHandler
-  );
+  const { isLoaded, isListening, isError, errorMessage, start, resume, pause } =
+    usePorcupine(
+      PorcupineWorkerFactory,
+      { keywords, start: true },
+      keywordEventHandler
+    );
 
   return (
     <div className="voice-widget">
