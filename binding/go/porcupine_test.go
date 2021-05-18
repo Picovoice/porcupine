@@ -1,6 +1,7 @@
 package porcupine
 
 import (
+	"encoding/binary"
 	"io/ioutil"
 	"math"
 	"path/filepath"
@@ -32,18 +33,29 @@ func TestProcess(t *testing.T) {
 
 	frameLenBytes := FrameLength * 2
 	frameCount := int(math.Floor(float64(len(data)) / float64(frameLenBytes)))
+	sampleBuffer := make([]int16, FrameLength)
+	var results []int
 	for i := 0; i < frameCount; i++ {
 		start := i * frameLenBytes
-		count := frameLenBytes
 
-		frame := data[start : start+count]
-		result, err := p.Process(frame)
+		for j := 0; j < FrameLength; j++ {
+			dataOffset := start + (j * 2)
+			sampleBuffer[j] = int16(binary.LittleEndian.Uint16(data[dataOffset : dataOffset+2]))
+		}
+
+		result, err := p.Process(sampleBuffer)
 		if err != nil {
 			t.Fatalf("Could not read test file: %v", err)
 		}
-		if result >= 0 {
+
+		if result == 0 {
+			results = append(results, result)
 			t.Logf("Keyword triggered at %f", float64(i*FrameLength)/float64(SampleRate))
 		}
+	}
+
+	if len(results) != 1 || results[0] != 0 {
+		t.Fatal("Failed to find keyword.")
 	}
 
 	delErr := p.Delete()
@@ -83,12 +95,16 @@ func TestMultiple(t *testing.T) {
 	var results []int
 	frameLenBytes := FrameLength * 2
 	frameCount := int(math.Floor(float64(len(data)) / float64(frameLenBytes)))
+	sampleBuffer := make([]int16, FrameLength)
 	for i := 0; i < frameCount; i++ {
 		start := i * frameLenBytes
-		count := frameLenBytes
 
-		frame := data[start : start+count]
-		result, err := p.Process(frame)
+		for j := 0; j < FrameLength; j++ {
+			dataOffset := start + (j * 2)
+			sampleBuffer[j] = int16(binary.LittleEndian.Uint16(data[dataOffset : dataOffset+2]))
+		}
+
+		result, err := p.Process(sampleBuffer)
 		if err != nil {
 			t.Fatalf("Could not read test file: %v", err)
 		}

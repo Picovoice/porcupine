@@ -153,20 +153,20 @@ func (porcupine *Porcupine) Delete() error {
 }
 
 // pv_porcupine_process
-func (porcupine *Porcupine) Process(data []byte) (int, error) {
+func (porcupine *Porcupine) Process(pcm []int16) (int, error) {
 
 	if porcupine.handle == 0 {
 		return -1, fmt.Errorf("Porcupine has not been initialized or has been deleted.")
 	}
 
-	if len(data) != FrameLength*2 {
+	if len(pcm) != FrameLength {
 		return -1, fmt.Errorf("Input data frame is wrong size")
 	}
 
 	var index int32
 	ret, _, e := syscall.Syscall6(process_func, 3,
 		porcupine.handle,
-		uintptr(unsafe.Pointer(&data[0])),
+		uintptr(unsafe.Pointer(&pcm[0])),
 		uintptr(unsafe.Pointer(&index)),
 		0, 0, 0)
 	if e != 0 {
