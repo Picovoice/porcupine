@@ -1,3 +1,13 @@
+// Copyright 2021 Picovoice Inc.
+//
+// You may not use this file except in compliance with the license. A copy of the license is
+// located in the "LICENSE" file accompanying this source.
+//
+// Unless required by applicable law or agreed to in writing, software distributed under the
+// License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+// express or implied. See the License for the specific language governing permissions and
+// limitations under the License.
+
 package porcupine
 
 import (
@@ -13,12 +23,9 @@ func TestProcess(t *testing.T) {
 	test_file, _ := filepath.Abs("../../resources/audio_samples/porcupine.wav")
 
 	p := Porcupine{BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
-	status, err := p.Init()
+	err := p.Init()
 	if err != nil {
 		t.Fatalf("%v", err)
-	}
-	if status != SUCCESS {
-		t.Fatalf("Porcupine failed to init with PvStatus %d", status)
 	}
 
 	t.Logf("Porcupine Version: %s", Version)
@@ -74,12 +81,9 @@ func TestMultiple(t *testing.T) {
 		TERMINATOR}}
 	expectedResults := []int{7, 0, 1, 2, 3, 4, 5, 6, 7, 8}
 
-	status, err := p.Init()
+	err := p.Init()
 	if err != nil {
 		t.Fatalf("%v", err)
-	}
-	if status != SUCCESS {
-		t.Fatalf("Porcupine failed to init with PvStatus %d", status)
 	}
 
 	t.Logf("Porcupine Version: %s", Version)

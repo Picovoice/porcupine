@@ -1,3 +1,19 @@
+// Copyright 2021 Picovoice Inc.
+//
+// You may not use this file except in compliance with the license. A copy of the license is
+// located in the "LICENSE" file accompanying this source.
+//
+// Unless required by applicable law or agreed to in writing, software distributed under the
+// License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+// express or implied. See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// Go binding for Porcupine wake word engine. It detects utterances of given keywords within an incoming stream of
+// audio in real-time. It processes incoming audio in consecutive frames and for each frame emits the detection result.
+// The number of samples per frame can be attained by calling `.FrameLength`. The incoming audio needs to have a
+// sample rate equal to `.SampleRate` and be 16-bit linearly-encoded. Porcupine operates on single-channel audio.
+
 package porcupine
 
 import (
@@ -20,8 +36,10 @@ import (
 //go:embed embedded
 var embeddedFS embed.FS
 
+// PvStatus type
 type PvStatus int
 
+// Possible status return codes from the Porcupine library
 const (
 	SUCCESS          PvStatus = 0
 	OUT_OF_MEMORY    PvStatus = 1
@@ -29,8 +47,25 @@ const (
 	INVALID_ARGUMENT PvStatus = 3
 )
 
+func pvStatusToString(status PvStatus) string {
+	switch status {
+	case SUCCESS:
+		return "SUCCESS"
+	case OUT_OF_MEMORY:
+		return "OUT_OF_MEMORY"
+	case IO_ERROR:
+		return "IO_ERROR"
+	case INVALID_ARGUMENT:
+		return "INVALID_ARGUMENT"
+	default:
+		return "Unknown error"
+	}
+}
+
+// BuiltInKeyword Type
 type BuiltInKeyword string
 
+// Available built-in wake words
 const (
 	ALEXA       BuiltInKeyword = "alexa"
 	AMERICANO   BuiltInKeyword = "americano"
@@ -50,6 +85,7 @@ const (
 	TERMINATOR  BuiltInKeyword = "terminator"
 )
 
+// Checks if a given BuiltInKeyword is valid
 func (k BuiltInKeyword) IsValid() error {
 	switch k {
 	case ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, COMPUTER, GRAPEFRUIT, GRASSHOPPER, HEY_BARISTA,
@@ -59,14 +95,25 @@ func (k BuiltInKeyword) IsValid() error {
 	return errors.New("Invalid built-in keyword.")
 }
 
+// Porcupine struct
 type Porcupine struct {
-	handle          uintptr
-	ModelPath       string
-	Sensitivities   []float32
+	handle uintptr
+
+	// Absolute path to the file containing model parameters.
+	ModelPath string
+
+	// Sensitivity values for detecting keywords. Each value should be a number within [0, 1]. A
+	// higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+	Sensitivities []float32
+
+	// List of built-in keywords to use.
 	BuiltInKeywords []BuiltInKeyword
-	KeywordPaths    []string
+
+	// Absolute paths to keyword model files.
+	KeywordPaths []string
 }
 
+// private vars
 var (
 	osName        = getOS()
 	extractionDir = filepath.Join(os.TempDir(), "porcupine")
@@ -82,30 +129,41 @@ var (
 	version_func, _      = syscall.GetProcAddress(lib, "pv_porcupine_version")
 	frame_length_func, _ = syscall.GetProcAddress(lib, "pv_porcupine_frame_length")
 	delete_func, _       = syscall.GetProcAddress(lib, "pv_porcupine_delete")
-
-	FrameLength = getFrameLength()
-	SampleRate  = getSampleRate()
-	Version     = getVersion()
 )
 
-func (porcupine *Porcupine) Init() (status PvStatus, err error) {
+var (
+	// Number of audio samples per frame.
+	FrameLength = getFrameLength()
+
+	// Audio sample rate accepted by Picovoice.
+	SampleRate = getSampleRate()
+
+	// Porcupine version
+	Version = getVersion()
+)
+
+// Init function for Porcupine. Must be called before attempting process
+func (porcupine *Porcupine) Init() (err error) {
 	if porcupine.ModelPath == "" {
 		porcupine.ModelPath = defaultModelFile
 	}
 
 	if _, err := os.Stat(porcupine.ModelPath); os.IsNotExist(err) {
-		return INVALID_ARGUMENT, fmt.Errorf("Specified model file could not be found at %s", porcupine.ModelPath)
+		return fmt.Errorf("%s: Specified model file could not be found at %s", pvStatusToString(INVALID_ARGUMENT), porcupine.ModelPath)
 	}
 
 	if porcupine.BuiltInKeywords != nil && len(porcupine.BuiltInKeywords) > 0 {
 		for _, keyword := range porcupine.BuiltInKeywords {
-			keywordStr := strings.ToLower(string(keyword))
+			if err := keyword.IsValid(); err != nil {
+				return fmt.Errorf("%s: '%s' is not a valid built-in keyword.", pvStatusToString(INVALID_ARGUMENT), keyword)
+			}
+			keywordStr := string(keyword)
 			porcupine.KeywordPaths = append(porcupine.KeywordPaths, builtinKeywords[keywordStr])
 		}
 	}
 
 	if porcupine.KeywordPaths == nil || len(porcupine.KeywordPaths) == 0 {
-		return INVALID_ARGUMENT, fmt.Errorf("No valid keywords were provided.")
+		return fmt.Errorf("%s: No valid keywords were provided.", pvStatusToString(INVALID_ARGUMENT))
 	}
 
 	if porcupine.Sensitivities == nil {
@@ -116,23 +174,20 @@ func (porcupine *Porcupine) Init() (status PvStatus, err error) {
 	}
 
 	if len(porcupine.KeywordPaths) != len(porcupine.Sensitivities) {
-		return INVALID_ARGUMENT, fmt.Errorf("Keyword array size (%d) is not the same size as sensitivities array (%d)",
-			len(porcupine.KeywordPaths), len(porcupine.Sensitivities))
+		return fmt.Errorf("%s: Keyword array size (%d) is not the same size as sensitivities array (%d)",
+			pvStatusToString(INVALID_ARGUMENT), len(porcupine.KeywordPaths), len(porcupine.Sensitivities))
 	}
 
-	// args for lib call
 	var (
 		modelPathC  = C.CString(porcupine.ModelPath)
 		numKeywords = len(porcupine.KeywordPaths)
 		keywordsC   = make([]*C.char, numKeywords)
 	)
 
-	// convert keywords to c strings
 	for i, s := range porcupine.KeywordPaths {
 		keywordsC[i] = C.CString(s)
 	}
 
-	// call lib init
 	ret, _, e := syscall.Syscall6(init_func, 5,
 		uintptr(unsafe.Pointer(modelPathC)),
 		uintptr(numKeywords),
@@ -141,12 +196,17 @@ func (porcupine *Porcupine) Init() (status PvStatus, err error) {
 		uintptr(unsafe.Pointer(&porcupine.handle)),
 		0)
 	if e != 0 {
-		return IO_ERROR, fmt.Errorf("%v\n", e)
+		return fmt.Errorf("Error: %v\n", e)
 	}
 
-	return PvStatus(ret), nil
+	if PvStatus(ret) != SUCCESS {
+		return fmt.Errorf(": Porcupine returned error %s", pvStatusToString(INVALID_ARGUMENT))
+	}
+
+	return nil
 }
 
+// Releases resources acquired by Porcupine.
 func (porcupine *Porcupine) Delete() error {
 	if porcupine.handle == 0 {
 		return fmt.Errorf("Porcupine has not been initialized or has already been deleted.")
@@ -163,7 +223,11 @@ func (porcupine *Porcupine) Delete() error {
 	return nil
 }
 
-// pv_porcupine_process
+// Processes a frame of the incoming audio stream and emits the detection result.
+// Frame of audio The number of samples per frame can be attained by calling
+// `.FrameLength`. The incoming audio needs to have a sample rate equal to `.Sample` and be 16-bit
+// linearly-encoded. Porcupine operates on single-channel audio.
+// Returns a 0 based index if keyword was detected in frame. Returns -1 if no detection was made.
 func (porcupine *Porcupine) Process(pcm []int16) (int, error) {
 
 	if porcupine.handle == 0 {
