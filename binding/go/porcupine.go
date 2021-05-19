@@ -49,6 +49,15 @@ const (
 	TERMINATOR  BuiltInKeyword = "terminator"
 )
 
+func (k BuiltInKeyword) IsValid() bool {
+	switch k {
+	case ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, COMPUTER, GRAPEFRUIT, GRASSHOPPER, HEY_BARISTA,
+		HEY_GOOGLE, HEY_SIRI, JARVIS, OK_GOOGLE, PICO_CLOCK, PICOVOICE, PORCUPINE, TERMINATOR:
+		return true
+	}
+	return false
+}
+
 type Porcupine struct {
 	handle          uintptr
 	ModelPath       string
