@@ -43,8 +43,15 @@ func main() {
 	}
 
 	p := Porcupine{}
+	defer p.Delete()
+
+	// validate model
 	if *modelPathArg != "" {
 		modelPath, _ := filepath.Abs(*modelPathArg)
+		if _, err := os.Stat(modelPath); os.IsNotExist(err) {
+			log.Fatalf("Could not find model file at %s", modelPath)
+		}
+
 		p.ModelPath = modelPath
 	}
 
@@ -107,6 +114,7 @@ func main() {
 	shortBuf := make([]int16, FrameLength)
 	var n int
 	totalRead := 0
+	keywordsDetected := false
 	for err == nil {
 		n, err = wavFile.PCMBuffer(buf)
 		if err != nil {
@@ -128,9 +136,12 @@ func main() {
 		}
 
 		if keywordIndex >= 0 {
+			keywordsDetected = true
 			fmt.Printf("Keyword %d detected at %f seconds.\n", keywordIndex, float64(totalRead)/float64(SampleRate))
 		}
 	}
 
-	p.Delete()
+	if !keywordsDetected {
+		fmt.Println("None of the provided keywords were found in the input audio file.")
+	}
 }
