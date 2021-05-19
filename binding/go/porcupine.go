@@ -116,7 +116,7 @@ func (porcupine *Porcupine) Init() (status PvStatus, err error) {
 	}
 
 	if len(porcupine.KeywordPaths) != len(porcupine.Sensitivities) {
-		return INVALID_ARGUMENT, fmt.Errorf("Keyword array size (%d) is not the same size as sensitivites array (%d)",
+		return INVALID_ARGUMENT, fmt.Errorf("Keyword array size (%d) is not the same size as sensitivities array (%d)",
 			len(porcupine.KeywordPaths), len(porcupine.Sensitivities))
 	}
 
