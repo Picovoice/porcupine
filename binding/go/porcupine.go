@@ -10,6 +10,7 @@ import (
 	"unsafe"
 )
 import (
+	"errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -49,13 +50,13 @@ const (
 	TERMINATOR  BuiltInKeyword = "terminator"
 )
 
-func (k BuiltInKeyword) IsValid() bool {
+func (k BuiltInKeyword) IsValid() error {
 	switch k {
 	case ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, COMPUTER, GRAPEFRUIT, GRASSHOPPER, HEY_BARISTA,
 		HEY_GOOGLE, HEY_SIRI, JARVIS, OK_GOOGLE, PICO_CLOCK, PICOVOICE, PORCUPINE, TERMINATOR:
-		return true
+		return nil
 	}
-	return false
+	return errors.New("Invalid built-in keyword.")
 }
 
 type Porcupine struct {
