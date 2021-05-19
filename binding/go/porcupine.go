@@ -31,22 +31,22 @@ const (
 type BuiltInKeyword string
 
 const (
-	ALEXA       BuiltInKeyword = "Alexa"
-	AMERICANO   BuiltInKeyword = "Americano"
-	BLUEBERRY   BuiltInKeyword = "Blueberry"
-	BUMBLEBEE   BuiltInKeyword = "Bumblebee"
-	COMPUTER    BuiltInKeyword = "Computer"
-	GRAPEFRUIT  BuiltInKeyword = "Grapefruit"
-	GRASSHOPPER BuiltInKeyword = "Grasshopper"
-	HEY_BARISTA BuiltInKeyword = "Hey Barista"
-	HEY_GOOGLE  BuiltInKeyword = "Hey Google"
-	HEY_SIRI    BuiltInKeyword = "Hey Siri"
-	JARVIS      BuiltInKeyword = "Jarvis"
-	OK_GOOGLE   BuiltInKeyword = "OK Google"
-	PICO_CLOCK  BuiltInKeyword = "Pico Clock"
-	PICOVOICE   BuiltInKeyword = "Picovoice"
-	PORCUPINE   BuiltInKeyword = "Porcupine"
-	TERMINATOR  BuiltInKeyword = "Terminator"
+	ALEXA       BuiltInKeyword = "alexa"
+	AMERICANO   BuiltInKeyword = "americano"
+	BLUEBERRY   BuiltInKeyword = "blueberry"
+	BUMBLEBEE   BuiltInKeyword = "bumblebee"
+	COMPUTER    BuiltInKeyword = "computer"
+	GRAPEFRUIT  BuiltInKeyword = "grapefruit"
+	GRASSHOPPER BuiltInKeyword = "grasshopper"
+	HEY_BARISTA BuiltInKeyword = "hey barista"
+	HEY_GOOGLE  BuiltInKeyword = "hey google"
+	HEY_SIRI    BuiltInKeyword = "hey siri"
+	JARVIS      BuiltInKeyword = "jarvis"
+	OK_GOOGLE   BuiltInKeyword = "ok google"
+	PICO_CLOCK  BuiltInKeyword = "pico clock"
+	PICOVOICE   BuiltInKeyword = "picovoice"
+	PORCUPINE   BuiltInKeyword = "porcupine"
+	TERMINATOR  BuiltInKeyword = "terminator"
 )
 
 type Porcupine struct {
@@ -106,7 +106,8 @@ func (porcupine *Porcupine) Init() (status PvStatus, err error) {
 	}
 
 	if len(porcupine.KeywordPaths) != len(porcupine.Sensitivities) {
-		return INVALID_ARGUMENT, fmt.Errorf("Keyword array is not the same size as sensitivites array")
+		return INVALID_ARGUMENT, fmt.Errorf("Keyword array size (%d) is not the same size as sensitivites array (%d)",
+			len(porcupine.KeywordPaths), len(porcupine.Sensitivities))
 	}
 
 	// args for lib call

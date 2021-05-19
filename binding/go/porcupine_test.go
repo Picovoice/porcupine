@@ -50,7 +50,7 @@ func TestProcess(t *testing.T) {
 
 		if result == 0 {
 			results = append(results, result)
-			t.Logf("Keyword triggered at %f", float64(i*FrameLength)/float64(SampleRate))
+			t.Logf("Keyword triggered at %f", float64((i+1)*FrameLength)/float64(SampleRate))
 		}
 	}
 
@@ -109,7 +109,7 @@ func TestMultiple(t *testing.T) {
 			t.Fatalf("Could not read test file: %v", err)
 		}
 		if result >= 0 {
-			t.Logf("Keyword %d triggered at %f", result, float64(i*FrameLength)/float64(SampleRate))
+			t.Logf("Keyword %d triggered at %f", result, float64((i+1)*FrameLength)/float64(SampleRate))
 			results = append(results, result)
 		}
 	}
