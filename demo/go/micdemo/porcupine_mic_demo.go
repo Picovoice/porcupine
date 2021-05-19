@@ -27,9 +27,9 @@ import (
 )
 
 func main() {
-	keywordsArg := flag.String("keywords", "", "Comma-separated list of built-in keywords")
+	keywordsArg := flag.String("keywords", "", fmt.Sprintf("Comma-separated list of built-in keywords. Available options are: %+q", BuiltInKeywords))
 	keywordPathsArg := flag.String("keyword_paths", "", "Comma-separated list of paths to keyword model files. "+
-		"If not set it will be populated from `--keywords` argument")
+		"If not set it will be populated from -keywords argument")
 	modelPathArg := flag.String("model_path", "", "Path to Porcupine model file")
 	sensitivitiesArg := flag.String("sensitivities", "", "Comma-separated list of sensitivity values for detecting keywords."+
 		"Each value should be a number within [0, 1]. A higher "+
