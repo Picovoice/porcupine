@@ -65,7 +65,7 @@ func pvStatusToString(status PvStatus) string {
 // BuiltInKeyword Type
 type BuiltInKeyword string
 
-// Available built-in wake words
+// Available built-in wake words constants
 const (
 	ALEXA       BuiltInKeyword = "alexa"
 	AMERICANO   BuiltInKeyword = "americano"
@@ -85,12 +85,18 @@ const (
 	TERMINATOR  BuiltInKeyword = "terminator"
 )
 
+// List of available built-in wake words
+var BuiltInKeywords = []BuiltInKeyword{
+	ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, COMPUTER, GRAPEFRUIT, GRASSHOPPER, HEY_BARISTA,
+	HEY_GOOGLE, HEY_SIRI, JARVIS, OK_GOOGLE, PICO_CLOCK, PICOVOICE, PORCUPINE, TERMINATOR,
+}
+
 // Checks if a given BuiltInKeyword is valid
 func (k BuiltInKeyword) IsValid() error {
-	switch k {
-	case ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, COMPUTER, GRAPEFRUIT, GRASSHOPPER, HEY_BARISTA,
-		HEY_GOOGLE, HEY_SIRI, JARVIS, OK_GOOGLE, PICO_CLOCK, PICOVOICE, PORCUPINE, TERMINATOR:
-		return nil
+	for _, b := range BuiltInKeywords {
+		if k == b {
+			return nil
+		}
 	}
 	return errors.New("Invalid built-in keyword.")
 }
