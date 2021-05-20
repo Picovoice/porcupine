@@ -38,7 +38,7 @@ var (
 	delete_func       = lib.NewProc("pv_porcupine_delete")
 )
 
-func (porcupine *Porcupine) nativeInit() int {
+func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus) {
 	var (
 		modelPathC  = C.CString(porcupine.ModelPath)
 		numKeywords = len(porcupine.KeywordPaths)
@@ -58,34 +58,34 @@ func (porcupine *Porcupine) nativeInit() int {
 		uintptr(unsafe.Pointer(&porcupine.Sensitivities[0])),
 		uintptr(unsafe.Pointer(&porcupine.handle)))
 
-	return int(ret)
+	return PvStatus(ret)
 }
 
-func (porcupine *Porcupine) nativeDelete() {
+func (np nativePorcupineType) nativeDelete(porcupine *Porcupine) {
 	delete_func.Call(porcupine.handle)
 }
 
-func (porcupine *Porcupine) nativeProcess(pcm []int16) (int, int) {
+func (np nativePorcupineType) nativeProcess(porcupine *Porcupine, pcm []int16) (status PvStatus, keywordIndex int) {
 
 	var index int32
 	ret, _, _ := process_func.Call(
 		porcupine.handle,
 		uintptr(unsafe.Pointer(&pcm[0])),
 		uintptr(unsafe.Pointer(&index)))
-	return int(ret), int(index)
+	return PvStatus(ret), int(index)
 }
 
-func nativeSampleRate() int {
+func (np nativePorcupineType) nativeSampleRate() (sampleRate int) {
 	ret, _, _ := sample_rate_func.Call()
 	return int(ret)
 }
 
-func nativeFrameLength() int {
+func (np nativePorcupineType) nativeFrameLength() (frameLength int) {
 	ret, _, _ := frame_length_func.Call()
 	return int(ret)
 }
 
-func nativeVersion() string {
+func (np nativePorcupineType) nativeVersion() (version string) {
 	ret, _, _ := version_func.Call()
 	return C.GoString((*C.char)(unsafe.Pointer(ret)))
 }

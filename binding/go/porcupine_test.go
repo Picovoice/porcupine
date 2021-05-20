@@ -62,7 +62,7 @@ func TestProcess(t *testing.T) {
 	}
 
 	if len(results) != 1 || results[0] != 0 {
-		t.Fatal("Failed to find keyword.")
+		t.Fatalf("Failed to find keyword '%s.'", p.BuiltInKeywords[0])
 	}
 
 	delErr := p.Delete()
@@ -79,7 +79,7 @@ func TestMultiple(t *testing.T) {
 		ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE,
 		GRAPEFRUIT, GRASSHOPPER, PICOVOICE, PORCUPINE,
 		TERMINATOR}}
-	expectedResults := []int{7, 0, 1, 2, 3, 4, 5, 6, 7, 8}
+	expectedResults := []BuiltInKeyword{PORCUPINE, ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, GRAPEFRUIT, GRASSHOPPER, PICOVOICE, PORCUPINE, TERMINATOR}
 
 	err := p.Init()
 	if err != nil {
@@ -119,8 +119,9 @@ func TestMultiple(t *testing.T) {
 	}
 
 	for i := range results {
-		if results[i] != expectedResults[i] {
-			t.Fatalf("Expected keyword %d, but %d was detected.", expectedResults[i], results[i])
+		detectedKeyword := p.BuiltInKeywords[results[i]]
+		if detectedKeyword != expectedResults[i] {
+			t.Fatalf("Expected keyword %s, but %s was detected.", expectedResults[i], detectedKeyword)
 		}
 	}
 
