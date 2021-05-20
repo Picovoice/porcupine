@@ -65,15 +65,6 @@ void pv_porcupine_delete_wrapper(void *f, pv_porcupine_t *object) {
 import "C"
 
 import (
-	"embed"
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-	"path/filepath"
-	"runtime"
-	"strings"
 	"unsafe"
 )
 
@@ -133,5 +124,5 @@ func nativeFrameLength() int {
 }
 
 func nativeVersion() string {
-	return int(C.pv_sample_rate_wrapper(pv_sample_rate_ptr))
+	return C.GoString(C.pv_porcupine_version_wrapper(pv_porcupine_version_ptr))
 }
