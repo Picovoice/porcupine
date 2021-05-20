@@ -18,11 +18,12 @@
 
 package porcupine
 
+//#include <stdlib.h>
+import "C"
+
 import (
-	"C"
 	"unsafe"
-)
-import (
+
 	"golang.org/x/sys/windows"
 )
 
@@ -43,9 +44,11 @@ func (porcupine *Porcupine) nativeInit() int {
 		numKeywords = len(porcupine.KeywordPaths)
 		keywordsC   = make([]*C.char, numKeywords)
 	)
+	defer C.free(unsafe.Pointer(modelPathC))
 
 	for i, s := range porcupine.KeywordPaths {
 		keywordsC[i] = C.CString(s)
+		defer C.free(unsafe.Pointer(keywordsC[i]))
 	}
 
 	ret, _, _ := init_func.Call(
