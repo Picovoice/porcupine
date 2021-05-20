@@ -22,8 +22,7 @@ package porcupine
 #cgo LDFLAGS: -ldl
 #include <dlfcn.h>
 #include <stdint.h>
-
-#include "pv_porcupine.h"
+#include <stdlib.h>
 
 typedef int32_t (*pv_sample_rate_func)();
 
@@ -43,21 +42,21 @@ char* pv_porcupine_version_wrapper(void* f) {
      return ((pv_porcupine_version_func) f)();
 }
 
-typedef pv_status_t (*pv_porcupine_init_func)(const char *, int32_t, const char * const *, const float *, pv_porcupine_t **);
+typedef int32_t (*pv_porcupine_init_func)(const char *, int32_t, const char * const *, const float *, void **);
 
-int32_t pv_porcupine_init_wrapper(void *f, const char *model_path, int32_t num_keywords, const char * const *keyword_paths, const float *sensitivities, pv_porcupine_t **object) {
+int32_t pv_porcupine_init_wrapper(void *f, const char *model_path, int32_t num_keywords, const char * const *keyword_paths, const float *sensitivities, void **object) {
 	return ((pv_porcupine_init_func) f)(model_path, num_keywords, keyword_paths, sensitivities, object);
 }
 
-typedef pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *);
+typedef int32_t (*pv_porcupine_process_func)(void *, const int16_t *, int32_t *);
 
-int32_t pv_porcupine_process_wrapper(void *f, pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index) {
+int32_t pv_porcupine_process_wrapper(void *f, void *object, const int16_t *pcm, int32_t *keyword_index) {
 	return ((pv_porcupine_process_func) f)(object, pcm, keyword_index);
 }
 
-typedef void (*pv_porcupine_delete_func)(pv_porcupine_t *);
+typedef void (*pv_porcupine_delete_func)(void *);
 
-void pv_porcupine_delete_wrapper(void *f, pv_porcupine_t *object) {
+void pv_porcupine_delete_wrapper(void *f, void *object) {
 	return ((pv_porcupine_delete_func) f)(object);
 }
 
@@ -70,7 +69,8 @@ import (
 
 // private vars
 var (
-	lib                           = C.dlopen(C.CString(libName), C.RTLD_NOW)
+	lib = C.dlopen(C.CString(libName), C.RTLD_NOW)
+
 	pv_porcupine_init_ptr         = C.dlsym(lib, C.CString("pv_porcupine_init"))
 	pv_porcupine_process_ptr      = C.dlsym(lib, C.CString("pv_porcupine_process"))
 	pv_sample_rate_ptr            = C.dlsym(lib, C.CString("pv_sample_rate"))
@@ -84,10 +84,13 @@ func (porcupine *Porcupine) nativeInit() int {
 		modelPathC  = C.CString(porcupine.ModelPath)
 		numKeywords = len(porcupine.KeywordPaths)
 		keywordsC   = make([]*C.char, numKeywords)
+		ptrC        = make([]unsafe.Pointer, 1)
 	)
+	defer C.free(unsafe.Pointer(modelPathC))
 
 	for i, s := range porcupine.KeywordPaths {
 		keywordsC[i] = C.CString(s)
+		defer C.free(unsafe.Pointer(keywordsC[i]))
 	}
 
 	var ret = C.pv_porcupine_init_wrapper(pv_porcupine_init_ptr,
@@ -95,21 +98,22 @@ func (porcupine *Porcupine) nativeInit() int {
 		(C.int32_t)(numKeywords),
 		(**C.char)(unsafe.Pointer(&keywordsC[0])),
 		(*C.float)(unsafe.Pointer(&porcupine.Sensitivities[0])),
-		(**C.pv_porcupine_t)(unsafe.Pointer(&porcupine.handle)))
+		&ptrC[0])
 
+	porcupine.handle = uintptr(ptrC[0])
 	return int(ret)
 }
 
 func (porcupine *Porcupine) nativeDelete() {
 	C.pv_porcupine_delete_wrapper(pv_porcupine_delete_ptr,
-		(*C.pv_porcupine_t)(unsafe.Pointer(porcupine.handle)))
+		unsafe.Pointer(porcupine.handle))
 }
 
 func (porcupine *Porcupine) nativeProcess(pcm []int16) (int, int) {
 
 	var index int32
 	var ret = C.pv_porcupine_process_wrapper(pv_porcupine_process_ptr,
-		(*C.pv_porcupine_t)(unsafe.Pointer(porcupine.handle)),
+		unsafe.Pointer(porcupine.handle),
 		(*C.int16_t)(unsafe.Pointer(&pcm[0])),
 		(*C.int32_t)(unsafe.Pointer(&index)))
 	return int(ret), int(index)
