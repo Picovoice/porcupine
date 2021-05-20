@@ -24,7 +24,6 @@ import (
 	"fmt"
 	"log"
 	"runtime"
-	"syscall"
 	"unsafe"
 )
 import (
@@ -33,6 +32,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"golang.org/x/sys/windows"
 )
 
 //go:embed embedded
@@ -130,13 +131,13 @@ var (
 	builtinKeywords  = extractKeywordFiles()
 	libName          = extractLib()
 
-	lib, _               = syscall.LoadLibrary(libName)
-	init_func, _         = syscall.GetProcAddress(lib, "pv_porcupine_init")
-	process_func, _      = syscall.GetProcAddress(lib, "pv_porcupine_process")
-	sample_rate_func, _  = syscall.GetProcAddress(lib, "pv_sample_rate")
-	version_func, _      = syscall.GetProcAddress(lib, "pv_porcupine_version")
-	frame_length_func, _ = syscall.GetProcAddress(lib, "pv_porcupine_frame_length")
-	delete_func, _       = syscall.GetProcAddress(lib, "pv_porcupine_delete")
+	lib               = windows.NewLazyDLL(libName)
+	init_func         = lib.NewProc("pv_porcupine_init")
+	process_func      = lib.NewProc("pv_porcupine_process")
+	sample_rate_func  = lib.NewProc("pv_sample_rate")
+	version_func      = lib.NewProc("pv_porcupine_version")
+	frame_length_func = lib.NewProc("pv_porcupine_frame_length")
+	delete_func       = lib.NewProc("pv_porcupine_delete")
 )
 
 var (
@@ -196,16 +197,12 @@ func (porcupine *Porcupine) Init() (err error) {
 		keywordsC[i] = C.CString(s)
 	}
 
-	ret, _, e := syscall.Syscall6(init_func, 5,
+	ret, _, _ := init_func.Call(
 		uintptr(unsafe.Pointer(modelPathC)),
 		uintptr(numKeywords),
 		uintptr(unsafe.Pointer(&keywordsC[0])),
 		uintptr(unsafe.Pointer(&porcupine.Sensitivities[0])),
-		uintptr(unsafe.Pointer(&porcupine.handle)),
-		0)
-	if e != 0 {
-		return fmt.Errorf("Error: %v\n", e)
-	}
+		uintptr(unsafe.Pointer(&porcupine.handle)))
 
 	if PvStatus(ret) != SUCCESS {
 		return fmt.Errorf(": Porcupine returned error %s", pvStatusToString(INVALID_ARGUMENT))
@@ -220,13 +217,8 @@ func (porcupine *Porcupine) Delete() error {
 		return fmt.Errorf("Porcupine has not been initialized or has already been deleted.")
 	}
 
-	_, _, e := syscall.Syscall(delete_func, 1,
-		porcupine.handle,
-		0, 0)
-
-	if e != 0 {
-		return fmt.Errorf("%v\n", e)
-	}
+	delete_func.Call(
+		porcupine.handle)
 
 	return nil
 }
@@ -247,14 +239,11 @@ func (porcupine *Porcupine) Process(pcm []int16) (int, error) {
 	}
 
 	var index int32
-	ret, _, e := syscall.Syscall6(process_func, 3,
+	ret, _, _ := process_func.Call(
 		porcupine.handle,
 		uintptr(unsafe.Pointer(&pcm[0])),
 		uintptr(unsafe.Pointer(&index)),
 		0, 0, 0)
-	if e != 0 {
-		return -1, fmt.Errorf("%v\n", e)
-	}
 
 	if PvStatus(ret) != SUCCESS {
 		return -1, fmt.Errorf("Process audio frame failed with PvStatus: %d", ret)
@@ -264,17 +253,17 @@ func (porcupine *Porcupine) Process(pcm []int16) (int, error) {
 }
 
 func getSampleRate() int {
-	ret, _, _ := syscall.Syscall(sample_rate_func, 0, 0, 0, 0)
+	ret, _, _ := sample_rate_func.Call()
 	return int(ret)
 }
 
 func getFrameLength() int {
-	ret, _, _ := syscall.Syscall(frame_length_func, 0, 0, 0, 0)
+	ret, _, _ := frame_length_func.Call()
 	return int(ret)
 }
 
 func getVersion() string {
-	ret, _, _ := syscall.Syscall(version_func, 0, 0, 0, 0)
+	ret, _, _ := version_func.Call()
 	return C.GoString((*C.char)(unsafe.Pointer(ret)))
 }
 
