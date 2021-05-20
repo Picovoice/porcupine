@@ -80,7 +80,7 @@ func main() {
 
 		for _, k := range keywordsSplit {
 			builtInKeyword := BuiltInKeyword(k)
-			if err := builtInKeyword.IsValid(); err != nil {
+			if !builtInKeyword.IsValid() {
 				log.Fatalf("'%s' is not a valid built-in keyword.", k)
 			}
 
