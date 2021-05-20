@@ -40,6 +40,9 @@ const (
 	OUT_OF_MEMORY    PvStatus = 1
 	IO_ERROR         PvStatus = 2
 	INVALID_ARGUMENT PvStatus = 3
+	STOP_ITERATION   PvStatus = 4
+	KEY_ERROR        PvStatus = 5
+	INVALID_STATE    PvStatus = 6
 )
 
 func pvStatusToString(status PvStatus) string {
@@ -52,6 +55,12 @@ func pvStatusToString(status PvStatus) string {
 		return "IO_ERROR"
 	case INVALID_ARGUMENT:
 		return "INVALID_ARGUMENT"
+	case STOP_ITERATION:
+		return "STOP_ITERATION"
+	case KEY_ERROR:
+		return "KEY_ERROR"
+	case INVALID_STATE:
+		return "INVALID_STATE"
 	default:
 		return fmt.Sprintf("Unknown error code: %d", status)
 	}

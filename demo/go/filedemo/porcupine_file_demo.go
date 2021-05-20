@@ -18,6 +18,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	. "github.com/Picovoice/porcupine/binding/go"
 	"github.com/go-audio/audio"
@@ -125,6 +126,7 @@ func main() {
 	var n int
 	totalRead := 0
 	keywordsDetected := false
+	start := time.Now()
 	for err == nil {
 		n, err = wavFile.PCMBuffer(buf)
 		if err != nil {
@@ -150,8 +152,12 @@ func main() {
 			fmt.Printf("Keyword %d detected at %f seconds.\n", keywordIndex, float64(totalRead)/float64(SampleRate))
 		}
 	}
-
 	if !keywordsDetected {
 		fmt.Println("None of the provided keywords were found in the input audio file.")
 	}
+
+	audioLen := float64(totalRead) / float64(SampleRate)
+	elapsed := time.Since(start)
+	realtimeFactor := audioLen / elapsed.Seconds()
+	fmt.Printf("Realtime factor: %fx\n", realtimeFactor)
 }
