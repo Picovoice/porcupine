@@ -14,65 +14,25 @@
 // The number of samples per frame can be attained by calling `.FrameLength`. The incoming audio needs to have a
 // sample rate equal to `.SampleRate` and be 16-bit linearly-encoded. Porcupine operates on single-channel audio.
 
+// +build windows
+
 package porcupine
 
-/*
-#cgo LDFLAGS: -ldl
-#include <dlfcn.h>
-#include <stdint.h>
-
-#include "pv_porcupine.h"
-
-typedef int32_t (*pv_sample_rate_func)();
-
-int32_t pv_sample_rate_wrapper(void *f) {
-     return ((pv_sample_rate_func) f)();
-}
-
-typedef int32_t (*pv_porcupine_frame_length_func)();
-
-int32_t pv_porcupine_frame_length_wrapper(void* f) {
-     return ((pv_porcupine_frame_length_func) f)();
-}
-
-typedef char* (*pv_porcupine_version_func)();
-
-char* pv_porcupine_version_wrapper(void* f) {
-     return ((pv_porcupine_version_func) f)();
-}
-
-typedef pv_status_t (*pv_porcupine_init_func)(const char *, int32_t, const char * const *, const float *, pv_porcupine_t **);
-
-int32_t pv_porcupine_init_wrapper(void *f, const char *model_path, int32_t num_keywords, const char * const *keyword_paths, const float *sensitivities, pv_porcupine_t **object) {
-	return ((pv_porcupine_init_func) f)(model_path, num_keywords, keyword_paths, sensitivities, object);
-}
-
-typedef pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *);
-
-int32_t pv_porcupine_process_wrapper(void *f, pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index) {
-	return ((pv_porcupine_process_func) f)(object, pcm, keyword_index);
-}
-
-typedef void (*pv_porcupine_delete_func)(pv_porcupine_t *);
-
-void pv_porcupine_delete_wrapper(void *f, pv_porcupine_t *object) {
-	return ((pv_porcupine_delete_func) f)(object);
-}
-
-*/
-import "C"
-
 import (
+	"C"
 	"embed"
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"runtime"
+	"syscall"
+	"unsafe"
+)
+import (
+	"errors"
+	"io/ioutil"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
-	"unsafe"
 )
 
 //go:embed embedded
@@ -170,24 +130,24 @@ var (
 	builtinKeywords  = extractKeywordFiles()
 	libName          = extractLib()
 
-	lib                           = C.dlopen(C.CString(libName), C.RTLD_NOW)
-	pv_porcupine_init_ptr         = C.dlsym(lib, C.CString("pv_porcupine_init"))
-	pv_porcupine_process_ptr      = C.dlsym(lib, C.CString("pv_porcupine_process"))
-	pv_sample_rate_ptr            = C.dlsym(lib, C.CString("pv_sample_rate"))
-	pv_porcupine_version_ptr      = C.dlsym(lib, C.CString("pv_porcupine_version"))
-	pv_porcupine_frame_length_ptr = C.dlsym(lib, C.CString("pv_porcupine_frame_length"))
-	pv_porcupine_delete_ptr       = C.dlsym(lib, C.CString("pv_porcupine_delete"))
+	lib, _               = syscall.LoadLibrary(libName)
+	init_func, _         = syscall.GetProcAddress(lib, "pv_porcupine_init")
+	process_func, _      = syscall.GetProcAddress(lib, "pv_porcupine_process")
+	sample_rate_func, _  = syscall.GetProcAddress(lib, "pv_sample_rate")
+	version_func, _      = syscall.GetProcAddress(lib, "pv_porcupine_version")
+	frame_length_func, _ = syscall.GetProcAddress(lib, "pv_porcupine_frame_length")
+	delete_func, _       = syscall.GetProcAddress(lib, "pv_porcupine_delete")
 )
 
 var (
 	// Number of audio samples per frame.
-	FrameLength = int(C.pv_porcupine_frame_length_wrapper(pv_porcupine_frame_length_ptr))
+	FrameLength = getFrameLength()
 
 	// Audio sample rate accepted by Picovoice.
-	SampleRate = int(C.pv_sample_rate_wrapper(pv_sample_rate_ptr))
+	SampleRate = getSampleRate()
 
 	// Porcupine version
-	Version = C.GoString(C.pv_porcupine_version_wrapper(pv_porcupine_version_ptr))
+	Version = getVersion()
 )
 
 // Init function for Porcupine. Must be called before attempting process
@@ -227,7 +187,7 @@ func (porcupine *Porcupine) Init() (err error) {
 	}
 
 	var (
-		// modelPathC  = C.CString(porcupine.ModelPath)
+		modelPathC  = C.CString(porcupine.ModelPath)
 		numKeywords = len(porcupine.KeywordPaths)
 		keywordsC   = make([]*C.char, numKeywords)
 	)
@@ -236,12 +196,16 @@ func (porcupine *Porcupine) Init() (err error) {
 		keywordsC[i] = C.CString(s)
 	}
 
-	var ret = C.pv_porcupine_init_wrapper(pv_porcupine_init_ptr,
-		C.CString(porcupine.ModelPath),
-		(C.int32_t)(numKeywords),
-		(**C.char)(unsafe.Pointer(&keywordsC[0])),
-		(*C.float)(unsafe.Pointer(&porcupine.Sensitivities[0])),
-		(**C.pv_porcupine_t)(unsafe.Pointer(&porcupine.handle)))
+	ret, _, e := syscall.Syscall6(init_func, 5,
+		uintptr(unsafe.Pointer(modelPathC)),
+		uintptr(numKeywords),
+		uintptr(unsafe.Pointer(&keywordsC[0])),
+		uintptr(unsafe.Pointer(&porcupine.Sensitivities[0])),
+		uintptr(unsafe.Pointer(&porcupine.handle)),
+		0)
+	if e != 0 {
+		return fmt.Errorf("Error: %v\n", e)
+	}
 
 	if PvStatus(ret) != SUCCESS {
 		return fmt.Errorf(": Porcupine returned error %s", pvStatusToString(INVALID_ARGUMENT))
@@ -256,8 +220,14 @@ func (porcupine *Porcupine) Delete() error {
 		return fmt.Errorf("Porcupine has not been initialized or has already been deleted.")
 	}
 
-	C.pv_porcupine_delete_wrapper(pv_porcupine_delete_ptr,
-		(*C.pv_porcupine_t)(unsafe.Pointer(porcupine.handle)))
+	_, _, e := syscall.Syscall(delete_func, 1,
+		porcupine.handle,
+		0, 0)
+
+	if e != 0 {
+		return fmt.Errorf("%v\n", e)
+	}
+
 	return nil
 }
 
@@ -277,16 +247,35 @@ func (porcupine *Porcupine) Process(pcm []int16) (int, error) {
 	}
 
 	var index int32
-	var ret = C.pv_porcupine_process_wrapper(pv_porcupine_process_ptr,
-		(*C.pv_porcupine_t)(unsafe.Pointer(porcupine.handle)),
-		(*C.int16_t)(unsafe.Pointer(&pcm[0])),
-		(*C.int32_t)(unsafe.Pointer(&index)))
+	ret, _, e := syscall.Syscall6(process_func, 3,
+		porcupine.handle,
+		uintptr(unsafe.Pointer(&pcm[0])),
+		uintptr(unsafe.Pointer(&index)),
+		0, 0, 0)
+	if e != 0 {
+		return -1, fmt.Errorf("%v\n", e)
+	}
 
 	if PvStatus(ret) != SUCCESS {
 		return -1, fmt.Errorf("Process audio frame failed with PvStatus: %d", ret)
 	}
 
 	return int(index), nil
+}
+
+func getSampleRate() int {
+	ret, _, _ := syscall.Syscall(sample_rate_func, 0, 0, 0, 0)
+	return int(ret)
+}
+
+func getFrameLength() int {
+	ret, _, _ := syscall.Syscall(frame_length_func, 0, 0, 0, 0)
+	return int(ret)
+}
+
+func getVersion() string {
+	ret, _, _ := syscall.Syscall(version_func, 0, 0, 0, 0)
+	return C.GoString((*C.char)(unsafe.Pointer(ret)))
 }
 
 func getOS() string {
