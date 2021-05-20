@@ -81,7 +81,7 @@ func main() {
 		for _, k := range keywordsSplit {
 			builtInKeyword := BuiltInKeyword(k)
 			if !builtInKeyword.IsValid() {
-				log.Fatalf("'%s' is not a valid built-in keyword.", k)
+				log.Fatalf("'%s' is not a valid built-in keyword. Available options are: %+q", k, BuiltInKeywords)
 			}
 
 			p.BuiltInKeywords = append(p.BuiltInKeywords, builtInKeyword)
