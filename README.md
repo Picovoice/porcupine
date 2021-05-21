@@ -30,6 +30,7 @@ applications. It is
     - [Python](#python-demos)
     - [.NET](#net-demos)
     - [Java](#java-demos)
+    - [Go](#go-demos)
     - [Unity](#unity-demos)
     - [Flutter](#flutter-demos)
     - [React Native](#react-native-demos)
@@ -47,6 +48,7 @@ applications. It is
     - [Python](#python)
     - [.NET](#net)
     - [Java](#java)
+    - [Go](#go)
     - [Unity](#unity)
     - [Flutter](#flutter)
     - [React Native](#react-native)
@@ -157,6 +159,19 @@ The engine starts processing the audio input from the microphone in realtime and
 utterances of `Porcupine`.
 
 For more information about Java demos go to [demo/java](/demo/java).
+
+### Go Demos
+
+MicDemo uses [malgo](https://github.com/gen2brain/malgo) for cross-platform audio capture. It requires `cgo`, which on Windows may mean that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) to build it properly. 
+
+From [demo/go](/demo/go) run the following command to build and run the following command from the terminal:
+```console
+go run micdemo/porcupine_mic_demo.go -keywords porcupine
+```
+
+The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects utterances of the word `Porcupine`.
+
+For more information about Go demos go to [demo/go](/demo/go).
 
 ### Unity Demos
 
@@ -517,6 +532,56 @@ Once you're done with Porcupine, ensure you release its resources explicitly:
 
 ```java
 handle.delete();
+```
+
+### Go
+
+To install the Porcupine Go module to your project, use the command:
+```console
+go get github.com/Picovoice/porcupine/binding/go
+```
+
+To create an instance of the engine you first creat a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`.
+
+```go
+import . "github.com/Picovoice/porcupine/binding/go"
+
+porcupine := Porcupine{BuiltInKeywords: []BuiltInKeyword{PICOVOICE}}
+err := porcupine.Init()
+if err != nil {
+    // handle init fail
+}
+```
+
+In the above example, we've initialzed the engine to detect the built-in wake word "Picovoice". Built-in keywords are constants in the package with the BuiltInKeyword type.
+
+To detect non-default keywords, use `KeywordPaths` parameter instead
+
+```go
+porcupine := Porcupine{KeywordPaths: []string{"/path/to/keyword.ppn"}}
+err := porcupine.Init()
+```
+
+When initialized, the valid sample rate is given by `SampleRate`. Expected frame length (number of audio samples in an input array) is given by `FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+
+To feed audio into Porcupine, use the `Process` function in your capture loop. You must call `Init()` before calling `Process`. 
+```go
+func getNextFrameAudio() []int16{
+    // get audio frame
+}
+
+for {
+    keywordIndex, err := porcupine.Process(getNextFrameAudio())
+    if keywordIndex >= 0 {
+        // wake word detected!
+    }
+}
+```
+
+When done resources have to be released explicitly.
+
+```go
+porcupine.Delete()
 ```
 
 ### Unity
