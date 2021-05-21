@@ -164,7 +164,7 @@ For more information about Java demos go to [demo/java](/demo/java).
 
 MicDemo uses [malgo](https://github.com/gen2brain/malgo) for cross-platform audio capture. It requires `cgo`, which on Windows may mean that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) to build it properly. 
 
-From [demo/go](/demo/go) run the following command to build and run the following command from the terminal:
+From [demo/go](/demo/go) run the following command from the terminal to build and run the mic demo:
 ```console
 go run micdemo/porcupine_mic_demo.go -keywords porcupine
 ```
