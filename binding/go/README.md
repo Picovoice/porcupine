@@ -72,7 +72,7 @@ func getNextFrameAudio() []int16{
 }
 
 for {
-    keywordIndex := porcupine.Process(getNextFrameAudio())
+    keywordIndex, err := porcupine.Process(getNextFrameAudio())
     if keywordIndex >= 0 {
         // wake word detected!
     }
