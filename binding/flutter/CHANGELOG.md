@@ -24,3 +24,6 @@
 
 ## [1.9.11] - 2021-04-30
 * Android lib update
+
+## [1.9.12] - 2021-06-04
+* Android lib update
