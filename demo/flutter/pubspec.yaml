@@ -11,12 +11,20 @@ dependencies:
     sdk: flutter
   
   flutter_picker: ^2.0.1
-
-  porcupine: ^1.9.11
+  path_provider: ^2.0.2
+  porcupine: ^1.9.12
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
+  assets:
+    - assets/ananas_android.ppn
+    - assets/himbeere_android.ppn
+    - assets/porcupine_params_de.pv
+    - assets/porcupine_params_fr.pv
+    - assets/porcupine_params_es.pv
+    - assets/leopardo_android.ppn
+    - assets/framboise_android.ppn
   uses-material-design: true
