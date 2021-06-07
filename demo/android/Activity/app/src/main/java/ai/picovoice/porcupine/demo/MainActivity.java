@@ -14,9 +14,7 @@ package ai.picovoice.porcupine.demo;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -32,13 +30,6 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
@@ -66,34 +57,34 @@ public class MainActivity extends AppCompatActivity {
                 .setKeyword(keyword)
                 .setSensitivity(0.7f)
                 .build(getApplicationContext(), new PorcupineManagerCallback() {
-            @Override
-            public void invoke(int keywordIndex) {
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-                        if (!notificationPlayer.isPlaying()) {
-                            notificationPlayer.start();
-                        }
-
-                        final RelativeLayout layout = findViewById(R.id.layout);
-                        layout.setBackgroundColor(detectedBackgroundColor);
-                        new CountDownTimer(1000, 100) {
+                    public void invoke(int keywordIndex) {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onTick(long millisUntilFinished) {
+                            public void run() {
                                 if (!notificationPlayer.isPlaying()) {
                                     notificationPlayer.start();
                                 }
-                            }
 
-                            @Override
-                            public void onFinish() {
-                                layout.setBackgroundColor(Color.TRANSPARENT);
+                                final RelativeLayout layout = findViewById(R.id.layout);
+                                layout.setBackgroundColor(detectedBackgroundColor);
+                                new CountDownTimer(1000, 100) {
+                                    @Override
+                                    public void onTick(long millisUntilFinished) {
+                                        if (!notificationPlayer.isPlaying()) {
+                                            notificationPlayer.start();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        layout.setBackgroundColor(Color.TRANSPARENT);
+                                    }
+                                }.start();
                             }
-                        }.start();
+                        });
                     }
                 });
-            }
-        });
     }
 
     private void configureKeywordSpinner() {
@@ -142,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         ToggleButton recordButton = findViewById(R.id.record_button);
         if (recordButton.isChecked()) {
             if (porcupineManager != null) {
@@ -169,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
             ToggleButton toggleButton = findViewById(R.id.record_button);
             toggleButton.toggle();

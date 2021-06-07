@@ -17,6 +17,8 @@ import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Process;
 
 import java.util.concurrent.Callable;
@@ -148,6 +150,8 @@ public class PorcupineManager {
         private final AtomicBoolean stop = new AtomicBoolean(false);
         private final AtomicBoolean stopped = new AtomicBoolean(false);
 
+        private final Handler callbackHandler = new Handler();
+
         void start() {
 
             if (started.get()) {
@@ -207,7 +211,12 @@ public class PorcupineManager {
                         try {
                             final int keywordIndex = porcupine.process(buffer);
                             if (keywordIndex >= 0) {
-                                callback.invoke(keywordIndex);
+                                callbackHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        callback.invoke(keywordIndex);
+                                    }
+                                });
                             }
                         } catch (PorcupineException e) {
                             throw new PorcupineException(e);
