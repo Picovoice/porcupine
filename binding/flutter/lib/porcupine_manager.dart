@@ -143,8 +143,8 @@ class PorcupineManager {
   /// Closes audio stream
   Future<void> stop() async => await _voiceProcessor?.stop();
 
-  /// Releases Porcupine and audio resouces
-  void delete() async {
+  /// Releases Porcupine and audio resources
+  Future<void> delete() async {
     if (_voiceProcessor?.isRecording ?? false) {
       await _voiceProcessor?.stop();
     }

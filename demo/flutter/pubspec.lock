@@ -161,10 +161,10 @@ packages:
   porcupine:
     dependency: "direct main"
     description:
-      name: porcupine
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.12"
+      path: "../../binding/flutter"
+      relative: true
+    source: path
+    version: "1.9.13"
   process:
     dependency: transitive
     description:
