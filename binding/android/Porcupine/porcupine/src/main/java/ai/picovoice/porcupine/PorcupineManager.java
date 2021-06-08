@@ -150,7 +150,7 @@ public class PorcupineManager {
         private final AtomicBoolean stop = new AtomicBoolean(false);
         private final AtomicBoolean stopped = new AtomicBoolean(false);
 
-        private final Handler callbackHandler = new Handler();
+        private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
         void start() {
 
