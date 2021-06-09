@@ -140,7 +140,7 @@ class Porcupine {
           keywordPaths[i] = _builtInKeywordPaths?[keywords[i]];
         } else {
           throw new PvArgumentError(
-              "One or more keywords are not available by default. Available default keywords are: $BUILT_IN_KEYWORDS");
+              "The keyword `${keywords[i]}` is not a valid built-in keyword. Available built-in keywords are: $BUILT_IN_KEYWORDS");
         }
       }
     }
