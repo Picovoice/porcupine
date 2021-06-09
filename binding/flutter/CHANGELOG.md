@@ -27,3 +27,6 @@
 
 ## [1.9.12] - 2021-06-04
 * Android lib update
+
+## [1.9.13] - 2021-06-08
+* Supports on-the-fly asset extraction

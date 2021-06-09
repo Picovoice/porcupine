@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.inactive) {
       await _stopProcessing();
-      _porcupineManager?.delete();
+      await _porcupineManager?.delete();
       _porcupineManager = null;
     }
   }
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     }
 
     if (_porcupineManager != null) {
-      _porcupineManager?.delete();
+      await _porcupineManager?.delete();
       _porcupineManager = null;
     }
     try {
