@@ -164,7 +164,7 @@ packages:
       name: porcupine
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.12"
+    version: "1.9.13"
   process:
     dependency: transitive
     description:
