@@ -211,7 +211,7 @@ You can then pass it directly to Porcupine's `fromKeywordPaths` constructor:
 ```dart
 String keywordAsset = "assets/keyword.ppn"
 try{
-    _porcupine = await Porcupine.fromKeywordPaths(["assets/keyword.ppn"]);
+    _porcupine = await Porcupine.fromKeywordPaths([keywordAsset]);
 } on PvError catch (err) {
     // handle porcupine init error
 }
