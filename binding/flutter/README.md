@@ -145,7 +145,7 @@ await _porcupineManager.stop();
 
 Once the app is done with using an instance of PorcupineManager, be sure you explicitly release the resources allocated to Porcupine:
 ```dart
-_porcupineManager.delete();
+await _porcupineManager.delete();
 ```
 
 NOTE: Avoid calling `delete()` from the `paused` state unless you have overidden the back button functionality on Android with [WillPopScope](https://api.flutter.dev/flutter/widgets/WillPopScope-class.html).
