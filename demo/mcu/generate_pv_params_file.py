@@ -47,7 +47,7 @@ def generate_pv_params(ppn_files, header_file_folders):
 
     for header_file_path in header_file_folders:
         header_file = os.path.join(header_file_path, 'pv_params.h')
-        with open(header_file, 'w') as f_out:
+        with open(os.path.join(script_dir, header_file), 'w') as f_out:
             f_out.write(HEADER)
             for keyword in ppn_files:
                 keyword_file_path = os.path.join(ppn_dir, keyword + '_cortexm.ppn')
