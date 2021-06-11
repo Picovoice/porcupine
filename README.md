@@ -1,6 +1,17 @@
 # Porcupine
 
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
+[![PyPI](https://img.shields.io/pypi/v/pvporcupine)](https://pypi.org/project/pvporcupine/)
+[![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/porcupine/binding/go.svg)](https://pkg.go.dev/github.com/Picovoice/porcupine/binding/go)
+[![Pub Version](https://img.shields.io/pub/v/porcupine)](https://pub.dev/packages/porcupine)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)
+[![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
+[![Cocoapods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://github.com/Picovoice/porcupine/tree/master/binding/ios)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-angular)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-react)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-vue)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
