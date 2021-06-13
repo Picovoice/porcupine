@@ -1,6 +1,9 @@
 # Porcupine
 
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
+[![GitHub](https://img.shields.io/github/license/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
+[![GitHub language count](https://img.shields.io/github/languages/count/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
+
 [![PyPI](https://img.shields.io/pypi/v/pvporcupine)](https://pypi.org/project/pvporcupine/)
 [![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
 [![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/porcupine/binding/go.svg)](https://pkg.go.dev/github.com/Picovoice/porcupine/binding/go)
@@ -14,6 +17,9 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/AiPicovoice)](https://twitter.com/AiPicovoice)
+[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCAdi9sTCXLosG1XeqDwLx7w?style=social)](https://www.youtube.com/channel/UCAdi9sTCXLosG1XeqDwLx7w)
 
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
 applications. It is
