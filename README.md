@@ -166,10 +166,13 @@ For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
 
 ### Java Demos
 
-Make sure there is a working microphone connected to your device. From the root of the repository, run the following command from the terminal:
+Make sure there is a working microphone connected to your device. Then invoke the following commands from the terminal:
 
 ```console
-java -jar demo/java/bin/porcupine-mic-demo.jar -k porcupine
+cd demo/java
+./gradlew build
+cd build/libs
+java -jar porcupine-mic-demo.jar -k porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
@@ -490,8 +493,8 @@ using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoic
 
 ### Java
 
-Install the Porcupine Java binding by downloading and referencing the latest Porcupine JAR file available
-[here](/binding/java/bin). The SDK exposes a builder to create instances of the engine:
+The Porcupine Java binding is available from the Maven Central Repository at `ai.picovoice:porcupine-java:${version}`.
+
 
 ```java
 import ai.picovoice.porcupine.*;
