@@ -7,7 +7,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '1.9.0'
+    PUBLISH_VERSION = '1.9.2'
     PUBLISH_ARTIFACT_ID = 'porcupine-java'
 }
 
@@ -21,18 +21,20 @@ sourceSets {
             srcDirs = ['src']
         }
     }
-    test{
+    test {
         java {
             srcDirs = ['test']
         }
     }
 }
 
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
 def outputDir = "$buildDir/classes/java/main"
 
 task copyLinuxKeywordResources(type: Copy) {
     from('../../resources/keyword_files/linux')
-    include ('alexa_linux.ppn',
+    include('alexa_linux.ppn',
             'americano_linux.ppn',
             'blueberry_linux.ppn',
             'bumblebee_linux.ppn',
@@ -46,11 +48,11 @@ task copyLinuxKeywordResources(type: Copy) {
             'picovoice_linux.ppn',
             'porcupine_linux.ppn',
             'terminator_linux.ppn')
-    into ("${outputDir}/porcupine/resources/keyword_files/linux/")
+    into("${outputDir}/porcupine/resources/keyword_files/linux/")
 }
 task copyMacKeywordResources(type: Copy) {
     from('../../resources/keyword_files/mac')
-    include ('alexa_mac.ppn',
+    include('alexa_mac.ppn',
             'americano_mac.ppn',
             'blueberry_mac.ppn',
             'bumblebee_mac.ppn',
@@ -64,11 +66,11 @@ task copyMacKeywordResources(type: Copy) {
             'picovoice_mac.ppn',
             'porcupine_mac.ppn',
             'terminator_mac.ppn')
-    into ("${outputDir}/porcupine/resources/keyword_files/mac/")
+    into("${outputDir}/porcupine/resources/keyword_files/mac/")
 }
 task copyWindowsKeywordResources(type: Copy) {
     from('../../resources/keyword_files/windows')
-    include ('alexa_windows.ppn',
+    include('alexa_windows.ppn',
             'americano_windows.ppn',
             'blueberry_windows.ppn',
             'bumblebee_windows.ppn',
@@ -82,7 +84,7 @@ task copyWindowsKeywordResources(type: Copy) {
             'picovoice_windows.ppn',
             'porcupine_windows.ppn',
             'terminator_windows.ppn')
-    into ("${outputDir}/porcupine/resources/keyword_files/windows/")
+    into("${outputDir}/porcupine/resources/keyword_files/windows/")
 }
 
 task copyDefaultModel(type: Copy) {
@@ -108,7 +110,9 @@ assemble {
     dependsOn 'copyWindowsLib'
 }
 
-apply from: "${rootDir}/publish-mavencentral.gradle"
+if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
+    apply from: "${rootDir}/publish-mavencentral.gradle"
+}
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
