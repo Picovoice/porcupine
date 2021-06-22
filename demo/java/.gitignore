@@ -1,5 +1,5 @@
-.idea/workspace.xml
-.idea/usage.statistics.xml
-.idea/tasks.xml
-.idea/shelf/**
-out/**
+*.iml
+/.idea
+.gradle
+.DS_Store
+/build

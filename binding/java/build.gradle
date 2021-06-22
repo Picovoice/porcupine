@@ -1,0 +1,123 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+ext {
+    PUBLISH_GROUP_ID = 'ai.picovoice'
+    PUBLISH_VERSION = '1.9.2'
+    PUBLISH_ARTIFACT_ID = 'porcupine-java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test']
+        }
+    }
+}
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
+def outputDir = "$buildDir/classes/java/main"
+
+task copyLinuxKeywordResources(type: Copy) {
+    from('../../resources/keyword_files/linux')
+    include('alexa_linux.ppn',
+            'americano_linux.ppn',
+            'blueberry_linux.ppn',
+            'bumblebee_linux.ppn',
+            'computer_linux.ppn',
+            'grapefruit_linux.ppn',
+            'grasshopper_linux.ppn',
+            'hey google_linux.ppn',
+            'hey siri_linux.ppn',
+            'jarvis_linux.ppn',
+            'ok google_linux.ppn',
+            'picovoice_linux.ppn',
+            'porcupine_linux.ppn',
+            'terminator_linux.ppn')
+    into("${outputDir}/porcupine/resources/keyword_files/linux/")
+}
+task copyMacKeywordResources(type: Copy) {
+    from('../../resources/keyword_files/mac')
+    include('alexa_mac.ppn',
+            'americano_mac.ppn',
+            'blueberry_mac.ppn',
+            'bumblebee_mac.ppn',
+            'computer_mac.ppn',
+            'grapefruit_mac.ppn',
+            'grasshopper_mac.ppn',
+            'hey google_mac.ppn',
+            'hey siri_mac.ppn',
+            'jarvis_mac.ppn',
+            'ok google_mac.ppn',
+            'picovoice_mac.ppn',
+            'porcupine_mac.ppn',
+            'terminator_mac.ppn')
+    into("${outputDir}/porcupine/resources/keyword_files/mac/")
+}
+task copyWindowsKeywordResources(type: Copy) {
+    from('../../resources/keyword_files/windows')
+    include('alexa_windows.ppn',
+            'americano_windows.ppn',
+            'blueberry_windows.ppn',
+            'bumblebee_windows.ppn',
+            'computer_windows.ppn',
+            'grapefruit_windows.ppn',
+            'grasshopper_windows.ppn',
+            'hey google_windows.ppn',
+            'hey siri_windows.ppn',
+            'jarvis_windows.ppn',
+            'ok google_windows.ppn',
+            'picovoice_windows.ppn',
+            'porcupine_windows.ppn',
+            'terminator_windows.ppn')
+    into("${outputDir}/porcupine/resources/keyword_files/windows/")
+}
+
+task copyDefaultModel(type: Copy) {
+    from('../../lib/common/porcupine_params.pv') into "${outputDir}/porcupine/lib/common/"
+}
+task copyLinuxLib(type: Copy) {
+    from('../../lib/java/linux/x86_64/libpv_porcupine_jni.so') into "${outputDir}/porcupine/lib/java/linux/x86_64/"
+}
+task copyMacLib(type: Copy) {
+    from('../../lib/java/mac/x86_64/libpv_porcupine_jni.dylib') into "${outputDir}/porcupine/lib/java/mac/x86_64/"
+}
+task copyWindowsLib(type: Copy) {
+    from('../../lib/java/windows/amd64/pv_porcupine_jni.dll') into "${outputDir}/porcupine/lib/java/windows/amd64/"
+}
+
+assemble {
+    dependsOn 'copyLinuxKeywordResources'
+    dependsOn 'copyMacKeywordResources'
+    dependsOn 'copyWindowsKeywordResources'
+    dependsOn 'copyDefaultModel'
+    dependsOn 'copyLinuxLib'
+    dependsOn 'copyMacLib'
+    dependsOn 'copyWindowsLib'
+}
+
+if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
+    apply from: "${rootDir}/publish-mavencentral.gradle"
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+}
+
+test {
+    useJUnitPlatform()
+}
