@@ -10,6 +10,23 @@ java {
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
 
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+
+def props = new Properties()
+file("local.properties").withInputStream { props.load(it) }
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
