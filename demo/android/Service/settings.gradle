@@ -1,2 +1,2 @@
 include ':porcupine'
-include ':app'
+include ':porcupine-service-demo-app'
