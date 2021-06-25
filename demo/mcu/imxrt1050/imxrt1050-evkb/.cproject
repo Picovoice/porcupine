@@ -637,7 +637,7 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="com.nxp.mcuxpresso.core.datamodels">
 		<sdkName>SDK_2.x_EVKB-IMXRT1050</sdkName>
-		<sdkVersion>2.8.6</sdkVersion>
+		<sdkVersion>2.9.1</sdkVersion>
 		<sdkComponents>middleware.baremetal.MIMXRT1052;platform.drivers.common.MIMXRT1052;platform.drivers.clock.MIMXRT1052;device.MIMXRT1052_CMSIS.MIMXRT1052;platform.Include_core_cm7.MIMXRT1052;platform.Include_common.MIMXRT1052;platform.Include_dsp.MIMXRT1052;platform.drivers.lpuart.MIMXRT1052;platform.drivers.igpio.MIMXRT1052;platform.drivers.iomuxc.MIMXRT1052;platform.drivers.xip_device.MIMXRT1052;platform.drivers.lpi2c.MIMXRT1052;platform.drivers.lpi2c_edma.MIMXRT1052;platform.drivers.edma.MIMXRT1052;platform.drivers.dmamux.MIMXRT1052;platform.drivers.ocotp.MIMXRT1052;utility.debug_console.MIMXRT1052;component.serial_manager.MIMXRT1052;component.lists.MIMXRT1052;component.serial_manager_uart.MIMXRT1052;component.lpuart_adapter.MIMXRT1052;platform.drivers.xip_board.MIMXRT1052;component.wm8904_adapter.MIMXRT1052;driver.wm8904.MIMXRT1052;component.codec_i2c.MIMXRT1052;component.lpi2c_adapter.MIMXRT1052;driver.codec.MIMXRT1052;device.MIMXRT1052_startup.MIMXRT1052;project_template.evkbimxrt1050.MIMXRT1052;</sdkComponents>
 		<boardId>evkbimxrt1050</boardId>
 		<package>MIMXRT1052DVL6B</package>
