@@ -30,7 +30,7 @@ func TestProcess(t *testing.T) {
 
 	t.Logf("Porcupine Version: %s", Version)
 	t.Logf("Frame Length: %d", FrameLength)
-	t.Logf("Samples Rate: %d", SampleRate)
+	t.Logf("Sample Rate: %d", SampleRate)
 
 	data, err := ioutil.ReadFile(test_file)
 	if err != nil {
