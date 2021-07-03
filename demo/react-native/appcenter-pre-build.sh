@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-yarn copy
+node copy.js
