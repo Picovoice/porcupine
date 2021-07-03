@@ -304,10 +304,7 @@ func extractFile(srcFile string, dstDir string) string {
 	}
 
 	extractedFilepath := filepath.Join(dstDir, srcFile)
-	err := os.MkdirAll(filepath.Dir(extractedFilepath), 0777)
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
+	os.MkdirAll(filepath.Dir(extractedFilepath), 0777)
 
 	writeErr := ioutil.WriteFile(extractedFilepath, bytes, 0777)
 	if writeErr != nil {
