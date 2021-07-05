@@ -11,6 +11,6 @@ export PATH=`pwd`/flutter/bin:$PATH
 
 flutter channel stable
 flutter doctor
-flutter build apk --release
+flutter build apk --debug
 
-mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_<
+mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-debug.apk $_<
