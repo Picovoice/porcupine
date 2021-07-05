@@ -21,7 +21,7 @@ subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
-    project.evaluationDependsOn(':porcupine-flutter-demo-app')
+    project.evaluationDependsOn(':app')
 }
 
 task clean(type: Delete) {
