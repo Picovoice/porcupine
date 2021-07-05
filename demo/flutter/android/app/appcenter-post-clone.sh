@@ -13,4 +13,5 @@ flutter channel stable
 flutter doctor
 flutter build apk --debug
 
-mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-debug.apk $_<
+mkdir -p android/app/build/outputs/apk/
+mv build/app/outputs/apk/release/app-debug.apk android/app/build/outputs/apk/
