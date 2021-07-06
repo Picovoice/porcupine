@@ -9,7 +9,7 @@
 
 import AVFoundation
 
-public enum PorcupineManagerError: Error {    
+public enum PorcupineManagerError: Error {
     case recordingDenied
     case objectDisposed
 }
@@ -59,7 +59,7 @@ public class PorcupineManager {
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineError
-    public convenience init(keywordPaths: [String], modelPath:String = Porcupine.defaultModelPath, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
+    public convenience init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
         try self.init(porcupine:Porcupine(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
     }
     
@@ -72,7 +72,7 @@ public class PorcupineManager {
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineError
-    public convenience init(keywordPath: String, modelPath:String = Porcupine.defaultModelPath, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
+    public convenience init(keywordPath: String, modelPath:String? = nil, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
         try self.init(porcupine:Porcupine(keywordPath: keywordPath, modelPath: modelPath, sensitivity: sensitivity), onDetection:onDetection)
     }
     
@@ -85,7 +85,7 @@ public class PorcupineManager {
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineError
-    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath: String = Porcupine.defaultModelPath, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
+    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
         
         try self.init(porcupine:Porcupine(keywords: keywords, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
     }
@@ -99,7 +99,7 @@ public class PorcupineManager {
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineError
-    public convenience init(keyword: Porcupine.BuiltInKeyword, modelPath: String = Porcupine.defaultModelPath, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
+    public convenience init(keyword: Porcupine.BuiltInKeyword, modelPath: String? = nil, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
         try self.init(porcupine:Porcupine(keyword: keyword, modelPath: modelPath, sensitivity: sensitivity), onDetection:onDetection)
     }
     
@@ -137,7 +137,7 @@ public class PorcupineManager {
         let audioSession = AVAudioSession.sharedInstance()
         if audioSession.recordPermission == .denied {
             throw PorcupineManagerError.recordingDenied
-        }                
+        }
         
         try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
         
