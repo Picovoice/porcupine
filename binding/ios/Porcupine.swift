@@ -39,7 +39,6 @@ public class Porcupine {
     public static let frameLength = UInt32(pv_porcupine_frame_length())
     public static let sampleRate = UInt32(pv_sample_rate())
     public static let version = String(cString: pv_porcupine_version())
-    public static let defaultModelPath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv") ?? ""
     
     /// Constructor.
     ///
@@ -49,7 +48,16 @@ public class Porcupine {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public init(keywordPaths: [String], modelPath:String = defaultModelPath, sensitivities: [Float32]?) throws {
+    public init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]?) throws {
+        
+        var modelPathArg = modelPath
+        if (modelPath == nil){
+            let bundle = Bundle(for: type(of: self))
+            modelPathArg  = bundle.path(forResource: "porcupine_params", ofType: "pv")
+            if modelPathArg == nil {
+                throw PorcupineError.io
+            }
+        }
         
         let sensitivitiesArg = sensitivities ?? Array(repeating: 0.5, count: keywordPaths.count)
         
@@ -61,8 +69,8 @@ public class Porcupine {
             throw PorcupineError.invalidArgument(message: "One or more sensitivities provided were not floating-point values between [0,1]")
         }
         
-        if !FileManager().fileExists(atPath: modelPath){
-            throw PorcupineError.invalidArgument(message: "Model file at does not exist at '\(modelPath)'")
+        if !FileManager().fileExists(atPath: modelPathArg!){
+            throw PorcupineError.invalidArgument(message: "Model file at does not exist at '\(modelPathArg!)'")
         }
         
         for keywordPath in keywordPaths {
@@ -72,7 +80,7 @@ public class Porcupine {
         }
         
         let status = pv_porcupine_init(
-            modelPath,
+            modelPathArg,
             Int32(keywordPaths.count),
             keywordPaths.map { UnsafePointer(strdup($0)) },
             sensitivitiesArg,
@@ -88,7 +96,7 @@ public class Porcupine {
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public convenience init(keywordPath: String, modelPath:String = defaultModelPath, sensitivity: Float32 = 0.5) throws {
+    public convenience init(keywordPath: String, modelPath:String? = nil, sensitivity: Float32 = 0.5) throws {
         try self.init(keywordPaths: [keywordPath], modelPath:modelPath, sensitivities: [sensitivity])
     }
     
@@ -100,14 +108,16 @@ public class Porcupine {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath: String = defaultModelPath, sensitivities: [Float32]?) throws {
+    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]?) throws {
         
         var keywordPaths = [String]()
+        let bundle = Bundle(for: type(of: self))
         for k in keywords{
-            let keywordPath = Bundle.main.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
-            if keywordPath != nil {
-                keywordPaths.append(keywordPath!);
+            let keywordPath = bundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
+            if keywordPath == nil {
+                throw PorcupineError.io
             }
+            keywordPaths.append(keywordPath!);
         }
         
         try self.init(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities)
@@ -121,7 +131,7 @@ public class Porcupine {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public convenience init(keyword: Porcupine.BuiltInKeyword, modelPath: String = defaultModelPath, sensitivity: Float32 = 0.5) throws {
+    public convenience init(keyword: Porcupine.BuiltInKeyword, modelPath:String? = nil, sensitivity: Float32 = 0.5) throws {
         try self.init(keywords: [keyword], modelPath:modelPath, sensitivities: [sensitivity])
     }
     
