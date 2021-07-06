@@ -75,7 +75,7 @@ const keywordIndex = handle.process(frame);
 
 ### Custom keywords
 
-Providing an array of strings instead of the built-in enums allows you to specify an absolute path to a keyword PPN file:
+Providing an array of strings instead of the built-in enums allows you to specify an absolute path to a keyword `.ppn` file:
 
 ```javascript
 const handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
