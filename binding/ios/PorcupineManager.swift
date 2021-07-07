@@ -63,7 +63,7 @@ public class PorcupineManager {
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineError
-    public convenience init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
+    public convenience init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]? = nil, onDetection: ((Int32) -> Void)?) throws {
         try self.init(porcupine:Porcupine(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
     }
     
@@ -89,7 +89,7 @@ public class PorcupineManager {
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
     /// - Throws: PorcupineError
-    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]?, onDetection: ((Int32) -> Void)?) throws {
+    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]? = nil, onDetection: ((Int32) -> Void)?) throws {
         
         try self.init(porcupine:Porcupine(keywords: keywords, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
     }

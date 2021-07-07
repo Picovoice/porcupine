@@ -49,7 +49,7 @@ public class Porcupine {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]?) throws {
+    public init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]? = nil) throws {
         
         var modelPathArg = modelPath
         if (modelPath == nil){
@@ -109,7 +109,7 @@ public class Porcupine {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]?) throws {
+    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]? = nil) throws {
         
         var keywordPaths = [String]()
         let bundle = Bundle(for: type(of: self))
