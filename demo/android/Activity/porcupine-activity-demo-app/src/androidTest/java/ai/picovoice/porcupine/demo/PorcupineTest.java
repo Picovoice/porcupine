@@ -247,7 +247,7 @@ public class PorcupineTest {
     }
 
     @Test
-    public void testProcSingleBuiltInSuccess() throws Exception {
+    public void testProcSuccessSingleBuiltIn() throws Exception {
         Porcupine p = new Porcupine.Builder()
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
@@ -278,7 +278,7 @@ public class PorcupineTest {
     }
 
     @Test
-    public void testProcMultipleBuiltInSuccess() throws Exception {
+    public void testProcSuccessMultipleBuiltIn() throws Exception {
         Porcupine.BuiltInKeyword[] inputBuiltInKeywords = new Porcupine.BuiltInKeyword[]{
                 Porcupine.BuiltInKeyword.ALEXA,
                 Porcupine.BuiltInKeyword.AMERICANO,
@@ -340,7 +340,7 @@ public class PorcupineTest {
     }
 
     @Test
-    public void testInitPorcupineDE() throws PorcupineException {
+    public void testInitSuccessDE() throws PorcupineException {
         File keywordPath = new File(testResourcesPath, "keyword_files/de/ananas_android.ppn");
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params_de.pv");
         Porcupine p = new Porcupine.Builder()
@@ -356,7 +356,7 @@ public class PorcupineTest {
     }
 
     @Test
-    public void testInitPorcupineES() throws PorcupineException {
+    public void testInitSuccessES() throws PorcupineException {
         File keywordPath = new File(testResourcesPath, "keyword_files/es/emparedado_android.ppn");
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params_es.pv");
         Porcupine p = new Porcupine.Builder()
@@ -372,7 +372,7 @@ public class PorcupineTest {
     }
 
     @Test
-    public void testInitPorcupineFR() throws PorcupineException {
+    public void testInitSuccessFR() throws PorcupineException {
         File keywordPath = new File(testResourcesPath, "keyword_files/fr/framboise_android.ppn");
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params_fr.pv");
         Porcupine p = new Porcupine.Builder()
