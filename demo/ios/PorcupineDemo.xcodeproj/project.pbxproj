@@ -10,7 +10,6 @@
 		0251C2F0269610D000B77F69 /* multiple_keywords.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0251C2EE269610D000B77F69 /* multiple_keywords.wav */; };
 		0251C2F1269610D000B77F69 /* porcupine.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0251C2EF269610D000B77F69 /* porcupine.wav */; };
 		0251C2FD2696114A00B77F69 /* porcupine_params_es.pv in Resources */ = {isa = PBXBuildFile; fileRef = 0251C2F92696114A00B77F69 /* porcupine_params_es.pv */; };
-		0251C2FE2696114A00B77F69 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 0251C2FA2696114A00B77F69 /* porcupine_params.pv */; };
 		0251C2FF2696114A00B77F69 /* porcupine_params_fr.pv in Resources */ = {isa = PBXBuildFile; fileRef = 0251C2FB2696114A00B77F69 /* porcupine_params_fr.pv */; };
 		0251C3002696114A00B77F69 /* porcupine_params_de.pv in Resources */ = {isa = PBXBuildFile; fileRef = 0251C2FC2696114A00B77F69 /* porcupine_params_de.pv */; };
 		0251C3022696115900B77F69 /* framboise_android.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C3012696115900B77F69 /* framboise_android.ppn */; };
@@ -56,7 +55,6 @@
 		0251C2EE269610D000B77F69 /* multiple_keywords.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = multiple_keywords.wav; sourceTree = "<group>"; };
 		0251C2EF269610D000B77F69 /* porcupine.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = porcupine.wav; sourceTree = "<group>"; };
 		0251C2F92696114A00B77F69 /* porcupine_params_es.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_es.pv; path = ../../../lib/common/porcupine_params_es.pv; sourceTree = "<group>"; };
-		0251C2FA2696114A00B77F69 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../lib/common/porcupine_params.pv; sourceTree = "<group>"; };
 		0251C2FB2696114A00B77F69 /* porcupine_params_fr.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_fr.pv; path = ../../../lib/common/porcupine_params_fr.pv; sourceTree = "<group>"; };
 		0251C2FC2696114A00B77F69 /* porcupine_params_de.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_de.pv; path = ../../../lib/common/porcupine_params_de.pv; sourceTree = "<group>"; };
 		0251C3012696115900B77F69 /* framboise_android.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = framboise_android.ppn; path = ../../../../resources/keyword_files_fr/android/framboise_android.ppn; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 				0251C2FC2696114A00B77F69 /* porcupine_params_de.pv */,
 				0251C2F92696114A00B77F69 /* porcupine_params_es.pv */,
 				0251C2FB2696114A00B77F69 /* porcupine_params_fr.pv */,
-				0251C2FA2696114A00B77F69 /* porcupine_params.pv */,
 			);
 			name = model_files;
 			sourceTree = "<group>";
@@ -350,7 +347,6 @@
 				0251C3042696116400B77F69 /* emparedado_android.ppn in Resources */,
 				0251C2FD2696114A00B77F69 /* porcupine_params_es.pv in Resources */,
 				0251C2F0269610D000B77F69 /* multiple_keywords.wav in Resources */,
-				0251C2FE2696114A00B77F69 /* porcupine_params.pv in Resources */,
 				0251C30A2696119700B77F69 /* alexa_linux.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
