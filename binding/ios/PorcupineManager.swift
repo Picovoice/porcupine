@@ -41,11 +41,15 @@ public class PorcupineManager {
                 return
             }
             
-            let result:Int32 = self.porcupine!.process(pcm: audio)
-            if result >= 0 {
-                DispatchQueue.main.async {
-                    self.onDetection?(result)
+            do{
+                let result:Int32 = try self.porcupine!.process(pcm: audio)
+                if result >= 0 {
+                    DispatchQueue.main.async {
+                        self.onDetection?(result)
+                    }
                 }
+            } catch {
+                print("\(error)")
             }
         }
     }

@@ -13,6 +13,7 @@ public enum PorcupineError: Error {
     case invalidArgument(message:String)
     case io
     case outOfMemory
+    case invalidState
 }
 
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.
@@ -151,10 +152,16 @@ public class Porcupine {
     ///
     /// - Parameters:
     ///   - pcm: A pointer to a frame of 16-bit pcm
+    /// - Throws: PorcupineError
     /// - Returns:Index of keyword detected or -1 if no keyword was detected
-    public func process(pcm:UnsafePointer<Int16>) -> Int32 {
+    public func process(pcm:UnsafePointer<Int16>) throws -> Int32 {
+        if handle == nil {
+            throw PorcupineError.invalidState
+        }
+        
         var result: Int32 = -1
-        pv_porcupine_process(self.handle, pcm, &result)
+        let status = pv_porcupine_process(self.handle, pcm, &result)
+        try checkStatus(status)
         return result
     }
     
@@ -162,14 +169,20 @@ public class Porcupine {
     ///
     /// - Parameters:
     ///   - pcm: An array of 16-bit pcm samples
+    /// - Throws: PorcupineError
     /// - Returns:Index of keyword detected or -1 if no keyword was detected
     public func process(pcm:[Int16]) throws -> Int32 {
+        if handle == nil {
+            throw PorcupineError.invalidState
+        }
+        
         if pcm.count != Porcupine.frameLength {
             throw PorcupineError.invalidArgument(message: "Frame of audio data must contain \(Porcupine.frameLength) samples - given frame contained \(pcm.count)")
         }
         
         var result: Int32 = -1
-        pv_porcupine_process(self.handle, pcm, &result)
+        let status = pv_porcupine_process(self.handle, pcm, &result)
+        try checkStatus(status)
         return result
     }
     
@@ -181,6 +194,8 @@ public class Porcupine {
             throw PorcupineError.outOfMemory
         case PV_STATUS_INVALID_ARGUMENT:
             throw PorcupineError.invalidArgument(message:"Porcupine rejected one of the provided arguments.")
+        case PV_STATUS_INVALID_STATE:
+            throw PorcupineError.invalidState
         default:
             return
         }
