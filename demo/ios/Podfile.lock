@@ -1,5 +1,5 @@
 PODS:
-  - Porcupine-iOS (1.9.2)
+  - Porcupine-iOS (1.9.3)
 
 DEPENDENCIES:
   - Porcupine-iOS
@@ -9,7 +9,7 @@ SPEC REPOS:
     - Porcupine-iOS
 
 SPEC CHECKSUMS:
-  Porcupine-iOS: c8dcb9d88483f510ba581e2cff25ad3c4eb3eac0
+  Porcupine-iOS: 15d9bd18f1ee8ee27715325e7c9318268cc064d2
 
 PODFILE CHECKSUM: a3abf8c14ea74825f6e51e06317d1453d4819411
 

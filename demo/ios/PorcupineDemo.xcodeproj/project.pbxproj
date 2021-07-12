@@ -16,6 +16,8 @@
 		0251C31026964CF700B77F69 /* ananas_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C30F26964CF700B77F69 /* ananas_ios.ppn */; };
 		0251C31226964D0700B77F69 /* framboise_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C31126964D0700B77F69 /* framboise_ios.ppn */; };
 		0251C31426964D2000B77F69 /* emparedado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C31326964D2000B77F69 /* emparedado_ios.ppn */; };
+		0251C323269C036200B77F69 /* pico clock_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C321269C036200B77F69 /* pico clock_ios.ppn */; };
+		0251C324269C036200B77F69 /* hey barista_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C322269C036200B77F69 /* hey barista_ios.ppn */; };
 		026A050D2693C833005C4511 /* PorcupineDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A050C2693C833005C4511 /* PorcupineDemoUITests.swift */; };
 		3A2A7656BBCEF3A94D927EDE /* libPods-PorcupineDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C07E6637D1E8570FA717E88 /* libPods-PorcupineDemoUITests.a */; };
 		B1AEE5C2CE6894B9E4AC32B0 /* libPods-PorcupineDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 102CBAC25A002178FECEB3F7 /* libPods-PorcupineDemo.a */; };
@@ -59,6 +61,8 @@
 		0251C30F26964CF700B77F69 /* ananas_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = ananas_ios.ppn; path = ../../../resources/keyword_files_de/ios/ananas_ios.ppn; sourceTree = "<group>"; };
 		0251C31126964D0700B77F69 /* framboise_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = framboise_ios.ppn; path = ../../../resources/keyword_files_fr/ios/framboise_ios.ppn; sourceTree = "<group>"; };
 		0251C31326964D2000B77F69 /* emparedado_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = emparedado_ios.ppn; path = ../../../resources/keyword_files_es/ios/emparedado_ios.ppn; sourceTree = "<group>"; };
+		0251C321269C036200B77F69 /* pico clock_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "pico clock_ios.ppn"; path = "../../../resources/keyword_files/ios/pico clock_ios.ppn"; sourceTree = "<group>"; };
+		0251C322269C036200B77F69 /* hey barista_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey barista_ios.ppn"; path = "../../../resources/keyword_files/ios/hey barista_ios.ppn"; sourceTree = "<group>"; };
 		026A050A2693C833005C4511 /* PorcupineDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PorcupineDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		026A050C2693C833005C4511 /* PorcupineDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PorcupineDemoUITests.swift; sourceTree = "<group>"; };
 		026A050E2693C833005C4511 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -142,6 +146,8 @@
 		0251C2F52696112700B77F69 /* en */ = {
 			isa = PBXGroup;
 			children = (
+				0251C322269C036200B77F69 /* hey barista_ios.ppn */,
+				0251C321269C036200B77F69 /* pico clock_ios.ppn */,
 				0251C3092696119700B77F69 /* alexa_linux.ppn */,
 			);
 			name = en;
@@ -334,11 +340,13 @@
 				0251C31426964D2000B77F69 /* emparedado_ios.ppn in Resources */,
 				0251C3002696114A00B77F69 /* porcupine_params_de.pv in Resources */,
 				0251C2FF2696114A00B77F69 /* porcupine_params_fr.pv in Resources */,
+				0251C323269C036200B77F69 /* pico clock_ios.ppn in Resources */,
 				0251C31026964CF700B77F69 /* ananas_ios.ppn in Resources */,
 				0251C2F1269610D000B77F69 /* porcupine.wav in Resources */,
 				0251C2FD2696114A00B77F69 /* porcupine_params_es.pv in Resources */,
 				0251C2F0269610D000B77F69 /* multiple_keywords.wav in Resources */,
 				0251C30A2696119700B77F69 /* alexa_linux.ppn in Resources */,
+				0251C324269C036200B77F69 /* hey barista_ios.ppn in Resources */,
 				0251C31226964D0700B77F69 /* framboise_ios.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,12 +401,10 @@
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey barista_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/pico clock_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
@@ -413,12 +419,10 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey barista_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pico clock_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
@@ -443,12 +447,10 @@
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey barista_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/pico clock_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
@@ -463,12 +465,10 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey barista_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pico clock_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
