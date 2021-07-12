@@ -18,7 +18,7 @@ The app background color will change to indicate a detection occurred.
 
 ## Running the Instrumented Unit Tests
 
-Ensure you have an Android device connected or simulator running.
+Ensure you have an Android device connected or simulator running. Then run the following from the terminal:
 
 ```console
 cd demo/android/Activity
