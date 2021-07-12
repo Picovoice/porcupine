@@ -64,7 +64,7 @@ class PorcupineDemoUITests: XCTestCase {
             didFail = true
         }
         
-        assert(didFail)
+        XCTAssert(didFail)
     }
     
     func testInitFailWithInvalidModelPath() throws {
@@ -76,7 +76,7 @@ class PorcupineDemoUITests: XCTestCase {
             didFail = true
         }
         
-        assert(didFail)
+        XCTAssert(didFail)
     }
     
     func testInitFailWithInvalidSensitivity() throws {
@@ -88,7 +88,7 @@ class PorcupineDemoUITests: XCTestCase {
             didFail = true
         }
         
-        assert(didFail)
+        XCTAssert(didFail)
     }
     
     func testInitFailWithMismatchedSensitivityCount() throws {
@@ -102,7 +102,7 @@ class PorcupineDemoUITests: XCTestCase {
             didFail = true
         }
         
-        assert(didFail)
+        XCTAssert(didFail)
     }
     
     func testInitFailWithNoKeywords() throws {
@@ -115,7 +115,7 @@ class PorcupineDemoUITests: XCTestCase {
             didFail = true
         }
         
-        assert(didFail)
+        XCTAssert(didFail)
     }
     
     func testInitFailWithInvalidKeywordPath() throws {
@@ -127,7 +127,7 @@ class PorcupineDemoUITests: XCTestCase {
             didFail = true
         }
         
-        assert(didFail)
+        XCTAssert(didFail)
     }
     
     func testInitFailWithWrongKeywordPlatform() throws {
@@ -141,7 +141,7 @@ class PorcupineDemoUITests: XCTestCase {
             didFail = true
         }
         
-        assert(didFail)
+        XCTAssert(didFail)
     }
     
     func testInitSuccessES() throws {
