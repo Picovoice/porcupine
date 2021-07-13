@@ -7,7 +7,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 5
-        versionName "1.8.1"
+        versionName "1.9.0"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -15,10 +16,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'ai.picovoice:porcupine-android:1.9.4'
+
+    // Espresso UI Testing
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
 }
