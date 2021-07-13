@@ -16,6 +16,5 @@ build/*
 *.perspectivev3
 *.pbxuser
 xcuserdata
-xcshareddata
 Pods
 ddp
