@@ -17,7 +17,6 @@ task javadoc(type: Javadoc) {
 
 javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
-
 // build a jar with javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier.set('javadoc')
