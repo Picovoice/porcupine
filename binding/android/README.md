@@ -100,7 +100,9 @@ In addition to custom keywords, you can override the default Porcupine english m
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
 
-The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, you'll pass in a different model file. 
+The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, you'll pass in a different model file.
+
+There is also the option to pass an error callback, which will be invoked if an error is encountered while PorcupineManager is processing audio.
 
 These optional parameters can be set like so:
 ```java
@@ -109,6 +111,12 @@ try {
                         .setKeywordPaths(keywordPaths)
                         .setModelPath("absolute/path/to/porcupine_model.pv")
                         .setSensitivities(new float[] { 0.6f, 0.35f })
+                        .setErrorCallback(new PorcupineManagerErrorCallback() {
+                            @Override
+                            public void invoke(PorcupineExcpetion e) {
+                                // process error
+                            }
+                        })
                         .build(context, wakeWordCallback);
 } catch (PorcupineException e) { }
 ```
@@ -176,22 +184,16 @@ porcupine.delete();
 
 ## Custom Wake Word Integration
 
-To add a custom wake word to your Android application a couple of extra steps must be taken. First, add your .ppn file to the `/res/raw` folder. All resources are compressed when the build system creates an APK, so you will have to extract your ppn file first before using it:
+To add a custom wake word or model file to your application, add the files to your assets folder (`src/main/assets`) and then pass the path to the Porcupine Builder:
 
 ```java
-// in this example our file located at '/res/raw/keyword.ppn'
-try (
-        InputStream is = new BufferedInputStream(
-            getResources().openRawResource(R.raw.keyword), 256);
-        OutputStream os = new BufferedOutputStream(
-            openFileOutput("keyword.ppn", Context.MODE_PRIVATE), 256)
-) {
-    int r;
-    while ((r = is.read()) != -1) {
-        os.write(r);
-    }
-    os.flush();
-}
+// in this example our files are located at '/assets/picovoice_files/keyword.ppn' and '/assets/picovoice_files/model.pv' 
+try {    
+    Porcupine porcupine = new Porcupine.Builder()
+                        .setKeywordPath("picovoice_files/keyword.ppn")
+                        .setModelPath("picovoice_files/model.pv")
+                        .build(context);
+} catch (PorcupineException e) { }
 ```
 
 ## Non-English Wake Words

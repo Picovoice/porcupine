@@ -20,6 +20,7 @@ import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
+import android.util.Log;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -35,19 +36,23 @@ public class PorcupineManager {
     private final MicrophoneReader microphoneReader;
     private final Porcupine porcupine;
     private final PorcupineManagerCallback callback;
+    private final PorcupineManagerErrorCallback errorCallback;
 
     /**
      * Private constructor.
      *
-     * @param porcupine An instance of the Porcupine wake word engine.
-     * @param callback  A callback function that is invoked upon detection of any of the keywords.
+     * @param porcupine     An instance of the Porcupine wake word engine.
+     * @param callback      A callback function that is invoked upon detection of any of the keywords.
+     * @param errorCallback A callback that reports errors encountered while processing audio.
      */
     private PorcupineManager(Porcupine porcupine,
-                             PorcupineManagerCallback callback) {
+                             PorcupineManagerCallback callback,
+                             PorcupineManagerErrorCallback errorCallback) {
 
 
         this.porcupine = porcupine;
         this.callback = callback;
+        this.errorCallback = errorCallback;
         microphoneReader = new MicrophoneReader();
     }
 
@@ -89,6 +94,7 @@ public class PorcupineManager {
         private String[] keywordPaths = null;
         private Porcupine.BuiltInKeyword[] keywords = null;
         private float[] sensitivities = null;
+        private PorcupineManagerErrorCallback errorCallback = null;
 
         public PorcupineManager.Builder setModelPath(String modelPath) {
             this.modelPath = modelPath;
@@ -125,6 +131,11 @@ public class PorcupineManager {
             return this;
         }
 
+        public PorcupineManager.Builder setErrorCallback(PorcupineManagerErrorCallback errorCallback) {
+            this.errorCallback = errorCallback;
+            return this;
+        }
+
         /**
          * Creates an instance of PorcupineManager.
          *
@@ -141,7 +152,7 @@ public class PorcupineManager {
                     .setKeywords(keywords)
                     .setSensitivities(sensitivities)
                     .build(context);
-            return new PorcupineManager(porcupine, callback);
+            return new PorcupineManager(porcupine, callback, errorCallback);
         }
     }
 
@@ -186,7 +197,7 @@ public class PorcupineManager {
             stopped.set(false);
         }
 
-        private void read() throws PorcupineException {
+        private void read() {
             final int minBufferSize = AudioRecord.getMinBufferSize(
                     porcupine.getSampleRate(),
                     AudioFormat.CHANNEL_IN_MONO,
@@ -218,15 +229,33 @@ public class PorcupineManager {
                                     }
                                 });
                             }
-                        } catch (PorcupineException e) {
-                            throw new PorcupineException(e);
+                        } catch (final PorcupineException e) {
+                            if (errorCallback != null) {
+                                callbackHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        errorCallback.invoke(e);
+                                    }
+                                });
+                            } else {
+                                Log.e("PorcupineManager", e.toString());
+                            }
                         }
                     }
                 }
 
                 audioRecord.stop();
             } catch (IllegalArgumentException | IllegalStateException e) {
-                throw new PorcupineException(e);
+                if (errorCallback != null) {
+                    callbackHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            errorCallback.invoke(new PorcupineException(e));
+                        }
+                    });
+                } else {
+                    Log.e("PorcupineManager", e.toString());
+                }
             } finally {
                 if (audioRecord != null) {
                     audioRecord.release();
