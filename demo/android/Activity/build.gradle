@@ -3,9 +3,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1043/'
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.3'
@@ -16,9 +13,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1043/'
-        }
     }
 }
 
