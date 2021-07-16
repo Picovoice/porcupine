@@ -48,7 +48,7 @@ public class Porcupine {
         System.loadLibrary("pv_porcupine");
     }
 
-    private final long handle;
+    private long handle;
 
     /**
      * Constructor.
@@ -72,7 +72,10 @@ public class Porcupine {
      * Releases resources acquired by Porcupine.
      */
     public void delete() {
-        delete(handle);
+        if (handle != 0) {
+            delete(handle);
+            handle = 0;
+        }
     }
 
     /**
@@ -88,6 +91,22 @@ public class Porcupine {
      * @throws PorcupineException if there is an error while processing the audio frame.
      */
     public int process(short[] pcm) throws PorcupineException {
+        if (handle == 0) {
+            throw new PorcupineException(
+                    new IllegalStateException("Attempted to call Porcupine process after delete."));
+        }
+        if (pcm == null) {
+            throw new PorcupineException(
+                    new IllegalArgumentException("Passed null frame to Porcupine process."));
+        }
+
+        if (pcm.length != getFrameLength()) {
+            throw new PorcupineException(
+                    new IllegalArgumentException(
+                            String.format("Porcupine process requires frames of length %d. " +
+                                    "Received frame of size %d.", getFrameLength(), pcm.length)));
+        }
+
         try {
             return process(handle, pcm);
         } catch (Exception e) {
@@ -184,18 +203,20 @@ public class Porcupine {
             return this;
         }
 
-        private void extractResources(Context context) throws PorcupineException {
+        private void extractPackageResources(Context context) throws PorcupineException {
             final Resources resources = context.getResources();
 
             try {
-                for (final int x : KEYWORDS_RESOURCES) {
-                    final String keywordName = resources.getResourceEntryName(x);
-                    final String keywordPath = copyResourceFile(context, x, keywordName + ".ppn");
+                for (final int resourceId : KEYWORDS_RESOURCES) {
+                    final String keywordName = resources.getResourceEntryName(resourceId);
+                    final String keywordPath = extractResource(context,
+                            resources.openRawResource(resourceId),
+                            keywordName + ".ppn");
                     BUILT_IN_KEYWORD_PATHS.put(BuiltInKeyword.valueOf(keywordName.toUpperCase()), keywordPath);
                 }
 
-                DEFAULT_MODEL_PATH = copyResourceFile(context,
-                        R.raw.porcupine_params,
+                DEFAULT_MODEL_PATH = extractResource(context,
+                        resources.openRawResource(R.raw.porcupine_params),
                         resources.getResourceEntryName(R.raw.porcupine_params) + ".pv");
 
                 isExtracted = true;
@@ -204,9 +225,9 @@ public class Porcupine {
             }
         }
 
-        private String copyResourceFile(Context context, int resourceId, String filename) throws IOException {
-            InputStream is = new BufferedInputStream(context.getResources().openRawResource(resourceId), 256);
-            OutputStream os = new BufferedOutputStream(context.openFileOutput(filename, Context.MODE_PRIVATE), 256);
+        private String extractResource(Context context, InputStream srcFileStream, String dstFilename) throws IOException {
+            InputStream is = new BufferedInputStream(srcFileStream, 256);
+            OutputStream os = new BufferedOutputStream(context.openFileOutput(dstFilename, Context.MODE_PRIVATE), 256);
             int r;
             while ((r = is.read()) != -1) {
                 os.write(r);
@@ -215,8 +236,7 @@ public class Porcupine {
 
             is.close();
             os.close();
-
-            return new File(context.getFilesDir(), filename).getAbsolutePath();
+            return new File(context.getFilesDir(), dstFilename).getAbsolutePath();
         }
 
         /**
@@ -229,11 +249,23 @@ public class Porcupine {
         public Porcupine build(Context context) throws PorcupineException {
 
             if (!isExtracted) {
-                extractResources(context);
+                extractPackageResources(context);
             }
 
             if (modelPath == null) {
                 modelPath = DEFAULT_MODEL_PATH;
+            } else {
+                File modelFile = new File(modelPath);
+                String modelFilename = modelFile.getName();
+                if (!modelFile.exists() && !modelFilename.equals("")) {
+                    try {
+                        modelPath = extractResource(context,
+                                context.getAssets().open(modelPath),
+                                modelFilename);
+                    } catch (IOException ex) {
+                        throw new PorcupineException(ex);
+                    }
+                }
             }
 
             if (this.keywordPaths != null && this.keywords != null) {
@@ -243,13 +275,32 @@ public class Porcupine {
 
             if (this.keywordPaths == null) {
                 if (this.keywords == null) {
-                    throw new PorcupineException(new IllegalArgumentException("Either 'keywords' or " +
-                            "'keywordPaths' must be set."));
+                    throw new PorcupineException(
+                            new IllegalArgumentException("Either 'keywords' or 'keywordPaths' must be set."));
                 }
 
                 this.keywordPaths = new String[keywords.length];
                 for (int i = 0; i < keywords.length; i++) {
                     this.keywordPaths[i] = BUILT_IN_KEYWORD_PATHS.get(keywords[i]);
+                }
+            } else {
+                for (int i = 0; i < keywordPaths.length; i++) {
+                    if (keywordPaths[i] == null || keywordPaths[i].equals("")) {
+                        throw new PorcupineException(
+                                new IllegalArgumentException("Empty keyword path passed to Porcupine."));
+                    }
+
+                    File keywordFile = new File(keywordPaths[i]);
+                    String keywordFilename = keywordFile.getName();
+                    if (!keywordFile.exists() && !keywordFilename.equals("")) {
+                        try {
+                            keywordPaths[i] = extractResource(context,
+                                    context.getAssets().open(keywordPaths[i]),
+                                    keywordFilename);
+                        } catch (IOException ex) {
+                            throw new PorcupineException(ex);
+                        }
+                    }
                 }
             }
 
