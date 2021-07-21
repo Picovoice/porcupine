@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Porcupine (Android)</string>
+    <string name="app_name">Porcupine Android Activity Demo</string>
     <string-array name="keywords">
         <item>Alexa</item>
         <item>Americano</item>
