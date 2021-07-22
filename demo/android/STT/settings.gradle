@@ -1,0 +1,2 @@
+include ':porcupine'
+include ':porcupine-stt-demo-app'
