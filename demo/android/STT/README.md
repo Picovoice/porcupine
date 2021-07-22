@@ -1,6 +1,6 @@
 # Android Speech-To-Text Demo
 
-This Android demo runs Porcupine as .
+This Android demo runs Porcupine with Android STT.
 
 ## Usage
 
@@ -9,21 +9,11 @@ Launch the demo on your phone using Android Studio.
 1. Select the wake word using the dropdown
 2. Press start
 3. Say the wake word
+4. Wait for the wake word to be detected
+5. Say any phrase
 
 E.g.:
 
 > "Alexa"
 
-The app background color will change to indicate a detection occurred.
-
-## Running the Instrumented Unit Tests
-
-Ensure you have an Android device connected or simulator running. Then run the following from the terminal:
-
-```console
-cd demo/android/Activity
-./copy_test_resources.sh
-./gradlew connectedAndroidTest
-```
-
-The test results are stored in `porcupine-activity-demo-app/build/reports`.
+The app will detect the wake word and start Android STT. The state should be in `Running STT` and the box will change colors to dark blue. Any phrases picked up will be added to the box.
