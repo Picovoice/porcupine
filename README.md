@@ -237,6 +237,8 @@ Using [Android Studio](https://developer.android.com/studio/index.html), open
 
 To learn about how to use Porcupine in long running services go to [demo/android/Service](/demo/android/Service).
 
+To learn about how to use Porcupine with Android Speech to Text recognition go to [demo/android/STT](/demo/android/STT).
+
 ### iOS Demos
 
 Before building the demo app, run the following from this directory to install the Porcupine-iOS Cocoapod:

@@ -10,6 +10,10 @@ This demo is intended for applications that need to do voice recognition in the 
 
 **NOTE:** If running the Porcupine as a service on Android < 10, you will need to stop the service before attempting to record audio in another application. This is a limitation of the Android OS that is documented [here](https://developer.android.com/guide/topics/media/sharing-audio-input).
 
+## Speech to Text
+
+This demo is intended for applications that use Porcupine Wake Work engine with Android's STT recognition service.
+
 ## Use Custom Wake Words (.ppn files)
 
 The demos use built-in wake words that are included with Porcupine (e.g. "Computer", "Alexa", "Picovoice"). To add a custom wake word (e.g. one created by [Picovoice Console](https://picovoice.ai/console/) to your Android application a couple of extra steps must be taken:
