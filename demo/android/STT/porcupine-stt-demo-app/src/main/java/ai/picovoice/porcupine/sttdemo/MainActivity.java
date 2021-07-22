@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         final Spinner mySpinner = findViewById(R.id.keyword_spinner);
         final String keywordName = mySpinner.getSelectedItem().toString();
 
-        stateTextView.setText("Listening for Wake Word");
+        stateTextView.setText("Listening for " + keywordName);
 
         Porcupine.BuiltInKeyword keyword = Porcupine.BuiltInKeyword.valueOf(keywordName.toUpperCase().replace(" ", "_"));
 
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                stateTextView.setText("Wake Word Detected");
                                 try {
                                     // needs to stop porcupine manager before speechRecognizer can start listening.
                                     porcupineManager.stop();
@@ -84,19 +83,9 @@ public class MainActivity extends AppCompatActivity {
                                     return;
                                 }
 
-                                new CountDownTimer(1000, 1000) {
-                                    @Override
-                                    public void onTick(long millisUntilFinished) {
-                                        // do nothing
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        stateTextView.setText("Running STT");
-                                        intentWrapper.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                        speechRecognizer.startListening(speechRecognizerIntent);
-                                    }
-                                }.start();
+                                stateTextView.setText("Running STT");
+                                intentWrapper.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                                speechRecognizer.startListening(speechRecognizerIntent);
                             }
                         });
                     }
@@ -199,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         speechRecognizer.stopListening();
 
         stateTextView.setText("Stopped");
-        intentWrapper.setBackgroundColor(getResources().getColor(android.R.color.black));
+        intentWrapper.setBackgroundColor(getResources().getColor(R.color.colorBackground));
     }
 
     @Override
@@ -270,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                     displayError("Error recording audio.");
                     break;
                 case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                    displayError("Not enough permissions.");
+                    displayError("Insufficient permissions.");
                     break;
                 case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
                 case SpeechRecognizer.ERROR_NETWORK:
@@ -287,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
                     displayError("Recognition service is busy.");
                     break;
                 case SpeechRecognizer.ERROR_SERVER:
-                    displayError("Error with server");
+                    displayError("Server Error.");
                     break;
                 case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
                     displayError("No speech input.");

@@ -1,10 +1,10 @@
 # Android Speech-To-Text Demo
 
-This Android demo runs Porcupine with Android STT.
+Porcupine Wake Word engine with Android STT.
 
 ## Usage
 
-Launch the demo on your phone using Android Studio.
+Open demo/android/STT with Android Studio. Launch the demo on your connected Android device or simulator.
 
 1. Select the wake word using the dropdown
 2. Press start

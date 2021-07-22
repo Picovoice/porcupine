@@ -98,8 +98,8 @@
         android:id="@+id/intentWrapper"
         android:layout_width="0sp"
         android:layout_height="0sp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/black"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorBackground"
         app:layout_constraintTop_toBottomOf="@+id/stateText"
         app:layout_constraintBottom_toTopOf="@id/clearButton"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
@@ -116,14 +116,12 @@
 
     </ScrollView>
 
-
-
     <Button
         android:id="@+id/clearButton"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:text="@string/clear_text"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:background="@android:color/holo_red_dark"
         android:textColor="@android:color/white"
         android:textSize="14sp"
