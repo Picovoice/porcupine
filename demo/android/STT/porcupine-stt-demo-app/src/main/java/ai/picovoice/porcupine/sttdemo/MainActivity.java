@@ -17,16 +17,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -47,9 +43,10 @@ import ai.picovoice.porcupine.PorcupineManagerCallback;
 public class MainActivity extends AppCompatActivity {
     private PorcupineManager porcupineManager = null;
 
-    private ScrollView intentWrapper;
+    private final Porcupine.BuiltInKeyword defaultKeyword = Porcupine.BuiltInKeyword.PORCUPINE;
+
     private TextView intentTextView;
-    private TextView stateTextView;
+    private ToggleButton recordButton;
 
     private SpeechRecognizer speechRecognizer;
     private Intent speechRecognizerIntent;
@@ -59,15 +56,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private PorcupineManager initPorcupine() throws PorcupineException {
-        final Spinner mySpinner = findViewById(R.id.keyword_spinner);
-        final String keywordName = mySpinner.getSelectedItem().toString();
-
-        stateTextView.setText("Listening for " + keywordName);
-
-        Porcupine.BuiltInKeyword keyword = Porcupine.BuiltInKeyword.valueOf(keywordName.toUpperCase().replace(" ", "_"));
-
         return new PorcupineManager.Builder()
-                .setKeyword(keyword)
+                .setKeyword(defaultKeyword)
                 .setSensitivity(0.7f)
                 .build(getApplicationContext(), new PorcupineManagerCallback() {
                     @Override
@@ -75,16 +65,15 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                intentTextView.setText("");
                                 try {
                                     // needs to stop porcupine manager before speechRecognizer can start listening.
                                     porcupineManager.stop();
                                 } catch (PorcupineException e) {
-                                    displayError("Failed to stop porcupine.");
+                                    displayError("Failed to stop Porcupine.");
                                     return;
                                 }
 
-                                stateTextView.setText("Running STT");
-                                intentWrapper.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                                 speechRecognizer.startListening(speechRecognizerIntent);
                             }
                         });
@@ -92,44 +81,13 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void configureKeywordSpinner() {
-        Spinner spinner = findViewById(R.id.keyword_spinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.keywords,
-                R.layout.keyword_spinner_item);
-        adapter.setDropDownViewResource(R.layout.keyword_spinner_item);
-        spinner.setAdapter(adapter);
-
-        final ToggleButton recordButton = findViewById(R.id.record_button);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (recordButton.isChecked()) {
-                    stopService();
-                    recordButton.toggle();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing.
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        intentWrapper = findViewById(R.id.intentWrapper);
         intentTextView = findViewById(R.id.intentView);
-        stateTextView = findViewById(R.id.stateText);
-
-        stateTextView.setText("Stopped");
+        recordButton = findViewById(R.id.record_button);
 
         // on android 11, RecognitionService has to be specifically added to android manifest.
         if (!SpeechRecognizer.isRecognitionAvailable(this)) {
@@ -137,30 +95,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        speechRecognizer.setRecognitionListener(new SpeechListener());
-
-        configureKeywordSpinner();
+        try {
+            porcupineManager = initPorcupine();
+        } catch (PorcupineException e) {
+            displayError("Failed to initialize Porcupine.");
+        }
     }
 
     @Override
     protected void onStop() {
-        ToggleButton recordButton = findViewById(R.id.record_button);
         if (recordButton.isChecked()) {
             stopService();
             recordButton.toggle();
+            speechRecognizer.destroy();
         }
 
         super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        speechRecognizer.destroy();
     }
 
     private boolean hasRecordPermission() {
@@ -171,63 +125,54 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
     }
 
-    private void keepSttAlive() {
+    private void playback(int milliSeconds) {
         speechRecognizer.stopListening();
-        speechRecognizer.startListening(speechRecognizerIntent);
+        porcupineManager.start();
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                intentTextView.setTextColor(getResources().getColor(android.R.color.white));
+                intentTextView.setText("Listening for " + defaultKeyword + " ...");
+            }
+        }, milliSeconds);
     }
 
     private void stopService() {
-        if (porcupineManager != null) {
-            try {
-                porcupineManager.stop();
-                porcupineManager.delete();
-            } catch (PorcupineException e) {
-                displayError("Failed to stop porcupine.");
-            }
+        try {
+            porcupineManager.stop();
+        } catch (PorcupineException e) {
+            displayError("Failed to stop porcupine.");
         }
-        speechRecognizer.stopListening();
-
-        stateTextView.setText("Stopped");
-        intentWrapper.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+        intentTextView.setText("");
+        speechRecognizer.destroy();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            ToggleButton toggleButton = findViewById(R.id.record_button);
-            toggleButton.toggle();
+            recordButton.toggle();
             displayError("Permission denied.");
         } else {
-            try {
-                porcupineManager = initPorcupine();
-                porcupineManager.start();
-            } catch (PorcupineException e) {
-                displayError("Failed to initialize Porcupine.");
-            }
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            speechRecognizer.setRecognitionListener(new SpeechListener());
+            playback(0);
         }
     }
 
     public void process(View view) {
-        ToggleButton recordButton = findViewById(R.id.record_button);
-        try {
-            if (recordButton.isChecked()) {
-                if (hasRecordPermission()) {
-                    porcupineManager = initPorcupine();
-                    porcupineManager.start();
-                } else {
-                    requestRecordPermission();
-                }
+        if (recordButton.isChecked()) {
+            if (hasRecordPermission()) {
+                speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+                speechRecognizer.setRecognitionListener(new SpeechListener());
+                playback(0);
             } else {
-                stopService();
+                requestRecordPermission();
             }
-        } catch (PorcupineException e) {
-            displayError("Something went wrong");
+        } else {
+            stopService();
         }
-    }
-
-    public void clearText(View view) {
-        intentTextView.setText("");
     }
 
     private class SpeechListener implements RecognitionListener {
@@ -253,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onError(int error) {
-            ToggleButton recordButton = findViewById(R.id.record_button);
             switch (error) {
                 case SpeechRecognizer.ERROR_AUDIO:
                     displayError("Error recording audio.");
@@ -268,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 case SpeechRecognizer.ERROR_NO_MATCH:
                     if (recordButton.isChecked()) {
                         displayError("No recognition result matched.");
-                        keepSttAlive();
+                        playback(1000);
                     }
                 case SpeechRecognizer.ERROR_CLIENT:
                     return;
@@ -291,15 +235,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onResults(Bundle results) {
-            Log.d("RecognitionListener", "onResults()");
             ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            intentTextView.append(data.get(0) + " ");
+            intentTextView.setTextColor(getResources().getColor(android.R.color.white));
+            intentTextView.setText(data.get(0));
 
-            keepSttAlive();
+            playback(3000);
         }
 
         @Override
         public void onPartialResults(Bundle partialResults) {
+            ArrayList<String> data = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            intentTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            intentTextView.setText(data.get(0));
         }
 
         @Override
