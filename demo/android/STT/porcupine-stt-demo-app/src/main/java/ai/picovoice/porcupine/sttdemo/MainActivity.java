@@ -39,6 +39,11 @@ import ai.picovoice.porcupine.PorcupineException;
 import ai.picovoice.porcupine.PorcupineManager;
 import ai.picovoice.porcupine.PorcupineManagerCallback;
 
+enum AppState {
+    STOPPED,
+    WAKEWORD,
+    STT
+}
 
 public class MainActivity extends AppCompatActivity {
     private PorcupineManager porcupineManager = null;
@@ -50,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SpeechRecognizer speechRecognizer;
     private Intent speechRecognizerIntent;
+
+    private AppState currentState;
 
     private void displayError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -75,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 speechRecognizer.startListening(speechRecognizerIntent);
+                                currentState = AppState.STT;
                             }
                         });
                     }
@@ -104,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (PorcupineException e) {
             displayError("Failed to initialize Porcupine.");
         }
+
+        currentState = AppState.STOPPED;
     }
 
     @Override
@@ -127,13 +137,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void playback(int milliSeconds) {
         speechRecognizer.stopListening();
-        porcupineManager.start();
+        currentState = AppState.WAKEWORD;
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                intentTextView.setTextColor(getResources().getColor(android.R.color.white));
-                intentTextView.setText("Listening for " + defaultKeyword + " ...");
+                if (currentState == AppState.WAKEWORD) {
+                    porcupineManager.start();
+                    intentTextView.setTextColor(getResources().getColor(android.R.color.white));
+                    intentTextView.setText("Listening for " + defaultKeyword + " ...");
+                }
             }
         }, milliSeconds);
     }
@@ -145,7 +158,9 @@ public class MainActivity extends AppCompatActivity {
             displayError("Failed to stop porcupine.");
         }
         intentTextView.setText("");
+        speechRecognizer.stopListening();
         speechRecognizer.destroy();
+        currentState = AppState.STOPPED;
     }
 
     @Override
