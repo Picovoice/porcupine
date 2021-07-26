@@ -52,85 +52,19 @@
         app:layout_constraintGuide_percent="0.97"/>
 
     <TextView
-        android:id="@+id/keyword_spinner_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/keyword_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintTop_toTopOf="@id/topGuideline"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintHorizontal_bias="0"/>
-
-    <Spinner
-        android:id="@+id/keyword_spinner"
-        style="@android:style/Widget.Holo.Light.Spinner"
-        android:layout_width="0sp"
-        android:layout_height="wrap_content"
-        android:entries="@array/keywords"
-        android:spinnerMode="dialog"
-        app:layout_constraintTop_toBottomOf="@+id/keyword_spinner_label"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"/>
-
-    <TextView
-        android:id="@+id/stateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/state_label"
-        android:layout_marginTop="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintTop_toBottomOf="@id/keyword_spinner"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintHorizontal_bias="0"/>
-
-    <TextView
-        android:id="@+id/stateText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toTopOf="@id/stateLabel"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"/>
-
-    <ScrollView
-        android:id="@+id/intentWrapper"
+        android:id="@+id/intentView"
         android:layout_width="0sp"
         android:layout_height="0sp"
-        android:layout_marginTop="30dp"
-        android:background="@color/colorBackground"
-        app:layout_constraintTop_toBottomOf="@+id/stateText"
-        app:layout_constraintBottom_toTopOf="@id/clearButton"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.5" >
-
-        <TextView
-            android:id="@+id/intentView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"/>
-
-    </ScrollView>
-
-    <Button
-        android:id="@+id/clearButton"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:text="@string/clear_text"
-        android:layout_marginBottom="30dp"
-        android:background="@android:color/holo_red_dark"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:padding="10dp"
+        android:background="@color/colorPrimaryDark"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:onClick="clearText"
-        app:layout_constraintTop_toBottomOf="@+id/intentWrapper"
-        app:layout_constraintBottom_toTopOf="@id/record_button"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/record_button"
+        app:layout_constraintBottom_toTopOf="@id/footer"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"/>
 
     <ToggleButton
         android:id="@+id/record_button"
@@ -143,9 +77,22 @@
         android:onClick="process"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintTop_toTopOf="@id/topGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintHorizontal_bias="0.5"/>
+
+    <TextView
+        android:id="@+id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:text="@string/footer"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintHorizontal_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
