@@ -10,7 +10,7 @@ any device that supports `miniaudio`.
 Compile by executing the following command from the root of the repository
 
 ```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lasound
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
 ```
 
 Running the executable without any commandline arguments prints the usage info to the console as below

@@ -14,7 +14,7 @@
 
 #if defined(WIN32) || defined(WIN64)
 #include <windows.h>
-#elif
+#else
 #include <dlfcn.h>
 #endif
 
@@ -41,23 +41,23 @@ static volatile bool is_interrupted = false;
 void *open_dl(const char *dl_path) {
 #if defined(WIN32) || defined(WIN64)
     return LoadLibrary(dl_path);
-#elif
+#else
     return dlopen(dl_path, RTLD_NOW);
 #endif
 }
 
-void *load_symbol(const void *handle, const char *symbol) {
+void *load_symbol(void *handle, const char *symbol) {
 #if defined(WIN32) || defined(WIN64)
     return GetProcAddress((HMODULE) handle, symbol);
-#elif
+#else
     return dlsym(handle, symbol);
 #endif
 }
 
-void close_dl(const void *handle) {
+void close_dl(void *handle) {
 #if defined(WIN32) || defined(WIN64)
     FreeLibrary((HMODULE) handle);
-#elif
+#else
     dlclose(handle);
 #endif
 }
@@ -65,7 +65,7 @@ void close_dl(const void *handle) {
 void print_dl_error(const char *message) {
 #if defined(WIN32) || defined(WIN64)
     fprintf(stderr, "%s with code '%lu'.\n", message, GetLastError());
-#elif
+#else
     fprintf(stderr, "%s with '%s'.\n", message, dlerror());
 #endif
 }
@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
 
     if (argc != 5 && argc != 6) {
         fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity audio_device_index\n"
-                        "        %s --show_audio_devices", argv[0], argv[0]);
+                        "        %s --show_audio_devices\n", argv[0], argv[0]);
         exit(1);
     }
 
@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) {
     const char *keyword_path = argv[3];
     const float sensitivity = (float) atof(argv[4]);
 
-    HMODULE porcupine_library = open_dl(library_path);
+    void *porcupine_library = open_dl(library_path);
 
     if (!porcupine_library) {
         fprintf(stderr, "failed to open library.\n");
