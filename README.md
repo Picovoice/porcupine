@@ -344,7 +344,8 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### C Demos
 
-[Microphone demo](/demo/c/porcupine_demo_mic.c) runs on any platform that `miniaudio` supports.
+[Microphone demo](/demo/c/porcupine_demo_mic.c) runs on any platform that `miniaudio` supports. 
+Run `git submodule update --init --recursive` to get `miniaudio` as a submodule.
 
 To build on Linux, Mac, and Raspberry Pi, run the following the in the root of the repository:
 
