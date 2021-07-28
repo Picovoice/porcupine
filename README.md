@@ -354,7 +354,7 @@ gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic \
 -I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
 ```
 
-To build on Windows, run the following the in the root of the repository:
+To build on Windows, run the following in the root of the repository:
 
 ```console
 gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c

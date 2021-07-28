@@ -1,13 +1,11 @@
 # Compatibility
 
 You need a C99-compatible compiler to build these demos. The microphone based demo can run on
-any platform that supports `miniaudio`. 
+any platform that supports `miniaudio`.
 
-#Usage
+# Microphone Demo
 
-## Microphone Demo
-
-### Requirements
+## Requirements
 
 The microphone demo relies on `miniaudio`. To get `miniaudio` as submodule, run the following
 
@@ -15,7 +13,7 @@ The microphone demo relies on `miniaudio`. To get `miniaudio` as submodule, run 
 git submodule update --init --recursive
 ```
 
-### Usage
+## Usage
 
 Running the executable without any commandline arguments prints the usage info to the console as below
 
@@ -30,7 +28,7 @@ To show the available audio input devices, type following in the console
 $ ./demo/c/porcupine_demo_mic --show_audio_devices
 ```
 
-### Linux, Mac, Raspberry Pi
+## Linux, Mac, Raspberry Pi
 
 To compile on Linux, execute the following command from the root of the repository
 
@@ -60,7 +58,7 @@ The following achieves the same on Mac
 resources/keyword_files/mac/porcupine_raspberry-pi.ppn 0.5 (index)
 ```
 
-### Windows
+## Windows
 
 To compile on Windows, execute the following command from the root of the repository.
 
@@ -77,7 +75,7 @@ resources/keyword_files/windows/porcupine_windows.ppn 0.5 (index)
 ```
 
 
-## File Demo
+# File Demo
 
 **Note that the demo expect a single-channel WAV file with a sampling rate of 16000 and 16-bit linear PCM encoding. If you
 provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**

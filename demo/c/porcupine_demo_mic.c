@@ -96,11 +96,13 @@ void interrupt_handler(int _) {
     is_interrupted = true;
 }
 
-void porcupine_process_callback(pv_porcupine_data_t *pv_porcupine_data, int16_t *pcm){
+void porcupine_process_callback(pv_porcupine_data_t *pv_porcupine_data, int16_t *pcm) {
     int32_t keyword_index = -1;
-    pv_status_t status = pv_porcupine_data->pv_porcupine_process_func(pv_porcupine_data->porcupine, pcm, &keyword_index);
+    pv_status_t status = pv_porcupine_data->pv_porcupine_process_func(pv_porcupine_data->porcupine, pcm,
+                                                                      &keyword_index);
     if (status != PV_STATUS_SUCCESS) {
-        fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n", pv_porcupine_data->pv_status_to_string_func(status));
+        fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n",
+                pv_porcupine_data->pv_status_to_string_func(status));
         exit(1);
     }
     if (keyword_index != -1) {
@@ -109,7 +111,7 @@ void porcupine_process_callback(pv_porcupine_data_t *pv_porcupine_data, int16_t 
     }
 }
 
-void mic_callback(ma_device* device, void* output, const void* input, ma_uint32 frame_count) {
+void mic_callback(ma_device *device, void *output, const void *input, ma_uint32 frame_count) {
     (void) output;
 
     pv_porcupine_data_t *pv_porcupine_data = (pv_porcupine_data_t *) device->pUserData;
@@ -135,7 +137,7 @@ void mic_callback(ma_device* device, void* output, const void* input, ma_uint32 
             processed_frames += frames_to_read;
             frame_buffer->filled += frames_to_read;
         } else {
-            porcupine_process_callback(device->pUserData, frame_buffer->buffer);
+            porcupine_process_callback(pv_porcupine_data, frame_buffer->buffer);
 
             buffer_ptr = frame_buffer->buffer;
             frame_buffer->filled = 0;
@@ -164,7 +166,7 @@ int main(int argc, char *argv[]) {
     if (argc == 2) {
         if (strcmp(argv[1], "--show_audio_devices") == 0) {
             for (ma_uint32 device = 0; device < capture_count; device++) {
-                fprintf(stdout,"index: %d, name: %s\n", device, capture_info[device].name);
+                fprintf(stdout, "index: %d, name: %s\n", device, capture_info[device].name);
             }
             return 0;
         }
@@ -198,7 +200,7 @@ int main(int argc, char *argv[]) {
 
     int32_t (*pv_sample_rate_func)() = load_symbol(porcupine_library, "pv_sample_rate");
     if (!pv_sample_rate_func) {
-        print_dl_error( "failed to load 'pv_sample_rate'");
+        print_dl_error("failed to load 'pv_sample_rate'");
         exit(1);
     }
 
@@ -274,7 +276,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "Using device: %s\n", device.capture.name);
     fflush(stdout);
 
-    while(!is_interrupted) {}
+    while (!is_interrupted) {}
 
     ma_device_uninit(&device);
     ma_context_uninit(&context);
