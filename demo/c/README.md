@@ -1,23 +1,18 @@
 # Compatibility
 
 You need a C99-compatible compiler to build these demos. The microphone based demo can run on
-any device that supports `miniaudio`.
+any platform that supports `miniaudio`. Since the demo relies on `miniaudio` run the following command to get
+the submodule
 
-# Usage
+```console
+git submodule update --init --recursive
+```
+
+#Usage
 
 ## Microphone Demo
 
-To compile on Linux, execute the following command from the root of the repository
-
-```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
-```
-
-To compile on Windows, execute the same command without linking
-
-```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
-```
+### Usage
 
 Running the executable without any commandline arguments prints the usage info to the console as below
 
@@ -27,9 +22,17 @@ usage : ./demo/c/porcupine_demo_mic library_path model_path keyword_path sensiti
         ./demo/c/porcupine_demo_mic --show_audio_devices
 ```
 
-To show the available audio input devices type following in the console
+To show the available audio input devices, type following in the console
 ```console
 $ ./demo/c/porcupine_demo_mic --show_audio_devices
+```
+
+### Linux, Mac, Raspberry Pi
+
+To compile on Linux, execute the following command from the root of the repository
+
+```console
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
 ```
 
 The following starts an audio steaming from the microphone available on an Ubuntu 18.04 machine and listens for wake phrase
@@ -47,12 +50,29 @@ The following achieves the same on a Raspberry Pi 4
 resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 (index)
 ```
 
-The following achieves the same on Windows 10
+The following achieves the same on Mac
+
+```console
+./demo/c/porcupine_demo_mic lib/mac/x86_64/libpv_porcupine.dylib lib/common/porcupine_params.pv \
+resources/keyword_files/mac/porcupine_raspberry-pi.ppn 0.5 (index)
+```
+
+### Windows
+
+To compile on Windows, execute the following command from the root of the repository.
+
+```console
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
+```
+
+
+The following starts an audio streaming from Windows and listens for the wake phrase "porcupine".
 
 ```console
 ./demo/c/porcupine_demo_mic lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv \
 resources/keyword_files/windows/porcupine_windows.ppn 0.5 (index)
 ```
+
 
 ## File Demo
 

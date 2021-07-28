@@ -344,25 +344,37 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### C Demos
 
-[Microphone demo](/demo/c/porcupine_demo_mic.c) runs on Linux-based systems (e.g. Ubuntu, Raspberry Pi, and BeagleBone).
-Build the demo:
+[Microphone demo](/demo/c/porcupine_demo_mic.c) runs on any platform that `miniaudio` supports.
+
+To build on Linux, Mac, and Raspberry Pi, run the following the in the root of the repository:
 
 ```console
 gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic \
--I include/ demo/c/porcupine_demo_mic.c -ldl -lasound
+-I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
 ```
 
-Find the name of audio input device (microphone) on your computer using `arecord -L` and then from the root of the
-repository run the demo:
+To build on Windows, run the following the in the root of the repository:
+
+```console
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
+```
+
+Find the index of the audio input device (microphone) by running the following command in the root of the repository:
+
+```console
+$ ./demo/c/porcupine_demo_mic --show_audio_devices
+```
+
+Then from the root of the repository run the demo:
 
 ```console
 ./demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
-resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${INPUT_AUDIO_DEVICE}
+resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, or `beaglebone`), and `${INPUT_AUDIO_DEVICE}` with
-the name of your microphone device. The demo opens an audio stream and detects utterances of `Porcupine`.
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac` or `windows`), and `${AUDIO_DEVICE_INDEX}` with
+the index of your audio device. The demo opens an audio stream and detects utterances of `Porcupine`.
 
 For more information about C demos go to [demo/c](/demo/c).
 

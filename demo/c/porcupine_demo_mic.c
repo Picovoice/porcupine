@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -10,12 +10,17 @@
 */
 
 #define MINIAUDIO_IMPLEMENTATION
+
 #include "miniaudio/miniaudio.h"
 
 #if defined(WIN32) || defined(WIN64)
+
 #include <windows.h>
+
 #else
+
 #include <dlfcn.h>
+
 #endif
 
 #include <signal.h>
@@ -40,33 +45,49 @@ static volatile bool is_interrupted = false;
 
 void *open_dl(const char *dl_path) {
 #if defined(WIN32) || defined(WIN64)
+
     return LoadLibrary(dl_path);
+
 #else
+
     return dlopen(dl_path, RTLD_NOW);
+
 #endif
 }
 
 void *load_symbol(void *handle, const char *symbol) {
 #if defined(WIN32) || defined(WIN64)
+
     return GetProcAddress((HMODULE) handle, symbol);
+
 #else
+
     return dlsym(handle, symbol);
+
 #endif
 }
 
 void close_dl(void *handle) {
 #if defined(WIN32) || defined(WIN64)
+
     FreeLibrary((HMODULE) handle);
+
 #else
+
     dlclose(handle);
+
 #endif
 }
 
 void print_dl_error(const char *message) {
 #if defined(WIN32) || defined(WIN64)
+
     fprintf(stderr, "%s with code '%lu'.\n", message, GetLastError());
+
 #else
+
     fprintf(stderr, "%s with '%s'.\n", message, dlerror());
+
 #endif
 }
 
@@ -75,11 +96,7 @@ void interrupt_handler(int _) {
     is_interrupted = true;
 }
 
-void data_callback_fixed(ma_device* device, void* output, const void* input, ma_uint32 frame_count){
-    pv_porcupine_data_t *pv_porcupine_data = (pv_porcupine_data_t *) device->pUserData;
-
-    int16_t *pcm = (int16_t *) input;
-
+void porcupine_process_callback(pv_porcupine_data_t *pv_porcupine_data, int16_t *pcm){
     int32_t keyword_index = -1;
     pv_status_t status = pv_porcupine_data->pv_porcupine_process_func(pv_porcupine_data->porcupine, pcm, &keyword_index);
     if (status != PV_STATUS_SUCCESS) {
@@ -90,12 +107,11 @@ void data_callback_fixed(ma_device* device, void* output, const void* input, ma_
         fprintf(stdout, "keyword detected\n");
         fflush(stdout);
     }
-
-    (void)output;
-    (void)frame_count;
 }
 
-void data_callback(ma_device* device, void* output, const void* input, ma_uint32 frame_count) {
+void mic_callback(ma_device* device, void* output, const void* input, ma_uint32 frame_count) {
+    (void) output;
+
     pv_porcupine_data_t *pv_porcupine_data = (pv_porcupine_data_t *) device->pUserData;
 
     frame_buffer_t *frame_buffer = &pv_porcupine_data->frame_buffer;
@@ -119,7 +135,7 @@ void data_callback(ma_device* device, void* output, const void* input, ma_uint32
             processed_frames += frames_to_read;
             frame_buffer->filled += frames_to_read;
         } else {
-            data_callback_fixed(device, output, frame_buffer->buffer, frame_count);
+            porcupine_process_callback(device->pUserData, frame_buffer->buffer);
 
             buffer_ptr = frame_buffer->buffer;
             frame_buffer->filled = 0;
@@ -135,13 +151,13 @@ int main(int argc, char *argv[]) {
 
     result = ma_context_init(NULL, 0, NULL, &context);
     if (result != MA_SUCCESS) {
-        fprintf(stderr, "failed to initialize context.\n");
+        fprintf(stderr, "failed to initialize the input audio device list.\n");
         exit(1);
     }
 
     result = ma_context_get_devices(&context, NULL, NULL, &capture_info, &capture_count);
     if (result != MA_SUCCESS) {
-        fprintf(stderr, "failed to getting context.\n");
+        fprintf(stderr, "failed to get the available input devices.\n");
         exit(1);
     }
 
@@ -236,7 +252,7 @@ int main(int argc, char *argv[]) {
     device_config.capture.format = ma_format_s16;
     device_config.capture.channels = 1;
     device_config.sampleRate = ma_standard_sample_rate_16000;
-    device_config.dataCallback = data_callback;
+    device_config.dataCallback = mic_callback;
     device_config.pUserData = &pv_porcupine_data;
 
     if (argc == 6) {
