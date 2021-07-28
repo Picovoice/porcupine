@@ -125,6 +125,18 @@ these two, Porcupine is **6.0 times more accurate** and **6.5 times faster** (on
 
 ## Demos
 
+If using SSH, clone the repository with:
+
+```console
+git clone --recurse-submodules git@github.com:Picovoice/porcupine.git
+```
+
+If using HTTPS, clone the repository with:
+
+```console
+git clone --recurse-submodules https://github.com/Picovoice/porcupine.git
+```
+
 ### Python Demos
 
 Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package:
@@ -344,36 +356,50 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### C Demos
 
-The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires `miniaudio` for accessing microphone audio data. 
-Run the following command to initialize the `miniaudio` submodule:
+The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](link/to/github/repo) for accessing microphone audio data.
 
-```console
-git submodule update --init --recursive
- ```
+#### Linux (x86_64), macOS (x86_64), and Raspberry Pi
 
-To build on Linux (x86_64), macOS (x86_64), and Raspberry Pi, run the following from the root of the repository:
+At the root of the repository, build with:
 
 ```console
 gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic \
 -I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
 ```
 
-To build on Windows, run the following in the root of the repository:
-
-```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
-```
-
-Find the index of the audio input device (microphone) by running the following command in the root of the repository:
+List input audio devices with:
 
 ```console
 $ ./demo/c/porcupine_demo_mic --show_audio_devices
 ```
 
-Then from the root of the repository run the demo:
+Run the demo using:
 
 ```console
 ./demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
+resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+```
+
+#### Windows
+
+**Requires MingW to run the demo.**
+
+At the root of the repository, build with:
+
+```console
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
+```
+
+List input audio devices with:
+
+```console
+$ ./demo/c/porcupine_demo_mic.exe --show_audio_devices
+```
+
+Run the demo using:
+
+```console
+./demo/c/porcupine_demo_mic.exe ${LIBRARY_PATH} lib/common/porcupine_params.pv \
 resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 

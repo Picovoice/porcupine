@@ -2,18 +2,15 @@
 
 ## Compatibility
 
-You need a C99-compatible compiler to build these demos. The microphone based demo requires `miniaudio`
-for accessing microphone audio data.
+You need a C99-compatible compiler to build these demos. 
 
 ## Microphone Demo
 
 ## Requirements
 
-The microphone demo relies on `miniaudio`. To get `miniaudio` as submodule:
+**For Windows, MingW is required to run the demo.**
 
-```console
-git submodule update --init --recursive
-```
+The microphone based demo requires [miniaudio](link/to/github/repo) for accessing microphone audio data.
 
 ## Build
 
@@ -39,13 +36,20 @@ usage : ./demo/c/porcupine_demo_mic library_path model_path keyword_path sensiti
         ./demo/c/porcupine_demo_mic --show_audio_devices
 ```
 
-To show the available audio input devices, run:
+To show the available audio input devices, on Linux, macOS, Raspberry Pi run:
 
 ```console
 ./demo/c/porcupine_demo_mic --show_audio_devices
 ```
 
-The following start up a microphone audio steam and listens for the wake phrase "porcupine" (omitting ${AUDIO_DEVICE_INDEX} will resort to system default).
+on Windows run:
+
+```console
+./demo/c/porcupine_demo_mic.exe --show_audio_devices
+```
+
+The following commands start up a microphone audio stream and listens for the wake phrase "porcupine".
+Replace `${AUDIO_DEVICE_INDEX}` with the index of the audio device.
 
 ### Linux
 
@@ -62,15 +66,18 @@ resources/keyword_files/mac/porcupine_mac.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 
 ### Raspberry Pi
 
+Replace `${PROCESSOR}` with one of Raspberry Pi's processor defined [here](../../lib/raspberry-pi) 
+(for Raspberry Pi 4 this would be cortex-a72) and run:
+
 ```console
-./demo/c/porcupine_demo_mic lib/raspberry-pi/cortex-a72/libpv_porcupine.so lib/common/porcupine_params.pv \
+./demo/c/porcupine_demo_mic lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
 ### Windows
 
 ```console
-./demo/c/porcupine_demo_mic lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv \
+./demo/c/porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv \
 resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
