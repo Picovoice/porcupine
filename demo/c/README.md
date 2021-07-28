@@ -7,10 +7,16 @@ any device that supports `miniaudio`.
 
 ## Microphone Demo
 
-Compile by executing the following command from the root of the repository
+To compile on Linux, execute the following command from the root of the repository
 
 ```console
 gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
+```
+
+To compile on Windows, execute the same command without linking
+
+```console
+gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
 ```
 
 Running the executable without any commandline arguments prints the usage info to the console as below
@@ -39,6 +45,13 @@ The following achieves the same on a Raspberry Pi 4
 ```console
 ./demo/c/porcupine_demo_mic lib/raspberry-pi/cortex-a72/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 (index)
+```
+
+The following achieves the same on Windows 10
+
+```console
+./demo/c/porcupine_demo_mic lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv \
+resources/keyword_files/windows/porcupine_windows.ppn 0.5 (index)
 ```
 
 ## File Demo
