@@ -1,16 +1,19 @@
 # Compatibility
 
 You need a C99-compatible compiler to build these demos. The microphone based demo can run on
-any platform that supports `miniaudio`. Since the demo relies on `miniaudio` run the following command to get
-the submodule
-
-```console
-git submodule update --init --recursive
-```
+any platform that supports `miniaudio`. 
 
 #Usage
 
 ## Microphone Demo
+
+### Requirements
+
+The microphone demo relies on `miniaudio`. To get `miniaudio` as submodule, run the following
+
+```console
+git submodule update --init --recursive
+```
 
 ### Usage
 
