@@ -51,27 +51,27 @@ The following start up a microphone audio steam and listens for the wake phrase 
 
 ```console
 ./demo/c/porcupine_demo_mic lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/linux/porcupine_linux.ppn 0.5 ${AUIDO_DEVICE_INDEX}
+resources/keyword_files/linux/porcupine_linux.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 ### macOS
 
 ```console
 ./demo/c/porcupine_demo_mic lib/mac/x86_64/libpv_porcupine.dylib lib/common/porcupine_params.pv \
-resources/keyword_files/mac/porcupine_mac.ppn 0.5 ${AUIDO_DEVICE_INDEX}
+resources/keyword_files/mac/porcupine_mac.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
 ### Raspberry Pi
 
 ```console
 ./demo/c/porcupine_demo_mic lib/raspberry-pi/cortex-a72/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 ${AUIDO_DEVICE_INDEX}
+resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
 ### Windows
 
 ```console
 ./demo/c/porcupine_demo_mic lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv \
-resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUIDO_DEVICE_INDEX}
+resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
 
