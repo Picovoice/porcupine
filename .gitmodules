@@ -1,3 +1,6 @@
 [submodule "binding/unity/Assets/Porcupine/VoiceProcessor"]
 	path = binding/unity/Assets/Porcupine/VoiceProcessor
 	url = ../unity-voice-processor.git
+[submodule "demo/c/miniaudio"]
+	path = demo/c/miniaudio
+	url = ../../mackron/miniaudio.git

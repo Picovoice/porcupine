@@ -10,4 +10,4 @@ build
 dist
 pvporcupine.egg-info
 demo/c/porcupine_demo_file
-demo/c/porcupine_demo_mic
+demo/c/porcupine_demo_mic*
