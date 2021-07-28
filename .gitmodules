@@ -3,4 +3,4 @@
 	url = ../unity-voice-processor.git
 [submodule "demo/c/miniaudio"]
 	path = demo/c/miniaudio
-	url = https://github.com/mackron/miniaudio.git
+	url = ../../mackron/miniaudio.git

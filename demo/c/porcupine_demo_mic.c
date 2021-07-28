@@ -96,6 +96,11 @@ void interrupt_handler(int _) {
     is_interrupted = true;
 }
 
+void print_usage(const char *program) {
+    fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity audio_device_index\n"
+                    "        %s --show_audio_devices\n", program, program);
+}
+
 void porcupine_process_callback(pv_porcupine_data_t *pv_porcupine_data, int16_t *pcm) {
     int32_t keyword_index = -1;
     pv_status_t status = pv_porcupine_data->pv_porcupine_process_func(pv_porcupine_data->porcupine, pcm,
@@ -146,9 +151,12 @@ void mic_callback(ma_device *device, void *output, const void *input, ma_uint32 
 }
 
 int main(int argc, char *argv[]) {
+    if (argc != 2 && argc != 5 && argc != 6) {
+        print_usage(argv[0]);
+        exit(1);
+    }
+
     ma_context context;
-    ma_device_info *capture_info;
-    ma_uint32 capture_count;
     ma_result result;
 
     result = ma_context_init(NULL, 0, NULL, &context);
@@ -156,6 +164,9 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "failed to initialize the input audio device list.\n");
         exit(1);
     }
+
+    ma_device_info *capture_info;
+    ma_uint32 capture_count;
 
     result = ma_context_get_devices(&context, NULL, NULL, &capture_info, &capture_count);
     if (result != MA_SUCCESS) {
@@ -169,13 +180,10 @@ int main(int argc, char *argv[]) {
                 fprintf(stdout, "index: %d, name: %s\n", device, capture_info[device].name);
             }
             return 0;
+        } else {
+            print_usage(argv[0]);
+            exit(1);
         }
-    }
-
-    if (argc != 5 && argc != 6) {
-        fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity audio_device_index\n"
-                        "        %s --show_audio_devices\n", argv[0], argv[0]);
-        exit(1);
     }
 
     signal(SIGINT, interrupt_handler);
