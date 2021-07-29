@@ -47,7 +47,7 @@ static volatile bool is_interrupted = false;
 
 static void *open_dl(const char *dl_path) {
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 
     return LoadLibrary(dl_path);
 
@@ -61,7 +61,7 @@ static void *open_dl(const char *dl_path) {
 
 static void *load_symbol(void *handle, const char *symbol) {
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 
     return GetProcAddress((HMODULE) handle, symbol);
 
@@ -75,7 +75,7 @@ static void *load_symbol(void *handle, const char *symbol) {
 
 static void close_dl(void *handle) {
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 
     FreeLibrary((HMODULE) handle);
 
@@ -89,7 +89,7 @@ static void close_dl(void *handle) {
 
 static void print_dl_error(const char *message) {
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 
     fprintf(stderr, "%s with code '%lu'.\n", message, GetLastError());
 

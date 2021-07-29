@@ -356,7 +356,7 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### C Demos
 
-The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](link/to/github/repo) for accessing microphone audio data.
+The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 #### Linux (x86_64), macOS (x86_64), and Raspberry Pi
 

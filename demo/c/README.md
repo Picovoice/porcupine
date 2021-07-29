@@ -10,7 +10,7 @@ You need a C99-compatible compiler to build these demos.
 
 **For Windows, MingW is required to run the demo.**
 
-The microphone based demo requires [miniaudio](link/to/github/repo) for accessing microphone audio data.
+The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 ## Build
 
