@@ -387,7 +387,7 @@ resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${AUDIO_DEVICE_IND
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebon`, and `jetson`), and `${AUDIO_DEVICE_INDEX}` with
-the index of your audio device. The demo opens an audio stream and detects utterances of `Porcupine`.
+the index of your audio device.
 
 #### Windows
 
@@ -403,7 +403,9 @@ Run the demo using:
 .\\demo\\c\\porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
-Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device. The demo opens an audio stream and detects utterances of `Porcupine`.
+Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device. 
+
+The demo opens an audio stream and detects utterances of `Porcupine`.
 
 #### File Demo
 
@@ -424,7 +426,6 @@ resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 resources/audio_sa
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebon`, and `jetson`).
-The demo opens up the file and detects utterances of `Porcupine`.
 
 #### Windows
 
