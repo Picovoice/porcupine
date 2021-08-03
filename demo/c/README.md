@@ -8,7 +8,7 @@ You need a C99-compatible compiler to build these demos.
 
 1. The demo requires [CMake](https://cmake.org/) version 3.20 or higher.
 2. The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
-3. The following demo must be run at the [root](../..) of the directory.
+3. The following demo must be run at the [root](/../../) of the directory.
 4. **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to run the demo.
    
 # Microphone Demo
@@ -159,21 +159,21 @@ Replace `${PROCESSOR}` with one of Raspberry Pi's processor defined [here](../..
 
 ```console
 ./demo/c/build/porcupine_demo_file lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/raspberry-pi.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+resources/keyword_files/raspberry-pi/americano_raspberry-pi.ppn 0.5 resources/audio_samples/multiple_keywords.wav
 ```
 
 #### BeagleBone
 
 ```console
 ./demo/c/build/porcupine_demo_file lib/beaglebone/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/beaglebone/porcupine_beaglebone.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+resources/keyword_files/beaglebone/americano_beaglebone.ppn 0.5 resources/audio_samples/multiple_keywords.wav
 ```
 
 #### Jetson
 
 ```console
 ./demo/c/build/porcupine_demo_file lib/jetson/cortex-a57-aarch64/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/jetson/porcupine_jetson.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+resources/keyword_files/jetson/americano_jetson.ppn 0.5 resources/audio_samples/multiple_keywords.wav
 ```
 
 #### Windows
