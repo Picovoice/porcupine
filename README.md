@@ -356,7 +356,7 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### C Demos
 
-The C demo requires [CMake](https://cmake.org/) version 3.20 or higher.
+The C demo requires [CMake](https://cmake.org/) version 3.16 or higher.
 
 The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
