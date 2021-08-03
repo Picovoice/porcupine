@@ -1,0 +1,5 @@
+if(WIN32)
+    set(CMAKE_GENERATOR "MinGW Makefiles" CACHE STRING "" FORCE)
+else()
+    set(CMAKE_GENERATOR "Unix Makefiles" CACHE STRING "" FORCE)
+endif()
