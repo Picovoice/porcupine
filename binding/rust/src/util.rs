@@ -35,9 +35,17 @@ fn find_machine_type() -> String {
         .unwrap()
         .to_lowercase();
 
-    // TODO, convert to MACHINE
+    let machine = match cpu_part.as_str() {
+        "0xb76" => "arm11",
+        "0xc07" => "cortex-a7",
+        "0xd03" => "cortex-a53",
+        "0xd07" => "cortex-a57",
+        "0xd08" => "cortex-a72",
+        "0xc08" => "beaglebone",
+        _ => "unsupported",
+    };
 
-    return cpu_part;
+    return String::from(machine);
 }
 
 #[cfg(target_os = "macos")]
