@@ -2,15 +2,12 @@ cmake_minimum_required(VERSION 3.4)
 project(porcupine_demo_c)
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_BUILD_TYPE Release)
 
-list(APPEND COMMON_LIBS dl)
-list(APPEND MIC_LIBS pthread m)
+set(APPEND COMMON_LIBS dl)
+set(APPEND MIC_LIBS pthread m)
 
-list(APPEND INCLUDES "${PROJECT_SOURCE_DIR}/../../include")
-
-include_directories(${INCLUDES})
-
-add_compile_options("-O3;")
+include_directories("${PROJECT_SOURCE_DIR}/../../include")
 
 add_executable(
         porcupine_demo_mic

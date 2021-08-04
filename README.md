@@ -360,7 +360,7 @@ The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
 The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
-**Windows Requires [MinGW](http://mingw-w64.org/doku.php) to run the demo.**
+**Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build/compile the demo.**
 
 #### Microphone Demo
 
@@ -382,10 +382,10 @@ Run the demo using:
 
 ```console
 ./demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
-resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebon`, and `jetson`), and `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device.
 
@@ -421,10 +421,10 @@ Run the demo using:
 
 ```console
 ./demo/c/porcupine_demo_file ${LIBRARY_PATH} lib/common/porcupine_params.pv \
-resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebon`, and `jetson`).
 
 #### Windows
