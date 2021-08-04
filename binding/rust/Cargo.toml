@@ -1,0 +1,13 @@
+[package]
+name = "pv_porcupine"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+cpal = "0.13"
+libc = "0.2"
+libloading = "0.7"
+
+[dev-dependencies]
+rodio = "0.14"
+itertools = "0.10.1"
