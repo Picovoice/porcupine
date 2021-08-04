@@ -1,11 +1,10 @@
 [package]
-name = "pv_porcupine_micdemo"
+name = "pv_porcupine_filedemo"
 version = "0.1.0"
 edition = "2018"
 
 [dependencies]
 clap = "2.33.3"
-cpal = "0.13.3"
+rodio = "0.14"
 itertools = "0.10.1"
 pv_porcupine = { path = "../../../binding/rust" }
-ctrlc = "3.1.9"
