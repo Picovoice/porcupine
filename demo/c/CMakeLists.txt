@@ -4,8 +4,8 @@ project(porcupine_demo_c)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_BUILD_TYPE Release)
 
-set(APPEND COMMON_LIBS dl)
-set(APPEND MIC_LIBS pthread m)
+set(COMMON_LIBS dl)
+set(MIC_LIBS pthread m)
 
 include_directories("${PROJECT_SOURCE_DIR}/../../include")
 

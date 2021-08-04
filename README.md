@@ -360,7 +360,7 @@ The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
 The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
-**Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build/compile the demo.**
+**Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build the demo.**
 
 #### Microphone Demo
 
