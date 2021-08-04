@@ -386,7 +386,7 @@ resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 ${AUDIO_DEVICE
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebon`, and `jetson`), and `${AUDIO_DEVICE_INDEX}` with
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`), and `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device.
 
 #### Windows
@@ -425,7 +425,7 @@ resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 resources/audi
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebon`, and `jetson`).
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`).
 
 #### Windows
 

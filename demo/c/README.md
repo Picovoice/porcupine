@@ -5,11 +5,10 @@
 You need a C99-compatible compiler to build these demos.
 
 ## Requirements
-
-1. The demo requires [CMake](https://cmake.org/) version 3.4 or higher.
-2. The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
-3. The following demo must be run at the [root](/../../) of the directory.
-4. **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
+- The demo requires [CMake](https://cmake.org/) version 3.4 or higher. 
+- The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data. 
+- The following demo must be run at the [root](/../../) of the directory.
+- **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
    
 # Microphone Demo
 
@@ -77,7 +76,7 @@ resources/keyword_files/mac/porcupine_mac.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 
 #### Raspberry Pi
 
-Replace `${PROCESSOR}` with one of Raspberry Pi's processor defined [here](../../lib/raspberry-pi) 
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../lib/raspberry-pi) 
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
@@ -135,7 +134,7 @@ usage : .\\demo\\c\\build\\porcupine_demo_file.exe library_path model_path keywo
 
 ### Wake Phrase
 
-**Note that the demo expect a single-channel WAV file with a sampling rate of 16000 and 16-bit linear PCM encoding. If you
+**Note that the demo expects a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding. If you
 provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**
 
 #### Linux
