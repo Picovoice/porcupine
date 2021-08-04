@@ -1,0 +1,145 @@
+#[allow(unused_imports)]
+use log::*;
+
+use std::collections::HashMap;
+use std::fs;
+use std::path::PathBuf;
+use std::process::Command;
+
+#[allow(dead_code)]
+const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+#[allow(dead_code)]
+const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+
+#[cfg(target_os = "linux")]
+#[allow(dead_code)]
+fn find_machine_type() -> String {
+    let cpu_info = Command::new("cat")
+        .arg("/proc/cpuinfo")
+        .output()
+        .expect("Failed to retrieve cpu info");
+    let cpu_part_list = std::str::from_utf8(&cpu_info.stdout)
+        .unwrap()
+        .split("\n")
+        .filter(|x| x.contains("CPU part"))
+        .collect::<Vec<_>>();
+
+    if cpu_part_list.len() == 0 {
+        panic!("Unsupported CPU");
+    }
+
+    let cpu_part = cpu_part_list[0]
+        .split(" ")
+        .collect::<Vec<_>>()
+        .pop()
+        .unwrap()
+        .to_lowercase();
+
+    // TODO, convert to MACHINE
+
+    return cpu_part;
+}
+
+#[cfg(target_os = "macos")]
+fn base_library_path() -> PathBuf {
+    return PathBuf::from("lib/mac/x86_64/libpv_porcupine.dylib");
+}
+
+#[cfg(target_os = "windows")]
+fn base_library_path() -> PathBuf {
+    return PathBuf::from("lib/windows/amd64/libpv_porcupine.dll");
+}
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+fn base_library_path() -> PathBuf {
+    return PathBuf::from("lib/linux/x86_64/libpv_porcupine.so");
+}
+
+#[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
+fn base_library_path() -> PathBuf {
+    let machine = find_machine_type();
+    return match machine {
+        machine if RPI_MACHINES.contains(&machine.as_str()) => {
+            if cfg!(target_arch = "aarch64") {
+                PathBuf::from(format!(
+                    "lib/raspberry-pi/{}-aarch64/libpv_porcupine.so",
+                    machine
+                ))
+            } else {
+                PathBuf::from(format!("lib/raspberry-pi/{}/libpv_porcupine.so", machine))
+            }
+        }
+        machine if JETSON_MACHINES.contains(&machine.as_str()) => {
+            PathBuf::from("lib/jetson/cortex-a57-aarch64/libpv_porcupine.so")
+        }
+        "beaglebone" => PathBuf::from("lib/beaglebone/libpv_porcupine.so"),
+        _ => {
+            warn!("WARNING: Please be advised that this device (CPU part = {}) is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models", cpu_part);
+            PathBuf::from("lib/raspberry-pi/arm11/libpv_porcupine.so")
+        }
+    };
+}
+
+pub fn pv_library_path(relative: PathBuf) -> PathBuf {
+    let mut path = relative.clone();
+    path.push(base_library_path());
+    return path;
+}
+
+pub fn pv_model_path(relative: PathBuf) -> PathBuf {
+    let mut path = relative.clone();
+    path.push("lib/common/porcupine_params.pv");
+    return path;
+}
+
+#[cfg(target_os = "macos")]
+fn keyword_path_subdir() -> PathBuf {
+    return PathBuf::from("mac");
+}
+
+#[cfg(target_os = "windows")]
+fn keyword_path_subdir() -> PathBuf {
+    return PathBuf::from("windows");
+}
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+fn keyword_path_subdir() -> PathBuf {
+    return PathBuf::from("linux");
+}
+
+#[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
+fn keyword_path_subdir() -> PathBuf {
+    let machine = find_machine_type();
+    return match machine {
+        machine if RPI_MACHINES.contains(&machine.as_str()) => PathBuf::from("raspberry-pi"),
+        machine if JETSON_MACHINES.contains(&machine.as_str()) => PathBuf::from("jetson"),
+        "beaglebone" => PathBuf::from("beaglebone"),
+        _ => {
+            panic!("ERROR: Please be advised that this device (CPU part = {}) is not officially supported by Picovoice.");
+        }
+    };
+}
+
+pub fn pv_keyword_paths(relative: PathBuf) -> HashMap<String, String> {
+    let mut dir = relative.clone();
+    dir.push("resources/keyword_files/");
+    dir.push(keyword_path_subdir());
+
+    let mut keyword_paths = HashMap::new();
+    let dir_entries = fs::read_dir(dir).unwrap();
+    for entry in dir_entries {
+        let entry = entry.unwrap();
+        let path = entry.path();
+        let keyword = entry
+            .file_name()
+            .into_string()
+            .unwrap()
+            .split("_")
+            .next()
+            .unwrap()
+            .to_string();
+        keyword_paths.insert(keyword, path.into_os_string().into_string().unwrap());
+    }
+
+    return keyword_paths;
+}
