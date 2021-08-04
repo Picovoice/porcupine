@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -9,12 +9,79 @@
     specific language governing permissions and limitations under the License.
 */
 
+#if !defined(_WIN32) && !defined(_WIN64)
+
 #include <dlfcn.h>
+
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+
+#include <windows.h>
+
+#endif
+
 #include "pv_porcupine.h"
+
+static void *open_dl(const char *dl_path) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    return LoadLibrary(dl_path);
+
+#else
+
+    return dlopen(dl_path, RTLD_NOW);
+
+#endif
+
+}
+
+static void *load_symbol(void *handle, const char *symbol) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    return GetProcAddress((HMODULE) handle, symbol);
+
+#else
+
+    return dlsym(handle, symbol);
+
+#endif
+
+}
+
+static void close_dl(void *handle) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    FreeLibrary((HMODULE) handle);
+
+#else
+
+    dlclose(handle);
+
+#endif
+
+}
+
+static void print_dl_error(const char *message) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    fprintf(stderr, "%s with code '%lu'.\n", message, GetLastError());
+
+#else
+
+    fprintf(stderr, "%s with '%s'.\n", message, dlerror());
+
+#endif
+
+}
 
 int main(int argc, char *argv[]) {
     if (argc != 6) {
@@ -28,49 +95,47 @@ int main(int argc, char *argv[]) {
     const float sensitivity = (float) atof(argv[4]);
     const char *wav_path = argv[5];
 
-    void *porcupine_library = dlopen(library_path, RTLD_NOW);
+    void *porcupine_library = open_dl(library_path);
     if (!porcupine_library) {
         fprintf(stderr, "failed to open library\n");
         exit(1);
     }
 
-    char *error = NULL;
-
-    const char *(*pv_status_to_string_func)(pv_status_t) = dlsym(porcupine_library, "pv_status_to_string");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_status_to_string' with '%s'.\n", error);
+    const char *(*pv_status_to_string_func)(pv_status_t) = load_symbol(porcupine_library, "pv_status_to_string");
+    if (!pv_status_to_string_func) {
+        print_dl_error("failed to load 'pv_status_to_string' with '%s'");
         exit(1);
     }
 
-    int32_t (*pv_sample_rate_func)() = dlsym(porcupine_library, "pv_sample_rate");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_sample_rate' with '%s'.\n", error);
+    int32_t (*pv_sample_rate_func)() = load_symbol(porcupine_library, "pv_sample_rate");
+    if (!pv_sample_rate_func) {
+        print_dl_error("failed to load 'pv_sample_rate'");
         exit(1);
     }
 
     pv_status_t (*pv_porcupine_init_func)(const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
-            dlsym(porcupine_library, "pv_porcupine_init");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_init' with '%s'.\n", error);
+            load_symbol(porcupine_library, "pv_porcupine_init");
+    if (!pv_porcupine_init_func) {
+        print_dl_error("failed to load 'pv_porcupine_init'");
         exit(1);
     }
 
-    void (*pv_porcupine_delete_func)(pv_porcupine_t *) = dlsym(porcupine_library, "pv_porcupine_delete");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_delete' with '%s'.\n", error);
+    void (*pv_porcupine_delete_func)(pv_porcupine_t *) = load_symbol(porcupine_library, "pv_porcupine_delete");
+    if (!pv_porcupine_delete_func) {
+        print_dl_error("failed to load 'pv_porcupine_delete'");
         exit(1);
     }
 
     pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) =
-            dlsym(porcupine_library, "pv_porcupine_process");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_process' with '%s'.\n", error);
+            load_symbol(porcupine_library, "pv_porcupine_process");
+    if (!pv_porcupine_process_func) {
+        print_dl_error("failed to load 'pv_porcupine_process'");
         exit(1);
     }
 
-    int32_t (*pv_porcupine_frame_length_func)() = dlsym(porcupine_library, "pv_porcupine_frame_length");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_frame_length' with '%s'.\n", error);
+    int32_t (*pv_porcupine_frame_length_func)() = load_symbol(porcupine_library, "pv_porcupine_frame_length");
+    if (!pv_porcupine_frame_length_func) {
+        print_dl_error("failed to load 'pv_porcupine_frame_length' with '%s'.\n");
         exit(1);
     }
 
@@ -134,7 +199,7 @@ int main(int argc, char *argv[]) {
     free(pcm);
     fclose(wav);
     pv_porcupine_delete_func(porcupine);
-    dlclose(porcupine_library);
+    close_dl(porcupine_library);
 
     return 0;
 }

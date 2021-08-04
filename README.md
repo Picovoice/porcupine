@@ -356,16 +356,21 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### C Demos
 
+The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
+
 The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
-#### Linux (x86_64), macOS (x86_64), and Raspberry Pi
+**Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build the demo.**
+
+#### Microphone Demo
 
 At the root of the repository, build with:
 
 ```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic \
--I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
+cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_mic
 ```
+
+#### Linux (x86_64), macOS (x86_64), Raspberry Pi, BeagleBone, and Jetson
 
 List input audio devices with:
 
@@ -377,35 +382,60 @@ Run the demo using:
 
 ```console
 ./demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
-resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
+
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`), and `${AUDIO_DEVICE_INDEX}` with
+the index of your audio device.
 
 #### Windows
-
-**Requires MingW to run the demo.**
-
-At the root of the repository, build with:
-
-```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
-```
 
 List input audio devices with:
 
 ```console
-$ ./demo/c/porcupine_demo_mic.exe --show_audio_devices
+$ .\\demo\\c\\porcupine_demo_mic.exe --show_audio_devices
 ```
 
 Run the demo using:
 
 ```console
-./demo/c/porcupine_demo_mic.exe ${LIBRARY_PATH} lib/common/porcupine_params.pv \
-resources/keyword_files/${SYSTEM}/porcupine_${SYSTEM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+.\\demo\\c\\porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${SYSTEM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac` or `windows`), and `${AUDIO_DEVICE_INDEX}` with
-the index of your audio device. The demo opens an audio stream and detects utterances of `Porcupine`.
+Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device. 
+
+The demo opens an audio stream and detects utterances of `Porcupine`.
+
+#### File Demo
+
+At the root of the repository, build with:
+
+```console
+cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_file
+```
+
+#### Linux (x86_64), macOS (x86_64), Raspberry Pi, BeagleBone, and Jetson
+
+Run the demo using:
+
+```console
+./demo/c/porcupine_demo_file ${LIBRARY_PATH} lib/common/porcupine_params.pv \
+resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+```
+
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`).
+
+#### Windows
+
+Run the demo using:
+
+```console
+.\\demo\\c\\porcupine_demo_file.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+```
+
+The demo opens up the file and detects utterances of `Porcupine`.
 
 For more information about C demos go to [demo/c](/demo/c).
 

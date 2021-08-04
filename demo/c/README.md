@@ -2,115 +2,181 @@
 
 ## Compatibility
 
-You need a C99-compatible compiler to build these demos. 
-
-## Microphone Demo
+You need a C99-compatible compiler to build these demos.
 
 ## Requirements
-
-**For Windows, MingW is required to run the demo.**
-
-The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+- The demo requires [CMake](https://cmake.org/) version 3.4 or higher. 
+- The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data. 
+- The following demo must be run at the [root](/../../) of the directory.
+- **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
+   
+# Microphone Demo
 
 ## Build
 
-### Linux, macOS, Raspberry Pi
-
 ```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c -ldl -lpthread -lm
-```
-
-### Windows
-
-```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_mic -I include/ demo/c/porcupine_demo_mic.c
+cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_mic
 ```
 
 ## Run
 
-Running the executable without any commandline arguments prints the usage info to the console:
+### Usage
+
+Running the executable without any commandline arguments prints the usage info to the console.
+
+#### Linux, macOS, Raspberry Pi, BeagleBone, Jetson
 
 ```console
-./demo/c/porcupine_demo_mic 
-usage : ./demo/c/porcupine_demo_mic library_path model_path keyword_path sensitivity audio_device_intex
-        ./demo/c/porcupine_demo_mic --show_audio_devices
+./demo/c/build/porcupine_demo_mic 
+usage : ./demo/c/build/porcupine_demo_mic library_path model_path keyword_path sensitivity audio_device_intex
+        ./demo/c/build/porcupine_demo_mic --show_audio_devices
 ```
 
-To show the available audio input devices, on Linux, macOS, Raspberry Pi run:
+#### Windows
 
 ```console
-./demo/c/porcupine_demo_mic --show_audio_devices
+.\\demo\\c\\build\\porcupine_demo_mic.exe
+usage : .\\demo\\c\\build\\porcupine_demo_mic.exe library_path model_path keyword_path sensitivity audio_device_intex
+        .\\demo\\c\\build\\porcupine_demo_mic.exe --show_audio_devices
 ```
 
-on Windows run:
+### Show Audio Devices
+
+The following commands shows the available audio input devices to the console.
+
+#### Linux, macOS, Raspberry Pi, BeagleBone, Jetson
 
 ```console
-./demo/c/porcupine_demo_mic.exe --show_audio_devices
+./demo/c/build/porcupine_demo_mic --show_audio_devices
 ```
+
+#### Windows
+
+```console
+.\\demo\\c\\build\\porcupine_demo_mic.exe --show_audio_devices
+```
+
+### Wake Phrase
 
 The following commands start up a microphone audio stream and listens for the wake phrase "porcupine".
 Replace `${AUDIO_DEVICE_INDEX}` with the index of the audio device.
 
-### Linux
+#### Linux
 
 ```console
-./demo/c/porcupine_demo_mic lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
+./demo/c/build/porcupine_demo_mic lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/linux/porcupine_linux.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
-### macOS
+#### macOS
 
 ```console
-./demo/c/porcupine_demo_mic lib/mac/x86_64/libpv_porcupine.dylib lib/common/porcupine_params.pv \
+./demo/c/build/porcupine_demo_mic lib/mac/x86_64/libpv_porcupine.dylib lib/common/porcupine_params.pv \
 resources/keyword_files/mac/porcupine_mac.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
-### Raspberry Pi
+#### Raspberry Pi
 
-Replace `${PROCESSOR}` with one of Raspberry Pi's processor defined [here](../../lib/raspberry-pi) 
-(for Raspberry Pi 4 this would be cortex-a72) and run:
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../lib/raspberry-pi) 
+(e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
-./demo/c/porcupine_demo_mic lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so lib/common/porcupine_params.pv \
+./demo/c/build/porcupine_demo_mic lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
-### Windows
+#### BeagleBone
 
 ```console
-./demo/c/porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv \
-resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+./demo/c/build/porcupine_demo_mic lib/beaglebone/libpv_porcupine.so lib/common/porcupine_params.pv \
+resources/keyword_files/beaglebone/porcupine_beaglebone.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
+#### Jetson
 
-## File Demo
+```console
+./demo/c/build/porcupine_demo_mic lib/jetson/cortex-a57-aarch64/libpv_porcupine.so lib/common/porcupine_params.pv \
+resources/keyword_files/jetson/porcupine_jetson.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+```
 
-**Note that the demo expect a single-channel WAV file with a sampling rate of 16000 and 16-bit linear PCM encoding. If you
+#### Windows
+
+```console
+.\\demo\\c\\build\\porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+```
+
+# File Demo
+
+## Build
+
+```console
+cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_file
+```
+
+## Run
+
+### Usage
+
+Running the executable without any commandline arguments prints the usage info to the console.
+
+#### Linux, macOS, Raspberry Pi, BeagleBone, Jetson
+
+```console
+./demo/c/build/porcupine_demo_file 
+usage : ./demo/c/build/porcupine_demo_file library_path model_path keyword_path sensitivity wav_path
+```
+
+#### Windows
+
+```console
+.\\demo\\c\\build\\porcupine_demo_file.exe
+usage : .\\demo\\c\\build\\porcupine_demo_file.exe library_path model_path keyword_path sensitivity wav_path
+```
+
+### Wake Phrase
+
+**Note that the demo expects a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding. If you
 provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**
 
-Compile by executing the following command from the root of the repository:
+#### Linux
 
 ```console
-gcc -std=c99 -O3 -o demo/c/porcupine_demo_file -I include/ demo/c/porcupine_demo_file.c -ldl
-```
-
-Running the executable without any commandline arguments prints the usage info to the console as below:
-
-```console
-./demo/c/porcupine_demo_file
-usage : ./demo/c/porcupine_demo_file library_path model_path keyword_path sensitivity wav_path
-```
-
-For example the following processes one of the WAV files under resources folder and scans it for keyword "Americano" on 
-an Ubuntu 18.04:
-
-```console
-./demo/c/porcupine_demo_file lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
+./demo/c/build/porcupine_demo_file lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/linux/americano_linux.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
 ```
 
-The following achieves the same on a Raspberry Pi 4:
+#### macOS
 
 ```console
-./demo/c/porcupine_demo_file lib/raspberry-pi/cortex-a72/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/raspberry--pi.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+./demo/c/build/porcupine_demo_file lib/mac/x86_64/libpv_porcupine.dylib lib/common/porcupine_params.pv \
+resources/keyword_files/mac/americano_mac.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+```
+
+#### Raspberry Pi
+
+Replace `${PROCESSOR}` with one of Raspberry Pi's processor defined [here](../../lib/raspberry-pi)
+(e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
+
+```console
+./demo/c/build/porcupine_demo_file lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so lib/common/porcupine_params.pv \
+resources/keyword_files/raspberry-pi/americano_raspberry-pi.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+```
+
+#### BeagleBone
+
+```console
+./demo/c/build/porcupine_demo_file lib/beaglebone/libpv_porcupine.so lib/common/porcupine_params.pv \
+resources/keyword_files/beaglebone/americano_beaglebone.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+```
+
+#### Jetson
+
+```console
+./demo/c/build/porcupine_demo_file lib/jetson/cortex-a57-aarch64/libpv_porcupine.so lib/common/porcupine_params.pv \
+resources/keyword_files/jetson/americano_jetson.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+```
+
+#### Windows
+
+```console
+.\\demo\\c\\build\\porcupine_demo_file.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/americano_windows.ppn 0.5 resources/audio_samples/multiple_keywords.wav
 ```
