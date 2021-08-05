@@ -153,7 +153,7 @@ resources/keyword_files/mac/americano_mac.ppn 0.5 resources/audio_samples/multip
 
 #### Raspberry Pi
 
-Replace `${PROCESSOR}` with one of Raspberry Pi's processor defined [here](../../lib/raspberry-pi)
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../lib/raspberry-pi)
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
