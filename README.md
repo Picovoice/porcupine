@@ -375,13 +375,13 @@ cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupi
 List input audio devices with:
 
 ```console
-$ ./demo/c/porcupine_demo_mic --show_audio_devices
+./demo/c/build/porcupine_demo_mic --show_audio_devices
 ```
 
 Run the demo using:
 
 ```console
-./demo/c/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
+./demo/c/build/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
 resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
@@ -394,13 +394,13 @@ the index of your audio device.
 List input audio devices with:
 
 ```console
-$ .\\demo\\c\\porcupine_demo_mic.exe --show_audio_devices
+.\\demo\\c\\build\\porcupine_demo_mic.exe --show_audio_devices
 ```
 
 Run the demo using:
 
 ```console
-.\\demo\\c\\porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+.\\demo\\c\\build\\porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
 ```
 
 Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device. 
@@ -420,7 +420,7 @@ cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupi
 Run the demo using:
 
 ```console
-./demo/c/porcupine_demo_file ${LIBRARY_PATH} lib/common/porcupine_params.pv \
+./demo/c/build/porcupine_demo_file ${LIBRARY_PATH} lib/common/porcupine_params.pv \
 resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
 ```
 
@@ -432,7 +432,7 @@ name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beagle
 Run the demo using:
 
 ```console
-.\\demo\\c\\porcupine_demo_file.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+.\\demo\\c\\build\\porcupine_demo_file.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
 ```
 
 The demo opens up the file and detects utterances of `Porcupine`.

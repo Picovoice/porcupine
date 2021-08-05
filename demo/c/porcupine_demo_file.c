@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
     const char *library_path = argv[1];
     const char *model_path = argv[2];
     const char *keyword_path = argv[3];
-    const float sensitivity = (float) atof(argv[4]);
+    const float sensitivity = strtod(argv[4], NULL);
     const char *wav_path = argv[5];
 
     void *porcupine_library = open_dl(library_path);
