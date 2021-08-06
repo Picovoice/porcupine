@@ -80,23 +80,23 @@ fn base_library_path() -> PathBuf {
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn base_library_path() -> PathBuf {
     let machine = find_machine_type();
-    return match machine {
-        machine if RPI_MACHINES.contains(&machine.as_str()) => {
+    return match machine.as_str() {
+        machine if RPI_MACHINES.contains(&machine) => {
             if cfg!(target_arch = "aarch64") {
                 PathBuf::from(format!(
                     "lib/raspberry-pi/{}-aarch64/libpv_porcupine.so",
-                    machine
+                    &machine
                 ))
             } else {
-                PathBuf::from(format!("lib/raspberry-pi/{}/libpv_porcupine.so", machine))
+                PathBuf::from(format!("lib/raspberry-pi/{}/libpv_porcupine.so", &machine))
             }
         }
-        machine if JETSON_MACHINES.contains(&machine.as_str()) => {
+        machine if JETSON_MACHINES.contains(&machine) => {
             PathBuf::from("lib/jetson/cortex-a57-aarch64/libpv_porcupine.so")
         }
         "beaglebone" => PathBuf::from("lib/beaglebone/libpv_porcupine.so"),
         _ => {
-            warn!("WARNING: Please be advised that this device (CPU part = {}) is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models", cpu_part);
+            warn!("WARNING: Please be advised that this device is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models");
             PathBuf::from("lib/raspberry-pi/arm11/libpv_porcupine.so")
         }
     };
@@ -132,12 +132,12 @@ fn keyword_path_subdir() -> PathBuf {
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn keyword_path_subdir() -> PathBuf {
     let machine = find_machine_type();
-    return match machine {
-        machine if RPI_MACHINES.contains(&machine.as_str()) => PathBuf::from("raspberry-pi"),
-        machine if JETSON_MACHINES.contains(&machine.as_str()) => PathBuf::from("jetson"),
+    return match machine.as_str() {
+        machine if RPI_MACHINES.contains(&machine) => PathBuf::from("raspberry-pi"),
+        machine if JETSON_MACHINES.contains(&machine) => PathBuf::from("jetson"),
         "beaglebone" => PathBuf::from("beaglebone"),
         _ => {
-            panic!("ERROR: Please be advised that this device (CPU part = {}) is not officially supported by Picovoice.");
+            panic!("ERROR: Please be advised that this device is not officially supported by Picovoice.");
         }
     };
 }
