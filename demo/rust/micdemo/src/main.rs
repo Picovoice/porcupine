@@ -44,7 +44,7 @@ fn process_audio_chunk(
 }
 
 fn porcupine_demo(
-    audio_backend: Option<miniaudio::Backend>,
+    miniaudio_backend: &[miniaudio::Backend],
     audio_device_index: usize,
     library_path: PathBuf,
     model_path: PathBuf,
@@ -56,10 +56,6 @@ fn porcupine_demo(
     let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities)
         .expect("Failed to create Porcupine");
 
-    let miniaudio_backend = match audio_backend {
-        Some(backend) => vec![backend],
-        _ => vec![],
-    };
     let miniaudio_context =
         miniaudio::Context::new(&miniaudio_backend, None).expect("Failed to create audio context");
     miniaudio_context
@@ -107,8 +103,9 @@ fn porcupine_demo(
     println!("Stopped");
 }
 
-fn show_audio_devices() {
-    let miniaudio_context = miniaudio::Context::new(&[], None).expect("failed to create context");
+fn show_audio_devices(miniaudio_backend: &[miniaudio::Backend]) {
+    let miniaudio_context =
+        miniaudio::Context::new(miniaudio_backend, None).expect("failed to create context");
     miniaudio_context
         .with_capture_devices(|capture_devices| {
             println!("Capture Devices:");
@@ -200,34 +197,34 @@ fn main() {
         )
         .get_matches();
 
+    let miniaudio_backend = match matches.value_of("audio_backend") {
+        Some(audio_backend_str) => vec![match audio_backend_str {
+            "Wasapi" => miniaudio::Backend::Wasapi,
+            "DSound" => miniaudio::Backend::DSound,
+            "WinMM" => miniaudio::Backend::WinMM,
+            "CoreAudio" => miniaudio::Backend::CoreAudio,
+            "SNDIO" => miniaudio::Backend::SNDIO,
+            "Audio4" => miniaudio::Backend::Audio4,
+            "OSS" => miniaudio::Backend::OSS,
+            "PulseAudio" => miniaudio::Backend::PulseAudio,
+            "Alsa" => miniaudio::Backend::Alsa,
+            "Jack" => miniaudio::Backend::Jack,
+            "AAudio" => miniaudio::Backend::AAudio,
+            "OpenSL" => miniaudio::Backend::OpenSL,
+            "WebAudio" => miniaudio::Backend::WebAudio,
+            _ => panic!("Unsupported audio backend"),
+        }],
+        _ => vec![],
+    };
+
     if matches.is_present("show_audio_devices") {
-        show_audio_devices();
+        show_audio_devices(&miniaudio_backend);
     } else {
         let audio_device_index = matches
             .value_of("audio_device_index")
             .unwrap()
             .parse()
             .unwrap();
-
-        let audio_backend = match matches.value_of("audio_backend") {
-            Some(audio_backend_str) => Some(match audio_backend_str {
-                "Wasapi" => miniaudio::Backend::Wasapi,
-                "DSound" => miniaudio::Backend::DSound,
-                "WinMM" => miniaudio::Backend::WinMM,
-                "CoreAudio" => miniaudio::Backend::CoreAudio,
-                "SNDIO" => miniaudio::Backend::SNDIO,
-                "Audio4" => miniaudio::Backend::Audio4,
-                "OSS" => miniaudio::Backend::OSS,
-                "PulseAudio" => miniaudio::Backend::PulseAudio,
-                "Alsa" => miniaudio::Backend::Alsa,
-                "Jack" => miniaudio::Backend::Jack,
-                "AAudio" => miniaudio::Backend::AAudio,
-                "OpenSL" => miniaudio::Backend::OpenSL,
-                "WebAudio" => miniaudio::Backend::WebAudio,
-                _ => panic!("Unsupported audio backend"),
-            }),
-            _ => None,
-        };
 
         let library_path = PathBuf::from(matches.value_of("library_path").unwrap());
         let model_path = PathBuf::from(matches.value_of("model_path").unwrap());
@@ -287,7 +284,7 @@ fn main() {
         }
 
         porcupine_demo(
-            audio_backend,
+            &miniaudio_backend,
             audio_device_index,
             library_path,
             model_path,

@@ -68,7 +68,7 @@ fn main() {
         .into_string()
         .unwrap();
 
-    let matches = App::new("Picovoice Porcupine Rust Mic Demo")
+    let matches = App::new("Picovoice Porcupine Rust File Demo")
         .arg(
             Arg::with_name("input_audio_path")
             .long("input_audio_path")
