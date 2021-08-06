@@ -117,7 +117,7 @@ public class PorcupineManager {
         }
 
         // Only check if it's denied, permission will be automatically asked.
-        if try !voiceProcessor.hasPermissions() {
+        guard try voiceProcessor.hasPermissions() else {
             throw PorcupineManagerError.recordingDenied
         }
         
@@ -144,6 +144,10 @@ public class PorcupineManager {
     /// Callback to run after after voice processor processes frames.
     private func audioCallback(frameLength: UInt32, pcm: UnsafePointer<Int16> ) {
         guard self.porcupine != nil else {
+            return
+        }
+        
+        guard frameLength == Porcupine.frameLength else {
             return
         }
         
