@@ -1,10 +1,12 @@
 #[allow(unused_imports)]
 use log::*;
 
+#[allow(unused_imports)]
+use std::process::Command;
+
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
-use std::process::Command;
 
 #[allow(dead_code)]
 const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];

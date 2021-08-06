@@ -36,17 +36,28 @@ fn process_audio_chunk(
 }
 
 fn porcupine_demo(
+    audio_device_index: Option<usize>,
     library_path: PathBuf,
     model_path: PathBuf,
     keyword_paths: Vec<PathBuf>,
     keywords: Vec<String>,
     sensitivities: Vec<f32>,
 ) {
-    let mut buffer = Vec::new();
+    let mut buffer: Vec<i16> = Vec::new();
     let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities);
 
     let host = cpal::default_host();
-    let device = host.default_input_device().unwrap();
+    let device = match audio_device_index {
+        Some(index) => {
+            let device = host.input_devices().unwrap().enumerate().find(|(i, _device)| i == &index);
+            match device {
+                Some(device_tuple) => Some(device_tuple.1),
+                None => None
+            }
+        }
+        None => host.default_input_device(),
+    }
+    .expect("Failed to find input device");
     println!("Input device: {}", device.name().unwrap());
 
     let config = cpal::StreamConfig {
@@ -83,7 +94,7 @@ fn porcupine_demo(
 
 fn show_audio_devices() {
     let host = cpal::default_host();
-    for (idx, device) in host.devices().unwrap().enumerate() {
+    for (idx, device) in host.input_devices().unwrap().enumerate() {
         if let Ok(device_name) = device.name() {
             println!("Index: {}, Device: {}", idx, device_name);
         }
@@ -105,6 +116,7 @@ fn main() {
             ArgGroup::with_name("keywords_group")
             .arg("keywords")
             .arg("keyword_paths")
+            .arg("show_audio_devices")
             .required(true)
         )
         .arg(
@@ -156,13 +168,6 @@ fn main() {
             .takes_value(true)
         )
         .arg(
-            Arg::with_name("output_path")
-            .long("output_path")
-            .value_name("PATH")
-            .help("Absolute path to recorded audio for debugging.")
-            .takes_value(true)
-        )
-        .arg(
             Arg::with_name("show_audio_devices")
             .long("show_audio_devices")
         )
@@ -171,6 +176,14 @@ fn main() {
     if matches.is_present("show_audio_devices") {
         show_audio_devices();
     } else {
+        let audio_device_index = match matches.value_of("audio_device_index") {
+            Some(audio_device_index) => Some(
+                audio_device_index
+                    .parse::<usize>()
+                    .expect("Audio device index should be a positive integer"),
+            ),
+            None => None,
+        };
         let library_path = PathBuf::from(matches.value_of("library_path").unwrap());
         let model_path = PathBuf::from(matches.value_of("model_path").unwrap());
 
@@ -229,6 +242,7 @@ fn main() {
         }
 
         porcupine_demo(
+            audio_device_index,
             library_path,
             model_path,
             keyword_paths,

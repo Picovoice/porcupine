@@ -144,6 +144,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "cmake"
+version = "0.1.45"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eb6210b637171dfba4cda12e579ac6dc73f5165ad56133e5d72ef3131f320855"
+dependencies = [
+ "cc",
+]
+
+[[package]]
 name = "combine"
 version = "4.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -211,6 +220,35 @@ checksum = "232295399409a8b7ae41276757b5a1cc21032848d42bff2352261f958b3ca29a"
 dependencies = [
  "nix",
  "winapi",
+]
+
+[[package]]
+name = "cubeb"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "33c84c136ac07ad218df6ca1b3ca0f0a1f7358ce059ea13a2c5527d4311c36c0"
+dependencies = [
+ "cubeb-core",
+]
+
+[[package]]
+name = "cubeb-core"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40aa77fed9bd627aaf11654c4d2753038d43d0f10abb6651db6e9330f81270e9"
+dependencies = [
+ "bitflags",
+ "cubeb-sys",
+]
+
+[[package]]
+name = "cubeb-sys"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eaedd862c6194a52c45efc3b5fd43e42e11fe3cd915520add4d1a5d03a818796"
+dependencies = [
+ "cmake",
+ "pkg-config",
 ]
 
 [[package]]
@@ -616,14 +654,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "pv_porcupine_demo"
+name = "pv_porcupine_micdemo"
 version = "0.1.0"
 dependencies = [
  "clap",
  "cpal",
  "ctrlc",
+ "cubeb",
  "itertools",
- "lazy_static",
  "pv_porcupine",
 ]
 
