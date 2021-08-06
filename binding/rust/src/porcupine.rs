@@ -299,21 +299,18 @@ mod tests {
 
     #[test]
     fn test_process() {
-        let basedir_path = "../../";
         let porcupine = Porcupine::new(
-            pv_library_path(basedir_path.clone()),
-            pv_model_path(basedir_path.clone()),
+            pv_library_path(""),
+            pv_model_path(""),
             &[PathBuf::from(
-                pv_keyword_paths(basedir_path.clone())
-                    .get("porcupine")
-                    .unwrap(),
+                pv_keyword_paths("").get("porcupine").unwrap(),
             )],
             &[0.5],
         )
         .expect("Unable to create Porcupine");
 
         let soundfile =
-            BufReader::new(File::open("../../resources/audio_samples/porcupine.wav").unwrap());
+            BufReader::new(File::open("resources/audio_samples/porcupine.wav").unwrap());
         let source = Decoder::new(soundfile).unwrap();
 
         assert_eq!(porcupine.sample_rate(), source.sample_rate());
@@ -334,7 +331,6 @@ mod tests {
 
     #[test]
     fn test_process_multiple() {
-        let basedir_path = "../../";
         const KEYWORDS: [&str; 8] = [
             "americano",
             "blueberry",
@@ -346,23 +342,22 @@ mod tests {
             "terminator",
         ];
 
-        let keyword_paths = pv_keyword_paths(basedir_path.clone());
+        let keyword_paths = pv_keyword_paths("");
         let selected_keyword_paths = KEYWORDS
             .iter()
             .map(|keyword| PathBuf::from(keyword_paths.get(&keyword.to_string()).unwrap()))
             .collect::<Vec<_>>();
 
         let porcupine = Porcupine::new(
-            pv_library_path(basedir_path.clone()),
-            pv_model_path(basedir_path.clone()),
+            pv_library_path(""),
+            pv_model_path(""),
             &selected_keyword_paths,
             &[0.5; KEYWORDS.len()],
         )
         .expect("Unable to create Porcupine");
 
-        let soundfile = BufReader::new(
-            File::open("../../resources/audio_samples/multiple_keywords.wav").unwrap(),
-        );
+        let soundfile =
+            BufReader::new(File::open("resources/audio_samples/multiple_keywords.wav").unwrap());
         let source = Decoder::new(soundfile).unwrap();
 
         assert_eq!(porcupine.sample_rate(), source.sample_rate());

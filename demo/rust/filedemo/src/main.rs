@@ -59,11 +59,11 @@ fn porcupine_demo(
 }
 
 fn main() {
-    let default_library_path = pv_library_path("../../../")
+    let default_library_path = pv_library_path("")
         .into_os_string()
         .into_string()
         .unwrap();
-    let default_model_path = pv_model_path("../../../")
+    let default_model_path = pv_model_path("")
         .into_os_string()
         .into_string()
         .unwrap();
@@ -132,7 +132,7 @@ fn main() {
 
     let keyword_paths: Vec<PathBuf> = {
         if matches.is_present("keywords") {
-            let pv_keyword_paths = pv_keyword_paths(PathBuf::from("../../../"));
+            let pv_keyword_paths = pv_keyword_paths("");
             matches
                 .values_of("keywords")
                 .unwrap()

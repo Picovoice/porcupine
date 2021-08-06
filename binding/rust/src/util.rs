@@ -103,13 +103,19 @@ fn base_library_path() -> PathBuf {
 }
 
 pub fn pv_library_path<P: AsRef<Path>>(relative: P) -> PathBuf {
-    let mut path = PathBuf::from(relative.as_ref());
+    let mut path = PathBuf::from(file!());
+    path.pop(); // file! macro includes filename
+    path.push("../");
+    path.push(relative.as_ref());
     path.push(base_library_path());
     return path;
 }
 
 pub fn pv_model_path<P: AsRef<Path>>(relative: P) -> PathBuf {
-    let mut path = PathBuf::from(relative.as_ref());
+    let mut path = PathBuf::from(file!());
+    path.pop(); // file! macro includes filename
+    path.push("../");
+    path.push(relative.as_ref());
     path.push("lib/common/porcupine_params.pv");
     return path;
 }
@@ -137,18 +143,24 @@ fn keyword_path_subdir() -> PathBuf {
         machine if JETSON_MACHINES.contains(&machine) => PathBuf::from("jetson"),
         "beaglebone" => PathBuf::from("beaglebone"),
         _ => {
-            panic!("ERROR: Please be advised that this device is not officially supported by Picovoice.");
+            panic!("ERROR: Please be advised that this device is not officially supported by Picovoice");
         }
     };
 }
 
 pub fn pv_keyword_paths<P: AsRef<Path>>(relative: P) -> HashMap<String, String> {
-    let mut dir = PathBuf::from(relative.as_ref());
+    let mut dir = PathBuf::from(file!());
+    dir.pop(); // file! macro includes filename
+    dir.push("../");
+    dir.push(relative.as_ref());
     dir.push("resources/keyword_files/");
     dir.push(keyword_path_subdir());
 
     let mut keyword_paths = HashMap::new();
-    let dir_entries = fs::read_dir(dir).unwrap();
+    let dir_entries = fs::read_dir(dir.clone()).expect(&format!(
+        "Can't find default keyword_files dir: {}",
+        dir.display()
+    ));
     for entry in dir_entries {
         let entry = entry.unwrap();
         let path = entry.path();
