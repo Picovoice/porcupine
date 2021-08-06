@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   DESC
   s.homepage = 'https://github.com/Picovoice/porcupine/tree/master/binding/ios'
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }
-  s.source = { :git => "https://github.com/Picovoice/porcupine.git", :branch => "ios-binding-upgrade"}
+  s.source = { :git => "https://github.com/Picovoice/porcupine.git", :tag => "Porcupine-iOS-v1.9.3"}
   s.ios.deployment_target = '9.0'
   s.swift_version = '5.0'
   s.ios.framework = 'AVFoundation'

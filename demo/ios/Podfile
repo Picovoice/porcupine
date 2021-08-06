@@ -2,9 +2,9 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
 target 'PorcupineDemo' do    
-    pod 'Porcupine-iOS', :path => '../../binding/ios'
+    pod 'Porcupine-iOS'
 end
 
 target 'PorcupineDemoUITests' do
-    pod 'Porcupine-iOS', :path => '../../binding/ios'
+    pod 'Porcupine-iOS'
 end
