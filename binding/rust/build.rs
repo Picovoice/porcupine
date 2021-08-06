@@ -45,7 +45,11 @@ fn copy_dir<U: AsRef<Path>, V: AsRef<Path>>(from: U, to: V) -> Result<(), std::i
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
 
-    println!("cargo:warning=Copying required external files into {}", out_dir);
+    println!(
+        "cargo:warning=Copying required external files into {}",
+        out_dir
+    );
     copy_dir("../../lib", format!("{}/lib", out_dir)).unwrap();
     copy_dir("../../resources", format!("{}/resources", out_dir)).unwrap();
+    println!("cargo:rerun-if-changed=src/");
 }

@@ -1,9 +1,21 @@
+/*
+    Copyright 2018-2021 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+    file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations under the License.
+*/
+
 use libc::{c_char, c_float};
 use libloading::{Library, Symbol};
 use std::cmp::PartialEq;
 use std::ffi::CString;
 use std::path::PathBuf;
 use std::ptr::addr_of_mut;
+use std::sync::Arc;
 
 #[repr(C)]
 struct CPorcupine {}
@@ -37,11 +49,46 @@ type PvPorcupineProcessFn<'a> =
     Symbol<'a, unsafe extern "C" fn(*mut CPorcupine, *const i16, *mut i32) -> PicovoiceStatuses>;
 type PvPorcupineDeleteFn<'a> = Symbol<'a, unsafe extern "C" fn(*mut CPorcupine)>;
 
+#[derive(Clone)]
 pub struct Porcupine {
+    inner: Arc<PorcupineInner>,
+}
+
+impl Porcupine {
+    pub fn new(
+        library_path: PathBuf,
+        model_path: PathBuf,
+        keyword_paths: &[PathBuf],
+        sensitivities: &[f32],
+    ) -> Self {
+        Porcupine {
+            inner: Arc::new(PorcupineInner::new(
+                library_path,
+                model_path,
+                keyword_paths,
+                sensitivities,
+            )),
+        }
+    }
+
+    pub fn process(&self, pcm: &[i16]) -> i32 {
+        return self.inner.process(pcm);
+    }
+
+    pub fn frame_length(&self) -> u32 {
+        return self.inner.frame_length as u32;
+    }
+
+    pub fn sample_rate(&self) -> u32 {
+        return self.inner.sample_rate as u32;
+    }
+}
+
+struct PorcupineInner {
     cporcupine: *mut CPorcupine,
     lib: Library,
-    pub frame_length: i32,
-    pub sample_rate: i32,
+    frame_length: i32,
+    sample_rate: i32,
 }
 
 fn pathbuf_to_cstring(pathbuf: &PathBuf) -> CString {
@@ -49,7 +96,7 @@ fn pathbuf_to_cstring(pathbuf: &PathBuf) -> CString {
     return CString::new(pathstr).unwrap();
 }
 
-impl Porcupine {
+impl PorcupineInner {
     pub fn new(
         library_path: PathBuf,
         model_path: PathBuf,
@@ -95,7 +142,7 @@ impl Porcupine {
             let sample_rate = pv_sample_rate();
             let frame_length = pv_porcupine_frame_length();
 
-            return Porcupine {
+            return Self {
                 cporcupine,
                 lib,
                 sample_rate,
@@ -104,7 +151,7 @@ impl Porcupine {
         }
     }
 
-    pub fn process(&mut self, pcm: &[i16]) -> i32 {
+    pub fn process(&self, pcm: &[i16]) -> i32 {
         if pcm.len() as i32 != self.frame_length {
             panic!(
                 "Make this an actual raised error: frame length bad: {}/{}",
@@ -131,9 +178,10 @@ impl Porcupine {
     }
 }
 
-unsafe impl Send for Porcupine {}
+unsafe impl Send for PorcupineInner {}
+unsafe impl Sync for PorcupineInner {}
 
-impl Drop for Porcupine {
+impl Drop for PorcupineInner {
     fn drop(&mut self) {
         unsafe {
             let pv_porcupine_delete: PvPorcupineDeleteFn = self
@@ -159,7 +207,7 @@ mod tests {
     #[test]
     fn test_process() {
         let basedir_path: PathBuf = PathBuf::from("../../");
-        let mut porcupine = Porcupine::new(
+        let porcupine = Porcupine::new(
             pv_library_path(basedir_path.clone()),
             pv_model_path(basedir_path.clone()),
             &[PathBuf::from(
@@ -174,12 +222,12 @@ mod tests {
             BufReader::new(File::open("../../resources/audio_samples/porcupine.wav").unwrap());
         let source = Decoder::new(soundfile).unwrap();
 
-        assert_eq!(porcupine.sample_rate, source.sample_rate() as i32);
+        assert_eq!(porcupine.sample_rate(), source.sample_rate());
 
         let mut results = Vec::new();
-        for frame in &source.chunks(porcupine.frame_length as usize) {
+        for frame in &source.chunks(porcupine.frame_length() as usize) {
             let frame = frame.collect_vec();
-            if frame.len() == porcupine.frame_length as usize {
+            if frame.len() == porcupine.frame_length() as usize {
                 let keyword_index = porcupine.process(&frame);
                 if keyword_index >= 0 {
                     results.push(keyword_index);
@@ -210,7 +258,7 @@ mod tests {
             .map(|keyword| PathBuf::from(keyword_paths.get(&keyword.to_string()).unwrap()))
             .collect::<Vec<_>>();
 
-        let mut porcupine = Porcupine::new(
+        let porcupine = Porcupine::new(
             pv_library_path(basedir_path.clone()),
             pv_model_path(basedir_path.clone()),
             &selected_keyword_paths,
@@ -222,12 +270,12 @@ mod tests {
         );
         let source = Decoder::new(soundfile).unwrap();
 
-        assert_eq!(porcupine.sample_rate, source.sample_rate() as i32);
+        assert_eq!(porcupine.sample_rate(), source.sample_rate());
 
         let mut results = Vec::new();
-        for frame in &source.chunks(porcupine.frame_length as usize) {
+        for frame in &source.chunks(porcupine.frame_length() as usize) {
             let frame = frame.collect_vec();
-            if frame.len() == porcupine.frame_length as usize {
+            if frame.len() == porcupine.frame_length() as usize {
                 let keyword_index = porcupine.process(&frame);
                 if keyword_index >= 0 {
                     results.push(keyword_index);

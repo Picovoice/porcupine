@@ -1,3 +1,14 @@
+/*
+    Copyright 2018-2021 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+    file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations under the License.
+*/
+
 use clap::{App, Arg, ArgGroup};
 use itertools::Itertools;
 use pv_porcupine::{pv_keyword_paths, pv_library_path, pv_model_path, Porcupine, KEYWORDS};
@@ -18,19 +29,19 @@ fn porcupine_demo(
     let soundfile = BufReader::new(File::open(input_audio_path).unwrap());
     let audiosource = Decoder::new(soundfile).unwrap();
 
-    let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities);
+    let porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities);
 
-    if porcupine.sample_rate != audiosource.sample_rate() as i32 {
+    if porcupine.sample_rate() != audiosource.sample_rate() {
         panic!(
             "Audio file should have the expected sample rate of {}, got {}",
-            porcupine.sample_rate,
+            porcupine.sample_rate(),
             audiosource.sample_rate()
         );
     }
 
-    for frame in &audiosource.chunks(porcupine.frame_length as usize) {
+    for frame in &audiosource.chunks(porcupine.frame_length() as usize) {
         let frame = frame.collect_vec();
-        if frame.len() == porcupine.frame_length as usize {
+        if frame.len() == porcupine.frame_length() as usize {
             let keyword_index = porcupine.process(&frame);
             if keyword_index >= 0 {
                 println!(

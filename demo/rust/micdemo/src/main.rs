@@ -1,9 +1,17 @@
+/*
+    Copyright 2018-2021 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+    file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations under the License.
+*/
+
 use clap::{App, Arg, ArgGroup};
-use cpal;
-use cpal::traits::DeviceTrait;
-use cpal::traits::HostTrait;
-use cpal::traits::StreamTrait;
 use ctrlc;
+use miniaudio;
 use pv_porcupine::{pv_keyword_paths, pv_library_path, pv_model_path, Porcupine, KEYWORDS};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -12,15 +20,15 @@ use std::time::SystemTime;
 static LISTENING: AtomicBool = AtomicBool::new(true);
 
 fn process_audio_chunk(
-    data: &[i16],
+    samples: &[i16],
     porcupine: &mut Porcupine,
     buffer: &mut Vec<i16>,
     keywords: &[String],
 ) {
-    buffer.extend_from_slice(data);
+    buffer.extend_from_slice(samples);
 
-    if buffer.len() >= porcupine.frame_length as usize {
-        let frame: Vec<i16> = buffer.drain(..porcupine.frame_length as usize).collect();
+    if buffer.len() >= porcupine.frame_length() as usize {
+        let frame: Vec<i16> = buffer.drain(..porcupine.frame_length() as usize).collect();
         let result = porcupine.process(&frame);
         if result >= 0 {
             println!(
@@ -36,7 +44,7 @@ fn process_audio_chunk(
 }
 
 fn porcupine_demo(
-    audio_device_index: Option<usize>,
+    audio_device_index: usize,
     library_path: PathBuf,
     model_path: PathBuf,
     keyword_paths: Vec<PathBuf>,
@@ -46,42 +54,37 @@ fn porcupine_demo(
     let mut buffer: Vec<i16> = Vec::new();
     let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities);
 
-    let host = cpal::default_host();
-    let device = match audio_device_index {
-        Some(index) => {
-            let device = host.input_devices().unwrap().enumerate().find(|(i, _device)| i == &index);
-            match device {
-                Some(device_tuple) => Some(device_tuple.1),
-                None => None
-            }
-        }
-        None => host.default_input_device(),
-    }
-    .expect("Failed to find input device");
-    println!("Input device: {}", device.name().unwrap());
+    let miniaudio_context =
+        miniaudio::Context::new(&[], None).expect("Failed to create audio context");
+    miniaudio_context
+        .with_capture_devices(|_: _| {})
+        .expect("Failed to access capture devices");
+    let device_id = miniaudio_context
+        .capture_devices()
+        .get(audio_device_index)
+        .expect("No device available given audio device index.")
+        .id()
+        .clone();
 
-    let config = cpal::StreamConfig {
-        channels: 1,
-        sample_rate: cpal::SampleRate(porcupine.sample_rate as u32),
-        buffer_size: cpal::BufferSize::Default,
-    };
+    let mut device_config = miniaudio::DeviceConfig::new(miniaudio::DeviceType::Capture);
+    device_config
+        .capture_mut()
+        .set_format(miniaudio::Format::S16);
+    device_config.capture_mut().set_channels(1);
+    device_config.capture_mut().set_device_id(Some(device_id));
+    device_config.set_sample_rate(porcupine.sample_rate());
+    device_config.set_data_callback(move |_, _, frames| {
+        process_audio_chunk(frames.as_samples(), &mut porcupine, &mut buffer, &keywords);
+    });
 
-    println!("Listening...");
-    let stream = device
-        .build_input_stream(
-            &config.into(),
-            move |data: &[i16], _: &_| {
-                process_audio_chunk(data, &mut porcupine, &mut buffer, &keywords)
-            },
-            |_| {},
-        )
-        .unwrap();
-    stream.play().unwrap();
+    let device = miniaudio::Device::new(Some(miniaudio_context), &device_config)
+        .expect("Failed to initialize capture device");
+    device.start().expect("Failed to start device");
 
     ctrlc::set_handler(|| {
         LISTENING.store(false, Ordering::SeqCst);
     })
-    .unwrap();
+    .expect("Unable to setup signal handler");
 
     // Spin loop until we receive the ctrlc handler
     while LISTENING.load(Ordering::SeqCst) {
@@ -93,12 +96,15 @@ fn porcupine_demo(
 }
 
 fn show_audio_devices() {
-    let host = cpal::default_host();
-    for (idx, device) in host.input_devices().unwrap().enumerate() {
-        if let Ok(device_name) = device.name() {
-            println!("Index: {}, Device: {}", idx, device_name);
-        }
-    }
+    let miniaudio_context = miniaudio::Context::new(&[], None).expect("failed to create context");
+    miniaudio_context
+        .with_capture_devices(|capture_devices| {
+            println!("Capture Devices:");
+            for (idx, device) in capture_devices.iter().enumerate() {
+                println!("\t{}: {}", idx, device.name());
+            }
+        })
+        .expect("failed to get devices");
 }
 
 fn main() {
@@ -166,6 +172,7 @@ fn main() {
             .value_name("INDEX")
             .help("Index of input audio device.")
             .takes_value(true)
+            .default_value("0")
         )
         .arg(
             Arg::with_name("show_audio_devices")
@@ -176,14 +183,11 @@ fn main() {
     if matches.is_present("show_audio_devices") {
         show_audio_devices();
     } else {
-        let audio_device_index = match matches.value_of("audio_device_index") {
-            Some(audio_device_index) => Some(
-                audio_device_index
-                    .parse::<usize>()
-                    .expect("Audio device index should be a positive integer"),
-            ),
-            None => None,
-        };
+        let audio_device_index = matches
+            .value_of("audio_device_index")
+            .unwrap()
+            .parse()
+            .unwrap();
         let library_path = PathBuf::from(matches.value_of("library_path").unwrap());
         let model_path = PathBuf::from(matches.value_of("model_path").unwrap());
 

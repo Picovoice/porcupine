@@ -5,7 +5,7 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33.3"
-cpal = "0.13.3"
+miniaudio = "0.10.0"
 itertools = "0.10.1"
 pv_porcupine = { path = "../../../binding/rust" }
 ctrlc = "3.1.9"
