@@ -29,7 +29,7 @@ fn process_audio_chunk(
 
     while buffer.len() >= porcupine.frame_length() as usize && LISTENING.load(Ordering::SeqCst) {
         let frame: Vec<i16> = buffer.drain(..porcupine.frame_length() as usize).collect();
-        let result = porcupine.process(&frame);
+        let result = porcupine.process(&frame).unwrap();
         if result >= 0 {
             println!(
                 "[{}] Detected {}",
@@ -53,7 +53,8 @@ fn porcupine_demo(
     sensitivities: Vec<f32>,
 ) {
     let mut buffer: Vec<i16> = Vec::new();
-    let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities);
+    let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities)
+        .expect("Failed to create Porcupine");
 
     let miniaudio_backend = match audio_backend {
         Some(backend) => vec![backend],
@@ -103,6 +104,7 @@ fn porcupine_demo(
 
     println!("\nStopping!");
     device.stop().expect("Failed to stop device");
+    println!("Stopped");
 }
 
 fn show_audio_devices() {

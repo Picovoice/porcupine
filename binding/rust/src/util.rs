@@ -16,8 +16,9 @@ use log::*;
 use std::process::Command;
 
 use std::collections::HashMap;
+use std::convert::AsRef;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[allow(dead_code)]
 const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
@@ -101,14 +102,14 @@ fn base_library_path() -> PathBuf {
     };
 }
 
-pub fn pv_library_path(relative: PathBuf) -> PathBuf {
-    let mut path = relative.clone();
+pub fn pv_library_path<P: AsRef<Path>>(relative: P) -> PathBuf {
+    let mut path = PathBuf::from(relative.as_ref());
     path.push(base_library_path());
     return path;
 }
 
-pub fn pv_model_path(relative: PathBuf) -> PathBuf {
-    let mut path = relative.clone();
+pub fn pv_model_path<P: AsRef<Path>>(relative: P) -> PathBuf {
+    let mut path = PathBuf::from(relative.as_ref());
     path.push("lib/common/porcupine_params.pv");
     return path;
 }
@@ -141,8 +142,8 @@ fn keyword_path_subdir() -> PathBuf {
     };
 }
 
-pub fn pv_keyword_paths(relative: PathBuf) -> HashMap<String, String> {
-    let mut dir = relative.clone();
+pub fn pv_keyword_paths<P: AsRef<Path>>(relative: P) -> HashMap<String, String> {
+    let mut dir = PathBuf::from(relative.as_ref());
     dir.push("resources/keyword_files/");
     dir.push(keyword_path_subdir());
 

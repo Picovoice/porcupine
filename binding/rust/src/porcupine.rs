@@ -12,8 +12,9 @@
 use libc::{c_char, c_float};
 use libloading::{Library, Symbol};
 use std::cmp::PartialEq;
+use std::convert::AsRef;
 use std::ffi::CString;
-use std::path::PathBuf;
+use std::path::Path;
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
 
@@ -21,7 +22,7 @@ use std::sync::Arc;
 struct CPorcupine {}
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 #[allow(non_camel_case_types)]
 pub enum PicovoiceStatuses {
     SUCCESS = 0,
@@ -49,29 +50,59 @@ type PvPorcupineProcessFn<'a> =
     Symbol<'a, unsafe extern "C" fn(*mut CPorcupine, *const i16, *mut i32) -> PicovoiceStatuses>;
 type PvPorcupineDeleteFn<'a> = Symbol<'a, unsafe extern "C" fn(*mut CPorcupine)>;
 
+#[derive(Debug)]
+pub enum PorcupineErrorStatus {
+    LibraryError(PicovoiceStatuses),
+    FrameLengthError,
+    ArgumentError,
+}
+
+#[derive(Debug)]
+pub struct PorcupineError {
+    pub status: PorcupineErrorStatus,
+    pub message: Option<String>,
+}
+
+impl PorcupineError {
+    pub fn new(status: PorcupineErrorStatus, message: &str) -> Self {
+        PorcupineError {
+            status,
+            message: Some(message.to_string()),
+        }
+    }
+}
+
+impl std::fmt::Display for PorcupineError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match &self.message {
+            Some(message) => write!(f, "{}: {:?}", message, self.status),
+            None => write!(f, "Porcupine error: {:?}", self.status),
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct Porcupine {
     inner: Arc<PorcupineInner>,
 }
 
 impl Porcupine {
-    pub fn new(
-        library_path: PathBuf,
-        model_path: PathBuf,
-        keyword_paths: &[PathBuf],
+    pub fn new<P: AsRef<Path>>(
+        library_path: P,
+        model_path: P,
+        keyword_paths: &[P],
         sensitivities: &[f32],
-    ) -> Self {
-        Porcupine {
-            inner: Arc::new(PorcupineInner::new(
-                library_path,
-                model_path,
-                keyword_paths,
-                sensitivities,
-            )),
-        }
+    ) -> Result<Self, PorcupineError> {
+        let inner = PorcupineInner::new(library_path, model_path, keyword_paths, sensitivities);
+        return match inner {
+            Ok(inner) => Ok(Porcupine {
+                inner: Arc::new(inner),
+            }),
+            Err(err) => Err(err),
+        };
     }
 
-    pub fn process(&self, pcm: &[i16]) -> i32 {
+    pub fn process(&self, pcm: &[i16]) -> Result<i32, PorcupineError> {
         return self.inner.process(pcm);
     }
 
@@ -91,24 +122,73 @@ struct PorcupineInner {
     sample_rate: i32,
 }
 
-fn pathbuf_to_cstring(pathbuf: &PathBuf) -> CString {
-    let pathstr = pathbuf.to_str().unwrap();
+fn pathbuf_to_cstring<P: AsRef<Path>>(pathbuf: P) -> CString {
+    let pathstr = pathbuf.as_ref().to_str().unwrap();
     return CString::new(pathstr).unwrap();
 }
 
 impl PorcupineInner {
-    pub fn new(
-        library_path: PathBuf,
-        model_path: PathBuf,
-        keyword_paths: &[PathBuf],
+    pub fn new<P: AsRef<Path>>(
+        library_path: P,
+        model_path: P,
+        keyword_paths: &[P],
         sensitivities: &[f32],
-    ) -> Self {
+    ) -> Result<Self, PorcupineError> {
         unsafe {
-            let lib = Library::new(library_path).expect("Failed to load porcupine dynamic library");
+            if !library_path.as_ref().exists() {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::ArgumentError,
+                    &format!(
+                        "Couldn't find Porcupine's dynamic library at {}",
+                        library_path.as_ref().display()
+                    ),
+                ));
+            }
+
+            if !model_path.as_ref().exists() {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::ArgumentError,
+                    &format!(
+                        "Couldn't find model file at {}",
+                        model_path.as_ref().display()
+                    ),
+                ));
+            }
+
+            if keyword_paths.len() != sensitivities.len() {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::ArgumentError,
+                    "Number of keywords does not match the number of sensitivities",
+                ));
+            }
+
+            for keyword_path in keyword_paths {
+                if !keyword_path.as_ref().exists() {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::ArgumentError,
+                        &format!(
+                            "Couldn't find keyword file at {}",
+                            keyword_path.as_ref().display()
+                        ),
+                    ));
+                }
+            }
+
+            for sensitivity in sensitivities {
+                if !(0.0 <= *sensitivity && *sensitivity <= 1.0) {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::ArgumentError,
+                        "A sensitivity value should be within [0, 1]",
+                    ));
+                }
+            }
+
+            let lib = Library::new(library_path.as_ref())
+                .expect("Failed to load porcupine dynamic library");
 
             let pv_porcupine_init: PvPorcupineInitFn = lib
                 .get(b"pv_porcupine_init")
-                .expect("Failed to load init function");
+                .expect("Failed to load init function symbol from Porcupine library");
 
             let pv_model_path = pathbuf_to_cstring(&model_path);
             let pv_keyword_paths = keyword_paths
@@ -129,35 +209,45 @@ impl PorcupineInner {
                 addr_of_mut!(cporcupine),
             );
             if status != PicovoiceStatuses::SUCCESS {
-                panic!("Make this an actual raised error");
+                panic!(
+                    "{}",
+                    PorcupineError::new(
+                        PorcupineErrorStatus::LibraryError(status),
+                        "Failed to initialize the Porcupine library",
+                    )
+                );
             }
 
-            let pv_sample_rate: PvSampleRateFn =
-                lib.get(b"pv_sample_rate").expect("Failed to load function");
+            let pv_sample_rate: PvSampleRateFn = lib
+                .get(b"pv_sample_rate")
+                .expect("Failed to load function symbol from Porcupine library");
 
             let pv_porcupine_frame_length: PvPorcupineFrameLengthFn = lib
                 .get(b"pv_porcupine_frame_length")
-                .expect("Failed to load function");
+                .expect("Failed to load function symbol from Porcupine library");
 
             let sample_rate = pv_sample_rate();
             let frame_length = pv_porcupine_frame_length();
 
-            return Self {
+            return Ok(Self {
                 cporcupine,
                 lib,
                 sample_rate,
                 frame_length,
-            };
+            });
         }
     }
 
-    pub fn process(&self, pcm: &[i16]) -> i32 {
+    pub fn process(&self, pcm: &[i16]) -> Result<i32, PorcupineError> {
         if pcm.len() as i32 != self.frame_length {
-            panic!(
-                "Make this an actual raised error: frame length bad: {}/{}",
-                pcm.len(),
-                self.frame_length
-            );
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::FrameLengthError,
+                &format!(
+                    "Found a frame length of {} Expected {}",
+                    pcm.len(),
+                    self.frame_length
+                ),
+            ));
         }
 
         let mut result: i32 = -1;
@@ -165,16 +255,19 @@ impl PorcupineInner {
             let pv_porcupine_process: PvPorcupineProcessFn = self
                 .lib
                 .get(b"pv_porcupine_process")
-                .expect("Failed to load function");
+                .expect("Failed to load function symbol from Porcupine library");
 
             pv_porcupine_process(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
         };
 
         if status != PicovoiceStatuses::SUCCESS {
-            panic!("Make this an actual raised error");
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::LibraryError(status),
+                "Porcupine library failed to process",
+            ));
         }
 
-        return result;
+        return Ok(result);
     }
 }
 
@@ -187,7 +280,7 @@ impl Drop for PorcupineInner {
             let pv_porcupine_delete: PvPorcupineDeleteFn = self
                 .lib
                 .get(b"pv_porcupine_delete")
-                .expect("Failed to load function");
+                .expect("Failed to load function symbol from Porcupine library");
             pv_porcupine_delete(self.cporcupine);
         }
     }
@@ -206,17 +299,18 @@ mod tests {
 
     #[test]
     fn test_process() {
-        let basedir_path: PathBuf = PathBuf::from("../../");
+        let basedir_path = "../../";
         let porcupine = Porcupine::new(
             pv_library_path(basedir_path.clone()),
             pv_model_path(basedir_path.clone()),
             &[PathBuf::from(
                 pv_keyword_paths(basedir_path.clone())
-                    .get(&String::from("porcupine"))
+                    .get("porcupine")
                     .unwrap(),
             )],
             &[0.5],
-        );
+        )
+        .expect("Unable to create Porcupine");
 
         let soundfile =
             BufReader::new(File::open("../../resources/audio_samples/porcupine.wav").unwrap());
@@ -228,7 +322,7 @@ mod tests {
         for frame in &source.chunks(porcupine.frame_length() as usize) {
             let frame = frame.collect_vec();
             if frame.len() == porcupine.frame_length() as usize {
-                let keyword_index = porcupine.process(&frame);
+                let keyword_index = porcupine.process(&frame).unwrap();
                 if keyword_index >= 0 {
                     results.push(keyword_index);
                 }
@@ -240,7 +334,7 @@ mod tests {
 
     #[test]
     fn test_process_multiple() {
-        let basedir_path: PathBuf = PathBuf::from("../../");
+        let basedir_path = "../../";
         const KEYWORDS: [&str; 8] = [
             "americano",
             "blueberry",
@@ -263,7 +357,8 @@ mod tests {
             pv_model_path(basedir_path.clone()),
             &selected_keyword_paths,
             &[0.5; KEYWORDS.len()],
-        );
+        )
+        .expect("Unable to create Porcupine");
 
         let soundfile = BufReader::new(
             File::open("../../resources/audio_samples/multiple_keywords.wav").unwrap(),
@@ -276,7 +371,7 @@ mod tests {
         for frame in &source.chunks(porcupine.frame_length() as usize) {
             let frame = frame.collect_vec();
             if frame.len() == porcupine.frame_length() as usize {
-                let keyword_index = porcupine.process(&frame);
+                let keyword_index = porcupine.process(&frame).unwrap();
                 if keyword_index >= 0 {
                     results.push(keyword_index);
                 }

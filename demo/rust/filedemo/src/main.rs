@@ -29,7 +29,8 @@ fn porcupine_demo(
     let soundfile = BufReader::new(File::open(input_audio_path).unwrap());
     let audiosource = Decoder::new(soundfile).unwrap();
 
-    let porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities);
+    let porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities)
+        .expect("Failed to create Porcupine");
 
     if porcupine.sample_rate() != audiosource.sample_rate() {
         panic!(
@@ -42,7 +43,7 @@ fn porcupine_demo(
     for frame in &audiosource.chunks(porcupine.frame_length() as usize) {
         let frame = frame.collect_vec();
         if frame.len() == porcupine.frame_length() as usize {
-            let keyword_index = porcupine.process(&frame);
+            let keyword_index = porcupine.process(&frame).unwrap();
             if keyword_index >= 0 {
                 println!(
                     "[{}] Detected {}",
