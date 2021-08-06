@@ -59,11 +59,11 @@ fn porcupine_demo(
 }
 
 fn main() {
-    let default_library_path = pv_library_path(PathBuf::from("../../../"))
+    let default_library_path = pv_library_path("../../../")
         .into_os_string()
         .into_string()
         .unwrap();
-    let default_model_path = pv_model_path(PathBuf::from("../../../"))
+    let default_model_path = pv_model_path("../../../")
         .into_os_string()
         .into_string()
         .unwrap();
