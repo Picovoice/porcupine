@@ -27,7 +27,7 @@ fn process_audio_chunk(
 ) {
     buffer.extend_from_slice(samples);
 
-    if buffer.len() >= porcupine.frame_length() as usize {
+    while buffer.len() >= porcupine.frame_length() as usize && LISTENING.load(Ordering::SeqCst) {
         let frame: Vec<i16> = buffer.drain(..porcupine.frame_length() as usize).collect();
         let result = porcupine.process(&frame);
         if result >= 0 {
@@ -44,6 +44,7 @@ fn process_audio_chunk(
 }
 
 fn porcupine_demo(
+    audio_backend: Option<miniaudio::Backend>,
     audio_device_index: usize,
     library_path: PathBuf,
     model_path: PathBuf,
@@ -54,8 +55,12 @@ fn porcupine_demo(
     let mut buffer: Vec<i16> = Vec::new();
     let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities);
 
+    let miniaudio_backend = match audio_backend {
+        Some(backend) => vec![backend],
+        _ => vec![],
+    };
     let miniaudio_context =
-        miniaudio::Context::new(&[], None).expect("Failed to create audio context");
+        miniaudio::Context::new(&miniaudio_backend, None).expect("Failed to create audio context");
     miniaudio_context
         .with_capture_devices(|_: _| {})
         .expect("Failed to access capture devices");
@@ -65,6 +70,8 @@ fn porcupine_demo(
         .expect("No device available given audio device index.")
         .id()
         .clone();
+
+    println!("Using {:?} backend", miniaudio_context.backend());
 
     let mut device_config = miniaudio::DeviceConfig::new(miniaudio::DeviceType::Capture);
     device_config
@@ -81,6 +88,8 @@ fn porcupine_demo(
         .expect("Failed to initialize capture device");
     device.start().expect("Failed to start device");
 
+    println!("Listening for wake words...");
+
     ctrlc::set_handler(|| {
         LISTENING.store(false, Ordering::SeqCst);
     })
@@ -92,7 +101,8 @@ fn porcupine_demo(
         std::thread::sleep(std::time::Duration::from_millis(10));
     }
 
-    println!("Stopping!");
+    println!("\nStopping!");
+    device.stop().expect("Failed to stop device");
 }
 
 fn show_audio_devices() {
@@ -175,6 +185,14 @@ fn main() {
             .default_value("0")
         )
         .arg(
+            Arg::with_name("audio_backend")
+            .long("audio_backend")
+            .value_name("BACKEND")
+            .help("The name of a specific audio backend to use. Note: not all options will work on a given platform.")
+            .takes_value(true)
+            .possible_values(&["Wasapi", "DSound", "WinMM", "CoreAudio", "SNDIO", "Audio4", "OSS", "PulseAudio", "Alsa", "Jack", "AAudio", "OpenSL", "WebAudio"])
+        )
+        .arg(
             Arg::with_name("show_audio_devices")
             .long("show_audio_devices")
         )
@@ -188,6 +206,27 @@ fn main() {
             .unwrap()
             .parse()
             .unwrap();
+
+        let audio_backend = match matches.value_of("audio_backend") {
+            Some(audio_backend_str) => Some(match audio_backend_str {
+                "Wasapi" => miniaudio::Backend::Wasapi,
+                "DSound" => miniaudio::Backend::DSound,
+                "WinMM" => miniaudio::Backend::WinMM,
+                "CoreAudio" => miniaudio::Backend::CoreAudio,
+                "SNDIO" => miniaudio::Backend::SNDIO,
+                "Audio4" => miniaudio::Backend::Audio4,
+                "OSS" => miniaudio::Backend::OSS,
+                "PulseAudio" => miniaudio::Backend::PulseAudio,
+                "Alsa" => miniaudio::Backend::Alsa,
+                "Jack" => miniaudio::Backend::Jack,
+                "AAudio" => miniaudio::Backend::AAudio,
+                "OpenSL" => miniaudio::Backend::OpenSL,
+                "WebAudio" => miniaudio::Backend::WebAudio,
+                _ => panic!("Unsupported audio backend"),
+            }),
+            _ => None,
+        };
+
         let library_path = PathBuf::from(matches.value_of("library_path").unwrap());
         let model_path = PathBuf::from(matches.value_of("model_path").unwrap());
 
@@ -246,6 +285,7 @@ fn main() {
         }
 
         porcupine_demo(
+            audio_backend,
             audio_device_index,
             library_path,
             model_path,
