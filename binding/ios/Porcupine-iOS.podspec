@@ -20,7 +20,6 @@ Pod::Spec.new do |s|
   s.source = { :git => "https://github.com/Picovoice/porcupine.git", :tag => "Porcupine-iOS-v1.9.4"}
   s.ios.deployment_target = '9.0'
   s.swift_version = '5.0'
-  s.ios.framework = 'AVFoundation'
   s.vendored_frameworks = 'lib/ios/PvPorcupine.xcframework'
   s.resources = 'resources/keyword_files/ios/{alexa,americano,blueberry,bumblebee,computer,grapefruit,grasshopper,hey google,hey siri,jarvis,ok google,picovoice,porcupine,terminator}_ios.ppn', 
   'lib/common/porcupine_params.pv'
