@@ -7,7 +7,7 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-import AVFoundation
+import ios_voice_processor
 
 public enum PorcupineManagerError: Error {
     case recordingDenied
@@ -21,7 +21,7 @@ public class PorcupineManager {
     
     private var porcupine: Porcupine?
     
-    private let audioInputEngine: AudioInputEngine
+    private let voiceProcessor: VoiceProcessor;
     
     private var isListening = false
     
@@ -30,28 +30,7 @@ public class PorcupineManager {
         self.onDetection = onDetection
         self.porcupine = porcupine
         
-        self.audioInputEngine = AudioInputEngine()
-        audioInputEngine.audioInput = { [weak self] audio in
-            
-            guard let `self` = self else {
-                return
-            }
-            
-            guard self.porcupine != nil else {
-                return
-            }
-            
-            do{
-                let result:Int32 = try self.porcupine!.process(pcm: audio)
-                if result >= 0 {
-                    DispatchQueue.main.async {
-                        self.onDetection?(result)
-                    }
-                }
-            } catch {
-                print("\(error)")
-            }
-        }
+        self.voiceProcessor = VoiceProcessor()
     }
     
     /// Constructor.
@@ -138,14 +117,15 @@ public class PorcupineManager {
         }
 
         // Only check if it's denied, permission will be automatically asked.
-        let audioSession = AVAudioSession.sharedInstance()
-        if audioSession.recordPermission == .denied {
+        if voiceProcessor.hasPermissions() {
             throw PorcupineManagerError.recordingDenied
         }
         
-        try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
-        
-        try audioInputEngine.start()
+        try voiceProcessor.start(
+            frameLength: Porcupine.frameLength,
+            sampleRate: Porcupine.sampleRate,
+            audioCallback: self.audioCallback
+        )
         
         isListening = true
     }
@@ -156,74 +136,30 @@ public class PorcupineManager {
             return
         }
         
-        audioInputEngine.stop()
+        voiceProcessor.stop()
         
         isListening = false
     }
-}
-
-private class AudioInputEngine {
-    private let numBuffers = 3
-    private var audioQueue: AudioQueueRef?
     
-    var audioInput: ((UnsafePointer<Int16>) -> Void)?
-    
-    func start() throws {
-        var format = AudioStreamBasicDescription(
-            mSampleRate: Float64(Porcupine.sampleRate),
-            mFormatID: kAudioFormatLinearPCM,
-            mFormatFlags: kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked,
-            mBytesPerPacket: 2,
-            mFramesPerPacket: 1,
-            mBytesPerFrame: 2,
-            mChannelsPerFrame: 1,
-            mBitsPerChannel: 16,
-            mReserved: 0)
-        let userData = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        AudioQueueNewInput(&format, createAudioQueueCallback(), userData, nil, nil, 0, &audioQueue)
-        
-        guard let queue = audioQueue else {
+    ///
+    private func audioCallback(frameLength: UInt32, pcm: UnsafePointer<Int16> ) {
+        guard let `self` = self else {
             return
         }
         
-        let bufferSize = UInt32(Porcupine.frameLength) * 2
-        for _ in 0..<numBuffers {
-            var bufferRef: AudioQueueBufferRef? = nil
-            AudioQueueAllocateBuffer(queue, bufferSize, &bufferRef)
-            if let buffer = bufferRef {
-                AudioQueueEnqueueBuffer(queue, buffer, 0, nil)
-            }
-        }
-        
-        AudioQueueStart(queue, nil)
-    }
-    
-    func stop() {
-        guard let audioQueue = audioQueue else {
+        guard self.porcupine != nil else {
             return
         }
-        AudioQueueFlush(audioQueue)
-        AudioQueueStop(audioQueue, true)
-        AudioQueueDispose(audioQueue, true)
-        audioInput = nil
-    }
-    
-    private func createAudioQueueCallback() -> AudioQueueInputCallback {
-        return { userData, queue, bufferRef, startTimeRef, numPackets, packetDescriptions in
-            
-            // `self` is passed in as userData in the audio queue callback.
-            guard let userData = userData else {
-                return
+        
+        do{
+            let result:Int32 = try self.porcupine!.process(pcm: audio)
+            if result >= 0 {
+                DispatchQueue.main.async {
+                    self.onDetection?(result)
+                }
             }
-            let `self` = Unmanaged<AudioInputEngine>.fromOpaque(userData).takeUnretainedValue()
-            
-            let pcm = bufferRef.pointee.mAudioData.assumingMemoryBound(to: Int16.self)
-            
-            if let audioInput = self.audioInput {
-                audioInput(pcm)
-            }
-            
-            AudioQueueEnqueueBuffer(queue, bufferRef, 0, nil)
+        } catch {
+            print("\(error)")
         }
     }
 }
