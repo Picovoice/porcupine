@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2021-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -99,6 +99,7 @@ fn main() {
             .use_delimiter(true)
             .help("Absolute paths to keyword model files. If not set it will be populated from `--keywords` argument.")
             .takes_value(true)
+            // TODO: Check if relative paths will work
         )
         .arg(
             Arg::with_name("library_path")

@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2021-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -117,14 +117,8 @@ fn show_audio_devices(miniaudio_backend: &[miniaudio::Backend]) {
 }
 
 fn main() {
-    let default_library_path = pv_library_path("")
-        .into_os_string()
-        .into_string()
-        .unwrap();
-    let default_model_path = pv_model_path("")
-        .into_os_string()
-        .into_string()
-        .unwrap();
+    let default_library_path = pv_library_path("").into_os_string().into_string().unwrap();
+    let default_model_path = pv_model_path("").into_os_string().into_string().unwrap();
 
     let matches = App::new("Picovoice Porcupine Rust Mic Demo")
         .group(
@@ -218,79 +212,79 @@ fn main() {
     };
 
     if matches.is_present("show_audio_devices") {
-        show_audio_devices(&miniaudio_backend);
-    } else {
-        let audio_device_index = matches
-            .value_of("audio_device_index")
-            .unwrap()
-            .parse()
-            .unwrap();
-
-        let library_path = PathBuf::from(matches.value_of("library_path").unwrap());
-        let model_path = PathBuf::from(matches.value_of("model_path").unwrap());
-
-        let keyword_paths: Vec<PathBuf> = {
-            if matches.is_present("keywords") {
-                let pv_keyword_paths = pv_keyword_paths("");
-                matches
-                    .values_of("keywords")
-                    .unwrap()
-                    .map(|keyword| {
-                        PathBuf::from(pv_keyword_paths.get(&keyword.to_string()).unwrap().clone())
-                    })
-                    .collect()
-            } else {
-                matches
-                    .values_of("keyword_paths")
-                    .unwrap()
-                    .map(|path| PathBuf::from(path.to_string()))
-                    .collect()
-            }
-        };
-
-        let keywords: Vec<String> = keyword_paths
-            .iter()
-            .map(|path| {
-                path.file_name()
-                    .unwrap()
-                    .to_os_string()
-                    .into_string()
-                    .unwrap()
-                    .split("_")
-                    .next()
-                    .unwrap()
-                    .to_string()
-            })
-            .collect();
-
-        println!("{:?}", keywords);
-
-        let sensitivities: Vec<f32> = {
-            if matches.is_present("sensitivities") {
-                matches
-                    .values_of("sensitivities")
-                    .unwrap()
-                    .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
-                    .collect()
-            } else {
-                let mut sensitivities = Vec::new();
-                sensitivities.resize_with(keyword_paths.len(), || 0.5);
-                sensitivities
-            }
-        };
-
-        if keyword_paths.len() != sensitivities.len() {
-            panic!("Number of keywords does not match the number of sensitivities.");
-        }
-
-        porcupine_demo(
-            &miniaudio_backend,
-            audio_device_index,
-            library_path,
-            model_path,
-            keyword_paths,
-            keywords,
-            sensitivities,
-        );
+        return show_audio_devices(&miniaudio_backend);
     }
+
+    let audio_device_index = matches
+        .value_of("audio_device_index")
+        .unwrap()
+        .parse()
+        .unwrap();
+
+    let library_path = PathBuf::from(matches.value_of("library_path").unwrap());
+    let model_path = PathBuf::from(matches.value_of("model_path").unwrap());
+
+    let keyword_paths: Vec<PathBuf> = {
+        if matches.is_present("keywords") {
+            let pv_keyword_paths = pv_keyword_paths("");
+            matches
+                .values_of("keywords")
+                .unwrap()
+                .map(|keyword| {
+                    PathBuf::from(pv_keyword_paths.get(&keyword.to_string()).unwrap().clone())
+                })
+                .collect()
+        } else {
+            matches
+                .values_of("keyword_paths")
+                .unwrap()
+                .map(|path| PathBuf::from(path.to_string()))
+                .collect()
+        }
+    };
+
+    let keywords: Vec<String> = keyword_paths
+        .iter()
+        .map(|path| {
+            path.file_name()
+                .unwrap()
+                .to_os_string()
+                .into_string()
+                .unwrap()
+                .split("_")
+                .next()
+                .unwrap()
+                .to_string()
+        })
+        .collect();
+
+    println!("{:?}", keywords);
+
+    let sensitivities: Vec<f32> = {
+        if matches.is_present("sensitivities") {
+            matches
+                .values_of("sensitivities")
+                .unwrap()
+                .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
+                .collect()
+        } else {
+            let mut sensitivities = Vec::new();
+            sensitivities.resize_with(keyword_paths.len(), || 0.5);
+            sensitivities
+        }
+    };
+
+    if keyword_paths.len() != sensitivities.len() {
+        panic!("Number of keywords does not match the number of sensitivities.");
+    }
+
+    porcupine_demo(
+        &miniaudio_backend,
+        audio_device_index,
+        library_path,
+        model_path,
+        keyword_paths,
+        keywords,
+        sensitivities,
+    );
 }

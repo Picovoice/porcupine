@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2021-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -10,13 +10,74 @@
 */
 
 use libc::{c_char, c_float};
+use libloading;
 use libloading::{Library, Symbol};
 use std::cmp::PartialEq;
 use std::convert::AsRef;
-use std::ffi::CString;
-use std::path::Path;
+use std::ffi::CStr;
+use std::path::{Path, PathBuf};
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
+
+use crate::util::*;
+
+#[derive(PartialEq, Debug)]
+pub enum BuiltinKeywords {
+    Alexa,
+    Americano,
+    Blueberry,
+    Bumblebee,
+    Computer,
+    Grapefruit,
+    Grasshopper,
+    HeyGoogle,
+    HeySiri,
+    Jarvis,
+    OkGoogle,
+    Picovoice,
+    Porcupine,
+    Terminator,
+}
+
+impl BuiltinKeywords {
+    pub fn to_str(&self) -> &'static str {
+        match self {
+            Self::Alexa => "alexa",
+            Self::Americano => "americano",
+            Self::Blueberry => "blueberry",
+            Self::Bumblebee => "bumblebee",
+            Self::Computer => "computer",
+            Self::Grapefruit => "grapefruit",
+            Self::Grasshopper => "grasshopper",
+            Self::HeyGoogle => "hey google",
+            Self::HeySiri => "hey siri",
+            Self::Jarvis => "jarvis",
+            Self::OkGoogle => "ok google",
+            Self::Picovoice => "picovoice",
+            Self::Porcupine => "porcupine",
+            Self::Terminator => "terminator",
+        }
+    }
+
+    pub fn options() -> Vec<&'static str> {
+        vec![
+            "alexa",
+            "americano",
+            "blueberry",
+            "bumblebee",
+            "computer",
+            "grapefruit",
+            "grasshopper",
+            "hey google",
+            "hey siri",
+            "jarvis",
+            "ok google",
+            "picovoice",
+            "porcupine",
+            "terminator",
+        ]
+    }
+}
 
 #[repr(C)]
 struct CPorcupine {}
@@ -24,7 +85,7 @@ struct CPorcupine {}
 #[repr(C)]
 #[derive(PartialEq, Debug)]
 #[allow(non_camel_case_types)]
-pub enum PicovoiceStatuses {
+pub enum PvStatus {
     SUCCESS = 0,
     OUT_OF_MEMORY = 1,
     IO_ERROR = 2,
@@ -42,17 +103,19 @@ type PvPorcupineInitFn<'a> = Symbol<
         keyword_paths: *const *const c_char,
         sensitivities: *const c_float,
         object: *mut *mut CPorcupine,
-    ) -> PicovoiceStatuses,
+    ) -> PvStatus,
 >;
 type PvSampleRateFn<'a> = Symbol<'a, unsafe extern "C" fn() -> i32>;
 type PvPorcupineFrameLengthFn<'a> = Symbol<'a, unsafe extern "C" fn() -> i32>;
+type PvPorcupineVersionFn<'a> = Symbol<'a, unsafe extern "C" fn() -> *mut c_char>;
 type PvPorcupineProcessFn<'a> =
-    Symbol<'a, unsafe extern "C" fn(*mut CPorcupine, *const i16, *mut i32) -> PicovoiceStatuses>;
+    Symbol<'a, unsafe extern "C" fn(*mut CPorcupine, *const i16, *mut i32) -> PvStatus>;
 type PvPorcupineDeleteFn<'a> = Symbol<'a, unsafe extern "C" fn(*mut CPorcupine)>;
 
 #[derive(Debug)]
 pub enum PorcupineErrorStatus {
-    LibraryError(PicovoiceStatuses),
+    LibraryError(PvStatus),
+    LibraryLoadError,
     FrameLengthError,
     ArgumentError,
 }
@@ -81,19 +144,76 @@ impl std::fmt::Display for PorcupineError {
     }
 }
 
-#[derive(Clone)]
-pub struct Porcupine {
-    inner: Arc<PorcupineInner>,
+pub struct PorcupineBuilder {
+    library_path: PathBuf,
+    model_path: PathBuf,
+    keyword_paths: Vec<PathBuf>,
+    sensitivities: Vec<f32>,
 }
 
-impl Porcupine {
-    pub fn new<P: AsRef<Path>>(
-        library_path: P,
-        model_path: P,
-        keyword_paths: &[P],
-        sensitivities: &[f32],
-    ) -> Result<Self, PorcupineError> {
-        let inner = PorcupineInner::new(library_path, model_path, keyword_paths, sensitivities);
+impl PorcupineBuilder {
+    pub fn new_with_keywords(keywords: &[BuiltinKeywords]) -> Self {
+        let default_keyword_paths = pv_keyword_paths();
+        let keyword_paths: Vec<String> = keywords
+            .iter()
+            .map(|keyword| {
+                default_keyword_paths
+                    .get(keyword.to_str())
+                    .expect("Unable to find keyword file for specified keyword")
+                    .clone()
+            })
+            .collect();
+
+        return Self::new_with_keyword_paths(&keyword_paths);
+    }
+
+    pub fn new_with_keyword_paths<P: AsRef<Path>>(keyword_paths: &[P]) -> Self {
+        let keyword_paths: Vec<PathBuf> = keyword_paths
+            .iter()
+            .map(|path| PathBuf::from(path.as_ref()))
+            .collect();
+
+        let mut sensitivities = Vec::new();
+        sensitivities.resize_with(keyword_paths.len(), || 0.5);
+
+        return Self {
+            library_path: pv_library_path(),
+            model_path: pv_model_path(),
+            keyword_paths,
+            sensitivities,
+        };
+    }
+
+    pub fn library_path<'a, P: AsRef<Path>>(&'a mut self, library_path: P) -> &'a mut Self {
+        self.library_path = PathBuf::from(library_path.as_ref());
+        return self;
+    }
+
+    pub fn model_path<'a, P: AsRef<Path>>(&'a mut self, model_path: P) -> &'a mut Self {
+        self.model_path = PathBuf::from(model_path.as_ref());
+        return self;
+    }
+
+    pub fn keyword_paths<'a, P: AsRef<Path>>(&'a mut self, keyword_paths: &[P]) -> &'a mut Self {
+        self.keyword_paths = keyword_paths
+            .iter()
+            .map(|path| PathBuf::from(path.as_ref()))
+            .collect();
+        return self;
+    }
+
+    pub fn sensitivities<'a>(&'a mut self, sensitivities: &[f32]) -> &'a mut Self {
+        self.sensitivities = sensitivities.iter().map(|s| *s).collect();
+        return self;
+    }
+
+    pub fn init(&self) -> Result<Porcupine, PorcupineError> {
+        let inner = PorcupineInner::init(
+            self.library_path.clone(),
+            self.model_path.clone(),
+            &self.keyword_paths,
+            &self.sensitivities,
+        );
         return match inner {
             Ok(inner) => Ok(Porcupine {
                 inner: Arc::new(inner),
@@ -101,7 +221,14 @@ impl Porcupine {
             Err(err) => Err(err),
         };
     }
+}
 
+#[derive(Clone)]
+pub struct Porcupine {
+    inner: Arc<PorcupineInner>,
+}
+
+impl Porcupine {
     pub fn process(&self, pcm: &[i16]) -> Result<i32, PorcupineError> {
         return self.inner.process(pcm);
     }
@@ -113,6 +240,10 @@ impl Porcupine {
     pub fn sample_rate(&self) -> u32 {
         return self.inner.sample_rate as u32;
     }
+
+    pub fn version(&self) -> String {
+        return self.inner.version.clone();
+    }
 }
 
 struct PorcupineInner {
@@ -120,15 +251,11 @@ struct PorcupineInner {
     lib: Library,
     frame_length: i32,
     sample_rate: i32,
-}
-
-fn pathbuf_to_cstring<P: AsRef<Path>>(pathbuf: P) -> CString {
-    let pathstr = pathbuf.as_ref().to_str().unwrap();
-    return CString::new(pathstr).unwrap();
+    version: String,
 }
 
 impl PorcupineInner {
-    pub fn new<P: AsRef<Path>>(
+    pub fn init<P: AsRef<Path>>(
         library_path: P,
         model_path: P,
         keyword_paths: &[P],
@@ -155,10 +282,28 @@ impl PorcupineInner {
                 ));
             }
 
+            if keyword_paths.len() == 0 {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::ArgumentError,
+                    "Keywords should be length of at least one",
+                ));
+            }
+
+            if sensitivities.len() == 0 {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::ArgumentError,
+                    "Sensitivities should be length of at least one",
+                ));
+            }
+
             if keyword_paths.len() != sensitivities.len() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    "Number of keywords does not match the number of sensitivities",
+                    &format!(
+                        "Number of keywords ({}) does not match the number of sensitivities ({})",
+                        keyword_paths.len(),
+                        sensitivities.len()
+                    ),
                 ));
             }
 
@@ -175,20 +320,33 @@ impl PorcupineInner {
             }
 
             for sensitivity in sensitivities {
-                if !(0.0 <= *sensitivity && *sensitivity <= 1.0) {
+                if *sensitivity < 0.0 || *sensitivity > 1.0 {
                     return Err(PorcupineError::new(
                         PorcupineErrorStatus::ArgumentError,
-                        "A sensitivity value should be within [0, 1]",
+                        &format!("Sensitivity value {} should be within [0, 1]", sensitivity),
                     ));
                 }
             }
 
-            let lib = Library::new(library_path.as_ref())
-                .expect("Failed to load porcupine dynamic library");
+            let lib = match Library::new(library_path.as_ref()) {
+                Ok(symbol) => symbol,
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!("Failed to load porcupine dynamic library: {}", err),
+                    ))
+                }
+            };
 
-            let pv_porcupine_init: PvPorcupineInitFn = lib
-                .get(b"pv_porcupine_init")
-                .expect("Failed to load init function symbol from Porcupine library");
+            let pv_porcupine_init: PvPorcupineInitFn = match lib.get(b"pv_porcupine_init") {
+                Ok(symbol) => symbol,
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!("Failed to load pv_porcupine_init function symbol from Porcupine library: {}", err),
+                    ))
+                }
+            };
 
             let pv_model_path = pathbuf_to_cstring(&model_path);
             let pv_keyword_paths = keyword_paths
@@ -208,32 +366,64 @@ impl PorcupineInner {
                 sensitivities.as_ptr(),
                 addr_of_mut!(cporcupine),
             );
-            if status != PicovoiceStatuses::SUCCESS {
-                panic!(
-                    "{}",
-                    PorcupineError::new(
-                        PorcupineErrorStatus::LibraryError(status),
-                        "Failed to initialize the Porcupine library",
-                    )
-                );
+            if status != PvStatus::SUCCESS {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::LibraryLoadError,
+                    "Failed to initialize the Porcupine library",
+                ));
             }
 
-            let pv_sample_rate: PvSampleRateFn = lib
-                .get(b"pv_sample_rate")
-                .expect("Failed to load function symbol from Porcupine library");
+            let pv_sample_rate: PvSampleRateFn = match lib.get(b"pv_sample_rate") {
+                Ok(symbol) => symbol,
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!(
+                        "Failed to load pv_sample_rate function symbol from Porcupine library: {}",
+                        err
+                    ),
+                    ))
+                }
+            };
 
-            let pv_porcupine_frame_length: PvPorcupineFrameLengthFn = lib
-                .get(b"pv_porcupine_frame_length")
-                .expect("Failed to load function symbol from Porcupine library");
+            let pv_porcupine_frame_length: PvPorcupineFrameLengthFn = match lib.get(b"pv_porcupine_frame_length") {
+                Ok(symbol) => symbol,
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!("Failed to load pv_porcupine_frame_length function symbol from Porcupine library: {}", err),
+                    ))
+                }
+            };
+
+            let pv_porcupine_version: PvPorcupineVersionFn = match lib.get(b"pv_porcupine_version") {
+                Ok(symbol) => symbol,
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!("Failed to load pv_porcupine_version function symbol from Porcupine library: {}", err),
+                    ))
+                }
+            };
 
             let sample_rate = pv_sample_rate();
             let frame_length = pv_porcupine_frame_length();
+            let version = match CStr::from_ptr(pv_porcupine_version()).to_str() {
+                Ok(string) => string.to_string(),
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!("Failed to get version info from Porcupine Library: {}", err),
+                    ))
+                }
+            };
 
             return Ok(Self {
                 cporcupine,
                 lib,
                 sample_rate,
                 frame_length,
+                version,
             });
         }
     }
@@ -252,15 +442,12 @@ impl PorcupineInner {
 
         let mut result: i32 = -1;
         let status = unsafe {
-            let pv_porcupine_process: PvPorcupineProcessFn = self
-                .lib
-                .get(b"pv_porcupine_process")
-                .expect("Failed to load function symbol from Porcupine library");
-
+            let pv_porcupine_process: PvPorcupineProcessFn =
+                self.lib.get(b"pv_porcupine_process").unwrap();
             pv_porcupine_process(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
         };
 
-        if status != PicovoiceStatuses::SUCCESS {
+        if status != PvStatus::SUCCESS {
             return Err(PorcupineError::new(
                 PorcupineErrorStatus::LibraryError(status),
                 "Porcupine library failed to process",
@@ -277,102 +464,9 @@ unsafe impl Sync for PorcupineInner {}
 impl Drop for PorcupineInner {
     fn drop(&mut self) {
         unsafe {
-            let pv_porcupine_delete: PvPorcupineDeleteFn = self
-                .lib
-                .get(b"pv_porcupine_delete")
-                .expect("Failed to load function symbol from Porcupine library");
+            let pv_porcupine_delete: PvPorcupineDeleteFn =
+                self.lib.get(b"pv_porcupine_delete").unwrap();
             pv_porcupine_delete(self.cporcupine);
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use itertools::Itertools;
-    use rodio::{source::Source, Decoder};
-    use std::fs::File;
-    use std::io::BufReader;
-    use std::path::PathBuf;
-
-    use crate::porcupine::Porcupine;
-    use crate::util::{pv_keyword_paths, pv_library_path, pv_model_path};
-
-    #[test]
-    fn test_process() {
-        let porcupine = Porcupine::new(
-            pv_library_path(""),
-            pv_model_path(""),
-            &[PathBuf::from(
-                pv_keyword_paths("").get("porcupine").unwrap(),
-            )],
-            &[0.5],
-        )
-        .expect("Unable to create Porcupine");
-
-        let soundfile =
-            BufReader::new(File::open("resources/audio_samples/porcupine.wav").unwrap());
-        let source = Decoder::new(soundfile).unwrap();
-
-        assert_eq!(porcupine.sample_rate(), source.sample_rate());
-
-        let mut results = Vec::new();
-        for frame in &source.chunks(porcupine.frame_length() as usize) {
-            let frame = frame.collect_vec();
-            if frame.len() == porcupine.frame_length() as usize {
-                let keyword_index = porcupine.process(&frame).unwrap();
-                if keyword_index >= 0 {
-                    results.push(keyword_index);
-                }
-            }
-        }
-
-        assert_eq!(results, [0]);
-    }
-
-    #[test]
-    fn test_process_multiple() {
-        const KEYWORDS: [&str; 8] = [
-            "americano",
-            "blueberry",
-            "bumblebee",
-            "grapefruit",
-            "grasshopper",
-            "picovoice",
-            "porcupine",
-            "terminator",
-        ];
-
-        let keyword_paths = pv_keyword_paths("");
-        let selected_keyword_paths = KEYWORDS
-            .iter()
-            .map(|keyword| PathBuf::from(keyword_paths.get(&keyword.to_string()).unwrap()))
-            .collect::<Vec<_>>();
-
-        let porcupine = Porcupine::new(
-            pv_library_path(""),
-            pv_model_path(""),
-            &selected_keyword_paths,
-            &[0.5; KEYWORDS.len()],
-        )
-        .expect("Unable to create Porcupine");
-
-        let soundfile =
-            BufReader::new(File::open("resources/audio_samples/multiple_keywords.wav").unwrap());
-        let source = Decoder::new(soundfile).unwrap();
-
-        assert_eq!(porcupine.sample_rate(), source.sample_rate());
-
-        let mut results = Vec::new();
-        for frame in &source.chunks(porcupine.frame_length() as usize) {
-            let frame = frame.collect_vec();
-            if frame.len() == porcupine.frame_length() as usize {
-                let keyword_index = porcupine.process(&frame).unwrap();
-                if keyword_index >= 0 {
-                    results.push(keyword_index);
-                }
-            }
-        }
-
-        assert_eq!(results, [6, 0, 1, 2, 3, 4, 5, 6, 7]);
     }
 }

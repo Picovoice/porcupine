@@ -7,4 +7,4 @@ edition = "2018"
 clap = "2.33.3"
 rodio = "0.14"
 itertools = "0.10.1"
-pv_porcupine = { path = "../../../binding/rust" }
+porcupine = { path = "../../../binding/rust" }

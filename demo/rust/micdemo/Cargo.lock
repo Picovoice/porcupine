@@ -245,21 +245,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19b17cddbe7ec3f8bc800887bab5e717348c95ea2ca0b1bf0837fb964dc67099"
 
 [[package]]
+name = "porcupine"
+version = "1.9.0"
+dependencies = [
+ "libc",
+ "libloading 0.7.0",
+ "log",
+]
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5c7ed8b8c7b886ea3ed7dde405212185f423ab44682667c8c6dd14aa1d9f6612"
 dependencies = [
  "unicode-xid",
-]
-
-[[package]]
-name = "pv_porcupine"
-version = "0.1.0"
-dependencies = [
- "libc",
- "libloading 0.7.0",
- "log",
 ]
 
 [[package]]
@@ -270,7 +270,7 @@ dependencies = [
  "ctrlc",
  "itertools",
  "miniaudio",
- "pv_porcupine",
+ "porcupine",
 ]
 
 [[package]]

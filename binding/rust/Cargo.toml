@@ -1,13 +1,13 @@
 [package]
-name = "pv_porcupine"
-version = "0.1.0"
+name = "porcupine"
+version = "1.9.0"
 edition = "2018"
 description = "The Rust bindings for Picovoice's Porcupine library"
 license-file = "../../LICENSE"
 repository = "https://github.com/Picovoice/porcupine"
 
 [lib]
-name = "pv_porcupine"
+name = "porcupine"
 path = "src/lib.rs"
 crate_type = ["lib"]
 
