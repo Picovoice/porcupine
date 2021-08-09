@@ -20,6 +20,10 @@ use std::ffi::CString;
 use std::fs;
 use std::path::{Path, PathBuf};
 
+const DEFAULT_RELATIVE_KEYWORDS_DIR: &str = "../resources/keyword_files/";
+const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "../lib/";
+const DEFAULT_RELATIVE_MODEL_PATH: &str = "../lib/common/porcupine_params.pv";
+
 #[allow(dead_code)]
 const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
 #[allow(dead_code)]
@@ -64,17 +68,17 @@ fn find_machine_type() -> String {
 
 #[cfg(target_os = "macos")]
 fn base_library_path() -> PathBuf {
-    return PathBuf::from("lib/mac/x86_64/libpv_porcupine.dylib");
+    return PathBuf::from("mac/x86_64/libpv_porcupine.dylib");
 }
 
 #[cfg(target_os = "windows")]
 fn base_library_path() -> PathBuf {
-    return PathBuf::from("lib/windows/amd64/libpv_porcupine.dll");
+    return PathBuf::from("windows/amd64/libpv_porcupine.dll");
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 fn base_library_path() -> PathBuf {
-    return PathBuf::from("lib/linux/x86_64/libpv_porcupine.so");
+    return PathBuf::from("linux/x86_64/libpv_porcupine.so");
 }
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
@@ -84,20 +88,20 @@ fn base_library_path() -> PathBuf {
         machine if RPI_MACHINES.contains(&machine) => {
             if cfg!(target_arch = "aarch64") {
                 PathBuf::from(format!(
-                    "lib/raspberry-pi/{}-aarch64/libpv_porcupine.so",
+                    "raspberry-pi/{}-aarch64/libpv_porcupine.so",
                     &machine
                 ))
             } else {
-                PathBuf::from(format!("lib/raspberry-pi/{}/libpv_porcupine.so", &machine))
+                PathBuf::from(format!("raspberry-pi/{}/libpv_porcupine.so", &machine))
             }
         }
         machine if JETSON_MACHINES.contains(&machine) => {
-            PathBuf::from("lib/jetson/cortex-a57-aarch64/libpv_porcupine.so")
+            PathBuf::from("jetson/cortex-a57-aarch64/libpv_porcupine.so")
         }
-        "beaglebone" => PathBuf::from("lib/beaglebone/libpv_porcupine.so"),
+        "beaglebone" => PathBuf::from("beaglebone/libpv_porcupine.so"),
         _ => {
             warn!("WARNING: Please be advised that this device is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models");
-            PathBuf::from("lib/raspberry-pi/arm11/libpv_porcupine.so")
+            PathBuf::from("raspberry-pi/arm11/libpv_porcupine.so")
         }
     };
 }
@@ -105,7 +109,7 @@ fn base_library_path() -> PathBuf {
 pub fn pv_library_path() -> PathBuf {
     let mut path = PathBuf::from(file!());
     path.pop(); // file! macro includes filename
-    path.push("../");
+    path.push(DEFAULT_RELATIVE_LIBRARY_DIR);
     path.push(base_library_path());
     return path;
 }
@@ -113,33 +117,32 @@ pub fn pv_library_path() -> PathBuf {
 pub fn pv_model_path() -> PathBuf {
     let mut path = PathBuf::from(file!());
     path.pop(); // file! macro includes filename
-    path.push("../");
-    path.push("lib/common/porcupine_params.pv");
+    path.push(DEFAULT_RELATIVE_MODEL_PATH);
     return path;
 }
 
 #[cfg(target_os = "macos")]
-fn keyword_path_subdir() -> PathBuf {
-    return PathBuf::from("mac");
+fn keyword_path_subdir() -> String {
+    return String::from("mac");
 }
 
 #[cfg(target_os = "windows")]
-fn keyword_path_subdir() -> PathBuf {
-    return PathBuf::from("windows");
+fn keyword_path_subdir() -> String {
+    return String::from("windows");
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
-fn keyword_path_subdir() -> PathBuf {
-    return PathBuf::from("linux");
+fn keyword_path_subdir() -> String {
+    return String::from("linux");
 }
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
-fn keyword_path_subdir() -> PathBuf {
+fn keyword_path_subdir() -> String {
     let machine = find_machine_type();
     return match machine.as_str() {
-        machine if RPI_MACHINES.contains(&machine) => PathBuf::from("raspberry-pi"),
-        machine if JETSON_MACHINES.contains(&machine) => PathBuf::from("jetson"),
-        "beaglebone" => PathBuf::from("beaglebone"),
+        machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),
+        machine if JETSON_MACHINES.contains(&machine) => String::from("jetson"),
+        "beaglebone" => String::from("beaglebone"),
         _ => {
             panic!("ERROR: Please be advised that this device is not officially supported by Picovoice");
         }
@@ -147,29 +150,35 @@ fn keyword_path_subdir() -> PathBuf {
 }
 
 pub fn pv_keyword_paths() -> HashMap<String, String> {
+    let keyword_path_subdir = keyword_path_subdir();
+    let keyword_file_pattern = format!("_{}.ppn", keyword_path_subdir);
+
     let mut dir = PathBuf::from(file!());
     dir.pop(); // file! macro includes filename
-    dir.push("../");
-    dir.push("resources/keyword_files/");
-    dir.push(keyword_path_subdir());
+    dir.push(DEFAULT_RELATIVE_KEYWORDS_DIR);
+    dir.push(keyword_path_subdir.clone());
 
     let mut keyword_paths = HashMap::new();
     let dir_entries = fs::read_dir(dir.clone()).expect(&format!(
         "Can't find default keyword_files dir: {}",
         dir.display()
     ));
+
     for entry in dir_entries {
         let entry = entry.unwrap();
         let path = entry.path();
-        let keyword = entry
-            .file_name()
-            .into_string()
-            .unwrap()
-            .split("_")
-            .next()
-            .unwrap()
-            .to_string();
-        keyword_paths.insert(keyword, path.into_os_string().into_string().unwrap());
+        let keyword_string = entry.file_name().into_string().unwrap();
+
+        if keyword_string.contains(&keyword_file_pattern)
+            && keyword_string.len() > keyword_file_pattern.len()
+        {
+            if let Some(keyword) = keyword_string.split("_").next() {
+                keyword_paths.insert(
+                    keyword.to_string(),
+                    path.into_os_string().into_string().unwrap(),
+                );
+            }
+        }
     }
 
     return keyword_paths;
