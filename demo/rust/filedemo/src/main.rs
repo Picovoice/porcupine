@@ -21,7 +21,7 @@ use std::path::PathBuf;
 fn porcupine_demo(
     input_audio_path: PathBuf,
     keywords_or_paths: KeywordsOrPaths,
-    sensitivities: Vec<f32>,
+    sensitivities: Option<Vec<f32>>,
     model_path: Option<&str>,
 ) {
     let soundfile = BufReader::new(File::open(input_audio_path).unwrap());
@@ -33,10 +33,15 @@ fn porcupine_demo(
             PorcupineBuilder::new_with_keyword_paths(&keyword_paths)
         }
     };
-    porcupine_builder.sensitivities(&sensitivities);
+
+    if let Some(sensitivities) = sensitivities {
+        porcupine_builder.sensitivities(&sensitivities);
+    }
+
     if let Some(model_path) = model_path {
         porcupine_builder.model_path(model_path);
     }
+
     let porcupine = porcupine_builder
         .init()
         .expect("Failed to create Porcupine");
@@ -79,13 +84,6 @@ enum KeywordsOrPaths {
 }
 
 impl KeywordsOrPaths {
-    fn len(&self) -> usize {
-        match self {
-            Self::Keywords(keywords) => keywords.len(),
-            Self::KeywordPaths(keyword_paths) => keyword_paths.len(),
-        }
-    }
-
     fn get(&self, index: usize) -> String {
         match self {
             Self::Keywords(keywords) => keywords[index].to_str().to_string(),
@@ -175,25 +173,16 @@ fn main() {
         }
     };
 
-    let sensitivities: Vec<f32> = {
-        if matches.is_present("sensitivities") {
-            matches
-                .values_of("sensitivities")
-                .unwrap()
-                .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
-                .collect()
-        } else {
-            let mut sensitivities = Vec::new();
-            sensitivities.resize_with(keywords_or_paths.len(), || 0.5);
+    let sensitivities: Option<Vec<f32>> = match matches.values_of("sensitivities") {
+        Some(sensitivities) => Some(
             sensitivities
-        }
+                .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
+                .collect(),
+        ),
+        None => None,
     };
 
     let model_path = matches.value_of("model_path");
-
-    if keywords_or_paths.len() != sensitivities.len() {
-        panic!("Number of keywords does not match the number of sensitivities.");
-    }
 
     porcupine_demo(
         input_audio_path,
