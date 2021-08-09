@@ -151,23 +151,6 @@ public class Porcupine {
     /// Process a frame of audio with the wake word engine
     ///
     /// - Parameters:
-    ///   - pcm: A pointer to a frame of 16-bit pcm
-    /// - Throws: PorcupineError
-    /// - Returns:Index of keyword detected or -1 if no keyword was detected
-    public func process(pcm:UnsafePointer<Int16>) throws -> Int32 {
-        if handle == nil {
-            throw PorcupineError.invalidState
-        }
-        
-        var result: Int32 = -1
-        let status = pv_porcupine_process(self.handle, pcm, &result)
-        try checkStatus(status)
-        return result
-    }
-    
-    /// Process a frame of audio with the wake word engine
-    ///
-    /// - Parameters:
     ///   - pcm: An array of 16-bit pcm samples
     /// - Throws: PorcupineError
     /// - Returns:Index of keyword detected or -1 if no keyword was detected
