@@ -9,35 +9,32 @@
     specific language governing permissions and limitations under the License.
 */
 
+use chrono::prelude::*;
 use clap::{App, Arg, ArgGroup};
 use ctrlc;
 use miniaudio;
-use pv_porcupine::{pv_keyword_paths, pv_library_path, pv_model_path, Porcupine, KEYWORDS};
+use porcupine::{BuiltinKeywords, Porcupine, PorcupineBuilder};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::time::SystemTime;
 
-static LISTENING: AtomicBool = AtomicBool::new(true);
+static LISTENING: AtomicBool = AtomicBool::new(false);
 
 fn process_audio_chunk(
     samples: &[i16],
-    porcupine: &mut Porcupine,
+    porcupine: &Porcupine,
     buffer: &mut Vec<i16>,
-    keywords: &[String],
+    keywords_or_paths: &KeywordsOrPaths,
 ) {
     buffer.extend_from_slice(samples);
 
     while buffer.len() >= porcupine.frame_length() as usize && LISTENING.load(Ordering::SeqCst) {
         let frame: Vec<i16> = buffer.drain(..porcupine.frame_length() as usize).collect();
-        let result = porcupine.process(&frame).unwrap();
-        if result >= 0 {
+        let keyword_index = porcupine.process(&frame).unwrap();
+        if keyword_index >= 0 {
             println!(
                 "[{}] Detected {}",
-                SystemTime::now()
-                    .duration_since(SystemTime::UNIX_EPOCH)
-                    .unwrap()
-                    .as_secs(),
-                keywords[result as usize]
+                Local::now(),
+                keywords_or_paths.get(keyword_index as usize)
             );
         }
     }
@@ -46,14 +43,24 @@ fn process_audio_chunk(
 fn porcupine_demo(
     miniaudio_backend: &[miniaudio::Backend],
     audio_device_index: usize,
-    library_path: PathBuf,
-    model_path: PathBuf,
-    keyword_paths: Vec<PathBuf>,
-    keywords: Vec<String>,
+    keywords_or_paths: KeywordsOrPaths,
     sensitivities: Vec<f32>,
+    model_path: Option<&str>,
 ) {
     let mut buffer: Vec<i16> = Vec::new();
-    let mut porcupine = Porcupine::new(library_path, model_path, &keyword_paths, &sensitivities)
+
+    let mut porcupine_builder = match keywords_or_paths {
+        KeywordsOrPaths::Keywords(ref keywords) => PorcupineBuilder::new_with_keywords(&keywords),
+        KeywordsOrPaths::KeywordPaths(ref keyword_paths) => {
+            PorcupineBuilder::new_with_keyword_paths(&keyword_paths)
+        }
+    };
+    porcupine_builder.sensitivities(&sensitivities);
+    if let Some(model_path) = model_path {
+        porcupine_builder.model_path(model_path);
+    }
+    let porcupine = porcupine_builder
+        .init()
         .expect("Failed to create Porcupine");
 
     let miniaudio_context =
@@ -78,13 +85,19 @@ fn porcupine_demo(
     device_config.capture_mut().set_device_id(Some(device_id));
     device_config.set_sample_rate(porcupine.sample_rate());
     device_config.set_data_callback(move |_, _, frames| {
-        process_audio_chunk(frames.as_samples(), &mut porcupine, &mut buffer, &keywords);
+        process_audio_chunk(
+            frames.as_samples(),
+            &porcupine,
+            &mut buffer,
+            &keywords_or_paths,
+        );
     });
 
     let device = miniaudio::Device::new(Some(miniaudio_context), &device_config)
         .expect("Failed to initialize capture device");
-    device.start().expect("Failed to start device");
 
+    LISTENING.store(true, Ordering::SeqCst);
+    device.start().expect("Failed to start device");
     println!("Listening for wake words...");
 
     ctrlc::set_handler(|| {
@@ -103,6 +116,32 @@ fn porcupine_demo(
     println!("Stopped");
 }
 
+#[derive(Clone)]
+enum KeywordsOrPaths {
+    Keywords(Vec<BuiltinKeywords>),
+    KeywordPaths(Vec<PathBuf>),
+}
+
+impl KeywordsOrPaths {
+    fn len(&self) -> usize {
+        match self {
+            Self::Keywords(keywords) => keywords.len(),
+            Self::KeywordPaths(keyword_paths) => keyword_paths.len(),
+        }
+    }
+
+    fn get(&self, index: usize) -> String {
+        match self {
+            Self::Keywords(keywords) => keywords[index].to_str().to_string(),
+            Self::KeywordPaths(keyword_paths) => keyword_paths[index]
+                .clone()
+                .into_os_string()
+                .into_string()
+                .unwrap(),
+        }
+    }
+}
+
 fn show_audio_devices(miniaudio_backend: &[miniaudio::Backend]) {
     let miniaudio_context =
         miniaudio::Context::new(miniaudio_backend, None).expect("failed to create context");
@@ -117,9 +156,6 @@ fn show_audio_devices(miniaudio_backend: &[miniaudio::Backend]) {
 }
 
 fn main() {
-    let default_library_path = pv_library_path("").into_os_string().into_string().unwrap();
-    let default_model_path = pv_model_path("").into_os_string().into_string().unwrap();
-
     let matches = App::new("Picovoice Porcupine Rust Mic Demo")
         .group(
             ArgGroup::with_name("keywords_group")
@@ -133,40 +169,31 @@ fn main() {
             .long("keywords")
             .value_name("KEYWORDS")
             .use_delimiter(true)
-            .help("List of default keywords for detection.")
+            .help("Comma-seperated list of default keywords for detection.")
             .takes_value(true)
-            .possible_values(&KEYWORDS)
+            .possible_values(&BuiltinKeywords::options())
         )
         .arg(
             Arg::with_name("keyword_paths")
             .long("keyword_paths")
             .value_name("PATHS")
             .use_delimiter(true)
-            .help("Absolute paths to keyword model files. If not set it will be populated from `--keywords` argument.")
+            .help("Comma-seperated list of paths to keyword model files. If not set it will be populated from `--keywords` argument.")
             .takes_value(true)
-        )
-        .arg(
-            Arg::with_name("library_path")
-            .long("library_path")
-            .value_name("PATH")
-            .help("Absolute path to dynamic library.")
-            .takes_value(true)
-            .default_value(&default_library_path)
         )
         .arg(
             Arg::with_name("model_path")
             .long("model_path")
             .value_name("PATH")
-            .help("Absolute path to the file containing model parameter.")
+            .help("Path to the file containing model parameter.")
             .takes_value(true)
-            .default_value(&default_model_path)
         )
         .arg(
             Arg::with_name("sensitivities")
             .long("sensitivities")
             .value_name("SENSITIVITIES")
             .use_delimiter(true)
-            .help("Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.")
+            .help("Comma-seperated list of sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.")
             .takes_value(true)
         )
         .arg(
@@ -221,44 +248,30 @@ fn main() {
         .parse()
         .unwrap();
 
-    let library_path = PathBuf::from(matches.value_of("library_path").unwrap());
-    let model_path = PathBuf::from(matches.value_of("model_path").unwrap());
-
-    let keyword_paths: Vec<PathBuf> = {
-        if matches.is_present("keywords") {
-            let pv_keyword_paths = pv_keyword_paths("");
-            matches
-                .values_of("keywords")
-                .unwrap()
-                .map(|keyword| {
-                    PathBuf::from(pv_keyword_paths.get(&keyword.to_string()).unwrap().clone())
-                })
-                .collect()
+    let keywords_or_paths: KeywordsOrPaths = {
+        if matches.is_present("keyword_paths") {
+            KeywordsOrPaths::KeywordPaths(
+                matches
+                    .values_of("keyword_paths")
+                    .unwrap()
+                    .map(|path| PathBuf::from(path.to_string()))
+                    .collect(),
+            )
+        } else if matches.is_present("keywords") {
+            KeywordsOrPaths::Keywords(
+                matches
+                    .values_of("keywords")
+                    .unwrap()
+                    .flat_map(|keyword| match BuiltinKeywords::from_str(keyword) {
+                        Some(keyword) => vec![keyword],
+                        None => vec![],
+                    })
+                    .collect(),
+            )
         } else {
-            matches
-                .values_of("keyword_paths")
-                .unwrap()
-                .map(|path| PathBuf::from(path.to_string()))
-                .collect()
+            panic!("Keywords or keyword paths must be specified");
         }
     };
-
-    let keywords: Vec<String> = keyword_paths
-        .iter()
-        .map(|path| {
-            path.file_name()
-                .unwrap()
-                .to_os_string()
-                .into_string()
-                .unwrap()
-                .split("_")
-                .next()
-                .unwrap()
-                .to_string()
-        })
-        .collect();
-
-    println!("{:?}", keywords);
 
     let sensitivities: Vec<f32> = {
         if matches.is_present("sensitivities") {
@@ -269,22 +282,22 @@ fn main() {
                 .collect()
         } else {
             let mut sensitivities = Vec::new();
-            sensitivities.resize_with(keyword_paths.len(), || 0.5);
+            sensitivities.resize_with(keywords_or_paths.len(), || 0.5);
             sensitivities
         }
     };
 
-    if keyword_paths.len() != sensitivities.len() {
+    let model_path = matches.value_of("model_path");
+
+    if keywords_or_paths.len() != sensitivities.len() {
         panic!("Number of keywords does not match the number of sensitivities.");
     }
 
     porcupine_demo(
         &miniaudio_backend,
         audio_device_index,
-        library_path,
-        model_path,
-        keyword_paths,
-        keywords,
+        keywords_or_paths,
         sensitivities,
+        model_path,
     );
 }

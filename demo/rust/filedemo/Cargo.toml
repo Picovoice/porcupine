@@ -8,3 +8,4 @@ clap = "2.33.3"
 rodio = "0.14"
 itertools = "0.10.1"
 porcupine = { path = "../../../binding/rust" }
+chrono = "0.4.19"

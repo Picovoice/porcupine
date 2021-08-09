@@ -10,7 +10,6 @@
 */
 
 use libc::{c_char, c_float};
-use libloading;
 use libloading::{Library, Symbol};
 use std::cmp::PartialEq;
 use std::convert::AsRef;
@@ -19,9 +18,15 @@ use std::path::{Path, PathBuf};
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
 
+#[cfg(target_family = "unix")]
+use libloading::os::unix::Symbol as RawSymbol;
+
+#[cfg(target_family = "windows")]
+use libloading::os::windows::Symbol as RawSymbol;
+
 use crate::util::*;
 
-#[derive(PartialEq, Debug)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum BuiltinKeywords {
     Alexa,
     Americano,
@@ -56,6 +61,26 @@ impl BuiltinKeywords {
             Self::Picovoice => "picovoice",
             Self::Porcupine => "porcupine",
             Self::Terminator => "terminator",
+        }
+    }
+
+    pub fn from_str(str_option: &str) -> Option<Self> {
+        match str_option {
+            "alexa" => Some(Self::Alexa),
+            "americano" => Some(Self::Americano),
+            "blueberry" => Some(Self::Blueberry),
+            "bumblebee" => Some(Self::Bumblebee),
+            "computer" => Some(Self::Computer),
+            "grapefruit" => Some(Self::Grapefruit),
+            "grasshopper" => Some(Self::Grasshopper),
+            "hey google" => Some(Self::HeyGoogle),
+            "hey siri" => Some(Self::HeySiri),
+            "jarvis" => Some(Self::Jarvis),
+            "ok google" => Some(Self::OkGoogle),
+            "picovoice" => Some(Self::Picovoice),
+            "porcupine" => Some(Self::Porcupine),
+            "terminator" => Some(Self::Terminator),
+            _ => None,
         }
     }
 
@@ -105,12 +130,11 @@ type PvPorcupineInitFn<'a> = Symbol<
         object: *mut *mut CPorcupine,
     ) -> PvStatus,
 >;
-type PvSampleRateFn<'a> = Symbol<'a, unsafe extern "C" fn() -> i32>;
-type PvPorcupineFrameLengthFn<'a> = Symbol<'a, unsafe extern "C" fn() -> i32>;
-type PvPorcupineVersionFn<'a> = Symbol<'a, unsafe extern "C" fn() -> *mut c_char>;
-type PvPorcupineProcessFn<'a> =
-    Symbol<'a, unsafe extern "C" fn(*mut CPorcupine, *const i16, *mut i32) -> PvStatus>;
-type PvPorcupineDeleteFn<'a> = Symbol<'a, unsafe extern "C" fn(*mut CPorcupine)>;
+type PvSampleRateFn = unsafe extern "C" fn() -> i32;
+type PvPorcupineFrameLengthFn = unsafe extern "C" fn() -> i32;
+type PvPorcupineVersionFn = unsafe extern "C" fn() -> *mut c_char;
+type PvPorcupineProcessFn = unsafe extern "C" fn(*mut CPorcupine, *const i16, *mut i32) -> PvStatus;
+type PvPorcupineDeleteFn = unsafe extern "C" fn(*mut CPorcupine);
 
 #[derive(Debug)]
 pub enum PorcupineErrorStatus {
@@ -246,12 +270,18 @@ impl Porcupine {
     }
 }
 
+struct PorcupineInnerVTable {
+    pv_porcupine_process: RawSymbol<PvPorcupineProcessFn>,
+    pv_porcupine_delete: RawSymbol<PvPorcupineDeleteFn>,
+}
+
 struct PorcupineInner {
     cporcupine: *mut CPorcupine,
-    lib: Library,
+    _lib: Library,
     frame_length: i32,
     sample_rate: i32,
     version: String,
+    vtable: PorcupineInnerVTable,
 }
 
 impl PorcupineInner {
@@ -338,7 +368,7 @@ impl PorcupineInner {
                 }
             };
 
-            let pv_porcupine_init: PvPorcupineInitFn = match lib.get(b"pv_porcupine_init") {
+            let pv_porcupine_init: Symbol<PvPorcupineInitFn> = match lib.get(b"pv_porcupine_init") {
                 Ok(symbol) => symbol,
                 Err(err) => {
                     return Err(PorcupineError::new(
@@ -373,7 +403,13 @@ impl PorcupineInner {
                 ));
             }
 
-            let pv_sample_rate: PvSampleRateFn = match lib.get(b"pv_sample_rate") {
+            let pv_porcupine_process: Symbol<PvPorcupineProcessFn> =
+                lib.get(b"pv_porcupine_process").unwrap();
+
+            let pv_porcupine_delete: Symbol<PvPorcupineDeleteFn> =
+                lib.get(b"pv_porcupine_delete").unwrap();
+
+            let pv_sample_rate: Symbol<PvSampleRateFn> = match lib.get(b"pv_sample_rate") {
                 Ok(symbol) => symbol,
                 Err(err) => {
                     return Err(PorcupineError::new(
@@ -386,7 +422,7 @@ impl PorcupineInner {
                 }
             };
 
-            let pv_porcupine_frame_length: PvPorcupineFrameLengthFn = match lib.get(b"pv_porcupine_frame_length") {
+            let pv_porcupine_frame_length: Symbol<PvPorcupineFrameLengthFn> = match lib.get(b"pv_porcupine_frame_length") {
                 Ok(symbol) => symbol,
                 Err(err) => {
                     return Err(PorcupineError::new(
@@ -396,7 +432,7 @@ impl PorcupineInner {
                 }
             };
 
-            let pv_porcupine_version: PvPorcupineVersionFn = match lib.get(b"pv_porcupine_version") {
+            let pv_porcupine_version: Symbol<PvPorcupineVersionFn> = match lib.get(b"pv_porcupine_version") {
                 Ok(symbol) => symbol,
                 Err(err) => {
                     return Err(PorcupineError::new(
@@ -418,12 +454,19 @@ impl PorcupineInner {
                 }
             };
 
+            // Using the raw symbols means we have to ensure that "lib" outlives these refrences
+            let vtable = PorcupineInnerVTable {
+                pv_porcupine_process: pv_porcupine_process.into_raw(),
+                pv_porcupine_delete: pv_porcupine_delete.into_raw(),
+            };
+
             return Ok(Self {
                 cporcupine,
-                lib,
+                _lib: lib,
                 sample_rate,
                 frame_length,
                 version,
+                vtable,
             });
         }
     }
@@ -442,9 +485,7 @@ impl PorcupineInner {
 
         let mut result: i32 = -1;
         let status = unsafe {
-            let pv_porcupine_process: PvPorcupineProcessFn =
-                self.lib.get(b"pv_porcupine_process").unwrap();
-            pv_porcupine_process(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
+            (self.vtable.pv_porcupine_process)(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
         };
 
         if status != PvStatus::SUCCESS {
@@ -464,9 +505,7 @@ unsafe impl Sync for PorcupineInner {}
 impl Drop for PorcupineInner {
     fn drop(&mut self) {
         unsafe {
-            let pv_porcupine_delete: PvPorcupineDeleteFn =
-                self.lib.get(b"pv_porcupine_delete").unwrap();
-            pv_porcupine_delete(self.cporcupine);
+            (self.vtable.pv_porcupine_delete)(self.cporcupine);
         }
     }
 }
