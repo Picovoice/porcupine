@@ -25,5 +25,5 @@ Pod::Spec.new do |s|
   'lib/common/porcupine_params.pv'
   s.source_files = 'binding/ios/*.{swift}'
 
-  s.dependency 'ios-voice-processor', '~> 1.0.1'
+  s.dependency 'ios-voice-processor', '~> 1.0.2'
 end

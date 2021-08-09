@@ -18,19 +18,17 @@ public enum PorcupineManagerError: Error {
 /// client when any of the given keywords are detected.
 public class PorcupineManager {
     private var onDetection: ((Int32) -> Void)?
+    private var errorCallback: ((Error) -> Void)?
     
     private var porcupine: Porcupine?
-    
-    private let voiceProcessor: VoiceProcessor;
     
     private var isListening = false
     
     /// Private constructor.
-    private init(porcupine:Porcupine, onDetection: ((Int32) -> Void)?) throws {
+    private init(porcupine:Porcupine, onDetection: ((Int32) -> Void)?, errorCallback: ((Error) -> Void)?) throws {
         self.onDetection = onDetection
+        self.errorCallback = errorCallback
         self.porcupine = porcupine
-        
-        self.voiceProcessor = VoiceProcessor()
     }
     
     /// Constructor.
@@ -41,9 +39,19 @@ public class PorcupineManager {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
+    ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
-    public convenience init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]? = nil, onDetection: ((Int32) -> Void)?) throws {
-        try self.init(porcupine:Porcupine(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
+    public convenience init(
+        keywordPaths: [String],
+        modelPath:String? = nil,
+        sensitivities: [Float32]? = nil,
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
+        
+        try self.init(
+            porcupine:Porcupine(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities),
+            onDetection:onDetection,
+            errorCallback: errorCallback)
     }
     
     /// Constructor.
@@ -54,9 +62,19 @@ public class PorcupineManager {
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
+    ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
-    public convenience init(keywordPath: String, modelPath:String? = nil, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
-        try self.init(porcupine:Porcupine(keywordPath: keywordPath, modelPath: modelPath, sensitivity: sensitivity), onDetection:onDetection)
+    public convenience init(
+        keywordPath: String,
+        modelPath:String? = nil,
+        sensitivity: Float32 = 0.5,
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
+        
+        try self.init(
+            porcupine:Porcupine(keywordPath: keywordPath, modelPath: modelPath, sensitivity: sensitivity),
+            onDetection:onDetection,
+            errorCallback: errorCallback)
     }
     
     /// Constructor.
@@ -67,10 +85,19 @@ public class PorcupineManager {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
+    ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
-    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]? = nil, onDetection: ((Int32) -> Void)?) throws {
+    public convenience init(
+        keywords:[Porcupine.BuiltInKeyword],
+        modelPath:String? = nil,
+        sensitivities: [Float32]? = nil,
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
         
-        try self.init(porcupine:Porcupine(keywords: keywords, modelPath: modelPath, sensitivities: sensitivities), onDetection:onDetection)
+        try self.init(
+            porcupine:Porcupine(keywords: keywords, modelPath: modelPath, sensitivities: sensitivities),
+            onDetection:onDetection,
+            errorCallback: errorCallback)
     }
     
     /// Constructor.
@@ -81,9 +108,18 @@ public class PorcupineManager {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
+    ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
-    public convenience init(keyword: Porcupine.BuiltInKeyword, modelPath: String? = nil, sensitivity: Float32 = 0.5, onDetection: ((Int32) -> Void)?) throws {
-        try self.init(porcupine:Porcupine(keyword: keyword, modelPath: modelPath, sensitivity: sensitivity), onDetection:onDetection)
+    public convenience init(
+        keyword: Porcupine.BuiltInKeyword,
+        modelPath: String? = nil,
+        sensitivity: Float32 = 0.5,
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
+        try self.init(
+            porcupine:Porcupine(keyword: keyword, modelPath: modelPath, sensitivity: sensitivity),
+            onDetection:onDetection,
+            errorCallback: errorCallback)
     }
     
     deinit {
@@ -117,11 +153,11 @@ public class PorcupineManager {
         }
 
         // Only check if it's denied, permission will be automatically asked.
-        guard try voiceProcessor.hasPermissions() else {
+        guard try VoiceProcessor.shared.hasPermissions() else {
             throw PorcupineManagerError.recordingDenied
         }
         
-        try voiceProcessor.start(
+        try VoiceProcessor.shared.start(
             frameLength: Porcupine.frameLength,
             sampleRate: Porcupine.sampleRate,
             audioCallback: self.audioCallback
@@ -136,18 +172,14 @@ public class PorcupineManager {
             return
         }
         
-        voiceProcessor.stop()
+        VoiceProcessor.shared.stop()
         
         isListening = false
     }
     
     /// Callback to run after after voice processor processes frames.
-    private func audioCallback(frameLength: UInt32, pcm: UnsafePointer<Int16> ) {
+    private func audioCallback(pcm: [Int16]) {
         guard self.porcupine != nil else {
-            return
-        }
-        
-        guard frameLength == Porcupine.frameLength else {
             return
         }
         
@@ -159,7 +191,11 @@ public class PorcupineManager {
                 }
             }
         } catch {
-            print("\(error)")
+            if self.errorCallback != nil {
+                self.errorCallback!(error)
+            } else {
+                print("\(error)")
+            }
         }
     }
 }
