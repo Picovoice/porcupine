@@ -9,8 +9,10 @@
     specific language governing permissions and limitations under the License.
 */
 
+use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 fn copy_dir<U: AsRef<Path>, V: AsRef<Path>>(from: U, to: V) -> Result<(), std::io::Error> {
     let mut stack = Vec::new();
@@ -53,10 +55,29 @@ fn copy_dir<U: AsRef<Path>, V: AsRef<Path>>(from: U, to: V) -> Result<(), std::i
 }
 
 fn main() {
-    let out_dir = ".";
+    let pwd = Command::new("pwd").output().unwrap();
+    let pwd = String::from_utf8_lossy(&pwd.stdout);
 
-    // println!("cargo:warning=Copying required files into {}", out_dir);
-    copy_dir("../../lib", format!("{}/lib", out_dir)).unwrap();
-    copy_dir("../../resources", format!("{}/resources", out_dir)).unwrap();
+    let mut base_dir = PathBuf::from(file!());
+    base_dir.pop(); // file! macro includes filename
+    if pwd.contains("target") {
+        base_dir.push("../../../");
+    }
+    base_dir.push("../../");
+
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+
+    let mut lib_base_dir = base_dir.clone();
+    let mut lib_out_dir = out_dir.clone();
+    lib_base_dir.push("lib/");
+    lib_out_dir.push("lib/");
+    copy_dir(lib_base_dir, lib_out_dir).unwrap();
+
+    let mut resources_base_dir = base_dir.clone();
+    let mut resources_out_dir = out_dir.clone();
+    resources_base_dir.push("resources/");
+    resources_out_dir.push("resources/");
+    copy_dir(resources_base_dir, resources_out_dir).unwrap();
+
     println!("cargo:rerun-if-changed=build.rs");
 }

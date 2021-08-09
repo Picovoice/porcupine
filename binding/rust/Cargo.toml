@@ -1,5 +1,5 @@
 [package]
-name = "porcupine"
+name = "pv_porcupine"
 version = "1.9.0"
 edition = "2018"
 description = "The Rust bindings for Picovoice's Porcupine library"

@@ -1,5 +1,5 @@
 /*
-    Copyright 2021-2021 Picovoice Inc.
+    Copyright 2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -14,6 +14,7 @@ use clap::{App, Arg, ArgGroup};
 use ctrlc;
 use miniaudio;
 use porcupine::{BuiltinKeywords, Porcupine, PorcupineBuilder};
+use std::collections::VecDeque;
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 
@@ -22,10 +23,10 @@ static LISTENING: AtomicBool = AtomicBool::new(false);
 fn process_audio_chunk(
     samples: &[i16],
     porcupine: &Porcupine,
-    buffer: &mut Vec<i16>,
+    buffer: &mut VecDeque<i16>,
     keywords_or_paths: &KeywordsOrPaths,
 ) {
-    buffer.extend_from_slice(samples);
+    buffer.extend(samples.iter());
 
     while buffer.len() >= porcupine.frame_length() as usize && LISTENING.load(Ordering::SeqCst) {
         let frame: Vec<i16> = buffer.drain(..porcupine.frame_length() as usize).collect();
@@ -47,7 +48,7 @@ fn porcupine_demo(
     sensitivities: Option<Vec<f32>>,
     model_path: Option<&str>,
 ) {
-    let mut buffer: Vec<i16> = Vec::new();
+    let mut buffer: VecDeque<i16> = VecDeque::new();
 
     let mut porcupine_builder = match keywords_or_paths {
         KeywordsOrPaths::Keywords(ref keywords) => PorcupineBuilder::new_with_keywords(&keywords),

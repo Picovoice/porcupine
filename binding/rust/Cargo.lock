@@ -583,17 +583,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3831453b3449ceb48b6d9c7ad7c96d5ea673e9b470a1dc578c2ce6521230884c"
 
 [[package]]
-name = "porcupine"
-version = "1.9.0"
-dependencies = [
- "itertools",
- "libc",
- "libloading",
- "log",
- "rodio",
-]
-
-[[package]]
 name = "proc-macro-crate"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -619,6 +608,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5c7ed8b8c7b886ea3ed7dde405212185f423ab44682667c8c6dd14aa1d9f6612"
 dependencies = [
  "unicode-xid",
+]
+
+[[package]]
+name = "pv_porcupine"
+version = "1.9.0"
+dependencies = [
+ "itertools",
+ "libc",
+ "libloading",
+ "log",
+ "rodio",
 ]
 
 [[package]]
