@@ -24,8 +24,13 @@ mod tests {
             .init()
             .expect("Unable to create Porcupine");
 
-        let soundfile =
-            BufReader::new(File::open("resources/audio_samples/porcupine.wav").unwrap());
+        let soundfile = BufReader::new(
+            File::open(concat!(
+                env!("OUT_DIR"),
+                "/resources/audio_samples/porcupine.wav"
+            ))
+            .unwrap(),
+        );
         let source = Decoder::new(soundfile).unwrap();
 
         assert_eq!(porcupine.sample_rate(), source.sample_rate());
@@ -61,8 +66,13 @@ mod tests {
             .init()
             .expect("Unable to create Porcupine");
 
-        let soundfile =
-            BufReader::new(File::open("resources/audio_samples/multiple_keywords.wav").unwrap());
+        let soundfile = BufReader::new(
+            File::open(concat!(
+                env!("OUT_DIR"),
+                "/resources/audio_samples/multiple_keywords.wav"
+            ))
+            .unwrap(),
+        );
         let source = Decoder::new(soundfile).unwrap();
 
         assert_eq!(porcupine.sample_rate(), source.sample_rate());

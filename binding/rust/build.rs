@@ -78,6 +78,4 @@ fn main() {
     resources_base_dir.push("resources/");
     resources_out_dir.push("resources/");
     copy_dir(resources_base_dir, resources_out_dir).unwrap();
-
-    println!("cargo:rerun-if-changed=build.rs");
 }
