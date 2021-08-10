@@ -1,6 +1,6 @@
 [package]
 name = "pv_porcupine"
-version = "1.9.0"
+version = "1.9.1"
 edition = "2018"
 description = "The Rust bindings for Picovoice's Porcupine library"
 license-file = "../../LICENSE"
@@ -14,6 +14,7 @@ include = [
 	"build.rs",
 	"Cargo.toml",
 	"data/",
+	"README.md",
 	"src/",
 	"tests/",
 ]
