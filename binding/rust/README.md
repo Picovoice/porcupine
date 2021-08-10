@@ -20,10 +20,10 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
 ## Installation
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.
 
-To add the porupine library into your app, add `pv_porupine` to your apps `Cargo.toml` manifest:
+To add the porcupine library into your app, add `pv_porcupine` to your apps `Cargo.toml` manifest:
 ```toml
 [dependencies]
-pv_porcupine = "1.9.0"
+pv_porcupine = "1.9.1"
 ```
 
 If you prefer to clone the repo and use it locally, first run `copy.sh` (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the libs into the project.). Then you can reference the local binding location:
