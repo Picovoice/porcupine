@@ -36,7 +36,7 @@ fn process_audio_chunk(
         if keyword_index >= 0 {
             println!(
                 "[{}] Detected {}",
-                Local::now(),
+                Local::now().format("%F %T"),
                 keywords_or_paths.get(keyword_index as usize)
             );
         }
