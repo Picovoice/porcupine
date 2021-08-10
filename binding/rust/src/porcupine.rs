@@ -120,16 +120,13 @@ pub enum PvStatus {
     INVALID_STATE = 6,
 }
 
-type PvPorcupineInitFn<'a> = Symbol<
-    'a,
-    unsafe extern "C" fn(
-        model_path: *const c_char,
-        num_keywords: i32,
-        keyword_paths: *const *const c_char,
-        sensitivities: *const c_float,
-        object: *mut *mut CPorcupine,
-    ) -> PvStatus,
->;
+type PvPorcupineInitFn = unsafe extern "C" fn(
+    model_path: *const c_char,
+    num_keywords: i32,
+    keyword_paths: *const *const c_char,
+    sensitivities: *const c_float,
+    object: *mut *mut CPorcupine,
+) -> PvStatus;
 type PvSampleRateFn = unsafe extern "C" fn() -> i32;
 type PvPorcupineFrameLengthFn = unsafe extern "C" fn() -> i32;
 type PvPorcupineVersionFn = unsafe extern "C" fn() -> *mut c_char;

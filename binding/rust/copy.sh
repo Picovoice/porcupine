@@ -13,4 +13,5 @@ cp -r ../../lib/windows ./data/lib/
 
 echo "Copying Resource Files ..."
 cp -r ../../resources/keyword_files ./data/resources/
+
 echo "Copy complete!"
