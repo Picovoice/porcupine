@@ -12,11 +12,13 @@
 use chrono::prelude::*;
 use clap::{App, Arg, ArgGroup};
 use ctrlc;
+use hound;
 use miniaudio;
 use porcupine::{BuiltinKeywords, Porcupine, PorcupineBuilder};
 use std::collections::VecDeque;
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 
 static LISTENING: AtomicBool = AtomicBool::new(false);
 
@@ -47,6 +49,7 @@ fn porcupine_demo(
     keywords_or_paths: KeywordsOrPaths,
     sensitivities: Option<Vec<f32>>,
     model_path: Option<&str>,
+    output_path: Option<&str>,
 ) {
     let mut buffer: VecDeque<i16> = VecDeque::new();
 
@@ -68,6 +71,20 @@ fn porcupine_demo(
     let porcupine = porcupine_builder
         .init()
         .expect("Failed to create Porcupine");
+
+    let wavspec = hound::WavSpec {
+        channels: 1,
+        sample_rate: 16000,
+        bits_per_sample: 16,
+        sample_format: hound::SampleFormat::Int,
+    };
+    let output_file_writer = match output_path {
+        Some(output_path) => Some(Arc::new(Mutex::new(
+            hound::WavWriter::create(output_path, wavspec)
+                .expect("Failed to open output audio file"),
+        ))),
+        None => None,
+    };
 
     let miniaudio_context =
         miniaudio::Context::new(&miniaudio_backend, None).expect("Failed to create audio context");
@@ -97,6 +114,14 @@ fn porcupine_demo(
             &mut buffer,
             &keywords_or_paths,
         );
+
+        if let Some(output_file_writer_mutex) = &output_file_writer {
+            let mut output_file_writer = output_file_writer_mutex.lock().unwrap();
+            let samples: &[i16] = frames.as_samples();
+            for sample in samples {
+                output_file_writer.write_sample(*sample).unwrap();
+            }
+        }
     });
 
     let device = miniaudio::Device::new(Some(miniaudio_context), &device_config)
@@ -212,6 +237,13 @@ fn main() {
             .possible_values(&["Wasapi", "DSound", "WinMM", "CoreAudio", "SNDIO", "Audio4", "OSS", "PulseAudio", "Alsa", "Jack", "AAudio", "OpenSL", "WebAudio"])
         )
         .arg(
+            Arg::with_name("output_path")
+            .long("output_path")
+            .value_name("PATH")
+            .help("Path to recorded audio (for debugging)")
+            .takes_value(true)
+        )
+        .arg(
             Arg::with_name("show_audio_devices")
             .long("show_audio_devices")
         )
@@ -282,6 +314,7 @@ fn main() {
     };
 
     let model_path = matches.value_of("model_path");
+    let output_path = matches.value_of("output_path");
 
     porcupine_demo(
         &miniaudio_backend,
@@ -289,5 +322,6 @@ fn main() {
         keywords_or_paths,
         sensitivities,
         model_path,
+        output_path,
     );
 }

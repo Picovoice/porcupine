@@ -113,4 +113,10 @@ Exact system setups don't always play well with certain audio backends. If this 
 cargo run -- --release --keywords picovoice --audio_device_index 1 --audio_backend Alsa
 ```
 
-If the issue persists please open an issue.
+If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
+
+```console
+cargo run --release -- --keywords picovoice --output_path ./test.wav
+```
+
+If after listening to stored file there is no apparent problem detected please open an issue.
