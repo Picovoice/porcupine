@@ -19,8 +19,8 @@
 		0251C323269C036200B77F69 /* pico clock_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C321269C036200B77F69 /* pico clock_ios.ppn */; };
 		0251C324269C036200B77F69 /* hey barista_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C322269C036200B77F69 /* hey barista_ios.ppn */; };
 		026A050D2693C833005C4511 /* PorcupineDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A050C2693C833005C4511 /* PorcupineDemoUITests.swift */; };
-		3A2A7656BBCEF3A94D927EDE /* libPods-PorcupineDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C07E6637D1E8570FA717E88 /* libPods-PorcupineDemoUITests.a */; };
-		B1AEE5C2CE6894B9E4AC32B0 /* libPods-PorcupineDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 102CBAC25A002178FECEB3F7 /* libPods-PorcupineDemo.a */; };
+		98C07FAE08204ECF35C62683 /* libPods-PorcupineForegroundAppDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E42DB18835CE685BCEE511C /* libPods-PorcupineForegroundAppDemo.a */; };
+		A9E5A7157923C388AAC3F1B1 /* libPods-PorcupineForegroundAppDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F65504613E8A6170837746A /* libPods-PorcupineForegroundAppDemoUITests.a */; };
 		BBE66BCE205DD6F7006005B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */; };
 		BBE66BD0205DD6F7006005B1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCF205DD6F7006005B1 /* ViewController.swift */; };
 		BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE66BD1205DD6F7006005B1 /* Main.storyboard */; };
@@ -63,23 +63,27 @@
 		0251C31326964D2000B77F69 /* emparedado_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = emparedado_ios.ppn; path = ../../../resources/keyword_files_es/ios/emparedado_ios.ppn; sourceTree = "<group>"; };
 		0251C321269C036200B77F69 /* pico clock_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "pico clock_ios.ppn"; path = "../../../resources/keyword_files/ios/pico clock_ios.ppn"; sourceTree = "<group>"; };
 		0251C322269C036200B77F69 /* hey barista_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey barista_ios.ppn"; path = "../../../resources/keyword_files/ios/hey barista_ios.ppn"; sourceTree = "<group>"; };
-		026A050A2693C833005C4511 /* PorcupineDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PorcupineDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		026A050A2693C833005C4511 /* PorcupineForegroundAppDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PorcupineForegroundAppDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		026A050C2693C833005C4511 /* PorcupineDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PorcupineDemoUITests.swift; sourceTree = "<group>"; };
 		026A050E2693C833005C4511 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		026A05172693CF2C005C4511 /* libPorcupine-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPorcupine-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		09A8C8EBE4FFEF91BEBDF6CF /* Pods-PorcupineDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.release.xcconfig"; sourceTree = "<group>"; };
-		102CBAC25A002178FECEB3F7 /* libPods-PorcupineDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12D0D2712E012DEBA0507C04 /* Pods-PorcupineDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemoUITests/Pods-PorcupineDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1D8D47CEFF4B6F5AE2B7413E /* Pods-PorcupineDemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineDemoUITests/Pods-PorcupineDemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		1E42DB18835CE685BCEE511C /* libPods-PorcupineForegroundAppDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineForegroundAppDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CC3815B148D5148AA1A5964 /* Pods-PorcupineForegroundAppDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineForegroundAppDemo.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		60FC4E079EA2EE863142AAB7 /* Pods-PorcupineDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		9C07E6637D1E8570FA717E88 /* libPods-PorcupineDemoUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemoUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F65504613E8A6170837746A /* libPods-PorcupineForegroundAppDemoUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineForegroundAppDemoUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE6005B9BBE3986D0AE04CDF /* Pods-PorcupineForegroundAppDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineForegroundAppDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
+		BBE66BCA205DD6F7006005B1 /* PorcupineForegroundAppDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineForegroundAppDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBE66BCF205DD6F7006005B1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BBE66BD2205DD6F7006005B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BBE66BD4205DD6F7006005B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBE66BD7205DD6F7006005B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BBE66BD9205DD6F7006005B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7CC279F4C61B173D8697030 /* Pods-PorcupineForegroundAppDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineForegroundAppDemo.release.xcconfig"; path = "Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo.release.xcconfig"; sourceTree = "<group>"; };
+		E99DFA866FAA4CBF36A90AA4 /* Pods-PorcupineForegroundAppDemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineForegroundAppDemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A2A7656BBCEF3A94D927EDE /* libPods-PorcupineDemoUITests.a in Frameworks */,
+				A9E5A7157923C388AAC3F1B1 /* libPods-PorcupineForegroundAppDemoUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1AEE5C2CE6894B9E4AC32B0 /* libPods-PorcupineDemo.a in Frameworks */,
+				98C07FAE08204ECF35C62683 /* libPods-PorcupineForegroundAppDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,14 +181,14 @@
 			name = de;
 			sourceTree = "<group>";
 		};
-		026A050B2693C833005C4511 /* PorcupineDemoUITests */ = {
+		026A050B2693C833005C4511 /* PorcupineForegroundAppDemoUITests */ = {
 			isa = PBXGroup;
 			children = (
 				0251C2E32696108700B77F69 /* test_resources */,
 				026A050C2693C833005C4511 /* PorcupineDemoUITests.swift */,
 				026A050E2693C833005C4511 /* Info.plist */,
 			);
-			path = PorcupineDemoUITests;
+			path = PorcupineForegroundAppDemoUITests;
 			sourceTree = "<group>";
 		};
 		2BBD9051A599A3751D329DE8 /* Pods */ = {
@@ -194,6 +198,10 @@
 				09A8C8EBE4FFEF91BEBDF6CF /* Pods-PorcupineDemo.release.xcconfig */,
 				1D8D47CEFF4B6F5AE2B7413E /* Pods-PorcupineDemoUITests.debug.xcconfig */,
 				12D0D2712E012DEBA0507C04 /* Pods-PorcupineDemoUITests.release.xcconfig */,
+				3CC3815B148D5148AA1A5964 /* Pods-PorcupineForegroundAppDemo.debug.xcconfig */,
+				D7CC279F4C61B173D8697030 /* Pods-PorcupineForegroundAppDemo.release.xcconfig */,
+				E99DFA866FAA4CBF36A90AA4 /* Pods-PorcupineForegroundAppDemoUITests.debug.xcconfig */,
+				AE6005B9BBE3986D0AE04CDF /* Pods-PorcupineForegroundAppDemoUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -202,8 +210,8 @@
 			isa = PBXGroup;
 			children = (
 				026A05172693CF2C005C4511 /* libPorcupine-iOS.a */,
-				102CBAC25A002178FECEB3F7 /* libPods-PorcupineDemo.a */,
-				9C07E6637D1E8570FA717E88 /* libPods-PorcupineDemoUITests.a */,
+				1E42DB18835CE685BCEE511C /* libPods-PorcupineForegroundAppDemo.a */,
+				9F65504613E8A6170837746A /* libPods-PorcupineForegroundAppDemoUITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -211,8 +219,8 @@
 		BBE66BC1205DD6F7006005B1 = {
 			isa = PBXGroup;
 			children = (
-				BBE66BCC205DD6F7006005B1 /* PorcupineDemo */,
-				026A050B2693C833005C4511 /* PorcupineDemoUITests */,
+				BBE66BCC205DD6F7006005B1 /* PorcupineForegroundAppDemo */,
+				026A050B2693C833005C4511 /* PorcupineForegroundAppDemoUITests */,
 				BBE66BCB205DD6F7006005B1 /* Products */,
 				BB65C7B0205F4BF400E8770E /* Frameworks */,
 				2BBD9051A599A3751D329DE8 /* Pods */,
@@ -222,13 +230,13 @@
 		BBE66BCB205DD6F7006005B1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */,
-				026A050A2693C833005C4511 /* PorcupineDemoUITests.xctest */,
+				BBE66BCA205DD6F7006005B1 /* PorcupineForegroundAppDemo.app */,
+				026A050A2693C833005C4511 /* PorcupineForegroundAppDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BBE66BCC205DD6F7006005B1 /* PorcupineDemo */ = {
+		BBE66BCC205DD6F7006005B1 /* PorcupineForegroundAppDemo */ = {
 			isa = PBXGroup;
 			children = (
 				BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */,
@@ -238,15 +246,15 @@
 				BBE66BD6205DD6F7006005B1 /* LaunchScreen.storyboard */,
 				BBE66BD9205DD6F7006005B1 /* Info.plist */,
 			);
-			path = PorcupineDemo;
+			path = PorcupineForegroundAppDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		026A05092693C833005C4511 /* PorcupineDemoUITests */ = {
+		026A05092693C833005C4511 /* PorcupineForegroundAppDemoUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 026A05132693C833005C4511 /* Build configuration list for PBXNativeTarget "PorcupineDemoUITests" */;
+			buildConfigurationList = 026A05132693C833005C4511 /* Build configuration list for PBXNativeTarget "PorcupineForegroundAppDemoUITests" */;
 			buildPhases = (
 				C304C76C69A4944993C6A3F6 /* [CP] Check Pods Manifest.lock */,
 				026A05062693C833005C4511 /* Sources */,
@@ -260,14 +268,14 @@
 			dependencies = (
 				026A05102693C833005C4511 /* PBXTargetDependency */,
 			);
-			name = PorcupineDemoUITests;
+			name = PorcupineForegroundAppDemoUITests;
 			productName = PorcupineDemoUITests;
-			productReference = 026A050A2693C833005C4511 /* PorcupineDemoUITests.xctest */;
+			productReference = 026A050A2693C833005C4511 /* PorcupineForegroundAppDemoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		BBE66BC9205DD6F7006005B1 /* PorcupineDemo */ = {
+		BBE66BC9205DD6F7006005B1 /* PorcupineForegroundAppDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BBE66BE7205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemo" */;
+			buildConfigurationList = BBE66BE7205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineForegroundAppDemo" */;
 			buildPhases = (
 				6C1AA9585BD75DCCFB45F279 /* [CP] Check Pods Manifest.lock */,
 				BBE66BC6205DD6F7006005B1 /* Sources */,
@@ -281,9 +289,9 @@
 			);
 			dependencies = (
 			);
-			name = PorcupineDemo;
+			name = PorcupineForegroundAppDemo;
 			productName = ios;
-			productReference = BBE66BCA205DD6F7006005B1 /* PorcupineDemo.app */;
+			productReference = BBE66BCA205DD6F7006005B1 /* PorcupineForegroundAppDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -313,7 +321,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BBE66BC5205DD6F7006005B1 /* Build configuration list for PBXProject "PorcupineDemo" */;
+			buildConfigurationList = BBE66BC5205DD6F7006005B1 /* Build configuration list for PBXProject "PorcupineForegroundAppDemo" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -326,8 +334,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BBE66BC9205DD6F7006005B1 /* PorcupineDemo */,
-				026A05092693C833005C4511 /* PorcupineDemoUITests */,
+				BBE66BC9205DD6F7006005B1 /* PorcupineForegroundAppDemo */,
+				026A05092693C833005C4511 /* PorcupineForegroundAppDemoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -379,7 +387,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PorcupineDemo-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PorcupineForegroundAppDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -393,7 +401,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemoUITests/Pods-PorcupineDemoUITests-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-resources.sh",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
@@ -430,7 +438,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemoUITests/Pods-PorcupineDemoUITests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8FA8B79C31FD3FF2AD7076C6 /* [CP] Copy Pods Resources */ = {
@@ -439,7 +447,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-resources.sh",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
@@ -476,7 +484,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9A78D42DD73C7B435FAF4374 /* [CP] Embed Pods Frameworks */ = {
@@ -485,7 +493,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -494,7 +502,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C304C76C69A4944993C6A3F6 /* [CP] Check Pods Manifest.lock */ = {
@@ -512,7 +520,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PorcupineDemoUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PorcupineForegroundAppDemoUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -525,7 +533,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemoUITests/Pods-PorcupineDemoUITests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -534,7 +542,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemoUITests/Pods-PorcupineDemoUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -562,7 +570,7 @@
 /* Begin PBXTargetDependency section */
 		026A05102693C833005C4511 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BBE66BC9205DD6F7006005B1 /* PorcupineDemo */;
+			target = BBE66BC9205DD6F7006005B1 /* PorcupineForegroundAppDemo */;
 			targetProxy = 026A050F2693C833005C4511 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -589,7 +597,7 @@
 /* Begin XCBuildConfiguration section */
 		026A05112693C833005C4511 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1D8D47CEFF4B6F5AE2B7413E /* Pods-PorcupineDemoUITests.debug.xcconfig */;
+			baseConfigurationReference = E99DFA866FAA4CBF36A90AA4 /* Pods-PorcupineForegroundAppDemoUITests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -614,7 +622,7 @@
 		};
 		026A05122693C833005C4511 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 12D0D2712E012DEBA0507C04 /* Pods-PorcupineDemoUITests.release.xcconfig */;
+			baseConfigurationReference = AE6005B9BBE3986D0AE04CDF /* Pods-PorcupineForegroundAppDemoUITests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -756,18 +764,20 @@
 		};
 		BBE66BE8205DD6F7006005B1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60FC4E079EA2EE863142AAB7 /* Pods-PorcupineDemo.debug.xcconfig */;
+			baseConfigurationReference = 3CC3815B148D5148AA1A5964 /* Pods-PorcupineForegroundAppDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.0;
 				DEVELOPMENT_TEAM = 65723695GD;
-				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PorcupineForegroundAppDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.porcupineiosnativedemo;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.PorcupineForegroundAppDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -776,18 +786,20 @@
 		};
 		BBE66BE9205DD6F7006005B1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09A8C8EBE4FFEF91BEBDF6CF /* Pods-PorcupineDemo.release.xcconfig */;
+			baseConfigurationReference = D7CC279F4C61B173D8697030 /* Pods-PorcupineForegroundAppDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.0;
 				DEVELOPMENT_TEAM = 65723695GD;
-				INFOPLIST_FILE = "$(SRCROOT)/PorcupineDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PorcupineForegroundAppDemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.porcupineiosnativedemo;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.PorcupineForegroundAppDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -797,7 +809,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		026A05132693C833005C4511 /* Build configuration list for PBXNativeTarget "PorcupineDemoUITests" */ = {
+		026A05132693C833005C4511 /* Build configuration list for PBXNativeTarget "PorcupineForegroundAppDemoUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				026A05112693C833005C4511 /* Debug */,
@@ -806,7 +818,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BBE66BC5205DD6F7006005B1 /* Build configuration list for PBXProject "PorcupineDemo" */ = {
+		BBE66BC5205DD6F7006005B1 /* Build configuration list for PBXProject "PorcupineForegroundAppDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BBE66BE5205DD6F7006005B1 /* Debug */,
@@ -815,7 +827,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BBE66BE7205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineDemo" */ = {
+		BBE66BE7205DD6F7006005B1 /* Build configuration list for PBXNativeTarget "PorcupineForegroundAppDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BBE66BE8205DD6F7006005B1 /* Debug */,

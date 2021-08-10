@@ -1,10 +1,10 @@
 source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
-target 'PorcupineDemo' do    
+target 'PorcupineBackgroundServiceDemo' do
     pod 'Porcupine-iOS'
 end
 
-target 'PorcupineDemoUITests' do
+target 'PorcupineBackgroundServiceDemoUITests' do
     pod 'Porcupine-iOS'
 end

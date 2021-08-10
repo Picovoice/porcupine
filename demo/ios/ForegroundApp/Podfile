@@ -1,0 +1,10 @@
+source 'https://cdn.cocoapods.org/'
+platform :ios, '9.0'
+
+target 'PorcupineForegroundAppDemo' do
+    pod 'Porcupine-iOS'
+end
+
+target 'PorcupineForegroundAppDemoUITests' do
+    pod 'Porcupine-iOS'
+end
