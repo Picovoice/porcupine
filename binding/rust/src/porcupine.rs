@@ -267,6 +267,23 @@ impl Porcupine {
     }
 }
 
+macro_rules! load_library_fn {
+    ($lib:ident, $function_name:literal) => {
+        match $lib.get($function_name) {
+            Ok(symbol) => symbol,
+            Err(err) => {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::LibraryLoadError,
+                    &format!(
+                        "Failed to load function symbol from Porcupine library: {}",
+                        err
+                    ),
+                ))
+            }
+        };
+    };
+}
+
 struct PorcupineInnerVTable {
     pv_porcupine_process: RawSymbol<PvPorcupineProcessFn>,
     pv_porcupine_delete: RawSymbol<PvPorcupineDeleteFn>,
@@ -365,15 +382,8 @@ impl PorcupineInner {
                 }
             };
 
-            let pv_porcupine_init: Symbol<PvPorcupineInitFn> = match lib.get(b"pv_porcupine_init") {
-                Ok(symbol) => symbol,
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        &format!("Failed to load pv_porcupine_init function symbol from Porcupine library: {}", err),
-                    ))
-                }
-            };
+            let pv_porcupine_init: Symbol<PvPorcupineInitFn> =
+                load_library_fn!(lib, b"pv_porcupine_init");
 
             let pv_model_path = pathbuf_to_cstring(&model_path);
             let pv_keyword_paths = keyword_paths
@@ -400,64 +410,19 @@ impl PorcupineInner {
                 ));
             }
 
-            let pv_porcupine_process: Symbol<PvPorcupineProcessFn> = match lib.get(b"pv_porcupine_process") {
-                Ok(symbol) => symbol,
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        &format!(
-                        "Failed to load pv_porcupine_process function symbol from Porcupine library: {}",
-                        err
-                    ),
-                    ))
-                }
-            };
+            let pv_porcupine_process: Symbol<PvPorcupineProcessFn> =
+                load_library_fn!(lib, b"pv_porcupine_process");
 
-            let pv_porcupine_delete: Symbol<PvPorcupineDeleteFn> = match lib.get(b"pv_porcupine_delete") {
-                                Ok(symbol) => symbol,
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        &format!(
-                        "Failed to load pv_porcupine_delete function symbol from Porcupine library: {}",
-                        err
-                    ),
-                    ))
-                }
-            };
+            let pv_porcupine_delete: Symbol<PvPorcupineDeleteFn> =
+                load_library_fn!(lib, b"pv_porcupine_delete");
 
-            let pv_sample_rate: Symbol<PvSampleRateFn> = match lib.get(b"pv_sample_rate") {
-                Ok(symbol) => symbol,
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        &format!(
-                        "Failed to load pv_sample_rate function symbol from Porcupine library: {}",
-                        err
-                    ),
-                    ))
-                }
-            };
+            let pv_sample_rate: Symbol<PvSampleRateFn> = load_library_fn!(lib, b"pv_sample_rate");
 
-            let pv_porcupine_frame_length: Symbol<PvPorcupineFrameLengthFn> = match lib.get(b"pv_porcupine_frame_length") {
-                Ok(symbol) => symbol,
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        &format!("Failed to load pv_porcupine_frame_length function symbol from Porcupine library: {}", err),
-                    ))
-                }
-            };
+            let pv_porcupine_frame_length: Symbol<PvPorcupineFrameLengthFn> =
+                load_library_fn!(lib, b"pv_porcupine_frame_length");
 
-            let pv_porcupine_version: Symbol<PvPorcupineVersionFn> = match lib.get(b"pv_porcupine_version") {
-                Ok(symbol) => symbol,
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        &format!("Failed to load pv_porcupine_version function symbol from Porcupine library: {}", err),
-                    ))
-                }
-            };
+            let pv_porcupine_version: Symbol<PvPorcupineVersionFn> =
+                load_library_fn!(lib, b"pv_porcupine_version");
 
             let sample_rate = pv_sample_rate();
             let frame_length = pv_porcupine_frame_length();
