@@ -17,7 +17,7 @@ porcupine/demo/rust/micdemo  # Mic Demo
 
 ### File Demo
 
-The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
+The file demo uses Porcupine to scan for keywords in a `.wav` file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. s
 Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
 The following processes a file looking for instances of the phrase "Picovoice":
 

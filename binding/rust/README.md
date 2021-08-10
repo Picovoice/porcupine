@@ -49,9 +49,16 @@ let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords
     .init().expect("Unable to create Porcupine");
 ```
 
-To detect non-default keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method instead:
+To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one", "/absolute/path/to/keyword/two"])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one.ppn", "/absolute/path/to/keyword/two.ppn"])
+    .init().expect("Unable to create Porcupine");
+```
+
+The language can be changed by passing in an appropriate `*.pv` file path into the `model_path` method:
+```rust
+let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one.ppn"])
+    .model_path("/path/to/another/language_params.pv")
     .init().expect("Unable to create Porcupine");
 ```
 

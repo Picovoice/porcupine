@@ -1,4 +1,4 @@
-echo "Preppring dir ..."
+echo "Preparing dir ..."
 mkdir -p ./data/lib/
 mkdir -p ./data/resources/
 
