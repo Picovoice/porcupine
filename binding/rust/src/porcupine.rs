@@ -400,11 +400,31 @@ impl PorcupineInner {
                 ));
             }
 
-            let pv_porcupine_process: Symbol<PvPorcupineProcessFn> =
-                lib.get(b"pv_porcupine_process").unwrap();
+            let pv_porcupine_process: Symbol<PvPorcupineProcessFn> = match lib.get(b"pv_porcupine_process") {
+                Ok(symbol) => symbol,
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!(
+                        "Failed to load pv_porcupine_process function symbol from Porcupine library: {}",
+                        err
+                    ),
+                    ))
+                }
+            };
 
-            let pv_porcupine_delete: Symbol<PvPorcupineDeleteFn> =
-                lib.get(b"pv_porcupine_delete").unwrap();
+            let pv_porcupine_delete: Symbol<PvPorcupineDeleteFn> = match lib.get(b"pv_porcupine_delete") {
+                                Ok(symbol) => symbol,
+                Err(err) => {
+                    return Err(PorcupineError::new(
+                        PorcupineErrorStatus::LibraryLoadError,
+                        &format!(
+                        "Failed to load pv_porcupine_delete function symbol from Porcupine library: {}",
+                        err
+                    ),
+                    ))
+                }
+            };
 
             let pv_sample_rate: Symbol<PvSampleRateFn> = match lib.get(b"pv_sample_rate") {
                 Ok(symbol) => symbol,
