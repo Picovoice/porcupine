@@ -7,6 +7,6 @@ edition = "2018"
 clap = "2.33.3"
 miniaudio = "0.10.0"
 itertools = "0.10.1"
-pv_porcupine = { crate = "../../../binding/rust/target/package/porcupine-1.9.0.crate" }
+pv_porcupine = "1.9.0"
 ctrlc = "3.1.9"
 chrono = "0.4.19"

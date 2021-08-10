@@ -7,7 +7,16 @@ license-file = "../../LICENSE"
 homepage = "https://picovoice.ai/platform/porcupine/"
 repository = "https://github.com/Picovoice/porcupine"
 keywords = ["machine-learning", "audio"]
-publish = false
+publish = true
+
+include = [
+	".gitignore",
+	"build.rs",
+	"Cargo.toml",
+	"data/",
+	"src/",
+	"tests/",
+]
 
 [lib]
 name = "porcupine"
@@ -17,7 +26,7 @@ crate_type = ["lib"]
 [dependencies]
 libc = "0.2"
 libloading = "0.7"
-log = "*"
+log = "0.4"
 
 [dev-dependencies]
 rodio = "0.14"
