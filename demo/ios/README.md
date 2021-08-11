@@ -1,6 +1,8 @@
-# Porcupine iOS Demo
+# Porcupine iOS Demos
 
 ## BackgroundService Demo
+
+This demo runs microphone recording in the background and detects the wake word while the application is **not** in focus. The wake word will be detected as long as the application remains running in the background.
 
 **The minimum iOS version required is 10.0.**
 
@@ -16,7 +18,9 @@ Open up the demo and press start. The demo listens for the wake word "Porcupine"
 
 ## ForegroundApp Demo
 
-To run the background service demo, go to [ForegroundApp](./ForegroundApp) directory. Then run:
+This demo runs wake word detection while the application is in focus. 
+
+To run the foreground application demo, go to [ForegroundApp](./ForegroundApp) directory. Then run:
 
 ```console
 pod install

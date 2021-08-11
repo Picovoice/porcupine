@@ -256,6 +256,9 @@ To learn about how to use Porcupine with Android Speech to Text recognition go t
 
 ### iOS Demos
 
+The BackgroundService demo runs audio recording in the background, enabling detection of wake word while the application is **not** in focus and remains running in the background.
+The ForegroundApp demo runs wake word detection **only** when the application is in focus.
+
 #### BackgroundService Demo
 
 To run the demo, go to [demo/ios/BackgroundService](/demo/ios/BackgroundService) and run:

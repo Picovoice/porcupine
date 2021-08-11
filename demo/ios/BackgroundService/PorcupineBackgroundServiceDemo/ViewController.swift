@@ -19,34 +19,34 @@ class ViewController: UIViewController, UITextViewDelegate {
 
     var porcupineManager: PorcupineManager!
     var isRecording = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         startButton.layer.cornerRadius = 0.5 * startButton.bounds.size.width
         startButton.clipsToBounds = true
         
-        textView.text = "Press the Start button and say the wake word \"Porcupine\". You may close the app but it must be running in the background."
+        textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
+        
+        
+        let keywordCallback: ((Int32) -> Void) = { keywordIndex in
+            NotificationManager.shared.sendNotification()
+        }
+        do {
+            self.porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
+        } catch {
+            showAlert(message: "Failed to initialize Porcupine Manager")
+        }
     }
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
             NotificationManager.shared.requestNotificationAuthorization()
-            
-            let keywordCallback: ((Int32) -> Void) = { keywordIndex in
-                NotificationManager.shared.sendNotification()
-            }
 
             do {
-                porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
                 try porcupineManager.start()
             } catch {
-                let alert = UIAlertController(
-                        title: "Alert",
-                        message: "Something went wrong",
-                        preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                showAlert(message: "Failed to start Porcupine Manager")
                 return
             }
 
@@ -58,5 +58,14 @@ class ViewController: UIViewController, UITextViewDelegate {
             isRecording = false
             startButton.setTitle("START", for: UIControl.State.normal)
         }
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(
+                title: "Alert",
+                message: message,
+                preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }
