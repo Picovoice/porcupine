@@ -27,6 +27,7 @@ import (
 	"runtime"
 	"strings"
 )
+import "os/exec"
 
 //go:embed embedded
 var embeddedFS embed.FS
@@ -135,7 +136,7 @@ type nativePorcupineType struct{}
 
 // private vars
 var (
-	osName        = getOS()
+	osName, cpu   = getOS()
 	extractionDir = filepath.Join(os.TempDir(), "porcupine")
 
 	defaultModelFile = extractDefaultModel()
@@ -168,7 +169,7 @@ func (porcupine *Porcupine) Init() (err error) {
 	if porcupine.BuiltInKeywords != nil && len(porcupine.BuiltInKeywords) > 0 {
 		for _, keyword := range porcupine.BuiltInKeywords {
 			if !keyword.IsValid() {
-				return fmt.Errorf("%s: '%s' is not a valid built-in keyword.", pvStatusToString(INVALID_ARGUMENT), keyword)
+				return fmt.Errorf("%s: '%s' is not a valid built-in keyword", pvStatusToString(INVALID_ARGUMENT), keyword)
 			}
 			keywordStr := string(keyword)
 			porcupine.KeywordPaths = append(porcupine.KeywordPaths, builtinKeywords[keywordStr])
@@ -176,7 +177,7 @@ func (porcupine *Porcupine) Init() (err error) {
 	}
 
 	if porcupine.KeywordPaths == nil || len(porcupine.KeywordPaths) == 0 {
-		return fmt.Errorf("%s: No valid keywords were provided.", pvStatusToString(INVALID_ARGUMENT))
+		return fmt.Errorf("%s: No valid keywords were provided", pvStatusToString(INVALID_ARGUMENT))
 	}
 
 	for _, k := range porcupine.KeywordPaths {
@@ -193,7 +194,7 @@ func (porcupine *Porcupine) Init() (err error) {
 	} else {
 		for _, s := range porcupine.Sensitivities {
 			if s < 0 || s > 1 {
-				return fmt.Errorf("%s: Sensitivity value of %f is invalid. Must be between [0, 1].",
+				return fmt.Errorf("%s: Sensitivity value of %f is invalid. Must be between [0, 1]",
 					pvStatusToString(INVALID_ARGUMENT), s)
 			}
 		}
@@ -215,7 +216,7 @@ func (porcupine *Porcupine) Init() (err error) {
 // Releases resources acquired by Porcupine.
 func (porcupine *Porcupine) Delete() error {
 	if porcupine.handle == 0 {
-		return fmt.Errorf("Porcupine has not been initialized or has already been deleted.")
+		return fmt.Errorf("Porcupine has not been initialized or has already been deleted")
 	}
 
 	nativePorcupine.nativeDelete(porcupine)
@@ -230,11 +231,11 @@ func (porcupine *Porcupine) Delete() error {
 func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 
 	if porcupine.handle == 0 {
-		return -1, fmt.Errorf("Porcupine has not been initialized or has been deleted.")
+		return -1, fmt.Errorf("Porcupine has not been initialized or has been deleted")
 	}
 
 	if len(pcm) != FrameLength {
-		return -1, fmt.Errorf("Input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)
+		return -1, fmt.Errorf("input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)
 	}
 
 	// call process
@@ -246,17 +247,63 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 	return index, nil
 }
 
-func getOS() string {
+func getOS() (string, string) {
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		return "mac"
+		return "mac", "x86_64"
 	case "linux":
-		return "linux"
+		return getLinuxDetails()
 	case "windows":
-		return "windows"
+		return "windows", "amd64"
 	default:
 		log.Fatalf("%s is not a supported OS", os)
-		return ""
+		return "", ""
+	}
+}
+
+func getLinuxDetails() (string, string) {
+	var archInfo = ""
+
+	if runtime.GOARCH == "amd64" {
+		return "linux", "x86_64"
+	} else if runtime.GOARCH == "arm64" {
+		archInfo = "-aarch64"
+	}
+
+	cmd := exec.Command("cat", "/proc/cpuinfo")
+	cpuInfo, err := cmd.Output()
+
+	if err != nil {
+		log.Fatalf("Failed to get CPU details: %s", err.Error())
+	}
+
+	var cpuPart = ""
+	for _, line := range strings.Split(string(cpuInfo), "\n") {
+		if strings.Contains(line, "CPU part") {
+			split := strings.Split(line, " ")
+			cpuPart = strings.ToLower(split[len(split) - 1])
+			break
+		}
+	}
+
+	switch cpuPart {
+	case "0xb76":
+		return "raspberry-pi", "arm11" + archInfo
+	case "0xc07":
+		return "raspberry-pi", "cortex-a7" + archInfo
+	case "0xd03":
+		return "raspberry-pi", "cortex-a53" + archInfo
+	case "0xd07":
+		return "jetson", "cortex-a57" + archInfo
+	case "0xd08":
+		return "raspberry-pi", "cortex-a72" + archInfo
+	case "0xc08":
+		return "beaglebone", "\b"
+	default:
+		log.Fatalf(
+			`WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice.\n
+			Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models`, cpuPart)
+		return "raspberry-pi", "arm11" + archInfo
 	}
 }
 
@@ -287,7 +334,7 @@ func extractLib() string {
 	case "darwin":
 		libPath = fmt.Sprintf("embedded/lib/%s/x86_64/libpv_porcupine.dylib", osName)
 	case "linux":
-		libPath = fmt.Sprintf("embedded/lib/%s/x86_64/libpv_porcupine.so", osName)
+		libPath = fmt.Sprintf("embedded/lib/%s/%s/libpv_porcupine.so", osName, cpu)
 	case "windows":
 		libPath = fmt.Sprintf("embedded/lib/%s/amd64/libpv_porcupine.dll", osName)
 	default:
