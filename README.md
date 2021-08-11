@@ -256,12 +256,28 @@ To learn about how to use Porcupine with Android Speech to Text recognition go t
 
 ### iOS Demos
 
-Before building the demo app, run the following from this directory to install the Porcupine-iOS Cocoapod:
-```ruby
+The BackgroundService demo runs audio recording in the background, enabling detection of wake word while the application is **not** in focus and remains running in the background.
+The ForegroundApp demo runs wake word detection **only** when the application is in focus.
+
+#### BackgroundService Demo
+
+To run the demo, go to [demo/ios/BackgroundService](/demo/ios/BackgroundService) and run:
+
+```console
 pod install
 ```
 
-Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineDemo.xcworkspace` and run the application.
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineBackgroundServiceDemo.xcworkspace` and run the application.
+
+#### ForegroundApp Demo
+
+To run the demo, go to [demo/ios/ForegroundApp](/demo/ios/ForegroundApp) and run:
+
+```console
+pod install
+```
+
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineForegroundAppDemo.xcworkspace` and run the application.
 
 ### Web Demos
 

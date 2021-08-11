@@ -17,9 +17,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "026A05092693C833005C4511"
-               BuildableName = "PorcupineDemoUITests.xctest"
-               BlueprintName = "PorcupineDemoUITests"
-               ReferencedContainer = "container:PorcupineDemo.xcodeproj">
+               BuildableName = "PorcupineForegroundAppDemoUITests.xctest"
+               BlueprintName = "PorcupineForegroundAppDemoUITests"
+               ReferencedContainer = "container:PorcupineForegroundAppDemo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
