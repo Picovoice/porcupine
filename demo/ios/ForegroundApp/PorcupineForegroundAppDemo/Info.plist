@@ -25,9 +25,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>for wake word detection</string>
 	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
