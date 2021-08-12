@@ -3,22 +3,22 @@ name: Rust
 on:
   push:
     branches: [ rust-actions ]
-  #   paths:
-  #     - 'binding/rust/**'
-  #     - 'lib/linux/**'
-  #     - 'lib/mac/**'
-  #     - 'lib/raspberry-pi/**'
-  #     - 'lib/windows/**'
-  #     - '!binding/rust/README.md'
-  # pull_request:
-  #   branches: [ rust-actions ]
-  #   paths:
-  #     - 'binding/rust/**'
-  #     - 'lib/linux/**'
-  #     - 'lib/mac/**'
-  #     - 'lib/raspberry-pi/**'
-  #     - 'lib/windows/**'
-  #     - '!binding/rust/README.md'
+    paths:
+      - 'binding/rust/**'
+      - 'lib/linux/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - '!binding/rust/README.md'
+  pull_request:
+    branches: [ rust-actions ]
+    paths:
+      - 'binding/rust/**'
+      - 'lib/linux/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - '!binding/rust/README.md'
 
 env:
   CARGO_TERM_COLOR: always
