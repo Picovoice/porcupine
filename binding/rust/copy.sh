@@ -2,8 +2,6 @@ echo "Preparing dir ..."
 mkdir -p ./data/lib/
 mkdir -p ./data/resources/
 
-echo! "Test to trip github actions"
-
 echo "Copying Library Files ..."
 cp -r ../../lib/beaglebone ./data/lib/
 cp -r ../../lib/common ./data/lib/

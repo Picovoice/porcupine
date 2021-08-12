@@ -2,7 +2,7 @@ name: Rust
 
 on:
   push:
-    branches: [ rust-actions ]
+    branches: [ master ]
     paths:
       - 'binding/rust/**'
       - 'lib/linux/**'
@@ -11,7 +11,7 @@ on:
       - 'lib/windows/**'
       - '!binding/rust/README.md'
   pull_request:
-    branches: [ rust-actions ]
+    branches: [ master ]
     paths:
       - 'binding/rust/**'
       - 'lib/linux/**'
