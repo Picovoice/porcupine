@@ -79,7 +79,6 @@ const (
 	COMPUTER    BuiltInKeyword = "computer"
 	GRAPEFRUIT  BuiltInKeyword = "grapefruit"
 	GRASSHOPPER BuiltInKeyword = "grasshopper"
-	HEY_BARISTA BuiltInKeyword = "hey barista"
 	HEY_GOOGLE  BuiltInKeyword = "hey google"
 	HEY_SIRI    BuiltInKeyword = "hey siri"
 	JARVIS      BuiltInKeyword = "jarvis"
@@ -91,7 +90,7 @@ const (
 
 // List of available built-in wake words
 var BuiltInKeywords = []BuiltInKeyword{
-	ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, COMPUTER, GRAPEFRUIT, GRASSHOPPER, HEY_BARISTA,
+	ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, COMPUTER, GRAPEFRUIT, GRASSHOPPER,
 	HEY_GOOGLE, HEY_SIRI, JARVIS, OK_GOOGLE, PICOVOICE, PORCUPINE, TERMINATOR,
 }
 
@@ -207,7 +206,7 @@ func (porcupine *Porcupine) Init() (err error) {
 
 	ret := nativePorcupine.nativeInit(porcupine)
 	if PvStatus(ret) != SUCCESS {
-		return fmt.Errorf(": Porcupine returned error %s", pvStatusToString(INVALID_ARGUMENT))
+		return fmt.Errorf("Porcupine returned error %s", pvStatusToString(INVALID_ARGUMENT))
 	}
 
 	return nil
@@ -241,7 +240,7 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 	// call process
 	ret, index := nativePorcupine.nativeProcess(porcupine, pcm)
 	if PvStatus(ret) != SUCCESS {
-		return -1, fmt.Errorf("Process audio frame failed with PvStatus: %d", ret)
+		return -1, fmt.Errorf("process audio frame failed with PvStatus: %d", ret)
 	}
 
 	return index, nil
@@ -275,8 +274,7 @@ func getLinuxDetails() (string, string) {
 	cpuInfo, err := cmd.Output()
 
 	if err != nil {
-		log.Fatalf("Failed to get CPU details: %s, defaulting to linux x86_64", err.Error())
-		return "linux", "x86_64"
+		log.Fatalf("Failed to get CPU details: %s", err.Error())
 	}
 
 	var cpuPart = ""
@@ -302,7 +300,7 @@ func getLinuxDetails() (string, string) {
 	case "0xc08":
 		return "beaglebone", ""
 	default:
-		log.Fatalf(
+		log.Printf(
 			`WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice.\n
 			Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models`, cpuPart)
 		return "raspberry-pi", "arm11" + archInfo
