@@ -26,8 +26,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"os/exec"
 )
-import "os/exec"
 
 //go:embed embedded
 var embeddedFS embed.FS
