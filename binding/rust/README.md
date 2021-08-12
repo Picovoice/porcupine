@@ -26,7 +26,9 @@ To add the porcupine library into your app, add `pv_porcupine` to your apps `Car
 pv_porcupine = "1.9.1"
 ```
 
-If you prefer to clone the repo and use it locally, first run `copy.sh` (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the libs into the project.). Then you can reference the local binding location:
+If you prefer to clone the repo and use it locally, first run `copy.sh`.
+(**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the libs into the project).
+Then you can reference the local binding location:
 ```toml
 [dependencies]
 pv_porcupine = { path = "/path/to/rust/binding" }
@@ -34,14 +36,15 @@ pv_porcupine = { path = "/path/to/rust/binding" }
 
 ## Usage
 
-To create an instance of the engine you first create a PorcupineBuilder instance with the configuration parameters for the wake word engine and then make a call to `.init()`.
+To create an instance of the engine you first create a PorcupineBuilder instance with the configuration parameters for the wake word engine and then make a call to `.init()`:
 
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
 let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```
-In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine". Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
+In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine".
+Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
 Porcupine can detect multiple keywords concurrently:
 ```rust
@@ -69,9 +72,13 @@ let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords
     .init().expect("Unable to create Porcupine");
 ```
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate.
+It is a floating point number within `[0, 1]`.
+A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
-When initialized, the valid sample rate is given by `sample_rate()`. Expected frame length (number of audio samples in an input array) is given by `frame_length()`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+When initialized, the valid sample rate is given by `sample_rate()`.
+Expected frame length (number of audio samples in an input array) is given by `frame_length()`.
+The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 To feed audio into Porcupine, use the `process` function in your capture loop.
 ```rust
@@ -90,7 +97,8 @@ loop {
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file.
+The model files for all supported languages are available [here](/lib/common).
 
 ## Demos
 

@@ -375,9 +375,12 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### Rust Demos
 
-MicDemo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture. It uses `bindgen` and therefore requires `clang` to be installed and on the path. Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros. 
+The microphone demo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture.
+It uses `bindgen` and therefore requires `clang` to be installed and on the path.
+Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros.
 
-This demo opens an audio stream from a microphone and detects utterances of a given wake word. From [demo/rust/micdemo](/demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
+This demo opens an audio stream from a microphone and detects utterances of a given wake word.
+From [demo/rust/micdemo](/demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
 
 ```console
 cargo run --release -- --keywords picovoice
@@ -1445,14 +1448,15 @@ To add the porcupine library into your app, add `pv_porcupine` to your apps `Car
 pv_porcupine = "1.9.1"
 ```
 
-To create an instance of the engine you first create a `PorcupineBuilder` instance with the configuration parameters for the wake word engine and then make a call to `.init()`
+To create an instance of the engine you first create a `PorcupineBuilder` instance with the configuration parameters for the wake word engine and then make a call to `.init()`:
 
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
 let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```
-In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine". Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
+In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine".
+Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
 To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
 ```rust
@@ -1460,9 +1464,11 @@ let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute
     .init().expect("Unable to create Porcupine");
 ```
 
-When initialized, the valid sample rate is given by `sample_rate()`. Expected frame length (number of audio samples in an input array) is given by `frame_length()`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+When initialized, the valid sample rate is given by `sample_rate()`.
+Expected frame length (number of audio samples in an input array) is given by `frame_length()`.
+The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
-To feed audio into Porcupine, use the `process` function in your capture loop.
+To feed audio into Porcupine, use the `process` function in your capture loop:
 ```rust
 fn next_audio_frame() -> Vec<i16> {
     // get audio frame

@@ -130,8 +130,12 @@ type PvPorcupineInitFn = unsafe extern "C" fn(
 type PvSampleRateFn = unsafe extern "C" fn() -> i32;
 type PvPorcupineFrameLengthFn = unsafe extern "C" fn() -> i32;
 type PvPorcupineVersionFn = unsafe extern "C" fn() -> *mut c_char;
-type PvPorcupineProcessFn = unsafe extern "C" fn(*mut CPorcupine, *const i16, *mut i32) -> PvStatus;
-type PvPorcupineDeleteFn = unsafe extern "C" fn(*mut CPorcupine);
+type PvPorcupineProcessFn = unsafe extern "C" fn(
+    object: *mut CPorcupine,
+    pcm: *const i16,
+    keyword_index: *mut i32,
+) -> PvStatus;
+type PvPorcupineDeleteFn = unsafe extern "C" fn(object: *mut CPorcupine);
 
 #[derive(Debug)]
 pub enum PorcupineErrorStatus {

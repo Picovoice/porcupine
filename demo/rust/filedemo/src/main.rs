@@ -11,11 +11,9 @@
 
 use chrono::Duration;
 use clap::{App, Arg, ArgGroup};
+use hound;
 use itertools::Itertools;
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
-use rodio::{source::Source, Decoder};
-use std::fs::File;
-use std::io::BufReader;
 use std::path::PathBuf;
 
 fn porcupine_demo(
@@ -24,9 +22,6 @@ fn porcupine_demo(
     sensitivities: Option<Vec<f32>>,
     model_path: Option<&str>,
 ) {
-    let soundfile = BufReader::new(File::open(input_audio_path).unwrap());
-    let audiosource = Decoder::new(soundfile).unwrap();
-
     let mut porcupine_builder = match keywords_or_paths {
         KeywordsOrPaths::Keywords(ref keywords) => PorcupineBuilder::new_with_keywords(&keywords),
         KeywordsOrPaths::KeywordPaths(ref keyword_paths) => {
@@ -46,17 +41,42 @@ fn porcupine_demo(
         .init()
         .expect("Failed to create Porcupine");
 
-    if porcupine.sample_rate() != audiosource.sample_rate() {
+    let mut wav_reader = match hound::WavReader::open(input_audio_path.clone()) {
+        Ok(reader) => reader,
+        Err(err) => panic!(
+            "Failed to open .wav audio file {}: {}",
+            input_audio_path.display(),
+            err
+        ),
+    };
+
+    if wav_reader.spec().sample_rate != porcupine.sample_rate() {
         panic!(
             "Audio file should have the expected sample rate of {}, got {}",
             porcupine.sample_rate(),
-            audiosource.sample_rate()
+            wav_reader.spec().sample_rate
         );
     }
 
+    if wav_reader.spec().channels != 1u16 {
+        panic!(
+            "Audio file should have the expected number of channels 1, got {}",
+            wav_reader.spec().channels
+        );
+    }
+
+    if wav_reader.spec().bits_per_sample != 16u16
+        || wav_reader.spec().sample_format != hound::SampleFormat::Int
+    {
+        panic!("WAV format should be in the signed 16 bit format",);
+    }
+
     let mut timestamp = Duration::zero();
-    for frame in &audiosource.chunks(porcupine.frame_length() as usize) {
-        let frame = frame.collect_vec();
+    for frame in &wav_reader
+        .samples()
+        .chunks(porcupine.frame_length() as usize)
+    {
+        let frame: Vec<i16> = frame.map(|s| s.unwrap()).collect_vec();
         timestamp = timestamp
             + Duration::milliseconds(
                 ((1000 * frame.len()) / porcupine.sample_rate() as usize) as i64,
@@ -102,7 +122,7 @@ fn main() {
             Arg::with_name("input_audio_path")
             .long("input_audio_path")
             .value_name("PATH")
-            .help("Path to input audio file.")
+            .help("Path to input audio file (mono, WAV, 16-bit, 16kHz).")
             .takes_value(true)
             .required(true)
         )
