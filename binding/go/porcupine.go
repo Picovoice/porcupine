@@ -300,7 +300,7 @@ func getLinuxDetails() (string, string) {
 	case "0xd08":
 		return "raspberry-pi", "cortex-a72" + archInfo
 	case "0xc08":
-		return "beaglebone", "\b"
+		return "beaglebone", ""
 	default:
 		log.Fatalf(
 			`WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice.\n
