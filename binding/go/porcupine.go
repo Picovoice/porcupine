@@ -275,7 +275,8 @@ func getLinuxDetails() (string, string) {
 	cpuInfo, err := cmd.Output()
 
 	if err != nil {
-		log.Fatalf("Failed to get CPU details: %s", err.Error())
+		log.Fatalf("Failed to get CPU details: %s, defaulting to linux x86_64", err.Error())
+		return "linux", "x86_64"
 	}
 
 	var cpuPart = ""
