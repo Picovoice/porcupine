@@ -23,7 +23,7 @@ First you will need [Rust and Cargo](https://rustup.rs/) installed on your syste
 To add the porcupine library into your app, add `pv_porcupine` to your apps `Cargo.toml` manifest:
 ```toml
 [dependencies]
-pv_porcupine = "1.9.1"
+pv_porcupine = "*"
 ```
 
 If you prefer to clone the repo and use it locally, first run `copy.sh`.

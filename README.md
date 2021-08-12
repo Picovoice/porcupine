@@ -1445,7 +1445,7 @@ First you will need [Rust and Cargo](https://rustup.rs/) installed on your syste
 To add the porcupine library into your app, add `pv_porcupine` to your apps `Cargo.toml` manifest:
 ```toml
 [dependencies]
-pv_porcupine = "1.9.1"
+pv_porcupine = "*"
 ```
 
 To create an instance of the engine you first create a `PorcupineBuilder` instance with the configuration parameters for the wake word engine and then make a call to `.init()`:
