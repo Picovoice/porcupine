@@ -3,36 +3,41 @@ name: Rust
 on:
   push:
     branches: [ rust-actions ]
-    paths:
-      - 'binding/rust/**'
-      - 'lib/linux/**'
-      - 'lib/mac/**'
-      - 'lib/raspberry-pi/**'
-      - 'lib/windows/**'
-      - '!binding/rust/README.md'
-  pull_request:
-    branches: [ rust-actions ]
-    paths:
-      - 'binding/rust/**'
-      - 'lib/linux/**'
-      - 'lib/mac/**'
-      - 'lib/raspberry-pi/**'
-      - 'lib/windows/**'
-      - '!binding/rust/README.md'
+  #   paths:
+  #     - 'binding/rust/**'
+  #     - 'lib/linux/**'
+  #     - 'lib/mac/**'
+  #     - 'lib/raspberry-pi/**'
+  #     - 'lib/windows/**'
+  #     - '!binding/rust/README.md'
+  # pull_request:
+  #   branches: [ rust-actions ]
+  #   paths:
+  #     - 'binding/rust/**'
+  #     - 'lib/linux/**'
+  #     - 'lib/mac/**'
+  #     - 'lib/raspberry-pi/**'
+  #     - 'lib/windows/**'
+  #     - '!binding/rust/README.md'
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Rust pre-build
+      run: ./copy.sh
+      working-directory: binding/rust
+
     - name: Rust build
       run: cargo build --verbose
       working-directory: binding/rust
+
     - name: Rust run tests
       run: cargo test --verbose
       working-directory: binding/rust
