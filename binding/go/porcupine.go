@@ -253,7 +253,6 @@ func getOS() (string, string) {
 		return "mac", "x86_64"
 	case "linux":
 		osName, cpu := getLinuxDetails()
-		log.Printf("os: %s, cpu: %s\n", osName, cpu)
 		return osName, cpu
 	case "windows":
 		return "windows", "amd64"
