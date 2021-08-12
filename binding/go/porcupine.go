@@ -336,7 +336,11 @@ func extractLib() string {
 	case "darwin":
 		libPath = fmt.Sprintf("embedded/lib/%s/x86_64/libpv_porcupine.dylib", osName)
 	case "linux":
-		libPath = fmt.Sprintf("embedded/lib/%s/%s/libpv_porcupine.so", osName, cpu)
+		if cpu == "" {
+			libPath = fmt.Sprintf("embedded/lib/%s/libpv_porcupine.so", osName)
+		} else {
+			libPath = fmt.Sprintf("embedded/lib/%s/%s/libpv_porcupine.so", osName, cpu)
+		}
 	case "windows":
 		libPath = fmt.Sprintf("embedded/lib/%s/amd64/libpv_porcupine.dll", osName)
 	default:
