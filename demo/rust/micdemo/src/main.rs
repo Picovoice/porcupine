@@ -74,7 +74,7 @@ fn porcupine_demo(
 
     let wavspec = hound::WavSpec {
         channels: 1,
-        sample_rate: 16000,
+        sample_rate: porcupine.sample_rate(),
         bits_per_sample: 16,
         sample_format: hound::SampleFormat::Int,
     };
@@ -240,7 +240,7 @@ fn main() {
             Arg::with_name("output_path")
             .long("output_path")
             .value_name("PATH")
-            .help("Path to recorded audio (for debugging)")
+            .help("Path to recorded audio (for debugging).")
             .takes_value(true)
         )
         .arg(

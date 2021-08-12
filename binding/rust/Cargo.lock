@@ -612,7 +612,7 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "1.9.2"
+version = "1.9.3"
 dependencies = [
  "itertools",
  "libc",
