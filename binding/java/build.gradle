@@ -86,6 +86,60 @@ task copyWindowsKeywordResources(type: Copy) {
             'terminator_windows.ppn')
     into("${outputDir}/porcupine/resources/keyword_files/windows/")
 }
+task copyRPiKeywordResources(type: Copy) {
+    from('../../resources/keyword_files/raspberry-pi')
+    include('alexa_raspberry-pi.ppn',
+            'americano_raspberry-pi.ppn',
+            'blueberry_raspberry-pi.ppn',
+            'bumblebee_raspberry-pi.ppn',
+            'computer_raspberry-pi.ppn',
+            'grapefruit_raspberry-pi.ppn',
+            'grasshopper_raspberry-pi.ppn',
+            'hey google_raspberry-pi.ppn',
+            'hey siri_raspberry-pi.ppn',
+            'jarvis_raspberry-pi.ppn',
+            'ok google_raspberry-pi.ppn',
+            'picovoice_raspberry-pi.ppn',
+            'porcupine_raspberry-pi.ppn',
+            'terminator_raspberry-pi.ppn')
+    into("${outputDir}/porcupine/resources/keyword_files/raspberry-pi/")
+}
+task copyJetsonKeywordResources(type: Copy) {
+    from('../../resources/keyword_files/jetson')
+    include('alexa_jetson.ppn',
+            'americano_jetson.ppn',
+            'blueberry_jetson.ppn',
+            'bumblebee_jetson.ppn',
+            'computer_jetson.ppn',
+            'grapefruit_jetson.ppn',
+            'grasshopper_jetson.ppn',
+            'hey google_jetson.ppn',
+            'hey siri_jetson.ppn',
+            'jarvis_jetson.ppn',
+            'ok google_jetson.ppn',
+            'picovoice_jetson.ppn',
+            'porcupine_jetson.ppn',
+            'terminator_jetson.ppn')
+    into("${outputDir}/porcupine/resources/keyword_files/jetson/")
+}
+task copyBeagleboneKeywordResources(type: Copy) {
+    from('../../resources/keyword_files/beaglebone')
+    include('alexa_beaglebone.ppn',
+            'americano_beaglebone.ppn',
+            'blueberry_beaglebone.ppn',
+            'bumblebee_beaglebone.ppn',
+            'computer_beaglebone.ppn',
+            'grapefruit_beaglebone.ppn',
+            'grasshopper_beaglebone.ppn',
+            'hey google_beaglebone.ppn',
+            'hey siri_beaglebone.ppn',
+            'jarvis_beaglebone.ppn',
+            'ok google_beaglebone.ppn',
+            'picovoice_beaglebone.ppn',
+            'porcupine_beaglebone.ppn',
+            'terminator_beaglebone.ppn')
+    into("${outputDir}/porcupine/resources/keyword_files/beaglebone/")
+}
 
 task copyDefaultModel(type: Copy) {
     from('../../lib/common/porcupine_params.pv') into "${outputDir}/porcupine/lib/common/"
@@ -99,15 +153,37 @@ task copyMacLib(type: Copy) {
 task copyWindowsLib(type: Copy) {
     from('../../lib/java/windows/amd64/pv_porcupine_jni.dll') into "${outputDir}/porcupine/lib/java/windows/amd64/"
 }
+task copyRPiLib(type: Copy) {
+    from('../../lib/java/raspberry-pi/')
+    include('arm11/libpv_porcupine_jni.so',
+            'cortex-a7/libpv_porcupine_jni.so',
+            'cortex-a53/libpv_porcupine_jni.so',
+            'cortex-a53-aarch64/libpv_porcupine_jni.so',
+            'cortex-a72/libpv_porcupine_jni.so',
+            'cortex-a72-aarch64/libpv_porcupine_jni.so')
+    into("${outputDir}/porcupine/lib/java/raspberry-pi/")
+}
+task copyJetsonLib(type: Copy) {
+    from('../../lib/java/jetson/cortex-a57-aarch64/libpv_porcupine_jni.so') into "${outputDir}/porcupine/lib/java/jetson/cortex-a57-aarch64/"
+}
+task copyBeagleboneLib(type: Copy) {
+    from('../../lib/java/beaglebone/libpv_porcupine_jni.so') into "${outputDir}/porcupine/lib/java/beaglebone/"
+}
 
 assemble {
     dependsOn 'copyLinuxKeywordResources'
     dependsOn 'copyMacKeywordResources'
     dependsOn 'copyWindowsKeywordResources'
+    dependsOn 'copyRPiKeywordResources'
+    dependsOn 'copyJetsonKeywordResources'
+    dependsOn 'copyBeagleboneKeywordResources'
     dependsOn 'copyDefaultModel'
     dependsOn 'copyLinuxLib'
     dependsOn 'copyMacLib'
     dependsOn 'copyWindowsLib'
+    dependsOn 'copyRPiLib'
+    dependsOn 'copyJetsonLib'
+    dependsOn 'copyBeagleboneLib'
 }
 
 if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
