@@ -2,9 +2,9 @@ name: iOS AppCenter Tests
 
 on:
   push:
-    branches: [ ios-appcenter-action ]
+    branches: [ master ]
   pull_request:
-    branches: [ ios-appcenter-action ]
+    branches: [ master ]
 
 defaults:
   run:
