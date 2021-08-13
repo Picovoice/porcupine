@@ -1,4 +1,4 @@
-name: iOS starter workflow
+name: iOS AppCenter Tests
 
 on:
   push:
@@ -31,3 +31,4 @@ jobs:
           -sdk iphoneos 
           -scheme PorcupineForegroundAppDemo 
           -derivedDataPath ddp
+          -allowProvisioningUpdates
