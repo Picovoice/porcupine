@@ -160,7 +160,7 @@ class Utils {
             return null;
         }
 
-        String archInfo = (System.getProperty("os.arch").equals("arm64")) ? "-aarch64" : "";
+        String archInfo = (System.getProperty("os.arch").equals("aarch64")) ? "-aarch64" : "";
 
         switch (cpuPath) {
             case "0xb76":
