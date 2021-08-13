@@ -17,7 +17,7 @@ defaults:
     
 jobs:
   build:
-  
+    name: Run Android Tests on AppCenter
     runs-on: ubuntu-latest
 
     steps:
@@ -39,7 +39,7 @@ jobs:
       run: ./gradlew assembleDebug
     - name: Build androidTest
       run: ./gradlew assembleAndroidTest
-    - name: Upload to AppCenter
+    - name: Run tests on AppCenter
       run: appcenter test run espresso 
         --token ${{secrets.APPCENTERAPITOKEN}}
         --app "Picovoice/Porcupine-Android" 
