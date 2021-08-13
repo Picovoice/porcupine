@@ -18,16 +18,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.0
       - name: Install Cocoapods
         run: gem install cocoapods
+      - name: Install AppCenter CLI
+        run: npm install -g appcenter-cli
       - name: Make build dir
         run: mkdir ddp
       - name: Run Cocoapods
         run: pod install
-      - name: Build
+      - name: XCode Build
         run: xcrun xcodebuild build-for-testing 
           -configuration Debug 
           -workspace PorcupineForegroundAppDemo.xcworkspace 
           -sdk iphoneos 
           -scheme PorcupineForegroundAppDemo 
-          -derivedDataPath ddp CODE_SIGNING_ALLOWED=NO
+          -derivedDataPath ddp 
+          CODE_SIGNING_ALLOWED=NO
+      - name: Run Tests on AppCenter
+        run: appcenter test run xcuitest 
+          --token ${{secrets.APPCENTERAPITOKEN}}
+          --app "Picovoice/Porcupine-iOS" 
+          --devices "Picovoice/ios-single" 
+          --test-series "porcupine-ios" 
+          --locale "en_US" 
+          --build-dir ddp
