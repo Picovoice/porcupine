@@ -32,11 +32,13 @@ class Utils {
 
     private static final Path RESOURCE_DIRECTORY;
     private static final String ENVIRONMENT_NAME;
+    private static final String ARCHITECTURE;
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     static {
         RESOURCE_DIRECTORY = getResourceDirectory();
         ENVIRONMENT_NAME = getEnvironmentName();
+        ARCHITECTURE = getArchitecture();
     }
 
     public static boolean isResourcesAvailable() {
@@ -47,7 +49,7 @@ class Utils {
         return ENVIRONMENT_NAME != null;
     }
 
-    private static Path getResourceDirectory() {
+    private static Path getResourceDirectory() throws RuntimeException {
         // location of resources, either a JAR file or a directory
         final URL resourceURL = Porcupine.class.getProtectionDomain().getCodeSource().getLocation();
         Path resourcePath;
@@ -62,9 +64,7 @@ class Utils {
             try {
                 resourcePath = extractResources(resourcePath);
             } catch (IOException e) {
-                logger.severe("Failed to extract resources from Porcupine jar.");
-                e.printStackTrace();
-                return null;
+                throw new RuntimeException("Failed to extract resources from Porcupine jar.");
             }
         }
 
@@ -121,24 +121,78 @@ class Utils {
     }
 
     private static String getEnvironmentName() throws RuntimeException {
+        String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+        if (os.contains("mac") || os.contains("darwin")) {
+            return "mac";
+        } else if (os.contains("win")) {
+            return "windows";
+        } else if (os.contains("linux")) {
+            String arch = System.getProperty("os.arch");
+            if (arch.equals("arm") || arch.equals("aarch64")) {
+                String cpuPart = getCpuPart();
+                switch (cpuPart) {
+                    case "0xc07":
+                    case "0xd03":
+                    case "0xd08":
+                        return "raspberry-pi";
+                    case "0xd07":
+                        return "jetson";
+                    case "0xc08":
+                        return "beaglebone";
+                    default:
+                        throw new RuntimeException(String.format("Execution environment not supported. " +
+                                "Porcupine Java does not support CPU Part (%s).", cpuPart));
+                }
+            }
+            return "linux";
+        } else {
+            throw new RuntimeException("Execution environment not supported. " +
+                    "Porcupine Java is supported on MacOS, Linux and Windows");
+        }
+    }
+
+    private static String getArchitecture() throws RuntimeException {
         String arch = System.getProperty("os.arch");
         if (arch.equals("amd64") || arch.equals("x86_64")) {
-            String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
-            if (os.contains("mac") || os.contains("darwin")) {
-                return "mac";
-            } else if (os.contains("win")) {
-                return "windows";
-            } else if (os.contains("linux")) {
-                return "linux";
+            if (ENVIRONMENT_NAME.equals("windows")) {
+                return "amd64";
             } else {
-                logger.severe("Execution environment not supported. " +
-                        "Porcupine Java is supported on MacOS, Linux and Windows");
-                return null;
+                return "x86_64";
+            }
+        } else if (arch.equals("arm") || arch.equals("aarch64")) {
+            String cpuPart = getCpuPart();
+            String archInfo = (arch.equals("aarch64")) ? "-aarch64" : "";
+
+            switch (cpuPart) {
+                case "0xc07":
+                    return "cortex-a7" + archInfo;
+                case "0xd03":
+                    return "cortex-a53" + archInfo;
+                case "0xd07":
+                    return "cortex-a57" + archInfo;
+                case "0xd08":
+                    return "cortex-a72" + archInfo;
+                case "0xc08":
+                    return "";
+                default:
+                    throw new RuntimeException(
+                            String.format("Platform architecture with CPU Part (%s) is not supported by Porcupine.", cpuPart)
+                    );
             }
         } else {
-            logger.severe(String.format("Platform architecture (%s) not supported. " +
-                    "Porcupine Java is only supported on amd64 and x86_64 architectures.", arch));
-            return null;
+            throw new RuntimeException(String.format("Platform architecture (%s) is not supported by Porcupine.", arch));
+        }
+    }
+
+    private static String getCpuPart() throws RuntimeException {
+        try {
+            return Files.lines(Paths.get("/proc/cpuinfo"))
+                    .filter(line -> line.startsWith("CPU part"))
+                    .map(line -> line.substring(line.lastIndexOf(" ") + 1))
+                    .findFirst()
+                    .orElse("");
+        } catch (IOException e) {
+            throw new RuntimeException("Porcupine failed to get get CPU information.");
         }
     }
 
@@ -163,17 +217,19 @@ class Utils {
     }
 
     public static String getPackagedLibraryPath() {
-        if (ENVIRONMENT_NAME == null) {
-            return null;
-        }
-
         switch (ENVIRONMENT_NAME) {
             case "windows":
                 return RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
             case "mac":
                 return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
+            case "jetson":
+            case "beaglebone":
+            case "raspberry-pi":
             case "linux":
-                return RESOURCE_DIRECTORY.resolve("lib/java/linux/x86_64/libpv_porcupine_jni.so").toString();
+                return RESOURCE_DIRECTORY.resolve("lib/java")
+                        .resolve(ENVIRONMENT_NAME)
+                        .resolve(ARCHITECTURE)
+                        .resolve("libpv_porcupine_jni.so").toString();
             default:
                 return null;
         }
