@@ -43,4 +43,4 @@ jobs:
           --devices "Picovoice/ios-single" 
           --test-series "porcupine-ios" 
           --locale "en_US" 
-          --build-dir ddp
+          --build-dir ddp/Build/Products/Debug-iphoneos
