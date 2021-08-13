@@ -16,7 +16,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build-micdemo:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -28,6 +28,14 @@ jobs:
       run: cargo build --verbose
       working-directory: demo/rust/micdemo
 
+  build-filedemo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Rust dependencies
+      run: sudo apt install libasound2-dev
+
     - name: Rust build filedemo
-      run: cargo test --verbose
-      working-directory: demo/rust/micdemo
+      run: cargo build --verbose
+      working-directory: demo/rust/filedemo
