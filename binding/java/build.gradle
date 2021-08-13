@@ -160,8 +160,7 @@ task copyWindowsLib(type: Copy) {
 }
 task copyRPiLib(type: Copy) {
     from('../../lib/java/raspberry-pi/')
-    include('arm11/libpv_porcupine_jni.so',
-            'cortex-a7/libpv_porcupine_jni.so',
+    include('cortex-a7/libpv_porcupine_jni.so',
             'cortex-a53/libpv_porcupine_jni.so',
             'cortex-a53-aarch64/libpv_porcupine_jni.so',
             'cortex-a72/libpv_porcupine_jni.so',
