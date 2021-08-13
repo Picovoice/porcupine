@@ -38,6 +38,8 @@ jobs:
       run: ./gradlew assembleDebug
     - name: Build androidTest
       run: ./gradlew assembleAndroidTest
+    - name: Copy test_resources
+      run: ./copy_test_resources.sh
     - name: Upload to AppCenter
       run: appcenter test run espresso 
         --token ${{secrets.APPCENTERAPITOKEN}}
