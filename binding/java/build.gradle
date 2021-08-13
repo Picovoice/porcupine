@@ -11,6 +11,11 @@ ext {
     PUBLISH_ARTIFACT_ID = 'porcupine-java'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 repositories {
     mavenCentral()
 }
