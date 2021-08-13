@@ -148,9 +148,9 @@ class Utils {
     }
 
     private static String getLinuxArch() {
-        String cpuPath;
+        String cpuPart;
         try {
-            cpuPath = Files.lines(Paths.get("/proc/cpuinfo"))
+            cpuPart = Files.lines(Paths.get("/proc/cpuinfo"))
                     .filter(line -> line.startsWith("CPU part"))
                     .map(line -> line.substring(line.lastIndexOf(" ") + 1))
                     .findFirst()
@@ -162,7 +162,7 @@ class Utils {
 
         String archInfo = (System.getProperty("os.arch").equals("aarch64")) ? "-aarch64" : "";
 
-        switch (cpuPath) {
+        switch (cpuPart) {
             case "0xb76":
                 linuxArch = "arm11" + archInfo;
                 return "raspberry-pi";
@@ -182,7 +182,7 @@ class Utils {
                 linuxArch = "";
                 return "beaglebone";
             default:
-                logger.severe(String.format("CPU Part (%s) not supported.", cpuPath));
+                logger.severe(String.format("CPU Part (%s) not supported.", cpuPart));
                 return null;
         }
     }
