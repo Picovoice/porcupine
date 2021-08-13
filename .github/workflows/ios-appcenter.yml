@@ -36,8 +36,6 @@ jobs:
           -scheme PorcupineForegroundAppDemo 
           -derivedDataPath ddp 
           CODE_SIGNING_ALLOWED=NO
-      - name: ls
-        run: ls ddp/Build/Products/Debug-iphoneos
       - name: Run Tests on AppCenter
         run: appcenter test run xcuitest 
           --token ${{secrets.APPCENTERAPITOKEN}}
@@ -45,12 +43,4 @@ jobs:
           --devices "Picovoice/ios-single" 
           --test-series "porcupine-ios" 
           --locale "en_US" 
-          --build-dir ddp/Build/Products
-      - name: Run Tests on AppCenter
-        run: appcenter test run xcuitest 
-          --token ${{secrets.APPCENTERAPITOKEN}}
-          --app "Picovoice/Porcupine-iOS" 
-          --devices "Picovoice/ios-single" 
-          --test-series "porcupine-ios" 
-          --locale "en_US" 
-          --build-dir /home/runner/work/porcupine/demo/ios/PorcupineForegroundDemoApp/ddp/Build/Products/Debug-iphoneos
+          --build-dir ddp/Build/Products/Debug-iphoneos
