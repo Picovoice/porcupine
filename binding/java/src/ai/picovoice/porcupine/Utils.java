@@ -218,6 +218,7 @@ class Utils {
             case "mac":
                 return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
             case "linux":
+                System.out.printf("os: %s, cpu: %s\n", ENVIRONMENT_NAME, linuxArch);
                 return RESOURCE_DIRECTORY.resolve("lib/java")
                         .resolve(ENVIRONMENT_NAME)
                         .resolve(linuxArch)
