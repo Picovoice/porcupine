@@ -3,9 +3,13 @@ name: iOS AppCenter Tests
 on:
   push:
     branches: [ master ]
+    paths: 
+      - 'demo/ios/ForegroundApp/Podfile.lock'
   pull_request:
     branches: [ master ]
-
+    paths: 
+      - 'demo/ios/ForegroundApp/Podfile.lock'
+      
 defaults:
   run:
     working-directory: demo/ios/ForegroundApp
