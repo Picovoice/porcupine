@@ -32,14 +32,14 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
+    - name: Copy test_resources
+      run: ./copy_test_resources.sh
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build app
       run: ./gradlew assembleDebug
     - name: Build androidTest
       run: ./gradlew assembleAndroidTest
-    - name: Copy test_resources
-      run: ./copy_test_resources.sh
     - name: Upload to AppCenter
       run: appcenter test run espresso 
         --token ${{secrets.APPCENTERAPITOKEN}}
