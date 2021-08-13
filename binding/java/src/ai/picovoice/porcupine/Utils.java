@@ -218,7 +218,7 @@ class Utils {
             case "mac":
                 return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
             case "linux":
-                logger.info(String.format("os: %s, cpu: %s", ENVIRONMENT_NAME, linuxArch));
+                logger.severe(String.format("os: %s, cpu: %s", ENVIRONMENT_NAME, linuxArch));
                 return RESOURCE_DIRECTORY.resolve("lib/java")
                         .resolve(ENVIRONMENT_NAME)
                         .resolve(linuxArch)
