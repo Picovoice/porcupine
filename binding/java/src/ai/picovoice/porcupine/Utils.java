@@ -138,7 +138,7 @@ class Utils {
                         "Porcupine Java is supported on MacOS, Linux and Windows");
                 return null;
             }
-        } else if (os.contains("linux") && (arch.equals("aarch") || arch.equals("aarch64"))) {
+        } else if (os.contains("linux") && (arch.equals("arm") || arch.equals("aarch64"))) {
             return getLinuxArch();
         } else {
             logger.severe(String.format("Platform architecture (%s) not supported. " +
