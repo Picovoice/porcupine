@@ -32,3 +32,4 @@ jobs:
           -scheme PorcupineForegroundAppDemo 
           -derivedDataPath ddp
           -allowProvisioningUpdates
+          -allowProvisioningDeviceRegistration
