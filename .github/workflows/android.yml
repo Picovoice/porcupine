@@ -32,12 +32,20 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build app
       run: ./gradlew assembleDebug
     - name: Build androidTest
       run: ./gradlew assembleAndroidTest
+    - name: Upload to AppCenter
+      run: appcenter test run espresso 
+        --token ${{secrets.APPCENTERAPITOKEN}}
+        --app "Picovoice/Porcupine-Android" 
+        --devices "Picovoice/single" 
+        --app-path porcupine-activity-demo-app/build/outputs/apk/debug/porcupine-activity-demo-app-debug.apk 
+        --test-series "porcupine-tests" 
+        --locale "en_US" 
+        --build-dir porcupine-activity-demo-app/build/outputs/apk/androidTest/debug
     
   
