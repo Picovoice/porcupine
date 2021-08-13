@@ -151,7 +151,7 @@ class Utils {
         String cpuPath;
         try {
             cpuPath = Files.lines(Paths.get("/proc/cpuinfo"))
-                    .filter(line -> line.startsWith("CPU Part"))
+                    .filter(line -> line.startsWith("CPU part"))
                     .map(line -> line.substring(line.lastIndexOf(" ") + 1))
                     .findFirst()
                     .orElse("");
