@@ -221,7 +221,6 @@ class Utils {
             case "beaglebone":
             case "raspberry-pi":
             case "linux":
-                logger.severe(String.format("os: %s, cpu: %s", ENVIRONMENT_NAME, linuxArch));
                 return RESOURCE_DIRECTORY.resolve("lib/java")
                         .resolve(ENVIRONMENT_NAME)
                         .resolve(linuxArch)

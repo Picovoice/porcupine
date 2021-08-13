@@ -16,10 +16,18 @@ Porcupine is:
 
 To learn more about Porcupine, see the [product](https://picovoice.ai/products/porcupine/), [documentation](https://picovoice.ai/docs/), and [GitHub](https://github.com/Picovoice/porcupine/) pages.
 
-## Compatibility
+## Requirements
 
 - Java 11+
-- Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
+
+## Compatibility
+
+- Linux (x86_64)
+- macOS (x86_64)
+- Windows (x86_64)
+- Raspberry Pi 2, Raspberry Pi 3 (32 and 64 bit), Raspberry Pi 4 (32 and 64 bit)
+- Jetson Nano
+- BeagleBone
 
 ## Installation
 
