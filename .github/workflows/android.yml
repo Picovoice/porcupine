@@ -23,6 +23,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.4.0
+    - name: Install AppCenter CLI
+      run: npm install -g appcenter-cli
     - name: set up JDK 11
       uses: actions/setup-java@v2
       with:
@@ -35,3 +39,5 @@ jobs:
       run: ./gradlew assembleDebug
     - name: Build androidTest
       run: ./gradlew assembleAndroidTest
+    
+  
