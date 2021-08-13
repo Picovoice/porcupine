@@ -34,11 +34,16 @@ class Utils {
     private static final String ENVIRONMENT_NAME;
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private static String linuxArch;
+    private static final String CPU_PART;
+    private static final String ARM_DEVICE;
+    private static final String CPU;
 
     static {
         RESOURCE_DIRECTORY = getResourceDirectory();
         ENVIRONMENT_NAME = getEnvironmentName();
+        CPU_PART = getCpuPart();
+        ARM_DEVICE = getArmDevice();
+        CPU = getCpu();
     }
 
     public static boolean isResourcesAvailable() {
@@ -131,7 +136,6 @@ class Utils {
             } else if (os.contains("win")) {
                 return "windows";
             } else if (os.contains("linux")) {
-                linuxArch = "x86_64";
                 return "linux";
             } else {
                 logger.severe("Execution environment not supported. " +
@@ -139,7 +143,7 @@ class Utils {
                 return null;
             }
         } else if (os.contains("linux") && (arch.equals("arm") || arch.equals("aarch64"))) {
-            return getLinuxArch();
+            return "linux-arm";
         } else {
             logger.severe(String.format("Platform architecture (%s) not supported. " +
                     "Porcupine Java is only supported on amd64 and x86_64 architectures.", arch));
@@ -147,10 +151,13 @@ class Utils {
         }
     }
 
-    private static String getLinuxArch() {
-        String cpuPart;
+    private static String getCpuPart() {
+        if (!ENVIRONMENT_NAME.equals("linux-arm")) {
+            return null;
+        }
+
         try {
-            cpuPart = Files.lines(Paths.get("/proc/cpuinfo"))
+            return Files.lines(Paths.get("/proc/cpuinfo"))
                     .filter(line -> line.startsWith("CPU part"))
                     .map(line -> line.substring(line.lastIndexOf(" ") + 1))
                     .findFirst()
@@ -159,30 +166,51 @@ class Utils {
             logger.severe("Could not get CPU information.");
             return null;
         }
+    }
+
+    private static String getArmDevice() {
+        if (CPU_PART == null) {
+            return null;
+        }
+
+        switch (CPU_PART) {
+            case "0xb76":
+            case "0xc07":
+            case "0xd03":
+            case "0xd08":
+                return "raspberry-pi";
+            case "0xd07":
+                return "jetson";
+            case "0xc08":
+                return "beaglebone";
+            default:
+                logger.severe(String.format("CPU Part (%s) not supported.", CPU_PART));
+                return null;
+        }
+    }
+
+    private static String getCpu() {
+        if (CPU_PART == null) {
+            return null;
+        }
 
         String archInfo = (System.getProperty("os.arch").equals("aarch64")) ? "-aarch64" : "";
 
-        switch (cpuPart) {
+        switch (CPU_PART) {
             case "0xb76":
-                linuxArch = "arm11" + archInfo;
-                return "raspberry-pi";
+                return "arm11" + archInfo;
             case "0xc07":
-                linuxArch = "cortex-a7" + archInfo;
-                return "raspberry-pi";
+                return "cortex-a7" + archInfo;
             case "0xd03":
-                linuxArch = "cortex-a53" + archInfo;
-                return "raspberry-pi";
+                return "cortex-a53" + archInfo;
             case "0xd07":
-                linuxArch = "cortex-a57" + archInfo;
-                return "jetson";
+                return "cortex-a57" + archInfo;
             case "0xd08":
-                linuxArch = "cortex-a72" + archInfo;
-                return "raspberry-pi";
+                return "cortex-a72" + archInfo;
             case "0xc08":
-                linuxArch = "";
-                return "beaglebone";
+                return "";
             default:
-                logger.severe(String.format("CPU Part (%s) not supported.", cpuPart));
+                logger.severe(String.format("CPU Part (%s) not supported.", CPU_PART));
                 return null;
         }
     }
@@ -217,13 +245,16 @@ class Utils {
                 return RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
             case "mac":
                 return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
-            case "jetson":
-            case "beaglebone":
-            case "raspberry-pi":
             case "linux":
+                return RESOURCE_DIRECTORY.resolve("lib/java/linux/x86_64/libpv_porcupine_jni.so").toString();
+            case "linux-arm":
+                if (CPU_PART == null) {
+                    return null;
+                }
+
                 return RESOURCE_DIRECTORY.resolve("lib/java")
-                        .resolve(ENVIRONMENT_NAME)
-                        .resolve(linuxArch)
+                        .resolve(ARM_DEVICE)
+                        .resolve(CPU)
                         .resolve("libpv_porcupine_jni.so").toString();
             default:
                 return null;
