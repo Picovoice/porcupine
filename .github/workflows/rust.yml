@@ -1,0 +1,65 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/rust/**'
+      - '!binding/rust/README.md'
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/jetson/**'
+      - 'lib/linux/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/common/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'binding/rust/**'
+      - '!binding/rust/README.md'
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/jetson/**'
+      - 'lib/linux/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/common/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Rust dependencies
+      run: sudo apt install libasound2-dev
+
+    - name: Rust pre-build
+      run: ./copy.sh
+      working-directory: binding/rust
+
+    - name: Rust build
+      run: cargo build --verbose
+      working-directory: binding/rust
+
+    - name: Rust run tests
+      run: cargo test --verbose
+      working-directory: binding/rust
