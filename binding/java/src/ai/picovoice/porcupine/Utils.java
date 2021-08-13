@@ -49,7 +49,7 @@ class Utils {
         return ENVIRONMENT_NAME != null;
     }
 
-    private static Path getResourceDirectory() {
+    private static Path getResourceDirectory() throws RuntimeException {
         // location of resources, either a JAR file or a directory
         final URL resourceURL = Porcupine.class.getProtectionDomain().getCodeSource().getLocation();
         Path resourcePath;
@@ -64,9 +64,7 @@ class Utils {
             try {
                 resourcePath = extractResources(resourcePath);
             } catch (IOException e) {
-                logger.severe("Failed to extract resources from Porcupine jar.");
-                e.printStackTrace();
-                return null;
+                throw new RuntimeException("Failed to extract resources from Porcupine jar.");
             }
         }
 
@@ -122,7 +120,7 @@ class Utils {
         return resourceDirectoryPath;
     }
 
-    private static String getEnvironmentName() {
+    private static String getEnvironmentName() throws RuntimeException {
         String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
         if (os.contains("mac") || os.contains("darwin")) {
             return "mac";
@@ -132,10 +130,6 @@ class Utils {
             String arch = System.getProperty("os.arch");
             if (arch.equals("arm") || arch.equals("aarch64")) {
                 String cpuPart = getCpuPart();
-                if (cpuPart == null) {
-                    return null;
-                }
-
                 switch (cpuPart) {
                     case "0xc07":
                     case "0xd03":
@@ -146,23 +140,18 @@ class Utils {
                     case "0xc08":
                         return "beaglebone";
                     default:
-                        logger.severe(String.format("CPU Part (%s) not supported.", cpuPart));
-                        return null;
+                        throw new RuntimeException(String.format("Execution environment not supported. " +
+                                "Porcupine Java does not support CPU Part (%s).", cpuPart));
                 }
             }
             return "linux";
         } else {
-            logger.severe("Execution environment not supported. " +
+            throw new RuntimeException("Execution environment not supported. " +
                     "Porcupine Java is supported on MacOS, Linux and Windows");
-            return null;
         }
     }
 
-    private static String getArchitecture() {
-        if (ENVIRONMENT_NAME == null) {
-            return null;
-        }
-
+    private static String getArchitecture() throws RuntimeException {
         String arch = System.getProperty("os.arch");
         if (arch.equals("amd64") || arch.equals("x86_64")) {
             if (ENVIRONMENT_NAME.equals("windows")) {
@@ -172,10 +161,6 @@ class Utils {
             }
         } else if (arch.equals("arm") || arch.equals("aarch64")) {
             String cpuPart = getCpuPart();
-            if (cpuPart == null) {
-                return null;
-            }
-
             String archInfo = (arch.equals("aarch64")) ? "-aarch64" : "";
 
             switch (cpuPart) {
@@ -190,16 +175,16 @@ class Utils {
                 case "0xc08":
                     return "";
                 default:
-                    logger.severe(String.format("CPU Part (%s) not supported.", cpuPart));
-                    return null;
+                    throw new RuntimeException(
+                            String.format("Platform architecture with CPU Part (%s) is not supported by Porcupine.", cpuPart)
+                    );
             }
         } else {
-            logger.severe(String.format("Platform architecture (%s) not supported.", arch));
-            return null;
+            throw new RuntimeException(String.format("Platform architecture (%s) is not supported by Porcupine.", arch));
         }
     }
 
-    private static String getCpuPart() {
+    private static String getCpuPart() throws RuntimeException {
         try {
             return Files.lines(Paths.get("/proc/cpuinfo"))
                     .filter(line -> line.startsWith("CPU part"))
@@ -207,8 +192,7 @@ class Utils {
                     .findFirst()
                     .orElse("");
         } catch (IOException e) {
-            logger.severe("Could not get CPU information.");
-            return null;
+            throw new RuntimeException("Porcupine failed to get get CPU information.");
         }
     }
 
@@ -233,10 +217,6 @@ class Utils {
     }
 
     public static String getPackagedLibraryPath() {
-        if (ENVIRONMENT_NAME == null) {
-            return null;
-        }
-
         switch (ENVIRONMENT_NAME) {
             case "windows":
                 return RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
@@ -246,10 +226,6 @@ class Utils {
             case "beaglebone":
             case "raspberry-pi":
             case "linux":
-                if (ARCHITECTURE == null) {
-                    return null;
-                }
-
                 return RESOURCE_DIRECTORY.resolve("lib/java")
                         .resolve(ENVIRONMENT_NAME)
                         .resolve(ARCHITECTURE)
