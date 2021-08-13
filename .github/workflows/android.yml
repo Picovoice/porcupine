@@ -1,0 +1,52 @@
+name: Android AppCenter Tests
+
+on:
+  push:
+    branches: [ master ]
+    paths: 
+      - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
+    
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
+
+defaults:
+  run:
+    working-directory: demo/android/Activity
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.4.0
+    - name: Install AppCenter CLI
+      run: npm install -g appcenter-cli
+    - name: set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: Copy test_resources
+      run: ./copy_test_resources.sh
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build app
+      run: ./gradlew assembleDebug
+    - name: Build androidTest
+      run: ./gradlew assembleAndroidTest
+    - name: Upload to AppCenter
+      run: appcenter test run espresso 
+        --token ${{secrets.APPCENTERAPITOKEN}}
+        --app "Picovoice/Porcupine-Android" 
+        --devices "Picovoice/single" 
+        --app-path porcupine-activity-demo-app/build/outputs/apk/debug/porcupine-activity-demo-app-debug.apk 
+        --test-series "porcupine-tests" 
+        --locale "en_US" 
+        --build-dir porcupine-activity-demo-app/build/outputs/apk/androidTest/debug
+    
+  
