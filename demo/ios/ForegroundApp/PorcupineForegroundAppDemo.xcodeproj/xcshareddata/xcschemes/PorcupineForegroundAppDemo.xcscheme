@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1E1A676826C3434300EDD6EC"
+               BuildableName = "PorcupineForegroundAppDemoUITests.xctest"
+               BlueprintName = "PorcupineForegroundAppDemoUITests"
+               ReferencedContainer = "container:PorcupineForegroundAppDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
