@@ -2,20 +2,19 @@ name: Android CI
 
 on:
   push:
-    branches: [ appcenter-actions-1 ]
-#     paths: 
-#       - 'demo/android/Activity/**'
-#       - '!demo/android/Activity/README.md'
+    branches: [ master ]
+    paths: 
+      - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
     
-#   pull_request:
-#     branches: [ master ]
-#     paths: 
-#       - 'demo/android/Activity/**'
-#       - '!demo/android/Activity/README.md'
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
 
 defaults:
   run:
     working-directory: demo/android/Activity
+    
 jobs:
   build:
 
