@@ -1,0 +1,33 @@
+name: iOS starter workflow
+
+on:
+  push:
+    branches: [ ios-appcenter-action ]
+  pull_request:
+    branches: [ ios-appcenter-action ]
+
+defaults:
+  run:
+    working-directory: demo/ios/ForegroundApp
+    
+jobs:
+  build:
+    name: Run iOS Tests on AppCenter
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Cocoapods
+        run: gem install cocoapods
+      - name: Make build dir
+        run: mkdir ddp
+      - name: Run Cocoapods
+        run: pod install
+      - name: Build
+        run: xcrun xcodebuild build-for-testing 
+          -configuration Debug 
+          -workspace PorcupineForegroundAppDemo.xcworkspace 
+          -sdk iphoneos 
+          -scheme PorcupineForegroundAppDemo 
+          -derivedDataPath ddp
