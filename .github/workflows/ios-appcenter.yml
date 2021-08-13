@@ -30,6 +30,4 @@ jobs:
           -workspace PorcupineForegroundAppDemo.xcworkspace 
           -sdk iphoneos 
           -scheme PorcupineForegroundAppDemo 
-          -derivedDataPath ddp
-          -allowProvisioningUpdates
-          -allowProvisioningDeviceRegistration
+          -derivedDataPath ddp CODE_SIGNING_ALLOWED=NO
