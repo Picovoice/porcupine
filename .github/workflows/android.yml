@@ -2,10 +2,20 @@ name: Android CI
 
 on:
   push:
-    branches: [ appcenter-actions ]
+    branches: [ appcenter-actions-1 ]
+    paths: 
+      - 'demo/android/Activity/**'
+      - '!demo/android/Activity/README.md'
+    
   pull_request:
-    branches: [ appcenter-actions ]
+    branches: [ appcenter-actions-1 ]
+    paths: 
+      - 'demo/android/Activity/**'
+      - '!demo/android/Activity/README.md'
 
+defaults:
+  run:
+    working-directory: demo/android/Activity
 jobs:
   build:
 
@@ -21,5 +31,7 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Build app
+      run: ./gradlew assembleDebug
+    - name: Build androidTest
+      run: ./gradlew assembleAndroidTest
