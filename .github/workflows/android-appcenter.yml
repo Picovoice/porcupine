@@ -1,6 +1,7 @@
 name: Android AppCenter Tests
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
     paths: 
