@@ -5,20 +5,24 @@ on:
     branches: [ master ]
     paths:
       - 'binding/rust/**'
+      - '!binding/rust/README.md'
+      - 'lib/beaglebone/**'
+      - 'lib/jetson/**'
       - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
-      - '!binding/rust/README.md'
   pull_request:
     branches: [ master ]
     paths:
       - 'binding/rust/**'
+      - '!binding/rust/README.md'
+      - 'lib/beaglebone/**'
+      - 'lib/jetson/**'
       - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
-      - '!binding/rust/README.md'
 
 env:
   CARGO_TERM_COLOR: always
