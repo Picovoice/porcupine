@@ -138,7 +138,7 @@ class Utils {
                         "Porcupine Java is supported on MacOS, Linux and Windows");
                 return null;
             }
-        } else if (os.contains("linux") && (arch.equals("arm") || arch.equals("arm64"))) {
+        } else if (os.contains("linux") && (arch.equals("aarch") || arch.equals("aarch64"))) {
             return getLinuxArch();
         } else {
             logger.severe(String.format("Platform architecture (%s) not supported. " +
@@ -218,7 +218,7 @@ class Utils {
             case "mac":
                 return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
             case "linux":
-                System.out.printf("os: %s, cpu: %s\n", ENVIRONMENT_NAME, linuxArch);
+                logger.info(String.format("os: %s, cpu: %s", ENVIRONMENT_NAME, linuxArch));
                 return RESOURCE_DIRECTORY.resolve("lib/java")
                         .resolve(ENVIRONMENT_NAME)
                         .resolve(linuxArch)
