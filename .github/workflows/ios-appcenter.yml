@@ -36,6 +36,10 @@ jobs:
           -scheme PorcupineForegroundAppDemo 
           -derivedDataPath ddp 
           CODE_SIGNING_ALLOWED=NO
+      - name: ls
+        run: ls ddp
+      - name: ls 2
+        run: ls ddp/Build/Products
       - name: Run Tests on AppCenter
         run: appcenter test run xcuitest 
           --token ${{secrets.APPCENTERAPITOKEN}}
