@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
   s.name = 'Porcupine-iOS'
   s.module_name = 'Porcupine'
   s.version = '1.9.4'
-  s.license = {:type => 'Apache 2.0', :file => 'LICENSE'}
+  s.license = {:type => 'Apache 2.0'}
   s.summary = 'iOS SDK for Picovoice\'s Porcupine wake word engine'
   s.description = 
   <<-DESC
