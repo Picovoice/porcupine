@@ -1,19 +1,20 @@
-name: React Native
+name: Web
+
 on:
   push:
     branches: [ github-actions ]
     paths:
       - 'TODO-REMOVE.TXT'
-      - 'binding/react-native/**'
-      - '!binding/react-native/README.md'
+      - 'binding/web/**'
+      - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
     branches: [ github-actions ]
     paths:
       - 'TODO-REMOVE.TXT'
-      - 'binding/react-native/**'
-      - '!binding/react-native/README.md'
+      - 'binding/web/**'
+      - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
 
@@ -23,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -35,12 +36,16 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-      working-directory: binding/react-native
+      working-directory: binding/web
 
     - name: Install dependencies
       run: yarn install
-      working-directory: binding/react-native
+      working-directory: binding/web
+
+    - name: Build
+      run: yarn build
+      working-directory: binding/web
 
     - name: Test
-      run: yarn test --passWithNoTests
-      working-directory: binding/react-native
+      run: for i in porcupine-web*; do cd $i; yarn && yarn build && yarn test --passWithNoTests || exit 1; cd ..; done
+      working-directory: binding/web
