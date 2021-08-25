@@ -34,6 +34,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+      working-directory: binding/nodejs
 
     - name: Nodejs dependencies
       run: npm install yarn
