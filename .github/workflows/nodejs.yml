@@ -16,6 +16,10 @@ on:
       - 'lib/**'
       - 'resources/**'
 
+defaults:
+  run:
+    working-directory: binding/nodejs
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,12 +38,9 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-      working-directory: binding/nodejs
 
     - name: Install dependencies
       run: yarn install
-      working-directory: binding/nodejs
 
     - name: Test
       run: yarn test
-      working-directory: binding/nodejs

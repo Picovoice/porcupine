@@ -16,6 +16,10 @@ on:
       - 'lib/**'
       - 'resources/**'
 
+defaults:
+  run:
+    working-directory: binding/vue
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,12 +38,9 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-      working-directory: binding/vue
 
     - name: Install dependencies
       run: yarn install
-      working-directory: binding/vue
 
     - name: Build
       run: yarn build
-      working-directory: binding/vue

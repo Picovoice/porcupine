@@ -16,6 +16,10 @@ on:
       - 'lib/**'
       - 'resources/**'
 
+defaults:
+  run:
+    working-directory: binding/java
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,8 +38,6 @@ jobs:
 
     - name: Build
       run: ./gradlew build
-      working-directory: binding/java
 
     - name: Test
       run: ./gradlew test
-      working-directory: binding/java

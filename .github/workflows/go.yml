@@ -16,6 +16,10 @@ on:
       - 'lib/**'
       - 'resources/**'
 
+defaults:
+  run:
+    working-directory: binding/go
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,16 +38,12 @@ jobs:
 
     - name: Pre-build dependencies
       run: ./copy.sh
-      working-directory: binding/go
 
     - name: Install dependencies
       run: go get
-      working-directory: binding/go
 
     - name: Build
       run: go build
-      working-directory: binding/go
 
     - name: Test
       run: go test
-      working-directory: binding/go

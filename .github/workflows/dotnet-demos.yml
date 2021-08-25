@@ -12,6 +12,10 @@ on:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
 
+defaults:
+  run:
+    working-directory: binding/dotnet/Porcupine
+
 jobs:
   build-micdemo:
     runs-on: ubuntu-latest
@@ -29,11 +33,10 @@ jobs:
 
     - name: Dotnet restore dependencies
       run: dotnet restore
-      working-directory: binding/dotnet/Porcupine
+
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
-      working-directory: binding/dotnet/Porcupine
 
   build-filedemo:
     runs-on: ubuntu-latest
@@ -51,8 +54,6 @@ jobs:
 
     - name: Dotnet restore dependencies
       run: dotnet restore
-      working-directory: binding/dotnet/Porcupine
 
     - name: Dotnet build filedemo
       run: dotnet build -c FileDemo.Release
-      working-directory: binding/dotnet/Porcupine

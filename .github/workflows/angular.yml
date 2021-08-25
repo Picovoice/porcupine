@@ -16,6 +16,10 @@ on:
       - 'lib/**'
       - 'resources/**'
 
+defaults:
+  run:
+    working-directory: binding/angular
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,12 +38,9 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-      working-directory: binding/angular
 
     - name: Install dependencies
       run: yarn install
-      working-directory: binding/angular
 
     - name: Build
       run: yarn build porcupine-web-angular --prod
-      working-directory: binding/angular

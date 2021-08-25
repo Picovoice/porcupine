@@ -16,6 +16,10 @@ on:
       - 'lib/**'
       - 'resources/**'
 
+defaults:
+  run:
+    working-directory: binding/web
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,16 +38,12 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-      working-directory: binding/web
 
     - name: Install dependencies
       run: yarn install
-      working-directory: binding/web
 
     - name: Build
       run: yarn build
-      working-directory: binding/web
 
     - name: Test
       run: for i in porcupine-web*; do cd $i; yarn && yarn build && yarn test --passWithNoTests || exit 1; cd ..; done
-      working-directory: binding/web
