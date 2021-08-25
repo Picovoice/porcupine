@@ -2,17 +2,15 @@ name: Java
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/java/**'
       - '!binding/java/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/java/**'
       - '!binding/java/README.md'
       - 'lib/**'

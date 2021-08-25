@@ -2,17 +2,15 @@ name: Go
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/go/**'
       - '!binding/go/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/go/**'
       - '!binding/go/README.md'
       - 'lib/**'
