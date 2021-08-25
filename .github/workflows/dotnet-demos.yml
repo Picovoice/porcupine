@@ -1,0 +1,56 @@
+name: .NET Demos
+
+on:
+  push:
+    branches: [ github-actions ]
+    paths:
+      - 'demo/dotnet/**'
+      - '!demo/dotnet/README.md'
+  pull_request:
+    branches: [ github-actions ]
+    paths:
+      - 'demo/dotnet/**'
+      - '!demo/dotnet/README.md'
+
+jobs:
+  build-micdemo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Dotnet dependencies
+      run: sudo apt install libopenal-dev
+
+    - name: Dotnet restore dependencies
+      run: dotnet restore
+      working-directory: binding/dotnet/Porcupine
+
+    - name: Dotnet build micdemo
+      run: dotnet build -c MicDemo.Release
+      working-directory: binding/dotnet/Porcupine
+
+  build-filedemo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Dotnet dependencies
+      run: sudo apt install libopenal-dev
+
+    - name: Dotnet restore dependencies
+      run: dotnet restore
+      working-directory: binding/dotnet/Porcupine
+
+    - name: Dotnet build filedemo
+      run: dotnet build -c FileDemo.Release
+      working-directory: binding/dotnet/Porcupine
