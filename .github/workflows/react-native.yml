@@ -1,17 +1,15 @@
 name: React Native
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
       - 'lib/**'

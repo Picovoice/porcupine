@@ -2,17 +2,15 @@ name: Web
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/web/**'
       - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'TODO-REMOVE.TXT'
       - 'binding/web/**'
       - '!binding/web/README.md'
       - 'lib/**'
@@ -24,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x, 16.x]
 
     steps:
     - uses: actions/checkout@v2
