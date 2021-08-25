@@ -1,0 +1,48 @@
+name: Nodejs
+
+on:
+  push:
+    branches: [ github-actions ]
+    paths:
+      - 'TODO-REMOVE.TXT'
+      - 'binding/nodejs/**'
+      - '!binding/nodejs/README.md'
+      - 'lib/**'
+      - 'resources/**'
+  pull_request:
+    branches: [ github-actions ]
+    paths:
+      - 'TODO-REMOVE.TXT'
+      - 'binding/nodejs/**'
+      - '!binding/nodejs/README.md'
+      - 'lib/**'
+      - 'resources/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Nodejs dependencies
+      run: npm install yarn
+      working-directory: binding/nodejs
+
+    - name: Nodejs pre-build
+      run: yarn install
+      working-directory: binding/nodejs
+
+    - name: Nodejs run tests
+      run: yarn test
+      working-directory: binding/nodejs
