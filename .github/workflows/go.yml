@@ -24,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        go: [ '1.14', '1.13' ]
+        go: [ '1.16' ]
 
     steps:
     - uses: actions/checkout@v2
