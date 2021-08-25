@@ -34,18 +34,18 @@ jobs:
       with:
         go-version: ${{ matrix.go }}
 
-    - name: Go pre-build
+    - name: Pre-build dependencies
       run: ./copy.sh
       working-directory: binding/go
 
-    - name: Go dependencies
+    - name: Install dependencies
       run: go get
       working-directory: binding/go
 
-    - name: Go build
+    - name: Build
       run: go build
       working-directory: binding/go
 
-    - name: Go run tests
+    - name: Test
       run: go test
       working-directory: binding/go

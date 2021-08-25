@@ -34,14 +34,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Angular dependencies
+    - name: Pre-build dependencies
       run: npm install yarn
       working-directory: binding/angular
 
-    - name: Angular pre-build
+    - name: Install dependencies
       run: yarn install
       working-directory: binding/angular
 
-    - name: Angular build
+    - name: Build
       run: yarn build porcupine-web-angular --prod
       working-directory: binding/angular

@@ -34,14 +34,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Nodejs dependencies
+    - name: Pre-build dependencies
       run: npm install yarn
       working-directory: binding/nodejs
 
-    - name: Nodejs pre-build
+    - name: Install dependencies
       run: yarn install
       working-directory: binding/nodejs
 
-    - name: Nodejs run tests
+    - name: Test
       run: yarn test
       working-directory: binding/nodejs

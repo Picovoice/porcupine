@@ -1,4 +1,4 @@
-name: Jave
+name: Java
 
 on:
   push:
@@ -34,10 +34,10 @@ jobs:
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
-    - name: Java build
+    - name: Build
       run: ./gradlew build
       working-directory: binding/java
 
-    - name: Java run tests
+    - name: Test
       run: ./gradlew test
       working-directory: binding/java

@@ -34,14 +34,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: React dependencies
+    - name: Pre-build dependencies
       run: npm install yarn
       working-directory: binding/react
 
-    - name: React pre-build
+    - name: Install dependencies
       run: yarn install
       working-directory: binding/react
 
-    - name: React build
+    - name: Build
       run: yarn build
       working-directory: binding/react

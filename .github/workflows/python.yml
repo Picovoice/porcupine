@@ -1,0 +1,49 @@
+name: Python
+
+on:
+  push:
+    branches: [ github-actions ]
+    paths:
+      - 'TODO-REMOVE.TXT'
+      - 'binding/python/**'
+      - '!binding/python/README.md'
+      - 'lib/**'
+      - 'resources/**'
+  pull_request:
+    branches: [ github-actions ]
+    paths:
+      - 'TODO-REMOVE.TXT'
+      - 'binding/python/**'
+      - '!binding/python/README.md'
+      - 'lib/**'
+      - 'resources/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Pre-build dependencies
+      run: |
+        sudo apt install libsndfile1-dev
+        python -m pip install --upgrade pip
+      working-directory: binding/python
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+      working-directory: binding/python
+
+    - name: Test
+      run: python setup.py test
+      working-directory: binding/python
