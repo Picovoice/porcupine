@@ -1,0 +1,51 @@
+name: Go
+
+on:
+  push:
+    branches: [ github-actions ]
+    paths:
+      - 'TODO-REMOVE.TXT'
+      - 'binding/go/**'
+      - '!binding/go/README.md'
+      - 'lib/**'
+      - 'resources/**'
+  pull_request:
+    branches: [ github-actions ]
+    paths:
+      - 'TODO-REMOVE.TXT'
+      - 'binding/go/**'
+      - '!binding/go/README.md'
+      - 'lib/**'
+      - 'resources/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go: [ '1.14', '1.13' ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+
+    - name: Go pre-build
+      run: ./copy.sh
+      working-directory: binding/go
+
+    - name: Go dependencies
+      run: go get
+      working-directory: binding/go
+
+    - name: Go build
+      run: go build
+      working-directory: binding/go
+
+    - name: Go run tests
+      run: go test
+      working-directory: binding/go

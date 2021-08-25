@@ -31,10 +31,8 @@ jobs:
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
-      working-directory: binding/react
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
 
     - name: React dependencies
       run: npm install yarn

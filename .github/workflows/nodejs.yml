@@ -33,8 +33,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-      working-directory: binding/nodejs
 
     - name: Nodejs dependencies
       run: npm install yarn
