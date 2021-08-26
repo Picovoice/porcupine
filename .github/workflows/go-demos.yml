@@ -1,16 +1,14 @@
-name: Go
+name: Go Demos
 
 on:
   push:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/go/**'
       - '!demo/go/README.md'
   pull_request:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/go/**'
       - '!demo/go/README.md'
 

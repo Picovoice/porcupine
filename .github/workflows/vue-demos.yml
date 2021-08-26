@@ -2,15 +2,13 @@ name: Vue Demos
 
 on:
   push:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/vue/**'
       - '!demo/vue/README.md'
   pull_request:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/vue/**'
       - '!demo/vue/README.md'
 

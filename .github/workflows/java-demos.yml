@@ -2,15 +2,13 @@ name: Java Demos
 
 on:
   push:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/java/**'
       - '!demo/java/README.md'
   pull_request:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/java/**'
       - '!demo/java/README.md'
 

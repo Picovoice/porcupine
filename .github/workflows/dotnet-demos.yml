@@ -14,7 +14,7 @@ on:
 
 defaults:
   run:
-    working-directory: binding/dotnet/Porcupine
+    working-directory: demo/dotnet/PorcupineDemo
 
 jobs:
   build-micdemo:

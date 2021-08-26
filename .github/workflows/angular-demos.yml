@@ -2,15 +2,13 @@ name: Angular Demos
 
 on:
   push:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/angular/**'
       - '!demo/angular/README.md'
   pull_request:
-    branches: [ github-demo-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETE_ME.TXT'
       - 'demo/angular/**'
       - '!demo/angular/README.md'
 
