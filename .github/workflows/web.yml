@@ -2,15 +2,17 @@ name: Web
 
 on:
   push:
-    branches: [ master ]
+    branches: [ github-actions ]
     paths:
+      - 'DELETEME.TXT'
       - 'binding/web/**'
       - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ github-actions ]
     paths:
+      - 'DELETEME.TXT'
       - 'binding/web/**'
       - '!binding/web/README.md'
       - 'lib/**'
@@ -43,7 +45,9 @@ jobs:
       run: yarn install
 
     - name: Build
-      run: yarn build
+      run: |
+        yarn build
+        for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
 
     - name: Test
-      run: for i in porcupine-web*; do cd $i; yarn && yarn build && yarn test --passWithNoTests || exit 1; cd ..; done
+      run: for i in porcupine-web*; do cd $i; yarn test --passWithNoTests || exit 1; cd ..; done

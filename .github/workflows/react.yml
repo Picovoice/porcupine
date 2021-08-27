@@ -2,15 +2,17 @@ name: React
 
 on:
   push:
-    branches: [ master ]
+    branches: [ github-actions ]
     paths:
+      - 'DELETEME.TXT'
       - 'binding/react/**'
       - '!binding/react/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ github-actions ]
     paths:
+      - 'DELETEME.TXT'
       - 'binding/react/**'
       - '!binding/react/README.md'
       - 'lib/**'
@@ -44,3 +46,6 @@ jobs:
 
     - name: Build
       run: yarn build
+
+    - name: Lint
+      run: yarn lint

@@ -2,15 +2,17 @@ name: Angular
 
 on:
   push:
-    branches: [ master ]
+    branches: [ github-actions ]
     paths:
+      - 'DELETEME.TXT'
       - 'binding/angular/**'
       - '!binding/angular/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ github-actions ]
     paths:
+      - 'DELETEME.TXT'
       - 'binding/angular/**'
       - '!binding/angular/README.md'
       - 'lib/**'
@@ -44,3 +46,6 @@ jobs:
 
     - name: Build
       run: yarn build porcupine-web-angular --prod
+
+    - name: Lint
+      run: yarn lint
