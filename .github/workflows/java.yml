@@ -1,0 +1,43 @@
+name: Java
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/java/**'
+      - '!binding/java/README.md'
+      - 'lib/**'
+      - 'resources/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'binding/java/**'
+      - '!binding/java/README.md'
+      - 'lib/**'
+      - 'resources/**'
+
+defaults:
+  run:
+    working-directory: binding/java
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
+    - name: Build
+      run: ./gradlew build
+
+    - name: Test
+      run: ./gradlew test

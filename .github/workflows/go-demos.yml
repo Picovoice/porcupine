@@ -1,0 +1,57 @@
+name: Go Demos
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'demo/go/**'
+      - '!demo/go/README.md'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'demo/go/**'
+      - '!demo/go/README.md'
+
+
+defaults:
+  run:
+    working-directory: demo/go
+
+jobs:
+  build-micdemo:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go: [ '1.16' ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+
+    - name: Build micdemo
+      run: go build
+      working-directory: demo/go/micdemo
+
+  build-filedemo:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go: [ '1.16' ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+
+    - name: Build filedemo
+      run: go build
+      working-directory: demo/go/filedemo

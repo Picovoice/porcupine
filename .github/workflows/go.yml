@@ -1,0 +1,49 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/go/**'
+      - '!binding/go/README.md'
+      - 'lib/**'
+      - 'resources/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'binding/go/**'
+      - '!binding/go/README.md'
+      - 'lib/**'
+      - 'resources/**'
+
+defaults:
+  run:
+    working-directory: binding/go
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go: [ '1.16' ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+
+    - name: Pre-build dependencies
+      run: ./copy.sh
+
+    - name: Install dependencies
+      run: go get
+
+    - name: Build
+      run: go build
+
+    - name: Test
+      run: go test

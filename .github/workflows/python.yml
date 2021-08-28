@@ -1,0 +1,48 @@
+name: Python
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/python/**'
+      - '!binding/python/README.md'
+      - 'lib/**'
+      - 'resources/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'binding/python/**'
+      - '!binding/python/README.md'
+      - 'lib/**'
+      - 'resources/**'
+
+defaults:
+  run:
+    working-directory: binding/python
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Pre-build dependencies
+      run: |
+        sudo apt install libsndfile1-dev
+        python -m pip install --upgrade pip
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Test
+      run: python setup.py test
