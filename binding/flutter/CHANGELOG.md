@@ -30,3 +30,6 @@
 
 ## [1.9.13] - 2021-06-08
 * Supports on-the-fly asset extraction
+
+## [1.9.14] - 2021-09-01
+* Update flutter-voice-processor
