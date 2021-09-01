@@ -28,6 +28,7 @@ class PorcupineManager {
 
   final WakeWordCallback _wakeWordCallback;
   RemoveListener? _removeVoiceProcessorListener;
+  RemoveListener? _removeErrorListener;
 
   /// Static creator for initializing PorcupineManager from a selection of built-in keywords
   ///
@@ -117,6 +118,13 @@ class PorcupineManager {
         errorCallback == null ? print(error.message) : errorCallback(error);
       }
     });
+
+    _removeErrorListener = _voiceProcessor?.addErrorListener((errorMsg) {
+      PvError nativeRecorderError = new PvError(errorMsg as String);
+      errorCallback == null
+          ? print(nativeRecorderError.message)
+          : errorCallback(nativeRecorderError);
+    });
   }
 
   /// Opens audio input stream and sends audio frames to Porcupine
@@ -149,6 +157,7 @@ class PorcupineManager {
       await _voiceProcessor?.stop();
     }
     _removeVoiceProcessorListener?.call();
+    _removeErrorListener?.call();
     _voiceProcessor = null;
 
     _porcupine?.delete();
