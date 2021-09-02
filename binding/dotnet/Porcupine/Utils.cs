@@ -26,7 +26,7 @@ namespace Pv
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" : 
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && 
-                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? "raspberry-pi": "";
+                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv(): "";
         
         public static string PvModelPath()
         {
@@ -75,25 +75,49 @@ namespace Pv
             else if (_arch == Architecture.Arm64)
                 archInfo = "-aarch64";
 
-            string cpuInfo = File.ReadAllText("/proc/cpuinfo");
-            string[] cpuPartList = cpuInfo.Split('\n').Where(x => x.Contains("CPU part")).ToArray();
-            if (cpuPartList.Length == 0)
-                throw new PlatformNotSupportedException($"Unsupported CPU.\n{cpuInfo}");
-
-            string cpuPart = cpuPartList[0].Split(' ').Last().ToLower();
+            string cpuPart = GetCpuPart();
             switch (cpuPart)
             {
-                case "0xb76": return "arm11" + archInfo;
                 case "0xc07": return "cortex-a7" + archInfo;
                 case "0xd03": return "cortex-a53" + archInfo;
                 case "0xd07": return "cortex-a57" + archInfo;
                 case "0xd08": return "cortex-a72" + archInfo;
+                case "0xc08": return "\b";
                 default:
                     Console.WriteLine(
                         $"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice. " +
                         "Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models");
                     return "arm11" + archInfo;
             }
+        }
+
+        public static string PvLinuxEnv()
+        {
+            string cpuPart = GetCpuPart();
+            switch (cpuPart)
+            {
+                case "0xc07":
+                case "0xd03":
+                case "0xd08": return "raspberry-pi";
+                case "0xd07": return "jetson";
+                case "0xc08": return "beaglebone";
+                default:
+                    Console.WriteLine(
+                        $"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice. " +
+                        "Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models");
+                    return "arm11" + archInfo;
+            }
+        }
+
+        private static string GetCpuPart()
+        {
+            string cpuInfo = File.ReadAllText("/proc/cpuinfo");
+            string[] cpuPartList = cpuInfo.Split('\n').Where(x => x.Contains("CPU part")).ToArray();
+            if (cpuPartList.Length == 0)
+                throw new PlatformNotSupportedException($"Unsupported CPU.\n{cpuInfo}");
+
+            string cpuPart = cpuPartList[0].Split(' ').Last().ToLower();
+            return cpuPart;
         }
     }
 }
