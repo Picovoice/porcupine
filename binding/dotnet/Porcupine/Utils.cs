@@ -67,7 +67,7 @@ namespace Pv
             }
         }
 
-        public static string PvLinuxMachine() 
+        public static string PvLinuxMachine()
         {
             string archInfo = "";
             if (_arch == Architecture.X64)
@@ -84,10 +84,7 @@ namespace Pv
                 case "0xd08": return "cortex-a72" + archInfo;
                 case "0xc08": return "\b";
                 default:
-                    Console.WriteLine(
-                        $"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice. " +
-                        "Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models");
-                    return "arm11" + archInfo;
+                    throw new PlatformNotSupportedException($"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice.");
             }
         }
 
@@ -102,10 +99,7 @@ namespace Pv
                 case "0xd07": return "jetson";
                 case "0xc08": return "beaglebone";
                 default:
-                    Console.WriteLine(
-                        $"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice. " +
-                        "Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models");
-                    return "arm11" + archInfo;
+                    throw new PlatformNotSupportedException($"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice.");
             }
         }
 
