@@ -1,4 +1,4 @@
 numpy
 pvporcupine==1.9.5
-soundfile
 pvrecorder==1.0.0
+soundfile
