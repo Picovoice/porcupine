@@ -78,7 +78,6 @@ class PorcupineDemo(Thread):
 
         porcupine = None
         recorder = None
-        audio_stream = None
         try:
             porcupine = pvporcupine.create(
                 library_path=self._library_path,
@@ -111,9 +110,6 @@ class PorcupineDemo(Thread):
         finally:
             if porcupine is not None:
                 porcupine.delete()
-
-            if audio_stream is not None:
-                audio_stream.close()
 
             if recorder is not None:
                 recorder.delete()
