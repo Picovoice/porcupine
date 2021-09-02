@@ -17,10 +17,21 @@ Porcupine is:
 - scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
 - self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
 
-## Compatibility
+## Requirements
 
 - .NET Core 3.1
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64) and Raspberry Pi
+
+## Compatibility
+
+- Linux (x86_64)
+- macOS (x86_64)
+- Windows (x86_64)
+- Raspberry Pi:
+  - 2
+  - 3 (32 and 64 bit)
+  - 4 (32 and 64 bit)
+- NVIDIA Jetson Nano
+- BeagleBone
 
 ## Installation
 
