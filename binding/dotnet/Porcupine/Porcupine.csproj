@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
-	  <Version>1.9.3</Version>
+	  <Version>1.9.4</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>
@@ -51,7 +51,7 @@ Porcupine is:
 			<Link>lib\linux\x86_64\libpv_porcupine.so</Link>
 			<Visible>false</Visible>
 		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\**\*">
+		<Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
 			<PackagePath>
 				build/netstandard2.0/lib/raspberry-pi;
 				build/netcoreapp3.1/lib/raspberry-pi
@@ -59,7 +59,25 @@ Porcupine is:
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<Visible>false</Visible>
-		</Content>		
+		</Content>
+        <Content Include="..\..\..\lib\jetson\cortex-a57-aarch64\libpv_porcupine.so">
+            <PackagePath>
+                build/netstandard2.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
+                build/netcoreapp3.1/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\jetson\cortex-a57-aarch64\libpv_porcupine.so</Link>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="..\..\..\lib\beaglebone\libpv_porcupine.so">
+            <PackagePath>
+                build/netstandard2.0/lib/beaglebone/libpv_porcupine.so;
+                build/netcoreapp3.1/lib/beaglebone/libpv_porcupine.so
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\beaglebone\libpv_porcupine.so</Link>
+            <Visible>false</Visible>
+        </Content>
 		<Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
 			<PackagePath>
 				build/netstandard2.0/lib/mac/x86_64/libpv_porcupine.dylib;
@@ -99,6 +117,22 @@ Porcupine is:
 				build/netcoreapp3.1/resources/keyword_files/raspberry-pi
 			</PackagePath>
 			<Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+        <Content Include="..\..\..\resources\keyword_files\jetson\*">
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/jetson;
+				build/netcoreapp3.1/resources/keyword_files/jetson
+			</PackagePath>
+			<Link>resources\keyword_files\jetson\%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+        <Content Include="..\..\..\resources\keyword_files\beaglebone\*">
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/beaglebone;
+				build/netcoreapp3.1/resources/keyword_files/beaglebone
+			</PackagePath>
+			<Link>resources\keyword_files\beaglebone\%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="..\..\..\lib\common\porcupine_params.pv">
