@@ -142,7 +142,7 @@ git clone --recurse-submodules https://github.com/Picovoice/porcupine.git
 
 ### Python Demos
 
-Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package:
+Install the demo package:
 
 ```console
 sudo pip3 install pvporcupinedemo
