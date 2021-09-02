@@ -16,8 +16,8 @@ from threading import Thread
 
 import numpy as np
 import pvporcupine
-from pvrecorder import PvRecorder
 import soundfile
+from pvrecorder import PvRecorder
 
 
 class PorcupineDemo(Thread):
