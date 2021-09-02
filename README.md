@@ -161,7 +161,7 @@ For more information about Python demos go to [demo/python](/demo/python).
 
 ### .NET Demos
 
-Install [OpenAL](https://openal.org/) and then from [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
+From [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
 following in the terminal to build the demo:
 
 ```console

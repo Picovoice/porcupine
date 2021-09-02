@@ -26,23 +26,7 @@ Porcupine is:
 
 Both demos use [Microsoft's .NET Core framework](https://dotnet.microsoft.com/download).
 
-MicDemo uses [OpenAL](https://openal.org/). 
-
-On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
-
-On Linux use apt-get
-
-```console
-sudo apt-get install libopenal-dev
-```
-
-On Mac use Brew
-
-```console
-brew install openal-soft
-```
-
-Once .NET Core and OpenAL have been installed, you can build with the dotnet CLI
+Build with the dotnet CLI:
 
 ```console
 dotnet build -c MicDemo.Release

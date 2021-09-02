@@ -47,7 +47,7 @@ namespace PorcupineDemo
         /// <param name="audioDeviceIndex">Optional argument. If provided, audio is recorded from this input device. Otherwise, the default audio input device is used.</param>        
         /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>        
         public static void RunDemo(string modelPath, List<string> keywordPaths, List<string> keywords, List<float> sensitivities,
-                                   int? audioDeviceIndex = null, string outputPath = null)
+                                   int audioDeviceIndex, string outputPath = null)
         {
             Porcupine porcupine = null;
             BinaryWriter outputFileWriter = null;
@@ -69,22 +69,6 @@ namespace PorcupineDemo
                     WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
                 }
 
-                // choose audio device
-                string deviceName = null;
-                if(audioDeviceIndex != null) 
-                {
-                    List<string> captureDeviceList = ALC.GetStringList(GetEnumerationStringList.CaptureDeviceSpecifier).ToList();
-                    if (captureDeviceList != null && audioDeviceIndex.Value < captureDeviceList.Count)
-                    {
-                        deviceName = captureDeviceList[audioDeviceIndex.Value];
-                    }
-                    else
-                    {
-                        throw new ArgumentException("No input device found with the specified index. Use --show_audio_devices to show" +
-                                                    "available inputs", "--audio_device_index");
-                    }
-                }
-
                 Console.Write("Listening for {");
                 for (int i = 0; i < keywords.Count; i++)
                 {
@@ -93,38 +77,33 @@ namespace PorcupineDemo
                 Console.Write("  }\n");
 
                 // create and start recording
-                short[] recordingBuffer = new short[porcupine.FrameLength];
-                ALCaptureDevice captureDevice = ALC.CaptureOpenDevice(deviceName, 16000, ALFormat.Mono16, porcupine.FrameLength * 2);
-                {
-                    ALC.CaptureStart(captureDevice);
+                using (PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength)) {
+                    Console.WriteLine($"Using device: ${recorder.SelectedDevice}");
+                    recorder.Start();
+
                     while (!Console.KeyAvailable)
                     {
-                        int samplesAvailable = ALC.GetAvailableSamples(captureDevice);
-                        if (samplesAvailable > porcupine.FrameLength)
+                        short[] pcm = recorder.Read();
+
+                        int result = porcupine.Process(pcm);                            
+                        if (result >= 0)
                         {
-                            ALC.CaptureSamples(captureDevice, ref recordingBuffer[0], porcupine.FrameLength);
-                            int result = porcupine.Process(recordingBuffer);                            
-                            if (result >= 0)
+                            Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywords[result]}'");
+                        }
+                        
+                        if (outputFileWriter != null) 
+                        {
+                            foreach (short sample in pcm) 
                             {
-                                Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywords[result]}'");
+                                outputFileWriter.Write(sample);
                             }
-                            
-                            if (outputFileWriter != null) 
-                            {
-                                foreach (short sample in recordingBuffer) 
-                                {
-                                    outputFileWriter.Write(sample);
-                                }
-                                totalSamplesWritten += recordingBuffer.Length;
-                            }
+                            totalSamplesWritten += pcm.Length;
                         }
                         Thread.Yield();
                     }
 
                     // stop and clean up resources
                     Console.WriteLine("Stopping...");
-                    ALC.CaptureStop(captureDevice);
-                    ALC.CaptureCloseDevice(captureDevice);
                 }                
             }
             finally 
@@ -174,11 +153,9 @@ namespace PorcupineDemo
         /// </summary>
         public static void ShowAudioDevices()
         {
-            Console.WriteLine("Available audio devices: \n");
-            List<string> captureDeviceList = ALC.GetStringList(GetEnumerationStringList.CaptureDeviceSpecifier).ToList();
-            for(int i=0; i<captureDeviceList.Count; i++)
-            {            
-                Console.WriteLine($"\tDevice {i}: {captureDeviceList[i]}");
+            string[] devices = PvRecorder.GetAudioDevices();
+            for (int i = 0; i < devices.Length; i++) {
+                Console.WriteLine($"index: {i}, device name: {devices[i]}");
             }
         }
 
@@ -196,7 +173,7 @@ namespace PorcupineDemo
             List<string> keywordPaths = null;
             List<float> sensitivities = null;
             string modelPath = null;
-            int? audioDeviceIndex = null;
+            int audioDeviceIndex = -1;
             string outputPath = null;
             bool showAudioDevices = false;
             bool showHelp = false;
