@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2018-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -11,14 +11,13 @@
 
 import argparse
 import os
-import struct
 from datetime import datetime
 from threading import Thread
 
 import numpy as np
 import pvporcupine
-import pyaudio
 import soundfile
+from pvrecorder import PvRecorder
 
 
 class PorcupineDemo(Thread):
@@ -78,8 +77,7 @@ class PorcupineDemo(Thread):
                 keywords.append(keyword_phrase_part[0])
 
         porcupine = None
-        pa = None
-        audio_stream = None
+        recorder = None
         try:
             porcupine = pvporcupine.create(
                 library_path=self._library_path,
@@ -87,15 +85,10 @@ class PorcupineDemo(Thread):
                 keyword_paths=self._keyword_paths,
                 sensitivities=self._sensitivities)
 
-            pa = pyaudio.PyAudio()
+            recorder = PvRecorder(device_index=self._input_device_index, frame_length=porcupine.frame_length)
+            recorder.start()
 
-            audio_stream = pa.open(
-                rate=porcupine.sample_rate,
-                channels=1,
-                format=pyaudio.paInt16,
-                input=True,
-                frames_per_buffer=porcupine.frame_length,
-                input_device_index=self._input_device_index)
+            print(f'Using device: {recorder.selected_device}')
 
             print('Listening {')
             for keyword, sensitivity in zip(keywords, self._sensitivities):
@@ -103,8 +96,7 @@ class PorcupineDemo(Thread):
             print('}')
 
             while True:
-                pcm = audio_stream.read(porcupine.frame_length)
-                pcm = struct.unpack_from("h" * porcupine.frame_length, pcm)
+                pcm = recorder.read()
 
                 if self._output_path is not None:
                     self._recorded_frames.append(pcm)
@@ -119,11 +111,8 @@ class PorcupineDemo(Thread):
             if porcupine is not None:
                 porcupine.delete()
 
-            if audio_stream is not None:
-                audio_stream.close()
-
-            if pa is not None:
-                pa.terminate()
+            if recorder is not None:
+                recorder.delete()
 
             if self._output_path is not None and len(self._recorded_frames) > 0:
                 recorded_audio = np.concatenate(self._recorded_frames, axis=0).astype(np.int16)
@@ -131,15 +120,10 @@ class PorcupineDemo(Thread):
 
     @classmethod
     def show_audio_devices(cls):
-        fields = ('index', 'name', 'defaultSampleRate', 'maxInputChannels')
+        devices = PvRecorder.get_audio_devices()
 
-        pa = pyaudio.PyAudio()
-
-        for i in range(pa.get_device_count()):
-            info = pa.get_device_info_by_index(i)
-            print(', '.join("'%s': '%s'" % (k, str(info[k])) for k in fields))
-
-        pa.terminate()
+        for i in range(len(devices)):
+            print(f'index: {i}, device name: {devices[i]}')
 
 
 def main():
@@ -173,7 +157,7 @@ def main():
         type=float,
         default=None)
 
-    parser.add_argument('--audio_device_index', help='Index of input audio device.', type=int, default=None)
+    parser.add_argument('--audio_device_index', help='Index of input audio device.', type=int, default=-1)
 
     parser.add_argument('--output_path', help='Absolute path to recorded audio for debugging.', default=None)
 
