@@ -82,9 +82,9 @@ namespace Pv
                 case "0xd03": return "cortex-a53" + archInfo;
                 case "0xd07": return "cortex-a57" + archInfo;
                 case "0xd08": return "cortex-a72" + archInfo;
-                case "0xc08": return "\b";
+                case "0xc08": return "";
                 default:
-                    throw new PlatformNotSupportedException($"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice.");
+                    throw new PlatformNotSupportedException($"This device (CPU part = {cpuPart}) is not supported by Picovoice.");
             }
         }
 
@@ -99,7 +99,7 @@ namespace Pv
                 case "0xd07": return "jetson";
                 case "0xc08": return "beaglebone";
                 default:
-                    throw new PlatformNotSupportedException($"WARNING: Please be advised that this device (CPU part = {cpuPart}) is not officially supported by Picovoice.");
+                    throw new PlatformNotSupportedException($"This device (CPU part = {cpuPart}) is not supported by Picovoice.");
             }
         }
 

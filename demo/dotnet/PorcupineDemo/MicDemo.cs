@@ -78,7 +78,7 @@ namespace PorcupineDemo
 
                 // create and start recording
                 using (PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength)) {
-                    Console.WriteLine($"Using device: ${recorder.SelectedDevice}");
+                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
                     recorder.Start();
 
                     while (!Console.KeyAvailable)
