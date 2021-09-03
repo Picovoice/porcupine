@@ -18,7 +18,11 @@ Porcupine is:
 
 ## Compatibility
 
-Platforms compatible with .NET Core 2.0+ and .NET Framework 4.6.1+:
+Platforms compatible with .NET Framework 4.6.1+:
+
+- Windows (x86_64)
+
+Platforms compatible with .NET Core 2.0+:
 
 - Linux (x86_64)
 - macOS (x86_64)
