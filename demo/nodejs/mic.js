@@ -11,23 +11,16 @@
 //
 "use strict";
 
-const { program } = require("commander");
+const { program, option } = require("commander");
 const Porcupine = require("@picovoice/porcupine-node");
 const { getPlatform } = require("@picovoice/porcupine-node/platforms");
+const PvRecorder = require("@picovoice/pvrecorder-node");
 
 const {
   BUILTIN_KEYWORDS_STRINGS,
   BUILTIN_KEYWORDS_STRING_TO_ENUM,
   getBuiltinKeywordPath,
 } = require("@picovoice/porcupine-node/builtin_keywords");
-
-const PLATFORM_RECORDER_MAP = new Map();
-PLATFORM_RECORDER_MAP.set("linux", "arecord");
-PLATFORM_RECORDER_MAP.set("mac", "sox");
-PLATFORM_RECORDER_MAP.set("raspberry-pi", "arecord");
-PLATFORM_RECORDER_MAP.set("windows", "sox");
-
-const recorder = require("node-record-lpcm16");
 
 program
   .option(
@@ -48,6 +41,14 @@ program
     "sensitivity value between 0 and 1",
     parseFloat,
     0.5
+  ).option(
+      "-i, --audio_device_index <number>",
+      "index of audio device to use to record audio",
+      Number,
+      -1
+  ).option(
+      "-a, --show_audio_devices",
+      "show the list of available devices"
   );
 
 if (process.argv.length < 3) {
@@ -55,21 +56,28 @@ if (process.argv.length < 3) {
 }
 program.parse(process.argv);
 
-function chunkArray(array, size) {
-  return Array.from({ length: Math.ceil(array.length / size) }, (v, index) =>
-    array.slice(index * size, index * size + size)
-  );
-}
+let isInterrupted = false;
 
-function micDemo() {
+async function micDemo() {
   let keywordPaths = program["keyword_file_paths"];
   let keywords = program["keywords"];
   let libraryFilePath = program["library_file_path"];
   let modelFilePath = program["model_file_path"];
   let sensitivity = program["sensitivity"];
+  let audioDeviceIndex = program["audio_device_index"];
+  let showAudioDevices = program["show_audio_devices"];
 
   let keywordPathsDefined = keywordPaths !== undefined;
   let builtinKeywordsDefined = keywords !== undefined;
+  let showAudioDevicesDefined = showAudioDevices !== undefined;
+
+  if (showAudioDevicesDefined) {
+      const devices = PvRecorder.getAudioDevices();
+      for (let i = 0; i < devices.length; i++) {
+          console.log(`index: ${i}, device name: ${devices[i]}`);
+      }
+      process.exit();
+  }
 
   if (
     (keywordPathsDefined && builtinKeywordsDefined) ||
@@ -109,7 +117,8 @@ function micDemo() {
   for (let keywordPath of keywordPaths) {
     if (keywordPathsDefined && BUILTIN_KEYWORDS_STRINGS.has(keywordPath)) {
       console.warn(
-        `--keyword_path argument '${keywordPath}' matches a built-in keyword. Did you mean to use --keywords ?`
+        `--keyword_path argument '${keywordPath}' matc
+        let help = program["help"];hes a built-in keyword. Did you mean to use --keywords ?`
       );
     }
     let keywordName = keywordPath
@@ -142,57 +151,41 @@ function micDemo() {
     platform = getPlatform();
   } catch (error) {
     console.error();
-    ("The NodeJS binding does not support this platform. Supported platforms include macOS (x86_64), Windows (x86_64), Linux (x86_64), and Raspberry Pi (1-4)");
+    ("The NodeJS binding does not support this platform. Supported platforms include macOS (x86_64), Linux (x86_64), and Raspberry Pi (2-4)");
     console.error(error);
   }
 
-  let recorderType = PLATFORM_RECORDER_MAP.get(platform);
-  console.log(
-    `Platform: '${platform}'; attempting to use '${recorderType}' to access microphone ...`
-  );
-
   const frameLength = handle.frameLength;
-  const sampleRate = handle.sampleRate;
 
-  const recording = recorder.record({
-    sampleRate: sampleRate,
-    channels: 1,
-    audioType: "raw",
-    recorder: recorderType,
-  });
+  const recorder = new PvRecorder(audioDeviceIndex, frameLength);
+  recorder.start();
 
-  var frameAccumulator = [];
+  console.log(`Using device: ${recorder.getSelectedDevice()}...`);
 
-  recording.stream().on("data", (data) => {
-    // Two bytes per Int16 from the data buffer
-    let newFrames16 = new Array(data.length / 2);
-    for (let i = 0; i < data.length; i += 2) {
-      newFrames16[i / 2] = data.readInt16LE(i);
-    }
+  console.log(`Listening for wake word(s): ${keywordNames}`);
+  console.log("Press ctrl+c to exit.")
 
-    // Split the incoming PCM integer data into arrays of size Porcupine.frameLength. If there's insufficient frames, or a remainder,
-    // store it in 'frameAccumulator' for the next iteration, so that we don't miss any audio data
-    frameAccumulator = frameAccumulator.concat(newFrames16);
-    let frames = chunkArray(frameAccumulator, frameLength);
-
-    if (frames[frames.length - 1].length !== frameLength) {
-      // store remainder from divisions of frameLength
-      frameAccumulator = frames.pop();
-    } else {
-      frameAccumulator = [];
-    }
-
-    for (let frame of frames) {
-      let index = handle.process(frame);
+  while (!isInterrupted) {
+      const pcm = await recorder.read();
+      let index = handle.process(pcm);
       if (index !== -1) {
         console.log(`Detected '${keywordNames[index]}'`);
       }
-    }
-  });
+  }
 
-  console.log(`Listening for wake word(s): ${keywordNames}`);
-  process.stdin.resume();
-  console.warn("Press ctrl+c to exit.");
+  console.log("Stopping...");
+  recorder.release();
 }
 
-micDemo();
+// setup interrupt
+process.on("SIGINT", function () {
+    isInterrupted = true;
+});
+
+(async function () {
+    try {
+        await micDemo();
+    } catch (e) {
+        console.error(e.toString());
+    }
+})();

@@ -19,7 +19,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 
 ## Compatibility
 
-These demos run Porcupine on **NodeJS 10+** on the following platforms:
+These demos run Porcupine on **NodeJS 12+** on the following platforms:
 
 - Linux (x86_64)
 - macOS (x86_64)
@@ -29,25 +29,9 @@ These demos run Porcupine on **NodeJS 10+** on the following platforms:
 
 These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Porcupine in-browser? Use the [JavaScript WebAssembly](https://github.com/Picovoice/porcupine/tree/master/binding/javascript) binding instead.
 
-## Prerequisites
-
-If you only wish to use the file-based demo, you may skip ahead to [installing the NPM package](#install-npm-package).
-
 ### Microphone demo
 
-The microphone demo allows you monitor microphone input for keywords using Porcupine. Note: **the microphone demo requires you to install/setup software that is not included by npm**. For microphone access, the [node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16) package is used. Please follow that documentation for troubleshooting.
-
-The [node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16) library spawns a different microphone recording process depending on the OS used. The microphone program (SoX or Arecord) must be setup manually and is not included with yarn/npm.
-
-#### Setup SoX / Arecord
-
-##### macOS
-
-See [the documentation for node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16#dependencies) for instructions on installing [SoX](http://sox.sourceforge.net/).
-
-##### Raspberry Pi
-
-See [this quick start](https://picovoice.ai/quick-start/wake-word-raspberrypi/) for instructions on setting up the microphone / default device.
+The microphone demo allows you monitor microphone input for keywords using Porcupine. 
 
 ## Install NPM package
 
@@ -77,7 +61,7 @@ Wake word detections will display in the console:
 
 ```console
 $ ppn-mic-demo --keywords grapefruit
-Platform: 'mac'; attempting to use 'sox' to access microphone ...
+Using device: sof-hda-dsp Digital Microphone
 Listening for wake word(s): grapefruit
 Press ctrl+c to exit.
 
