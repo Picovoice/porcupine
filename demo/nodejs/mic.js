@@ -11,9 +11,8 @@
 //
 "use strict";
 
-const { program, option } = require("commander");
+const { program } = require("commander");
 const Porcupine = require("@picovoice/porcupine-node");
-const { getPlatform } = require("@picovoice/porcupine-node/platforms");
 const PvRecorder = require("@picovoice/pvrecorder-node");
 
 const {
@@ -144,15 +143,6 @@ async function micDemo() {
     modelFilePath,
     libraryFilePath
   );
-
-  let platform;
-  try {
-    platform = getPlatform();
-  } catch (error) {
-    console.error();
-    ("The NodeJS binding does not support this platform. Supported platforms include macOS (x86_64), Linux (x86_64), and Raspberry Pi (2-4)");
-    console.error(error);
-  }
 
   const frameLength = handle.frameLength;
 
