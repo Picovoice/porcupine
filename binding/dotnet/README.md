@@ -14,13 +14,18 @@ Porcupine is:
 
 ## Requirements
 
-- .NET Standard 2.0, .NET Core 3.1
+- .NET Core 3.1
 
 ## Compatibility
+
+Platforms compatible with .NET Core 2.0+ and .NET Framework 4.6.1+:
 
 - Linux (x86_64)
 - macOS (x86_64)
 - Windows (x86_64)
+
+Platforms compatible with .NET Core 3.1+:
+
 - Raspberry Pi:
   - 2
   - 3 (32 and 64 bit)
