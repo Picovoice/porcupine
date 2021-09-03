@@ -105,25 +105,28 @@ of debugging facilities baked into the demo application to solve this. First, ty
 go run micdemo/porcupine_mic_demo.go -show_audio_devices
 ```
 
-It provides information about various audio input devices on the box. On a is an example output from a Windows machine:
+It provides information about various audio input devices on the box. Here is an example output:
 
 ```console
-Capture Devices
-    0: Microphone Array (Realtek(R) Audio)
-    1: Microphone (USB Audio Device)
+index: 0, device name: Monitor of sof-hda-dsp HDMI3/DP3 Output
+index: 1, device name: Monitor of sof-hda-dsp HDMI2/DP2 Output
+index: 2, device name: Monitor of sof-hda-dsp HDMI1/DP1 Output
+index: 3, device name: Monitor of sof-hda-dsp Speaker + Headphones
+index: 4, device name: sof-hda-dsp Headset Mono Microphone + Headphones Stereo Microphone
+index: 5, device name: sof-hda-dsp Digital Microphone
 ``` 
 
-You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB 
-microphone in the above example, you can invoke the demo application as below:
+You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Digital 
+Microphone in the above example, you can invoke the demo application as below:
 
 ```console
-go run micdemo/porcupine_mic_demo.go -keywords picovoice -audio_device_index 1
+go run micdemo/porcupine_mic_demo.go -keywords picovoice -audio_device_index 5
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
 ```console
-go run micdemo/porcupine_mic_demo.go -keywords picovoice -audio_device_index 1 -output_path ./test.wav
+go run micdemo/porcupine_mic_demo.go -keywords picovoice -audio_device_index 5 -output_path ./test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
