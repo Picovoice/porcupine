@@ -117,8 +117,7 @@ async function micDemo() {
   for (let keywordPath of keywordPaths) {
     if (keywordPathsDefined && BUILTIN_KEYWORDS_STRINGS.has(keywordPath)) {
       console.warn(
-        `--keyword_path argument '${keywordPath}' matc
-        let help = program["help"];hes a built-in keyword. Did you mean to use --keywords ?`
+        `--keyword_path argument '${keywordPath}' matches a built-in keyword. Did you mean to use --keywords ?`
       );
     }
     let keywordName = keywordPath
