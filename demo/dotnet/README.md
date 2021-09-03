@@ -17,32 +17,27 @@ Porcupine is:
 - scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
 - self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
 
-## Compatibility
+## Requirements
 
 - .NET Core 3.1
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64) and Raspberry Pi
+
+## Compatibility
+
+- Linux (x86_64)
+- macOS (x86_64)
+- Windows (x86_64)
+- Raspberry Pi:
+  - 2
+  - 3 (32 and 64 bit)
+  - 4 (32 and 64 bit)
+- NVIDIA Jetson Nano
+- BeagleBone
 
 ## Installation
 
 Both demos use [Microsoft's .NET Core framework](https://dotnet.microsoft.com/download).
 
-MicDemo uses [OpenAL](https://openal.org/). 
-
-On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
-
-On Linux use apt-get
-
-```console
-sudo apt-get install libopenal-dev
-```
-
-On Mac use Brew
-
-```console
-brew install openal-soft
-```
-
-Once .NET Core and OpenAL have been installed, you can build with the dotnet CLI
+Build with the dotnet CLI:
 
 ```console
 dotnet build -c MicDemo.Release

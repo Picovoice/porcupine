@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
-	  <Version>1.9.3</Version>
+	  <Version>1.9.4</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>
@@ -51,7 +51,7 @@ Porcupine is:
 			<Link>lib\linux\x86_64\libpv_porcupine.so</Link>
 			<Visible>false</Visible>
 		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\**\*">
+		<Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
 			<PackagePath>
 				build/netstandard2.0/lib/raspberry-pi;
 				build/netcoreapp3.1/lib/raspberry-pi
@@ -59,7 +59,25 @@ Porcupine is:
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<Visible>false</Visible>
-		</Content>		
+		</Content>
+        <Content Include="..\..\..\lib\jetson\cortex-a57-aarch64\libpv_porcupine.so">
+            <PackagePath>
+                build/netstandard2.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
+                build/netcoreapp3.1/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\jetson\cortex-a57-aarch64\libpv_porcupine.so</Link>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="..\..\..\lib\beaglebone\libpv_porcupine.so">
+            <PackagePath>
+                build/netstandard2.0/lib/beaglebone/libpv_porcupine.so;
+                build/netcoreapp3.1/lib/beaglebone/libpv_porcupine.so
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\beaglebone\libpv_porcupine.so</Link>
+            <Visible>false</Visible>
+        </Content>
 		<Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
 			<PackagePath>
 				build/netstandard2.0/lib/mac/x86_64/libpv_porcupine.dylib;
@@ -69,7 +87,20 @@ Porcupine is:
 			<Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
 			<Visible>false</Visible>
 		</Content>
-		<Content Include="..\..\..\resources\keyword_files\windows\*">
+		<Content Include="..\..\..\resources\keyword_files\windows\alexa_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\americano_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\blueberry_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\bumblebee_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\computer_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\grapefruit_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\grasshopper_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\hey google_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\hey siri_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\jarvis_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\ok google_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\picovoice_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\porcupine_windows.ppn;
+                          ..\..\..\resources\keyword_files\windows\terminator_windows.ppn;">
 			<PackagePath>
 				build/netstandard2.0/resources/keyword_files/windows;
 				build/netcoreapp3.1/resources/keyword_files/windows
@@ -77,7 +108,20 @@ Porcupine is:
 			<Link>resources\keyword_files\windows\%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>		
-		<Content Include="..\..\..\resources\keyword_files\mac\*">
+		<Content Include="..\..\..\resources\keyword_files\mac\alexa_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\americano_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\blueberry_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\bumblebee_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\computer_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\grapefruit_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\grasshopper_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\hey google_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\hey siri_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\jarvis_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\ok google_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\picovoice_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\porcupine_mac.ppn;
+                          ..\..\..\resources\keyword_files\mac\terminator_mac.ppn;">
 			<PackagePath>
 				build/netstandard2.0/resources/keyword_files/mac;
 				build/netcoreapp3.1/resources/keyword_files/mac;
@@ -85,7 +129,20 @@ Porcupine is:
 			<Link>resources\keyword_files\mac\%(Filename)%(Extension)</Link>			
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>			
 		</Content>
-		<Content Include="..\..\..\resources\keyword_files\linux\*">
+		<Content Include="..\..\..\resources\keyword_files\linux\alexa_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\americano_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\blueberry_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\bumblebee_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\computer_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\grapefruit_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\grasshopper_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\hey google_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\hey siri_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\jarvis_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\ok google_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\picovoice_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\porcupine_linux.ppn;
+                          ..\..\..\resources\keyword_files\linux\terminator_linux.ppn;">
 			<PackagePath>
 				build/netstandard2.0/resources/keyword_files/linux;
 				build/netcoreapp3.1/resources/keyword_files/linux	
@@ -93,12 +150,67 @@ Porcupine is:
 			<Link>resources\keyword_files\linux\%(Filename)%(Extension)</Link>			
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>			
 		</Content>
-		<Content Include="..\..\..\resources\keyword_files\raspberry-pi\*">
+		<Content Include="..\..\..\resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\americano_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\blueberry_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\bumblebee_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\computer_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\grapefruit_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\grasshopper_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\hey google_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\hey siri_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\jarvis_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\ok google_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\picovoice_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\porcupine_raspberry-pi.ppn;
+                          ..\..\..\resources\keyword_files\raspberry-pi\terminator_raspberry-pi.ppn;">
 			<PackagePath>
 				build/netstandard2.0/resources/keyword_files/raspberry-pi;
 				build/netcoreapp3.1/resources/keyword_files/raspberry-pi
 			</PackagePath>
 			<Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+        <Content Include="..\..\..\resources\keyword_files\jetson\alexa_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\americano_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\blueberry_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\bumblebee_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\computer_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\grapefruit_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\grasshopper_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\hey google_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\hey siri_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\jarvis_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\ok google_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\picovoice_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\porcupine_jetson.ppn;
+                          ..\..\..\resources\keyword_files\jetson\terminator_jetson.ppn;">
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/jetson;
+				build/netcoreapp3.1/resources/keyword_files/jetson
+			</PackagePath>
+			<Link>resources\keyword_files\jetson\%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+        <Content Include="..\..\..\resources\keyword_files\beaglebone\alexa_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\americano_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\blueberry_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\bumblebee_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\computer_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\grapefruit_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\grasshopper_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\hey google_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\hey siri_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\jarvis_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\ok google_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\picovoice_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\porcupine_beaglebone.ppn;
+                          ..\..\..\resources\keyword_files\beaglebone\terminator_beaglebone.ppn;">
+			<PackagePath>
+				build/netstandard2.0/resources/keyword_files/beaglebone;
+				build/netcoreapp3.1/resources/keyword_files/beaglebone
+			</PackagePath>
+			<Link>resources\keyword_files\beaglebone\%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="..\..\..\lib\common\porcupine_params.pv">
