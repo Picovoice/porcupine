@@ -49,12 +49,30 @@ npm install -g @picovoice/porcupine-node-demo
 
 ### Run the mic demo
 
-Use `ppn-mic-demo` to run the mic demo. Specify either built-in keywords with `--keywords` or paths to Porcupine `.ppn` files with `--keyword_file_paths`.
-
-Here is an example which will listen for "grapefruit" keyword:
+Use `ppn-mic-demo` to run the mic demo. First select an input audio device to start recording audio:
 
 ```console
-ppn-mic-demo --keywords grapefruit
+ppn-mic-demo --show_audio_devices
+```
+
+This command prints a list of the available devices and its inputs:
+
+```console
+index: 0, device name: Monitor of sof-hda-dsp HDMI3/DP3 Output
+index: 1, device name: Monitor of sof-hda-dsp HDMI2/DP2 Output
+index: 2, device name: Monitor of sof-hda-dsp HDMI1/DP1 Output
+index: 3, device name: Monitor of sof-hda-dsp Speaker + Headphones
+index: 4, device name: sof-hda-dsp Headset Mono Microphone + Headphones Stereo Microphone
+index: 5, device name: sof-hda-dsp Digital Microphone
+```
+
+Specify the input audio device with `--audio_device_index` and either built-in 
+keywords with `--keywords` or paths to Porcupine `.ppn` files with `--keyword_file_paths`.
+
+Here is an example using Digital Microphone which will listen for "grapefruit" keyword:
+
+```console
+ppn-mic-demo --keywords grapefruit --audio_device_index 5
 ```
 
 Wake word detections will display in the console:
@@ -179,13 +197,13 @@ npm install
 Use `yarn mic` (or `npm run mic`) to run the mic demo from the demos/nodejs directory. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script.
 
 ```console
-yarn mic --keywords grapefruit
+yarn mic --keywords grapefruit --audio_device_index 5
 ```
 
 (or)
 
 ```console
-npm run mic -- --keywords grapefruit
+npm run mic -- --keywords grapefruit --audio_device_index 5
 ```
 
 ### File demo
