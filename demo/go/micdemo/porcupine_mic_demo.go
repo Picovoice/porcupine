@@ -11,18 +11,17 @@
 package main
 
 import (
-	"encoding/binary"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
+	"os/signal"
 
 	. "github.com/Picovoice/porcupine/binding/go"
-	"github.com/gen2brain/malgo"
+	pvrecorder "github.com/Picovoice/pvrecorder/sdk/go"
 	"github.com/go-audio/wav"
 )
 
@@ -112,117 +111,73 @@ func main() {
 		}
 	}
 
-	var backends []malgo.Backend = nil
-	if runtime.GOOS == "windows" {
-		backends = []malgo.Backend{malgo.BackendWinmm}
-	} else if runtime.GOOS == "linux" {
-		backends = []malgo.Backend{malgo.BackendAlsa}
-	}
-
-	context, err := malgo.InitContext(backends, malgo.ContextConfig{}, func(message string) {
-		fmt.Printf("%v\n", message)
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func() {
-		_ = context.Uninit()
-		context.Free()
-	}()
-
-	deviceConfig := malgo.DefaultDeviceConfig(malgo.Duplex)
-	deviceConfig.Capture.Format = malgo.FormatS16
-	deviceConfig.Capture.Channels = 1
-	deviceConfig.SampleRate = 16000
-
-	if *audioDeviceIndex >= 0 {
-		infos, err := context.Devices(malgo.Capture)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if *audioDeviceIndex > len(infos)-1 {
-			fmt.Printf("Audio device at index %d does not exist. Using default capture device.\n", *audioDeviceIndex)
-		} else {
-			deviceConfig.Capture.DeviceID = infos[*audioDeviceIndex].ID.Pointer()
-		}
-	}
-
-	err = p.Init()
+	err := p.Init()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer p.Delete()
 
-	var shortBufIndex, shortBufOffset int
-	shortBuf := make([]int16, FrameLength)
+	recorder := pvrecorder.PvRecorder{
+		DeviceIndex: *audioDeviceIndex,
+		FrameLength: FrameLength,
+		BufferSizeMSec: 1000,
+		LogOverflow: 0,
+	}
 
-	onRecvFrames := func(pSample2, pSample []byte, framecount uint32) {
-		for i := 0; i < len(pSample); i += 2 {
-			shortBuf[shortBufIndex+shortBufOffset] = int16(binary.LittleEndian.Uint16(pSample[i : i+2]))
-			shortBufOffset++
+	if err := recorder.Init(); err != nil {
+        log.Fatalf("Error: %s.\n", err.Error())
+    }
+    defer recorder.Delete()
 
-			if shortBufIndex+shortBufOffset == FrameLength {
-				shortBufIndex = 0
-				shortBufOffset = 0
-				keywordIndex, err := p.Process(shortBuf)
-				if err != nil {
-					log.Fatal(err)
-				}
-				if keywordIndex >= 0 {
-					fmt.Printf("Keyword %d detected\n", keywordIndex)
-				}
+	log.Printf("Using device: %s", recorder.GetSelectedDevice())
 
-				// write to debug file
-				if outputWav != nil {
-					for outputBufIndex := range shortBuf {
-						outputWav.WriteFrame(shortBuf[outputBufIndex])
-					}
+	if err := recorder.Start(); err != nil {
+        log.Fatalf("Error: %s.\n", err.Error())
+    }
+
+	signalCh := make(chan os.Signal, 1)
+    waitCh := make(chan struct{})
+    signal.Notify(signalCh, os.Interrupt)
+
+    go func () {
+        <- signalCh
+        close(waitCh)
+    }()
+    
+    waitLoop:
+    for {
+        select {
+        case <- waitCh:
+            log.Println("Stopping...")
+            break waitLoop
+        default:
+            pcm, err := recorder.Read()
+            if err != nil {
+                log.Fatalf("Error: %s.\n", err.Error())
+            }
+			keywordIndex, err := p.Process(pcm)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if keywordIndex >= 0 {
+				fmt.Printf("Keyword %d detected\n", keywordIndex)
+			}
+			// write to debug file
+			if outputWav != nil {
+				for outputBufIndex := range pcm {
+					outputWav.WriteFrame(pcm[outputBufIndex])
 				}
 			}
-		}
-		shortBufIndex += shortBufOffset
-		shortBufOffset = 0
-	}
-
-	captureCallbacks := malgo.DeviceCallbacks{
-		Data: onRecvFrames,
-	}
-	device, err := malgo.InitDevice(context.Context, deviceConfig, captureCallbacks)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = device.Start()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Press Enter to stop recording.")
-	fmt.Println("Listening...")
-	fmt.Scanln()
-
-	device.Uninit()
+        }
+    }
 }
 
 func printAudioDevices() {
-	context, err := malgo.InitContext(nil, malgo.ContextConfig{}, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func() {
-		_ = context.Uninit()
-		context.Free()
-	}()
-
-	// Capture devices.
-	infos, err := context.Devices(malgo.Capture)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Capture Devices")
-	for i, info := range infos {
-		fmt.Printf("    %d: %s\n", i, strings.Replace(info.Name(), "\x00", "", -1))
+	if devices, err := pvrecorder.GetAudioDevices(); err != nil {
+		log.Fatalf("Error: %s.\n", err.Error())
+	} else {
+		for i, device := range devices {
+			log.Printf("index: %d, device name: %s\n", i, device)
+		}
 	}
 }
