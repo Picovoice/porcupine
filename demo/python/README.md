@@ -66,8 +66,8 @@ porcupine_demo_mic --model_path ${NON_ENGLISH_MODEL_PATH} --keyword_paths ${NON_
 The model files for all supported languages are available 
 [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) on Porcupine's GitHub repository.
 
-It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
-of debugging facilities baked into the demo application to solve this. First, type the following into the console
+It is possible that the default audio input device recognized by the demo is not the one being used. There are a couple of
+debugging facilities baked into the demo application to solve this. First, type the following into the console:
 
 ```console
 porcupine_demo_mic --show_audio_devices
@@ -76,25 +76,21 @@ porcupine_demo_mic --show_audio_devices
 It provides information about various audio input devices on the box. On a Linux box, this is the console output
 
 ```
-index: 0, device name: Monitor of sof-hda-dsp HDMI3/DP3 Output
-index: 1, device name: Monitor of sof-hda-dsp HDMI2/DP2 Output
-index: 2, device name: Monitor of sof-hda-dsp HDMI1/DP1 Output
-index: 3, device name: Monitor of sof-hda-dsp Speaker + Headphones
-index: 4, device name: sof-hda-dsp Headset Mono Microphone + Headphones Stereo Microphone
-index: 5, device name: sof-hda-dsp Digital Microphone
+index: 0, device name: USB Audio Device
+index: 1, device name: MacBook Air Microphone
 ``` 
 
-If you would like to use the default device, leave `audio_device_index` empty, else select the device index from the
-output above. In this example we will use the device at index 5.
+You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device 
+in the above example, you can invoke the demo application as below:
 
 ```console
-porcupine_demo_mic --keywords picovoice --audio_device_index 5
+porcupine_demo_mic --keywords picovoice --audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved by
 
 ```console
-porcupine_demo_mic --keywords picovoice --audio_device_index 5 --output_path ~/test.wav
+porcupine_demo_mic --keywords picovoice --audio_device_index 0 --output_path ~/test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.

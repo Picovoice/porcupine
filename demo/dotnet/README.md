@@ -129,26 +129,23 @@ of debugging facilities baked into the demo application to solve this. First, ty
 dotnet run -c MicDemo.Release -- --show_audio_devices
 ```
 
-It provides information about various audio input devices on the box. On a Windows PC, this is the output:
+It provides information about various audio input devices on the box. Here is an example output:
 
 ```
-Available input devices:
-
-    Device 0: Microphone Array (Realtek(R) Au
-    Device 1: Microphone Headset USB
+index: 0, device name: USB Audio Device
+index: 1, device name: MacBook Air Microphone
 ``` 
 
-You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Headset 
-microphone in the above example, you can invoke the demo application as below:
+You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Auio Device in the above example, you can invoke the demo application as below:
 
 ```console
-dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 1
+dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
 ```console
-dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 1 --output_path ./test.wav
+dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 0 --output_path ./test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
