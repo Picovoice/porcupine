@@ -27,7 +27,7 @@ These demos run Porcupine on **NodeJS 12+** on the following platforms:
 
 ### Web Browsers
 
-These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Porcupine in-browser? Use the [JavaScript WebAssembly](https://github.com/Picovoice/porcupine/tree/master/binding/javascript) binding instead.
+These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Porcupine in-browser? See the [@picovoice/porcupine-web-en-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker) package.
 
 ### Microphone demo
 
