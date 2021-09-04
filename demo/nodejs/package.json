@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-node-demo",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "Picovoice Porcupine NodeJS file-based and microphone demos",
   "scripts": {
     "file": "node file.js",
@@ -17,8 +17,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@picovoice/porcupine-node": "1.9.2",
+    "@picovoice/pvrecorder-node": "1.0.1",
     "commander": "^6.1.0",
-    "node-record-lpcm16": "^1.0.1",
     "wavefile": "^11.0.0"
   },
   "devDependencies": {},
@@ -29,7 +29,7 @@
     "directory": "demo/nodejs"
   },
   "engines": {
-    "node": ">=1.0.0"
+    "node": ">=12.0.0"
   },
   "cpu": [
     "!ia32",

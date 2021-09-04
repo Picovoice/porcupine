@@ -355,8 +355,7 @@ Open http://localhost:8080 in your browser to try the demo.
 
 ### NodeJS Demos
 
-Install [node-record-lpcm16](https://www.npmjs.com/package/node-record-lpcm16) NPM package and follow the instructions
-there for setting up your microphone. Then install the demo package:
+Install the demo package:
 
 ```console
 yarn global add @picovoice/porcupine-node-demo
