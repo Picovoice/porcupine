@@ -8,6 +8,7 @@ This package provides demo projects for the following development boards:
 - [STM32H735G-DK](/demo/mcu/stm32h735)
 - [STM32H747I-DISCO](/demo/mcu/stm32h747)
 - [IMXRT1050-EVKB](/demo/mcu/imxrt1050)
+- [CY8CKIT-062S2-43012 (PSoC6)](https://github.com/Picovoice/porcupine-demo-psoc6)
 
 ## Usage
 
