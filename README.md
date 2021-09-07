@@ -374,10 +374,6 @@ For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
 
 ### Rust Demos
 
-The microphone demo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture.
-It uses `bindgen` and therefore requires `clang` to be installed and on the path.
-Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros.
-
 This demo opens an audio stream from a microphone and detects utterances of a given wake word.
 From [demo/rust/micdemo](/demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
 

@@ -13,46 +13,20 @@ use chrono::prelude::*;
 use clap::{App, Arg, ArgGroup};
 use ctrlc;
 use hound;
-use miniaudio;
-use porcupine::{BuiltinKeywords, Porcupine, PorcupineBuilder};
-use std::collections::VecDeque;
+use porcupine::{BuiltinKeywords, PorcupineBuilder};
+use pv_recorder::{Recorder, RecorderBuilder};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex};
 
 static LISTENING: AtomicBool = AtomicBool::new(false);
 
-fn process_audio_chunk(
-    samples: &[i16],
-    porcupine: &Porcupine,
-    buffer: &mut VecDeque<i16>,
-    keywords_or_paths: &KeywordsOrPaths,
-) {
-    buffer.extend(samples.iter());
-
-    while buffer.len() >= porcupine.frame_length() as usize && LISTENING.load(Ordering::SeqCst) {
-        let frame: Vec<i16> = buffer.drain(..porcupine.frame_length() as usize).collect();
-        let keyword_index = porcupine.process(&frame).unwrap();
-        if keyword_index >= 0 {
-            println!(
-                "[{}] Detected {}",
-                Local::now().format("%F %T"),
-                keywords_or_paths.get(keyword_index as usize)
-            );
-        }
-    }
-}
-
 fn porcupine_demo(
-    miniaudio_backend: &[miniaudio::Backend],
-    audio_device_index: usize,
+    audio_device_index: i32,
     keywords_or_paths: KeywordsOrPaths,
     sensitivities: Option<Vec<f32>>,
     model_path: Option<&str>,
     output_path: Option<&str>,
 ) {
-    let mut buffer: VecDeque<i16> = VecDeque::new();
-
     let mut porcupine_builder = match keywords_or_paths {
         KeywordsOrPaths::Keywords(ref keywords) => PorcupineBuilder::new_with_keywords(&keywords),
         KeywordsOrPaths::KeywordPaths(ref keyword_paths) => {
@@ -72,79 +46,57 @@ fn porcupine_demo(
         .init()
         .expect("Failed to create Porcupine");
 
-    let wavspec = hound::WavSpec {
-        channels: 1,
-        sample_rate: porcupine.sample_rate(),
-        bits_per_sample: 16,
-        sample_format: hound::SampleFormat::Int,
-    };
-    let output_file_writer = match output_path {
-        Some(output_path) => Some(Arc::new(Mutex::new(
-            hound::WavWriter::create(output_path, wavspec)
-                .expect("Failed to open output audio file"),
-        ))),
-        None => None,
-    };
-
-    let miniaudio_context =
-        miniaudio::Context::new(&miniaudio_backend, None).expect("Failed to create audio context");
-    miniaudio_context
-        .with_capture_devices(|_: _| {})
-        .expect("Failed to access capture devices");
-    let device_id = miniaudio_context
-        .capture_devices()
-        .get(audio_device_index)
-        .expect("No device available given audio device index.")
-        .id()
-        .clone();
-
-    println!("Using {:?} backend", miniaudio_context.backend());
-
-    let mut device_config = miniaudio::DeviceConfig::new(miniaudio::DeviceType::Capture);
-    device_config
-        .capture_mut()
-        .set_format(miniaudio::Format::S16);
-    device_config.capture_mut().set_channels(1);
-    device_config.capture_mut().set_device_id(Some(device_id));
-    device_config.set_sample_rate(porcupine.sample_rate());
-    device_config.set_data_callback(move |_, _, frames| {
-        process_audio_chunk(
-            frames.as_samples(),
-            &porcupine,
-            &mut buffer,
-            &keywords_or_paths,
-        );
-
-        if let Some(output_file_writer_mutex) = &output_file_writer {
-            let mut output_file_writer = output_file_writer_mutex.lock().unwrap();
-            let samples: &[i16] = frames.as_samples();
-            for sample in samples {
-                output_file_writer.write_sample(*sample).unwrap();
-            }
-        }
-    });
-
-    let device = miniaudio::Device::new(Some(miniaudio_context), &device_config)
-        .expect("Failed to initialize capture device");
+    let recorder = RecorderBuilder::new()
+        .device_index(audio_device_index)
+        .frame_length(porcupine.frame_length() as i32)
+        .init()
+        .expect("Failed to initialize pvrecorder");
+    recorder.start().expect("Failed to start audio recording");
 
     LISTENING.store(true, Ordering::SeqCst);
-    device.start().expect("Failed to start device");
-    println!("Listening for wake words...");
-
     ctrlc::set_handler(|| {
         LISTENING.store(false, Ordering::SeqCst);
     })
     .expect("Unable to setup signal handler");
 
-    // Spin loop until we receive the ctrlc handler
+    println!("Listening for wake words...");
+
+    let mut audio_data = Vec::new();
     while LISTENING.load(Ordering::SeqCst) {
-        std::hint::spin_loop();
-        std::thread::sleep(std::time::Duration::from_millis(10));
+        let mut pcm = vec![0; recorder.frame_length()];
+        recorder
+            .read(&mut pcm)
+            .expect("Failed to read audio frame");
+
+        let keyword_index = porcupine.process(&pcm).unwrap();
+        if keyword_index >= 0 {
+            println!(
+                "[{}] Detected {}",
+                Local::now().format("%F %T"),
+                keywords_or_paths.get(keyword_index as usize)
+            );
+        }
+
+        if !output_path.is_none() {
+            audio_data.extend_from_slice(&pcm);
+        }
     }
 
-    println!("\nStopping!");
-    device.stop().expect("Failed to stop device");
-    println!("Stopped");
+    println!("\nStopping...");
+    recorder.stop().expect("Failed to stop audio recording");
+
+    if let Some(output_path) = output_path {
+        let wavspec = hound::WavSpec {
+            channels: 1,
+            sample_rate: porcupine.sample_rate(),
+            bits_per_sample: 16,
+            sample_format: hound::SampleFormat::Int,
+        };
+        let mut writer = hound::WavWriter::create(output_path, wavspec).expect("Failed to open output audio file");
+        for sample in audio_data {
+            writer.write_sample(sample).unwrap();
+        }
+    }
 }
 
 #[derive(Clone)]
@@ -166,17 +118,16 @@ impl KeywordsOrPaths {
     }
 }
 
-fn show_audio_devices(miniaudio_backend: &[miniaudio::Backend]) {
-    let miniaudio_context =
-        miniaudio::Context::new(miniaudio_backend, None).expect("failed to create context");
-    miniaudio_context
-        .with_capture_devices(|capture_devices| {
-            println!("Capture Devices:");
-            for (idx, device) in capture_devices.iter().enumerate() {
-                println!("\t{}: {}", idx, device.name());
+fn show_audio_devices() {
+    let audio_devices = Recorder::get_audio_devices();
+    match audio_devices {
+        Ok(audio_devices) => {
+            for (idx, device) in audio_devices.iter().enumerate() {
+                println!("index: {}, device name: {:?}", idx, device);
             }
-        })
-        .expect("failed to get devices");
+        }
+        Err(err) => panic!("Failed to get audio devices: {}", err),
+    };
 }
 
 fn main() {
@@ -226,15 +177,7 @@ fn main() {
             .value_name("INDEX")
             .help("Index of input audio device.")
             .takes_value(true)
-            .default_value("0")
-        )
-        .arg(
-            Arg::with_name("audio_backend")
-            .long("audio_backend")
-            .value_name("BACKEND")
-            .help("The name of a specific audio backend to use. Note: not all options will work on a given platform.")
-            .takes_value(true)
-            .possible_values(&["Wasapi", "DSound", "WinMM", "CoreAudio", "SNDIO", "Audio4", "OSS", "PulseAudio", "Alsa", "Jack", "AAudio", "OpenSL", "WebAudio"])
+            .default_value("-1")
         )
         .arg(
             Arg::with_name("output_path")
@@ -249,28 +192,8 @@ fn main() {
         )
         .get_matches();
 
-    let miniaudio_backend = match matches.value_of("audio_backend") {
-        Some(audio_backend_str) => vec![match audio_backend_str {
-            "Wasapi" => miniaudio::Backend::Wasapi,
-            "DSound" => miniaudio::Backend::DSound,
-            "WinMM" => miniaudio::Backend::WinMM,
-            "CoreAudio" => miniaudio::Backend::CoreAudio,
-            "SNDIO" => miniaudio::Backend::SNDIO,
-            "Audio4" => miniaudio::Backend::Audio4,
-            "OSS" => miniaudio::Backend::OSS,
-            "PulseAudio" => miniaudio::Backend::PulseAudio,
-            "Alsa" => miniaudio::Backend::Alsa,
-            "Jack" => miniaudio::Backend::Jack,
-            "AAudio" => miniaudio::Backend::AAudio,
-            "OpenSL" => miniaudio::Backend::OpenSL,
-            "WebAudio" => miniaudio::Backend::WebAudio,
-            _ => panic!("Unsupported audio backend"),
-        }],
-        _ => vec![],
-    };
-
     if matches.is_present("show_audio_devices") {
-        return show_audio_devices(&miniaudio_backend);
+        return show_audio_devices();
     }
 
     let audio_device_index = matches
@@ -317,7 +240,6 @@ fn main() {
     let output_path = matches.value_of("output_path");
 
     porcupine_demo(
-        &miniaudio_backend,
         audio_device_index,
         keywords_or_paths,
         sensitivities,

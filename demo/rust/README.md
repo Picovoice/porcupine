@@ -2,12 +2,6 @@
 
 This Rust module contains demos for processing real-time audio (i.e. microphone) and audio files using the Porcupine wake word engine.
 
-## Installation
-
-The microphone demo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture.
-It uses `bindgen` and therefore requires `clang` to be installed and on the path.
-Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros.
-
 ## Usage
 
 NOTE: The working directory for the following `Cargo` commands is:
@@ -91,35 +85,25 @@ use the `keyword_paths` argument:
 cargo run --release -- --keyword_paths "/path/to/keyword/one.ppn","/path/to/keyword/two.ppn"
 ```
 
-It is possible that the default audio input device is not the one you wish to use.
-There are a couple of debugging facilities baked into the demo application to solve this.
-First, type the following into the console:
+It is possible that the default audio input device is not the one you wish to use. There are a couple
+of debugging facilities baked into the demo application to solve this. First, type the following into the console:
 
 ```console
 cargo run --release -- --show_audio_devices
 ```
 
-It provides information about various audio input devices on the box.
-Here is an example output from a Windows machine:
+It provides information about various audio input devices on the box. Here is an example output:
 
 ```console
-Capture Devices
-    0: Microphone Array (Realtek(R) Audio)
-    1: Microphone (USB Audio Device)
+index: 0, device name: USB Audio Device
+index: 1, device name: MacBook Air Microphone
 ``` 
 
-You can use the device index to specify which microphone to use for the demo.
-For instance, if you want to use the USB microphone in the above example, you can invoke the demo application as below:
+You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device
+in the above example, you can invoke the demo application as below:
 
 ```console
-cargo run --release -- --keywords picovoice --audio_device_index 1
-```
-
-Exact system setups don't always play well with certain audio backends.
-If this is the case you can override the default with a specific backend:
-
-```console
-cargo run -- --release --keywords picovoice --audio_device_index 1 --audio_backend Alsa
+cargo run --release -- --keywords picovoice --audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection.
