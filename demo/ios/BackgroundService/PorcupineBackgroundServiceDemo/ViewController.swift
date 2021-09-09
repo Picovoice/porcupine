@@ -29,10 +29,10 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
         
-        
+        Sound.category = .playAndRecord
         let keywordCallback: ((Int32) -> Void) = { keywordIndex in
-            Sound.play(file: "boing.wav")
             NotificationManager.shared.sendNotification()
+            Sound.play(file: "boing.wav")
         }
         do {
             self.porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
