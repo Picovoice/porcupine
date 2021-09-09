@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1EB9A33726C3389200077D0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ED03A6F26C1DB0F0078E0E7 /* Main.storyboard */; };
-		1ECA2AA426EACC02000F22A4 /* boing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA2AA326EACC02000F22A4 /* boing.wav */; };
+		1ECA2AA626EAD451000F22A4 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA2AA526EAD451000F22A4 /* beep.wav */; };
 		1ED03A6E26C1CF650078E0E7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED03A6D26C1CF650078E0E7 /* NotificationManager.swift */; };
 		1ED03A7426C1DB190078E0E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ED03A7226C1DB190078E0E7 /* LaunchScreen.storyboard */; };
 		21603BDA73D34368F1EFC5F5 /* libPods-PorcupineBackgroundServiceDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 344A2CADE9BD37C535BCBE37 /* libPods-PorcupineBackgroundServiceDemo.a */; };
@@ -32,7 +32,7 @@
 
 /* Begin PBXFileReference section */
 		026A05172693CF2C005C4511 /* libPorcupine-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPorcupine-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1ECA2AA326EACC02000F22A4 /* boing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = boing.wav; sourceTree = "<group>"; };
+		1ECA2AA526EAD451000F22A4 /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		1ED03A6D26C1CF650078E0E7 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		1ED03A7026C1DB0F0078E0E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1ED03A7326C1DB190078E0E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 		1ECA2AA226EACBF1000F22A4 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
-				1ECA2AA326EACC02000F22A4 /* boing.wav */,
+				1ECA2AA526EAD451000F22A4 /* beep.wav */,
 			);
 			path = Sound;
 			sourceTree = "<group>";
@@ -193,7 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1EB9A33726C3389200077D0A /* Main.storyboard in Resources */,
-				1ECA2AA426EACC02000F22A4 /* boing.wav in Resources */,
+				1ECA2AA626EAD451000F22A4 /* beep.wav in Resources */,
 				1ED03A7426C1DB190078E0E7 /* LaunchScreen.storyboard in Resources */,
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
 			);

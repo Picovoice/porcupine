@@ -32,7 +32,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         Sound.category = .playAndRecord
         let keywordCallback: ((Int32) -> Void) = { keywordIndex in
             NotificationManager.shared.sendNotification()
-            Sound.play(file: "boing.wav")
+            Sound.play(file: "beep.wav")
         }
         do {
             self.porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
