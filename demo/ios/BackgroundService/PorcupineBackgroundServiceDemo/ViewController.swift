@@ -9,6 +9,7 @@
 
 import UIKit
 import Porcupine
+import SwiftySound
 
 class ViewController: UIViewController, UITextViewDelegate {
     
@@ -30,6 +31,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         
         let keywordCallback: ((Int32) -> Void) = { keywordIndex in
+            Sound.play(file: "boing.wav")
             NotificationManager.shared.sendNotification()
         }
         do {
