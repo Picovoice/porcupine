@@ -9,6 +9,7 @@
 
 import UIKit
 import Porcupine
+import SwiftySound
 
 class ViewController: UIViewController, UITextViewDelegate {
     
@@ -28,9 +29,10 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
         
-        
+        Sound.category = .playAndRecord
         let keywordCallback: ((Int32) -> Void) = { keywordIndex in
             NotificationManager.shared.sendNotification()
+            Sound.play(file: "beep.wav")
         }
         do {
             self.porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)

@@ -3,4 +3,5 @@ platform :ios, '9.0'
 
 target 'PorcupineBackgroundServiceDemo' do
     pod 'Porcupine-iOS'
+    pod 'SwiftySound'
 end
