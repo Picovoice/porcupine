@@ -1,3 +1,3 @@
-demos/* -linguist-detectable
-lib/* -linguist-detectable
-resources/* -linguist-detectable
+demos/* linguist-detectable=false
+lib/* -linguist-detectable=false
+resources/* -linguist-detectable=false
