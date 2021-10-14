@@ -23,8 +23,10 @@ def _pv_linux_machine(machine):
         return machine
     elif machine == 'aarch64':
         arch_info = '-' + machine
-    else:
+    elif machine == 'armv7l':
         arch_info = ''
+    else:
+        raise NotImplementedError('Unsupported CPU architecture')
 
     cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
     cpu_part_list = [x for x in cpu_info.split('\n') if 'CPU part' in x]
@@ -45,10 +47,13 @@ def _pv_linux_machine(machine):
     elif '0xc08' == cpu_part:
         return 'beaglebone' + arch_info
     else:
-        log.warning(
-            'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
-            'Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models' % cpu_part)
-        return 'arm11' + arch_info
+        if machine == 'armv7l':
+            log.warning(
+                'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
+                'Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.' % cpu_part)
+            return 'arm11'
+        else:
+            raise NotImplementedError('Unsupported CPU.')
 
 
 def _pv_platform():
