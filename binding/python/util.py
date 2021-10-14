@@ -46,14 +46,13 @@ def _pv_linux_machine(machine):
         return 'cortex-a72' + arch_info
     elif '0xc08' == cpu_part:
         return 'beaglebone' + arch_info
+    elif machine == 'armv7l':
+        log.warning(
+            'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
+            'Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.' % cpu_part)
+        return 'arm11'
     else:
-        if machine == 'armv7l':
-            log.warning(
-                'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
-                'Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.' % cpu_part)
-            return 'arm11'
-        else:
-            raise NotImplementedError('Unsupported CPU.')
+        raise NotImplementedError('Unsupported CPU.')
 
 
 def _pv_platform():
