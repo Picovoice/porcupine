@@ -28,6 +28,7 @@ def _pv_linux_machine(machine):
     else:
         raise NotImplementedError("Unsupported CPU architecture: '%s'" % machine)
 
+    cpu_info = ''
     try:
         cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
         cpu_part_list = [x for x in cpu_info.split('\n') if 'CPU part' in x]
