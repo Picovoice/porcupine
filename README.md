@@ -378,7 +378,7 @@ This demo opens an audio stream from a microphone and detects utterances of a gi
 From [demo/rust/micdemo](/demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
 
 ```console
-cargo run --release -- --keywords picovoice
+cargo run --release -- --access_key ACCESS_KEY --keywords picovoice
 ```
 
 For more information about Rust demos go to [demo/rust](/demo/rust).
@@ -1448,7 +1448,9 @@ To create an instance of the engine you first create a `PorcupineBuilder` instan
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
+let access_key = "..."; // AccessKey provided by Picovoice Console (https://picovoice.ai/console/)
+
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```
 In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.

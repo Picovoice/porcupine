@@ -136,6 +136,7 @@ fn main() {
     let matches = App::new("Picovoice Porcupine Rust Mic Demo")
         .group(
             ArgGroup::with_name("keywords_group")
+            .arg("access_key")
             .arg("keywords")
             .arg("keyword_paths")
             .arg("show_audio_devices")
@@ -147,7 +148,6 @@ fn main() {
                 .value_name("ACCESS_KEY")
                 .help("AccessKey provided by Picovoice Console (https://picovoice.ai/console/)")
                 .takes_value(true)
-                .required(true),
         )
         .arg(
             Arg::with_name("keywords")

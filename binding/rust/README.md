@@ -41,33 +41,37 @@ To create an instance of the engine you first create a PorcupineBuilder instance
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
+let access_key = "..."; // AccessKey provided by Picovoice Console (https://picovoice.ai/console/)
+
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```
+where `access_key` is an AccessKey which should be obtained from [Picovoice Console](https://picovoice.ai/console/).
+
 In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
 Porcupine can detect multiple keywords concurrently:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine, BuiltinKeywords::Blueberry, BuiltinKeywords::Bumblebee])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine, BuiltinKeywords::Blueberry, BuiltinKeywords::Bumblebee])
     .init().expect("Unable to create Porcupine");
 ```
 
 To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one.ppn", "/absolute/path/to/keyword/two.ppn"])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(access_key, &["/absolute/path/to/keyword/one.ppn", "/absolute/path/to/keyword/two.ppn"])
     .init().expect("Unable to create Porcupine");
 ```
 
 The language can be changed by passing in an appropriate `*.pv` file path into the `model_path` method:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one.ppn"])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(access_key, &["/absolute/path/to/keyword/one.ppn"])
     .model_path("/path/to/another/language_params.pv")
     .init().expect("Unable to create Porcupine");
 ```
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` method:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine, BuiltinKeywords::Bumblebee])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine, BuiltinKeywords::Bumblebee])
     .sensitivities(&[0.2f32, 0.42f32])
     .init().expect("Unable to create Porcupine");
 ```
