@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -19,8 +19,7 @@
 
 #ifdef __cplusplus
 
-extern "C"
-{
+extern "C" {
 
 #endif
 
@@ -36,6 +35,7 @@ typedef struct pv_porcupine pv_porcupine_t;
 /**
  * Constructor.
  *
+ * @param access_key AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
  * @param model_path Absolute path to the file containing model parameters.
  * @param num_keywords Number of keywords to monitor.
  * @param keyword_paths Absolute paths to keyword model files.
@@ -46,6 +46,7 @@ typedef struct pv_porcupine pv_porcupine_t;
  * failure.
  */
 PV_API pv_status_t pv_porcupine_init(
+        const char *access_key,
         const char *model_path,
         int32_t num_keywords,
         const char *const *keyword_paths,
