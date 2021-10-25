@@ -9,24 +9,33 @@
     specific language governing permissions and limitations under the License.
 */
 
+use lazy_static::lazy_static;
 use libc::{c_char, c_float};
 use libloading::{Library, Symbol};
 use std::cmp::PartialEq;
 use std::convert::AsRef;
-use std::ffi::CStr;
+use std::ffi::{CStr, CString};
 use std::path::{Path, PathBuf};
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
 
-#[cfg(target_family = "unix")]
-use libloading::os::unix::Symbol as RawSymbol;
-
-#[cfg(target_family = "windows")]
-use libloading::os::windows::Symbol as RawSymbol;
-
 use crate::util::*;
 
-#[derive(Clone, PartialEq, Debug)]
+lazy_static! {
+    static ref PV_PORCUPINE_LIB: Result<Library, PorcupineError> = {
+        unsafe {
+            match Library::new(pv_library_path()) {
+                Ok(symbol) => Ok(symbol),
+                Err(err) => Err(PorcupineError::new(
+                    PorcupineErrorStatus::LibraryLoadError,
+                    &format!("Failed to load porcupine dynamic library: {}", err),
+                )),
+            }
+        }
+    };
+}
+
+#[derive(PartialEq, Clone, Debug)]
 pub enum BuiltinKeywords {
     Alexa,
     Americano,
@@ -108,7 +117,7 @@ impl BuiltinKeywords {
 struct CPorcupine {}
 
 #[repr(C)]
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Clone, Debug)]
 #[allow(non_camel_case_types)]
 pub enum PvStatus {
     SUCCESS = 0,
@@ -118,9 +127,15 @@ pub enum PvStatus {
     STOP_ITERATION = 4,
     KEY_ERROR = 5,
     INVALID_STATE = 6,
+    PV_STATUS_RUNTIME_ERROR = 7,
+    PV_STATUS_ACTIVATION_ERROR = 8,
+    PV_STATUS_ACTIVATION_LIMIT_REACHED = 9,
+    PV_STATUS_ACTIVATION_THROTTLED = 10,
+    PV_STATUS_ACTIVATION_REFUSED = 11,
 }
 
 type PvPorcupineInitFn = unsafe extern "C" fn(
+    access_key: *const c_char,
     model_path: *const c_char,
     num_keywords: i32,
     keyword_paths: *const *const c_char,
@@ -137,7 +152,7 @@ type PvPorcupineProcessFn = unsafe extern "C" fn(
 ) -> PvStatus;
 type PvPorcupineDeleteFn = unsafe extern "C" fn(object: *mut CPorcupine);
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum PorcupineErrorStatus {
     LibraryError(PvStatus),
     LibraryLoadError,
@@ -145,7 +160,7 @@ pub enum PorcupineErrorStatus {
     ArgumentError,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct PorcupineError {
     pub status: PorcupineErrorStatus,
     pub message: Option<String>,
@@ -170,6 +185,7 @@ impl std::fmt::Display for PorcupineError {
 }
 
 pub struct PorcupineBuilder {
+    access_key: String,
     library_path: PathBuf,
     model_path: PathBuf,
     keyword_paths: Vec<PathBuf>,
@@ -177,7 +193,7 @@ pub struct PorcupineBuilder {
 }
 
 impl PorcupineBuilder {
-    pub fn new_with_keywords(keywords: &[BuiltinKeywords]) -> Self {
+    pub fn new_with_keywords<S: Into<String>>(access_key: S, keywords: &[BuiltinKeywords]) -> Self {
         let default_keyword_paths = pv_keyword_paths();
         let keyword_paths: Vec<String> = keywords
             .iter()
@@ -189,10 +205,13 @@ impl PorcupineBuilder {
             })
             .collect();
 
-        return Self::new_with_keyword_paths(&keyword_paths);
+        return Self::new_with_keyword_paths(access_key, &keyword_paths);
     }
 
-    pub fn new_with_keyword_paths<P: AsRef<Path>>(keyword_paths: &[P]) -> Self {
+    pub fn new_with_keyword_paths<S: Into<String>, P: AsRef<Path>>(
+        access_key: S,
+        keyword_paths: &[P],
+    ) -> Self {
         let keyword_paths: Vec<PathBuf> = keyword_paths
             .iter()
             .map(|path| PathBuf::from(path.as_ref()))
@@ -202,11 +221,17 @@ impl PorcupineBuilder {
         sensitivities.resize_with(keyword_paths.len(), || 0.5);
 
         return Self {
+            access_key: access_key.into(),
             library_path: pv_library_path(),
             model_path: pv_model_path(),
             keyword_paths,
             sensitivities,
         };
+    }
+
+    pub fn access_key<'a, S: Into<String>>(&'a mut self, access_key: S) -> &'a mut Self {
+        self.access_key = access_key.into();
+        return self;
     }
 
     pub fn library_path<'a, P: AsRef<Path>>(&'a mut self, library_path: P) -> &'a mut Self {
@@ -234,6 +259,7 @@ impl PorcupineBuilder {
 
     pub fn init(&self) -> Result<Porcupine, PorcupineError> {
         let inner = PorcupineInner::init(
+            self.access_key.clone(),
             self.library_path.clone(),
             self.model_path.clone(),
             &self.keyword_paths,
@@ -271,31 +297,44 @@ impl Porcupine {
     }
 }
 
-macro_rules! load_library_fn {
-    ($lib:ident, $function_name:literal) => {
-        match $lib.get($function_name) {
-            Ok(symbol) => symbol,
-            Err(err) => {
-                return Err(PorcupineError::new(
+fn load_library_fn<T>(function_name: &[u8]) -> Result<Symbol<T>, PorcupineError> {
+    match &*PV_PORCUPINE_LIB {
+        Ok(lib) => unsafe {
+            lib.get(function_name).map_err(|err| {
+                PorcupineError::new(
                     PorcupineErrorStatus::LibraryLoadError,
                     &format!(
-                        "Failed to load function symbol from Porcupine library: {}",
+                        "Failed to load function symbol from porcupine library: {}",
                         err
                     ),
-                ))
-            }
-        };
+                )
+            })
+        },
+        Err(err) => Err((*err).clone()),
+    }
+}
+
+macro_rules! check_fn_call_status {
+    ($status:ident, $function_name:literal) => {
+        if $status != PvStatus::SUCCESS {
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::LibraryError($status),
+                &format!(
+                    "Function '{}' in the porcupine library failed",
+                    $function_name
+                ),
+            ));
+        }
     };
 }
 
 struct PorcupineInnerVTable {
-    pv_porcupine_process: RawSymbol<PvPorcupineProcessFn>,
-    pv_porcupine_delete: RawSymbol<PvPorcupineDeleteFn>,
+    pv_porcupine_process: Symbol<'static, PvPorcupineProcessFn>,
+    pv_porcupine_delete: Symbol<'static, PvPorcupineDeleteFn>,
 }
 
 struct PorcupineInner {
     cporcupine: *mut CPorcupine,
-    _lib: Library,
     frame_length: i32,
     sample_rate: i32,
     version: String,
@@ -303,7 +342,8 @@ struct PorcupineInner {
 }
 
 impl PorcupineInner {
-    pub fn init<P: AsRef<Path>>(
+    pub fn init<S: Into<String>, P: AsRef<Path>>(
+        access_key: S,
         library_path: P,
         model_path: P,
         keyword_paths: &[P],
@@ -376,19 +416,18 @@ impl PorcupineInner {
                 }
             }
 
-            let lib = match Library::new(library_path.as_ref()) {
-                Ok(symbol) => symbol,
+            let pv_porcupine_init: Symbol<PvPorcupineInitFn> =
+                load_library_fn(b"pv_porcupine_init")?;
+
+            let access_key = match CString::new(access_key.into()) {
+                Ok(access_key) => access_key,
                 Err(err) => {
                     return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        &format!("Failed to load porcupine dynamic library: {}", err),
+                        PorcupineErrorStatus::ArgumentError,
+                        &format!("AccessKey is not a valid C string {}", err),
                     ))
                 }
             };
-
-            let pv_porcupine_init: Symbol<PvPorcupineInitFn> =
-                load_library_fn!(lib, b"pv_porcupine_init");
-
             let pv_model_path = pathbuf_to_cstring(&model_path);
             let pv_keyword_paths = keyword_paths
                 .iter()
@@ -401,6 +440,7 @@ impl PorcupineInner {
             let mut cporcupine = std::ptr::null_mut();
 
             let status = pv_porcupine_init(
+                access_key.as_ptr(),
                 pv_model_path.as_ptr(),
                 pv_keyword_paths.len() as i32,
                 pv_keyword_paths_ptrs.as_ptr(),
@@ -415,18 +455,18 @@ impl PorcupineInner {
             }
 
             let pv_porcupine_process: Symbol<PvPorcupineProcessFn> =
-                load_library_fn!(lib, b"pv_porcupine_process");
+                load_library_fn(b"pv_porcupine_process")?;
 
             let pv_porcupine_delete: Symbol<PvPorcupineDeleteFn> =
-                load_library_fn!(lib, b"pv_porcupine_delete");
+                load_library_fn(b"pv_porcupine_delete")?;
 
-            let pv_sample_rate: Symbol<PvSampleRateFn> = load_library_fn!(lib, b"pv_sample_rate");
+            let pv_sample_rate: Symbol<PvSampleRateFn> = load_library_fn(b"pv_sample_rate")?;
 
             let pv_porcupine_frame_length: Symbol<PvPorcupineFrameLengthFn> =
-                load_library_fn!(lib, b"pv_porcupine_frame_length");
+                load_library_fn(b"pv_porcupine_frame_length")?;
 
             let pv_porcupine_version: Symbol<PvPorcupineVersionFn> =
-                load_library_fn!(lib, b"pv_porcupine_version");
+                load_library_fn(b"pv_porcupine_version")?;
 
             let sample_rate = pv_sample_rate();
             let frame_length = pv_porcupine_frame_length();
@@ -440,15 +480,13 @@ impl PorcupineInner {
                 }
             };
 
-            // Using the raw symbols means we have to ensure that "lib" outlives these refrences
             let vtable = PorcupineInnerVTable {
-                pv_porcupine_process: pv_porcupine_process.into_raw(),
-                pv_porcupine_delete: pv_porcupine_delete.into_raw(),
+                pv_porcupine_process,
+                pv_porcupine_delete,
             };
 
             return Ok(Self {
                 cporcupine,
-                _lib: lib,
                 sample_rate,
                 frame_length,
                 version,
@@ -473,13 +511,7 @@ impl PorcupineInner {
         let status = unsafe {
             (self.vtable.pv_porcupine_process)(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
         };
-
-        if status != PvStatus::SUCCESS {
-            return Err(PorcupineError::new(
-                PorcupineErrorStatus::LibraryError(status),
-                "Porcupine library failed to process",
-            ));
-        }
+        check_fn_call_status!(status, "pv_porcupine_process");
 
         return Ok(result);
     }

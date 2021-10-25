@@ -13,6 +13,7 @@
 mod tests {
     use itertools::Itertools;
     use rodio::{source::Source, Decoder};
+    use std::env;
     use std::fs::File;
     use std::io::BufReader;
 
@@ -20,9 +21,12 @@ mod tests {
 
     #[test]
     fn test_process() {
-        let porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine])
-            .init()
-            .expect("Unable to create Porcupine");
+        let access_key = env::var("PV_ACCESS_KEY")
+            .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
+        let porcupine =
+            PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine])
+                .init()
+                .expect("Unable to create Porcupine");
 
         let soundfile_path = concat!(
             env!("CARGO_MANIFEST_DIR"),
@@ -60,7 +64,9 @@ mod tests {
             BuiltinKeywords::Terminator,
         ];
 
-        let porcupine = PorcupineBuilder::new_with_keywords(&selected_keywords)
+        let access_key = env::var("PV_ACCESS_KEY")
+            .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
+        let porcupine = PorcupineBuilder::new_with_keywords(access_key, &selected_keywords)
             .init()
             .expect("Unable to create Porcupine");
 
