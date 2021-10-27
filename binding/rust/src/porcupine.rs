@@ -445,7 +445,7 @@ impl PorcupineInner {
             );
             if status != PvStatus::SUCCESS {
                 return Err(PorcupineError::new(
-                    PorcupineErrorStatus::LibraryLoadError,
+                    PorcupineErrorStatus::LibraryError(status),
                     "Failed to initialize the Porcupine library",
                 ));
             }

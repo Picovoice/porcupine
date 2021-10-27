@@ -15,7 +15,7 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
 ## Compatibility
 
 - Rust 1.54+
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
+- Runs on Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
 
 ## Installation
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.
@@ -36,12 +36,13 @@ pv_porcupine = { path = "/path/to/rust/binding" }
 
 ## AccessKey
 
-Porcupine requires that you obtain a free `AccessKey` from the [Picovoice Console](https://picovoice.ai/console/).
-`AccessKeys` are your credentials for accessing Picovoice SDKs. Please keep your `AccessKeys` secret.
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 
-1. Login or Signup for a Picovoice account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create or use an exisiting `AccessKey`.
-3. `AccessKeys` can be viewed at any time be choosing the `Show AccessKey` button in the `AccessKey` tab.
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 
 ## Usage
 
@@ -50,13 +51,12 @@ To create an instance of the engine you first create a PorcupineBuilder instance
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-let access_key = "..."; // AccessKey provided by Picovoice Console (https://picovoice.ai/console/)
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```
-where `access_key` is an AccessKey which should be obtained from [Picovoice Console](https://picovoice.ai/console/).
 
-In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine".
+In the above example, we've initialized the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
 Porcupine can detect multiple keywords concurrently:

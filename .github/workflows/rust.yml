@@ -62,5 +62,5 @@ jobs:
       working-directory: binding/rust
 
     - name: Rust run tests
-      run: cargo test --verbose
+      run: PV_ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}} cargo test --verbose
       working-directory: binding/rust

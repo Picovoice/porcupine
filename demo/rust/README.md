@@ -11,6 +11,15 @@ porcupine/demo/rust/filedemo  # File Demo
 porcupine/demo/rust/micdemo  # Microphone Demo
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ### File Demo
 
 The file demo uses Porcupine to scan for keywords in a `.wav` file.
@@ -19,10 +28,8 @@ Porcupine processes a 16kHz, single-channel audio stream.
 The following processes a file looking for instances of the phrase "Picovoice":
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --input_audio_path "path/to/input.wav" --keywords picovoice
+cargo run --release -- --access_key ${ACCESS_KEY} --input_audio_path "path/to/input.wav" --keywords picovoice
 ```
-
-Where `ACCESS_KEY` is an AccessKey which should be obtained from [Picovoice Console](https://picovoice.ai/console/).
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
 can be seen in the usage string:
@@ -31,18 +38,18 @@ can be seen in the usage string:
 cargo run --release -- --help
 ```
 
-To detect multiple phrases concurrently provide them as comma-seperated values.
+To detect multiple phrases concurrently provide them as comma-separated values.
 If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --input_audio_path "path/to/input.wav" --keywords picovoice,grasshopper,"hey siri"
+cargo run --release -- --access_key ${ACCESS_KEY} --input_audio_path "path/to/input.wav" --keywords picovoice,grasshopper,"hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument:
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY \
+cargo run --release -- --access_key ${ACCESS_KEY} \
 --input_audio_path "path/to/input.wav" \
 --keyword_paths "/path/to/keyword/one.ppn","/path/to/keyword/two.ppn"
 ```
@@ -50,7 +57,7 @@ cargo run --release -- --access_key ACCESS_KEY \
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument:
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY \
+cargo run --release -- --access_key ${ACCESS_KEY} \
 --input_audio_path "path/to/input.wav" \
 --keywords grasshopper,porcupine --sensitivities 0.3,0.6
 ```
@@ -65,10 +72,8 @@ The microphone opens an audio stream from a microphone and detects utterances of
 The following opens the default microphone and detects occurrences of "Picovoice":
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --keywords picovoice
+cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice
 ```
-
-Where `ACCESS_KEY` is an AccessKey which should be obtained from [Picovoice Console](https://picovoice.ai/console/).
 
 `keywords` is a shorthand for using default keyword files shipped with the package.
 The list of default keyword files can be seen in the usage string:
@@ -77,18 +82,18 @@ The list of default keyword files can be seen in the usage string:
 cargo run --release -- --help
 ```
 
-To detect multiple phrases concurrently provide them as comma-seperated values.
+To detect multiple phrases concurrently provide them as comma-separated values.
 If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --keywords picovoice,grasshopper,"hey siri"
+cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice,grasshopper,"hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use the `keyword_paths` argument:
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --keyword_paths "/path/to/keyword/one.ppn","/path/to/keyword/two.ppn"
+cargo run --release -- --access_key ${ACCESS_KEY} --keyword_paths "/path/to/keyword/one.ppn","/path/to/keyword/two.ppn"
 ```
 
 It is possible that the default audio input device is not the one you wish to use. There are a couple
@@ -109,14 +114,14 @@ You can use the device index to specify which microphone to use for the demo. Fo
 in the above example, you can invoke the demo application as below:
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --keywords picovoice --audio_device_index 0
+cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice --audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection.
 This can be achieved with:
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --keywords picovoice --output_path ./test.wav
+cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice --output_path ./test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.

@@ -378,7 +378,7 @@ This demo opens an audio stream from a microphone and detects utterances of a gi
 From [demo/rust/micdemo](/demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
 
 ```console
-cargo run --release -- --access_key ACCESS_KEY --keywords picovoice
+cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice
 ```
 
 For more information about Rust demos go to [demo/rust](/demo/rust).
@@ -666,7 +666,7 @@ To install the Porcupine Go module to your project, use the command:
 go get github.com/Picovoice/porcupine/binding/go
 ```
 
-To create an instance of the engine you first creat a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`.
+To create an instance of the engine you first create a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`.
 
 ```go
 import . "github.com/Picovoice/porcupine/binding/go"
@@ -678,7 +678,7 @@ if err != nil {
 }
 ```
 
-In the above example, we've initialzed the engine to detect the built-in wake word "Picovoice". Built-in keywords are constants in the package with the BuiltInKeyword type.
+In the above example, we've initialized the engine to detect the built-in wake word "Picovoice". Built-in keywords are constants in the package with the BuiltInKeyword type.
 
 To detect non-default keywords, use `KeywordPaths` parameter instead
 
@@ -1448,11 +1448,11 @@ To create an instance of the engine you first create a `PorcupineBuilder` instan
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-let access_key = "..."; // AccessKey provided by Picovoice Console (https://picovoice.ai/console/)
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```
-In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine".
+In the above example, we've initialized the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
 To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
