@@ -34,6 +34,15 @@ Then you can reference the local binding location:
 pv_porcupine = { path = "/path/to/rust/binding" }
 ```
 
+## AccessKey
+
+Porcupine requires that you obtain a free `AccessKey` from the [Picovoice Console](https://picovoice.ai/console/).
+`AccessKeys` are your credentials for accessing Picovoice SDKs. Please keep your `AccessKeys` secret.
+
+1. Login or Signup for a Picovoice account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create or use an exisiting `AccessKey`.
+3. `AccessKeys` can be viewed at any time be choosing the `Show AccessKey` button in the `AccessKey` tab.
+
 ## Usage
 
 To create an instance of the engine you first create a PorcupineBuilder instance with the configuration parameters for the wake word engine and then make a call to `.init()`:
