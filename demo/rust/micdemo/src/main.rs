@@ -135,12 +135,13 @@ fn show_audio_devices() {
 fn main() {
     let matches = App::new("Picovoice Porcupine Rust Mic Demo")
         .group(
-            ArgGroup::with_name("keywords_group")
+            ArgGroup::with_name("actions_group")
             .arg("access_key")
             .arg("keywords")
             .arg("keyword_paths")
             .arg("show_audio_devices")
             .required(true)
+            .multiple(true)
         )
         .arg(
             Arg::with_name("access_key")

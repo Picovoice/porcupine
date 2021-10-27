@@ -13,9 +13,9 @@ use lazy_static::lazy_static;
 use libc::{c_char, c_float};
 use libloading::{Library, Symbol};
 use std::cmp::PartialEq;
-use std::convert::AsRef;
+use std::ffi::OsStr;
 use std::ffi::{CStr, CString};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
 
@@ -127,11 +127,11 @@ pub enum PvStatus {
     STOP_ITERATION = 4,
     KEY_ERROR = 5,
     INVALID_STATE = 6,
-    PV_STATUS_RUNTIME_ERROR = 7,
-    PV_STATUS_ACTIVATION_ERROR = 8,
-    PV_STATUS_ACTIVATION_LIMIT_REACHED = 9,
-    PV_STATUS_ACTIVATION_THROTTLED = 10,
-    PV_STATUS_ACTIVATION_REFUSED = 11,
+    RUNTIME_ERROR = 7,
+    ACTIVATION_ERROR = 8,
+    ACTIVATION_LIMIT_REACHED = 9,
+    ACTIVATION_THROTTLED = 10,
+    ACTIVATION_REFUSED = 11,
 }
 
 type PvPorcupineInitFn = unsafe extern "C" fn(
@@ -208,14 +208,11 @@ impl PorcupineBuilder {
         return Self::new_with_keyword_paths(access_key, &keyword_paths);
     }
 
-    pub fn new_with_keyword_paths<S: Into<String>, P: AsRef<Path>>(
+    pub fn new_with_keyword_paths<S: Into<String>, P: Into<PathBuf> + AsRef<OsStr>>(
         access_key: S,
         keyword_paths: &[P],
     ) -> Self {
-        let keyword_paths: Vec<PathBuf> = keyword_paths
-            .iter()
-            .map(|path| PathBuf::from(path.as_ref()))
-            .collect();
+        let keyword_paths: Vec<PathBuf> = keyword_paths.iter().map(|path| path.into()).collect();
 
         let mut sensitivities = Vec::new();
         sensitivities.resize_with(keyword_paths.len(), || 0.5);
@@ -234,21 +231,21 @@ impl PorcupineBuilder {
         return self;
     }
 
-    pub fn library_path<'a, P: AsRef<Path>>(&'a mut self, library_path: P) -> &'a mut Self {
-        self.library_path = PathBuf::from(library_path.as_ref());
+    pub fn library_path<'a, P: Into<PathBuf>>(&'a mut self, library_path: P) -> &'a mut Self {
+        self.library_path = library_path.into();
         return self;
     }
 
-    pub fn model_path<'a, P: AsRef<Path>>(&'a mut self, model_path: P) -> &'a mut Self {
-        self.model_path = PathBuf::from(model_path.as_ref());
+    pub fn model_path<'a, P: Into<PathBuf>>(&'a mut self, model_path: P) -> &'a mut Self {
+        self.model_path = model_path.into();
         return self;
     }
 
-    pub fn keyword_paths<'a, P: AsRef<Path>>(&'a mut self, keyword_paths: &[P]) -> &'a mut Self {
-        self.keyword_paths = keyword_paths
-            .iter()
-            .map(|path| PathBuf::from(path.as_ref()))
-            .collect();
+    pub fn keyword_paths<'a, P: Into<PathBuf> + AsRef<OsStr>>(
+        &'a mut self,
+        keyword_paths: &[P],
+    ) -> &'a mut Self {
+        self.keyword_paths = keyword_paths.iter().map(|path| path.into()).collect();
         return self;
     }
 
@@ -342,7 +339,7 @@ struct PorcupineInner {
 }
 
 impl PorcupineInner {
-    pub fn init<S: Into<String>, P: AsRef<Path>>(
+    pub fn init<S: Into<String>, P: Into<PathBuf> + AsRef<OsStr>>(
         access_key: S,
         library_path: P,
         model_path: P,
@@ -350,23 +347,25 @@ impl PorcupineInner {
         sensitivities: &[f32],
     ) -> Result<Self, PorcupineError> {
         unsafe {
-            if !library_path.as_ref().exists() {
+            let library_path: PathBuf = library_path.into();
+            let model_path: PathBuf = model_path.into();
+            let keyword_paths: Vec<PathBuf> =
+                keyword_paths.iter().map(|path| path.into()).collect();
+
+            if !library_path.exists() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
                     &format!(
                         "Couldn't find Porcupine's dynamic library at {}",
-                        library_path.as_ref().display()
+                        library_path.display()
                     ),
                 ));
             }
 
-            if !model_path.as_ref().exists() {
+            if !model_path.exists() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    &format!(
-                        "Couldn't find model file at {}",
-                        model_path.as_ref().display()
-                    ),
+                    &format!("Couldn't find model file at {}", model_path.display()),
                 ));
             }
 
@@ -395,14 +394,11 @@ impl PorcupineInner {
                 ));
             }
 
-            for keyword_path in keyword_paths {
-                if !keyword_path.as_ref().exists() {
+            for keyword_path in &keyword_paths {
+                if !keyword_path.exists() {
                     return Err(PorcupineError::new(
                         PorcupineErrorStatus::ArgumentError,
-                        &format!(
-                            "Couldn't find keyword file at {}",
-                            keyword_path.as_ref().display()
-                        ),
+                        &format!("Couldn't find keyword file at {}", keyword_path.display()),
                     ));
                 }
             }
