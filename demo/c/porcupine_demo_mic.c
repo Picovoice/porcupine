@@ -104,7 +104,7 @@ static struct option long_options[] = {
         {"library_path",       required_argument, NULL, 'l'},
         {"model_path",         required_argument, NULL, 'm'},
         {"keyword_path",       required_argument, NULL, 'k'},
-        {"sensitivity",        required_argument, NULL, 'y'},
+        {"sensitivity",        required_argument, NULL, 't'},
         {"access_key",         required_argument, NULL, 'a'},
         {"audio_device_index", required_argument, NULL, 'd'}
 };
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
     int32_t device_index = -1;
 
     int c;
-    while ((c = getopt_long(argc, argv, "hsl:m:k:y:a:d:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "sl:m:k:t:a:d:", long_options, NULL)) != -1) {
         switch (c) {
             case 's':
                 show_audio_devices();

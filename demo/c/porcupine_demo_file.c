@@ -9,12 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-#if !defined(_WIN32) && !defined(_WIN64)
-
-#include <dlfcn.h>
-
-#endif
-
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -23,7 +18,15 @@
 
 #include <windows.h>
 
+#else
+
+#include <dlfcn.h>
+
 #endif
+
+#define DR_WAV_IMPLEMENTATION
+
+#include "dr_wav.h"
 
 #include "pv_porcupine.h"
 
@@ -83,17 +86,57 @@ static void print_dl_error(const char *message) {
 
 }
 
+static struct option long_options[] = {
+        {"library_path",       required_argument, NULL, 'l'},
+        {"model_path",         required_argument, NULL, 'm'},
+        {"keyword_path",       required_argument, NULL, 'k'},
+        {"sensitivity",        required_argument, NULL, 't'},
+        {"access_key",         required_argument, NULL, 'a'},
+        {"wav_path",           required_argument, NULL, 'w'}
+};
+
+void print_usage(const char *program_name) {
+    fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity wav_path\n", program_name);
+}
+
 int main(int argc, char *argv[]) {
-    if (argc != 6) {
-        fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity wav_path\n", argv[0]);
-        exit(1);
+    const char *library_path = NULL;
+    const char *model_path = NULL;
+    const char *keyword_path = NULL;
+    float sensitivity = 0.5;
+    const char *access_key = NULL;
+    const char *wav_path = NULL;
+
+    int c;
+    while ((c = getopt_long(argc, argv, "l:m:k:t:a:w:", long_options, NULL)) != -1) {
+        switch (c) {
+            case 'l':
+                library_path = optarg;
+                break;
+            case 'm':
+                model_path = optarg;
+                break;
+            case 'k':
+                keyword_path = optarg;
+                break;
+            case 't':
+                sensitivity = strtof(optarg, NULL);
+                break;
+            case 'a':
+                access_key = optarg;
+                break;
+            case 'w':
+                wav_path = optarg;
+                break;
+            default:
+                exit(1);
+        }
     }
 
-    const char *library_path = argv[1];
-    const char *model_path = argv[2];
-    const char *keyword_path = argv[3];
-    const float sensitivity = strtod(argv[4], NULL);
-    const char *wav_path = argv[5];
+    if (!library_path || !model_path || !keyword_path || !access_key) {
+        print_usage(argv[0]);
+        exit(1);
+    }
 
     void *porcupine_library = open_dl(library_path);
     if (!porcupine_library) {
@@ -113,8 +156,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_init_func)(const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
-            load_symbol(porcupine_library, "pv_porcupine_init");
+    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **)
+    = load_symbol(porcupine_library, "pv_porcupine_init");
     if (!pv_porcupine_init_func) {
         print_dl_error("failed to load 'pv_porcupine_init'");
         exit(1);
@@ -139,37 +182,54 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    const char *(*pv_porcupine_version_func)() = load_symbol(porcupine_library, "pv_porcupine_version");
+    if (!pv_porcupine_version_func) {
+        print_dl_error("failed to load 'pv_porcupine_version'");
+        exit(1);
+    }
+
+    drwav f;
+
+    if (!drwav_init_file(&f, wav_path, NULL)) {
+        fprintf(stderr, "failed to open wav file at '%s'.", wav_path);
+        exit(1);
+    }
+
+    if (f.sampleRate != (uint32_t) pv_sample_rate_func()) {
+        fprintf(stderr, "audio sample rate should be %d\n.", pv_sample_rate_func());
+        exit(1);
+    }
+
+    if (f.bitsPerSample != 16) {
+        fprintf(stderr, "audio format should be 16-bit\n.");
+        exit(1);
+    }
+
+    if (f.channels != 1) {
+        fprintf(stderr, "audio should be single-channel.\n");
+        exit(1);
+    }
+
+    int16_t *pcm = calloc(pv_porcupine_frame_length_func(), sizeof(int16_t));
+    if (!pcm) {
+        fprintf(stderr, "failed to allocate memory for audio frame.\n");
+        exit(1);
+    }
+
     pv_porcupine_t *porcupine = NULL;
-    pv_status_t status = pv_porcupine_init_func(model_path, 1, &keyword_path, &sensitivity, &porcupine);
+    pv_status_t status = pv_porcupine_init_func(access_key, model_path, 1, &keyword_path, &sensitivity, &porcupine);
     if (status != PV_STATUS_SUCCESS) {
         fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string_func(status));
         exit(1);
     }
 
-    FILE *wav = fopen(wav_path, "rb");
-    if (!wav) {
-        fprintf(stderr, "failed to open wav file\n");
-        exit(1);
-    }
-
-    if (fseek(wav, 44, SEEK_SET) != 0) {
-        fprintf(stderr, "failed to skip the wav header\n");
-        exit(1);
-    }
-
-    const int32_t frame_length = pv_porcupine_frame_length_func();
-
-    int16_t *pcm = malloc(sizeof(int16_t) * frame_length);
-    if (!pcm) {
-        fprintf(stderr, "failed to allocate memory for audio buffer\n");
-        exit(1);
-    }
+    fprintf(stdout, "V%s\n\n", pv_porcupine_version_func());
 
     double total_cpu_time_usec = 0;
     double total_processed_time_usec = 0;
     int32_t frame_index = 0;
 
-    while (fread(pcm, sizeof(int16_t), frame_length, wav) == (size_t) frame_length) {
+    while ((int32_t) drwav_read_pcm_frames_s16(&f, pv_porcupine_frame_length_func(), pcm) == pv_porcupine_frame_length_func()) {
         struct timeval before;
         gettimeofday(&before, NULL);
 
@@ -184,12 +244,12 @@ int main(int argc, char *argv[]) {
         gettimeofday(&after, NULL);
 
         if (keyword_index != -1) {
-            fprintf(stdout, "detected at %.1f seconds\n", (double) frame_index * frame_length / pv_sample_rate_func());
+            fprintf(stdout, "detected at %.1f seconds\n", (double) frame_index * pv_porcupine_frame_length_func() / pv_sample_rate_func());
         }
 
         total_cpu_time_usec +=
                 (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
-        total_processed_time_usec += (frame_length * 1e6) / pv_sample_rate_func();
+        total_processed_time_usec += (pv_porcupine_frame_length_func() * 1e6) / pv_sample_rate_func();
         frame_index++;
     }
 
@@ -197,7 +257,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "real time factor : %.3f\n", real_time_factor);
 
     free(pcm);
-    fclose(wav);
+    drwav_uninit(&f);
     pv_porcupine_delete_func(porcupine);
     close_dl(porcupine_library);
 
