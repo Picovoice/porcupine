@@ -4,6 +4,16 @@
 sudo apt-get install wiringpi
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+
 ## Build
 
 From the root of the repository run:
@@ -32,6 +42,7 @@ From the root of the repository run:
 
 ```console
 ./demo/respeaker-rpi0/porcupine_demo_mic \
+${ACCESS_KEY}
 lib/raspberry-pi/arm11/libpv_porcupine.so \
 lib/common/porcupine_params.pv \
 0.65 \

@@ -61,10 +61,10 @@ void interrupt_handler(int _) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 14) {
+    if (argc != 15) {
         fprintf(
             stderr,
-            "usage : %s library_path model_path sensitivity input_audio_device alexa_keyword_path "
+            "usage : %s access_key library_path model_path sensitivity input_audio_device alexa_keyword_path "
             "computer_keyword_path hey_google_keyword_path hey_siri_keyword_path jarvis_keyword_path "
             "picovoice_keyword_path porcupine_keyword_path bumblebee_keyword_path terminator_keyword_path\n", argv[0]);
         exit(1);
@@ -72,11 +72,12 @@ int main(int argc, char *argv[]) {
 
     signal(SIGINT, interrupt_handler);
 
-    const char *library_path = argv[1];
-    const char *model_path = argv[2];
-    const float sensitivity = (float) atof(argv[3]);
-    const char *input_audio_device = argv[4];
-    const char **keyword_paths = (const char **) &argv[5];
+    const char *access_key = argv[1];
+    const char *library_path = argv[2];
+    const char *model_path = argv[3];
+    const float sensitivity = (float) atof(argv[4]);
+    const char *input_audio_device = argv[5];
+    const char **keyword_paths = (const char **) &argv[6];
     const int32_t num_keywords = 9;
 
     void *porcupine_library = dlopen(library_path, RTLD_NOW);
@@ -99,7 +100,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_init_func)(const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
+    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
             dlsym(porcupine_library, "pv_porcupine_init");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_porcupine_init' with '%s'.\n", error);
@@ -130,7 +131,7 @@ int main(int argc, char *argv[]) {
     for (int32_t i = 0; i < num_keywords; i++) {
         sensitivities[i] = sensitivity;
     }
-    pv_status_t status = pv_porcupine_init_func(model_path, num_keywords, keyword_paths, sensitivities, &porcupine);
+    pv_status_t status = pv_porcupine_init_func(access_key, model_path, num_keywords, keyword_paths, sensitivities, &porcupine);
     if (status != PV_STATUS_SUCCESS) {
         fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string_func(status));
         exit(1);
