@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -14,11 +14,13 @@ import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
 export type DetectionCallback = (keywordIndex: number) => void;
+export type ErrorCallback = (error: Error) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
   private _porcupine: Porcupine | null;
   private _detectionCallback: DetectionCallback;
+  private _errorCallback?: ErrorCallback;
   private _bufferListener?: EventSubscription;
   private _bufferEmitter: NativeEventEmitter;
 
@@ -27,9 +29,11 @@ class PorcupineManager {
 
   /**
    * Static creator for initializing a Porcupine Manager from built-in keywords
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywords List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved
    * using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
    * @param detectionCallback A callback for when Porcupine detects the specified keywords
+   * @param errorCallback A callback for when Porcupine error occurs
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
@@ -37,12 +41,14 @@ class PorcupineManager {
    * @returns An instance of the Porcupine Manager
    */
   public static async fromKeywords(
+    accessKey: string,
     keywords: string[],
     detectionCallback: DetectionCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
     let porcupine = await Porcupine.fromKeywords(
+      accessKey,
       keywords,
       modelPath,
       sensitivities
@@ -52,8 +58,10 @@ class PorcupineManager {
 
   /**
    * Static creator for initializing a Porcupine Manager from paths to custom keywords
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywordPaths Absolute paths to keyword model files.
    * @param detectionCallback A callback for when Porcupine detects the specified keywords
+   * @param errorCallback A callback for when Porcupine error occurs
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
@@ -61,12 +69,14 @@ class PorcupineManager {
    * @returns An instance of the Porcupine Manager
    */
   public static async fromKeywordPaths(
+    accessKey: string,
     keywordPaths: string[],
     detectionCallback: DetectionCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
     let porcupine = await Porcupine.fromKeywordPaths(
+      accessKey,
       keywordPaths,
       modelPath,
       sensitivities

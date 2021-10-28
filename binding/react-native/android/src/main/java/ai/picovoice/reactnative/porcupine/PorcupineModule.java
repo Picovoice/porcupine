@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -74,7 +74,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void create(String modelPath, ReadableArray keywordPaths, ReadableArray sensitivities, Promise promise) {
+  public void create(String accessKey, String modelPath, ReadableArray keywordPaths, ReadableArray sensitivities, Promise promise) {
 
     // convert from ReadableArrays to Java types
     String[] keywordPathsJava = new String[keywordPaths.size()];
@@ -89,6 +89,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
     try {
       Porcupine porcupine = new Porcupine.Builder()
+                              .setAccessKey(accessKey)
                               .setModelPath(modelPath)
                               .setKeywordPaths(keywordPathsJava)
                               .setSensitivities(sensitivitiesJava)

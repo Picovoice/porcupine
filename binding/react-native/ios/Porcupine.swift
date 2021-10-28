@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -34,12 +34,13 @@ class PvPorcupine: NSObject {
         ]
     }
 
-    @objc(create:keywordPaths:sensitivities:resolver:rejecter:)
-    func create(modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
+    @objc(create:accessKey:keywordPaths:sensitivities:resolver:rejecter:)
+    func create(accessKey: String, modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
         resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {                
         
         var porcupine:OpaquePointer?
         let status = pv_porcupine_init(
+            accessKey,
             modelPath,
             Int32(keywordPaths.count),
             keywordPaths.map { UnsafePointer(strdup($0)) },
