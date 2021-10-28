@@ -60,26 +60,22 @@ yarn add @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 
+// The worker will call the callback function upon a detection event
+// Here we tell it to log it to the console
+function keywordDetectionCallback(keyword) {
+  console.log("Porcupine detected " + keyword);
+}
+
 async startPorcupine()
   // Create a Porcupine Worker (English language) to listen for 
   // the built-in keyword "Picovoice", at a sensitivity of 0.65
   // Note: you receive a Worker object, _not_ an individual Porcupine instance
+  const accessKey = // .. AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
   const porcupineWorker = await PorcupineWorkerFactory.create(
-    [{builtin: "Picovoice", sensitivity: 0.65}]
+    accessKey,
+    [{builtin: "Picovoice", sensitivity: 0.65}],
+    keywordDetectionCallback
   );
-
-  // The worker will send a message with data.command = "ppn-keyword" upon a detection event
-  // Here we tell it to log it to the console
-  porcupineWorker.onmessage = (msg) => {
-    switch (msg.data.command) {
-      case 'ppn-keyword':
-        // Porcupine keyword detection
-        console.log("Porcupine detected " + msg.data.keywordLabel);
-        break;
-      default:
-        break;
-    }
-  };
 
   // Start up the web voice processor. It will request microphone permission 
   // and immediately (start: true) start listening.
@@ -120,9 +116,10 @@ E.g.:
 import { Porcupine } from "@picovoice/porcupine-web-en-factory";
 
 async function startPorcupine() {
-  const handle = await Porcupine.create([
-    {builtin: "Bumblebee", sensitivity: 0.7}
-  ]);
+  const accessKey = // .. AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+  const handle = await Porcupine.create(
+    accessKey,
+    [{builtin: "Bumblebee", sensitivity: 0.7}]);
 
   // Send Porcupine frames of audio (check handle.frameLength for size of array)
   const audioFrames = new Int16Array(/* Provide data with correct format and size */)

@@ -1,7 +1,7 @@
 {
   "name": "porcupine-web-template",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "description": "Template project for building porcupine-web-* packages",
   "main": ".eslintrc.js",
@@ -18,5 +18,8 @@
   "devDependencies": {
     "edit-json-file": "^1.5.0",
     "ncp": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=12"
   }
 }

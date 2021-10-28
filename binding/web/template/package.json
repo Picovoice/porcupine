@@ -1,6 +1,6 @@
 {
   "name": "$",
-  "version": "1.9.4",
+  "version": "2.0.0",
   "description": "Porcupine library for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
@@ -44,6 +44,7 @@
     "@rollup/plugin-node-resolve": "^11.1.1",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
+    "asyncify-wasm": "^1.2.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.19.0",
     "jest": "^26.6.3",

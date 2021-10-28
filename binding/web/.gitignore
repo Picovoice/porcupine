@@ -4,4 +4,4 @@ node_modules
 *.log
 .DS_Store
 porcupine-web-*
-**/pv_porcupine_b64.js
+**/porcupine_b64.ts
