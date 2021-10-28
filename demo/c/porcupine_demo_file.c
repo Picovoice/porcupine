@@ -96,7 +96,7 @@ static struct option long_options[] = {
 };
 
 void print_usage(const char *program_name) {
-    fprintf(stderr, "usage : %s library_path model_path keyword_path sensitivity wav_path\n", program_name);
+    fprintf(stderr, "Usage : %s -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSTIVITY -a ACCESS_KEY -w WAV_PATH\n", program_name);
 }
 
 int main(int argc, char *argv[]) {

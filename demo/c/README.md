@@ -9,7 +9,16 @@ You need a C99-compatible compiler to build these demos.
 - The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data. 
 - The following demo must be run at the [root](/../../) of the directory.
 - **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
-   
+
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 # Microphone Demo
 
 ## Build
@@ -28,16 +37,16 @@ Running the executable without any commandline arguments prints the usage info t
 
 ```console
 ./demo/c/build/porcupine_demo_mic 
-usage : ./demo/c/build/porcupine_demo_mic library_path model_path keyword_path sensitivity audio_device_intex
-        ./demo/c/build/porcupine_demo_mic --show_audio_devices
+Usage : ./demo/c/build/porcupine_demo_mic -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSTIVITY -a ACCESS_KEY -d AUDIO_DEVICE_INDEX
+        ./demo/c/build/porcupine_demo_mic [-s] [--show_audio_devices]
 ```
 
 #### Windows
 
 ```console
 .\\demo\\c\\build\\porcupine_demo_mic.exe
-usage : .\\demo\\c\\build\\porcupine_demo_mic.exe library_path model_path keyword_path sensitivity audio_device_intex
-        .\\demo\\c\\build\\porcupine_demo_mic.exe --show_audio_devices
+Usage : .\\demo\\c\\build\\porcupine_demo_mic.exe -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSTIVITY -a ACCESS_KEY -d AUDIO_DEVICE_INDEX
+        .\\demo\\c\\build\\porcupine_demo_mic.exe [-s] [--show_audio_devices]
 ```
 
 ### Show Audio Devices
@@ -59,19 +68,30 @@ The following commands shows the available audio input devices to the console.
 ### Wake Phrase
 
 The following commands start up a microphone audio stream and listens for the wake phrase "porcupine".
-Replace `${AUDIO_DEVICE_INDEX}` with the index of the audio device.
+Replace `${AUDIO_DEVICE_INDEX}` with the index of the audio device and `${ACCESS_KEY}` with your `AccessKey`.
 
 #### Linux
 
 ```console
-./demo/c/build/porcupine_demo_mic lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/linux/porcupine_linux.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+./demo/c/build/porcupine_demo_mic \
+-l lib/linux/x86_64/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/linux/porcupine_linux.ppn -t 0.5 \
+-a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 #### macOS
 
 ```console
-./demo/c/build/porcupine_demo_mic lib/mac/x86_64/libpv_porcupine.dylib lib/common/porcupine_params.pv \
-resources/keyword_files/mac/porcupine_mac.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+# Macos with Intel Chip
+./demo/c/build/porcupine_demo_mic \
+-l lib/mac/x86_64/libpv_porcupine.dylib -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/mac/porcupine_mac.ppn -t 0.5 \
+-a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
+
+# Macos with Apple Chip
+./demo/c/build/porcupine_demo_mic \
+-l lib/mac/arm64/libpv_porcupine.dylib -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/mac/porcupine_mac.ppn -t 0.5 \
+-a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 
 #### Raspberry Pi
@@ -80,8 +100,10 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
-./demo/c/build/porcupine_demo_mic lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+./demo/c/build/porcupine_demo_mic \
+-l lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn -t 0.5 \
+-a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 
 #### BeagleBone
@@ -89,19 +111,26 @@ resources/keyword_files/raspberry-pi/porcupine_raspberry-pi.ppn 0.5 ${AUDIO_DEVI
 ```console
 ./demo/c/build/porcupine_demo_mic lib/beaglebone/libpv_porcupine.so lib/common/porcupine_params.pv \
 resources/keyword_files/beaglebone/porcupine_beaglebone.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+
+./demo/c/build/porcupine_demo_mic \
+-l lib/beaglebone/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/beaglebone/porcupine_beaglebone.ppn -t 0.5 \
+-a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 
 #### Jetson
 
 ```console
-./demo/c/build/porcupine_demo_mic lib/jetson/cortex-a57-aarch64/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/jetson/porcupine_jetson.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+./demo/c/build/porcupine_demo_mic \
+-l lib/jetson/cortex-a57-aarch64/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/jetson/porcupine_jetson.ppn -t 0.5 \
+-a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 
 #### Windows
 
 ```console
-.\\demo\\c\\build\\porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+.\\demo\\c\\build\\porcupine_demo_mic.exe -l lib/windows/amd64/libpv_porcupine.dll -m lib/common/porcupine_params.pv -k resources/keyword_files/windows/porcupine_windows.ppn -t 0.5 -a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 
 # File Demo
@@ -122,33 +151,42 @@ Running the executable without any commandline arguments prints the usage info t
 
 ```console
 ./demo/c/build/porcupine_demo_file 
-usage : ./demo/c/build/porcupine_demo_file library_path model_path keyword_path sensitivity wav_path
+Usage : ./demo/c/build/porcupine_demo_file -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSTIVITY -a ACCESS_KEY -w WAV_PATH
 ```
 
 #### Windows
 
 ```console
 .\\demo\\c\\build\\porcupine_demo_file.exe
-usage : .\\demo\\c\\build\\porcupine_demo_file.exe library_path model_path keyword_path sensitivity wav_path
+Usage : .\\demo\\c\\build\\porcupine_demo_file.exe -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSTIVITY -a ACCESS_KEY -w WAV_PATH
 ```
 
 ### Wake Phrase
 
-**Note that the demo expects a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding. If you
-provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**
+**Note that the demo expects a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding.**
+
+Replace `${ACCESS_KEY}` with your `AccessKey`.
 
 #### Linux
 
 ```console
-./demo/c/build/porcupine_demo_file lib/linux/x86_64/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/linux/americano_linux.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+./demo/c/build/porcupine_demo_file -l lib/linux/x86_64/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/linux/americano_linux.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
+-a ${ACCESS_KEY}
 ```
 
 #### macOS
 
 ```console
-./demo/c/build/porcupine_demo_file lib/mac/x86_64/libpv_porcupine.dylib lib/common/porcupine_params.pv \
-resources/keyword_files/mac/americano_mac.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+# Macos with Intel Chip
+./demo/c/build/porcupine_demo_file -l lib/mac/x86_64/libpv_porcupine.dylib -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/mac/americano_mac.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
+-a ${ACCESS_KEY}
+
+# Macos with Apple Chip
+./demo/c/build/porcupine_demo_file -l lib/mac/arm64/libpv_porcupine.dylib -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/mac/americano_mac.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
+-a ${ACCESS_KEY}
 ```
 
 #### Raspberry Pi
@@ -157,26 +195,29 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
-./demo/c/build/porcupine_demo_file lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/raspberry-pi/americano_raspberry-pi.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+./demo/c/build/porcupine_demo_file -l lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/raspberry-pi/americano_raspberry-pi.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
+-a ${ACCESS_KEY}
 ```
 
 #### BeagleBone
 
 ```console
-./demo/c/build/porcupine_demo_file lib/beaglebone/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/beaglebone/americano_beaglebone.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+./demo/c/build/porcupine_demo_file -l lib/beaglebone/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/beaglebone/americano_beaglebone.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
+-a ${ACCESS_KEY}
 ```
 
 #### Jetson
 
 ```console
-./demo/c/build/porcupine_demo_file lib/jetson/cortex-a57-aarch64/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/jetson/americano_jetson.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+./demo/c/build/porcupine_demo_file -l lib/jetson/cortex-a57-aarch64/libpv_porcupine.so -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/jetson/americano_jetson.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
+-a ${ACCESS_KEY}
 ```
 
 #### Windows
 
 ```console
-.\\demo\\c\\build\\porcupine_demo_file.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/americano_windows.ppn 0.5 resources/audio_samples/multiple_keywords.wav
+.\\demo\\c\\build\\porcupine_demo_file.exe -l lib/windows/amd64/libpv_porcupine.dll -m lib/common/porcupine_params.pv -k resources/keyword_files/windows/americano_windows.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav -a ${ACCESS_KEY}
 ```
