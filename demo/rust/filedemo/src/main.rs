@@ -18,14 +18,17 @@ use std::path::PathBuf;
 
 fn porcupine_demo(
     input_audio_path: PathBuf,
+    access_key: &str,
     keywords_or_paths: KeywordsOrPaths,
     sensitivities: Option<Vec<f32>>,
     model_path: Option<&str>,
 ) {
     let mut porcupine_builder = match keywords_or_paths {
-        KeywordsOrPaths::Keywords(ref keywords) => PorcupineBuilder::new_with_keywords(&keywords),
+        KeywordsOrPaths::Keywords(ref keywords) => {
+            PorcupineBuilder::new_with_keywords(access_key, &keywords)
+        }
         KeywordsOrPaths::KeywordPaths(ref keyword_paths) => {
-            PorcupineBuilder::new_with_keyword_paths(&keyword_paths)
+            PorcupineBuilder::new_with_keyword_paths(access_key, &keyword_paths)
         }
     };
 
@@ -126,6 +129,14 @@ fn main() {
             .takes_value(true)
             .required(true)
         )
+        .arg(
+            Arg::with_name("access_key")
+                .long("access_key")
+                .value_name("ACCESS_KEY")
+                .help("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)")
+                .takes_value(true)
+                .required(true),
+        )
         .group(
             ArgGroup::with_name("keywords_group")
             .arg("keywords")
@@ -204,8 +215,13 @@ fn main() {
 
     let model_path = matches.value_of("model_path");
 
+    let access_key = matches
+        .value_of("access_key")
+        .expect("AccessKey is REQUIRED for Porcupine operation");
+
     porcupine_demo(
         input_audio_path,
+        access_key,
         keywords_or_paths,
         sensitivities,
         model_path,

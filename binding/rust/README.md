@@ -7,7 +7,7 @@ applications. It is
 
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient. It is perfect for IoT.
-- cross-platform. Raspberry Pi, BeagleBone, Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and web
+- cross-platform. Raspberry Pi, BeagleBone, Android, iOS, Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), and web
 browsers are supported. Additionally, enterprise customers have access to ARM Cortex-M SDK.
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
 - self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
@@ -15,7 +15,7 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
 ## Compatibility
 
 - Rust 1.54+
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
+- Runs on Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
 
 ## Installation
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.
@@ -34,6 +34,16 @@ Then you can reference the local binding location:
 pv_porcupine = { path = "/path/to/rust/binding" }
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+
 ## Usage
 
 To create an instance of the engine you first create a PorcupineBuilder instance with the configuration parameters for the wake word engine and then make a call to `.init()`:
@@ -41,33 +51,36 @@ To create an instance of the engine you first create a PorcupineBuilder instance
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```
-In the above example, we've initialzed the engine to detect the built-in wake word "Porcupine".
+
+In the above example, we've initialized the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
 Porcupine can detect multiple keywords concurrently:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine, BuiltinKeywords::Blueberry, BuiltinKeywords::Bumblebee])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine, BuiltinKeywords::Blueberry, BuiltinKeywords::Bumblebee])
     .init().expect("Unable to create Porcupine");
 ```
 
 To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one.ppn", "/absolute/path/to/keyword/two.ppn"])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(access_key, &["/absolute/path/to/keyword/one.ppn", "/absolute/path/to/keyword/two.ppn"])
     .init().expect("Unable to create Porcupine");
 ```
 
 The language can be changed by passing in an appropriate `*.pv` file path into the `model_path` method:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one.ppn"])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(access_key, &["/absolute/path/to/keyword/one.ppn"])
     .model_path("/path/to/another/language_params.pv")
     .init().expect("Unable to create Porcupine");
 ```
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` method:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(&[BuiltinKeywords::Porcupine, BuiltinKeywords::Bumblebee])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine, BuiltinKeywords::Bumblebee])
     .sensitivities(&[0.2f32, 0.42f32])
     .init().expect("Unable to create Porcupine");
 ```

@@ -1,6 +1,7 @@
 name: Rust Demos
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
     paths:
