@@ -3,14 +3,14 @@ name: Rust
 on:
   workflow_dispatch:
   push:
-    branches: [ master, rust-2.0 ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/rust/**'
       - '!binding/rust/README.md'
       - 'lib/**'
       - 'res/**'
   pull_request:
-    branches: [ master, rust-2.0 ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/rust/**'
       - '!binding/rust/README.md'
