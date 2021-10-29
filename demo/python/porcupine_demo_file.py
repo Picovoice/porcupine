@@ -40,6 +40,10 @@ def main():
         help='Absolute path to the file containing model parameters.',
         default=pvporcupine.MODEL_PATH)
 
+    parser.add_argument('--access_key',
+                        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+                        required=True)
+
     parser.add_argument(
         '--sensitivities',
         nargs='+',
