@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2018-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -18,6 +18,10 @@ import soundfile
 
 def main():
     parser = argparse.ArgumentParser()
+
+    parser.add_argument('--access_key',
+                        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+                        required=True)
 
     parser.add_argument('--input_audio_path', help='Absolute path to input audio file.', required=True)
 
@@ -39,10 +43,6 @@ def main():
         '--model_path',
         help='Absolute path to the file containing model parameters.',
         default=pvporcupine.MODEL_PATH)
-
-    parser.add_argument('--access_key',
-                        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
-                        required=True)
 
     parser.add_argument(
         '--sensitivities',
@@ -70,6 +70,7 @@ def main():
         raise ValueError('Number of keywords does not match the number of sensitivities.')
 
     porcupine = pvporcupine.create(
+        access_key=args.access_key,
         library_path=args.library_path,
         model_path=args.model_path,
         keyword_paths=keyword_paths,

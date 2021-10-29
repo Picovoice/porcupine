@@ -151,7 +151,7 @@ sudo pip3 install pvporcupinedemo
 With a working microphone connected to your device run the following in the terminal:
 
 ```console
-porcupine_demo_mic --keywords porcupine
+porcupine_demo_mic --access_key ${ACCESS_KEY} --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
@@ -491,7 +491,9 @@ The SDK exposes a factory method to create instances of the engine:
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keywords=['picovoice', 'bumblebee'])
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+handle = pvporcupine.create(access_key=access_key, keywords=['picovoice', 'bumblebee'])
 ```
 
 `keywords` argument is a shorthand for accessing default keyword files shipped with the library. The default keyword
@@ -508,7 +510,9 @@ If you wish to use a non-default keyword file you need to identify its path:
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keyword_paths=['path/to/non/default/keyword/file'])
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+handle = pvporcupine.create(access_key=access_key, keyword_paths=['path/to/non/default/keyword/file'])
 ```
 
 When initialized, valid sample rate can be obtained using `handle.sample_rate`. The required frame length
@@ -518,7 +522,9 @@ incoming audio as follows:
 ```python
 import pvporcupine
 
-handle = pvporcupine.create(keywords=['porcupine'])
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+handle = pvporcupine.create(access_key=access_key, keywords=['porcupine'])
 
 def get_next_audio_frame():
     pass

@@ -29,6 +29,7 @@ class PorcupineDemo(Thread):
 
     def __init__(
             self,
+            access_key,
             library_path,
             model_path,
             keyword_paths,
@@ -52,6 +53,7 @@ class PorcupineDemo(Thread):
 
         super(PorcupineDemo, self).__init__()
 
+        self.access_key = access_key
         self._library_path = library_path
         self._model_path = model_path
         self._keyword_paths = keyword_paths
@@ -80,6 +82,7 @@ class PorcupineDemo(Thread):
         recorder = None
         try:
             porcupine = pvporcupine.create(
+                access_key=self.access_key,
                 library_path=self._library_path,
                 model_path=self._model_path,
                 keyword_paths=self._keyword_paths,
@@ -129,6 +132,9 @@ class PorcupineDemo(Thread):
 def main():
     parser = argparse.ArgumentParser()
 
+    parser.add_argument('--access_key',
+                        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)')
+
     parser.add_argument(
         '--keywords',
         nargs='+',
@@ -168,6 +174,8 @@ def main():
     if args.show_audio_devices:
         PorcupineDemo.show_audio_devices()
     else:
+        if args.access_key is None:
+            raise ValueError("AccessKey (--access_key) is required")
         if args.keyword_paths is None:
             if args.keywords is None:
                 raise ValueError("Either `--keywords` or `--keyword_paths` must be set.")
@@ -183,6 +191,7 @@ def main():
             raise ValueError('Number of keywords does not match the number of sensitivities.')
 
         PorcupineDemo(
+            access_key=args.access_key,
             library_path=args.library_path,
             model_path=args.model_path,
             keyword_paths=keyword_paths,

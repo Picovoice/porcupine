@@ -26,6 +26,15 @@ applications. It is
 sudo pip3 install pvporcupinedemo
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 ### Microphone Demo
@@ -34,7 +43,7 @@ It opens an audio stream from a microphone and detects utterances of a given wak
 microphone and detects occurrences of "Picovoice".
 
 ```console
-porcupine_demo_mic --keywords picovoice
+porcupine_demo_mic --access_key ${ACCESS_KEY} --keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
@@ -47,20 +56,20 @@ porcupine_demo_mic --help
 To detect multiple phrases concurrently provide them as separate arguments
 
 ```console
-porcupine_demo_mic --keywords picovoice porcupine
+porcupine_demo_mic --access_key ${ACCESS_KEY} --keywords picovoice porcupine
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument
 
 ```console
-porcupine_demo_mic --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
+porcupine_demo_mic --access_key ${ACCESS_KEY} --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 To detect non-English keywords provide the respective model path:
 
 ```console
-porcupine_demo_mic --model_path ${NON_ENGLISH_MODEL_PATH} --keyword_paths ${NON_ENGLISH_KEYWORD_PATH} 
+porcupine_demo_mic --access_key ${ACCESS_KEY} --model_path ${NON_ENGLISH_MODEL_PATH} --keyword_paths ${NON_ENGLISH_KEYWORD_PATH}
 ```
 
 The model files for all supported languages are available 
@@ -84,13 +93,13 @@ You can use the device index to specify which microphone to use for the demo. Fo
 in the above example, you can invoke the demo application as below:
 
 ```console
-porcupine_demo_mic --keywords picovoice --audio_device_index 0
+porcupine_demo_mic --access_key ${ACCESS_KEY} --keywords picovoice --audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved by
 
 ```console
-porcupine_demo_mic --keywords picovoice --audio_device_index 0 --output_path ~/test.wav
+porcupine_demo_mic --access_key ${ACCESS_KEY} --keywords picovoice --audio_device_index 0 --output_path ~/test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
@@ -103,7 +112,7 @@ provided it only processes the first (left) channel. The following processes a f
 "Picovoice"
 
 ```console
-porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keywords picovoice
+porcupine_demo_file --access_key ${ACCESS_KEY} --input_audio_path ${AUDIO_PATH} --keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
@@ -116,21 +125,23 @@ porcupine_demo_file --help
 To detect multiple phrases concurrently provide them as separate arguments
 
 ```console
-porcupine_demo_file --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
+porcupine_demo_file --access_key ${ACCESS_KEY} --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument
 
 ```console
-porcupine_demo_file --input_audio_path ${AUDIO_PATH} \
+porcupine_demo_file --access_key ${ACCESS_KEY} \
+--input_audio_path ${AUDIO_PATH} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 To detect non-English keywords provide the respective model path:
 
 ```console
-porcupine_demo_mic --input_audio_path ${AUDIO_PATH} \
+porcupine_demo_mic --access_key ${ACCESS_KEY} \
+--input_audio_path ${AUDIO_PATH} \
 --model_path ${NON_ENGLISH_MODEL_PATH} \
 --keyword_paths ${NON_ENGLISH_KEYWORD_PATH} 
 ```
@@ -141,7 +152,8 @@ The model files for all supported languages are available
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument
 
 ```console
-porcupine_demo_file --input_audio_path ${AUDIO_PATH} \
+porcupine_demo_file --access_key ${ACCESS_KEY} \
+--input_audio_path ${AUDIO_PATH} \
 --keywords grasshopper porcupine --sensitivities 0.3 0.6
 ```
 
