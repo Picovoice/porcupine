@@ -27,6 +27,16 @@ Then install the demo:
 sudo pip3 install ppnrespeakerdemo
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+
 ## Usage
 
 Below are the colors associated with supported wake words for this demo:
@@ -44,7 +54,7 @@ Below are the colors associated with supported wake words for this demo:
 Run the demo:
 
 ```console
-porcupine_respeaker_demo
+porcupine_respeaker_demo --access_key ${ACCESS_KEY}
 ```
 
 Wait for the demo to initialize and print `[Listening]` in the terminal. Say:
