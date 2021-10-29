@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "yarn run serve"
+    "start": "yarn run http-server -a localhost -p 5000"
   },
   "keywords": [
     "Picovoice",
@@ -24,6 +24,6 @@
     "@picovoice/web-voice-processor": "^2.0.2"
   },
   "devDependencies": {
-    "serve": "^11.3.2"
+    "http-server": "^14.0.0"
   }
 }
