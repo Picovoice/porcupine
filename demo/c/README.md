@@ -38,7 +38,7 @@ Running the executable without any commandline arguments prints the usage info t
 ```console
 ./demo/c/build/porcupine_demo_mic 
 Usage : ./demo/c/build/porcupine_demo_mic -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSTIVITY -a ACCESS_KEY -d AUDIO_DEVICE_INDEX
-        ./demo/c/build/porcupine_demo_mic [-s] [--show_audio_devices]
+        ./demo/c/build/porcupine_demo_mic [-s, --show_audio_devices]
 ```
 
 #### Windows
@@ -46,7 +46,7 @@ Usage : ./demo/c/build/porcupine_demo_mic -l LIBRARY_PATH -m MODEL_PATH -k KEYWO
 ```console
 .\\demo\\c\\build\\porcupine_demo_mic.exe
 Usage : .\\demo\\c\\build\\porcupine_demo_mic.exe -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSTIVITY -a ACCESS_KEY -d AUDIO_DEVICE_INDEX
-        .\\demo\\c\\build\\porcupine_demo_mic.exe [-s] [--show_audio_devices]
+        .\\demo\\c\\build\\porcupine_demo_mic.exe [-s, --show_audio_devices]
 ```
 
 ### Show Audio Devices
