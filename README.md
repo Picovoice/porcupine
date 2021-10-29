@@ -410,13 +410,14 @@ List input audio devices with:
 Run the demo using:
 
 ```console
-./demo/c/build/porcupine_demo_mic ${LIBRARY_PATH} lib/common/porcupine_params.pv \
-resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+./demo/c/build/porcupine_demo_mic -l ${LIBRARY_PATH} -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn -t 0.5 \
+-d ${AUDIO_DEVICE_INDEX} -a ${ACCESS_KEY}
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`), and `${AUDIO_DEVICE_INDEX}` with
-the index of your audio device.
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`), `${AUDIO_DEVICE_INDEX}` with
+the index of your audio device and `${ACCESS_KEY}` with your `AccessKey`.
 
 #### Windows
 
@@ -429,10 +430,10 @@ List input audio devices with:
 Run the demo using:
 
 ```console
-.\\demo\\c\\build\\porcupine_demo_mic.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 ${AUDIO_DEVICE_INDEX}
+.\\demo\\c\\build\\porcupine_demo_mic.exe -l lib/windows/amd64/libpv_porcupine.dll -m lib/common/porcupine_params.pv -k resources/keyword_files/windows/porcupine_windows.ppn -t 0.5 -d ${AUDIO_DEVICE_INDEX} -a ${ACCESS_KEY}
 ```
 
-Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device. 
+Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device and `${ACCESS_KEY}` with your `AccessKey`.
 
 The demo opens an audio stream and detects utterances of `Porcupine`.
 
@@ -449,20 +450,23 @@ cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupi
 Run the demo using:
 
 ```console
-./demo/c/build/porcupine_demo_file ${LIBRARY_PATH} lib/common/porcupine_params.pv \
-resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+./demo/c/build/porcupine_demo_file -l ${LIBRARY_PATH} -m lib/common/porcupine_params.pv \
+-k resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn -t 0.5 \
+-w resources/audio_samples/multiple_keywords.wav -a ${ACCESS_KEY}
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`).
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`) and `${ACCESS_KEY}` with your `AccessKey`.
 
 #### Windows
 
 Run the demo using:
 
 ```console
-.\\demo\\c\\build\\porcupine_demo_file.exe lib/windows/amd64/libpv_porcupine.dll lib/common/porcupine_params.pv resources/keyword_files/windows/porcupine_windows.ppn 0.5 resources/audio_samples/multiple_keywords.wav 
+.\\demo\\c\\build\\porcupine_demo_file.exe -l lib/windows/amd64/libpv_porcupine.dll -m lib/common/porcupine_params.pv -k resources/keyword_files/windows/porcupine_windows.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav -a ${ACCESS_KEY}
 ```
+
+Replace `${ACCESS_KEY}` with your `AccessKey`.
 
 The demo opens up the file and detects utterances of `Porcupine`.
 
@@ -1488,11 +1492,13 @@ object can be constructed as follows.
 
 ```c
 const char *model_path = ... // Available at lib/common/porcupine_params.pv
+const char *access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 const char *keyword_path = ...
 const float sensitivity = 0.5f;
 
 pv_porcupine_t *handle = NULL;
 const pv_status_t status = pv_porcupine_init(
+    access_key,
     model_path,
     1,
     &keyword_path,
