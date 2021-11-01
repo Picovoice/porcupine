@@ -51,21 +51,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.97"/>
 
-    <TextView
-        android:id="@+id/intentView"
-        android:layout_width="0sp"
-        android:layout_height="0sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:padding="10dp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/record_button"
-        app:layout_constraintBottom_toTopOf="@id/footer"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"/>
-
     <ToggleButton
         android:id="@+id/record_button"
         android:layout_width="100dp"
@@ -81,6 +66,35 @@
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintHorizontal_bias="0.5"/>
+
+    <TextView
+        android:id="@+id/intentView"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:padding="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/record_button"
+        app:layout_constraintBottom_toTopOf="@id/footer"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"/>
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:text=""
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@drawable/error_view"
+        android:padding="10sp"
+        app:layout_constraintBottom_toTopOf="@id/footer"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/footer"
