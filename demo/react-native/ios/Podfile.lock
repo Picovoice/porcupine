@@ -19,7 +19,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - porcupine-react-native (1.9.6):
+  - porcupine-react-native (2.0.0):
     - React
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
@@ -187,6 +187,10 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
+  - react-native-config (1.4.5):
+    - react-native-config/App (= 1.4.5)
+  - react-native-config/App (1.4.5):
+    - React-Core
   - react-native-voice-processor (1.0.4):
     - React
   - React-RCTActionSheet (0.63.3):
@@ -249,7 +253,7 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - RNCPicker (1.9.10):
+  - RNCPicker (1.15.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -272,6 +276,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-config (from `../node_modules/react-native-config`)
   - "react-native-voice-processor (from `../node_modules/@picovoice/react-native-voice-processor`)"
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -323,6 +328,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-config:
+    :path: "../node_modules/react-native-config"
   react-native-voice-processor:
     :path: "../node_modules/@picovoice/react-native-voice-processor"
   React-RCTActionSheet:
@@ -357,7 +364,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 7da9338acfb98d4ef9e5536805a0704572d33c2f
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  porcupine-react-native: 9e69ff44d62c72a45cb7df946234938965b89b3d
+  porcupine-react-native: 707590b8a0bf5513925421dc7ce02747161aa27d
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -368,6 +375,7 @@ SPEC CHECKSUMS:
   React-jsi: df07aa95b39c5be3e41199921509bfa929ed2b9d
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
+  react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-voice-processor: d6de50c8942d0c9b9e89d7c1c982c85c298a8b6f
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
@@ -379,9 +387,9 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
+  RNCPicker: 5256da29a92406cac439ac6605719e233714a86a
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
 PODFILE CHECKSUM: 2e445a610504be78d8bf271d54daa25cad447f62
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

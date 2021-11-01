@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,6 +10,7 @@
 //
 
 import { NativeModules } from 'react-native';
+
 const RCTPorcupine = NativeModules.PvPorcupine;
 
 class Porcupine {
@@ -23,6 +24,7 @@ class Porcupine {
 
   /**
    * Static creator for initializing Porcupine from one of the built-in keywords
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/.
    * @param keywords List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved
    * using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
@@ -32,11 +34,13 @@ class Porcupine {
    * @returns An instance of the engine.
    */
   public static async fromKeywords(
+    accessKey: string,
     keywords: string[],
     modelPath?: string,
     sensitivities?: number[]
   ) {
     let { handle, frameLength, sampleRate, version } = await Porcupine.create(
+      accessKey,
       keywords,
       undefined,
       modelPath,
@@ -47,6 +51,7 @@ class Porcupine {
 
   /**
    * Static creator for initializing Porcupine from a list of paths to custom keyword files
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywordPaths Absolute paths to keyword model files.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
@@ -55,11 +60,13 @@ class Porcupine {
    * @returns An instance of the engine.
    */
   public static async fromKeywordPaths(
+    accessKey: string,
     keywordsPaths: string[],
     modelPath?: string,
     sensitivities?: number[]
   ) {
     let { handle, frameLength, sampleRate, version } = await Porcupine.create(
+      accessKey,
       undefined,
       keywordsPaths,
       modelPath,
@@ -70,6 +77,7 @@ class Porcupine {
 
   /**
    * Creates an instance of wake word engine (Porcupine).
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywords List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved
    * using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
    * @param keywordPaths Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.
@@ -80,18 +88,25 @@ class Porcupine {
    * @returns An instance of the engine.
    */
   private static async create(
+    accessKey: string,
     keywords?: string[],
     keywordPaths?: string[],
     modelPath?: string,
     sensitivities?: number[]
   ) {
+    if (accessKey === undefined || accessKey === null) {
+      return Promise.reject(
+        `'accessKey' must be set.`
+      )
+    }
+
     if (modelPath === undefined) {
       modelPath = RCTPorcupine.DEFAULT_MODEL_PATH;
     }
 
     if (Array.isArray(keywords) && Array.isArray(keywordPaths)) {
       return Promise.reject(
-        `Both 'keywords' and 'keywordPaths' were set. Only one of the two arguments may be set for intializtion.`
+        `Both 'keywords' and 'keywordPaths' were set. Only one of the two arguments may be set for initialization.`
       );
     }
 
@@ -125,6 +140,13 @@ class Porcupine {
       }
     }
 
+    for (let i = 0; i < keywordPaths.length; i++) {
+      if (keywordPaths[i] == null || keywordPaths[i] == "") {
+        throw new Error(
+            "One of the provided keyword paths was empty.");
+      }
+    }
+
     if (sensitivities === undefined || sensitivities.length === 0) {
       sensitivities = [];
       for (let i = 0; i < keywordPaths.length; i++) {
@@ -146,7 +168,7 @@ class Porcupine {
       );
     }
 
-    return RCTPorcupine.create(modelPath, keywordPaths, sensitivities);
+    return RCTPorcupine.create(accessKey, modelPath, keywordPaths, sensitivities);
   }
 
   private constructor(

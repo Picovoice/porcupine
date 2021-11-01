@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,6 +10,12 @@
 //
 
 import PvPorcupine
+import Foundation
+
+enum PvPorcupineError: Error {
+    case RuntimeError(_ message: String)
+}
+
 
 @objc(PvPorcupine)
 class PvPorcupine: NSObject {
@@ -34,15 +40,25 @@ class PvPorcupine: NSObject {
         ]
     }
 
-    @objc(create:keywordPaths:sensitivities:resolver:rejecter:)
-    func create(modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
-        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {                
+    @objc(create:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
+    func create(accessKey: String, modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
+        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+        var modelPath = modelPath
+        var keywordPaths = keywordPaths
+        
+        do {
+            modelPath = try extractResource(modelPath)
+            keywordPaths = try keywordPaths.map { try extractResource($0) }
+        } catch {
+            reject("PvPorcupine:create", "PvPorcupine failed: \(error)", nil)
+        }
         
         var porcupine:OpaquePointer?
         let status = pv_porcupine_init(
+            accessKey,
             modelPath,
             Int32(keywordPaths.count),
-            keywordPaths.map { UnsafePointer(strdup($0)) },
+            keywordPaths.map{ UnsafePointer(strdup($0)) },
             sensitivities,
             &porcupine);
 
@@ -85,5 +101,19 @@ class PvPorcupine: NSObject {
         else{
             reject("PvPorcupine:process", "Invalid Porcupine handle provided to native module.", nil)
         }
+    }
+
+    private func extractResource(_ filePath: String) throws -> String {
+        if (!FileManager.default.fileExists(atPath: filePath)) {
+            if let resourcePath = Bundle.main.resourceURL?.appendingPathComponent("resources/\(filePath)").path {
+                if (FileManager.default.fileExists(atPath: resourcePath)) {
+                    return resourcePath
+                }
+            }
+            
+            throw PvPorcupineError.RuntimeError("Could not find file at path '\(filePath)'. If this is a packaged asset, ensure you have added it to your xcode project.")
+        }
+        
+        return filePath
     }
 }
