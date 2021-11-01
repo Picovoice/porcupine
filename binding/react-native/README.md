@@ -145,7 +145,7 @@ static constructor and provide the paths to the `.ppn` file(s).
 this._porcupineManager = await PorcupineManager.fromKeywordPaths(["/path/to/keyword.ppn"], detectionCallback);
 ```
 
-To add custom keywords to your app, copy the ppn files to your platform's asset folder and get the paths using [react-native-fs](https://www.npmjs.com/package/react-native-fs). An example of this can be found in our [Rhino demo](https://github.com/Picovoice/rhino/tree/master/demo/react-native).
+To add a custom wake word to your React Native application you'll need to add the ppn file to your platform projects. Android models must be added to `./android/app/src/main/assets/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS (i.e. add via xCode) project.
 
 In addition to custom keywords, you can override the default Porcupine model file and/or keyword sensitivities.
 These optional parameters can be passed in like so:
@@ -218,27 +218,6 @@ Finally, once you no longer need the wake word engine, be sure to explicitly rel
 
 ```javascript
 this._porcupine.delete();
-```
-
-## Custom Wake Word Integration
-
-To add a custom wake word to your React Native application you'll need to add the ppn file to your platform projects. Android models must be added to `./android/app/src/main/res/raw/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS project. Then in your app code, using the [react-native-fs](https://www.npmjs.com/package/react-native-fs) package, retrieve the files like so:
-```javascript
-const RNFS = require('react-native-fs');
-
-let wakeWordName = 'keyword';
-let wakeWordFilename = wakeWordName;
-let wakeWordPath = '';
-
-if (Platform.OS == 'android') {
-    // for Android, extract resources from APK
-    wakeWordFilename += '_android.ppn';
-    wakeWordPath = `${RNFS.DocumentDirectoryPath}/${wakeWordFilename}`;
-    await RNFS.copyFileRes(wakeWordFilename, wakeWordPath);
-} else if (Platform.OS == 'ios') {
-    wakeWordFilename += '_ios.ppn';
-    wakeWordPath = `${RNFS.MainBundlePath}/${wakeWordFilename}`;
-}
 ```
 
 ## Non-English Wake Words

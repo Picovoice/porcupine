@@ -14,7 +14,7 @@ import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
 export type DetectionCallback = (keywordIndex: number) => void;
-export type ErrorCallback = (error: Error) => void;
+export type ErrorCallback = (error: unknown) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
@@ -44,6 +44,7 @@ class PorcupineManager {
     accessKey: string,
     keywords: string[],
     detectionCallback: DetectionCallback,
+    errorCallback?: ErrorCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
@@ -53,7 +54,7 @@ class PorcupineManager {
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback);
+    return new PorcupineManager(porcupine, detectionCallback, errorCallback);
   }
 
   /**
@@ -72,6 +73,7 @@ class PorcupineManager {
     accessKey: string,
     keywordPaths: string[],
     detectionCallback: DetectionCallback,
+    errorCallback?: ErrorCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
@@ -81,11 +83,12 @@ class PorcupineManager {
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback);
+    return new PorcupineManager(porcupine, detectionCallback, errorCallback);
   }
 
-  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback) {
+  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback, errorCallback?: ErrorCallback) {
     this._detectionCallback = detectionCallback;
+    this._errorCallback = errorCallback;
     this._porcupine = porcupine;
     this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
       porcupine.frameLength,
@@ -103,7 +106,7 @@ class PorcupineManager {
             this._detectionCallback(keywordIndex);
           }
         } catch (e) {
-          console.error(e);
+          this._errorCallback?.(e);
         }
       }
     );

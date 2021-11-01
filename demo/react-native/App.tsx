@@ -14,6 +14,7 @@ import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
 import {PorcupineManager} from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
+import Config from 'react-native-config';
 
 type Props = {};
 type State = {
@@ -121,6 +122,7 @@ export default class App extends Component<Props, State> {
     this.setState({currentKeyword: keyword});
     try {
       this._porcupineManager = await PorcupineManager.fromKeywords(
+        Config.ACCESS_KEY,
         [keyword],
         (keywordIndex: number) => {
                     

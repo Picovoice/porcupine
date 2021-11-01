@@ -10,6 +10,7 @@
 //
 
 import { NativeModules } from 'react-native';
+
 const RCTPorcupine = NativeModules.PvPorcupine;
 
 class Porcupine {
@@ -99,14 +100,13 @@ class Porcupine {
       )
     }
 
-
     if (modelPath === undefined) {
       modelPath = RCTPorcupine.DEFAULT_MODEL_PATH;
     }
 
     if (Array.isArray(keywords) && Array.isArray(keywordPaths)) {
       return Promise.reject(
-        `Both 'keywords' and 'keywordPaths' were set. Only one of the two arguments may be set for intializtion.`
+        `Both 'keywords' and 'keywordPaths' were set. Only one of the two arguments may be set for initialization.`
       );
     }
 
@@ -137,6 +137,13 @@ class Porcupine {
             )}`
           );
         }
+      }
+    }
+
+    for (let i = 0; i < keywordPaths.length; i++) {
+      if (keywordPaths[i] == null || keywordPaths[i] == "") {
+        throw new Error(
+            "One of the provided keyword paths was empty.");
       }
     }
 

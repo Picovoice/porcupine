@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -13,7 +13,8 @@
 
 @interface RCT_EXTERN_MODULE(PvPorcupine, NSObject)
 
-RCT_EXTERN_METHOD(create: (NSString *)modelPath 
+RCT_EXTERN_METHOD(create: (NSString *)accessKey
+                  modelPath: (NSString *)modelPath 
                   keywordPaths: (NSArray<NSString *>)keywordPaths 
                   sensitivities: (NSArray<NSNumber>)sensitivities 
                   resolver: (RCTPromiseResolveBlock)resolve 
