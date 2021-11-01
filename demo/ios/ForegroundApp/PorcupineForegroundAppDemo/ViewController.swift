@@ -14,6 +14,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var wakeWordPicker: UIPickerView!
     @IBOutlet weak var startButton: UIButton!
 
+    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWordDict = [String:Porcupine.BuiltInKeyword]()
     var wakeWordKeys = [String]()
     var wakeWord = Porcupine.BuiltInKeyword.alexa
@@ -71,7 +72,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             }
 
             do {
-                porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
+                porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback)
                 try porcupineManager.start()
             } catch {
                 let alert = UIAlertController(

@@ -65,27 +65,27 @@ public class Porcupine {
             let bundle = Bundle(for: type(of: self))
             modelPathArg  = bundle.path(forResource: "porcupine_params", ofType: "pv")
             if modelPathArg == nil {
-                throw PorcupineError.PorcupineIOError(message: "Unable to open the the porcupine_params model at \(modelPathArg)")
+                throw PorcupineError.PorcupineIOError("Unable to open the the porcupine_params model at \(modelPathArg)")
             }
         }
         
         let sensitivitiesArg = sensitivities ?? Array(repeating: 0.5, count: keywordPaths.count)
         
         if sensitivitiesArg.count != keywordPaths.count {
-            throw PorcupineError.PorcupineInvalidArgumentError(message: "Number of sensitivity values (\(sensitivitiesArg.count)) does not match number of keywords (\(keywordPaths.count))")
+            throw PorcupineError.PorcupineInvalidArgumentError("Number of sensitivity values (\(sensitivitiesArg.count)) does not match number of keywords (\(keywordPaths.count))")
         }
         
         if !sensitivitiesArg.allSatisfy({$0 >= 0 && $0 <= 1}) {
-            throw PorcupineError.PorcupineInvalidArgumentError(message: "One or more sensitivities provided were not floating-point values between [0,1]")
+            throw PorcupineError.PorcupineInvalidArgumentError("One or more sensitivities provided were not floating-point values between [0,1]")
         }
         
         if !FileManager().fileExists(atPath: modelPathArg!){
-            throw PorcupineError.PorcupineInvalidArgumentError(message: "Model file at does not exist at '\(modelPathArg!)'")
+            throw PorcupineError.PorcupineInvalidArgumentError("Model file at does not exist at '\(modelPathArg!)'")
         }
         
         for keywordPath in keywordPaths {
             if !FileManager().fileExists(atPath: keywordPath){
-                throw PorcupineError.PorcupineInvalidArgumentError(message: "Keyword file at does not exist at '\(keywordPath)'")
+                throw PorcupineError.PorcupineInvalidArgumentError("Keyword file at does not exist at '\(keywordPath)'")
             }
         }
         
@@ -96,7 +96,7 @@ public class Porcupine {
             keywordPaths.map { UnsafePointer(strdup($0)) },
             sensitivitiesArg,
             &handle)
-        try checkStatus(status)
+        try checkStatus(status, "Porcupine init failed")
     }
     
     /// Constructor.
@@ -128,7 +128,7 @@ public class Porcupine {
         for k in keywords{
             let keywordPath = bundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
             if keywordPath == nil {
-                throw PorcupineError.PorcupineIOError(message: "Unable to open the the porcupine_params model at \(modelPathArg)")
+                throw PorcupineError.PorcupineIOError("Unable to open the the keyword file at \(keywordPath)")
             }
             keywordPaths.append(keywordPath!);
         }
@@ -169,16 +169,16 @@ public class Porcupine {
     /// - Returns:Index of keyword detected or -1 if no keyword was detected
     public func process(pcm:[Int16]) throws -> Int32 {
         if handle == nil {
-            throw PorcupineError.PorcupineInvalidStateError(message: "Porcupine must be initialized before processing")
+            throw PorcupineError.PorcupineInvalidStateError("Porcupine must be initialized before processing")
         }
         
         if pcm.count != Porcupine.frameLength {
-            throw PorcupineError.PorcupineInvalidArgumentError(message: "Frame of audio data must contain \(Porcupine.frameLength) samples - given frame contained \(pcm.count)")
+            throw PorcupineError.PorcupineInvalidArgumentError("Frame of audio data must contain \(Porcupine.frameLength) samples - given frame contained \(pcm.count)")
         }
         
         var result: Int32 = -1
         let status = pv_porcupine_process(self.handle, pcm, &result)
-        try checkStatus(status)
+        try checkStatus(status, "Porcupine process failed")
         return result
     }
     

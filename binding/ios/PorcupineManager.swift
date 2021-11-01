@@ -68,7 +68,7 @@ public class PorcupineManager {
     ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-        accessKey: accessKey,
+        accessKey: String,
         keywordPath: String,
         modelPath:String? = nil,
         sensitivity: Float32 = 0.5,

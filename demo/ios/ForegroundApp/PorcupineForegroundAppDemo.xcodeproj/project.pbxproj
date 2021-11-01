@@ -251,8 +251,8 @@
 				1E1A676526C3434300EDD6EC /* Sources */,
 				1E1A676626C3434300EDD6EC /* Frameworks */,
 				1E1A676726C3434300EDD6EC /* Resources */,
-				A55FE8CDFD5E960BD25BF8A1 /* [CP] Embed Pods Frameworks */,
-				B7492AA94D009BFB936526C0 /* [CP] Copy Pods Resources */,
+				FE5097B53F9A53002054E8D6 /* [CP] Embed Pods Frameworks */,
+				47F21F7EED8365D0730CD26A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -273,8 +273,8 @@
 				BBE66BC7205DD6F7006005B1 /* Frameworks */,
 				BBE66BC8205DD6F7006005B1 /* Resources */,
 				02FB765E25CA0965004826D5 /* Embed Frameworks */,
-				9A78D42DD73C7B435FAF4374 /* [CP] Embed Pods Frameworks */,
-				8FA8B79C31FD3FF2AD7076C6 /* [CP] Copy Pods Resources */,
+				655870436260DB191CFCFE8B /* [CP] Embed Pods Frameworks */,
+				773F3F462D2BE0CD1BC7E12A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -363,6 +363,70 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		47F21F7EED8365D0730CD26A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-resources.sh",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/alexa_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/americano_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/blueberry_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/bumblebee_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/computer_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/grapefruit_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/grasshopper_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/hey google_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/hey siri_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/jarvis_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/ok google_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/picovoice_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/porcupine_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/terminator_ios.ppn",
+				"${PODS_ROOT}/../../../../lib/common/porcupine_params.pv",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/alexa_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/americano_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/blueberry_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/bumblebee_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		655870436260DB191CFCFE8B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvPorcupine.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		6C1AA9585BD75DCCFB45F279 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -385,28 +449,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8FA8B79C31FD3FF2AD7076C6 /* [CP] Copy Pods Resources */ = {
+		773F3F462D2BE0CD1BC7E12A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-resources.sh",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/bumblebee_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params.pv",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/alexa_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/americano_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/blueberry_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/bumblebee_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/computer_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/grapefruit_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/grasshopper_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/hey google_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/hey siri_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/jarvis_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/ok google_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/picovoice_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/porcupine_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/terminator_ios.ppn",
+				"${PODS_ROOT}/../../../../lib/common/porcupine_params.pv",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -431,24 +495,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9A78D42DD73C7B435FAF4374 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvPorcupine.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9FC7095EC41D3F3E4946822C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -471,14 +517,14 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55FE8CDFD5E960BD25BF8A1 /* [CP] Embed Pods Frameworks */ = {
+		FE5097B53F9A53002054E8D6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -487,52 +533,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B7492AA94D009BFB936526C0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-resources.sh",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/bumblebee_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params.pv",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/alexa_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/americano_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/blueberry_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/bumblebee_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
