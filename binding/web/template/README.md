@@ -42,6 +42,15 @@ Factory packages allow you to create instances of `Porcupine` directly. Useful f
 
 ## Installation & Usage
 
+### AccessKey
+
+The Porcupine library requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ### Worker
 
 To obtain a `PorcupineWorker`, we can use the static `create` factory method from the PorcupineWorkerFactory. Here is a complete example that:
