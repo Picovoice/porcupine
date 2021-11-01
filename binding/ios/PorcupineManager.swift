@@ -34,6 +34,7 @@ public class PorcupineManager {
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
@@ -42,6 +43,7 @@ public class PorcupineManager {
     ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
+        accessKey: String,
         keywordPaths: [String],
         modelPath:String? = nil,
         sensitivities: [Float32]? = nil,
@@ -49,7 +51,7 @@ public class PorcupineManager {
         errorCallback: ((Error) -> Void)? = nil) throws {
         
         try self.init(
-            porcupine:Porcupine(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities),
+            porcupine:Porcupine(accessKey: accessKey, keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities),
             onDetection:onDetection,
             errorCallback: errorCallback)
     }
@@ -57,6 +59,7 @@ public class PorcupineManager {
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keywordPath: Absolute paths to a keyword model file.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
@@ -65,6 +68,7 @@ public class PorcupineManager {
     ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
+        accessKey: accessKey,
         keywordPath: String,
         modelPath:String? = nil,
         sensitivity: Float32 = 0.5,
@@ -72,7 +76,7 @@ public class PorcupineManager {
         errorCallback: ((Error) -> Void)? = nil) throws {
         
         try self.init(
-            porcupine:Porcupine(keywordPath: keywordPath, modelPath: modelPath, sensitivity: sensitivity),
+            porcupine:Porcupine(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath, sensitivity: sensitivity),
             onDetection:onDetection,
             errorCallback: errorCallback)
     }
@@ -80,6 +84,7 @@ public class PorcupineManager {
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keywords: An array of built-in keywords from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
@@ -88,6 +93,7 @@ public class PorcupineManager {
     ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
+        accessKey: String,
         keywords:[Porcupine.BuiltInKeyword],
         modelPath:String? = nil,
         sensitivities: [Float32]? = nil,
@@ -95,7 +101,7 @@ public class PorcupineManager {
         errorCallback: ((Error) -> Void)? = nil) throws {
         
         try self.init(
-            porcupine:Porcupine(keywords: keywords, modelPath: modelPath, sensitivities: sensitivities),
+            porcupine:Porcupine(accessKey: accessKey, keywords: keywords, modelPath: modelPath, sensitivities: sensitivities),
             onDetection:onDetection,
             errorCallback: errorCallback)
     }
@@ -103,6 +109,7 @@ public class PorcupineManager {
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
@@ -111,13 +118,14 @@ public class PorcupineManager {
     ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
+        accessKey: String,
         keyword: Porcupine.BuiltInKeyword,
         modelPath: String? = nil,
         sensitivity: Float32 = 0.5,
         onDetection: ((Int32) -> Void)?,
         errorCallback: ((Error) -> Void)? = nil) throws {
         try self.init(
-            porcupine:Porcupine(keyword: keyword, modelPath: modelPath, sensitivity: sensitivity),
+            porcupine:Porcupine(accessKey: accessKey, keyword: keyword, modelPath: modelPath, sensitivity: sensitivity),
             onDetection:onDetection,
             errorCallback: errorCallback)
     }
