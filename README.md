@@ -231,6 +231,12 @@ To run the React Native Porcupine demo app you will first need to setup your Rea
 please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has
 been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands:
 
+Replace `ACCESS_KEY` in the [.env](.env) file:
+
+```s
+ACCESS_KEY="YOUR_ACCESS_KEY_HERE" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+```
+
 For Android:
 
 ```console
@@ -930,9 +936,12 @@ Using the constructor `PorcupineManager.fromKeywords` will create an instance of
 using one or more of the built-in keywords.
 
 ```javascript
+const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 async createPorcupineManager(){
     try{
         this._porcupineManager = await PorcupineManager.fromKeywords(
+            accessKey,
             ["picovoice", "porcupine"],
             detectionCallback);
     } catch (err) {
@@ -945,7 +954,10 @@ To create an instance of PorcupineManager that detects custom keywords, you can 
 static constructor and provide the paths to the `.ppn` file(s).
 
 ```javascript
+const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 this._porcupineManager = await PorcupineManager.fromKeywords(
+  accessKey,
   ["/path/to/keyword.ppn"],
   detectionCallback
 );
@@ -976,9 +988,11 @@ who want to incorporate wake word detection into a already existing audio proces
 `fromKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
+const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 async createPorcupine(){
     try{
-        this._porcupine = await Porcupine.fromKeywords(["picovoice"]);
+        this._porcupine = await Porcupine.fromKeywords(accessKey, ["picovoice"]);
     } catch (err) {
         // handle error
     }

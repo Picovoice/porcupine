@@ -66,6 +66,7 @@ On Android, open your AndroidManifest.xml and add the following line:
 ```
 
 Finally, in your app JS code, be sure to check for user permission consent before proceeding with audio capture:
+
 ```javascript
 let recordAudioRequest;
 if (Platform.OS == 'android') {
@@ -110,12 +111,17 @@ audio recording. This class is the quickest way to get started.
 
 Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager
 using one or more of the built-in keywords.
+
 ```javascript
+const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 async createPorcupineManager(){
     try{
         this._porcupineManager = await PorcupineManager.fromKeywords(
+            accessKey,
             ["picovoice", "porcupine"],
-            detectionCallback);
+            detectionCallback,
+            errorCallback);
     } catch (err) {
         // handle error
     }
@@ -141,18 +147,26 @@ Available built-in keywords are stored in the constants `PorcupineManager.KEYWOR
 
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
+
 ```javascript
-this._porcupineManager = await PorcupineManager.fromKeywordPaths(["/path/to/keyword.ppn"], detectionCallback);
+const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+this._porcupineManager = await PorcupineManager.fromKeywordPaths(accessKey, ["/path/to/keyword.ppn"], detectionCallback);
 ```
 
 To add a custom wake word to your React Native application you'll need to add the ppn file to your platform projects. Android models must be added to `./android/app/src/main/assets/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS (i.e. add via xCode) project.
 
 In addition to custom keywords, you can override the default Porcupine model file and/or keyword sensitivities.
 These optional parameters can be passed in like so:
+
 ```javascript
+const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 this._porcupineManager = await PorcupineManager.fromKeywordPaths(
+    accessKey,
     ["/path/to/keyword/file/one.ppn", "/path/to/keyword/file/two.ppn"],
     detectionCallback,
+    errorCallback,
     'path/to/model/file.pv',
     [0.25, 0.6]);
 ```
@@ -187,9 +201,11 @@ who want to incorporate wake word detection into a already existing audio proces
 `Porcupine` also has `fromKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
+const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 async createPorcupine(){
     try{
-        this._porcupine = await Porcupine.fromKeywords(["picovoice"]);
+        this._porcupine = await Porcupine.fromKeywords(accessKey, ["picovoice"]);
     } catch (err) {
         // handle error
     }
