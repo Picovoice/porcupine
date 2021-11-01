@@ -53,7 +53,7 @@ class PorcupineDemo(Thread):
 
         super(PorcupineDemo, self).__init__()
 
-        self.access_key = access_key
+        self._access_key = access_key
         self._library_path = library_path
         self._model_path = model_path
         self._keyword_paths = keyword_paths
@@ -82,7 +82,7 @@ class PorcupineDemo(Thread):
         recorder = None
         try:
             porcupine = pvporcupine.create(
-                access_key=self.access_key,
+                access_key=self._access_key,
                 library_path=self._library_path,
                 model_path=self._model_path,
                 keyword_paths=self._keyword_paths,
