@@ -2,14 +2,14 @@ name: Python
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/python/**'
       - '!binding/python/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/python/**'
       - '!binding/python/README.md'
@@ -45,4 +45,4 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Test
-      run: python setup.py test
+      run: python test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}

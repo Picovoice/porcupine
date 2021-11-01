@@ -9,12 +9,13 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import argparse
 import struct
 import tkinter as tk
 from threading import Thread
 
 import pvporcupine
-import pyaudio
+from pvrecorder import PvRecorder
 
 KEYWORDS = [
     'alexa', 'americano', 'blueberry', 'bumblebee', 'computer', 'grapefruit', 'grasshopper', 'hey google', 'hey siri',
@@ -23,9 +24,11 @@ KEYWORDS = [
 
 
 class PorcupineThread(Thread):
-    def __init__(self, keyword_var):
+    def __init__(self, access_key, device_index, keyword_var):
         super().__init__()
 
+        self._access_key = access_key
+        self._device_index = device_index
         self._keyword_var = keyword_var
 
         self._is_ready = False
@@ -34,34 +37,25 @@ class PorcupineThread(Thread):
 
     def run(self):
         ppn = None
-        py_audio = None
-        audio_stream = None
+        recorder = None
 
         try:
-            ppn = pvporcupine.create(keywords=KEYWORDS, sensitivities=[0.75] * len(KEYWORDS))
+            ppn = pvporcupine.create(access_key=self._access_key, keywords=KEYWORDS, sensitivities=[0.75] * len(KEYWORDS))
 
-            py_audio = pyaudio.PyAudio()
-            audio_stream = py_audio.open(
-                rate=ppn.sample_rate,
-                channels=1,
-                format=pyaudio.paInt16,
-                input=True,
-                frames_per_buffer=ppn.frame_length)
+            recorder = PvRecorder(device_index=self._device_index, frame_length=ppn.frame_length)
+            recorder.start()
 
             self._is_ready = True
 
             while not self._stop:
-                pcm = audio_stream.read(ppn.frame_length)
-                pcm = struct.unpack_from("h" * ppn.frame_length, pcm)
+                pcm = recorder.read()
                 keyword_index = ppn.process(pcm)
                 if keyword_index >= 0:
                     self._keyword_var.set(KEYWORDS[keyword_index])
                     print(self._keyword_var.get())
         finally:
-            if audio_stream is not None:
-                audio_stream.close()
-            if py_audio is not None:
-                py_audio.terminate()
+            if recorder is not None:
+                recorder.delete()
 
             if ppn is not None:
                 ppn.delete()
@@ -79,6 +73,16 @@ class PorcupineThread(Thread):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--access_key',
+                        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+                        required=True)
+
+    parser.add_argument('--audio_device_index', help='Index of input audio device.', type=int, default=-1)
+
+    args = parser.parse_args()
+
     window = tk.Tk()
     window.title('Porcupine Demo')
     window.minsize(width=300, height=400)
@@ -88,7 +92,9 @@ def main():
     for x in KEYWORDS:
         tk.Radiobutton(window, text=x, variable=keyword_var, value=x, indicator=0).pack(fill=tk.X, ipady=5)
 
-    porcupine_thread = PorcupineThread(keyword_var)
+    porcupine_thread = PorcupineThread(access_key=args.access_key,
+                                       device_index=args.audio_device_index,
+                                       keyword_var=keyword_var)
 
     def on_close():
         porcupine_thread.stop()

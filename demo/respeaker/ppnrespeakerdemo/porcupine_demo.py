@@ -9,12 +9,13 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import argparse
 import struct
 import sys
 from threading import Thread
 
 import pvporcupine
-import pyaudio
+from pvrecorder import PvRecorder
 from gpiozero import LED
 
 from .apa102 import APA102
@@ -49,11 +50,12 @@ power.on()
 
 
 class PorcupineDemo(Thread):
-    def __init__(self, sensitivity):
+    def __init__(self, access_key, device_index, sensitivity):
         super(PorcupineDemo, self).__init__()
 
+        self._device_index = device_index
         self._keywords = list(KEYWORDS_COLOR.keys())
-        self._porcupine = pvporcupine.create(keywords=self._keywords, sensitivities=[sensitivity] * len(KEYWORDS_COLOR))
+        self._porcupine = pvporcupine.create(access_key=access_key, keywords=self._keywords, sensitivities=[sensitivity] * len(KEYWORDS_COLOR))
 
     @staticmethod
     def _set_color(color):
@@ -62,25 +64,16 @@ class PorcupineDemo(Thread):
         driver.show()
 
     def run(self):
-        pa = None
-        audio_stream = None
+        recorder = None
 
         try:
-            pa = pyaudio.PyAudio()
-
-            audio_stream = pa.open(
-                rate=self._porcupine.sample_rate,
-                channels=1,
-                format=pyaudio.paInt16,
-                input=True,
-                frames_per_buffer=self._porcupine.frame_length)
+            recorder = PvRecorder(device_index=self._device_index, frame_length=self._porcupine.frame_length)
+            recorder.start()
 
             print('[Listening ...]')
 
             while True:
-                pcm = audio_stream.read(self._porcupine.frame_length)
-                pcm = struct.unpack_from("h" * self._porcupine.frame_length, pcm)
-
+                pcm = recorder.read()
                 keyword_index = self._porcupine.process(pcm)
                 if keyword_index >= 0:
                     print("detected '%s'" % self._keywords[keyword_index])
@@ -89,17 +82,26 @@ class PorcupineDemo(Thread):
             sys.stdout.write('\b' * 2)
             print('Stopping ...')
         finally:
-            if audio_stream is not None:
-                audio_stream.close()
-
-            if pa is not None:
-                pa.terminate()
+            if recorder is not None:
+                recorder.delete()
 
             self._porcupine.delete()
 
 
 def main():
-    o = PorcupineDemo(sensitivity=0.6)
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--access_key',
+                        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+                        required=True)
+
+    parser.add_argument('--audio_device_index', help='Index of input audio device.', type=int, default=-1)
+
+    args = parser.parse_args()
+
+    o = PorcupineDemo(access_key=args.access_key,
+                      device_index=args.audio_device_index,
+                      sensitivity=0.6)
     o.run()
 
 

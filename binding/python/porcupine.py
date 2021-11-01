@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2018-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -30,6 +30,11 @@ class Porcupine(object):
         STOP_ITERATION = 4
         KEY_ERROR = 5
         INVALID_STATE = 6
+        RUNTIME_ERROR = 7
+        ACTIVATION_ERROR = 8
+        ACTIVATION_LIMIT_REACHED = 9
+        ACTIVATION_THROTTLED = 10
+        ACTIVATION_REFUSED = 11
 
     _PICOVOICE_STATUS_TO_EXCEPTION = {
         PicovoiceStatuses.OUT_OF_MEMORY: MemoryError,
@@ -38,21 +43,30 @@ class Porcupine(object):
         PicovoiceStatuses.STOP_ITERATION: StopIteration,
         PicovoiceStatuses.KEY_ERROR: KeyError,
         PicovoiceStatuses.INVALID_STATE: ValueError,
+        PicovoiceStatuses.RUNTIME_ERROR: RuntimeError,
+        PicovoiceStatuses.ACTIVATION_ERROR: RuntimeError,
+        PicovoiceStatuses.ACTIVATION_LIMIT_REACHED: PermissionError,
+        PicovoiceStatuses.ACTIVATION_THROTTLED: PermissionError,
+        PicovoiceStatuses.ACTIVATION_REFUSED: PermissionError
     }
 
     class CPorcupine(Structure):
         pass
 
-    def __init__(self, library_path, model_path, keyword_paths, sensitivities):
+    def __init__(self, access_key, library_path, model_path, keyword_paths, sensitivities):
         """
         Constructor.
 
+        :param access_key: AccessKey obtained from Picovoice Console.
         :param library_path: Absolute path to Porcupine's dynamic library.
         :param model_path: Absolute path to the file containing model parameters.
         :param keyword_paths: Absolute paths to keyword model files.
         :param sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A
         higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
         """
+
+        if not access_key:
+            raise ValueError("access_key should be a non-empty string.")
 
         if not os.path.exists(library_path):
             raise IOError("Couldn't find Porcupine's dynamic library at '%s'." % library_path)
@@ -76,6 +90,7 @@ class Porcupine(object):
         init_func = library.pv_porcupine_init
         init_func.argtypes = [
             c_char_p,
+            c_char_p,
             c_int,
             POINTER(c_char_p),
             POINTER(c_float),
@@ -85,6 +100,7 @@ class Porcupine(object):
         self._handle = POINTER(self.CPorcupine)()
 
         status = init_func(
+            access_key.encode('utf-8'),
             model_path.encode('utf-8'),
             len(keyword_paths),
             (c_char_p * len(keyword_paths))(*[os.path.expanduser(x).encode('utf-8') for x in keyword_paths]),
