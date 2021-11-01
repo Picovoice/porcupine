@@ -2,6 +2,6 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
 target 'PorcupineBackgroundServiceDemo' do
-    pod 'Porcupine-iOS'
+    pod 'Porcupine-iOS', :path => '../../../'
     pod 'SwiftySound'
 end

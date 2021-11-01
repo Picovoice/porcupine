@@ -231,21 +231,21 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PorcupineBackgroundServiceDemo/Pods-PorcupineBackgroundServiceDemo-resources.sh",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/bumblebee_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params.pv",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/alexa_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/americano_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/blueberry_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/bumblebee_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/computer_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/grapefruit_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/grasshopper_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/hey google_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/hey siri_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/jarvis_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/ok google_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/picovoice_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/porcupine_ios.ppn",
+				"${PODS_ROOT}/../../../../resources/keyword_files/ios/terminator_ios.ppn",
+				"${PODS_ROOT}/../../../../lib/common/porcupine_params.pv",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -277,7 +277,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PorcupineBackgroundServiceDemo/Pods-PorcupineBackgroundServiceDemo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (

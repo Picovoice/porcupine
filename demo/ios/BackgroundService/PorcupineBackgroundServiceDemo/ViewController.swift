@@ -16,6 +16,7 @@ class ViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     
+    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWord = Porcupine.BuiltInKeyword.porcupine
 
     var porcupineManager: PorcupineManager!
@@ -26,7 +27,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         startButton.layer.cornerRadius = 0.5 * startButton.bounds.size.width
         startButton.clipsToBounds = true
-        
+        #imageLiteral(resourceName: "simulator_screenshot_C62944CB-14DA-463F-B7C8-040D82A38962.png")
         textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
         
         Sound.category = .playAndRecord
@@ -35,7 +36,7 @@ class ViewController: UIViewController, UITextViewDelegate {
             Sound.play(file: "beep.wav")
         }
         do {
-            self.porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
+            self.porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback)
         } catch {
             showAlert(message: "Failed to initialize Porcupine Manager")
         }

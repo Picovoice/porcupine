@@ -1,24 +1,27 @@
 PODS:
   - ios-voice-processor (1.0.3)
-  - Porcupine-iOS (1.9.4):
+  - Porcupine-iOS (2.0.0):
     - ios-voice-processor (~> 1.0.2)
   - SwiftySound (1.2.0)
 
 DEPENDENCIES:
-  - Porcupine-iOS
+  - Porcupine-iOS (from `../../../`)
   - SwiftySound
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
-    - Porcupine-iOS
     - SwiftySound
+
+EXTERNAL SOURCES:
+  Porcupine-iOS:
+    :path: "../../../"
 
 SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Porcupine-iOS: cf230daf574fd4bab07b3552445a51ed5154b472
+  Porcupine-iOS: c15cfb1a6d35eeded7bd0449d24c656e9c15cbb2
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: f367be5e5594355584aa28c2ee01152a42527ef6
+PODFILE CHECKSUM: 34f157f2b4392677279c7fe0cac94d500f419239
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2
