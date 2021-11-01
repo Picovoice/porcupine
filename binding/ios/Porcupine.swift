@@ -65,7 +65,7 @@ public class Porcupine {
             let bundle = Bundle(for: type(of: self))
             modelPathArg  = bundle.path(forResource: "porcupine_params", ofType: "pv")
             if modelPathArg == nil {
-                throw PorcupineError.PorcupineIOError("Unable to open the the porcupine_params model at \(modelPathArg)")
+                throw PorcupineError.PorcupineIOError("Unable to find the default model path")
             }
         }
         
@@ -128,7 +128,7 @@ public class Porcupine {
         for k in keywords{
             let keywordPath = bundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
             if keywordPath == nil {
-                throw PorcupineError.PorcupineIOError("Unable to open the the keyword file at \(keywordPath)")
+                throw PorcupineError.PorcupineIOError("Unable to open the default keyword file for keyword '\(k)'")
             }
             keywordPaths.append(keywordPath!);
         }
@@ -182,33 +182,37 @@ public class Porcupine {
         return result
     }
     
-    private func checkStatus(_ status: pv_status_t, _ message: String) -> PorcupineError {
+    private func checkStatus(_ status: pv_status_t, _ message: String) throws {
+        if status == PV_STATUS_SUCCESS {
+            return
+        }
+        
         switch status {
         case PV_STATUS_OUT_OF_MEMORY:
-            return PorcupineError.PorcupineOutOfMemoryError(message)
+            throw PorcupineError.PorcupineOutOfMemoryError(message)
         case PV_STATUS_IO_ERROR:
-            return PorcupineError.PorcupineIOError(message)
+            throw PorcupineError.PorcupineIOError(message)
         case PV_STATUS_INVALID_ARGUMENT:
-            return PorcupineError.PorcupineInvalidArgumentError(message)
+            throw PorcupineError.PorcupineInvalidArgumentError(message)
         case PV_STATUS_STOP_ITERATION:
-            return PorcupineError.PorcupineStopIterationError(message)
+            throw PorcupineError.PorcupineStopIterationError(message)
         case PV_STATUS_KEY_ERROR:
-            return PorcupineError.PorcupineKeyError(message)
+            throw PorcupineError.PorcupineKeyError(message)
         case PV_STATUS_INVALID_STATE:
-            return PorcupineError.PorcupineInvalidStateError(message)
+            throw PorcupineError.PorcupineInvalidStateError(message)
         case PV_STATUS_RUNTIME_ERROR:
-            return PorcupineError.PorcupineRuntimeError(message)
+            throw PorcupineError.PorcupineRuntimeError(message)
         case PV_STATUS_ACTIVATION_ERROR:
-            return PorcupineError.PorcupineActivationError(message)
+            throw PorcupineError.PorcupineActivationError(message)
         case PV_STATUS_ACTIVATION_LIMIT_REACHED:
-            return PorcupineError.PorcupineActivationLimitError(message)
+            throw PorcupineError.PorcupineActivationLimitError(message)
         case PV_STATUS_ACTIVATION_THROTTLED:
-            return PorcupineError.PorcupineActivationThrottledError(message)
+            throw PorcupineError.PorcupineActivationThrottledError(message)
         case PV_STATUS_ACTIVATION_REFUSED:
-            return PorcupineError.PorcupineActivationRefusedError(message)
+            throw PorcupineError.PorcupineActivationRefusedError(message)
         default:
             let pvStatusString = String(cString: pv_status_to_string(status))
-            return PorcupineError.PorcupineInternalError("\(pvStatusString): \(message)")
+            throw PorcupineError.PorcupineInternalError("\(pvStatusString): \(message)")
         }
     }
 }
