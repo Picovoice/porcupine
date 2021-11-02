@@ -15,8 +15,6 @@ package ai.picovoice.reactnative.porcupine;
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
 
-import android.os.Environment;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -26,10 +24,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +33,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
   private static final String LOG_TAG = "PvPorcupine";
   private final ReactApplicationContext reactContext;
-  private final Map<String, Porcupine> porcupinePool = new HashMap<String, Porcupine>();
+  private final Map<String, Porcupine> porcupinePool = new HashMap<>();
 
   public PorcupineModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -83,12 +77,6 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     float[] sensitivitiesJava = new float[sensitivities.size()];
     for (int i = 0; i < sensitivities.size(); i++) {
       sensitivitiesJava[i] = (float) sensitivities.getDouble(i);
-    }
-
-    try {
-
-    } catch (RuntimeException e) {
-      promise.reject(e);
     }
 
     try {

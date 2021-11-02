@@ -11,10 +11,10 @@ To obtain your `AccessKey`:
 1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
-Once you obtain your `AccessKey`, replace it in the [.env](.env) file:
+Once you obtain your `AccessKey`, replace it in `App.tsx` file:
 
-```s
-ACCESS_KEY="YOUR_ACCESS_KEY_HERE" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+```typescript
+_accessKey: string ="YOUR_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 ```
 
 **NOTE**: This will not protect your access key in production builds.

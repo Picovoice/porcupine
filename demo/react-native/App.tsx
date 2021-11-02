@@ -14,7 +14,6 @@ import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
 import {PorcupineManager} from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
-import Config from 'react-native-config';
 
 type Props = {};
 type State = {
@@ -30,6 +29,7 @@ export default class App extends Component<Props, State> {
   _porcupineManager: PorcupineManager | undefined;
   _detectionColour: string = '#00E5C3';
   _defaultColour: string = '#F5FCFF';
+  _accessKey: string = "YOU_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
   constructor(props: Props) {
     super(props);
@@ -122,7 +122,7 @@ export default class App extends Component<Props, State> {
     this.setState({currentKeyword: keyword});
     try {
       this._porcupineManager = await PorcupineManager.fromKeywords(
-        Config.ACCESS_KEY,
+        this._accessKey,
         [keyword],
         (keywordIndex: number) => {
                     
