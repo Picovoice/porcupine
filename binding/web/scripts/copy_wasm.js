@@ -22,15 +22,19 @@ for (const language of LANGUAGES) {
 
   const outputDirectory = join(__dirname, "..", language);
 
-  fs.mkdirSync(outputDirectory, { recursive: true });
+  try {
+    fs.mkdirSync(outputDirectory, { recursive: true });
 
-  const wasmFile = readFileSync(
-    join(sourceDirectory, "pv_porcupine.wasm")
-  );
-  const strBase64 = Buffer.from(wasmFile).toString("base64");
-  const jsSourceFileOutput = `export const PORCUPINE_WASM_BASE64 = '${strBase64}';\n`;
-
-  writeFileSync(join(outputDirectory, "porcupine_b64.ts"), jsSourceFileOutput);
+    const wasmFile = readFileSync(
+      join(sourceDirectory, "pv_porcupine.wasm")
+    );
+    const strBase64 = Buffer.from(wasmFile).toString("base64");
+    const jsSourceFileOutput = `export const PORCUPINE_WASM_BASE64 = '${strBase64}';\n`;
+  
+    writeFileSync(join(outputDirectory, "porcupine_b64.ts"), jsSourceFileOutput);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 console.log("... Done!");

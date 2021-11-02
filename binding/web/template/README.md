@@ -72,10 +72,16 @@ import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 // The worker will call the callback function upon a detection event
 // Here we tell it to log it to the console
 function keywordDetectionCallback(keyword) {
-  console.log("Porcupine detected " + keyword);
+  console.log(`Porcupine detected ${keyword}`);
 }
 
-async startPorcupine()
+// If during processing an audio stream, anything goes wrong, the worker will
+// call the error callback and passe the error to it.
+function processErrorCallback(error) {
+  console.error(error); 
+}
+
+async function startPorcupine()
   // Create a Porcupine Worker (English language) to listen for 
   // the built-in keyword "Picovoice", at a sensitivity of 0.65
   // Note: you receive a Worker object, _not_ an individual Porcupine instance
@@ -83,7 +89,8 @@ async startPorcupine()
   const porcupineWorker = await PorcupineWorkerFactory.create(
     accessKey,
     [{builtin: "Picovoice", sensitivity: 0.65}],
-    keywordDetectionCallback
+    keywordDetectionCallback,
+    processErrorCallback
   );
 
   // Start up the web voice processor. It will request microphone permission 
