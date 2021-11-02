@@ -85,6 +85,7 @@ export class Porcupine implements PorcupineEngine {
 
   private static _resolvePromise: EmptyPromise | null;
   private static _rejectPromise: EmptyPromise | null;
+  private static _createMutex: Mutex;
 
   private constructor(handleWasm: PorcupineWasmOutput, keywordLabels: ArrayLike<string>) {
     Porcupine._frameLength = handleWasm.frameLength;
@@ -203,602 +204,609 @@ export class Porcupine implements PorcupineEngine {
       );
     }
 
-    if (!Array.isArray(keywords)) {
-      keywords = [keywords];
-    } else if (keywords.length === 0) {
-      throw new Error(
-        'The keywords argument array is empty; What would you like Porcupine to listen for?'
-      );
-    }
-
-    const keywordSensitivities = [];
-    const keywordModels = [];
-    const keywordLabels = [];
-
-    // Convert all PorcupineKeyword arguments to an array of bytes and an array of sensitivities
-    for (const keyword of keywords) {
-      const keywordArg = keyword;
-      let keywordArgNormalized: PorcupineKeyword;
-
-      // Convert string arguments to PorcupineKeyword object arguments
-      // We need to infer what type of argument this is, because strings are ambiguous
-      if (typeof keywordArg === 'string') {
-        keywordArgNormalized = {
-          builtin: keywordArg as BuiltInKeyword,
-          sensitivity: DEFAULT_SENSITIVITY,
-        };
-      } else if (typeof keywordArg !== 'object') {
-        throw new Error(
-          'Invalid keyword argument type: ' +
-          keywordArg +
-          ' : ' +
-          typeof keywordArg
-        );
-      } else {
-        keywordArgNormalized = keywordArg;
-      }
-
-      if ('custom' in keywordArgNormalized) {
-        // Custom keyword: Base64 string and label have been passed in
-        keywordModels.push(
-          Uint8Array.from(atob(keywordArgNormalized.base64), c =>
-            c.charCodeAt(0)
-          )
-        );
-        keywordLabels.push(keywordArgNormalized.custom);
-      } else if ('builtin' in keywordArgNormalized) {
-        // Built-in keyword: Look up the bytes from the map and convert
-        const validEnums = Object.values(BuiltInKeyword);
-        const builtInName = keywordArgNormalized.builtin;
-        const keywordEnum = BuiltInKeyword[builtInName.replace(' ', '')];
-        if (!validEnums.includes(keywordEnum)) {
+    const returnPromise = new Promise<Porcupine>((resolve, reject) => {
+      Porcupine._createMutex.runExclusive(async () => {
+        if (!Array.isArray(keywords)) {
+          keywords = [keywords];
+        } else if (keywords.length === 0) {
           throw new Error(
-            `Keyword ${builtInName} does not map to list of built-in keywords (${validEnums})`
+            'The keywords argument array is empty; What would you like Porcupine to listen for?'
           );
         }
-        keywordModels.push(
-          Uint8Array.from(atob(BUILT_IN_KEYWORD_BYTES.get(keywordEnum)), c =>
-            c.charCodeAt(0)
-          )
+
+        const keywordSensitivities = [];
+        const keywordModels = [];
+        const keywordLabels = [];
+
+        // Convert all PorcupineKeyword arguments to an array of bytes and an array of sensitivities
+        for (const keyword of keywords) {
+          const keywordArg = keyword;
+          let keywordArgNormalized: PorcupineKeyword;
+
+          // Convert string arguments to PorcupineKeyword object arguments
+          // We need to infer what type of argument this is, because strings are ambiguous
+          if (typeof keywordArg === 'string') {
+            keywordArgNormalized = {
+              builtin: keywordArg as BuiltInKeyword,
+              sensitivity: DEFAULT_SENSITIVITY,
+            };
+          } else if (typeof keywordArg !== 'object') {
+            throw new Error(
+              'Invalid keyword argument type: ' +
+              keywordArg +
+              ' : ' +
+              typeof keywordArg
+            );
+          } else {
+            keywordArgNormalized = keywordArg;
+          }
+
+          if ('custom' in keywordArgNormalized) {
+            // Custom keyword: Base64 string and label have been passed in
+            keywordModels.push(
+              Uint8Array.from(atob(keywordArgNormalized.base64), c =>
+                c.charCodeAt(0)
+              )
+            );
+            keywordLabels.push(keywordArgNormalized.custom);
+          } else if ('builtin' in keywordArgNormalized) {
+            // Built-in keyword: Look up the bytes from the map and convert
+            const validEnums = Object.values(BuiltInKeyword);
+            const builtInName = keywordArgNormalized.builtin;
+            const keywordEnum = BuiltInKeyword[builtInName.replace(' ', '')];
+            if (!validEnums.includes(keywordEnum)) {
+              throw new Error(
+                `Keyword ${builtInName} does not map to list of built-in keywords (${validEnums})`
+              );
+            }
+            keywordModels.push(
+              Uint8Array.from(atob(BUILT_IN_KEYWORD_BYTES.get(keywordEnum)), c =>
+                c.charCodeAt(0)
+              )
+            );
+            keywordLabels.push(keywordArgNormalized.builtin);
+          } else {
+            throw new Error(
+              'Unknown keyword argument: ' + JSON.stringify(keywordArg)
+            );
+          }
+
+          keywordSensitivities.push(
+            keywordArgNormalized.sensitivity ?? DEFAULT_SENSITIVITY
+          );
+        }
+
+        for (const sensitivity of keywordSensitivities) {
+          if (typeof sensitivity !== "number") {
+            throw new Error('Sensitivity is not a number (in range [0,1]): ' + sensitivity)
+          }
+          if (sensitivity < 0 || sensitivity > 1) {
+            throw new Error('Sensitivity is outside of range [0, 1]: ' + sensitivity)
+          }
+        }
+
+        if (keywordSensitivities.length !== keywordModels.length) {
+          throw new Error(`keywordSensitivities (${keywordSensitivities.length}) and keywordModels (${keywordModels.length}) length differs`)
+        }
+
+        const sensitivities = new Float32Array(keywordSensitivities);
+
+        const keywordModelSizes = Int32Array.from(
+          keywordModels.map(x => x.byteLength)
         );
-        keywordLabels.push(keywordArgNormalized.builtin);
-      } else {
-        throw new Error(
-          'Unknown keyword argument: ' + JSON.stringify(keywordArg)
+
+        const wasmOutput = await Porcupine.initWasm(
+          accessKey,
+          keywordModels,
+          keywordModelSizes,
+          sensitivities,
         );
-      }
-
-      keywordSensitivities.push(
-        keywordArgNormalized.sensitivity ?? DEFAULT_SENSITIVITY
-      );
-    }
-
-    for (const sensitivity of keywordSensitivities) {
-      if (typeof sensitivity !== "number") {
-        throw new Error('Sensitivity is not a number (in range [0,1]): ' + sensitivity)
-      }
-      if (sensitivity < 0 || sensitivity > 1) {
-        throw new Error('Sensitivity is outside of range [0, 1]: ' + sensitivity)
-      }
-    }
-
-    if (keywordSensitivities.length !== keywordModels.length) {
-      throw new Error(`keywordSensitivities (${keywordSensitivities.length}) and keywordModels (${keywordModels.length}) length differs`)
-    }
-
-    const sensitivities = new Float32Array(keywordSensitivities);
-
-    const keywordModelSizes = Int32Array.from(
-      keywordModels.map(x => x.byteLength)
-    );
-
-    const wasmOutput = await Porcupine.initWasm(
-      accessKey,
-      keywordModels,
-      keywordModelSizes,
-      sensitivities,
-    );
-    return new Porcupine(wasmOutput, keywordLabels);
+        return new Porcupine(wasmOutput, keywordLabels);
+      }).then((result: Porcupine) => {
+        resolve(result);
+      });
+    });
+    return returnPromise;
   }
 
   public static clearFilePromises(): void {
-    Porcupine._rejectPromise = null;
-    Porcupine._resolvePromise = null;
-  }
+      Porcupine._rejectPromise = null;
+      Porcupine._resolvePromise = null;
+    }
 
   // eslint-disable-next-line
   public static resolveFilePromise(args: any): void {
-    // @ts-ignore
-    Porcupine._resolvePromise(args);
-  }
+      // @ts-ignore
+      Porcupine._resolvePromise(args);
+    }
 
   // eslint-disable-next-line
   public static rejectFilePromise(args: any): void {
-    // @ts-ignore
-    Porcupine._rejectPromise(args);
-  }
+      // @ts-ignore
+      Porcupine._rejectPromise(args);
+    }
 
   private static async initWasm(
-    accessKey: string,
-    keywordModels: ArrayLike<Uint8Array>,
-    keywordModelSizes: Int32Array,
-    sensitivities: Float32Array): Promise<any> {
-    const memory = new WebAssembly.Memory({ initial: 1000, maximum: 2000 });
+      accessKey: string,
+      keywordModels: ArrayLike < Uint8Array >,
+      keywordModelSizes: Int32Array,
+      sensitivities: Float32Array): Promise < any > {
+        const memory = new WebAssembly.Memory({ initial: 1000, maximum: 2000 });
 
-    const memoryBufferUint8 = new Uint8Array(memory.buffer);
-    const memoryBufferInt32 = new Int32Array(memory.buffer);
-    const memoryBufferFloat32 = new Float32Array(memory.buffer);
+        const memoryBufferUint8 = new Uint8Array(memory.buffer);
+        const memoryBufferInt32 = new Int32Array(memory.buffer);
+        const memoryBufferFloat32 = new Float32Array(memory.buffer);
 
-    const pvConsoleLogWasm = function (index: number): void {
-      // eslint-disable-next-line no-console
-      console.log(arrayBufferToStringAtIndex(memoryBufferUint8, index));
-    };
+        const pvConsoleLogWasm = function (index: number): void {
+          // eslint-disable-next-line no-console
+          console.log(arrayBufferToStringAtIndex(memoryBufferUint8, index));
+        };
 
-    const pvFileOperationHelper = function (args: any): Promise<any> {
-      let promise: any;
-      const runtimeEnvironment = getRuntimeEnvironment();
-      if (runtimeEnvironment === 'worker') {
-        promise = new Promise((resolve, reject) => {
-          Porcupine._resolvePromise = resolve;
-          Porcupine._rejectPromise = reject;
-        });
-        self.postMessage(
-          {
-            command: args.command,
-            path: args.path,
-            content: args.content,
-          },
-          // @ts-ignore
-          undefined
-        );
-      } else if (runtimeEnvironment === 'browser') {
-        promise = new Promise<string>((resolve, reject) => {
-          try {
-            switch (args.command) {
-              case 'file-save':
-                localStorage.setItem(args.path, args.content);
-                resolve('saved');
-                break;
-              case 'file-exists':
-                {
-                  const content = localStorage.getItem(args.path);
-                  resolve(content as string);
+        const pvFileOperationHelper = function (args: any): Promise<any> {
+          let promise: any;
+          const runtimeEnvironment = getRuntimeEnvironment();
+          if (runtimeEnvironment === 'worker') {
+            promise = new Promise((resolve, reject) => {
+              Porcupine._resolvePromise = resolve;
+              Porcupine._rejectPromise = reject;
+            });
+            self.postMessage(
+              {
+                command: args.command,
+                path: args.path,
+                content: args.content,
+              },
+              // @ts-ignore
+              undefined
+            );
+          } else if (runtimeEnvironment === 'browser') {
+            promise = new Promise<string>((resolve, reject) => {
+              try {
+                switch (args.command) {
+                  case 'file-save':
+                    localStorage.setItem(args.path, args.content);
+                    resolve('saved');
+                    break;
+                  case 'file-exists':
+                    {
+                      const content = localStorage.getItem(args.path);
+                      resolve(content as string);
+                    }
+                    break;
+                  case 'file-load':
+                    {
+                      const content = localStorage.getItem(args.path);
+                      if (content === null) {
+                        reject(`${args.path} does not exist`);
+                      } else {
+                        resolve(content as string);
+                      }
+                    }
+                    break;
+                  case 'file-delete':
+                    localStorage.removeItem(args.path);
+                    resolve('deleted');
+                    break;
+                  default:
+                    // eslint-disable-next-line no-console
+                    console.warn(`Unexpected command: ${args.command}`);
+                    reject();
                 }
-                break;
-              case 'file-load':
-                {
-                  const content = localStorage.getItem(args.path);
-                  if (content === null) {
-                    reject(`${args.path} does not exist`);
-                  } else {
-                    resolve(content as string);
-                  }
-                }
-                break;
-              case 'file-delete':
-                localStorage.removeItem(args.path);
-                resolve('deleted');
-                break;
-              default:
-                // eslint-disable-next-line no-console
-                console.warn(`Unexpected command: ${args.command}`);
+              } catch (error) {
                 reject();
-            }
-          } catch (error) {
-            reject();
+              }
+            });
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(`Unexpected environment: ${runtimeEnvironment}`);
+            return Promise.reject();
           }
-        });
-      } else {
-        // eslint-disable-next-line no-console
-        console.error(`Unexpected environment: ${runtimeEnvironment}`);
-        return Promise.reject();
-      }
-      return promise;
-    };
+          return promise;
+        };
 
-    const pvAssertWasm = function (
-      expr: number,
-      line: number,
-      fileNameAddress: number
-    ): void {
-      if (expr === 0) {
-        const fileName = arrayBufferToStringAtIndex(
-          memoryBufferUint8,
-          fileNameAddress
-        );
-        throw new Error(`assertion failed at line ${line} in "${fileName}"`);
-      }
-    };
+        const pvAssertWasm = function (
+          expr: number,
+          line: number,
+          fileNameAddress: number
+        ): void {
+          if (expr === 0) {
+            const fileName = arrayBufferToStringAtIndex(
+              memoryBufferUint8,
+              fileNameAddress
+            );
+            throw new Error(`assertion failed at line ${line} in "${fileName}"`);
+          }
+        };
 
-    const pvTimeWasm = function (): number {
-      return Date.now() / 1000;
-    };
+        const pvTimeWasm = function (): number {
+          return Date.now() / 1000;
+        };
 
-    const pvHttpsRequestWasm = async function (
-      httpMethodAddress: number,
-      serverNameAddress: number,
-      endpointAddress: number,
-      headerAddress: number,
-      bodyAddress: number,
-      timeoutMs: number,
-      responseAddressAddress: number,
-      responseSizeAddress: number,
-      responseCodeAddress: number
-    ): Promise<void> {
-      const httpMethod = arrayBufferToStringAtIndex(
-        memoryBufferUint8,
-        httpMethodAddress
-      );
-      const serverName = arrayBufferToStringAtIndex(
-        memoryBufferUint8,
-        serverNameAddress
-      );
-      const endpoint = arrayBufferToStringAtIndex(
-        memoryBufferUint8,
-        endpointAddress
-      );
-      const header = arrayBufferToStringAtIndex(
-        memoryBufferUint8,
-        headerAddress
-      );
-      const body = arrayBufferToStringAtIndex(memoryBufferUint8, bodyAddress);
+        const pvHttpsRequestWasm = async function (
+          httpMethodAddress: number,
+          serverNameAddress: number,
+          endpointAddress: number,
+          headerAddress: number,
+          bodyAddress: number,
+          timeoutMs: number,
+          responseAddressAddress: number,
+          responseSizeAddress: number,
+          responseCodeAddress: number
+        ): Promise<void> {
+          const httpMethod = arrayBufferToStringAtIndex(
+            memoryBufferUint8,
+            httpMethodAddress
+          );
+          const serverName = arrayBufferToStringAtIndex(
+            memoryBufferUint8,
+            serverNameAddress
+          );
+          const endpoint = arrayBufferToStringAtIndex(
+            memoryBufferUint8,
+            endpointAddress
+          );
+          const header = arrayBufferToStringAtIndex(
+            memoryBufferUint8,
+            headerAddress
+          );
+          const body = arrayBufferToStringAtIndex(memoryBufferUint8, bodyAddress);
 
-      const headerObject = stringHeaderToObject(header);
+          const headerObject = stringHeaderToObject(header);
 
-      let response: Response;
-      let responseText: string;
-      let statusCode: number;
+          let response: Response;
+          let responseText: string;
+          let statusCode: number;
 
-      try {
-        response = await fetchWithTimeout(
-          'https://' + serverName + endpoint,
-          {
-            method: httpMethod,
-            headers: headerObject,
-            body: body,
+          try {
+            response = await fetchWithTimeout(
+              'https://' + serverName + endpoint,
+              {
+                method: httpMethod,
+                headers: headerObject,
+                body: body,
+              },
+              timeoutMs
+            );
+            statusCode = response.status;
+          } catch (error) {
+            statusCode = 0;
+          }
+          // @ts-ignore
+          if (response !== undefined) {
+            try {
+              responseText = await response.text();
+            } catch (error) {
+              responseText = '';
+              statusCode = 1;
+            }
+            // eslint-disable-next-line
+            const responseAddress = await aligned_alloc(
+              Int8Array.BYTES_PER_ELEMENT,
+              (responseText.length + 1) * Int8Array.BYTES_PER_ELEMENT
+            );
+            if (responseAddress === 0) {
+              throw new Error('malloc failed: Cannot allocate memory');
+            }
+
+            memoryBufferInt32[
+              responseSizeAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = responseText.length + 1;
+            memoryBufferInt32[
+              responseAddressAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = responseAddress;
+
+            for (let i = 0; i < responseText.length; i++) {
+              memoryBufferUint8[responseAddress + i] = responseText.charCodeAt(i);
+            }
+            memoryBufferUint8[responseAddress + responseText.length] = 0;
+          }
+
+          memoryBufferInt32[
+            responseCodeAddress / Int32Array.BYTES_PER_ELEMENT
+          ] = statusCode;
+        };
+
+        const pvFileLoadWasm = async function (
+          pathAddress: number,
+          numContentBytesAddress: number,
+          contentAddressAddress: number,
+          succeededAddress: number
+        ): Promise<void> {
+          const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
+          try {
+            const contentBase64 = await pvFileOperationHelper({
+              command: 'file-load',
+              path: path,
+            });
+            const contentBuffer = base64ToUint8Array(contentBase64);
+            // eslint-disable-next-line
+            const contentAddress = await aligned_alloc(
+              Uint8Array.BYTES_PER_ELEMENT,
+              contentBuffer.length * Uint8Array.BYTES_PER_ELEMENT
+            );
+
+            if (contentAddress === 0) {
+              throw new Error('malloc failed: Cannot allocate memory');
+            }
+
+            memoryBufferInt32[
+              numContentBytesAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = contentBuffer.byteLength;
+            memoryBufferInt32[
+              contentAddressAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = contentAddress;
+            memoryBufferUint8.set(contentBuffer, contentAddress);
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 1;
+          } catch (error) {
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 0;
+          }
+        };
+
+        const pvFileSaveWasm = async function (
+          pathAddress: number,
+          numContentBytes: number,
+          contentAddress: number,
+          succeededAddress: number
+        ): Promise<void> {
+          const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
+          const content = arrayBufferToBase64AtIndex(
+            memoryBufferUint8,
+            numContentBytes,
+            contentAddress
+          );
+          try {
+            await pvFileOperationHelper({
+              command: 'file-save',
+              path: path,
+              content: content,
+            });
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 1;
+          } catch (error) {
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 0;
+          }
+        };
+
+        const pvFileExistsWasm = async function (
+          pathAddress: number,
+          isExistsAddress: number,
+          succeededAddress: number
+        ): Promise<void> {
+          const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
+
+          try {
+            const isExists = await pvFileOperationHelper({
+              command: 'file-exists',
+              path: path,
+            });
+            memoryBufferUint8[isExistsAddress] = isExists === null ? 0 : 1;
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 1;
+          } catch (error) {
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 0;
+          }
+        };
+
+        const pvFileDeleteWasm = async function (
+          pathAddress: number,
+          succeededAddress: number
+        ): Promise<void> {
+          const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
+          try {
+            await pvFileOperationHelper({
+              command: 'file-delete',
+              path: path,
+            });
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 1;
+          } catch (error) {
+            memoryBufferInt32[
+              succeededAddress / Int32Array.BYTES_PER_ELEMENT
+            ] = 0;
+          }
+        };
+
+        const pvGetBrowserInfo = async function (browserInfoAddressAddress: number): Promise<void> {
+          const userAgent =
+            navigator.userAgent !== undefined ? navigator.userAgent : 'unknown';
+          // eslint-disable-next-line
+          const browserInfoAddress = await aligned_alloc(
+            Uint8Array.BYTES_PER_ELEMENT,
+            (userAgent.length + 1) * Uint8Array.BYTES_PER_ELEMENT
+          );
+
+          if (browserInfoAddress === 0) {
+            throw new Error('malloc failed: Cannot allocate memory');
+          }
+
+          memoryBufferInt32[
+            browserInfoAddressAddress / Int32Array.BYTES_PER_ELEMENT
+          ] = browserInfoAddress;
+          for (let i = 0; i < userAgent.length; i++) {
+            memoryBufferUint8[browserInfoAddress + i] = userAgent.charCodeAt(i);
+          }
+          memoryBufferUint8[browserInfoAddress + userAgent.length] = 0;
+        };
+
+        const importObject = {
+          // eslint-disable-next-line camelcase
+          wasi_snapshot_preview1: wasiSnapshotPreview1Emulator,
+          env: {
+            memory: memory,
+            // eslint-disable-next-line camelcase
+            pv_console_log_wasm: pvConsoleLogWasm,
+            // eslint-disable-next-line camelcase
+            pv_assert_wasm: pvAssertWasm,
+            // eslint-disable-next-line camelcase
+            pv_time_wasm: pvTimeWasm,
+            // eslint-disable-next-line camelcase
+            pv_https_request_wasm: pvHttpsRequestWasm,
+            // eslint-disable-next-line camelcase
+            pv_file_load_wasm: pvFileLoadWasm,
+            // eslint-disable-next-line camelcase
+            pv_file_save_wasm: pvFileSaveWasm,
+            // eslint-disable-next-line camelcase
+            pv_file_exists_wasm: pvFileExistsWasm,
+            // eslint-disable-next-line camelcase
+            pv_file_delete_wasm: pvFileDeleteWasm,
+            // eslint-disable-next-line camelcase
+            pv_get_browser_info: pvGetBrowserInfo,
           },
-          timeoutMs
+        };
+
+        const wasmCodeArray = base64ToUint8Array(PORCUPINE_WASM_BASE64);
+        const { instance } = await Asyncify.instantiate(
+          wasmCodeArray,
+          importObject
         );
-        statusCode = response.status;
-      } catch (error) {
-        statusCode = 0;
-      }
-      // @ts-ignore
-      if (response !== undefined) {
-        try {
-          responseText = await response.text();
-        } catch (error) {
-          responseText = '';
-          statusCode = 1;
-        }
-        // eslint-disable-next-line
-        const responseAddress = await aligned_alloc(
-          Int8Array.BYTES_PER_ELEMENT,
-          (responseText.length + 1) * Int8Array.BYTES_PER_ELEMENT
+        const aligned_alloc = instance.exports.aligned_alloc as CallableFunction;
+        const pv_porcupine_version = instance.exports
+          .pv_porcupine_version as CallableFunction;
+        const pv_porcupine_frame_length = instance.exports
+          .pv_porcupine_frame_length as CallableFunction;
+        const pv_porcupine_process = instance.exports
+          .pv_porcupine_process as CallableFunction;
+        const pv_porcupine_delete = instance.exports
+          .pv_porcupine_delete as CallableFunction;
+        const pv_porcupine_init = instance.exports.pv_porcupine_init as CallableFunction;
+        const pv_status_to_string = instance.exports
+          .pv_status_to_string as CallableFunction;
+        const pv_sample_rate = instance.exports.pv_sample_rate as CallableFunction;
+        const keywordIndexAddress = await aligned_alloc(
+          Int32Array.BYTES_PER_ELEMENT,
+          Int32Array.BYTES_PER_ELEMENT
         );
-        if (responseAddress === 0) {
+        if(keywordIndexAddress === 0) {
           throw new Error('malloc failed: Cannot allocate memory');
-        }
+  }
+  const objectAddressAddress = await aligned_alloc(
+    Int32Array.BYTES_PER_ELEMENT,
+    Int32Array.BYTES_PER_ELEMENT
+  );
+  if(objectAddressAddress === 0) {
+  throw new Error('malloc failed: Cannot allocate memory');
+}
+const accessKeyAddress = await aligned_alloc(
+  Uint8Array.BYTES_PER_ELEMENT,
+  (accessKey.length + 1) * Uint8Array.BYTES_PER_ELEMENT
+);
 
-        memoryBufferInt32[
-          responseSizeAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = responseText.length + 1;
-        memoryBufferInt32[
-          responseAddressAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = responseAddress;
+if (accessKeyAddress === 0) {
+  throw new Error('malloc failed: Cannot allocate memory');
+}
 
-        for (let i = 0; i < responseText.length; i++) {
-          memoryBufferUint8[responseAddress + i] = responseText.charCodeAt(i);
-        }
-        memoryBufferUint8[responseAddress + responseText.length] = 0;
-      }
+for (let i = 0; i < accessKey.length; i++) {
+  memoryBufferUint8[accessKeyAddress + i] = accessKey.charCodeAt(i);
+}
+memoryBufferUint8[accessKeyAddress + accessKey.length] = 0;
 
-      memoryBufferInt32[
-        responseCodeAddress / Int32Array.BYTES_PER_ELEMENT
-      ] = statusCode;
-    };
+const keywordModelSizeAddress = await aligned_alloc(
+  Int32Array.BYTES_PER_ELEMENT,
+  keywordModels.length * Int32Array.BYTES_PER_ELEMENT
+);
+if (keywordModelSizeAddress === 0) {
+  throw new Error("malloc failed: Cannot allocate memory");
+}
+memoryBufferInt32.set(
+  keywordModelSizes,
+  keywordModelSizeAddress / Int32Array.BYTES_PER_ELEMENT
+);
+let keywordModelAddresses = [];
+for (let i = 0; i < keywordModels.length; i++) {
+  keywordModelAddresses.push(
+    await aligned_alloc(
+      Int8Array.BYTES_PER_ELEMENT,
+      keywordModelSizes[i] * Int8Array.BYTES_PER_ELEMENT
+    )
+  );
+  if (keywordModelAddresses[i] === 0) {
+    throw new Error("malloc failed: Cannot allocate memory");
+  }
+  memoryBufferUint8.set(keywordModels[i], keywordModelAddresses[i]);
+}
+const keywordModelAddressAddress = await aligned_alloc(
+  Int32Array.BYTES_PER_ELEMENT,
+  keywordModels.length * Int32Array.BYTES_PER_ELEMENT
+);
+if (keywordModelAddressAddress === 0) {
+  throw new Error("malloc failed: Cannot allocate memory");
+}
+memoryBufferInt32.set(
+  keywordModelAddresses,
+  keywordModelAddressAddress / Int32Array.BYTES_PER_ELEMENT
+);
 
-    const pvFileLoadWasm = async function (
-      pathAddress: number,
-      numContentBytesAddress: number,
-      contentAddressAddress: number,
-      succeededAddress: number
-    ): Promise<void> {
-      const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
-      try {
-        const contentBase64 = await pvFileOperationHelper({
-          command: 'file-load',
-          path: path,
-        });
-        const contentBuffer = base64ToUint8Array(contentBase64);
-        // eslint-disable-next-line
-        const contentAddress = await aligned_alloc(
-          Uint8Array.BYTES_PER_ELEMENT,
-          contentBuffer.length * Uint8Array.BYTES_PER_ELEMENT
-        );
-
-        if (contentAddress === 0) {
-          throw new Error('malloc failed: Cannot allocate memory');
-        }
-
-        memoryBufferInt32[
-          numContentBytesAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = contentBuffer.byteLength;
-        memoryBufferInt32[
-          contentAddressAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = contentAddress;
-        memoryBufferUint8.set(contentBuffer, contentAddress);
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 1;
-      } catch (error) {
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 0;
-      }
-    };
-
-    const pvFileSaveWasm = async function (
-      pathAddress: number,
-      numContentBytes: number,
-      contentAddress: number,
-      succeededAddress: number
-    ): Promise<void> {
-      const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
-      const content = arrayBufferToBase64AtIndex(
-        memoryBufferUint8,
-        numContentBytes,
-        contentAddress
-      );
-      try {
-        await pvFileOperationHelper({
-          command: 'file-save',
-          path: path,
-          content: content,
-        });
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 1;
-      } catch (error) {
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 0;
-      }
-    };
-
-    const pvFileExistsWasm = async function (
-      pathAddress: number,
-      isExistsAddress: number,
-      succeededAddress: number
-    ): Promise<void> {
-      const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
-
-      try {
-        const isExists = await pvFileOperationHelper({
-          command: 'file-exists',
-          path: path,
-        });
-        memoryBufferUint8[isExistsAddress] = isExists === null ? 0 : 1;
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 1;
-      } catch (error) {
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 0;
-      }
-    };
-
-    const pvFileDeleteWasm = async function (
-      pathAddress: number,
-      succeededAddress: number
-    ): Promise<void> {
-      const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
-      try {
-        await pvFileOperationHelper({
-          command: 'file-delete',
-          path: path,
-        });
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 1;
-      } catch (error) {
-        memoryBufferInt32[
-          succeededAddress / Int32Array.BYTES_PER_ELEMENT
-        ] = 0;
-      }
-    };
-
-    const pvGetBrowserInfo = async function (browserInfoAddressAddress: number): Promise<void> {
-      const userAgent =
-        navigator.userAgent !== undefined ? navigator.userAgent : 'unknown';
-      // eslint-disable-next-line
-      const browserInfoAddress = await aligned_alloc(
-        Uint8Array.BYTES_PER_ELEMENT,
-        (userAgent.length + 1) * Uint8Array.BYTES_PER_ELEMENT
-      );
-
-      if (browserInfoAddress === 0) {
-        throw new Error('malloc failed: Cannot allocate memory');
-      }
-
-      memoryBufferInt32[
-        browserInfoAddressAddress / Int32Array.BYTES_PER_ELEMENT
-      ] = browserInfoAddress;
-      for (let i = 0; i < userAgent.length; i++) {
-        memoryBufferUint8[browserInfoAddress + i] = userAgent.charCodeAt(i);
-      }
-      memoryBufferUint8[browserInfoAddress + userAgent.length] = 0;
-    };
-
-    const importObject = {
-      // eslint-disable-next-line camelcase
-      wasi_snapshot_preview1: wasiSnapshotPreview1Emulator,
-      env: {
-        memory: memory,
-        // eslint-disable-next-line camelcase
-        pv_console_log_wasm: pvConsoleLogWasm,
-        // eslint-disable-next-line camelcase
-        pv_assert_wasm: pvAssertWasm,
-        // eslint-disable-next-line camelcase
-        pv_time_wasm: pvTimeWasm,
-        // eslint-disable-next-line camelcase
-        pv_https_request_wasm: pvHttpsRequestWasm,
-        // eslint-disable-next-line camelcase
-        pv_file_load_wasm: pvFileLoadWasm,
-        // eslint-disable-next-line camelcase
-        pv_file_save_wasm: pvFileSaveWasm,
-        // eslint-disable-next-line camelcase
-        pv_file_exists_wasm: pvFileExistsWasm,
-        // eslint-disable-next-line camelcase
-        pv_file_delete_wasm: pvFileDeleteWasm,
-        // eslint-disable-next-line camelcase
-        pv_get_browser_info: pvGetBrowserInfo,
-      },
-    };
-
-    const wasmCodeArray = base64ToUint8Array(PORCUPINE_WASM_BASE64);
-    const { instance } = await Asyncify.instantiate(
-      wasmCodeArray,
-      importObject
-    );
-    const aligned_alloc = instance.exports.aligned_alloc as CallableFunction;
-    const pv_porcupine_version = instance.exports
-      .pv_porcupine_version as CallableFunction;
-    const pv_porcupine_frame_length = instance.exports
-      .pv_porcupine_frame_length as CallableFunction;
-    const pv_porcupine_process = instance.exports
-      .pv_porcupine_process as CallableFunction;
-    const pv_porcupine_delete = instance.exports
-      .pv_porcupine_delete as CallableFunction;
-    const pv_porcupine_init = instance.exports.pv_porcupine_init as CallableFunction;
-    const pv_status_to_string = instance.exports
-      .pv_status_to_string as CallableFunction;
-    const pv_sample_rate = instance.exports.pv_sample_rate as CallableFunction;
-    const keywordIndexAddress = await aligned_alloc(
-      Int32Array.BYTES_PER_ELEMENT,
-      Int32Array.BYTES_PER_ELEMENT
-    );
-    if (keywordIndexAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
-    }
-    const objectAddressAddress = await aligned_alloc(
-      Int32Array.BYTES_PER_ELEMENT,
-      Int32Array.BYTES_PER_ELEMENT
-    );
-    if (objectAddressAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
-    }
-    const accessKeyAddress = await aligned_alloc(
-      Uint8Array.BYTES_PER_ELEMENT,
-      (accessKey.length + 1) * Uint8Array.BYTES_PER_ELEMENT
-    );
-
-    if (accessKeyAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
-    }
-
-    for (let i = 0; i < accessKey.length; i++) {
-      memoryBufferUint8[accessKeyAddress + i] = accessKey.charCodeAt(i);
-    }
-    memoryBufferUint8[accessKeyAddress + accessKey.length] = 0;
-
-    const keywordModelSizeAddress = await aligned_alloc(
-      Int32Array.BYTES_PER_ELEMENT,
-      keywordModels.length * Int32Array.BYTES_PER_ELEMENT
-    );
-    if (keywordModelSizeAddress === 0) {
-      throw new Error("malloc failed: Cannot allocate memory");
-    }
-    memoryBufferInt32.set(
-      keywordModelSizes,
-      keywordModelSizeAddress / Int32Array.BYTES_PER_ELEMENT
-    );
-    let keywordModelAddresses = [];
-    for (let i = 0; i < keywordModels.length; i++) {
-      keywordModelAddresses.push(
-        await aligned_alloc(
-          Int8Array.BYTES_PER_ELEMENT,
-          keywordModelSizes[i] * Int8Array.BYTES_PER_ELEMENT
-        )
-      );
-      if (keywordModelAddresses[i] === 0) {
-        throw new Error("malloc failed: Cannot allocate memory");
-      }
-      memoryBufferUint8.set(keywordModels[i], keywordModelAddresses[i]);
-    }
-    const keywordModelAddressAddress = await aligned_alloc(
-      Int32Array.BYTES_PER_ELEMENT,
-      keywordModels.length * Int32Array.BYTES_PER_ELEMENT
-    );
-    if (keywordModelAddressAddress === 0) {
-      throw new Error("malloc failed: Cannot allocate memory");
-    }
-    memoryBufferInt32.set(
-      keywordModelAddresses,
-      keywordModelAddressAddress / Int32Array.BYTES_PER_ELEMENT
-    );
-
-    const sensitivityAddress = await aligned_alloc(
-      Float32Array.BYTES_PER_ELEMENT,
-      keywordModels.length * Float32Array.BYTES_PER_ELEMENT
-    );
-    if (sensitivityAddress === 0) {
-      throw new Error("malloc failed: Cannot allocate memory");
-    }
-    memoryBufferFloat32.set(
-      sensitivities,
-      sensitivityAddress / Float32Array.BYTES_PER_ELEMENT
-    );
-    const status = await pv_porcupine_init(
-      accessKeyAddress,
-      keywordModels.length,
-      keywordModelSizeAddress,
-      keywordModelAddressAddress,
-      sensitivityAddress,
-      objectAddressAddress);
-    if (status !== PV_STATUS_SUCCESS) {
-      throw new Error(
-        `'pv_porcupine_init' failed with status ${arrayBufferToStringAtIndex(
-          memoryBufferUint8,
-          await pv_status_to_string(status)
-        )}`
-      );
-    }
-    const memoryBufferView = new DataView(memory.buffer);
-    const objectAddress = memoryBufferView.getInt32(
-      objectAddressAddress,
-      true
-    );
-
-    const sampleRate = await pv_sample_rate();
-    const frameLength = await pv_porcupine_frame_length();
-    const versionAddress = await pv_porcupine_version();
-    const version = arrayBufferToStringAtIndex(
+const sensitivityAddress = await aligned_alloc(
+  Float32Array.BYTES_PER_ELEMENT,
+  keywordModels.length * Float32Array.BYTES_PER_ELEMENT
+);
+if (sensitivityAddress === 0) {
+  throw new Error("malloc failed: Cannot allocate memory");
+}
+memoryBufferFloat32.set(
+  sensitivities,
+  sensitivityAddress / Float32Array.BYTES_PER_ELEMENT
+);
+const status = await pv_porcupine_init(
+  accessKeyAddress,
+  keywordModels.length,
+  keywordModelSizeAddress,
+  keywordModelAddressAddress,
+  sensitivityAddress,
+  objectAddressAddress);
+if (status !== PV_STATUS_SUCCESS) {
+  throw new Error(
+    `'pv_porcupine_init' failed with status ${arrayBufferToStringAtIndex(
       memoryBufferUint8,
-      versionAddress
-    );
+      await pv_status_to_string(status)
+    )}`
+  );
+}
+const memoryBufferView = new DataView(memory.buffer);
+const objectAddress = memoryBufferView.getInt32(
+  objectAddressAddress,
+  true
+);
 
-    const inputBufferAddress = await aligned_alloc(
-      Int16Array.BYTES_PER_ELEMENT,
-      frameLength * Int16Array.BYTES_PER_ELEMENT
-    );
-    if (inputBufferAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
-    }
+const sampleRate = await pv_sample_rate();
+const frameLength = await pv_porcupine_frame_length();
+const versionAddress = await pv_porcupine_version();
+const version = arrayBufferToStringAtIndex(
+  memoryBufferUint8,
+  versionAddress
+);
 
-    return {
-      frameLength: frameLength,
-      inputBufferAddress: inputBufferAddress,
-      memory: memory,
-      objectAddress: objectAddress,
-      pvPorcupineDelete: pv_porcupine_delete,
-      pvPorcupineProcess: pv_porcupine_process,
-      pvStatusToString: pv_status_to_string,
-      keywordIndexAddress: keywordIndexAddress,
-      sampleRate: sampleRate,
-      version: version,
-    };
+const inputBufferAddress = await aligned_alloc(
+  Int16Array.BYTES_PER_ELEMENT,
+  frameLength * Int16Array.BYTES_PER_ELEMENT
+);
+if (inputBufferAddress === 0) {
+  throw new Error('malloc failed: Cannot allocate memory');
+}
+
+return {
+  frameLength: frameLength,
+  inputBufferAddress: inputBufferAddress,
+  memory: memory,
+  objectAddress: objectAddress,
+  pvPorcupineDelete: pv_porcupine_delete,
+  pvPorcupineProcess: pv_porcupine_process,
+  pvStatusToString: pv_status_to_string,
+  keywordIndexAddress: keywordIndexAddress,
+  sampleRate: sampleRate,
+  version: version,
+};
   }
 }
 
