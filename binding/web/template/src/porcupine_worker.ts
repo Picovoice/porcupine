@@ -9,6 +9,8 @@
     specific language governing permissions and limitations under the License.
 */
 
+import {Mutex} from 'async-mutex';
+
 import {
   PorcupineEngine,
   PorcupineKeyword,
@@ -24,6 +26,8 @@ import Porcupine from './porcupine';
 
 let paused = true;
 let porcupineEngine: PorcupineEngine | null = null;
+const processMutex = new Mutex();
+
 
 async function init(accessKey: string, keywords: Array<PorcupineKeyword | string>, start = true): Promise<void> {
   let porcupineMessage: PorcupineWorkerResponseReady | PorcupineWorkerResponseFailed;
@@ -63,7 +67,6 @@ async function process(inputFrame: Int16Array): Promise<void> {
     };
     postMessage(PorcupineErrorMessage, undefined);
   }
-
 }
 
 async function release(): Promise<void> {
@@ -74,59 +77,68 @@ async function release(): Promise<void> {
   close();
 }
 
+async function internal_onmessage(data: PorcupineWorkerRequest): Promise<void> {
+  await processMutex.runExclusive(async () => {
+    switch (data.command) {
+      case 'init':
+        await init(data.accessKey, data.keywords,data.start);
+        break;
+      case 'process':
+        await process(data.inputFrame);
+        break;
+      case 'pause':
+        paused = true;
+        break;
+      case 'resume':
+        paused = false;
+        break;
+      case 'release':
+        release();
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.warn('Unhandled command in porcupine_worker: ' + data.command);
+    }
+  });
+}
+
 onmessage = function (
   event: MessageEvent<PorcupineWorkerRequest>
 ): void {
   switch (event.data.command) {
-    case 'init':
-      init(event.data.accessKey, event.data.keywords,event.data.start);
+    case 'file-save-succeeded':
+      Porcupine.resolveFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
       break;
-    case 'process':
-      process(event.data.inputFrame);
+    case 'file-save-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
       break;
-    case 'pause':
-      paused = true;
+    case 'file-load-succeeded':
+      Porcupine.resolveFilePromise(event.data.content);
+      Porcupine.clearFilePromises();
       break;
-    case 'resume':
-      paused = false;
+    case 'file-load-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
       break;
-    case 'release':
-      release();
+    case 'file-exists-succeeded':
+      Porcupine.resolveFilePromise(event.data.content);
+      Porcupine.clearFilePromises();
       break;
-      case 'file-save-succeeded':
-        Porcupine.resolveFilePromise(event.data.message);
-        Porcupine.clearFilePromises();
-        break;
-      case 'file-save-failed':
-        Porcupine.rejectFilePromise(event.data.message);
-        Porcupine.clearFilePromises();
-        break;
-      case 'file-load-succeeded':
-        Porcupine.resolveFilePromise(event.data.content);
-        Porcupine.clearFilePromises();
-        break;
-      case 'file-load-failed':
-        Porcupine.rejectFilePromise(event.data.message);
-        Porcupine.clearFilePromises();
-        break;
-      case 'file-exists-succeeded':
-        Porcupine.resolveFilePromise(event.data.content);
-        Porcupine.clearFilePromises();
-        break;
-      case 'file-exists-failed':
-        Porcupine.rejectFilePromise(event.data.message);
-        Porcupine.clearFilePromises();
-        break;
-      case 'file-delete-succeeded':
-        Porcupine.resolveFilePromise(event.data.message);
-        Porcupine.clearFilePromises();
-        break;
-      case 'file-delete-failed':
-        Porcupine.rejectFilePromise(event.data.message);
-        Porcupine.clearFilePromises();
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.warn('Unhandled command in porcupine_worker: ' + event.data.command);
+    case 'file-exists-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      break;
+    case 'file-delete-succeeded':
+      Porcupine.resolveFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      break;
+    case 'file-delete-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      break;
+    default:
+      internal_onmessage(event.data);
   }
 };
