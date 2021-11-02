@@ -1,14 +1,14 @@
 name: React Native
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
