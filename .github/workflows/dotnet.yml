@@ -24,9 +24,12 @@ on:
       - 'lib/windows/**'
       - '!binding/dotnet/README.md'
 
+defaults:
+  run:
+    working-directory: binding/dotnet
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -38,13 +41,10 @@ jobs:
         dotnet-version: 3.1.x
 
     - name: Restore dependencies
-      run: dotnet restore
-      working-directory: binding/dotnet/Porcupine
+      run: dotnet restore    
 
     - name: Build
-      run: dotnet build --no-restore
-      working-directory: binding/dotnet/Porcupine
+      run: dotnet build --no-restore      
 
     - name: Test
-      run: dotnet test -- TestRunParameters.Parameter(name=\"pvTestAccessKey\", value=\"${{secrets.PV_VALID_ACCESS_KEY}}\")
-      working-directory: binding/dotnet/PorcupineTest
+      run: dotnet test -- "TestRunParameters.Parameter(name=\"pvTestAccessKey\", value=\"${{secrets.PV_VALID_ACCESS_KEY}}\")"
