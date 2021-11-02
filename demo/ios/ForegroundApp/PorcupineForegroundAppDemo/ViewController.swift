@@ -13,6 +13,7 @@ import Porcupine
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var wakeWordPicker: UIPickerView!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var errorLabel: UILabel!
 
     let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWordDict = [String:Porcupine.BuiltInKeyword]()
@@ -42,6 +43,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
         wakeWordPicker.frame.origin = CGPoint(x: 0, y: 40)
         wakeWordPicker.frame.size = CGSize(width: viewSize.width, height: viewSize.height - startButtonSize.height - 120)
+        
+        errorLabel.frame.origin = CGPoint(x: 0, y: 60)
+        errorLabel.frame.size = CGSize(width: viewSize.width, height: 120)
+        errorLabel.isHidden = true
     }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -70,25 +75,32 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     self.view.backgroundColor = originalColor
                 }
             }
-
-            do {
-                porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback)
-                try porcupineManager.start()
-            } catch {
-                let alert = UIAlertController(
-                        title: "Alert",
-                        message: "Something went wrong",
-                        preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
+            
+            let errorCallback: ((Error) -> Void) = {error in
+                self.errorLabel.isHidden = false
+                self.errorLabel.text = "\(error)"
             }
 
-            wakeWordPicker.isUserInteractionEnabled = false
-            isRecording = true
-            startButton.setTitle("STOP", for: UIControl.State.normal)
+            do {
+                porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback, errorCallback: errorCallback)
+                try porcupineManager.start()
+                
+                errorLabel.isHidden = true
+                wakeWordPicker.isUserInteractionEnabled = false
+                isRecording = true
+                startButton.setTitle("STOP", for: UIControl.State.normal)
+            } catch let error as PorcupineError {
+                errorLabel.isHidden = false
+                errorLabel.text = "\(error)"
+            } catch {
+                errorLabel.isHidden = false
+                errorLabel.text = "Something went wrong"
+                return
+            }
         } else {
-            porcupineManager.stop()
+            if porcupineManager != nil {
+                porcupineManager.stop()
+            }
 
             wakeWordPicker.isUserInteractionEnabled = true
             isRecording = false

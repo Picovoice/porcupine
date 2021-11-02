@@ -69,6 +69,10 @@ public class Porcupine {
             }
         }
         
+        if accessKey.count == 0 {
+            throw PorcupineError.PorcupineInvalidArgumentError("AccessKey is required for Porcupine initialization")
+        }
+        
         let sensitivitiesArg = sensitivities ?? Array(repeating: 0.5, count: keywordPaths.count)
         
         if sensitivitiesArg.count != keywordPaths.count {

@@ -27,36 +27,37 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         startButton.layer.cornerRadius = 0.5 * startButton.bounds.size.width
         startButton.clipsToBounds = true
-        #imageLiteral(resourceName: "simulator_screenshot_C62944CB-14DA-463F-B7C8-040D82A38962.png")
-        textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
         
-        Sound.category = .playAndRecord
-        let keywordCallback: ((Int32) -> Void) = { keywordIndex in
-            NotificationManager.shared.sendNotification()
-            Sound.play(file: "beep.wav")
-        }
-        do {
-            self.porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback)
-        } catch {
-            showAlert(message: "Failed to initialize Porcupine Manager")
-        }
+        textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
     }
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
-            NotificationManager.shared.requestNotificationAuthorization()
-
             do {
+                Sound.category = .playAndRecord
+                let keywordCallback: ((Int32) -> Void) = { keywordIndex in
+                    NotificationManager.shared.sendNotification()
+                    Sound.play(file: "beep.wav")
+                }
+                
+                self.porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback)
+                
+                
                 try porcupineManager.start()
-            } catch {
-                showAlert(message: "Failed to start Porcupine Manager")
+                isRecording = true
+                startButton.setTitle("STOP", for: UIControl.State.normal)
+            } catch let error as PorcupineError {
+                showAlert(message: "Failed to initialize and start Porcupine:\n\(error)")
+            } catch let error {
+                showAlert(message: "Something went wrong: \(error)")
                 return
             }
 
-            isRecording = true
-            startButton.setTitle("STOP", for: UIControl.State.normal)
+
         } else {
-            porcupineManager.stop()
+            if porcupineManager != nil {
+                porcupineManager.stop()
+            }
 
             isRecording = false
             startButton.setTitle("START", for: UIControl.State.normal)
@@ -68,7 +69,7 @@ class ViewController: UIViewController, UITextViewDelegate {
                 title: "Alert",
                 message: message,
                 preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
 }
