@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-        node-version: [12.x]
+        node-version: [lts/*]
 
     steps:
     - uses: actions/checkout@v2
@@ -45,6 +45,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt install curl unzip
+        echo google-chrome --version
         curl --output chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/93.0.4577.63/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
         sudo mv chromedriver /usr/local/bin
