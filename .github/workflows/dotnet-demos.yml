@@ -37,6 +37,9 @@ jobs:
       run: dotnet pack -c Release
       working-directory: binding/dotnet
     
+    - name: Package restore
+      run: dotnet restore
+    
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
 
@@ -62,6 +65,9 @@ jobs:
     - name: Pack binding for local ref
       run: dotnet pack -c Release
       working-directory: binding/dotnet
+    
+    - name: Package restore
+      run: dotnet restore
     
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
