@@ -68,7 +68,7 @@ export default class PorcupineWorkerFactory {
             if (keywordDetectionCallback !== undefined) {
               keywordDetectionCallback(event.data.keywordLabel);
             } else {
-              console.log(event.data.keywordLabel);
+              console.log(`Porcupine detected ${event.data.keywordLabel}`);
             }
             break;
           case 'ppn-error':

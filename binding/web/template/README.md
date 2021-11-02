@@ -76,7 +76,7 @@ function keywordDetectionCallback(keyword) {
 }
 
 // If during processing an audio stream, anything goes wrong, the worker will
-// call the error callback and passes the error to it.
+// call the error callback and pass the error to it.
 function processErrorCallback(error) {
   console.error(error); 
 }

@@ -38,6 +38,7 @@ applications. It is
 
 ## Table of Contents
 
+
 - [Porcupine](#porcupine)
   - [Table of Contents](#table-of-contents)
   - [License & Terms](#license--terms)
@@ -1167,7 +1168,7 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
     <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
       function keywordDetectionCallback(keyword) {
-        console.log("Porcupine detected " + keyword);
+        console.log(`Porcupine detected ${keyword}`);
       }
 
       function processErrorCallback(error) {
@@ -1226,7 +1227,7 @@ import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker"
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 
 function keywordDetectionCallback(keyword) {
-  console.log("Porcupine detected " + keyword);
+  console.log(`Porcupine detected ${keyword}`);
 }
 
 function processErrorCallback(error) {
