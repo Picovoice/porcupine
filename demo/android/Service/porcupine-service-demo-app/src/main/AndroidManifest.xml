@@ -15,7 +15,9 @@
         <service android:name="ai.picovoice.porcupinedemoservice.PorcupineService"
             android:enabled="true"
             android:exported="false" />
-        <activity android:name="ai.picovoice.porcupinedemoservice.MainActivity">
+        <activity
+            android:name="ai.picovoice.porcupinedemoservice.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
