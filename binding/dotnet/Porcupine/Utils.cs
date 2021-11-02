@@ -33,14 +33,16 @@ namespace Pv
             return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lib/common/porcupine_params.pv");
         }
 
-        public static Dictionary<string, string> PvKeywordPaths()
+        public static Dictionary<BuiltInKeyword, string> PvKeywordPaths()
         {
             string keywordFilesDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/keyword_files", _env);
 
-            Dictionary<string, string> keywordPaths = new Dictionary<string, string>();
+            Dictionary<BuiltInKeyword, string> keywordPaths = new Dictionary<BuiltInKeyword, string>();
             foreach (string keywordFile in Directory.GetFiles(keywordFilesDir))
             {
-                keywordPaths.Add(Path.GetFileName(keywordFile).Split('_')[0], Path.Combine(keywordFilesDir, keywordFile));
+                string enumName = Path.GetFileName(keywordFile).Split('_')[0].Replace(" ", "_").ToUpper();
+                BuiltInKeyword builtin = (BuiltInKeyword)Enum.Parse(typeof(BuiltInKeyword), enumName);
+                keywordPaths.Add(builtin, Path.Combine(keywordFilesDir, keywordFile));         
             }
 
             return keywordPaths;

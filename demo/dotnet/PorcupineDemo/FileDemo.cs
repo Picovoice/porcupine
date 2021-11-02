@@ -31,6 +31,7 @@ namespace PorcupineDemo
         /// Reads through input file and, upon detecting the specified wake word(s), prints the detection timecode and the wake word.
         /// </summary>
         /// <param name="inputAudioPath">Required argument. Absolute path to input audio file.</param>                
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
         /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>              
         /// <param name="sensitivities">
@@ -41,19 +42,26 @@ namespace PorcupineDemo
         /// List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved 
         /// using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
         /// </param>
-        public static void RunDemo(string inputAudioPath, string modelPath, List<string> keywordPaths, List<string> keywords, List<float> sensitivities)
+        public static void RunDemo(
+            string inputAudioPath, 
+            string accessKey, 
+            string modelPath, 
+            List<string> keywordPaths, 
+            List<string> keywords, 
+            List<float> sensitivities)
         {
             Porcupine porcupine = null;
             try
             {
                 // init porcupine wake word engine
-                porcupine = Porcupine.Create(modelPath, keywordPaths, keywords, sensitivities);
+                porcupine = Porcupine.FromKeywordPaths(
+                    accessKey, 
+                    keywordPaths, 
+                    modelPath, 
+                    sensitivities);
 
-                // get keyword names for labeling detection results
-                if (keywords == null)
-                {
-                    keywords = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
-                }
+                // get keyword names for labeling detection results                
+                List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
                 using BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open));
                 ValidateWavFile(reader, porcupine.SampleRate, 16, out short numChannels);
@@ -142,22 +150,30 @@ namespace PorcupineDemo
                 return;
             }
 
+            string inputAudioPath = null;
+            string accessKey = null;
             List<string> keywords = null;
             List<string> keywordPaths = null;
             List<float> sensitivities = null;
-            string modelPath = null;            
-            string inputAudioPath = null;            
+            string modelPath = null;
             bool showHelp = false;
 
             // parse command line arguments
             int argIndex = 0;
             while (argIndex < args.Length)
-            {
-                if (args[argIndex] == "--input_audio_path")
+            {                
+                if(args[argIndex] == "--input_audio_path")
                 {
                     if (++argIndex < args.Length)
                     {
                         inputAudioPath = args[argIndex++];
+                    }
+                }
+                else if (args[argIndex] == "--access_key")
+                {
+                    if (++argIndex < args.Length)
+                    {
+                        accessKey = args[argIndex++];
                     }
                 }
                 else if (args[argIndex] == "--keywords")
@@ -225,38 +241,43 @@ namespace PorcupineDemo
                 throw new ArgumentException($"Audio file at path {inputAudioPath} does not exist");
             }
 
-            // argument validation            
             if ((keywordPaths == null || keywordPaths.Count == 0) && (keywords == null || keywords.Count == 0))
             {
-                throw new ArgumentNullException("keywords", "Either '--keywords' or '--keyword_paths' must be set.");
+                throw new ArgumentException("Either '--keywords' or '--keyword_paths' must be set.");
             }
 
-            int keywordCount = keywordPaths?.Count ?? keywords.Count;
-
-            if (sensitivities == null)
+            if (keywords != null)
             {
-                sensitivities = Enumerable.Repeat(0.5f, keywordCount).ToList();
-            }
-
-            if (sensitivities.Count != keywordCount)
-            {
-                throw new ArgumentException($"Number of keywords ({keywordCount}) does not match number of sensitivities ({sensitivities.Count})");
+                keywordPaths = new List<string>();
+                foreach (string k in keywords)
+                {
+                    if (!Enum.TryParse(typeof(BuiltInKeyword), k.ToUpper().Replace(" ", "_"), out object builtin))
+                    {
+                        throw new ArgumentException($"Keyword '{k}' is not a valid built-in keyword. Available built-ins are: " +
+                            $"{string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(k => k.ToLower().Replace("_", " ")))}");
+                    }
+                    else
+                    {
+                        keywordPaths.Add(Porcupine.BUILT_IN_KEYWORD_PATHS[(BuiltInKeyword)builtin]);
+                    }
+                }
             }
 
             // run demo with validated arguments
-            RunDemo(inputAudioPath, modelPath, keywordPaths, keywords, sensitivities);
+            RunDemo(inputAudioPath, accessKey, modelPath, keywordPaths, keywords, sensitivities);
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine(e.ExceptionObject.ToString());
-            Console.ReadKey();
-            Environment.Exit(-1);
+            Console.WriteLine(e.ExceptionObject.ToString());            
+            Environment.Exit(1);
         }
 
         private static readonly string HELP_STR = "Available options: \n " +
             $"\t--input_audio_path (required): Absolute path to input audio file.\n" +
-            $"\t--keywords: List of default keywords for detection. Available keywords: {string.Join(", ", Porcupine.KEYWORDS)}\n" +
+            $"\t--access_key (required): AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)\n" +
+            $"\t--keywords: List of built-in keywords for detection. \n" +
+            $"\t\tAvailable keywords: {string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(k => k.ToLower().Replace("_", " ")))}\n" +
             $"\t--keyword_paths: Absolute paths to keyword model files. If not set it will be populated from `--keywords` argument\n" +
             $"\t--model_path: Absolute path to the file containing model parameters.\n" +
             $"\t--sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher \n" +
