@@ -85,7 +85,7 @@ export class Porcupine implements PorcupineEngine {
 
   private static _resolvePromise: EmptyPromise | null;
   private static _rejectPromise: EmptyPromise | null;
-  private static _createMutex = new Mutex;
+  private static _porcupineMutex = new Mutex;
 
   private constructor(handleWasm: PorcupineWasmOutput, keywordLabels: ArrayLike<string>) {
     Porcupine._frameLength = handleWasm.frameLength;
@@ -205,7 +205,7 @@ export class Porcupine implements PorcupineEngine {
     }
 
     const returnPromise = new Promise<Porcupine>((resolve, reject) => {
-      Porcupine._createMutex.runExclusive(async () => {
+      Porcupine._porcupineMutex.runExclusive(async () => {
         if (!Array.isArray(keywords)) {
           keywords = [keywords];
         } else if (keywords.length === 0) {
