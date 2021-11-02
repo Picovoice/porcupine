@@ -13,6 +13,7 @@
 
 // @ts-ignore
 import * as Asyncify from 'asyncify-wasm';
+import { Mutex } from 'async-mutex';
 
 import { PorcupineKeyword, PorcupineEngine } from './porcupine_types';
 
@@ -71,6 +72,7 @@ export class Porcupine implements PorcupineEngine {
   private _wasmMemory: WebAssembly.Memory;
   private _memoryBuffer: Int16Array;
   private _memoryBufferView: DataView;
+  private _processMutex: Mutex;
 
   private _objectAddress: number;
   private _inputBufferAddress: number;
@@ -105,6 +107,7 @@ export class Porcupine implements PorcupineEngine {
     for (let i = 0; i < keywordLabels.length; i++) {
       this._keywordLabels.set(i, keywordLabels[i]);
     }
+    this._processMutex = new Mutex();
   }
 
   /**
@@ -126,28 +129,35 @@ export class Porcupine implements PorcupineEngine {
     if (!(pcm instanceof Int16Array)) {
       throw new Error("The argument 'pcm' must be provided as an Int16Array");
     }
-    this._memoryBuffer.set(
-      pcm,
-      this._inputBufferAddress / Int16Array.BYTES_PER_ELEMENT
-    );
-    const status = await this._pvPorcupineProcess(
-      this._objectAddress,
-      this._inputBufferAddress,
-      this._keywordIndexAddress
-    );
-    if (status !== PV_STATUS_SUCCESS) {
-      const memoryBuffer = new Uint8Array(this._wasmMemory.buffer);
-      throw new Error(
-        `process failed with status ${arrayBufferToStringAtIndex(
-          memoryBuffer,
-          await this._pvStatusToString(status)
-        )}`
-      );
-    }
-    return this._memoryBufferView.getInt32(
-      this._keywordIndexAddress,
-      true
-    );
+    const returnPromise = new Promise<number>((resolve, reject) => {
+      this._processMutex.runExclusive(async () => {
+        this._memoryBuffer.set(
+          pcm,
+          this._inputBufferAddress / Int16Array.BYTES_PER_ELEMENT
+        );
+        const status = await this._pvPorcupineProcess(
+          this._objectAddress,
+          this._inputBufferAddress,
+          this._keywordIndexAddress
+        );
+        if (status !== PV_STATUS_SUCCESS) {
+          const memoryBuffer = new Uint8Array(this._wasmMemory.buffer);
+          throw new Error(
+            `process failed with status ${arrayBufferToStringAtIndex(
+              memoryBuffer,
+              await this._pvStatusToString(status)
+            )}`
+          );
+        }
+        return this._memoryBufferView.getInt32(
+          this._keywordIndexAddress,
+          true
+        );
+      }).then((result: number) => {
+        resolve(result);
+      });
+    });
+    return returnPromise;
   }
 
   get version(): string {

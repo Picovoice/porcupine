@@ -9,8 +9,6 @@
     specific language governing permissions and limitations under the License.
 */
 
-import {Mutex} from 'async-mutex';
-
 import {
   PorcupineEngine,
   PorcupineKeyword,
@@ -26,8 +24,6 @@ import Porcupine from './porcupine';
 
 let paused = true;
 let porcupineEngine: PorcupineEngine | null = null;
-const onmessageMutex = new Mutex();
-
 
 async function init(accessKey: string, keywords: Array<PorcupineKeyword | string>, start = true): Promise<void> {
   let porcupineMessage: PorcupineWorkerResponseReady | PorcupineWorkerResponseFailed;
@@ -77,31 +73,6 @@ async function release(): Promise<void> {
   close();
 }
 
-async function internalOnmessage(data: PorcupineWorkerRequest): Promise<void> {
-  await onmessageMutex.runExclusive(async () => {
-    switch (data.command) {
-      case 'init':
-        await init(data.accessKey, data.keywords,data.start);
-        break;
-      case 'process':
-        await process(data.inputFrame);
-        break;
-      case 'pause':
-        paused = true;
-        break;
-      case 'resume':
-        paused = false;
-        break;
-      case 'release':
-        release();
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.warn('Unhandled command in porcupine_worker: ' + data.command);
-    }
-  });
-}
-
 onmessage = function (
   event: MessageEvent<PorcupineWorkerRequest>
 ): void {
@@ -138,7 +109,23 @@ onmessage = function (
       Porcupine.rejectFilePromise(event.data.message);
       Porcupine.clearFilePromises();
       break;
-    default:
-      internalOnmessage(event.data);
+      case 'init':
+        init(event.data.accessKey, event.data.keywords,event.data.start);
+        break;
+      case 'process':
+        process(event.data.inputFrame);
+        break;
+      case 'pause':
+        paused = true;
+        break;
+      case 'resume':
+        paused = false;
+        break;
+      case 'release':
+        release();
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.warn('Unhandled command in porcupine_worker: ' + event.data.command);
   }
 };
