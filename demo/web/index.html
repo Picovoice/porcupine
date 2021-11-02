@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <script src="node_modules/@picovoice/porcupine-web-en-worker/dist/iife/index.js"></script>
-    <script src="node_modules/@picovoice/porcupine-web-de-worker/dist/iife/index.js"></script>
+    <!-- <script src="node_modules/@picovoice/porcupine-web-de-worker/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/porcupine-web-fr-worker/dist/iife/index.js"></script>
-    <script src="node_modules/@picovoice/porcupine-web-es-worker/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/porcupine-web-es-worker/dist/iife/index.js"></script> -->
     <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
       function writeMessage(message) {
@@ -44,30 +44,30 @@
             porcupineErrorCallback
           );
 
-          let ppnDe = await PorcupineWebDeWorker.PorcupineWorkerFactory.create(
-            accessKey,
-            {
-              builtin: "Ananas",
-              sensitivity: 0.7,
-            },
-            porcupineKeywordCallback,
-            porcupineErrorCallback
-          );
-          let ppnEs = await PorcupineWebEsWorker.PorcupineWorkerFactory.create(
-            accessKey,
-            {
-              builtin: "Manzana",
-              sensitivity: 0.6,
-            },
-            porcupineKeywordCallback,
-            porcupineErrorCallback
-          );
-          let ppnFr = await PorcupineWebFrWorker.PorcupineWorkerFactory.create(
-            accessKey,
-            ["Framboise"],
-            porcupineKeywordCallback,
-            porcupineErrorCallback
-          );
+          // let ppnDe = await PorcupineWebDeWorker.PorcupineWorkerFactory.create(
+          //   accessKey,
+          //   {
+          //     builtin: "Ananas",
+          //     sensitivity: 0.7,
+          //   },
+          //   porcupineKeywordCallback,
+          //   porcupineErrorCallback
+          // );
+          // let ppnEs = await PorcupineWebEsWorker.PorcupineWorkerFactory.create(
+          //   accessKey,
+          //   {
+          //     builtin: "Manzana",
+          //     sensitivity: 0.6,
+          //   },
+          //   porcupineKeywordCallback,
+          //   porcupineErrorCallback
+          // );
+          // let ppnFr = await PorcupineWebFrWorker.PorcupineWorkerFactory.create(
+          //   accessKey,
+          //   ["Framboise"],
+          //   porcupineKeywordCallback,
+          //   porcupineErrorCallback
+          // );
 
           writeMessage("Porcupine worker ready!");
 
@@ -75,7 +75,8 @@
             "WebVoiceProcessor initializing. Microphone permissions requested ..."
           );
           let webVp = await window.WebVoiceProcessor.WebVoiceProcessor.init({
-            engines: [ppnEn, ppnEs, ppnFr, ppnDe],
+            // engines: [ppnEn, ppnEs, ppnFr, ppnDe],
+            engines: [ppnEn],
           });
           writeMessage("WebVoiceProcessor ready and listening!");
         } catch (err) {

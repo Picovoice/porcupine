@@ -97,7 +97,7 @@ export type PorcupineWorkerResponse =
 
 export interface PorcupineEngine {
   /** Release all resources acquired by Porcupine */
-  release(): void;
+  release(): Promise<void>;
   /** Process a single frame of 16-bit 16kHz PCM audio */
   process(frame: Int16Array): Promise<number>;
   /** The version of the Porcupine engine */

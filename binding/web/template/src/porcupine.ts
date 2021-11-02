@@ -171,7 +171,7 @@ export class Porcupine implements PorcupineEngine {
    * Behind the scenes, it requires the WebAssembly code to load and initialize before
    * it can create an instance.
    *
-   * @param accessKey - AccessKey obtained from Picovoice Console
+   * @param accessKey - AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
    * @param keywords - Built-in or Base64
    * representations of keywords and their sensitivities.
    * Can be provided as an array or a single keyword.

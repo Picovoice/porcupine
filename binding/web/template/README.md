@@ -18,7 +18,7 @@ If you are using this library with the [@picovoice/web-voice-processor](https://
 
 ## Packages
 
-The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model, which is of nontrivial size. There are separate worker and factory pacakges as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
+The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model, which is of nontrivial size. There are separate worker and factory packages as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
 
 Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create. The `.ppn` files can be encoded with Base64 and then passed to the Porcupine `create` function as arguments.
 
@@ -76,7 +76,7 @@ function keywordDetectionCallback(keyword) {
 }
 
 // If during processing an audio stream, anything goes wrong, the worker will
-// call the error callback and passe the error to it.
+// call the error callback and passes the error to it.
 function processErrorCallback(error) {
   console.error(error); 
 }
