@@ -11,7 +11,7 @@ To obtain your `AccessKey`:
 1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
-Once you obtain your `AccessKey`, replace it in `App.tsx` file:
+Once you obtain your `AccessKey`, replace it in [`App.tsx`](App.tsx) file:
 
 ```typescript
 _accessKey: string ="YOUR_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)

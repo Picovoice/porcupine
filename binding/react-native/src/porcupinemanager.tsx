@@ -14,13 +14,13 @@ import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
 export type DetectionCallback = (keywordIndex: number) => void;
-export type ErrorCallback = (error: unknown) => void;
+export type ProcessErrorCallback = (error: unknown) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
   private _porcupine: Porcupine | null;
   private _detectionCallback: DetectionCallback;
-  private _errorCallback?: ErrorCallback;
+  private _processErrorCallback?: ProcessErrorCallback;
   private _bufferListener?: EventSubscription;
   private _bufferEmitter: NativeEventEmitter;
 
@@ -33,7 +33,7 @@ class PorcupineManager {
    * @param keywords List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved
    * using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
    * @param detectionCallback A callback for when Porcupine detects the specified keywords
-   * @param errorCallback A callback for when Porcupine error occurs
+   * @param processErrorCallback A callback for when Porcupine process function triggers an error.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
@@ -44,7 +44,7 @@ class PorcupineManager {
     accessKey: string,
     keywords: string[],
     detectionCallback: DetectionCallback,
-    errorCallback?: ErrorCallback,
+    processErrorCallback?: ProcessErrorCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
@@ -54,15 +54,15 @@ class PorcupineManager {
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback, errorCallback);
+    return new PorcupineManager(porcupine, detectionCallback, processErrorCallback);
   }
 
   /**
    * Static creator for initializing a Porcupine Manager from paths to custom keywords
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywordPaths Absolute paths to keyword model files.
-   * @param detectionCallback A callback for when Porcupine detects the specified keywords
-   * @param errorCallback A callback for when Porcupine error occurs
+   * @param processErrorCallback A callback for when Porcupine detects the specified keywords
+   * @param errorCallback A callback for when Porcupine process function triggers an error.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
@@ -73,7 +73,7 @@ class PorcupineManager {
     accessKey: string,
     keywordPaths: string[],
     detectionCallback: DetectionCallback,
-    errorCallback?: ErrorCallback,
+    processErrorCallback?: ProcessErrorCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
@@ -83,12 +83,12 @@ class PorcupineManager {
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback, errorCallback);
+    return new PorcupineManager(porcupine, detectionCallback, processErrorCallback);
   }
 
-  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback, errorCallback?: ErrorCallback) {
+  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback, processErrorCallback?: ProcessErrorCallback) {
     this._detectionCallback = detectionCallback;
-    this._errorCallback = errorCallback;
+    this._processErrorCallback = processErrorCallback;
     this._porcupine = porcupine;
     this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
       porcupine.frameLength,
@@ -106,7 +106,7 @@ class PorcupineManager {
             this._detectionCallback(keywordIndex);
           }
         } catch (e) {
-          this._errorCallback?.(e);
+          this._processErrorCallback?.(e);
         }
       }
     );

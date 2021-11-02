@@ -231,7 +231,7 @@ To run the React Native Porcupine demo app you will first need to setup your Rea
 please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has
 been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands:
 
-Replace `ACCESS_KEY` in the [.env](.env) file:
+Once you obtain your `AccessKey`, replace it in [`App.tsx`](/demo/react-native/App.tsx) file:
 
 ```s
 ACCESS_KEY="YOUR_ACCESS_KEY_HERE" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
@@ -959,7 +959,8 @@ const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (
 this._porcupineManager = await PorcupineManager.fromKeywords(
   accessKey,
   ["/path/to/keyword.ppn"],
-  detectionCallback
+  detectionCallback,
+  processErrorCallback
 );
 ```
 
