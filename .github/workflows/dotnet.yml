@@ -47,4 +47,4 @@ jobs:
       run: dotnet build --no-restore      
 
     - name: Test
-      run: dotnet test -- "TestRunParameters.Parameter(name=\"pvTestAccessKey\", value=\"${{secrets.PV_VALID_ACCESS_KEY}}\")"
+      run: dotnet test -- TestRunParameters.Parameter(name=\"pvTestAccessKey\", value=\"${{secrets.PV_VALID_ACCESS_KEY}}\")
