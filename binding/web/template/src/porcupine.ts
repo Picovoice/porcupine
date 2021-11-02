@@ -85,7 +85,7 @@ export class Porcupine implements PorcupineEngine {
 
   private static _resolvePromise: EmptyPromise | null;
   private static _rejectPromise: EmptyPromise | null;
-  private static _createMutex: Mutex;
+  private static _createMutex = new Mutex;
 
   private constructor(handleWasm: PorcupineWasmOutput, keywordLabels: ArrayLike<string>) {
     Porcupine._frameLength = handleWasm.frameLength;
