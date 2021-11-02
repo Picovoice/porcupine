@@ -24,67 +24,114 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import ai.picovoice.porcupine.Porcupine;
-import ai.picovoice.porcupine.PorcupineException;
-import ai.picovoice.porcupine.PorcupineManager;
-import ai.picovoice.porcupine.PorcupineManagerCallback;
+import ai.picovoice.porcupine.*;
 
 
 public class MainActivity extends AppCompatActivity {
     private PorcupineManager porcupineManager = null;
 
+    private static final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}";
+
     private MediaPlayer notificationPlayer;
+
+    private void startPorcupine() {
+        try {
+            final Spinner mySpinner = findViewById(R.id.keyword_spinner);
+            final String keywordName = mySpinner.getSelectedItem().toString();
+
+            Porcupine.BuiltInKeyword keyword = Porcupine.BuiltInKeyword.valueOf(keywordName.toUpperCase().replace(" ", "_"));
+            porcupineManager = new PorcupineManager.Builder()
+                    .setAccessKey(ACCESS_KEY)
+                    .setKeyword(keyword)
+                    .setSensitivity(0.7f)
+                    .build(getApplicationContext(), porcupineManagerCallback);
+            porcupineManager.start();
+        } catch (PorcupineInvalidArgumentException e) {
+            onPorcupineInitError(String.format("AccessKey '%s' is invalid", ACCESS_KEY));
+        } catch (PorcupineActivationException e) {
+            onPorcupineInitError("AccessKey activation error");
+        } catch (PorcupineActivationLimitException e) {
+            onPorcupineInitError("AccessKey reached its device limit");
+        } catch (PorcupineActivationRefusedException e) {
+            onPorcupineInitError("AccessKey refused");
+        } catch (PorcupineActivationThrottledException e) {
+            onPorcupineInitError("AccessKey has been throttled");
+        } catch (PorcupineException e) {
+            onPorcupineInitError("Failed to initialize Porcupine " + e.getMessage());
+        }
+    }
+
+    private void stopPorcupine() {
+        if (porcupineManager != null) {
+            try {
+                porcupineManager.stop();
+                porcupineManager.delete();
+            } catch (PorcupineException e) {
+                displayError("Failed to stop Porcupine.");
+            }
+        }
+    }
+
+    private final PorcupineManagerCallback porcupineManagerCallback = new PorcupineManagerCallback() {
+        @Override
+        public void invoke(int keywordIndex) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (!notificationPlayer.isPlaying()) {
+                        notificationPlayer.start();
+                    }
+
+                    final int detectedBackgroundColor = getResources().getColor(R.color.colorAccent);
+                    final RelativeLayout layout = findViewById(R.id.layout);
+                    layout.setBackgroundColor(detectedBackgroundColor);
+                    new CountDownTimer(1000, 100) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            if (!notificationPlayer.isPlaying()) {
+                                notificationPlayer.start();
+                            }
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            layout.setBackgroundColor(Color.TRANSPARENT);
+                        }
+                    }.start();
+                }
+            });
+        }
+    };
+
+    private void onPorcupineInitError(final String errorMessage) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView errorText = findViewById(R.id.errorMessage);
+                errorText.setText(errorMessage);
+                errorText.setVisibility(View.VISIBLE);
+
+                ToggleButton recordButton = findViewById(R.id.record_button);
+                recordButton.setBackground(ContextCompat.getDrawable(
+                        getApplicationContext(),
+                        R.drawable.button_disabled));
+                recordButton.setChecked(false);
+                recordButton.setEnabled(false);
+            }
+        });
+    }
 
     private void displayError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private PorcupineManager initPorcupine() throws PorcupineException {
-        final Spinner mySpinner = findViewById(R.id.keyword_spinner);
-        final String keywordName = mySpinner.getSelectedItem().toString();
-
-        final int detectedBackgroundColor = getResources().getColor(R.color.colorAccent);
-
-        Porcupine.BuiltInKeyword keyword = Porcupine.BuiltInKeyword.valueOf(keywordName.toUpperCase().replace(" ", "_"));
-        return new PorcupineManager.Builder()
-                .setKeyword(keyword)
-                .setSensitivity(0.7f)
-                .build(getApplicationContext(), new PorcupineManagerCallback() {
-                    @Override
-                    public void invoke(int keywordIndex) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!notificationPlayer.isPlaying()) {
-                                    notificationPlayer.start();
-                                }
-
-                                final RelativeLayout layout = findViewById(R.id.layout);
-                                layout.setBackgroundColor(detectedBackgroundColor);
-                                new CountDownTimer(1000, 100) {
-                                    @Override
-                                    public void onTick(long millisUntilFinished) {
-                                        if (!notificationPlayer.isPlaying()) {
-                                            notificationPlayer.start();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        layout.setBackgroundColor(Color.TRANSPARENT);
-                                    }
-                                }.start();
-                            }
-                        });
-                    }
-                });
     }
 
     private void configureKeywordSpinner() {
@@ -103,14 +150,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (recordButton.isChecked()) {
-                    if (porcupineManager != null) {
-                        try {
-                            porcupineManager.stop();
-                            porcupineManager.delete();
-                        } catch (PorcupineException e) {
-                            displayError("Failed to stop Porcupine.");
-                        }
-                    }
+                    stopPorcupine();
                     recordButton.toggle();
                 }
             }
@@ -126,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         notificationPlayer = MediaPlayer.create(this, R.raw.notification);
 
         configureKeywordSpinner();
@@ -135,17 +174,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         ToggleButton recordButton = findViewById(R.id.record_button);
-        if (recordButton.isChecked()) {
-            if (porcupineManager != null) {
-                try {
-                    porcupineManager.stop();
-                    porcupineManager.delete();
-                } catch (PorcupineException e) {
-                    displayError("Failed to stop Porcupine.");
-                }
-            }
-            recordButton.toggle();
-        }
+        recordButton.setChecked(false);
 
         super.onStop();
     }
@@ -162,35 +191,22 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            ToggleButton toggleButton = findViewById(R.id.record_button);
-            toggleButton.toggle();
+            onPorcupineInitError("Microphone permission is required for this demo");
         } else {
-            try {
-                porcupineManager = initPorcupine();
-                porcupineManager.start();
-            } catch (PorcupineException e) {
-                displayError("Failed to initialize Porcupine.");
-            }
+            startPorcupine();
         }
     }
 
     public void process(View view) {
         ToggleButton recordButton = findViewById(R.id.record_button);
-        try {
-            if (recordButton.isChecked()) {
-                if (hasRecordPermission()) {
-                    porcupineManager = initPorcupine();
-                    porcupineManager.start();
-
-                } else {
-                    requestRecordPermission();
-                }
+        if (recordButton.isChecked()) {
+            if (hasRecordPermission()) {
+                startPorcupine();
             } else {
-                porcupineManager.stop();
-                porcupineManager.delete();
+                requestRecordPermission();
             }
-        } catch (PorcupineException e) {
-            displayError("Something went wrong");
+        } else {
+            stopPorcupine();
         }
     }
 }

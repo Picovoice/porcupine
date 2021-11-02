@@ -61,6 +61,20 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:text=""
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@drawable/error_view"
+        android:padding="10sp"
+        android:layout_above="@id/footer"
+        android:visibility="invisible"/>
+
+    <TextView
         android:id="@+id/footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

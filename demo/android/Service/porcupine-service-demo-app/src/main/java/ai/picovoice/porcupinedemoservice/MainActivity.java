@@ -13,12 +13,14 @@
 package ai.picovoice.porcupinedemoservice;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -26,13 +28,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 public class MainActivity extends AppCompatActivity {
+
+    private ServiceBroadcastReceiver receiver;
 
     private boolean hasRecordPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
@@ -45,10 +43,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        ToggleButton recordButton = findViewById(R.id.startButton);
-
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            recordButton.toggle();
+            onPorcupineInitError("Microphone permission is required for this demo");
         } else {
             startService();
         }
@@ -69,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        receiver = new ServiceBroadcastReceiver();
+
         ToggleButton recordButton = findViewById(R.id.startButton);
 
         recordButton.setOnClickListener(v -> {
@@ -82,5 +80,40 @@ public class MainActivity extends AppCompatActivity {
                 stopService();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter("PorcupineInitError"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
+
+    private void onPorcupineInitError(final String errorMessage) {
+        runOnUiThread(() -> {
+            TextView errorText = findViewById(R.id.errorMessage);
+            errorText.setText(errorMessage);
+            errorText.setVisibility(View.VISIBLE);
+
+            ToggleButton recordButton = findViewById(R.id.startButton);
+            recordButton.setBackground(ContextCompat.getDrawable(
+                    getApplicationContext(),
+                    R.drawable.button_disabled));
+            recordButton.setChecked(false);
+            recordButton.setEnabled(false);
+            stopService();
+        });
+    }
+
+    public class ServiceBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onPorcupineInitError(intent.getStringExtra("errorMessage"));
+        }
     }
 }

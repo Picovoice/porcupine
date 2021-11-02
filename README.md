@@ -248,7 +248,7 @@ yarn ios-run            # builds and deploys to iOS
 ### Android Demos
 
 Using [Android Studio](https://developer.android.com/studio/index.html), open
-[demo/android/Activity](/demo/android/Activity) as an Android project and then run the application.
+[demo/android/Activity](/demo/android/Activity) as an Android project, copy your AccessKey into `MainActivity.java` and then run the application.
 
 To learn about how to use Porcupine in long running services go to [demo/android/Service](/demo/android/Service).
 
@@ -1020,7 +1020,7 @@ To include the package in your Android project, ensure you have included `mavenC
 
 ```groovy
 dependencies {    
-    implementation 'ai.picovoice:porcupine-android:1.9.0'
+    implementation 'ai.picovoice:porcupine-android:${LATEST_VERSION}'
 }
 ```
 
@@ -1035,11 +1035,12 @@ an input audio stream, feeding it into the Porcupine library, and invoking a use
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}";
 final String keywordPath = "/path/to/keyword.ppn"
-try {    
-    
+try {        
 
     PorcupineManager porcupineManager = new PorcupineManager.Builder()
+                        .setAccessKey(accessKey)
                         .setKeywordPath(keywordPath)
                         .setSensitivity(0.5f)
                         .build(context, 
@@ -1066,9 +1067,11 @@ binding for Android. It can be initialized using.
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}";
 final String keywordPath = "/path/to/keyword.ppn"
 try {    
     Porcupine porcupine = new Porcupine.Builder()
+                        .setAccessKey(accessKey)  
                         .setKeywordPath(keywordPath)
                         .setSensitivity(0.5f)
                         .build(context);
