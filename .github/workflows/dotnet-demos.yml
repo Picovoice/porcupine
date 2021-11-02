@@ -32,6 +32,9 @@ jobs:
       run: dotnet pack -c Release
       working-directory: binding/dotnet
     
+    - name: Package restore
+    - run: dotnet restore
+    
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
 
@@ -48,9 +51,16 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-
-    - name: Dotnet restore dependencies
-      run: dotnet restore
+    
+    - name: Pack binding for local ref
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+    
+    - name: Package restore
+    - run: dotnet restore
+    
+    - name: Add binding to demo
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
 
     - name: Dotnet build filedemo
       run: dotnet build -c FileDemo.Release
