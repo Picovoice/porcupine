@@ -62,7 +62,6 @@ class PorcupineManager {
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywordPaths Absolute paths to keyword model files.
    * @param processErrorCallback A callback for when Porcupine detects the specified keywords
-   * @param errorCallback A callback for when Porcupine process function triggers an error.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within

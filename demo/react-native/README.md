@@ -17,8 +17,6 @@ Once you obtain your `AccessKey`, replace it in [`App.tsx`](App.tsx) file:
 _accessKey: string ="YOUR_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 ```
 
-**NOTE**: This will not protect your access key in production builds.
-
 ## Usage
 
 ### Running On Android
