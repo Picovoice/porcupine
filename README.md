@@ -267,6 +267,8 @@ To run the demo, go to [demo/ios/BackgroundService](/demo/ios/BackgroundService)
 pod install
 ```
 
+Replace `let accessKey = ""` in the file [ViewController.swift](/demo/ios/BackgroundService/PorcupineBackgroundServiceDemo/ViewController.swift) with your `AccessKey`.
+
 Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineBackgroundServiceDemo.xcworkspace` and run the application.
 
 #### ForegroundApp Demo
@@ -276,6 +278,8 @@ To run the demo, go to [demo/ios/ForegroundApp](/demo/ios/ForegroundApp) and run
 ```console
 pod install
 ```
+
+Replace `let accessKey = ""` in the file [ViewController.swift](/demo/ios/ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
 
 Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineForegroundAppDemo.xcworkspace` and run the application.
 
@@ -1097,6 +1101,7 @@ There are two approaches for integrating Porcupine into an iOS application.
 the user-provided detection callback.
 
 ```swift
+let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
 let modelPath: String = ... // Available at lib/common/porcupine_params.pv
 let keywordPaths: [String] = ["/path/to/keyword/file/a", "/path/to/keyword/file/b"]
 let sensitivities: [Float32] = [0.35, 0.64]
@@ -1105,6 +1110,7 @@ let keywordCallback: ((Int32) -> Void) = { keywordIndex in
 }
 
 let manager = try PorcupineManager(
+    accessKey: accessKey,
     modelPath: modelPath,
     keywordPaths: keywordPaths,
     sensitivities: sensitivities
@@ -1123,8 +1129,10 @@ To construct an instance of Porcupine, pass it a keyword.
 ```swift
 import Porcupine
 
+let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+
 do {
-    Porcupine porcupine = try Porcupine(keyword: Porcupine.BuiltInKeyword.picovoice)
+    Porcupine porcupine = try Porcupine(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.picovoice)
 } catch { }
 ```
 

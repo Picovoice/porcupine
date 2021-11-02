@@ -29,6 +29,15 @@ The Porcupine iOS binding is available via [Cocoapods](https://cocoapods.org/pod
 pod 'Porcupine-iOS'
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Permissions
 
 To enable recording with your iOS device's microphone you must add the following to your app's `Info.plist` file:
@@ -49,8 +58,11 @@ To create an instance of PorcupineManager pass the desired keyword to the constr
 ```swift
 import Porcupine
 
+let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+
 do {
     PorcupineManager porcupineManager = try PorcupineManager(
+        accessKey: accessKey,
         keyword: Porcupine.BuiltInKeyword.picovoice, 
         onDetection: wakeWordCallback)
 } catch { }
@@ -73,8 +85,10 @@ Available built-in keywords are accessible via the Porcupine.BuiltInKeyword enum
 To create an instance of PorcupineManager that detects custom keywords, you can use the `keywordPaths` parameter instead:
 ```swift
 do {
+    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let paths = ["path/to/keyword/one.ppn", "path/to/keyword/two.ppn"]
     PorcupineManager porcupineManager = try PorcupineManager(
+        accessKey: accessKey,
         keywordPaths: paths, 
         onDetection: wakeWordCallback)
 } catch { }
@@ -89,8 +103,10 @@ The model file contains the parameters for the wake word engine. To change the l
 These optional parameters can be set like so:
 ```swift
 do {
+    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let paths = ["path/to/keyword/one.ppn", "path/to/keyword/two.ppn"]
     PorcupineManager porcupineManager = try PorcupineManager(
+        accessKey: accessKey,
         keywordPaths: paths,
         modelPath: "path/to/model/file.pv",
         sensitivities: [0.7, 0.35], 
@@ -127,7 +143,8 @@ To construct an instance of Porcupine, pass it a keyword.
 import Porcupine
 
 do {
-    Porcupine porcupine = try Porcupine(keyword: Porcupine.BuiltInKeyword.picovoice)
+    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+    Porcupine porcupine = try Porcupine(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.picovoice)
 } catch { }
 ```
 
