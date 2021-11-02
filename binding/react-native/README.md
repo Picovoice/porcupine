@@ -132,9 +132,6 @@ NOTE: the call is asynchronous and therefore should be called in an async block 
 The `detectionCallback` parameter is a function that you want to execute when Porcupine has detected one of the keywords.
 The function should accept a single integer, keywordIndex, which specifies which wake word has been detected.
 
-The `processErrorCallback` parameter is a function that you want to execute when Porcupine has detected an error while processing one of the keywords.
-The function should accept an error type, the error which is thrown. This function is optional.
-
 ```javascript
 detectionCallback(keywordIndex){
     if(keywordIndex === 0){
@@ -143,6 +140,15 @@ detectionCallback(keywordIndex){
     else if (keywordIndex === 1){
         // porcupine detected
     }
+}
+```
+
+The `processErrorCallback` parameter is a function that you want to execute when Porcupine has detected an error while processing one of the keywords.
+The function should accept an error type, the error which is thrown. This function is optional.
+
+```javascript
+processErrorCallback(error) {
+    console.error(error);
 }
 ```
 

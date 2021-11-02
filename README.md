@@ -943,7 +943,8 @@ async createPorcupineManager(){
         this._porcupineManager = await PorcupineManager.fromKeywords(
             accessKey,
             ["picovoice", "porcupine"],
-            detectionCallback);
+            detectionCallback,
+            processErrorCallback);
     } catch (err) {
         // handle error
     }
