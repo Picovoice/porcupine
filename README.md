@@ -38,7 +38,6 @@ applications. It is
 
 ## Table of Contents
 
-
 - [Porcupine](#porcupine)
   - [Table of Contents](#table-of-contents)
   - [License & Terms](#license--terms)
