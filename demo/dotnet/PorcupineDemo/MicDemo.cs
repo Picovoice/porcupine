@@ -27,7 +27,6 @@ namespace PorcupineDemo
     /// </summary>                
     public class MicDemo
     {
-
         /// <summary>
         /// Creates an input audio stream, instantiates an instance of Porcupine object, and monitors the audio stream for
         /// occurrencec of the wake word(s). It prints the time of detection for each occurrence and the wake word.
@@ -43,10 +42,10 @@ namespace PorcupineDemo
         /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>        
         public static void RunDemo(
             string accessKey,
-            string modelPath,             
+            string modelPath,
             List<string> keywordPaths,
             List<float> sensitivities,
-            int audioDeviceIndex, 
+            int audioDeviceIndex,
             string outputPath = null)
         {
             Porcupine porcupine = null;
@@ -56,9 +55,9 @@ namespace PorcupineDemo
             {
                 // init porcupine wake word engine
                 porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
-                
+
                 // get keyword names for labeling detection results                
-                List<string> keywordNames = keywordPaths.Select(k=>Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
+                List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
                 // open stream to output file
                 if (!string.IsNullOrWhiteSpace(outputPath))
@@ -69,7 +68,7 @@ namespace PorcupineDemo
                 Console.Write($"Listening for{string.Join(',', keywordNames.Select(k => $" '{k}'"))}\n");
 
                 // create and start recording
-                using (PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength)) 
+                using (PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength))
                 {
                     Console.WriteLine($"Using device: {recorder.SelectedDevice}");
                     recorder.Start();
@@ -78,15 +77,15 @@ namespace PorcupineDemo
                     {
                         short[] pcm = recorder.Read();
 
-                        int result = porcupine.Process(pcm);                            
+                        int result = porcupine.Process(pcm);
                         if (result >= 0)
                         {
                             Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
                         }
-                        
-                        if (outputFileWriter != null) 
+
+                        if (outputFileWriter != null)
                         {
-                            foreach (short sample in pcm) 
+                            foreach (short sample in pcm)
                             {
                                 outputFileWriter.Write(sample);
                             }
@@ -97,9 +96,9 @@ namespace PorcupineDemo
 
                     // stop and clean up resources
                     Console.WriteLine("Stopping...");
-                }                
+                }
             }
-            finally 
+            finally
             {
                 if (outputFileWriter != null)
                 {
@@ -109,7 +108,7 @@ namespace PorcupineDemo
                     outputFileWriter.Dispose();
                 }
                 porcupine?.Dispose();
-            }            
+            }
         }
 
         /// <summary>
@@ -125,12 +124,12 @@ namespace PorcupineDemo
             if (writer == null)
                 return;
 
-            writer.Seek(0, SeekOrigin.Begin);         
+            writer.Seek(0, SeekOrigin.Begin);
             writer.Write(Encoding.ASCII.GetBytes("RIFF"));
             writer.Write((bitDepth / 8 * totalSampleCount) + 36);
-            writer.Write(Encoding.ASCII.GetBytes("WAVE")); 
+            writer.Write(Encoding.ASCII.GetBytes("WAVE"));
             writer.Write(Encoding.ASCII.GetBytes("fmt "));
-            writer.Write(16); 
+            writer.Write(16);
             writer.Write((ushort)1);
             writer.Write(channelCount);
             writer.Write(sampleRate);
@@ -138,7 +137,7 @@ namespace PorcupineDemo
             writer.Write((ushort)(channelCount * bitDepth / 8));
             writer.Write(bitDepth);
             writer.Write(Encoding.ASCII.GetBytes("data"));
-            writer.Write(bitDepth / 8 * totalSampleCount);            
+            writer.Write(bitDepth / 8 * totalSampleCount);
         }
 
         /// <summary>
@@ -147,7 +146,8 @@ namespace PorcupineDemo
         public static void ShowAudioDevices()
         {
             string[] devices = PvRecorder.GetAudioDevices();
-            for (int i = 0; i < devices.Length; i++) {
+            for (int i = 0; i < devices.Length; i++)
+            {
                 Console.WriteLine($"index: {i}, device name: {devices[i]}");
             }
         }
@@ -225,7 +225,7 @@ namespace PorcupineDemo
                     argIndex++;
                 }
                 else if (args[argIndex] == "--audio_device_index")
-                {                    
+                {
                     if (++argIndex < args.Length && int.TryParse(args[argIndex], out int deviceIdx))
                     {
                         audioDeviceIndex = deviceIdx;
@@ -261,7 +261,7 @@ namespace PorcupineDemo
             // print audio device info and exit
             if (showAudioDevices)
             {
-                ShowAudioDevices();                
+                ShowAudioDevices();
                 Console.ReadKey();
                 return;
             }
@@ -275,7 +275,7 @@ namespace PorcupineDemo
             if (keywords != null)
             {
                 keywordPaths = new List<string>();
-                foreach(string k in keywords)
+                foreach (string k in keywords)
                 {
                     if (!Enum.TryParse(typeof(BuiltInKeyword), k.ToUpper().Replace(" ", "_"), out object builtin))
                     {
@@ -290,19 +290,19 @@ namespace PorcupineDemo
             }
 
             // run demo with validated arguments
-            RunDemo(accessKey, modelPath, keywordPaths, sensitivities, audioDeviceIndex, outputPath);            
+            RunDemo(accessKey, modelPath, keywordPaths, sensitivities, audioDeviceIndex, outputPath);
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine(e.ExceptionObject.ToString());            
+            Console.WriteLine(e.ExceptionObject.ToString());
             Environment.Exit(1);
         }
 
         private static readonly string HELP_STR = "Available options: \n " +
             $"\t--access_key (required): AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)\n" +
             $"\t--keywords: List of built-in keywords for detection." +
-            $"\t\tAvailable keywords: {string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(k => k.ToLower().Replace("_", " ")))}\n" + 
+            $"\t\tAvailable keywords: {string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(k => k.ToLower().Replace("_", " ")))}\n" +
             $"\t--keyword_paths: Absolute paths to keyword model files. If not set it will be populated from `--keywords` argument\n" +
             $"\t--model_path: Absolute path to the file containing model parameters.\n" +
             $"\t--sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher \n" +

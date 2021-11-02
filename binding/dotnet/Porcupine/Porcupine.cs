@@ -66,13 +66,13 @@ namespace Pv
     {
         private const string LIBRARY = "libpv_porcupine";
         private IntPtr _libraryPointer = IntPtr.Zero;
-        
+
         public static readonly string DEFAULT_MODEL_PATH;
         public static readonly Dictionary<BuiltInKeyword, string> BUILT_IN_KEYWORD_PATHS;
-      
+
         static Porcupine()
-        {        
-            
+        {
+
 #if NETCOREAPP3_1
 
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
@@ -80,14 +80,14 @@ namespace Pv
 #endif
 
             DEFAULT_MODEL_PATH = Utils.PvModelPath();
-            BUILT_IN_KEYWORD_PATHS = Utils.PvKeywordPaths();            
+            BUILT_IN_KEYWORD_PATHS = Utils.PvKeywordPaths();
         }
 
 #if NETCOREAPP3_1
 
-        private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) 
+        private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            IntPtr libHandle = IntPtr.Zero;                                   
+            IntPtr libHandle = IntPtr.Zero;
             NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
             return libHandle;
         }
@@ -97,10 +97,10 @@ namespace Pv
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern PorcupineStatus pv_porcupine_init(
             string accessKey,
-            string modelPath, 
-            int numKeywords, 
-            string[] keywordPaths, 
-            float[] sensitivities, 
+            string modelPath,
+            int numKeywords,
+            string[] keywordPaths,
+            float[] sensitivities,
             out IntPtr handle);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -111,8 +111,8 @@ namespace Pv
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern PorcupineStatus pv_porcupine_process(
-            IntPtr handle, 
-            short[] pcm, 
+            IntPtr handle,
+            short[] pcm,
             out int keywordIndex);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -135,10 +135,10 @@ namespace Pv
         public static Porcupine FromBuiltInKeywords(
             string accessKey,
             IEnumerable<BuiltInKeyword> keywords,
-            string modelPath = null,                    
+            string modelPath = null,
             IEnumerable<float> sensitivities = null)
-        {          
-            if(keywords == null || keywords.Count() == 0)
+        {
+            if (keywords == null || keywords.Count() == 0)
             {
                 throw new PorcupineInvalidArgumentException("No built-in keywords were specified.");
             }
@@ -163,7 +163,7 @@ namespace Pv
         public static Porcupine FromKeywordPaths(
             string accessKey,
             IEnumerable<string> keywordPaths,
-            string modelPath = null,            
+            string modelPath = null,
             IEnumerable<float> sensitivities = null)
         {
             return new Porcupine(accessKey, keywordPaths, modelPath, sensitivities);
@@ -197,8 +197,8 @@ namespace Pv
             }
 
             if (keywordPaths == null || keywordPaths.Count() == 0)
-            {              
-                throw new PorcupineInvalidArgumentException("No keyword file paths were provided to Porcupine");            
+            {
+                throw new PorcupineInvalidArgumentException("No keyword file paths were provided to Porcupine");
             }
 
             foreach (string path in keywordPaths)
@@ -228,10 +228,10 @@ namespace Pv
 
             PorcupineStatus status = pv_porcupine_init(
                 accessKey,
-                modelPath, 
-                keywordPaths.Count(), 
-                keywordPaths.ToArray(), 
-                sensitivities.ToArray(), 
+                modelPath,
+                keywordPaths.Count(),
+                keywordPaths.ToArray(),
+                sensitivities.ToArray(),
                 out _libraryPointer);
             if (status != PorcupineStatus.SUCCESS)
             {
@@ -338,7 +338,7 @@ namespace Pv
             {
                 pv_porcupine_delete(_libraryPointer);
                 _libraryPointer = IntPtr.Zero;
-                
+
                 // ensures finalizer doesn't trigger if already manually disposed
                 GC.SuppressFinalize(this);
             }

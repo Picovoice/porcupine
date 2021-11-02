@@ -48,57 +48,75 @@ in Visual Studio or using the .NET CLI.
 dotnet add package Porcupine
 ```
 
+## AccessKey
+
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
-Create an instance of the engine
+Create an instance of the engine:
 
 ```csharp
 using Pv;
 
-Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
+const string accessKey = "${ACCESS_KEY}";
+var keyword = new List<BuiltInKeyword> { BuiltInKeyword.PICOVOICE };
+
+Porcupine handle = Porcupine.FromBuiltInKeywords(accessKey, keyword);
 ```
 
-`handle` is an instance of Porcupine that detects utterances of "Picovoice". The `keywords` input argument is a shorthand
-for accessing default keyword model files shipped with the package. The list of default keywords can be retrieved by
+`handle` is an instance of Porcupine that detects utterances of "Picovoice". Using the `FromBuiltInKeywords` constructor allows you to initialize the Porcupine engine to detect any of the free, built-in keywords that come with the library. These built-ins are represented by the `BuiltInKeyword` enum.
+
+Porcupine can detect multiple keywords concurrently:
 
 ```csharp
-using Pv;
+const string accessKey = "${ACCESS_KEY}";
+var keywords = new List<BuiltInKeyword> { 
+        BuiltInKeyword.BUMBLEBEE,
+        BuiltInKeyword.PICOVOICE 
+    };
 
-foreach (string keyword in Porcupine.KEYWORDS)
-{
-    Console.WriteLine(keyword);
-}
+Porcupine handle = Porcupine.FromBuiltInKeywords(accessKey, keywords);
 ```
 
-Porcupine can detect multiple keywords concurrently
+To detect custom keywords, use the `FromKeywordPaths` constructor instead:
 
 ```csharp
-using Pv;
+const string accessKey = "${ACCESS_KEY}";
+var keywordPaths = new List<string> { 
+    "/absolute/path/to/keyword/one", 
+    "/absolute/path/to/keyword/two", 
+    ... }
 
-Porcupine handle = Porcupine.Create(keywords: new List<string>{ "bumblebee", "picovoice" });
+Porcupine handle = Porcupine.FromKeywordPaths(accessKey, keywordPaths);
 ```
 
-To detect non-default keywords use the `keywordPaths` input argument instead
+In addition to custom keywords, you can override the default Porcupine english model file and/or keyword sensitivities.
+
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+
+The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, you'll pass in a different model file.
 
 ```csharp
-using Pv;
+const string accessKey = "${ACCESS_KEY}";
+var keywords = new List<BuiltInKeyword> { 
+        BuiltInKeyword.GRAPEFRUIT,
+        BuiltInKeyword.PORCUPINE 
+    };
+string modelPath = "/path/to/model.pv"
+var sensitivities = new List<float>{ 0.6f, 0.35f };
 
-var keywordPaths = new List<string>{ "/absolute/path/to/keyword/one", "/absolute/path/to/keyword/two", ...}
-
-Porcupine handle = Porcupine.Create(keywordPaths: keywordPaths);
+Porcupine handle = Porcupine.FromBuiltInKeywords(
+    accessKey,
+    keywords,
+    modelPath: modelPath,
+    sensitivities: sensitivities);
 ```
-
-The sensitivity of the engine can be tuned per-keyword using the `sensitivities` input argument
-
-```csharp
-using Pv;
-
-Porcupine handle = Porcupine.Create(keywords: new List<string>{ "grapefruit", "porcupine" },  
-                                    sensitivities: new List<float>{ 0.6f, 0.35f });
-```
-
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
-`[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 When initialized, the valid sample rate is given by `handle.SampleRate`. Expected frame length (number of audio samples
 in an input array) is `handle.FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on
@@ -125,7 +143,9 @@ Porcupine will have its resources freed by the garbage collector, but to have re
 wrap it in a using statement: 
 
 ```csharp
-using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" }))
+using(Porcupine handle = Porcupine.FromBuiltInKeywords(
+    accessKey, 
+    new List<BuiltInKeyword> { BuiltInKeyword.PICOVOICE }))
 {
     // .. Porcupine usage here
 }

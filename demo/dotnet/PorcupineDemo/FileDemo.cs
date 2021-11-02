@@ -43,11 +43,11 @@ namespace PorcupineDemo
         /// using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
         /// </param>
         public static void RunDemo(
-            string inputAudioPath, 
-            string accessKey, 
-            string modelPath, 
-            List<string> keywordPaths, 
-            List<string> keywords, 
+            string inputAudioPath,
+            string accessKey,
+            string modelPath,
+            List<string> keywordPaths,
+            List<string> keywords,
             List<float> sensitivities)
         {
             Porcupine porcupine = null;
@@ -55,9 +55,9 @@ namespace PorcupineDemo
             {
                 // init porcupine wake word engine
                 porcupine = Porcupine.FromKeywordPaths(
-                    accessKey, 
-                    keywordPaths, 
-                    modelPath, 
+                    accessKey,
+                    keywordPaths,
+                    modelPath,
                     sensitivities);
 
                 // get keyword names for labeling detection results                
@@ -96,14 +96,14 @@ namespace PorcupineDemo
                     }
                 }
                 stopWatch.Stop();
-                double audioLen = Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2);                
+                double audioLen = Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2);
                 double realtimeFactor = Math.Round(audioLen / stopWatch.Elapsed.TotalSeconds, 2);
                 Console.WriteLine($"Realtime factor: {realtimeFactor}x");
             }
             finally
             {
                 porcupine?.Dispose();
-            }           
+            }
         }
 
 
@@ -114,8 +114,8 @@ namespace PorcupineDemo
         /// <param name="requiredSampleRate">Required sample rate in Hz</param>     
         /// <param name="requiredBitDepth">Required number of bits per sample</param>             
         /// <param name="numChannels">Number of channels can be returned by function</param>
-        public static void ValidateWavFile(BinaryReader reader, int requiredSampleRate, short requiredBitDepth, out short numChannels) 
-        {                        
+        public static void ValidateWavFile(BinaryReader reader, int requiredSampleRate, short requiredBitDepth, out short numChannels)
+        {
             byte[] riffHeader = reader?.ReadBytes(44);
 
             int riff = BitConverter.ToInt32(riffHeader, 0);
@@ -143,7 +143,7 @@ namespace PorcupineDemo
         public static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-            if (args.Length == 0) 
+            if (args.Length == 0)
             {
                 Console.WriteLine(HELP_STR);
                 Console.ReadKey();
@@ -161,8 +161,8 @@ namespace PorcupineDemo
             // parse command line arguments
             int argIndex = 0;
             while (argIndex < args.Length)
-            {                
-                if(args[argIndex] == "--input_audio_path")
+            {
+                if (args[argIndex] == "--input_audio_path")
                 {
                     if (++argIndex < args.Length)
                     {
@@ -183,7 +183,7 @@ namespace PorcupineDemo
                     while (argIndex < args.Length && !args[argIndex].StartsWith("--"))
                     {
                         keywords.Add(args[argIndex++]);
-                    }                    
+                    }
                 }
                 else if (args[argIndex] == "--keyword_paths")
                 {
@@ -192,7 +192,7 @@ namespace PorcupineDemo
                     while (argIndex < args.Length && !args[argIndex].StartsWith("--"))
                     {
                         keywordPaths.Add(args[argIndex++]);
-                    }                    
+                    }
                 }
                 else if (args[argIndex] == "--model_path")
                 {
@@ -205,13 +205,13 @@ namespace PorcupineDemo
                 {
                     argIndex++;
                     sensitivities = new List<float>();
-                    while (argIndex < args.Length && !args[argIndex].StartsWith("--") && 
+                    while (argIndex < args.Length && !args[argIndex].StartsWith("--") &&
                            float.TryParse(args[argIndex], out float sensitivity))
                     {
                         sensitivities.Add(sensitivity);
                         argIndex++;
                     }
-                }                
+                }
                 else if (args[argIndex] == "-h" || args[argIndex] == "--help")
                 {
                     showHelp = true;
@@ -236,7 +236,7 @@ namespace PorcupineDemo
             {
                 throw new ArgumentNullException("input_audio_path");
             }
-            if (!File.Exists(inputAudioPath)) 
+            if (!File.Exists(inputAudioPath))
             {
                 throw new ArgumentException($"Audio file at path {inputAudioPath} does not exist");
             }
@@ -269,7 +269,7 @@ namespace PorcupineDemo
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine(e.ExceptionObject.ToString());            
+            Console.WriteLine(e.ExceptionObject.ToString());
             Environment.Exit(1);
         }
 

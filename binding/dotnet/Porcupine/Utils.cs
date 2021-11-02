@@ -24,10 +24,10 @@ namespace Pv
 
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
-                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" : 
-                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && 
-                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv(): "";
-        
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
+                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
+
         public static string PvModelPath()
         {
             return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lib/common/porcupine_params.pv");
@@ -42,7 +42,7 @@ namespace Pv
             {
                 string enumName = Path.GetFileName(keywordFile).Split('_')[0].Replace(" ", "_").ToUpper();
                 BuiltInKeyword builtin = (BuiltInKeyword)Enum.Parse(typeof(BuiltInKeyword), enumName);
-                keywordPaths.Add(builtin, Path.Combine(keywordFilesDir, keywordFile));         
+                keywordPaths.Add(builtin, Path.Combine(keywordFilesDir, keywordFile));
             }
 
             return keywordPaths;
@@ -51,7 +51,7 @@ namespace Pv
         public static string PvLibraryPath(string libName)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && _arch == Architecture.X64)
-            {                
+            {
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/amd64/{libName}.dll");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _arch == Architecture.X64)
