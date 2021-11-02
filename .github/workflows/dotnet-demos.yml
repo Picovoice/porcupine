@@ -23,10 +23,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
   
-    - name: Setup .NET
+    - name: Setup .NET 3.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
+
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
     
     - name: Pack binding for local ref
       run: dotnet pack -c Release
@@ -36,7 +41,7 @@ jobs:
       run: dotnet restore
     
     - name: Add binding to demo
-      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine -v 2.0.0
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
@@ -47,10 +52,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET
+    - name: Setup .NET 3.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
+
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
     
     - name: Pack binding for local ref
       run: dotnet pack -c Release
@@ -60,7 +70,7 @@ jobs:
       run: dotnet restore
     
     - name: Add binding to demo
-      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine -v 2.0.0
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
 
     - name: Dotnet build filedemo
       run: dotnet build -c FileDemo.Release
