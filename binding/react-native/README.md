@@ -63,6 +63,7 @@ On iOS, open your Info.plist and add the following line:
 On Android, open your AndroidManifest.xml and add the following line:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 Finally, in your app JS code, be sure to check for user permission consent before proceeding with audio capture:
