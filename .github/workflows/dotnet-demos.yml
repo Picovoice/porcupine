@@ -33,7 +33,7 @@ jobs:
       working-directory: binding/dotnet
     
     - name: Package restore
-    - run: dotnet restore
+      run: dotnet restore
     
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
@@ -57,7 +57,7 @@ jobs:
       working-directory: binding/dotnet
     
     - name: Package restore
-    - run: dotnet restore
+      run: dotnet restore
     
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
