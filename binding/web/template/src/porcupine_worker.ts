@@ -139,6 +139,6 @@ onmessage = function (
       Porcupine.clearFilePromises();
       break;
     default:
-      internal_onmessage(event.data);
+      internalOnmessage(event.data);
   }
 };
