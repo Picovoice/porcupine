@@ -1,15 +1,16 @@
 name: Java
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
@@ -40,4 +41,4 @@ jobs:
       run: ./gradlew build
 
     - name: Test
-      run: ./gradlew test
+      run: ./gradlew test -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}"

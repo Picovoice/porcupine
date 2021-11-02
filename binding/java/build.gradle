@@ -7,7 +7,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '1.9.3'
+    PUBLISH_VERSION = '2.0.0'
     PUBLISH_ARTIFACT_ID = 'porcupine-java'
 }
 
@@ -155,6 +155,9 @@ task copyLinuxLib(type: Copy) {
 task copyMacLib(type: Copy) {
     from('../../lib/java/mac/x86_64/libpv_porcupine_jni.dylib') into "${outputDir}/porcupine/lib/java/mac/x86_64/"
 }
+task copyMacArmLib(type: Copy) {
+    from('../../lib/java/mac/arm64/libpv_porcupine_jni.dylib') into "${outputDir}/porcupine/lib/java/mac/arm64/"
+}
 task copyWindowsLib(type: Copy) {
     from('../../lib/java/windows/amd64/pv_porcupine_jni.dll') into "${outputDir}/porcupine/lib/java/windows/amd64/"
 }
@@ -199,5 +202,6 @@ dependencies {
 }
 
 test {
+    systemProperty 'pvTestingAccessKey', System.getProperty('pvTestingAccessKey')
     useJUnitPlatform()
 }

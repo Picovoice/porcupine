@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PorcupineTest {
 
     private Porcupine porcupine;
+    private String accessKey = System.getProperty("pvTestingAccessKey");
 
     @AfterEach
     void tearDown() {
@@ -40,6 +41,7 @@ public class PorcupineTest {
     @Test
     void getVersion() throws PorcupineException {
         porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeyword("porcupine")
                 .build();
         assertTrue(porcupine.getVersion() != null && !porcupine.getVersion().equals(""));
@@ -48,6 +50,7 @@ public class PorcupineTest {
     @Test
     void getFrameLength() throws PorcupineException {
         porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeyword("porcupine")
                 .build();
         assertTrue(porcupine.getFrameLength() > 0);
@@ -56,6 +59,7 @@ public class PorcupineTest {
     @org.junit.jupiter.api.Test
     void getSampleRate() throws PorcupineException {
         porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeyword("porcupine")
                 .build();
         assertTrue(porcupine.getSampleRate() > 0);
@@ -64,6 +68,7 @@ public class PorcupineTest {
     @Test
     void testProcess() throws IOException, UnsupportedAudioFileException, PorcupineException {
         porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeyword("porcupine")
                 .build();
 
@@ -101,6 +106,7 @@ public class PorcupineTest {
                 "grasshopper", "picovoice", "porcupine", "terminator"};
 
         porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeywords(keywords)
                 .build();
 

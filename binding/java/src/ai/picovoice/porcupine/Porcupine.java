@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -44,6 +44,7 @@ public class Porcupine {
     /**
      * Constructor.
      *
+     * @param accessKey     AccessKey obtained from Picovoice Console.
      * @param libraryPath   Absolute path to the native Porcupine library.
      * @param modelPath     Absolute path to the file containing model parameters.
      * @param keywordPaths  Absolute paths to keyword model files.
@@ -52,14 +53,9 @@ public class Porcupine {
      *                      of increasing the false alarm rate.
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
-    public Porcupine(String libraryPath, String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
-
-        try {
-            System.load(libraryPath);
-            libraryHandle = init(modelPath, keywordPaths, sensitivities);
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
+    public Porcupine(String accessKey, String libraryPath, String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
+        System.load(libraryPath);
+        libraryHandle = init(accessKey, modelPath, keywordPaths, sensitivities);
     }
 
     /**
@@ -82,11 +78,7 @@ public class Porcupine {
      * @throws PorcupineException if there is an error while processing the audio frame.
      */
     public int process(short[] pcm) throws PorcupineException {
-        try {
-            return process(libraryHandle, pcm);
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
+        return process(libraryHandle, pcm);
     }
 
     /**
@@ -110,7 +102,7 @@ public class Porcupine {
      */
     public native int getSampleRate();
 
-    private native long init(String modelPath, String[] keywordPaths, float[] sensitivities);
+    private native long init(String accessKey, String modelPath, String[] keywordPaths, float[] sensitivities);
 
     private native void delete(long object);
 
@@ -121,11 +113,17 @@ public class Porcupine {
      */
     public static class Builder {
 
+        private String accessKey = null;
         private String libraryPath = null;
         private String modelPath = null;
         private String[] keywordPaths = null;
         private String[] keywords = null;
         private float[] sensitivities = null;
+
+        public Builder setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+            return this;
+        }
 
         public Builder setLibraryPath(String libraryPath) {
             this.libraryPath = libraryPath;
@@ -178,6 +176,10 @@ public class Porcupine {
             if (!Utils.isEnvironmentSupported()) {
                 throw new PorcupineException(new RuntimeException("Could not initialize Porcupine. " +
                         "Execution environment not currently supported by Porcupine Java."));
+            }
+
+            if (accessKey == null) {
+                throw new PorcupineException(new IllegalArgumentException("AccessKey is required for Porcupine initialization."));
             }
 
             if (libraryPath == null) {
@@ -236,7 +238,7 @@ public class Porcupine {
                         "does not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length)));
             }
 
-            return new Porcupine(libraryPath, modelPath, keywordPaths, sensitivities);
+            return new Porcupine(accessKey, libraryPath, modelPath, keywordPaths, sensitivities);
         }
     }
 }
