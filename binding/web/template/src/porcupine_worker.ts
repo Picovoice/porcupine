@@ -26,7 +26,7 @@ import Porcupine from './porcupine';
 
 let paused = true;
 let porcupineEngine: PorcupineEngine | null = null;
-const processMutex = new Mutex();
+const onmessageMutex = new Mutex();
 
 
 async function init(accessKey: string, keywords: Array<PorcupineKeyword | string>, start = true): Promise<void> {
@@ -77,8 +77,8 @@ async function release(): Promise<void> {
   close();
 }
 
-async function internal_onmessage(data: PorcupineWorkerRequest): Promise<void> {
-  await processMutex.runExclusive(async () => {
+async function internalOnmessage(data: PorcupineWorkerRequest): Promise<void> {
+  await onmessageMutex.runExclusive(async () => {
     switch (data.command) {
       case 'init':
         await init(data.accessKey, data.keywords,data.start);
