@@ -28,15 +28,25 @@ Porcupine can be found on Maven Central. To include the package in your Android 
 ```groovy
 dependencies {
     // ...
-    implementation 'ai.picovoice:porcupine-android:1.9.0'
+    implementation 'ai.picovoice:porcupine-android:${LATEST_VERSION}'
 }
 ```
 
+## AccessKey
+
+All Android demos require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Permissions
 
-To enable recording with your Android device's microphone you must add the following line to your `AndroidManifest.xml` file:
+To enable AccessKey validation and recording with your Android device's microphone, you must add the following line to your `AndroidManifest.xml` file:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 ## Usage
@@ -51,6 +61,8 @@ To create an instance of PorcupineManager, use the PorcupineManager Builder:
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}";
+
 try {    
     Porcupine.BuiltInKeyword[] keywords = new Porcupine.BuiltInKeyword[]{
         Porcupine.BuiltInKeyword.PICOVOICE,
@@ -58,6 +70,7 @@ try {
     }
 
     PorcupineManager porcupineManager = new PorcupineManager.Builder()
+                        .setAccessKey(accessKey)
                         .setKeywords(keywords)
                         .build(context, wakeWordCallback);
 } catch (PorcupineException e) { }
@@ -84,6 +97,8 @@ Available built-in keywords are accessible via the Porcupine.BuiltInKeyword enum
 
 To create an instance of PorcupineManager that detects custom keywords, you can use the `setKeywordPaths()` builder argument instead:
 ```java
+final String accessKey = "${ACCESS_KEY}";
+
 try {    
     String[] keywordPaths = new String[]{
         "absolute/path/to/keyword/one.ppn",
@@ -91,6 +106,7 @@ try {
     }
 
     PorcupineManager porcupineManager = new PorcupineManager.Builder()
+                        .setAccessKey(accessKey)
                         .setKeywordPaths(keywordPaths)
                         .build(context, wakeWordCallback);
 } catch (PorcupineException e) { }
@@ -106,8 +122,11 @@ There is also the option to pass an error callback, which will be invoked if an 
 
 These optional parameters can be set like so:
 ```java
-try {    
-    PorcupineManager porcupineManager = new PorcupineManager.Builder()                        
+final String accessKey = "${ACCESS_KEY}";
+
+try {  
+    PorcupineManager porcupineManager = new PorcupineManager.Builder()
+                        .setAccessKey(accessKey)
                         .setKeywordPaths(keywordPaths)
                         .setModelPath("absolute/path/to/porcupine_model.pv")
                         .setSensitivities(new float[] { 0.6f, 0.35f })
@@ -149,8 +168,11 @@ porcupineManager.delete();
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}";
+    
 try {    
     Porcupine porcupine = new Porcupine.Builder()
+                        .setAccessKey(accessKey)
                         .setKeyword(Porcupine.BuiltInKeyword.PICOVOICE)
                         .build(context);
 } catch (PorcupineException e) { }
@@ -188,8 +210,12 @@ To add a custom wake word or model file to your application, add the files to yo
 
 ```java
 // in this example our files are located at '/assets/picovoice_files/keyword.ppn' and '/assets/picovoice_files/model.pv' 
+
+final String accessKey = "${ACCESS_KEY}";
+
 try {    
     Porcupine porcupine = new Porcupine.Builder()
+                        .setAccessKey(accessKey)
                         .setKeywordPath("picovoice_files/keyword.ppn")
                         .setModelPath("picovoice_files/model.pv")
                         .build(context);
@@ -202,8 +228,8 @@ In order to detect non-English wake words you need to use the corresponding mode
 
 ## Demo Apps
 
-For example usage refer to
-[Activity demo](/demo/android/Activity) or [Service demo](/demo/android/Service).
+For example usage refer to the
+[Activity demo](/demo/android/Activity), [Service demo](/demo/android/Service) or [STT demo](/demo/android/STT).
 
 ## Resource Usage 
 
