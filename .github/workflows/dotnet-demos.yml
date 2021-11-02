@@ -2,12 +2,12 @@ name: .NET Demos
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
@@ -28,12 +28,8 @@ jobs:
       with:
         dotnet-version: 3.1.x
 
-    - name: Dotnet dependencies
-      run: sudo apt install libopenal-dev
-
     - name: Dotnet restore dependencies
       run: dotnet restore
-
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
@@ -48,9 +44,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-
-    - name: Dotnet dependencies
-      run: sudo apt install libopenal-dev
 
     - name: Dotnet restore dependencies
       run: dotnet restore
