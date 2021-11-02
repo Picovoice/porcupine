@@ -38,7 +38,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 5.0.x
 
     - name: Restore dependencies
       run: dotnet restore    
@@ -47,4 +47,4 @@ jobs:
       run: dotnet build --no-restore      
 
     - name: Test
-      run: dotnet test -- TestRunParameters.Parameter(name=\"pvTestAccessKey\", value=\"${{secrets.PV_VALID_ACCESS_KEY}}\")
+      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
