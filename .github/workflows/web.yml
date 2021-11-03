@@ -2,14 +2,14 @@ name: Web
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/web/**'
       - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/web/**'
       - '!binding/web/README.md'
@@ -22,19 +22,34 @@ defaults:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        python-version: [3.8]
+        node-version: [lts/*]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Install system dependencies
+      run: |
+        sudo apt install curl unzip
+        google-chrome --version
+        curl --output chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/93.0.4577.63/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin
+        pip install selenium
 
     - name: Pre-build dependencies
       run: npm install yarn
@@ -48,4 +63,4 @@ jobs:
         for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
 
     - name: Test
-      run: for i in porcupine-web*; do cd $i; yarn test --passWithNoTests || exit 1; cd ..; done
+      run: python porcupine-web-en-factory/test/selenium_test.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --audio_file ../../resources/audio_samples/multiple_keywords.wav

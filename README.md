@@ -1175,24 +1175,25 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
     <script src="https://unpkg.com/@picovoice/porcupine-web-en-worker/dist/iife/index.js"></script>
     <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
+      function keywordDetectionCallback(keyword) {
+        console.log(`Porcupine detected ${keyword}`);
+      }
+
+      function processErrorCallback(error) {
+        console.error(error); 
+      }
+
       async function startPorcupine() {
         console.log("Porcupine is loading. Please wait...");
-        let ppnEn = await PorcupineWebEnWorker.PorcupineWorkerFactory.create([
-          {
-            builtin: "Picovoice",
-            sensitivity: 0.65,
-          },
-        ]);
+        const accessKey = // AccessKey string obtained from Picovoice Console (picovoice.ai/console/)
+        let ppnEn = await PorcupineWebEnWorker.PorcupineWorkerFactory.create(
+          accessKey, 
+          [{builtin: "Picovoice", sensitivity: 0.65},],
+          keywordDetectionCallback,
+          processErrorCallback
+          );
 
         console.log("Porcupine worker ready!");
-
-        const keywordDetectionCallback = (msg) => {
-          if (msg.data.command === "ppn-keyword") {
-            console.log("Keyword detected: " + msg.data.keywordLabel);
-          }
-        };
-
-        ppnEn.onmessage = keywordDetectionCallback;
 
         console.log(
           "WebVoiceProcessor initializing. Microphone permissions requested ..."
@@ -1233,21 +1234,22 @@ npm install @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor
 import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker"
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 
-async startPorcupine()
-  const porcupineWorker = await PorcupineWorkerFactory.create(
-    [{builtin: "Picovoice", sensitivity: 0.65}]
-  );
+function keywordDetectionCallback(keyword) {
+  console.log(`Porcupine detected ${keyword}`);
+}
 
-  porcupineWorker.onmessage = (msg) => {
-    switch (msg.data.command) {
-      case 'ppn-keyword':
-        // Porcupine keyword detection
-        console.log("Porcupine detected " + msg.data.keywordLabel);
-        break;
-      default:
-        break;
-    }
-  };
+function processErrorCallback(error) {
+  console.error(error); 
+}
+
+async startPorcupine()
+  const accessKey = //AccessKey string provided by Picovoice Console (picovoice.ai/console/)
+  const porcupineWorker = await PorcupineWorkerFactory.create(
+    accessKey,
+    [{builtin: "Picovoice", sensitivity: 0.65}],
+    keywordDetectionCallback,
+    processErrorCallback
+  );
 
   const webVp = await WebVoiceProcessor.init({
     engines: [porcupineWorker],
