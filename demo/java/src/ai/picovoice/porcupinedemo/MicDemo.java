@@ -27,7 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 public class MicDemo {
-    public static void runDemo(String libPath, String modelPath,
+    public static void runDemo(String accessKey, String libPath, String modelPath,
                                String[] keywordPaths, float[] sensitivities,
                                int audioDeviceIndex, String outputPath) {
 
@@ -64,6 +64,7 @@ public class MicDemo {
         try {
 
             porcupine = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(libPath)
                     .setModelPath(modelPath)
                     .setKeywordPaths(keywordPaths)
@@ -213,6 +214,7 @@ public class MicDemo {
             return;
         }
 
+        String accessKey = cmd.getOptionValue("access_key");
         String libraryPath = cmd.getOptionValue("library_path");
         String modelPath = cmd.getOptionValue("model_path");
         String[] keywords = cmd.getOptionValues("keywords");
@@ -220,6 +222,10 @@ public class MicDemo {
         String[] sensitivitiesStr = cmd.getOptionValues("sensitivities");
         String audioDeviceIndexStr = cmd.getOptionValue("audio_device_index");
         String outputPath = cmd.getOptionValue("output_path");
+
+        if (accessKey == null || accessKey.length() == 0) {
+            throw new IllegalArgumentException("AccessKey is required for Porcupine.");
+        }
 
         // parse sensitivity array
         float[] sensitivities = null;
@@ -291,11 +297,17 @@ public class MicDemo {
             }
         }
 
-        runDemo(libraryPath, modelPath, keywordPaths, sensitivities, audioDeviceIndex, outputPath);
+        runDemo(accessKey, libraryPath, modelPath, keywordPaths, sensitivities, audioDeviceIndex, outputPath);
     }
 
     private static Options BuildCommandLineOptions() {
         Options options = new Options();
+
+        options.addOption(Option.builder("a")
+                .longOpt("access_key")
+                .hasArg(true)
+                .desc("AccessKey obtained from Picovoice console.")
+                .build());
 
         options.addOption(Option.builder("l")
                 .longOpt("library_path")

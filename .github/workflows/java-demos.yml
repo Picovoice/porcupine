@@ -15,7 +15,7 @@ on:
 
 defaults:
   run:
-    working-directory: binding/java
+    working-directory: demo/java
 
 jobs:
   build:
@@ -32,6 +32,10 @@ jobs:
 
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
+    - name: Build Binding Dependency
+      run: ./gradlew build
+      working-directory: binding/java
 
     - name: Build
       run: ./gradlew build

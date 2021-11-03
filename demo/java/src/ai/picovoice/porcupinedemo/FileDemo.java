@@ -27,8 +27,8 @@ import java.util.Arrays;
 
 public class FileDemo {
 
-    public static void runDemo(File inputAudioFile, String libPath, String modelPath,
-                               String[] keywordPaths, float[] sensitivities) {
+    public static void runDemo(String accessKey, File inputAudioFile, String libPath,
+                               String modelPath, String[] keywordPaths, float[] sensitivities) {
 
         // create keywords from keyword_paths
         String[] keywords = new String[keywordPaths.length];
@@ -54,6 +54,7 @@ public class FileDemo {
         Porcupine porcupine = null;
         try {
             porcupine = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(libPath)
                     .setModelPath(modelPath)
                     .setKeywordPaths(keywordPaths)
@@ -128,6 +129,7 @@ public class FileDemo {
             return;
         }
 
+        String accessKey = cmd.getOptionValue("access_key");
         String inputAudioPath = cmd.getOptionValue("input_audio_path");
         String libraryPath = cmd.getOptionValue("library_path");
         String modelPath = cmd.getOptionValue("model_path");
@@ -157,7 +159,11 @@ public class FileDemo {
             }
         }
 
-        if(inputAudioPath == null){
+        if (accessKey == null || accessKey.length() == 0) {
+            throw new IllegalArgumentException("AccessKey is required for Porcupine.");
+        }
+
+        if (inputAudioPath == null){
             throw new IllegalArgumentException("No input audio file provided. This is a required argument.");
         }
         File inputAudioFile = new File(inputAudioPath);
@@ -199,11 +205,17 @@ public class FileDemo {
                     "not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
         }
 
-        runDemo(inputAudioFile, libraryPath, modelPath, keywordPaths, sensitivities);
+        runDemo(accessKey, inputAudioFile, libraryPath, modelPath, keywordPaths, sensitivities);
     }
 
     private static Options BuildCommandLineOptions() {
         Options options = new Options();
+
+        options.addOption(Option.builder("a")
+                .longOpt("access_key")
+                .hasArg(true)
+                .desc("AccessKey obtained from Picovoice console.")
+                .build());
 
         options.addOption(Option.builder("i")
                 .longOpt("input_audio_path")
