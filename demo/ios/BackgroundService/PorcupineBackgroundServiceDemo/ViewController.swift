@@ -33,6 +33,8 @@ class ViewController: UIViewController, UITextViewDelegate {
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
+            NotificationManager.shared.requestNotificationAuthorization()
+
             do {
                 Sound.category = .playAndRecord
                 let keywordCallback: ((Int32) -> Void) = { keywordIndex in
@@ -55,9 +57,7 @@ class ViewController: UIViewController, UITextViewDelegate {
 
 
         } else {
-            if porcupineManager != nil {
-                porcupineManager.stop()
-            }
+            porcupineManager.stop()
 
             isRecording = false
             startButton.setTitle("START", for: UIControl.State.normal)

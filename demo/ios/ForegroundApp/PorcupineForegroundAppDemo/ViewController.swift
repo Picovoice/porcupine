@@ -44,8 +44,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         wakeWordPicker.frame.origin = CGPoint(x: 0, y: 40)
         wakeWordPicker.frame.size = CGSize(width: viewSize.width, height: viewSize.height - startButtonSize.height - 120)
         
-        errorLabel.frame.origin = CGPoint(x: 0, y: 60)
-        errorLabel.frame.size = CGSize(width: viewSize.width, height: 120)
+        let errorLabelSize = CGSize(width: viewSize.width, height: 120)
+        errorLabel.frame.origin = CGPoint(x: 0, y: viewSize.height - (startButtonSize.height + errorLabelSize.height + 60)  )
+        errorLabel.frame.size = errorLabelSize
         errorLabel.isHidden = true
     }
 
@@ -65,9 +66,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         wakeWord = wakeWordDict[wakeWordKeys[row]]!
     }
 
+    func showErrorAlert(_ message: String) {
+        errorLabel.text = message
+        errorLabel.isHidden = false
+        wakeWordPicker.isUserInteractionEnabled = false
+        startButton.isEnabled = false
+    }
+
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
-
             let originalColor = self.view.backgroundColor
             let keywordCallback: ((Int32) -> Void) = { keywordIndex in
                 self.view.backgroundColor = UIColor.orange
@@ -77,30 +84,31 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             }
             
             let errorCallback: ((Error) -> Void) = {error in
-                self.errorLabel.isHidden = false
-                self.errorLabel.text = "\(error)"
+                self.showErrorAlert("\(error)")
             }
 
             do {
                 porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback, errorCallback: errorCallback)
                 try porcupineManager.start()
                 
-                errorLabel.isHidden = true
                 wakeWordPicker.isUserInteractionEnabled = false
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
-            } catch let error as PorcupineError {
-                errorLabel.isHidden = false
-                errorLabel.text = "\(error)"
+            } catch PorcupineError.PorcupineInvalidArgumentError {
+                showErrorAlert("AccessKey '\(accessKey)' is invalid")
+            } catch PorcupineError.PorcupineActivationError {
+                showErrorAlert("AccessKey activation error")
+            } catch PorcupineError.PorcupineActivationRefusedError {
+                showErrorAlert("AccessKey activation refused")
+            } catch PorcupineError.PorcupineActivationLimitError {
+                showErrorAlert("AccessKey reached its limit")
+            } catch PorcupineError.PorcupineActivationThrottledError  {
+                showErrorAlert("AccessKey is throttled")
             } catch {
-                errorLabel.isHidden = false
-                errorLabel.text = "Something went wrong"
-                return
+                showErrorAlert("\(error)")
             }
         } else {
-            if porcupineManager != nil {
-                porcupineManager.stop()
-            }
+            porcupineManager.stop()
 
             wakeWordPicker.isUserInteractionEnabled = true
             isRecording = false

@@ -61,7 +61,7 @@ import Porcupine
 let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
 
 do {
-    PorcupineManager porcupineManager = try PorcupineManager(
+    let porcupineManager = try PorcupineManager(
         accessKey: accessKey,
         keyword: Porcupine.BuiltInKeyword.picovoice, 
         onDetection: wakeWordCallback)
@@ -87,7 +87,7 @@ To create an instance of PorcupineManager that detects custom keywords, you can 
 do {
     let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let paths = ["path/to/keyword/one.ppn", "path/to/keyword/two.ppn"]
-    PorcupineManager porcupineManager = try PorcupineManager(
+    let porcupineManager = try PorcupineManager(
         accessKey: accessKey,
         keywordPaths: paths, 
         onDetection: wakeWordCallback)
@@ -105,7 +105,7 @@ These optional parameters can be set like so:
 do {
     let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let paths = ["path/to/keyword/one.ppn", "path/to/keyword/two.ppn"]
-    PorcupineManager porcupineManager = try PorcupineManager(
+    let porcupineManager = try PorcupineManager(
         accessKey: accessKey,
         keywordPaths: paths,
         modelPath: "path/to/model/file.pv",
@@ -144,7 +144,7 @@ import Porcupine
 
 do {
     let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
-    Porcupine porcupine = try Porcupine(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.picovoice)
+    let porcupine = try Porcupine(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.picovoice)
 } catch { }
 ```
 
