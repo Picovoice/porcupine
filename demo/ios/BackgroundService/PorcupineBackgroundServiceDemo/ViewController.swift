@@ -12,9 +12,9 @@ import Porcupine
 import SwiftySound
 
 class ViewController: UIViewController, UITextViewDelegate {
-    
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWord = Porcupine.BuiltInKeyword.porcupine
@@ -29,6 +29,8 @@ class ViewController: UIViewController, UITextViewDelegate {
         startButton.clipsToBounds = true
         
         textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
+        
+        errorLabel.isHidden = true
     }
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
@@ -44,17 +46,23 @@ class ViewController: UIViewController, UITextViewDelegate {
                 
                 self.porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback)
                 
-                
                 try porcupineManager.start()
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
-            } catch let error as PorcupineError {
-                showAlert(message: "Failed to initialize and start Porcupine:\n\(error)")
-            } catch let error {
-                showAlert(message: "Something went wrong: \(error)")
-                return
-            }
 
+            } catch PorcupineError.PorcupineInvalidArgumentError {
+                showErrorAlert(message: "AccessKey '\(accessKey)' is invalid")
+            } catch PorcupineError.PorcupineActivationError {
+                showErrorAlert(message: "AccessKey activation error")
+            } catch PorcupineError.PorcupineActivationRefusedError {
+                showErrorAlert(message: "AccessKey activation refused")
+            } catch PorcupineError.PorcupineActivationLimitError {
+                showErrorAlert(message: "AccessKey reached its limit")
+            } catch PorcupineError.PorcupineActivationThrottledError  {
+                showErrorAlert(message: "AccessKey is throttled")
+            } catch let error {
+                showErrorAlert(message: "\(error)")
+            }
 
         } else {
             porcupineManager.stop()
@@ -64,12 +72,9 @@ class ViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    private func showAlert(message: String) {
-        let alert = UIAlertController(
-                title: "Alert",
-                message: message,
-                preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+    private func showErrorAlert(message: String) {
+        errorLabel.text = message
+        errorLabel.isHidden = false
+        startButton.isEnabled = false
     }
 }

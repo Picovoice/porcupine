@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGq-wx-wER">
-                                <rect key="frame" x="100" y="180" width="120" height="120"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGq-wx-wER">
+                                <rect key="frame" x="100" y="309" width="120" height="120"/>
                                 <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="jZj-gI-YAY"/>
@@ -32,7 +32,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Press the Start button and say the wake word Porcupine. Try pressing the home button and saying it again." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="HQi-uh-rkP">
-                                <rect key="frame" x="20" y="10" width="280" height="140"/>
+                                <rect key="frame" x="20" y="40" width="280" height="140"/>
                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="140" id="kUL-d5-idX"/>
@@ -41,18 +41,33 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Error Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uS2-SO-jcS" userLabel="Error Label">
+                                <rect key="frame" x="16" y="180" width="288" height="69"/>
+                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="fQq-mj-SrC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="vGq-wx-wER" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="bottom" constant="30" id="0ro-kf-JRC"/>
+                            <constraint firstItem="uS2-SO-jcS" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="C6e-bd-km1"/>
+                            <constraint firstItem="uS2-SO-jcS" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="Grl-j9-qU5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HQi-uh-rkP" secondAttribute="trailing" constant="20" id="Pbv-40-UO2"/>
                             <constraint firstItem="HQi-uh-rkP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Zf3-tw-WgY"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="top" constant="-40" id="Zqx-jS-bvV"/>
                             <constraint firstItem="vGq-wx-wER" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="dcC-Up-9e0"/>
+                            <constraint firstItem="vGq-wx-wER" firstAttribute="top" secondItem="uS2-SO-jcS" secondAttribute="bottom" constant="30" id="hni-ol-fEb"/>
                             <constraint firstItem="vGq-wx-wER" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rRw-Rd-dBa"/>
+                            <constraint firstItem="uS2-SO-jcS" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="bottom" constant="30" id="yND-sS-0KO"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="errorLabel" destination="uS2-SO-jcS" id="Yg3-Gy-bpq"/>
                         <outlet property="startButton" destination="vGq-wx-wER" id="dOP-Uo-qGh"/>
                         <outlet property="textView" destination="HQi-uh-rkP" id="GxG-Hm-3IR"/>
                     </connections>
@@ -68,6 +83,9 @@
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
