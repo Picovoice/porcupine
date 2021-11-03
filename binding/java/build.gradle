@@ -155,9 +155,6 @@ task copyLinuxLib(type: Copy) {
 task copyMacLib(type: Copy) {
     from('../../lib/java/mac/x86_64/libpv_porcupine_jni.dylib') into "${outputDir}/porcupine/lib/java/mac/x86_64/"
 }
-task copyMacArmLib(type: Copy) {
-    from('../../lib/java/mac/arm64/libpv_porcupine_jni.dylib') into "${outputDir}/porcupine/lib/java/mac/arm64/"
-}
 task copyWindowsLib(type: Copy) {
     from('../../lib/java/windows/amd64/pv_porcupine_jni.dll') into "${outputDir}/porcupine/lib/java/windows/amd64/"
 }
