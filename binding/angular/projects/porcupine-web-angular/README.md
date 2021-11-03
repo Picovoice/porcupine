@@ -36,6 +36,15 @@ yarn add @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovo
 npm install @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 In your Angular component, add the `PorcupineService`. The `PorcupineService` has a detection event to which you can subscribe:
@@ -62,10 +71,12 @@ We need to initialize Porcupine to tell it which keywords we want to listen to (
   async ngOnInit() {
     // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; dynamically imported)
     const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
+    const accessKey = // AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)
+    
     // Initialize Porcupine Service
     try {
       await this.porcupineService.init(porcupineFactoryEn,
-      {keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
+      {accessKey: accessKey, keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
       console.log("Porcupine is now loaded and listening")
     }
     catch (error) {
