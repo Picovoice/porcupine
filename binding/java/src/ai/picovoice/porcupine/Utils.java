@@ -160,10 +160,6 @@ class Utils {
                 return "x86_64";
             }
         } else if (arch.equals("arm") || arch.equals("aarch64")) {
-            if (ENVIRONMENT_NAME.equals("mac")) {
-                return "arm64";
-            }
-
             String cpuPart = getCpuPart();
             String archInfo = (arch.equals("aarch64")) ? "-aarch64" : "";
 
@@ -225,9 +221,7 @@ class Utils {
             case "windows":
                 return RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
             case "mac":
-                return RESOURCE_DIRECTORY.resolve("lib/java/mac")
-                                         .resolve(ARCHITECTURE)
-                                         .resolve("libpv_porcupine_jni.dylib").toString();
+                return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
             case "jetson":
             case "beaglebone":
             case "raspberry-pi":
