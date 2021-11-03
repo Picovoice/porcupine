@@ -44,12 +44,8 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        sudo apt install curl unzip
-        google-chrome --version
-        curl --output chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/93.0.4577.63/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin
         pip install selenium
+        pip install webdriver-manager
 
     - name: Pre-build dependencies
       run: npm install yarn
