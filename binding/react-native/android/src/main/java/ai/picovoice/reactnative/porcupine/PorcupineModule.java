@@ -12,13 +12,7 @@
 
 package ai.picovoice.reactnative.porcupine;
 
-import ai.picovoice.porcupine.Porcupine;
-import ai.picovoice.porcupine.PorcupineActivationException;
-import ai.picovoice.porcupine.PorcupineActivationLimitException;
-import ai.picovoice.porcupine.PorcupineActivationRefusedException;
-import ai.picovoice.porcupine.PorcupineActivationThrottledException;
-import ai.picovoice.porcupine.PorcupineException;
-import ai.picovoice.porcupine.PorcupineInvalidArgumentException;
+import ai.picovoice.porcupine.*;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -50,9 +44,8 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     return "PvPorcupine";
   }
 
-  @Override
+   @Override
   public Map<String, Object> getConstants() {
-
     // default model file
     final File resourceDirectory = reactContext.getFilesDir();
     final Map<String, Object> constants = new HashMap<>();
@@ -71,7 +64,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void create(String accessKey, String modelPath, ReadableArray keywordPaths, ReadableArray sensitivities, Promise promise) {
+  public void fromKeywordPaths(String accessKey, String modelPath, ReadableArray keywordPaths, ReadableArray sensitivities, Promise promise) {
 
     // convert from ReadableArrays to Java types
     String[] keywordPathsJava = new String[keywordPaths.size()];
@@ -99,18 +92,8 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       paramMap.putInt("sampleRate", porcupine.getSampleRate());
       paramMap.putString("version", porcupine.getVersion());
       promise.resolve(paramMap);
-    } catch (PorcupineActivationException e) {
-      promise.reject("PorcupineException", "AccessKey activation error");
-    } catch (PorcupineActivationLimitException e) {
-      promise.reject("PorcupineException", "AccessKey reached its device limit");
-    } catch (PorcupineActivationRefusedException e) {
-      promise.reject("PorcupineException", "AccessKey refused");
-    } catch (PorcupineActivationThrottledException e) {
-      promise.reject("PorcupineException","AccessKey has been throttled");
-    } catch (PorcupineInvalidArgumentException e) {
-      promise.reject("PorcupineException", String.format("AccessKey '%s' is invalid", accessKey));
     } catch (PorcupineException e) {
-      promise.reject("PorcupineException", "Failed to initialize Porcupine " + e.getMessage());
+      promise.reject(e.getClass().getSimpleName(), e.getMessage());
     }
   }
 
@@ -127,7 +110,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     try {
 
       if (!porcupinePool.containsKey(handle)) {
-        promise.reject(new Exception("Invalid Porcupine handle provided to native module."));
+        promise.reject(PorcupineInvalidStateException.class.getSimpleName(), "Invalid Porcupine handle provided to native module.");
         return;
       }
 
@@ -140,7 +123,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       int result = porcupine.process(buffer);
       promise.resolve(result);
     } catch (PorcupineException e) {
-      promise.reject(e);
+      promise.reject(e.getClass().getSimpleName(), e.getMessage());
     }
   }
 }

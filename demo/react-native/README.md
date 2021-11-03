@@ -14,7 +14,7 @@ To obtain your `AccessKey`:
 Once you obtain your `AccessKey`, replace it in [`App.tsx`](App.tsx) file:
 
 ```typescript
-_accessKey: string ="YOUR_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+_accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 ```
 
 ## Usage

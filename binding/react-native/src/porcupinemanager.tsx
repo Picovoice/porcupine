@@ -13,6 +13,7 @@ import { VoiceProcessor, BufferEmitter } from '@picovoice/react-native-voice-pro
 import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
+import type BuiltInKeywords from './builtin_keywords';
 export type DetectionCallback = (keywordIndex: number) => void;
 export type ProcessErrorCallback = (error: unknown) => void;
 
@@ -23,9 +24,6 @@ class PorcupineManager {
   private _processErrorCallback?: ProcessErrorCallback;
   private _bufferListener?: EventSubscription;
   private _bufferEmitter: NativeEventEmitter;
-
-  // a list of built-in keywords
-  public static KEYWORDS = Porcupine.KEYWORDS;
 
   /**
    * Static creator for initializing a Porcupine Manager from built-in keywords
@@ -42,7 +40,7 @@ class PorcupineManager {
    */
   public static async fromKeywords(
     accessKey: string,
-    keywords: string[],
+    keywords: BuiltInKeywords[],
     detectionCallback: DetectionCallback,
     processErrorCallback?: ProcessErrorCallback,
     modelPath?: string,

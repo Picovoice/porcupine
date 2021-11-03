@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -12,13 +12,13 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PorcupineManager} from '@picovoice/porcupine-react-native';
+import {PorcupineManager, BuiltInKeywords} from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
 
 type Props = {};
 type State = {
-  currentKeyword: string;
-  keywordOptions: string[];
+  currentKeyword: BuiltInKeywords;
+  keywordOptions: (string | BuiltInKeywords)[];
   buttonText: string;
   buttonDisabled: boolean;
   isListening: boolean;
@@ -31,14 +31,13 @@ export default class App extends Component<Props, State> {
   _porcupineManager: PorcupineManager | undefined;
   _detectionColour: string = '#00E5C3';
   _defaultColour: string = '#F5FCFF';
-  _accessKey: string = "YOUR_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+  _accessKey: string = "${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
   constructor(props: Props) {
     super(props);
-    let keywordOptions = PorcupineManager.KEYWORDS;
     this.state = {
-      keywordOptions: keywordOptions,
-      currentKeyword: keywordOptions[0],
+      keywordOptions: Object.values(BuiltInKeywords),
+      currentKeyword: BuiltInKeywords.ALEXA,
       buttonText: 'Start',
       buttonDisabled: false,
       isListening: false,
@@ -49,7 +48,7 @@ export default class App extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    this._loadNewKeyword(this.state.currentKeyword as string);
+    this._loadNewKeyword(this.state.currentKeyword);
   }
 
   componentWillUnmount() {
@@ -117,7 +116,7 @@ export default class App extends Component<Props, State> {
     else this._startProcessing();
   }
 
-  async _loadNewKeyword(keyword: string) {
+  async _loadNewKeyword(keyword: BuiltInKeywords) {
     if (this.state.isListening) {
       this._stopProcessing();
     }
@@ -151,7 +150,6 @@ export default class App extends Component<Props, State> {
         }
       );
     } catch (err) {
-      console.log(err)
       this.setState({
         isError: true,
         errorMessage: err.toString()
@@ -214,7 +212,7 @@ export default class App extends Component<Props, State> {
               style={{}}
               itemStyle={styles.itemStyle}
               onValueChange={(keyword) =>
-                this._loadNewKeyword(keyword as string)
+                this._loadNewKeyword(keyword)
               }>
               {keywordOptions}
             </Picker>

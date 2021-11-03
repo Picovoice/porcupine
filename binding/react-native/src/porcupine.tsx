@@ -11,7 +11,15 @@
 
 import { NativeModules } from 'react-native';
 
+import BuiltInKeywords  from './builtin_keywords';
+import * as PorcupineExceptions from './porcupine_exceptions';
+
 const RCTPorcupine = NativeModules.PvPorcupine;
+
+type NativeError = {
+  code: string;
+  message: string;
+}
 
 class Porcupine {
   private _handle: string;
@@ -19,8 +27,8 @@ class Porcupine {
   private _sampleRate: number;
   private _version: string;
 
-  // a list of built-in keywords
-  public static KEYWORDS = Object.keys(RCTPorcupine.KEYWORD_PATHS);
+  private static readonly DEFAULT_MODEL_PATH: string = RCTPorcupine.DEFAULT_MODEL_PATH;
+  private static readonly KEYWORD_PATHS = RCTPorcupine.KEYWORD_PATHS;
 
   /**
    * Static creator for initializing Porcupine from one of the built-in keywords
@@ -35,18 +43,24 @@ class Porcupine {
    */
   public static async fromKeywords(
     accessKey: string,
-    keywords: string[],
+    keywords: BuiltInKeywords[],
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    let { handle, frameLength, sampleRate, version } = await Porcupine.create(
-      accessKey,
-      keywords,
-      undefined,
-      modelPath,
-      sensitivities
-    );
-    return new Porcupine(handle, frameLength, sampleRate, version);
+    const keywordPaths = keywords.map((keyword) => {
+      if (!Object.values(BuiltInKeywords).includes(keyword)) {
+        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
+          `keyword '${keyword}' is not a build-in keyword.`);
+      }
+      if (this.KEYWORD_PATHS[keyword] === undefined || this.KEYWORD_PATHS[keyword] === null) {
+        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
+          `keyword '${keyword}' is not a supported keyword.`);
+      }
+
+      return this.KEYWORD_PATHS[keyword];
+    });
+
+    return this.fromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
   }
 
   /**
@@ -65,21 +79,27 @@ class Porcupine {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    let { handle, frameLength, sampleRate, version } = await Porcupine.create(
-      accessKey,
-      undefined,
-      keywordsPaths,
-      modelPath,
-      sensitivities
-    );
-    return new Porcupine(handle, frameLength, sampleRate, version);
+    try {
+      let { handle, frameLength, sampleRate, version } = await Porcupine.fromKeywordPathsNative(
+        accessKey,
+        keywordsPaths,
+        modelPath,
+        sensitivities
+      );
+      return new Porcupine(handle, frameLength, sampleRate, version);
+    } catch (err) {
+      if (err instanceof PorcupineExceptions.PorcupineException) {
+        throw err;
+      } else {
+        const nativeError = err as NativeError;
+        throw this.codeToException(nativeError.code, nativeError.message);
+      }
+    }
   }
 
   /**
    * Creates an instance of wake word engine (Porcupine).
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
-   * @param keywords List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved
-   * using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
    * @param keywordPaths Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
@@ -87,27 +107,19 @@ class Porcupine {
    * [0, 1].
    * @returns An instance of the engine.
    */
-  private static async create(
+  private static async fromKeywordPathsNative(
     accessKey: string,
-    keywords?: string[],
     keywordPaths?: string[],
     modelPath?: string,
     sensitivities?: number[]
   ) {
     if (accessKey === undefined || accessKey === null) {
-      return Promise.reject(
-        `'accessKey' must be set.`
-      )
+      throw new PorcupineExceptions.PorcupineInvalidArgumentException(
+        "'accessKey' must be set.");
     }
 
     if (modelPath === undefined) {
-      modelPath = RCTPorcupine.DEFAULT_MODEL_PATH;
-    }
-
-    if (Array.isArray(keywords) && Array.isArray(keywordPaths)) {
-      return Promise.reject(
-        `Both 'keywords' and 'keywordPaths' were set. Only one of the two arguments may be set for initialization.`
-      );
+      modelPath = this.DEFAULT_MODEL_PATH;
     }
 
     if (
@@ -115,34 +127,13 @@ class Porcupine {
       keywordPaths.length === 0 ||
       !Array.isArray(keywordPaths)
     ) {
-      if (
-        keywords === undefined ||
-        keywords.length === 0 ||
-        !Array.isArray(keywords)
-      ) {
-        return Promise.reject(
-          `Either 'keywords' or 'keywordPaths' must be set.`
-        );
-      }
-
-      keywordPaths = [];
-      for (let i = 0; i < keywords.length; i++) {
-        let keywordPath = RCTPorcupine.KEYWORD_PATHS[keywords[i]];
-        if (keywordPath !== undefined) {
-          keywordPaths[i] = keywordPath;
-        } else {
-          return Promise.reject(
-            `One or more keywords are not available by default. Available default keywords are: ${Object.keys(
-              RCTPorcupine.KEYWORD_PATHS
-            )}`
-          );
-        }
-      }
+      throw new PorcupineExceptions.PorcupineInvalidArgumentException(
+          "keywordPaths must be set, not empty and an array.");
     }
 
     for (let i = 0; i < keywordPaths.length; i++) {
       if (keywordPaths[i] == null || keywordPaths[i] == "") {
-        throw new Error(
+        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
             "One of the provided keyword paths was empty.");
       }
     }
@@ -156,19 +147,19 @@ class Porcupine {
 
     for (let sensitivity of sensitivities) {
       if (sensitivity < 0 || sensitivity > 1 || isNaN(sensitivity)) {
-        return Promise.reject(
+        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
           `Sensitivity value in 'sensitivities' not in range [0,1]: ${sensitivity}`
         );
       }
     }
 
     if (keywordPaths.length !== sensitivities.length) {
-      return Promise.reject(
+      throw new PorcupineExceptions.PorcupineInvalidArgumentException(
         `Number of keywords (${keywordPaths.length}) does not match number of sensitivities (${sensitivities.length})`
       );
     }
 
-    return RCTPorcupine.create(accessKey, modelPath, keywordPaths, sensitivities);
+    return RCTPorcupine.fromKeywordPaths(accessKey, modelPath, keywordPaths, sensitivities);
   }
 
   private constructor(
@@ -192,23 +183,25 @@ class Porcupine {
    */
   async process(frame: number[]) {
     if (frame === undefined) {
-      return Promise.reject(
-        `Frame array provided to process() is undefined or null`
-      );
+      throw new PorcupineExceptions.PorcupineInvalidStateException(
+        "Frame array provided to process() is undefined or null");
     } else if (frame.length !== this._frameLength) {
-      return Promise.reject(
-        `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this._frameLength})`
-      );
+      throw new PorcupineExceptions.PorcupineInvalidStateException(
+        `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this._frameLength})`);
     }
 
     // sample the first frame to check for non-integer values
     if (!Number.isInteger(frame[0])) {
-      return Promise.reject(
-        `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`
-      );
+      throw new PorcupineExceptions.PorcupineInvalidStateException(
+        `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`);
     }
 
-    return RCTPorcupine.process(this._handle, frame);
+    try {
+      return await RCTPorcupine.process(this._handle, frame);
+    } catch(err) {
+      const nativeError = err as NativeError;
+      throw Porcupine.codeToException(nativeError.code, nativeError.message);
+    }
   }
 
   /**
@@ -240,6 +233,41 @@ class Porcupine {
    */
   get version() {
     return this._version;
+  }
+
+  /**
+   * Gets the exception type given a code.
+   * @param code Code name of nativee exception.
+   */
+  private static codeToException(code: string, message: string) {
+    switch(code) {
+      case 'PorcupineException':
+        return new PorcupineExceptions.PorcupineException(message);
+      case 'PorcupineMemoryException':
+        return new PorcupineExceptions.PorcupineMemoryException(message);
+      case 'PorcupineIOException':
+        return new PorcupineExceptions.PorcupineIOException(message);
+      case 'PorcupineInvalidArgumentException':
+        return new PorcupineExceptions.PorcupineInvalidArgumentException(message);
+      case 'PorcupineStopIterationException':
+        return new PorcupineExceptions.PorcupineStopIterationException(message);
+      case 'PorcupineKeyException':
+        return new PorcupineExceptions.PorcupineKeyException(message);
+      case 'PorcupineInvalidStateException':
+        return new PorcupineExceptions.PorcupineInvalidStateException(message);
+      case 'PorcupineRuntimeException':
+        return new PorcupineExceptions.PorcupineRuntimeException(message);
+      case 'PorcupineActivationException':
+        return new PorcupineExceptions.PorcupineActivationException(message);
+      case 'PorcupineActivationLimitException':
+        return new PorcupineExceptions.PorcupineActivationLimitException(message);
+      case 'PorcupineActivationThrottledException':
+        return new PorcupineExceptions.PorcupineActivationThrottledException(message);
+      case 'PorcupineActivationRefusedException':
+        return new PorcupineExceptions.PorcupineActivationRefusedException(message);
+      default:
+        throw new Error(`unexpected code: ${code}, message: ${message}`);
+    }
   }
 }
 

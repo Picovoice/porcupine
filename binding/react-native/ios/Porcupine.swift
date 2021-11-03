@@ -16,10 +16,8 @@ enum PvPorcupineError: Error {
     case RuntimeError(_ message: String)
 }
 
-
 @objc(PvPorcupine)
 class PvPorcupine: NSObject {
-
     private var porcupinePool:Dictionary<String, OpaquePointer?> = [:]
 
     @objc func constantsToExport() -> Dictionary<String, Any> {        
@@ -40,17 +38,17 @@ class PvPorcupine: NSObject {
         ]
     }
 
-    @objc(create:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
-    func create(accessKey: String, modelPath: String, keywordPaths: [String], sensitivities: [Float32], 
+    @objc(fromKeywordPaths:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
+    func fromKeywordPaths(accessKey: String, modelPath: String, keywordPaths: [String], sensitivities: [Float32],
         resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
         var modelPath = modelPath
         var keywordPaths = keywordPaths
         
         do {
-            modelPath = try extractResource(modelPath)
-            keywordPaths = try keywordPaths.map { try extractResource($0) }
+            modelPath = try getResourcePath(modelPath)
+            keywordPaths = try keywordPaths.map { try getResourcePath($0) }
         } catch {
-            reject("PvPorcupine:create", "failed with: \(error)", nil)
+            reject(pvStatusToExceptionCode(PV_STATUS_IO_ERROR), "failed to get resource path: \(error)", nil)
         }
         
         var porcupine:OpaquePointer?
@@ -75,26 +73,7 @@ class PvPorcupine: NSObject {
             resolve(porcupineParameters)
         }
         else {
-            switch (status) {
-            case PV_STATUS_INVALID_ARGUMENT:
-                reject("PvPorcupine:create", "AccessKey \(accessKey) is invalid", nil)
-                break;
-            case PV_STATUS_ACTIVATION_ERROR:
-                reject("PvPorcupine:create", "AccessKey activation error", nil)
-                break;
-            case PV_STATUS_ACTIVATION_REFUSED:
-                reject("PvPorcupine:create", "AccessKey refused", nil)
-                break;
-            case PV_STATUS_ACTIVATION_LIMIT_REACHED:
-                reject("PvPorcupine:create", "AccessKey reached its device limit", nil)
-                break;
-            case PV_STATUS_ACTIVATION_THROTTLED:
-                reject("PvPorcupine:create", "AccessKey has been throttled", nil)
-                break;
-            default:
-                let pvStatus = String(cString: pv_status_to_string(status))
-                reject("PvPorcupine:create", "Failed to initialize Porcupine: \(pvStatus)", nil)
-            }
+            reject(pvStatusToExceptionCode(status), "Failed to initialize Porcupine", nil)
         }
     }
     
@@ -117,11 +96,11 @@ class PvPorcupine: NSObject {
             resolve(keywordIndex)
         }
         else{
-            reject("PvPorcupine:process", "Invalid Porcupine handle provided to native module.", nil)
+            reject(pvStatusToExceptionCode(PV_STATUS_INVALID_STATE), "Invalid Porcupine handle provided to native module.", nil)
         }
     }
 
-    private func extractResource(_ filePath: String) throws -> String {
+    private func getResourcePath(_ filePath: String) throws -> String {
         if (!FileManager.default.fileExists(atPath: filePath)) {
             if let resourcePath = Bundle.main.resourceURL?.appendingPathComponent("resources/\(filePath)").path {
                 if (FileManager.default.fileExists(atPath: resourcePath)) {
@@ -133,5 +112,34 @@ class PvPorcupine: NSObject {
         }
         
         return filePath
+    }
+    
+    private func pvStatusToExceptionCode(_ status: pv_status_t) -> String {
+        switch (status) {
+        case PV_STATUS_OUT_OF_MEMORY:
+            return "PorcupineMemoryException"
+        case PV_STATUS_IO_ERROR:
+            return "PorcupineIOException"
+        case PV_STATUS_INVALID_ARGUMENT:
+            return "PorcupineInvalidArgumentException"
+        case PV_STATUS_STOP_ITERATION:
+            return "PorcupineStopIterationException"
+        case PV_STATUS_KEY_ERROR:
+            return "PorcupineKeyException"
+        case PV_STATUS_INVALID_STATE:
+            return "PorcupineInvalidStateException"
+        case PV_STATUS_RUNTIME_ERROR:
+            return "PorcupineRuntimeException"
+        case PV_STATUS_ACTIVATION_ERROR:
+            return "PorcupineActivationException"
+        case PV_STATUS_ACTIVATION_LIMIT_REACHED:
+            return "PorcupineActivationLimitException"
+        case PV_STATUS_ACTIVATION_THROTTLED:
+            return "PorcupineActivationThrottledException"
+        case PV_STATUS_ACTIVATION_REFUSED:
+            return "PorcupineActivationRefusedException"
+        default:
+            return "PorcupineException"
+        }
     }
 }
