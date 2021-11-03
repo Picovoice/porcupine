@@ -73,23 +73,6 @@ export function usePorcupine(
     return false;
   };
 
-  // // Refresh the detection callback when it changes (avoid stale closure)
-  // useEffect(() => {
-  //   if (porcupineWorker !== null) {
-  //     porcupineWorker.onmessage = (
-  //       msg: MessageEvent<PorcupineWorkerResponse>
-  //     ): void => {
-  //       switch (msg.data.command) {
-  //         case 'ppn-keyword':
-  //           detectionCallback(msg.data.keywordLabel);
-  //           break;
-  //         default:
-  //           break;
-  //       }
-  //     };
-  //   }
-  // }, [detectionCallback]);
-
   useEffect(() => {
     // If using dynamic import() on porcupine-web-xx-worker,
     // initially the worker factory may not exist yet; do nothing
@@ -123,7 +106,6 @@ export function usePorcupine(
         keywords,
         detectionCallback
       );
-
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
         start: startWebVp,
@@ -159,6 +141,7 @@ export function usePorcupine(
     // and is easily serializable ... doesn't have functions or weird objects like Dates.
     // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
     JSON.stringify(porcupineHookArgs),
+    detectionCallback,
   ]);
 
   return {

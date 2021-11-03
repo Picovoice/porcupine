@@ -1418,20 +1418,20 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-web-en-worker@^1.9.4":
+"@picovoice/porcupine-web-en-worker@^2.0.0":
   version "1.9.4"
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.4.tgz#ec2a04fa009aff8bbd6b9dcb84191c0a745c2395"
   integrity sha512-fzVCSa1wL7YikLAMOq2Quzcz2o4BlxsPmK2HEaAFBZte3ne/6a9h6YzkNKtbSKEmyPMnaxF9X5hCGlFqYUFedQ==
 
-"@picovoice/porcupine-web-react@^1.3.2":
+"@picovoice/porcupine-web-react@^2.0.0":
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-1.3.2.tgz#0be43383f429c22a848fe4588da33419de632997"
   integrity sha512-1nwGu1cpw0tOc0IxTZ5OgKlEBHvsd6vm8KPr8fKEZuA+Hk4XvQAEZIs2vv6MeCy629kC8G8hyu15F8TkQbKoUw==
 
-"@picovoice/web-voice-processor@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.3.tgz#72d089e19eaf7f782c0338ef8751fc91e8662b2d"
-  integrity sha512-lvEsEvpUXbMUsEcrJ+pmCF6+O/jWyzhs9Gu24jNlVs/yFKjuLAckusdTWeURLjYMzOLwcvdMCD+aK2fcNRhOSw==
+"@picovoice/web-voice-processor@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.0.tgz#dfc0707d0f4f7b76bb5655fd721a5c40613c8b6c"
+  integrity sha512-n4P7TSwZA7q08HyUF+t5S2JA9zBi3y9BexP4Fs6AmGhuD8MkVtao6CaRyYZbQabRk4OYT5fzt0a81ENS3wDz1w==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
