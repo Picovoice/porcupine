@@ -141,7 +141,6 @@ export function usePorcupine(
     // and is easily serializable ... doesn't have functions or weird objects like Dates.
     // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
     JSON.stringify(porcupineHookArgs),
-    detectionCallback,
   ]);
 
   return {
