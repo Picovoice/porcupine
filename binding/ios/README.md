@@ -58,7 +58,7 @@ To create an instance of PorcupineManager pass the desired keyword to the constr
 ```swift
 import Porcupine
 
-let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
 
 do {
     PorcupineManager porcupineManager = try PorcupineManager(
@@ -85,7 +85,7 @@ Available built-in keywords are accessible via the Porcupine.BuiltInKeyword enum
 To create an instance of PorcupineManager that detects custom keywords, you can use the `keywordPaths` parameter instead:
 ```swift
 do {
-    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+    let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let paths = ["path/to/keyword/one.ppn", "path/to/keyword/two.ppn"]
     PorcupineManager porcupineManager = try PorcupineManager(
         accessKey: accessKey,
@@ -103,7 +103,7 @@ The model file contains the parameters for the wake word engine. To change the l
 These optional parameters can be set like so:
 ```swift
 do {
-    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+    let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let paths = ["path/to/keyword/one.ppn", "path/to/keyword/two.ppn"]
     PorcupineManager porcupineManager = try PorcupineManager(
         accessKey: accessKey,
@@ -143,7 +143,7 @@ To construct an instance of Porcupine, pass it a keyword.
 import Porcupine
 
 do {
-    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+    let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     Porcupine porcupine = try Porcupine(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.picovoice)
 } catch { }
 ```

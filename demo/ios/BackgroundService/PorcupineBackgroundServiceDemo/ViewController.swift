@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     
-    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+    let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWord = Porcupine.BuiltInKeyword.porcupine
 
     var porcupineManager: PorcupineManager!

@@ -15,7 +15,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
 
-    let accessKey = "" // Obtained from Picovoice Console (https://console.picovoice.ai)
+    let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWordDict = [String:Porcupine.BuiltInKeyword]()
     var wakeWordKeys = [String]()
     var wakeWord = Porcupine.BuiltInKeyword.alexa

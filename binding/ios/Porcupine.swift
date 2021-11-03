@@ -52,7 +52,7 @@ public class Porcupine {
     /// Constructor.
     ///
     /// - Parameters:
-    ///   - accessKey: The AccessKey obtained from Picovoice console.
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
@@ -106,7 +106,7 @@ public class Porcupine {
     /// Constructor.
     ///
     /// - Parameters:
-    ///   - accessKey: The AccessKey obtained from Picovoice console.
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPath: Absolute paths to a keyword model file.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
@@ -119,7 +119,7 @@ public class Porcupine {
     /// Constructor.
     ///
     /// - Parameters:
-    ///   - accessKey: The AccessKey obtained from Picovoice console.
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywords: An array of built-in keywords from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
@@ -143,7 +143,7 @@ public class Porcupine {
     /// Constructor.
     ///
     /// - Parameters:
-    ///   - accessKey: The AccessKey obtained from Picovoice console.
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at

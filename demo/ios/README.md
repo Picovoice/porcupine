@@ -21,7 +21,7 @@ To run the background service demo, go to [BackgroundService](./BackgroundServic
 pod install
 ```
 
-Replace `let accessKey = ""` in the file [ViewController.swift](./BackgroundService/PorcupineBackgroundServiceDemo/ViewController.swift) with your `AccessKey`.
+Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./BackgroundService/PorcupineBackgroundServiceDemo/ViewController.swift) with your `AccessKey`.
 
 Open `PorcupineBackgroundServiceDemo.xcworkspace` and run the demo.
 
@@ -37,7 +37,7 @@ To run the foreground application demo, go to [ForegroundApp](./ForegroundApp) d
 pod install
 ```
 
-Replace `let accessKey = ""` in the file [ViewController.swift](./ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
+Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
 
 Open the `PorcupineForegroundAppDemo.xcworkspace` and run the demo.
 
