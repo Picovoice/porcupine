@@ -120,6 +120,8 @@ export interface PorcupineWorkerFactory {
   create: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
+    keywordDetectionCallback?: CallableFunction,
+    processErrorCallback?: CallableFunction,
     start?: boolean
   ) => Promise<PorcupineWorker>;
 }

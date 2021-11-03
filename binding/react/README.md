@@ -44,6 +44,15 @@ The `usePorcupine` hook provides a collection of fields and methods shown below.
 
 Make sure you handle the possibility of errors with the `isError` and `errorMessage` fields. Users may not have a working microphone, and they can always decline (and revoke) permissions; your application code should anticipate these scenarios.
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ### Static Import
 
 Using static imports for the `@picovoice/porcupine-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
@@ -61,10 +70,6 @@ function VoiceWidget(props) {
     console.log(`Porcupine detected ${keywordLabel}`);
   };
 
-  const errorEventHandler = errorMessage => {
-    console.error(errorMessage);
-  };
-
   const {
     isLoaded,
     isListening,
@@ -77,7 +82,6 @@ function VoiceWidget(props) {
     PorcupineWorkerFactory,
     { accessKey: accessKey, keywords: keywords, start: true },
     keywordEventHandler,
-    errorEventHandler,
   );
 }
 ```
@@ -101,6 +105,9 @@ import { usePorcupine } from '@picovoice/porcupine-web-react';
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [workerChunk, setWorkerChunk] = useState({ workerFactory: null });
+  const [accessKey] = useState(
+    // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+  );
   const [keywords] = useState([
     { builtin: 'Alexa', sensitivity: 0.7 },
     'Picovoice',
@@ -137,7 +144,7 @@ export default function VoiceWidget() {
     pause,
   } = usePorcupine(
     workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePorcupine will start.
-    { keywords: keywords },
+    { accessKey: accessKey, keywords: keywords },
     keywordEventHandler
   );
 }

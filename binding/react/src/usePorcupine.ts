@@ -17,14 +17,12 @@ import {
   PorcupineHookArgs,
   PorcupineWorker,
   PorcupineWorkerFactory,
-  PorcupineWorkerResponse,
 } from './porcupine_types';
 
 export function usePorcupine(
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
   porcupineHookArgs: PorcupineHookArgs | null,
-  detectionCallback: (label: string) => void,
-  errorCallback: (error: string) => void
+  detectionCallback: (label: string) => void
 ): {
   isLoaded: boolean;
   isListening: boolean;
@@ -75,22 +73,22 @@ export function usePorcupine(
     return false;
   };
 
-  // Refresh the detection callback when it changes (avoid stale closure)
-  useEffect(() => {
-    if (porcupineWorker !== null) {
-      porcupineWorker.onmessage = (
-        msg: MessageEvent<PorcupineWorkerResponse>
-      ): void => {
-        switch (msg.data.command) {
-          case 'ppn-keyword':
-            detectionCallback(msg.data.keywordLabel);
-            break;
-          default:
-            break;
-        }
-      };
-    }
-  }, [detectionCallback]);
+  // // Refresh the detection callback when it changes (avoid stale closure)
+  // useEffect(() => {
+  //   if (porcupineWorker !== null) {
+  //     porcupineWorker.onmessage = (
+  //       msg: MessageEvent<PorcupineWorkerResponse>
+  //     ): void => {
+  //       switch (msg.data.command) {
+  //         case 'ppn-keyword':
+  //           detectionCallback(msg.data.keywordLabel);
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //     };
+  //   }
+  // }, [detectionCallback]);
 
   useEffect(() => {
     // If using dynamic import() on porcupine-web-xx-worker,
@@ -117,29 +115,19 @@ export function usePorcupine(
       ppnWorker: PorcupineWorker;
     }> {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { keywords, start: startWebVp = true } = porcupineHookArgs!;
+      const { accessKey, keywords, start: startWebVp = true } = porcupineHookArgs!;
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(
-        keywords
+        accessKey,
+        keywords,
+        detectionCallback
       );
 
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
         start: startWebVp,
       });
-
-      ppnWorker.onmessage = (
-        msg: MessageEvent<PorcupineWorkerResponse>
-      ): void => {
-        switch (msg.data.command) {
-          case 'ppn-keyword':
-            detectionCallback(msg.data.keywordLabel);
-            break;
-          default:
-            break;
-        }
-      };
 
       return { webVp, ppnWorker };
     }
