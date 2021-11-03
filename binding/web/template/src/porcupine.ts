@@ -156,6 +156,8 @@ export class Porcupine implements PorcupineEngine {
         );
       }).then((result: number) => {
         resolve(result);
+      }).catch((error: any) => {
+        reject(error);
       });
     });
     return returnPromise;
@@ -304,6 +306,8 @@ export class Porcupine implements PorcupineEngine {
         return new Porcupine(wasmOutput, keywordLabels);
       }).then((result: Porcupine) => {
         resolve(result);
+      }).catch((error: any) => {
+        reject(error);
       });
     });
     return returnPromise;
