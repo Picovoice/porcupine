@@ -23,7 +23,8 @@ import {
 export function usePorcupine(
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
   porcupineHookArgs: PorcupineHookArgs | null,
-  detectionCallback: (label: string) => void
+  detectionCallback: (label: string) => void,
+  errorCallback: (error: string) => void
 ): {
   isLoaded: boolean;
   isListening: boolean;

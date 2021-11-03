@@ -53,11 +53,16 @@ import React, { useState } from 'react';
 import { PorcupineWorkerFactory } from '@picovoice/porcupine-web-en-worker';
 import { usePorcupine } from '@picovoice/porcupine-web-react';
 
+const accessKey = // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
 const keywords = [{ builtin: 'Picovoice', sensitivity: 0.65 }];
 
 function VoiceWidget(props) {
   const keywordEventHandler = keywordLabel => {
     console.log(`Porcupine detected ${keywordLabel}`);
+  };
+
+  const errorEventHandler = errorMessage => {
+    console.error(errorMessage);
   };
 
   const {
@@ -70,8 +75,9 @@ function VoiceWidget(props) {
     pause,
   } = usePorcupine(
     PorcupineWorkerFactory,
-    { keywords: keywords, start: true },
-    keywordEventHandler
+    { accessKey: accessKey, keywords: keywords, start: true },
+    keywordEventHandler,
+    errorEventHandler,
   );
 }
 ```
