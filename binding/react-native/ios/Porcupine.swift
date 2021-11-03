@@ -50,7 +50,7 @@ class PvPorcupine: NSObject {
             modelPath = try extractResource(modelPath)
             keywordPaths = try keywordPaths.map { try extractResource($0) }
         } catch {
-            reject("PvPorcupine:create", "PvPorcupine failed: \(error)", nil)
+            reject("PvPorcupine:create", "failed with: \(error)", nil)
         }
         
         var porcupine:OpaquePointer?
@@ -75,8 +75,26 @@ class PvPorcupine: NSObject {
             resolve(porcupineParameters)
         }
         else {
-            let pvStatus = String(cString: pv_status_to_string(status))
-            reject("PvPorcupine:create", "Could not create a new instance of Porcupine: \(pvStatus)", nil)            
+            switch (status) {
+            case PV_STATUS_INVALID_ARGUMENT:
+                reject("PvPorcupine:create", "AccessKey \(accessKey) is invalid", nil)
+                break;
+            case PV_STATUS_ACTIVATION_ERROR:
+                reject("PvPorcupine:create", "AccessKey activation error", nil)
+                break;
+            case PV_STATUS_ACTIVATION_REFUSED:
+                reject("PvPorcupine:create", "AccessKey refused", nil)
+                break;
+            case PV_STATUS_ACTIVATION_LIMIT_REACHED:
+                reject("PvPorcupine:create", "AccessKey reached its device limit", nil)
+                break;
+            case PV_STATUS_ACTIVATION_THROTTLED:
+                reject("PvPorcupine:create", "AccessKey has been throttled", nil)
+                break;
+            default:
+                let pvStatus = String(cString: pv_status_to_string(status))
+                reject("PvPorcupine:create", "Failed to initialize Porcupine: \(pvStatus)", nil)
+            }
         }
     }
     

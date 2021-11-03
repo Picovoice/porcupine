@@ -23,13 +23,15 @@ type State = {
   buttonDisabled: boolean;
   isListening: boolean;
   backgroundColour: string;
+  isError: boolean;
+  errorMessage: string;
 };
 
 export default class App extends Component<Props, State> {
   _porcupineManager: PorcupineManager | undefined;
   _detectionColour: string = '#00E5C3';
   _defaultColour: string = '#F5FCFF';
-  _accessKey: string = "YOU_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+  _accessKey: string = "YOUR_ACCESS_KEY_HERE" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
   constructor(props: Props) {
     super(props);
@@ -41,6 +43,8 @@ export default class App extends Component<Props, State> {
       buttonDisabled: false,
       isListening: false,
       backgroundColour: this._defaultColour,
+      isError: false,
+      errorMessage: null
     };
   }
 
@@ -138,9 +142,20 @@ export default class App extends Component<Props, State> {
             }, 1000);
           }
         },
+        (error) => {
+          this._stopProcessing();
+          this.setState({
+            isError: true,
+            errorMessage: error.toString()
+          });
+        }
       );
     } catch (err) {
-      console.error(err);
+      console.log(err)
+      this.setState({
+        isError: true,
+        errorMessage: err.toString()
+      });
     }
   }
 
@@ -159,7 +174,10 @@ export default class App extends Component<Props, State> {
       );
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
-      console.error(err);
+      this.setState({
+        isError: true,
+        errorMessage: err.toString()
+      });
       return false;
     }
   }
@@ -215,10 +233,20 @@ export default class App extends Component<Props, State> {
               borderRadius: 100,
             }}
             onPress={() => this._toggleListening()}
-            disabled={this.state.buttonDisabled}>
+            disabled={this.state.buttonDisabled || this.state.isError}>
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
+        {this.state.isError &&
+          <View style={styles.errorBox}>
+            <Text style={{
+              color: 'white',
+              fontSize: 16
+            }}>
+              {this.state.errorMessage}
+            </Text>
+          </View>
+        }
         <View style={{flex: 1, justifyContent: 'flex-end', paddingBottom: 25}}>
           <Text style={styles.instructions}>
             Made in Vancouver, Canada by Picovoice
@@ -270,5 +298,12 @@ const styles = StyleSheet.create({
   instructions: {
     textAlign: 'center',
     color: '#666666',
+  },
+  errorBox: {
+    backgroundColor: 'red',
+    borderRadius: 5,
+    margin: 20,
+    padding: 20,
+    textAlign: 'center'
   },
 });

@@ -13,7 +13,12 @@
 package ai.picovoice.reactnative.porcupine;
 
 import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.PorcupineActivationException;
+import ai.picovoice.porcupine.PorcupineActivationLimitException;
+import ai.picovoice.porcupine.PorcupineActivationRefusedException;
+import ai.picovoice.porcupine.PorcupineActivationThrottledException;
 import ai.picovoice.porcupine.PorcupineException;
+import ai.picovoice.porcupine.PorcupineInvalidArgumentException;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -94,8 +99,18 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       paramMap.putInt("sampleRate", porcupine.getSampleRate());
       paramMap.putString("version", porcupine.getVersion());
       promise.resolve(paramMap);
+    } catch (PorcupineActivationException e) {
+      promise.reject("PorcupineException", "AccessKey activation error");
+    } catch (PorcupineActivationLimitException e) {
+      promise.reject("PorcupineException", "AccessKey reached its device limit");
+    } catch (PorcupineActivationRefusedException e) {
+      promise.reject("PorcupineException", "AccessKey refused");
+    } catch (PorcupineActivationThrottledException e) {
+      promise.reject("PorcupineException","AccessKey has been throttled");
+    } catch (PorcupineInvalidArgumentException e) {
+      promise.reject("PorcupineException", String.format("AccessKey '%s' is invalid", accessKey));
     } catch (PorcupineException e) {
-      promise.reject(e);
+      promise.reject("PorcupineException", "Failed to initialize Porcupine " + e.getMessage());
     }
   }
 
