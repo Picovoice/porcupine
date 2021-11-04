@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -37,6 +37,8 @@ const keywordPathsMultipleAmericanoBumblebee = [
   `../../resources/keyword_files/${platform}/bumblebee_${platform}.ppn`,
 ];
 
+const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
+
 function porcupineDetectionCounts(engineInstance, waveFilePath) {
   const waveBuffer = fs.readFileSync(waveFilePath);
   const waveAudioFile = new WaveFile(waveBuffer);
@@ -73,6 +75,7 @@ function porcupineDetectionCounts(engineInstance, waveFilePath) {
 describe("successful keyword detections", () => {
   test("single keyword single detection", () => {
     let porcupineEngine = new Porcupine(
+      ACCESS_KEY,
       keywordPathsSinglePorcupine,
       SENSITIVITIES_1
     );
@@ -83,7 +86,11 @@ describe("successful keyword detections", () => {
   });
 
   test("builtin keyword 'GRASSHOPPER'", () => {
-    let porcupineEngine = new Porcupine([GRASSHOPPER], SENSITIVITIES_1);
+    let porcupineEngine = new Porcupine(
+        ACCESS_KEY,
+        [GRASSHOPPER], 
+        SENSITIVITIES_1
+    );
 
     let counts = porcupineDetectionCounts(
       porcupineEngine,
@@ -95,12 +102,17 @@ describe("successful keyword detections", () => {
 
   test("invalid builtin keyword type", () => {
     expect(() => {
-      let porcupineEngine = new Porcupine([99], SENSITIVITIES_1);
+      let porcupineEngine = new Porcupine(
+        ACCESS_KEY,
+        [99], 
+        SENSITIVITIES_1
+      );
     }).toThrow(PvArgumentError);
   });
 
   test("single keyword multiple detection", () => {
     let porcupineEngine = new Porcupine(
+      ACCESS_KEY,
       keywordPathsSinglePorcupine,
       SENSITIVITIES_1
     );
@@ -115,6 +127,7 @@ describe("successful keyword detections", () => {
 
   test("multiple keyword multiple detection", () => {
     let porcupineEngine = new Porcupine(
+      ACCESS_KEY,
       keywordPathsMultipleAmericanoBumblebee,
       SENSITIVITIES_2
     );
@@ -133,6 +146,7 @@ describe("successful keyword detections", () => {
 describe("manual paths", () => {
   test("manual model path", () => {
     let porcupineEngine = new Porcupine(
+      ACCESS_KEY,  
       keywordPathsSinglePorcupine,
       SENSITIVITIES_1,
       MODEL_PATH
@@ -147,7 +161,7 @@ describe("manual paths", () => {
 describe("basic parameter validation", () => {
   test("num of keywords does not match num of sensitivities", () => {
     expect(() => {
-      let porcupineEngine = new Porcupine(keywordPathsSinglePorcupine, [
+      let porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [
         0.1,
         0.2,
       ]);
@@ -157,6 +171,7 @@ describe("basic parameter validation", () => {
   test("keywords is not an array", () => {
     try {
       let porcupineEngine = new Porcupine(
+        ACCESS_KEY,  
         `../../resources/keyword_files/${platform}/porcupine_${platform}.ppn`,
         SENSITIVITIES_1
       );
@@ -167,13 +182,13 @@ describe("basic parameter validation", () => {
 
   test("sensitivity is not in range", () => {
     expect(() => {
-      let porcupineEngine = new Porcupine(keywordPathsSinglePorcupine, [4.2]);
+      let porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [4.2]);
     }).toThrow(RangeError);
   });
 
   test("sensitivity is not a number", () => {
     expect(() => {
-      let porcupineEngine = new Porcupine(keywordPathsSinglePorcupine, [
+      let porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [
         "steamed hams",
       ]);
     }).toThrow(Error);
@@ -181,14 +196,14 @@ describe("basic parameter validation", () => {
 
   test("invalid keyword path", () => {
     expect(() => {
-      let porcupineEngine = new Porcupine(["to be or not to be"], [0.5]);
+      let porcupineEngine = new Porcupine(ACCESS_KEY, ["to be or not to be"], [0.5]);
     }).toThrow(Error);
   });
 });
 
 describe("frame validation", () => {
   test("mismatched frameLength throws error", () => {
-    let porcupineEngine = new Porcupine(keywordPathsSinglePorcupine, [0.5]);
+    let porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
     expect(() => {
       porcupineEngine.process([1, 2, 3]);
     }).toThrow(PvArgumentError);
@@ -196,7 +211,7 @@ describe("frame validation", () => {
   });
 
   test("null/undefined frames throws error", () => {
-    let porcupineEngine = new Porcupine(keywordPathsSinglePorcupine, [0.5]);
+    let porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
     expect(() => {
       porcupineEngine.process(null);
     }).toThrow(PvArgumentError);
@@ -207,7 +222,7 @@ describe("frame validation", () => {
   });
 
   test("passing floating point frame values throws PvArgumentError", () => {
-    let porcupineEngine = new Porcupine(keywordPathsSinglePorcupine, [0.5]);
+    let porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
     let floatFrames = Array.from({ length: porcupineEngine.frameLength }).map(
       (x) => 3.1415
     );
@@ -221,6 +236,7 @@ describe("frame validation", () => {
 describe("invalid state", () => {
   test("process throws PvStateError if the engine is released", () => {
     let porcupineEngine = new Porcupine(
+      ACCESS_KEY,
       keywordPathsSinglePorcupine,
       SENSITIVITIES_1
     );

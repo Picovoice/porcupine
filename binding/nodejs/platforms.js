@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -18,6 +18,7 @@ const { PvUnsupportedPlatformError } = require("./errors");
 
 const SYSTEM_LINUX = "linux";
 const SYSTEM_MAC = "darwin";
+const SYSTEM_WINDOWS = "windows";
 
 const X86_64 = "x64";
 const ARM_32 = "arm";
@@ -26,6 +27,7 @@ const ARM_64 = "arm64";
 const PLATFORM_MAC = "mac";
 const PLATFORM_LINUX = "linux";
 const PLATFORM_RASPBERRY_PI = "raspberry-pi";
+const PLATFORM_WINDOWS = "windows";
 
 const ARM_CPU_CORTEX_A7 = "cortex-a7";
 const ARM_CPU_CORTEX_A53 = "cortex-a53";
@@ -34,6 +36,7 @@ const ARM_CPU_CORTEX_A72 = "cortex-a72";
 const SUPPORTED_NODEJS_SYSTEMS = new Set([
   SYSTEM_LINUX,
   SYSTEM_MAC,
+  SYSTEM_WINDOWS
 ]);
 
 const LIBRARY_PATH_PREFIX = "lib/";
@@ -42,6 +45,10 @@ SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_MAC}/${X86_64}`,
   `${PLATFORM_MAC}/x86_64/pv_porcupine.node`
 );
+SYSTEM_TO_LIBRARY_PATH.set(
+    `${SYSTEM_MAC}/${ARM_64}`,
+    `${PLATFORM_MAC}/arm64/pv_porcupine.node`
+  );
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_LINUX}/${X86_64}`,
   `${PLATFORM_LINUX}/x86_64/pv_porcupine.node`
@@ -57,6 +64,10 @@ SYSTEM_TO_LIBRARY_PATH.set(
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_LINUX}/${ARM_CPU_CORTEX_A72}`,
   `${PLATFORM_RASPBERRY_PI}/${ARM_CPU_CORTEX_A72}/pv_porcupine.node`
+);
+SYSTEM_TO_LIBRARY_PATH.set(
+    `${SYSTEM_WINDOWS}/${X86_64}`,
+    `${PLATFORM_WINDOWS}/x86_64/pv_porcupine.node`
 );
 
 function absoluteLibraryPath(libraryPath) {
@@ -122,6 +133,11 @@ function getSystemLibraryPath() {
             SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_MAC}/${X86_64}`)
           );
         }
+        else if (arch == ARM_64) {
+            return absoluteLibraryPath(
+                SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_MAC}/${ARM_64}`)
+            )
+        }
       }
       case SYSTEM_LINUX: {
         if (arch === X86_64) {
@@ -140,6 +156,13 @@ function getSystemLibraryPath() {
             );
           }
         }
+      }
+      case SYSTEM_WINDOWS: {
+          if (arch == X86_64) {
+            return absoluteLibraryPath(
+                SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_WINDOWS}/${X86_64}`)
+              );
+          }
       }
     }
   }
