@@ -1325,8 +1325,8 @@ function VoiceWidget(props) {
     isError,
     errorMessage,
     start,
-    resume,
     pause,
+    setDetectionCallback
   } = usePorcupine(
     PorcupineWorkerFactory,
     { accessKey, keywords, start: true },

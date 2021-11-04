@@ -38,11 +38,6 @@ yarn add @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker @pico
 npm install @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor`
 ```
 
-## Usage
-
-The `usePorcupine` hook provides a collection of fields and methods shown below. You can pass the `keywordEventHandler` to respond to Porcupine detection events. This example uses the builtin keyword "Picovoice" with a sensitivity of 0.65.
-
-Make sure you handle the possibility of errors with the `isError` and `errorMessage` fields. Users may not have a working microphone, and they can always decline (and revoke) permissions; your application code should anticipate these scenarios.
 
 ## AccessKey
 
@@ -52,6 +47,13 @@ You can create your `AccessKey` for free. Make sure to keep your `AccessKey` sec
 To obtain your `AccessKey`:
 1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+## Usage
+
+The `usePorcupine` hook provides a collection of fields and methods shown below. You can pass the `keywordEventHandler` to respond to Porcupine detection events. This example uses the builtin keyword "Picovoice" with a sensitivity of 0.65.
+
+Make sure you handle the possibility of errors with the `isError` and `errorMessage` fields. Users may not have a working microphone, and they can always decline (and revoke) permissions; your application code should anticipate these scenarios.
+
 
 ### Static Import
 
@@ -76,8 +78,8 @@ function VoiceWidget(props) {
     isError,
     errorMessage,
     start,
-    resume,
     pause,
+    setKeywordEventHandler
   } = usePorcupine(
     PorcupineWorkerFactory,
     { accessKey: accessKey, keywords: keywords, start: true },
@@ -86,7 +88,7 @@ function VoiceWidget(props) {
 }
 ```
 
-The `keywordEventHandler` will log the keyword detections to the browser's JavaScript console.
+The `keywordEventHandler` will log the keyword detections to the browser's JavaScript console. The detection callback function can be changed using the `setKeywordEventHandler`.
 
 **Important Note**: Internally, `usePorcupine` performs work asynchronously to initialize, as well as asking for microphone permissions. Not until the asynchronous tasks are done and permission given will Porcupine actually be running. Therefore, it makes sense to use the `isLoaded` state to update your UI to let users know your application is actually ready to process voice (and `isError` in case something went wrong). Otherwise, they may start speaking and their audio data will not be processed, leading to a poor/inconsistent experience.
 
@@ -140,8 +142,8 @@ export default function VoiceWidget() {
     isError,
     errorMessage,
     start,
-    resume,
     pause,
+    setKeywordEventHandler,
   } = usePorcupine(
     workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePorcupine will start.
     { accessKey: accessKey, keywords: keywords },

@@ -22,7 +22,7 @@ import {
 export function usePorcupine(
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
   porcupineHookArgs: PorcupineHookArgs | null,
-  detectionCallback: (label: string) => void
+  keywordEventHandler: (label: string) => void
 ): {
   isLoaded: boolean;
   isListening: boolean;
@@ -31,7 +31,7 @@ export function usePorcupine(
   webVoiceProcessor: WebVoiceProcessor | null;
   start: () => void;
   pause: () => void;
-  setDetectionCallback: React.Dispatch<React.SetStateAction<(label: string) => void>>;
+  setKeywordEventHandler: React.Dispatch<React.SetStateAction<(label: string) => void>>;
 } {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -42,7 +42,7 @@ export function usePorcupine(
   const [isError, setIsError] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [keywordCallback, setKeywordCallback] = useState(
-    () => detectionCallback
+    () => keywordEventHandler
   );
   const start = (): boolean => {
     if (webVoiceProcessor !== null) {
@@ -146,6 +146,6 @@ export function usePorcupine(
     webVoiceProcessor,
     start,
     pause,
-    setDetectionCallback: setKeywordCallback,
+    setKeywordEventHandler: setKeywordCallback,
   };
 }
