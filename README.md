@@ -729,14 +729,17 @@ The SDK provides two APIs:
 
 [PorcupineManager](/binding/unity/Assets/Porcupine/PorcupineManager.cs) provides a high-level API that takes care of audio recording. This is the quickest way to get started.
 
-The static constructor `PorcupineManager.FromKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
+The static constructor `PorcupineManager.FromBuiltInKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
 
 ```csharp
 using Pv.Unity;
 
+string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try {
-    List<string> keywords = new List<string>(){ "picovoice", "porcupine" };
-    PorcupineManager _porcupineManager = PorcupineManager.FromKeywords(
+    List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>(){ Porcupine.BuiltInKeyword.PICOVOICE, Porcupine.BuiltInKeyword.PORCUPINE };
+    PorcupineManager _porcupineManager = PorcupineManager.FromBuiltInKeywords(
+                                            accessKey,
                                             keywords,
                                             OnWakeWordDetected);
 }
@@ -750,8 +753,11 @@ To create an instance of PorcupineManager that detects custom keywords, you can 
 static constructor and provide the paths to the `.ppn` file(s).
 
 ```csharp
+string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 List<string> keywordPaths = new List<string>(){ "/path/to/keyword.ppn" };
 PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths(
+                                        accessKey,
                                         keywordPaths,
                                         OnWakeWordDetected);
 ```
@@ -777,15 +783,17 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 #### Low-Level API
 
-[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline. To create an instance of `Porcupine`, use the `.Create` static constructor.
+[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline. To create an instance of `Porcupine`, use the `.FromBuiltInKeywords` static constructor.
 
 ```csharp
 using Pv.Unity;
 
+string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try
 {
-    List<string> keywords = new List<string>(){ "porcupine", "picovoice" };
-    Porcupine _porcupine = Porcupine.Create(keywords: keywords);
+    List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>(){ Porcupine.BuiltInKeyword.PORCUPINE, Porcupine.BuiltInKeyword.PICOVOICE };
+    Porcupine _porcupine = Porcupine.FromBuiltInKeywords(accessKey: accessKey, keywords: keywords);
 }
 catch (Exception ex)
 {
