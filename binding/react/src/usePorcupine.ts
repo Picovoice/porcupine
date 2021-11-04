@@ -31,7 +31,7 @@ export function usePorcupine(
   webVoiceProcessor: WebVoiceProcessor | null;
   start: () => void;
   pause: () => void;
-  resume: () => void;
+  setDetectionCallback: React.Dispatch<React.SetStateAction<(label: string) => void>>;
 } {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -39,13 +39,11 @@ export function usePorcupine(
     webVoiceProcessor,
     setWebVoiceProcessor,
   ] = useState<WebVoiceProcessor | null>(null);
-  const [
-    porcupineWorker,
-    setPorcupineWorker,
-  ] = useState<PorcupineWorker | null>(null);
   const [isError, setIsError] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const [keywordCallback, setKeywordCallback] = useState(
+    () => detectionCallback
+  );
   const start = (): boolean => {
     if (webVoiceProcessor !== null) {
       webVoiceProcessor.start();
@@ -64,14 +62,6 @@ export function usePorcupine(
     return false;
   };
 
-  const resume = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.resume();
-      setIsListening(true);
-      return true;
-    }
-    return false;
-  };
 
   useEffect(() => {
     // If using dynamic import() on porcupine-web-xx-worker,
@@ -93,18 +83,23 @@ export function usePorcupine(
       };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { accessKey, keywords, start: startWebVp = true } = porcupineHookArgs!;
+    if (accessKey === null || accessKey === '') {
+      return (): void => {
+        /* NOOP */
+      };
+    }
+
     async function startPorcupine(): Promise<{
       webVp: WebVoiceProcessor;
       ppnWorker: PorcupineWorker;
     }> {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { accessKey, keywords, start: startWebVp = true } = porcupineHookArgs!;
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(
         accessKey,
         keywords,
-        detectionCallback
+        keywordCallback
       );
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
@@ -117,11 +112,10 @@ export function usePorcupine(
     const startPorcupinePromise = startPorcupine();
 
     startPorcupinePromise
-      .then(({ webVp, ppnWorker }) => {
+      .then(({ webVp, }) => {
         setIsLoaded(true);
         setIsListening(webVp.isRecording);
         setWebVoiceProcessor(webVp);
-        setPorcupineWorker(ppnWorker);
         setIsError(false);
       })
       .catch(error => {
@@ -141,6 +135,7 @@ export function usePorcupine(
     // and is easily serializable ... doesn't have functions or weird objects like Dates.
     // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
     JSON.stringify(porcupineHookArgs),
+    keywordCallback,
   ]);
 
   return {
@@ -151,6 +146,6 @@ export function usePorcupine(
     webVoiceProcessor,
     start,
     pause,
-    resume,
+    setDetectionCallback: setKeywordCallback,
   };
 }

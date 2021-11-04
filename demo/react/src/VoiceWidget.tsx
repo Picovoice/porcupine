@@ -42,7 +42,7 @@ export default function VoiceWidget() {
     setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
   };
 
-  const { isLoaded, isListening, isError, errorMessage, start, resume, pause } =
+  const { isLoaded, isListening, isError, errorMessage, start, pause } =
     usePorcupine(
       PorcupineWorkerFactory,
       { accessKey, keywords, start: true },
@@ -84,12 +84,6 @@ export default function VoiceWidget() {
         disabled={isError || !isListening || !isLoaded}
       >
         Pause
-      </button>
-      <button
-        onClick={() => resume()}
-        disabled={isError || isListening || !isLoaded}
-      >
-        Resume
       </button>
       <h3>Keyword Detections (listening for "Picovoice" and "Alexa"):</h3>
       {keywordDetections.length > 0 && (

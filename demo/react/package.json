@@ -4,8 +4,8 @@
   "private": true,
   "description": "Porcupine React demo (made with Create React App)",
   "dependencies": {
-    "@picovoice/porcupine-web-en-worker": "^2.0.0",
-    "@picovoice/porcupine-web-react": "^2.0.0",
+    "@picovoice/porcupine-web-en-worker": "file:../../binding/web/porcupine-web-en-worker",
+    "@picovoice/porcupine-web-react": "file:../../binding/react",
     "@picovoice/web-voice-processor": "^2.1.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
