@@ -39,7 +39,7 @@ class PorcupineManager {
    * [0, 1].
    * @returns An instance of the Porcupine Manager
    */
-  public static async fromBuildInKeywords(
+  public static async fromBuiltInKeywords(
     accessKey: string,
     keywords: BuiltInKeywords[],
     detectionCallback: DetectionCallback,
@@ -47,7 +47,7 @@ class PorcupineManager {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    let porcupine = await Porcupine.fromBuildInKeywords(
+    let porcupine = await Porcupine.fromBuiltInKeywords(
       accessKey,
       keywords,
       modelPath,

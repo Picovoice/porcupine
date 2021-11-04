@@ -124,7 +124,7 @@ export default class App extends Component<Props, State> {
 
     this.setState({currentKeyword: keyword});
     try {
-      this._porcupineManager = await PorcupineManager.fromBuildInKeywords(
+      this._porcupineManager = await PorcupineManager.fromBuiltInKeywords(
         this._accessKey,
         [keyword],
         (keywordIndex: number) => {

@@ -41,7 +41,7 @@ class Porcupine {
    * [0, 1].
    * @returns An instance of the engine.
    */
-  public static async fromBuildInKeywords(
+  public static async fromBuiltInKeywords(
     accessKey: string,
     keywords: BuiltInKeywords[],
     modelPath?: string,
@@ -50,7 +50,7 @@ class Porcupine {
     const keywordPaths = keywords.map((keyword) => {
       if (!Object.values(BuiltInKeywords).includes(keyword)) {
         throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          `keyword '${keyword}' is not a build-in keyword`);
+          `keyword '${keyword}' is not a built-in keyword`);
       }
       if (this.KEYWORD_PATHS[keyword] === undefined || this.KEYWORD_PATHS[keyword] === null) {
         throw new PorcupineExceptions.PorcupineInvalidArgumentException(

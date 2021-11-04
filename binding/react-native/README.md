@@ -123,7 +123,7 @@ Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an inst
 using one or more of the built-in keywords.
 
 ```javascript
-const accessKey = "${ACCESS_KEY}"
+const accessKey = "${ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 async createPorcupineManager(){
     try{
@@ -162,7 +162,7 @@ processErrorCallback(error) {
 }
 ```
 
-Available built-in keywords are stored in the constants `PorcupineManager.KEYWORDS` and `Porcupine.KEYWORDS`.
+Available built-in keywords are stored in the `BuiltInKeywords` enum.
 
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
@@ -220,11 +220,11 @@ who want to incorporate wake word detection into a already existing audio proces
 `Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
-const accessKey = "${ACCESS_KEY}"
+const accessKey = "${ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 async createPorcupine(){
     try{
-        this._porcupine = await Porcupine.fromBuiltInKeywords(accessKey, ["picovoice"]);
+        this._porcupine = await Porcupine.fromBuiltInKeywords(accessKey, [BuiltInKeywords.PICOVOICE]);
     } catch (err) {
         // handle error
     }

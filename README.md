@@ -988,7 +988,7 @@ const accessKey = "${ACCESS_KEY}" // AccessKey obtained from Picovoice Console (
 
 async createPorcupine(){
     try{
-        this._porcupine = await Porcupine.fromBuiltInKeywords(accessKey, ["picovoice"]);
+        this._porcupine = await Porcupine.fromBuiltInKeywords(accessKey, [BuiltInKeywords.PICOVOICE]);
     } catch (err) {
         // handle error
     }
