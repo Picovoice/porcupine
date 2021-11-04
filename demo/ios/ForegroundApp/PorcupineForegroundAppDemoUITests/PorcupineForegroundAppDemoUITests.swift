@@ -4,7 +4,8 @@ import XCTest
 import Porcupine
 
 class PorcupineDemoUITests: XCTestCase {
-
+    let accessKey: String = "{TESTING_ACCESS_KEY_HERE}"
+    
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
@@ -15,7 +16,7 @@ class PorcupineDemoUITests: XCTestCase {
    }
 
     func testInitSuccessWithSingleBuiltIn() throws {
-        let p = try Porcupine.init(keyword: Porcupine.BuiltInKeyword.porcupine)
+        let p = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
         XCTAssert(Porcupine.version != "")
         XCTAssert(Porcupine.frameLength > 0)
         XCTAssert(Porcupine.sampleRate > 0)
@@ -30,7 +31,7 @@ class PorcupineDemoUITests: XCTestCase {
             Porcupine.BuiltInKeyword.terminator
         ]
         
-        let p = try Porcupine.init(keywords: keywords)
+        let p = try Porcupine.init(accessKey: accessKey, keywords: keywords)
         p.delete()
     }
     
@@ -39,7 +40,7 @@ class PorcupineDemoUITests: XCTestCase {
         let keywordPath = bundle.path(forResource: "hey barista_ios", ofType: "ppn")!
         let modelPath = bundle.path(forResource: "porcupine_params", ofType: "pv")
         
-        let p = try Porcupine.init(keywordPath: keywordPath, modelPath: modelPath)
+        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         p.delete()
     }
     
@@ -48,7 +49,7 @@ class PorcupineDemoUITests: XCTestCase {
         let keywordPath = bundle.path(forResource: "hey barista_ios", ofType: "ppn")!
         let keywordPath2 = bundle.path(forResource: "pico clock_ios", ofType: "ppn")!
         
-        let p = try Porcupine.init(keywordPaths: [keywordPath, keywordPath2], sensitivities: [0.35, 0.6])
+        let p = try Porcupine.init(accessKey: accessKey, keywordPaths: [keywordPath, keywordPath2], sensitivities: [0.35, 0.6])
         p.delete()
     }
     
@@ -59,7 +60,7 @@ class PorcupineDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Porcupine.init(keywordPath: keywordPath, modelPath: modelPath)
+            _ = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         } catch {
             didFail = true
         }
@@ -71,7 +72,7 @@ class PorcupineDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Porcupine.init(keyword: Porcupine.BuiltInKeyword.porcupine, modelPath: "bad_path/bad_path.pv")
+            _ = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine, modelPath: "bad_path/bad_path.pv")
         } catch {
             didFail = true
         }
@@ -83,7 +84,7 @@ class PorcupineDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Porcupine.init(keyword: Porcupine.BuiltInKeyword.porcupine, sensitivity: 10)
+            _ = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine, sensitivity: 10)
         } catch {
             didFail = true
         }
@@ -97,7 +98,7 @@ class PorcupineDemoUITests: XCTestCase {
         let sensitivities:[Float32] = [0.3, 0.8, 0.4]
         var didFail = false
         do {
-            _ = try Porcupine.init(keywords: keywords, sensitivities: sensitivities)
+            _ = try Porcupine.init(accessKey: accessKey, keywords: keywords, sensitivities: sensitivities)
         } catch {
             didFail = true
         }
@@ -110,7 +111,7 @@ class PorcupineDemoUITests: XCTestCase {
         let keywords:[Porcupine.BuiltInKeyword] = []
         var didFail = false
         do {
-            _ = try Porcupine.init(keywords: keywords)
+            _ = try Porcupine.init(accessKey: accessKey, keywords: keywords)
         } catch {
             didFail = true
         }
@@ -122,7 +123,7 @@ class PorcupineDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Porcupine.init(keywordPath: "bad_path/bad_path.ppn")
+            _ = try Porcupine.init(accessKey: accessKey, keywordPath: "bad_path/bad_path.ppn")
         } catch {
             didFail = true
         }
@@ -136,7 +137,7 @@ class PorcupineDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Porcupine.init(keywordPath: keywordPath)
+            _ = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath)
         } catch {
             didFail = true
         }
@@ -149,7 +150,7 @@ class PorcupineDemoUITests: XCTestCase {
         let keywordPath = bundle.path(forResource: "emparedado_ios", ofType: "ppn")!
         let modelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
         
-        let p = try Porcupine.init(keywordPath: keywordPath, modelPath: modelPath)
+        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         p.delete()
     }
     
@@ -158,7 +159,7 @@ class PorcupineDemoUITests: XCTestCase {
         let keywordPath = bundle.path(forResource: "framboise_ios", ofType: "ppn")!
         let modelPath = bundle.path(forResource: "porcupine_params_fr", ofType: "pv")!
         
-        let p = try Porcupine.init(keywordPath: keywordPath, modelPath: modelPath)
+        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         p.delete()
     }
     
@@ -167,12 +168,12 @@ class PorcupineDemoUITests: XCTestCase {
         let keywordPath = bundle.path(forResource: "ananas_ios", ofType: "ppn")!
         let modelPath = bundle.path(forResource: "porcupine_params_de", ofType: "pv")!
         
-        let p = try Porcupine.init(keywordPath: keywordPath, modelPath: modelPath)
+        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         p.delete()
     }
     
     func testProcSuccessWithSingleBuiltIn() throws {
-        let p:Porcupine = try Porcupine.init(keyword: Porcupine.BuiltInKeyword.porcupine)
+        let p:Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
         
         let bundle = Bundle(for: type(of: self))
         let fileURL:URL = bundle.url(forResource: "porcupine", withExtension: "wav")!
@@ -209,7 +210,7 @@ class PorcupineDemoUITests: XCTestCase {
             Porcupine.BuiltInKeyword.terminator
         ]
         
-        let p:Porcupine = try Porcupine.init(keywords: keywords)
+        let p:Porcupine = try Porcupine.init(accessKey: accessKey, keywords: keywords)
         
         let bundle = Bundle(for: type(of: self))
         let fileURL:URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav")!

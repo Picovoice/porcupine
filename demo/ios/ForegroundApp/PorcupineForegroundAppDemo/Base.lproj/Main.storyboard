@@ -32,11 +32,21 @@
                                     <action selector="toggleStartButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NaQ-2Y-xrf"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" contentInsetAdjustmentBehavior="always" editable="NO" text="Picovoice" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Am4-Zu-51z" userLabel="Error View">
+                                <rect key="frame" x="10" y="291" width="300" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                     </view>
                     <connections>
+                        <outlet property="errorPanel" destination="Am4-Zu-51z" id="AOI-E4-SMp"/>
                         <outlet property="startButton" destination="vGq-wx-wER" id="dOP-Uo-qGh"/>
                         <outlet property="wakeWordPicker" destination="VMd-PX-dfw" id="q13-PN-cMz"/>
                     </connections>
@@ -49,6 +59,9 @@
     <resources>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
