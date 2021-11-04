@@ -217,7 +217,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/porcupine-react-native/PvPorcupine.framework/PvPorcupine",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -243,6 +243,7 @@
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/computer_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grapefruit_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grasshopper_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey barista_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey google_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey siri_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/jarvis_ios.ppn",
@@ -263,6 +264,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey barista_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",

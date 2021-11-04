@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -12,11 +12,7 @@
 
 package ai.picovoice.reactnative.porcupine;
 
-import ai.picovoice.porcupine.Porcupine;
-import ai.picovoice.porcupine.PorcupineException;
-
-import android.content.res.Resources;
-import android.util.Log;
+import ai.picovoice.porcupine.*;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -26,12 +22,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +32,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
   private static final String LOG_TAG = "PvPorcupine";
   private final ReactApplicationContext reactContext;
-  private final Map<String, Porcupine> porcupinePool = new HashMap<String, Porcupine>();
+  private final Map<String, Porcupine> porcupinePool = new HashMap<>();
 
   public PorcupineModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -53,9 +44,8 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     return "PvPorcupine";
   }
 
-  @Override
+   @Override
   public Map<String, Object> getConstants() {
-
     // default model file
     final File resourceDirectory = reactContext.getFilesDir();
     final Map<String, Object> constants = new HashMap<>();
@@ -64,7 +54,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     // default keyword files
     final Map<String, String> keywordPaths = new HashMap<>();
     for (Porcupine.BuiltInKeyword x : Porcupine.BuiltInKeyword.values()) {
-      String fileName = x.name().toLowerCase();      
+      String fileName = x.name().toLowerCase();
       String keyword = fileName.replace('_', ' ');
       keywordPaths.put(keyword, new File(resourceDirectory, fileName + ".ppn").getAbsolutePath());
     }
@@ -74,7 +64,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void create(String modelPath, ReadableArray keywordPaths, ReadableArray sensitivities, Promise promise) {
+  public void fromKeywordPaths(String accessKey, String modelPath, ReadableArray keywordPaths, ReadableArray sensitivities, Promise promise) {
 
     // convert from ReadableArrays to Java types
     String[] keywordPathsJava = new String[keywordPaths.size()];
@@ -89,12 +79,13 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
     try {
       Porcupine porcupine = new Porcupine.Builder()
+                              .setAccessKey(accessKey)
                               .setModelPath(modelPath)
                               .setKeywordPaths(keywordPathsJava)
                               .setSensitivities(sensitivitiesJava)
                               .build(reactContext);
       porcupinePool.put(String.valueOf(System.identityHashCode(porcupine)), porcupine);
-     
+
       WritableMap paramMap = Arguments.createMap();
       paramMap.putString("handle", String.valueOf(System.identityHashCode(porcupine)));
       paramMap.putInt("frameLength", porcupine.getFrameLength());
@@ -102,7 +93,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       paramMap.putString("version", porcupine.getVersion());
       promise.resolve(paramMap);
     } catch (PorcupineException e) {
-      promise.reject(e.toString());
+      promise.reject(e.getClass().getSimpleName(), e.getMessage());
     }
   }
 
@@ -119,7 +110,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     try {
 
       if (!porcupinePool.containsKey(handle)) {
-        promise.reject("Invalid Porcupine handle provided to native module.");
+        promise.reject(PorcupineInvalidStateException.class.getSimpleName(), "Invalid Porcupine handle provided to native module.");
         return;
       }
 
@@ -132,7 +123,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       int result = porcupine.process(buffer);
       promise.resolve(result);
     } catch (PorcupineException e) {
-      promise.reject(e.toString());
+      promise.reject(e.getClass().getSimpleName(), e.getMessage());
     }
   }
 }

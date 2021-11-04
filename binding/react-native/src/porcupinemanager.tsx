@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -13,47 +13,54 @@ import { VoiceProcessor, BufferEmitter } from '@picovoice/react-native-voice-pro
 import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
+import type BuiltInKeywords from './builtin_keywords';
+import type * as PorcupineExceptions from './porcupine_exceptions';
 export type DetectionCallback = (keywordIndex: number) => void;
+export type ProcessErrorCallback = (error: PorcupineExceptions.PorcupineException) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
   private _porcupine: Porcupine | null;
   private _detectionCallback: DetectionCallback;
+  private _processErrorCallback?: ProcessErrorCallback;
   private _bufferListener?: EventSubscription;
   private _bufferEmitter: NativeEventEmitter;
 
-  // a list of built-in keywords
-  public static KEYWORDS = Porcupine.KEYWORDS;
-
   /**
    * Static creator for initializing a Porcupine Manager from built-in keywords
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywords List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved
    * using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
    * @param detectionCallback A callback for when Porcupine detects the specified keywords
+   * @param processErrorCallback A callback for when Porcupine process function triggers an error.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
    * [0, 1].
    * @returns An instance of the Porcupine Manager
    */
-  public static async fromKeywords(
-    keywords: string[],
+  public static async fromBuiltInKeywords(
+    accessKey: string,
+    keywords: BuiltInKeywords[],
     detectionCallback: DetectionCallback,
+    processErrorCallback?: ProcessErrorCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    let porcupine = await Porcupine.fromKeywords(
+    let porcupine = await Porcupine.fromBuiltInKeywords(
+      accessKey,
       keywords,
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback);
+    return new PorcupineManager(porcupine, detectionCallback, processErrorCallback);
   }
 
   /**
    * Static creator for initializing a Porcupine Manager from paths to custom keywords
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywordPaths Absolute paths to keyword model files.
-   * @param detectionCallback A callback for when Porcupine detects the specified keywords
+   * @param processErrorCallback A callback for when Porcupine detects the specified keywords
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
@@ -61,21 +68,25 @@ class PorcupineManager {
    * @returns An instance of the Porcupine Manager
    */
   public static async fromKeywordPaths(
+    accessKey: string,
     keywordPaths: string[],
     detectionCallback: DetectionCallback,
+    processErrorCallback?: ProcessErrorCallback,
     modelPath?: string,
     sensitivities?: number[]
   ) {
     let porcupine = await Porcupine.fromKeywordPaths(
+      accessKey,
       keywordPaths,
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback);
+    return new PorcupineManager(porcupine, detectionCallback, processErrorCallback);
   }
 
-  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback) {
+  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback, processErrorCallback?: ProcessErrorCallback) {
     this._detectionCallback = detectionCallback;
+    this._processErrorCallback = processErrorCallback;
     this._porcupine = porcupine;
     this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
       porcupine.frameLength,
@@ -93,7 +104,11 @@ class PorcupineManager {
             this._detectionCallback(keywordIndex);
           }
         } catch (e) {
-          console.error(e);
+          if (this._processErrorCallback) {
+            this._processErrorCallback(e as PorcupineExceptions.PorcupineException);
+          } else {
+            console.error(e);
+          }
         }
       }
     );
