@@ -14,7 +14,7 @@ import SwiftySound
 class ViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var errorLabel: UIButton!
     
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWord = Porcupine.BuiltInKeyword.porcupine
@@ -73,7 +73,7 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
     
     private func showErrorAlert(message: String) {
-        errorLabel.text = message
+        errorLabel.setTitle(message, for: UIControl.State.normal)
         errorLabel.isHidden = false
         startButton.isEnabled = false
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina3_5" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
@@ -14,7 +14,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PorcupineBackgroundServiceDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGq-wx-wER">
@@ -32,7 +32,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Press the Start button and say the wake word Porcupine. Try pressing the home button and saying it again." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="HQi-uh-rkP">
-                                <rect key="frame" x="20" y="40" width="280" height="140"/>
+                                <rect key="frame" x="20" y="40" width="335" height="140"/>
                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="140" id="kUL-d5-idX"/>
@@ -41,40 +41,39 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Error Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uS2-SO-jcS" userLabel="Error Label">
-                                <rect key="frame" x="16" y="180" width="288" height="69"/>
-                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="MMx-Pi-Zm9" userLabel="Error Label">
+                                <rect key="frame" x="97" y="215" width="127" height="51"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="1" height="0.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="fQq-mj-SrC"/>
+                                    <constraint firstAttribute="height" constant="120" id="v03-iq-EHR"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button" titleAlignment="center"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="uS2-SO-jcS" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="C6e-bd-km1"/>
-                            <constraint firstItem="uS2-SO-jcS" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="Grl-j9-qU5"/>
+                            <constraint firstItem="vGq-wx-wER" firstAttribute="top" secondItem="MMx-Pi-Zm9" secondAttribute="bottom" constant="35" id="GHo-5p-MmJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HQi-uh-rkP" secondAttribute="trailing" constant="20" id="Pbv-40-UO2"/>
                             <constraint firstItem="HQi-uh-rkP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Zf3-tw-WgY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="top" constant="-40" id="Zqx-jS-bvV"/>
-                            <constraint firstItem="vGq-wx-wER" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="dcC-Up-9e0"/>
-                            <constraint firstItem="vGq-wx-wER" firstAttribute="top" secondItem="uS2-SO-jcS" secondAttribute="bottom" constant="30" id="hni-ol-fEb"/>
+                            <constraint firstItem="MMx-Pi-Zm9" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.8" id="fqx-lm-gxG"/>
+                            <constraint firstItem="MMx-Pi-Zm9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jqM-vl-I2w"/>
+                            <constraint firstItem="MMx-Pi-Zm9" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="bottom" constant="35" id="oGu-4M-aPE"/>
                             <constraint firstItem="vGq-wx-wER" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rRw-Rd-dBa"/>
-                            <constraint firstItem="uS2-SO-jcS" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="bottom" constant="30" id="yND-sS-0KO"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="errorLabel" destination="uS2-SO-jcS" id="Yg3-Gy-bpq"/>
+                        <outlet property="errorLabel" destination="MMx-Pi-Zm9" id="May-Tt-A38"/>
                         <outlet property="startButton" destination="vGq-wx-wER" id="dOP-Uo-qGh"/>
                         <outlet property="textView" destination="HQi-uh-rkP" id="GxG-Hm-3IR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="133.125" y="111.97183098591549"/>
+            <point key="canvasLocation" x="133.125" y="111.25"/>
         </scene>
     </scenes>
     <resources>
