@@ -36,7 +36,7 @@ export interface PorcupineWorkerFactory {
     keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
     keywordDetectionCallback?: CallableFunction,
     processErrorCallback?: CallableFunction,
-    start?: boolean,
+    start?: boolean
   ): Promise<PorcupineWorker>;
 }
 

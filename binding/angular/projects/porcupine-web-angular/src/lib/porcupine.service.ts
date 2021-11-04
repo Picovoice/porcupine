@@ -22,15 +22,6 @@ export class PorcupineService implements OnDestroy {
 
   constructor() {}
 
-  private keywordCallback = (label: string): void => {
-    this.keyword$.next(label);
-  }
-
-  private errorCallback = (error: string): void => {
-    this.error$.next(error);
-    this.isInit = true;
-  }
-
   public pause(): boolean {
     if (this.webVoiceProcessor !== null) {
       this.webVoiceProcessor.pause();
@@ -76,7 +67,6 @@ export class PorcupineService implements OnDestroy {
         this.keywordCallback,
         this.errorCallback
       );
-
     } catch (error) {
       this.isInit = false;
       this.error$.next(error);
@@ -105,4 +95,13 @@ export class PorcupineService implements OnDestroy {
   async ngOnDestroy() {
     this.release();
   }
+
+  private keywordCallback = (label: string): void => {
+    this.keyword$.next(label);
+  };
+
+  private errorCallback = (error: string): void => {
+    this.error$.next(error);
+    this.isInit = true;
+  };
 }
