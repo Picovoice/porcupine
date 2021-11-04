@@ -26,21 +26,22 @@ let paused = true;
 let porcupineEngine: PorcupineEngine | null = null;
 
 async function init(accessKey: string, keywords: Array<PorcupineKeyword | string>, start = true): Promise<void> {
-  let porcupineMessage: PorcupineWorkerResponseReady | PorcupineWorkerResponseFailed;
   try {
     porcupineEngine = await Porcupine.create(accessKey, keywords);
-    porcupineMessage = {
+    const porcupineReadyMessage: PorcupineWorkerResponseReady = {
       command: 'ppn-ready',
     };
+    paused = !start;
+    // @ts-ignore
+    postMessage(porcupineReadyMessage, undefined);
   } catch (error) {
-    porcupineMessage = {
+    const errorMessage = error.toString();
+    const porcupineFailedMessage: PorcupineWorkerResponseFailed = {
       command: 'ppn-failed',
-      message: error as string,
+      message: errorMessage,
     };
+    postMessage(porcupineFailedMessage, undefined);
   }
-  paused = !start;
-  // @ts-ignore
-  postMessage(porcupineMessage, undefined);
 }
 
 async function process(inputFrame: Int16Array): Promise<void> {

@@ -12,10 +12,10 @@
 "@picovoice/porcupine-web-en-worker@file:../../binding/web/porcupine-web-en-worker":
   version "2.0.0"
 
-"@picovoice/web-voice-processor@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.2.tgz#51ec2838c95d741ecb843ca1fb3401559485fdf2"
-  integrity sha512-4L+WLjEZQLSssSzBNlznuIfLurETJsukPlIdZXYIJqK+H1P0oi5BLDwncKC+VmkywNonQxY/w3ZbBsDL7pfemQ==
+"@picovoice/web-voice-processor@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.0.tgz#dfc0707d0f4f7b76bb5655fd721a5c40613c8b6c"
+  integrity sha512-n4P7TSwZA7q08HyUF+t5S2JA9zBi3y9BexP4Fs6AmGhuD8MkVtao6CaRyYZbQabRk4OYT5fzt0a81ENS3wDz1w==
   dependencies:
     "@babel/runtime" "^7.12.18"
 

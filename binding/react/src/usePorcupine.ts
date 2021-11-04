@@ -17,13 +17,12 @@ import {
   PorcupineHookArgs,
   PorcupineWorker,
   PorcupineWorkerFactory,
-  PorcupineWorkerResponse,
 } from './porcupine_types';
 
 export function usePorcupine(
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
   porcupineHookArgs: PorcupineHookArgs | null,
-  detectionCallback: (label: string) => void
+  keywordEventHandler: (label: string) => void
 ): {
   isLoaded: boolean;
   isListening: boolean;
@@ -32,7 +31,7 @@ export function usePorcupine(
   webVoiceProcessor: WebVoiceProcessor | null;
   start: () => void;
   pause: () => void;
-  resume: () => void;
+  setKeywordEventHandler: React.Dispatch<React.SetStateAction<(label: string) => void>>;
 } {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -40,12 +39,11 @@ export function usePorcupine(
     webVoiceProcessor,
     setWebVoiceProcessor,
   ] = useState<WebVoiceProcessor | null>(null);
-  const [
-    porcupineWorker,
-    setPorcupineWorker,
-  ] = useState<PorcupineWorker | null>(null);
   const [isError, setIsError] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [keywordCallback, setKeywordCallback] = useState(
+    () => keywordEventHandler
+  );
 
   const start = (): boolean => {
     if (webVoiceProcessor !== null) {
@@ -65,31 +63,11 @@ export function usePorcupine(
     return false;
   };
 
-  const resume = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.resume();
-      setIsListening(true);
-      return true;
-    }
-    return false;
+  const processErrorCallback = (error: string): void => {
+    setIsError(true);
+    setErrorMessage(error.toString());
   };
 
-  // Refresh the detection callback when it changes (avoid stale closure)
-  useEffect(() => {
-    if (porcupineWorker !== null) {
-      porcupineWorker.onmessage = (
-        msg: MessageEvent<PorcupineWorkerResponse>
-      ): void => {
-        switch (msg.data.command) {
-          case 'ppn-keyword':
-            detectionCallback(msg.data.keywordLabel);
-            break;
-          default:
-            break;
-        }
-      };
-    }
-  }, [detectionCallback]);
 
   useEffect(() => {
     // If using dynamic import() on porcupine-web-xx-worker,
@@ -111,34 +89,29 @@ export function usePorcupine(
       };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { accessKey, keywords, start: startWebVp = true } = porcupineHookArgs!;
+    if (accessKey === null || accessKey === '') {
+      return (): void => {
+        /* NOOP */
+      };
+    }
+
     async function startPorcupine(): Promise<{
       webVp: WebVoiceProcessor;
       ppnWorker: PorcupineWorker;
     }> {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { keywords, start: startWebVp = true } = porcupineHookArgs!;
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(
-        keywords
+        accessKey,
+        keywords,
+        keywordCallback,
+        processErrorCallback
       );
-
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
         start: startWebVp,
       });
-
-      ppnWorker.onmessage = (
-        msg: MessageEvent<PorcupineWorkerResponse>
-      ): void => {
-        switch (msg.data.command) {
-          case 'ppn-keyword':
-            detectionCallback(msg.data.keywordLabel);
-            break;
-          default:
-            break;
-        }
-      };
 
       return { webVp, ppnWorker };
     }
@@ -146,11 +119,10 @@ export function usePorcupine(
     const startPorcupinePromise = startPorcupine();
 
     startPorcupinePromise
-      .then(({ webVp, ppnWorker }) => {
+      .then(({ webVp, }) => {
         setIsLoaded(true);
         setIsListening(webVp.isRecording);
         setWebVoiceProcessor(webVp);
-        setPorcupineWorker(ppnWorker);
         setIsError(false);
       })
       .catch(error => {
@@ -170,6 +142,7 @@ export function usePorcupine(
     // and is easily serializable ... doesn't have functions or weird objects like Dates.
     // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
     JSON.stringify(porcupineHookArgs),
+    keywordCallback,
   ]);
 
   return {
@@ -180,6 +153,6 @@ export function usePorcupine(
     webVoiceProcessor,
     start,
     pause,
-    resume,
+    setKeywordEventHandler: setKeywordCallback,
   };
 }

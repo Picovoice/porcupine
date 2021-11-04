@@ -21,7 +21,7 @@
     "@picovoice/porcupine-web-en-worker": "^2.0.0",
     "@picovoice/porcupine-web-es-worker": "^2.0.0",
     "@picovoice/porcupine-web-fr-worker": "^2.0.0",
-    "@picovoice/web-voice-processor": "^2.0.2"
+    "@picovoice/web-voice-processor": "^2.1.0"
   },
   "devDependencies": {
     "serve": "^11.3.2"

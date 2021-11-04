@@ -1311,6 +1311,7 @@ import React, { useState } from "react";
 import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 import { usePorcupine } from "@picovoice/porcupine-web-react";
 
+const accessKey = // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
 const keywords = [{ builtin: "Picovoice", sensitivity: 0.65 }];
 
 function VoiceWidget(props) {
@@ -1324,11 +1325,11 @@ function VoiceWidget(props) {
     isError,
     errorMessage,
     start,
-    resume,
     pause,
+    setDetectionCallback
   } = usePorcupine(
     PorcupineWorkerFactory,
-    { keywords, start: true },
+    { accessKey, keywords, start: true },
     keywordEventHandler
   );
 }
