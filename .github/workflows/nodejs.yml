@@ -43,4 +43,4 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
