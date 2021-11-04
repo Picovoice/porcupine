@@ -32,23 +32,28 @@
                                     <action selector="toggleStartButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NaQ-2Y-xrf"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="mNn-Mh-rKy" userLabel="Error Label">
-                                <rect key="frame" x="118" y="343" width="86" height="31"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" contentInsetAdjustmentBehavior="always" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Am4-Zu-51z" userLabel="Error View">
+                                <rect key="frame" x="10" y="291" width="300" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
                                 <color key="tintColor" systemColor="systemRedColor"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Picovoice">
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" systemColor="systemRedColor"/>
-                                </buttonConfiguration>
-                            </button>
+                                <attributedString key="attributedText">
+                                    <fragment content="Picovoice">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" metaFont="system" size="16"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="errorLabel" destination="mNn-Mh-rKy" id="cof-bA-3Xg"/>
+                        <outlet property="errorPanel" destination="Am4-Zu-51z" id="AOI-E4-SMp"/>
                         <outlet property="startButton" destination="vGq-wx-wER" id="dOP-Uo-qGh"/>
                         <outlet property="wakeWordPicker" destination="VMd-PX-dfw" id="q13-PN-cMz"/>
                     </connections>

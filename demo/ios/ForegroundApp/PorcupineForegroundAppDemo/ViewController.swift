@@ -13,7 +13,7 @@ import Porcupine
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var wakeWordPicker: UIPickerView!
     @IBOutlet weak var startButton: UIButton!
-    @IBOutlet weak var errorLabel: UIButton!
+    @IBOutlet weak var errorPanel: UITextView!
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWordDict = [String:Porcupine.BuiltInKeyword]()
@@ -47,10 +47,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         wakeWordPicker.frame.size = CGSize(width: viewSize.width, height: viewSize.height - (startButtonSize.height + errorLabelSize.height + 40))
         
         
-        errorLabel.layer.cornerRadius = 10
-        errorLabel.frame.origin = CGPoint(x: ((viewSize.width - errorLabelSize.width) / 2), y: viewSize.height - (startButtonSize.height + errorLabelSize.height + 60)  )
-        errorLabel.frame.size = errorLabelSize
-        errorLabel.isHidden = true
+        errorPanel.layer.cornerRadius = 10
+        errorPanel.frame.origin = CGPoint(x: ((viewSize.width - errorLabelSize.width) / 2), y: viewSize.height - (startButtonSize.height + errorLabelSize.height + 60)  )
+        errorPanel.frame.size = errorLabelSize
+        errorPanel.isHidden = true
     }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -70,8 +70,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
 
     func showErrorAlert(_ message: String) {
-        errorLabel.setTitle(message, for: UIControl.State.normal)
-        errorLabel.isHidden = false
+        errorPanel.text = message
+        errorPanel.isHidden = false
         wakeWordPicker.isUserInteractionEnabled = false
         startButton.isEnabled = false
     }

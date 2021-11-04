@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGq-wx-wER">
-                                <rect key="frame" x="100" y="309" width="120" height="120"/>
+                                <rect key="frame" x="135" y="447" width="120" height="120"/>
                                 <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="jZj-gI-YAY"/>
@@ -41,45 +41,47 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="MMx-Pi-Zm9" userLabel="Error Label">
-                                <rect key="frame" x="108" y="225" width="106" height="31"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="always" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9h5-UJ-jbf" userLabel="Error View">
+                                <rect key="frame" x="37.5" y="195" width="300" height="120"/>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
-                                </accessibility>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="1" height="0.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="v03-iq-EHR"/>
-                                </constraints>
                                 <color key="tintColor" systemColor="systemRedColor"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Picovoice" titleAlignment="center">
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" systemColor="systemRedColor"/>
-                                </buttonConfiguration>
-                            </button>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="XKN-lv-N38"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Picovoice">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" metaFont="system" size="16"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="vGq-wx-wER" firstAttribute="top" secondItem="MMx-Pi-Zm9" secondAttribute="bottom" constant="35" id="GHo-5p-MmJ"/>
+                            <constraint firstItem="9h5-UJ-jbf" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.8" id="0yb-ZR-THl"/>
+                            <constraint firstItem="9h5-UJ-jbf" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="bottom" constant="15" id="3OW-27-jur"/>
+                            <constraint firstItem="vGq-wx-wER" firstAttribute="top" secondItem="9h5-UJ-jbf" secondAttribute="bottom" constant="35" id="HNo-Hq-3Km"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HQi-uh-rkP" secondAttribute="trailing" constant="20" id="Pbv-40-UO2"/>
+                            <constraint firstItem="9h5-UJ-jbf" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="R8P-ne-h3O"/>
                             <constraint firstItem="HQi-uh-rkP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Zf3-tw-WgY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="top" constant="-40" id="Zqx-jS-bvV"/>
-                            <constraint firstItem="MMx-Pi-Zm9" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.8" id="fqx-lm-gxG"/>
-                            <constraint firstItem="MMx-Pi-Zm9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jqM-vl-I2w"/>
-                            <constraint firstItem="MMx-Pi-Zm9" firstAttribute="top" secondItem="HQi-uh-rkP" secondAttribute="bottom" constant="35" id="oGu-4M-aPE"/>
                             <constraint firstItem="vGq-wx-wER" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rRw-Rd-dBa"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="errorLabel" destination="MMx-Pi-Zm9" id="May-Tt-A38"/>
+                        <outlet property="errorPanel" destination="9h5-UJ-jbf" id="4Po-eB-OZe"/>
                         <outlet property="startButton" destination="vGq-wx-wER" id="dOP-Uo-qGh"/>
                         <outlet property="textView" destination="HQi-uh-rkP" id="GxG-Hm-3IR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="133.125" y="111.25"/>
+            <point key="canvasLocation" x="132" y="111.0944527736132"/>
         </scene>
     </scenes>
     <resources>

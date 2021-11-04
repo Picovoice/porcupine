@@ -14,7 +14,7 @@ import SwiftySound
 class ViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var errorLabel: UIButton!
+    @IBOutlet weak var errorPanel: UITextView!
     
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWord = Porcupine.BuiltInKeyword.porcupine
@@ -30,8 +30,8 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
         
-        errorLabel.layer.cornerRadius = 10
-        errorLabel.isHidden = true
+        errorPanel.layer.cornerRadius = 10
+        errorPanel.isHidden = true
     }
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
@@ -74,8 +74,8 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
     
     private func showErrorAlert(message: String) {
-        errorLabel.setTitle(message, for: UIControl.State.normal)
-        errorLabel.isHidden = false
+        errorPanel.text = message
+        errorPanel.isHidden = false
         startButton.isEnabled = false
     }
 }
