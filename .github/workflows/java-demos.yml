@@ -1,20 +1,21 @@
 name: Java Demos
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
 
 defaults:
   run:
-    working-directory: binding/java
+    working-directory: demo/java
 
 jobs:
   build:
@@ -32,6 +33,9 @@ jobs:
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
+    - name: Build Binding Dependency
+      run: ./gradlew assemble
+      working-directory: binding/java
+
     - name: Build
       run: ./gradlew build
-

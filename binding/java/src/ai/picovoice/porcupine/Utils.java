@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -200,8 +200,8 @@ class Utils {
         return RESOURCE_DIRECTORY.resolve("lib/common/porcupine_params.pv").toString();
     }
 
-    public static HashMap<String, String> getPackagedKeywordPaths() {
-        HashMap<String, String> keywordPaths = new HashMap<>();
+    public static HashMap<Porcupine.BuiltInKeyword, String> getPackagedKeywordPaths() {
+        HashMap<Porcupine.BuiltInKeyword, String> keywordPaths = new HashMap<>();
         Path keywordFileDir = RESOURCE_DIRECTORY.resolve("resources/keyword_files").resolve(ENVIRONMENT_NAME);
         File[] keywordFiles = keywordFileDir.toFile().listFiles();
 
@@ -211,8 +211,10 @@ class Utils {
         }
 
         for (File keywordFile : keywordFiles) {
-            keywordPaths.put(keywordFile.getName().split("_")[0], keywordFile.getAbsolutePath());
+            final String keywordName = keywordFile.getName().split("_")[0].toUpperCase().replace(' ', '_');
+            keywordPaths.put(Porcupine.BuiltInKeyword.valueOf(keywordName), keywordFile.getAbsolutePath());
         }
+
         return keywordPaths;
     }
 

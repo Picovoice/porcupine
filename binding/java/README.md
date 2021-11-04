@@ -56,6 +56,15 @@ cd porcupine/binding/java
 
 Once the task is complete, the output JAR can be found in `porcupine/binding/java/build/libs`.
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 The easiest way to create an instance of the engine is with the Porcupine Builder:
@@ -63,23 +72,25 @@ The easiest way to create an instance of the engine is with the Porcupine Builde
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 try{
     Porcupine handle = new Porcupine.Builder()
-                        .setKeyword("picovoice")
+                        .setAccessKey(accessKey)
+                        .setBuiltInKeyword(BuiltInKeyword.PORCUPINE)
                         .build();
 } catch (PorcupineException e) { }
 ```
 
-`handle` is an instance of Porcupine that detects utterances of "Picovoice". The `setKeyword()` builder argument is a shorthand
-for accessing default keyword model files shipped with the package. 
+`handle` is an instance of Porcupine that detects utterances of "Picovoice". The `setBuiltInKeyword()` builder argument is a shorthand
+for accessing built-in keyword model files shipped with the package.
 
-The list of default keywords can be retrieved by:
+The list of built-in keywords can be found in the `BuiltInKeyword` enum, and can be retrieved by:
 
 ```java
 import ai.picovoice.porcupine.*;
 
-for(String keyword : Porcupine.KEYWORDS){
-    System.out.println(keyword);
+for(BuiltInKeyword keyword : BuiltInKeyword.values()) {
+    System.out.println(keyword.name());
 }
 ```
 
@@ -88,9 +99,11 @@ Porcupine can detect multiple keywords concurrently:
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 try{
     Porcupine handle = new Porcupine.Builder()
-                        .setKeywords(new String[]{"bumblebee", "picovoice" }
+                        .setAccessKey(accessKey)
+                        .setBuiltInKeywords(new BuiltInKeyword[]{BuiltInKeyword.BUMBLEBEE, BuiltInKeyword.PICOVOICE})
                         .build();
 } catch (PorcupineException e) { }
 ```
@@ -100,9 +113,11 @@ To detect non-default keywords use the `setKeywordPaths()` builder argument inst
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 String[] keywordPaths = new String[]{ "/absolute/path/to/keyword/one", "/absolute/path/to/keyword/two", ...}
 try{
     Porcupine handle = new Porcupine.Builder()
+                        .setAccessKey(accessKey)
                         .setKeywordPaths(keywordPaths)
                         .build();
 } catch (PorcupineException e) { }
@@ -113,9 +128,11 @@ The sensitivity of the engine can be tuned per-keyword using the `setSensitiviti
 ```java
 import ai.picovoice.porcupine.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 try{
     Porcupine handle = new Porcupine.Builder()
-                        .setKeywords(new String[]{"grapefruit", "porcupine"})
+                        .setAccessKey(accessKey)
+                        .setBuiltInKeywords(new BuiltInKeyword[]{BuiltInKeyword.GRAPEFRUIT, BuiltInKeyword.PORCUPINE})
                         .setSensitivities(new float[]{ 0.6f, 0.35f })
                         .build();
 } catch (PorcupineException e) { }

@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -27,8 +27,8 @@ import java.util.Arrays;
 
 public class FileDemo {
 
-    public static void runDemo(File inputAudioFile, String libPath, String modelPath,
-                               String[] keywordPaths, float[] sensitivities) {
+    public static void runDemo(String accessKey, File inputAudioFile, String libPath,
+                               String modelPath, String[] keywordPaths, float[] sensitivities) {
 
         // create keywords from keyword_paths
         String[] keywords = new String[keywordPaths.length];
@@ -54,6 +54,7 @@ public class FileDemo {
         Porcupine porcupine = null;
         try {
             porcupine = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(libPath)
                     .setModelPath(modelPath)
                     .setKeywordPaths(keywordPaths)
@@ -128,6 +129,7 @@ public class FileDemo {
             return;
         }
 
+        String accessKey = cmd.getOptionValue("access_key");
         String inputAudioPath = cmd.getOptionValue("input_audio_path");
         String libraryPath = cmd.getOptionValue("library_path");
         String modelPath = cmd.getOptionValue("model_path");
@@ -157,7 +159,11 @@ public class FileDemo {
             }
         }
 
-        if(inputAudioPath == null){
+        if (accessKey == null || accessKey.length() == 0) {
+            throw new IllegalArgumentException("AccessKey is required for Porcupine.");
+        }
+
+        if (inputAudioPath == null){
             throw new IllegalArgumentException("No input audio file provided. This is a required argument.");
         }
         File inputAudioFile = new File(inputAudioPath);
@@ -178,14 +184,15 @@ public class FileDemo {
                 throw new IllegalArgumentException("Either '--keywords' or '--keyword_paths' must be set.");
             }
 
-            if (Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))) {
-                keywordPaths = new String[keywords.length];
-                for (int i = 0; i < keywords.length; i++) {
-                    keywordPaths[i] = Porcupine.KEYWORD_PATHS.get(keywords[i]);
+            keywordPaths = new String[keywords.length];
+            for (int i = 0; i < keywords.length; i++) {
+                final String keyword = keywords[i].toUpperCase().replace(" ", "_");
+                try {
+                    final Porcupine.BuiltInKeyword builtInKeyword = Porcupine.BuiltInKeyword.valueOf(keyword);
+                    keywordPaths[i] = Porcupine.BUILT_IN_KEYWORD_PATHS.get(builtInKeyword);
+                } catch (Exception e) {
+                    throw new IllegalArgumentException(String.format("'%s' not a built-in keyword", keyword));
                 }
-            } else {
-                throw new IllegalArgumentException("One or more keywords are not available by default. " +
-                        "Available default keywords are:\n" + String.join(",", Porcupine.KEYWORDS));
             }
         }
 
@@ -199,11 +206,17 @@ public class FileDemo {
                     "not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
         }
 
-        runDemo(inputAudioFile, libraryPath, modelPath, keywordPaths, sensitivities);
+        runDemo(accessKey, inputAudioFile, libraryPath, modelPath, keywordPaths, sensitivities);
     }
 
     private static Options BuildCommandLineOptions() {
         Options options = new Options();
+
+        options.addOption(Option.builder("a")
+                .longOpt("access_key")
+                .hasArg(true)
+                .desc("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/).")
+                .build());
 
         options.addOption(Option.builder("i")
                 .longOpt("input_audio_path")
@@ -226,15 +239,13 @@ public class FileDemo {
         options.addOption(Option.builder("k")
                 .longOpt("keywords")
                 .hasArgs()
-                .desc(String.format("List of default keywords for detection. Available keywords: %s",
-                        String.join(",", Porcupine.KEYWORDS)))
+                .desc(String.format("List of built-in keywords for detection. Available keywords: %s", Porcupine.BuiltInKeyword.options()))
                 .build());
 
         options.addOption(Option.builder("kp")
                 .longOpt("keyword_paths")
                 .hasArgs()
-                .desc("Absolute paths to keyword model files. If not set it will be populated from " +
-                        "`--keywords` argument")
+                .desc("Absolute paths to keyword model files.")
                 .build());
 
         options.addOption(Option.builder("s")

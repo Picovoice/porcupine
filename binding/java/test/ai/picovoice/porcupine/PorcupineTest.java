@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PorcupineTest {
 
     private Porcupine porcupine;
+    private String accessKey = System.getProperty("pvTestingAccessKey");
 
     @AfterEach
     void tearDown() {
@@ -40,7 +41,8 @@ public class PorcupineTest {
     @Test
     void getVersion() throws PorcupineException {
         porcupine = new Porcupine.Builder()
-                .setKeyword("porcupine")
+                .setAccessKey(accessKey)
+                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
         assertTrue(porcupine.getVersion() != null && !porcupine.getVersion().equals(""));
     }
@@ -48,7 +50,8 @@ public class PorcupineTest {
     @Test
     void getFrameLength() throws PorcupineException {
         porcupine = new Porcupine.Builder()
-                .setKeyword("porcupine")
+                .setAccessKey(accessKey)
+                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
         assertTrue(porcupine.getFrameLength() > 0);
     }
@@ -56,7 +59,8 @@ public class PorcupineTest {
     @org.junit.jupiter.api.Test
     void getSampleRate() throws PorcupineException {
         porcupine = new Porcupine.Builder()
-                .setKeyword("porcupine")
+                .setAccessKey(accessKey)
+                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
         assertTrue(porcupine.getSampleRate() > 0);
     }
@@ -64,7 +68,8 @@ public class PorcupineTest {
     @Test
     void testProcess() throws IOException, UnsupportedAudioFileException, PorcupineException {
         porcupine = new Porcupine.Builder()
-                .setKeyword("porcupine")
+                .setAccessKey(accessKey)
+                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
 
         int frameLen = porcupine.getFrameLength();
@@ -97,11 +102,21 @@ public class PorcupineTest {
 
     @Test
     void testProcessMultiple() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String[] keywords = new String[]{ "alexa", "americano", "blueberry", "bumblebee", "grapefruit",
-                "grasshopper", "picovoice", "porcupine", "terminator"};
+        final Porcupine.BuiltInKeyword[] keywords = new Porcupine.BuiltInKeyword[]{
+            Porcupine.BuiltInKeyword.ALEXA,
+            Porcupine.BuiltInKeyword.AMERICANO,
+            Porcupine.BuiltInKeyword.BLUEBERRY,
+            Porcupine.BuiltInKeyword.BUMBLEBEE,
+            Porcupine.BuiltInKeyword.GRAPEFRUIT,
+            Porcupine.BuiltInKeyword.GRASSHOPPER,
+            Porcupine.BuiltInKeyword.PICOVOICE,
+            Porcupine.BuiltInKeyword.PORCUPINE,
+            Porcupine.BuiltInKeyword.TERMINATOR
+        };
 
         porcupine = new Porcupine.Builder()
-                .setKeywords(keywords)
+                .setAccessKey(accessKey)
+                .setBuiltInKeywords(keywords)
                 .build();
 
         int frameLen = porcupine.getFrameLength();
