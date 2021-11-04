@@ -8,7 +8,7 @@ using Pv.Unity;
 
 public class PorcupineDemo : MonoBehaviour {
 
-    private const string ACCESS_KEY = "Tw4jothrMMLyRYQ793yD/XF3DeithcbeNVsYlNN0Dc1vY26suWNOkg=="; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    private const string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
     static List<Porcupine.BuiltInKeyword> _keywords = Enum.GetValues(typeof(Porcupine.BuiltInKeyword)).Cast<Porcupine.BuiltInKeyword>().ToList();
     public Texture[] _imgs;

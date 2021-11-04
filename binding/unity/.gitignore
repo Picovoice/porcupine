@@ -68,4 +68,5 @@ Assets/Porcupine/Plugins/**/*.dll
 Assets/Porcupine/VoiceProcessor/**
 Assets/Porcupine/Demo/**
 UIElementsSchema
+UserSettings
 .vsconfig

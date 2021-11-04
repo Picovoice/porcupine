@@ -87,6 +87,7 @@ namespace Pv.Unity {
             try
             {
                 int keywordIndex = _porcupine.Process(pcm);
+                Debug.Log(keywordIndex);
                 if (keywordIndex >= 0)
                 {
                     if (_wakeWordCallback != null)

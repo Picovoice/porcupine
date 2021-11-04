@@ -10,7 +10,6 @@ cp ../../lib/linux/x86_64/libpv_porcupine.so ./Assets/Porcupine/Plugins/linux/x8
 
 echo "Copying macOS lib..."
 cp ../../lib/mac/x86_64/libpv_porcupine.dylib ./Assets/Porcupine/Plugins/mac/x86_64/libpv_porcupine.dylib
-cp ../../lib/mac/arm64/libpv_porcupine.dylib ./Assets/Porcupine/Plugins/mac/arm64/libpv_porcupine.dylib
 
 echo "Copying Windows lib..."
 cp ../../lib/windows/amd64/libpv_porcupine.dll ./Assets/Porcupine/Plugins/windows/amd64/pv_porcupine.dll
