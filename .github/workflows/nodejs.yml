@@ -2,18 +2,18 @@ name: Nodejs
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'
-      - 'lib/**'
+      - 'lib/node/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'
-      - 'lib/**'
+      - 'lib/node/**'
       - 'resources/**'
 
 defaults:
