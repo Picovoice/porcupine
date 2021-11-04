@@ -51,55 +51,24 @@ namespace PorcupineDemo
             Porcupine porcupine = null;
             BinaryWriter outputFileWriter = null;
             int totalSamplesWritten = 0;
-            try
+            
+            // init porcupine wake word engine
+            porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
+
+            // get keyword names for labeling detection results                
+            List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
+
+            // open stream to output file
+            if (!string.IsNullOrWhiteSpace(outputPath))
             {
-                // init porcupine wake word engine
-                porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
+                outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
+                WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
+            }            
 
-                // get keyword names for labeling detection results                
-                List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
+            Console.CancelKeyPress += (s, o) =>
+            {                
+                Console.WriteLine("Stopping...");
 
-                // open stream to output file
-                if (!string.IsNullOrWhiteSpace(outputPath))
-                {
-                    outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
-                    WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
-                }
-                Console.Write($"Listening for{string.Join(',', keywordNames.Select(k => $" '{k}'"))}\n");
-
-                // create and start recording
-                using (PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength))
-                {
-                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
-                    recorder.Start();
-
-                    while (!Console.KeyAvailable)
-                    {
-                        short[] pcm = recorder.Read();
-
-                        int result = porcupine.Process(pcm);
-                        if (result >= 0)
-                        {
-                            Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
-                        }
-
-                        if (outputFileWriter != null)
-                        {
-                            foreach (short sample in pcm)
-                            {
-                                outputFileWriter.Write(sample);
-                            }
-                            totalSamplesWritten += pcm.Length;
-                        }
-                        Thread.Yield();
-                    }
-
-                    // stop and clean up resources
-                    Console.WriteLine("Stopping...");
-                }
-            }
-            finally
-            {
                 if (outputFileWriter != null)
                 {
                     // write size to header and clean up
@@ -108,6 +77,35 @@ namespace PorcupineDemo
                     outputFileWriter.Dispose();
                 }
                 porcupine?.Dispose();
+            };
+
+            // create and start recording
+            using (PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength))
+            {
+                Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+                Console.Write($"Listening for [{string.Join(' ', keywordNames.Select(k => $"'{k}'"))}]...\n");
+                recorder.Start();
+
+                while (true)
+                {
+                    short[] pcm = recorder.Read();
+
+                    int result = porcupine.Process(pcm);
+                    if (result >= 0)
+                    {
+                        Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
+                    }
+
+                    if (outputFileWriter != null)
+                    {
+                        foreach (short sample in pcm)
+                        {
+                            outputFileWriter.Write(sample);
+                        }
+                        totalSamplesWritten += pcm.Length;
+                    }
+                    Thread.Yield();
+                }
             }
         }
 
