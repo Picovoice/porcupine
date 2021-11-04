@@ -304,7 +304,7 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 func getOS() (string, string) {
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		return "mac", "x86_64"
+		return "mac", runtime.GOARCH
 	case "linux":
 		osName, cpu := getLinuxDetails()
 		return osName, cpu
