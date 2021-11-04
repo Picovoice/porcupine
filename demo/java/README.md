@@ -65,7 +65,7 @@ The following processes a file looking for instances of the phrase "Picovoice":
 java -jar porcupine-file-demo.jar -a ${ACCESS_KEY} -i ${AUDIO_PATH} -k picovoice
 ```
 
-`-k` or `--keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
+`-k` or `--keywords` is a shorthand for using built-in keywords shipped with the package. The list of built-in keyword files
 can be seen in the usage string:
 
 ```console
@@ -78,7 +78,7 @@ To detect multiple phrases concurrently provide them as separate arguments. If t
 java -jar porcupine-file-demo.jar -a ${ACCESS_KEY} -i ${AUDIO_PATH} -k grasshopper "hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect custom keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use the `-kp` or `--keyword_paths` argument:
 
 ```console
@@ -103,7 +103,7 @@ microphone and detects occurrences of "Picovoice":
 java -jar porcupine-mic-demo.jar -a ${ACCESS_KEY} -k picovoice
 ```
 
-`-k` or `--keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
+`-k` or `--keywords` is a shorthand for using built-in keyword files shipped with the package. The list of built-in keyword files
 can be seen in the usage string:
 
 ```console
@@ -116,7 +116,7 @@ To detect multiple phrases concurrently provide them as separate arguments. If t
 java -jar porcupine-mic-demo.jar -a ${ACCESS_KEY} -k picovoice "hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect custom keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use the `-kp` or `--keyword_paths` argument:
 
 ```console

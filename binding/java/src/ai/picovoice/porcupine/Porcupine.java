@@ -15,6 +15,7 @@ package ai.picovoice.porcupine;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.stream.*;
 import java.util.logging.Logger;
 
 /**
@@ -31,14 +32,12 @@ public class Porcupine {
 
     public static final String LIBRARY_PATH;
     public static final String MODEL_PATH;
-    public static final HashMap<String, String> KEYWORD_PATHS;
-    public static final Set<String> KEYWORDS;
+    public static final HashMap<BuiltInKeyword, String> BUILT_IN_KEYWORD_PATHS;
 
     static {
         LIBRARY_PATH = Utils.getPackagedLibraryPath();
         MODEL_PATH = Utils.getPackagedModelPath();
-        KEYWORD_PATHS = Utils.getPackagedKeywordPaths();
-        KEYWORDS = KEYWORD_PATHS.keySet();
+        BUILT_IN_KEYWORD_PATHS = Utils.getPackagedKeywordPaths();
     }
 
     /**
@@ -54,7 +53,11 @@ public class Porcupine {
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
     public Porcupine(String accessKey, String libraryPath, String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
-        System.load(libraryPath);
+        try {
+            System.load(libraryPath);
+        } catch (Exception exception) {
+            throw new PorcupineException(exception);
+        }
         libraryHandle = init(accessKey, modelPath, keywordPaths, sensitivities);
     }
 
@@ -108,6 +111,31 @@ public class Porcupine {
 
     private native int process(long object, short[] pcm);
 
+    public enum BuiltInKeyword {
+        ALEXA,
+        AMERICANO,
+        BLUEBERRY,
+        BUMBLEBEE,
+        COMPUTER,
+        GRAPEFRUIT,
+        GRASSHOPPER,
+        HEY_GOOGLE,
+        HEY_SIRI,
+        JARVIS,
+        OK_GOOGLE,
+        PICOVOICE,
+        PORCUPINE,
+        TERMINATOR;
+
+        public static Stream<BuiltInKeyword> stream() {
+            return Stream.of(BuiltInKeyword.values());
+        }
+
+        public static String options() {
+            return BuiltInKeyword.stream().map((v) -> v.name()).collect(Collectors.joining(","));
+        }
+    }
+
     /**
      * Builder for creating an instance of Porcupine with a mixture of default arguments
      */
@@ -117,7 +145,7 @@ public class Porcupine {
         private String libraryPath = null;
         private String modelPath = null;
         private String[] keywordPaths = null;
-        private String[] keywords = null;
+        private BuiltInKeyword[] keywords = null;
         private float[] sensitivities = null;
 
         public Builder setAccessKey(String accessKey) {
@@ -145,13 +173,13 @@ public class Porcupine {
             return this;
         }
 
-        public Builder setKeywords(String[] keywords) {
+        public Builder setBuiltInKeywords(BuiltInKeyword[] keywords) {
             this.keywords = keywords;
             return this;
         }
 
-        public Builder setKeyword(String keyword) {
-            this.keywords = new String[]{keyword};
+        public Builder setBuiltInKeyword(BuiltInKeyword keyword) {
+            this.keywords = new BuiltInKeyword[]{keyword};
             return this;
         }
 
@@ -174,20 +202,20 @@ public class Porcupine {
         public Porcupine build() throws PorcupineException {
 
             if (!Utils.isEnvironmentSupported()) {
-                throw new PorcupineException(new RuntimeException("Could not initialize Porcupine. " +
-                        "Execution environment not currently supported by Porcupine Java."));
+                throw new PorcupineRuntimeException("Could not initialize Porcupine. " +
+                        "Execution environment not currently supported by Porcupine Java.");
             }
 
             if (accessKey == null) {
-                throw new PorcupineException(new IllegalArgumentException("AccessKey is required for Porcupine initialization."));
+                throw new PorcupineInvalidArgumentException("AccessKey is required for Porcupine initialization.");
             }
 
             if (libraryPath == null) {
                 if (Utils.isResourcesAvailable()) {
                     libraryPath = LIBRARY_PATH;
                 } else {
-                    throw new PorcupineException(new IllegalArgumentException("Default library unavailable. Please " +
-                            "provide a native Porcupine library path (-l <library_path>)."));
+                    throw new PorcupineInvalidArgumentException("Default library unavailable. Please " +
+                            "provide a native Porcupine library path (-l <library_path>).");
                 }
             }
 
@@ -195,36 +223,29 @@ public class Porcupine {
                 if (Utils.isResourcesAvailable()) {
                     modelPath = MODEL_PATH;
                 } else {
-                    throw new PorcupineException(new IllegalArgumentException("Default model unavailable. Please provide a " +
-                            "valid Porcupine model path (-m <model_path>)."));
+                    throw new PorcupineInvalidArgumentException("Default model unavailable. Please provide a " +
+                            "valid Porcupine model path (-m <model_path>).");
                 }
             }
 
             if(this.keywordPaths != null && this.keywords != null){
-                throw new PorcupineException(new IllegalArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
-                        "Only one of the two arguments may be set for initialization."));
+                throw new PorcupineInvalidArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
+                        "Only one of the two arguments may be set for initialization.");
             }
 
             if (this.keywordPaths == null) {
                 if (this.keywords == null) {
-                    throw new PorcupineException(new IllegalArgumentException("Either 'keywords' or " +
-                            "'keywordPaths' must be set."));
+                    throw new PorcupineInvalidArgumentException("Either 'keywords' or 'keywordPaths' must be set.");
                 }
 
                 if (Utils.isResourcesAvailable()) {
-                    if (KEYWORDS.containsAll(Arrays.asList(keywords))) {
-                        this.keywordPaths = new String[keywords.length];
-                        for (int i = 0; i < keywords.length; i++) {
-                            this.keywordPaths[i] = KEYWORD_PATHS.get(keywords[i]);
-                        }
-                    } else {
-                        throw new PorcupineException(new IllegalArgumentException("One or more keywords are not " +
-                                "available by default. Available default keywords are:\n" +
-                                String.join(",", Porcupine.KEYWORDS)));
+                    this.keywordPaths = new String[keywords.length];
+                    for (int i = 0; i < keywords.length; i++) {
+                        this.keywordPaths[i] = BUILT_IN_KEYWORD_PATHS.get(keywords[i]);
                     }
                 } else {
-                    throw new PorcupineException(new IllegalArgumentException("Default keywords unavailable. Please provide " +
-                            "a valid Porcupine keyword path (-kp <keyword_path(s)>)."));
+                    throw new PorcupineInvalidArgumentException("BuiltIn keywords unavailable. Please provide " +
+                            "a valid Porcupine keyword path.");
                 }
             }
 
@@ -234,8 +255,8 @@ public class Porcupine {
             }
 
             if (sensitivities.length != keywordPaths.length) {
-                throw new PorcupineException(new IllegalArgumentException(String.format("Number of keywords (%d) " +
-                        "does not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length)));
+                throw new PorcupineInvalidArgumentException(String.format("Number of keywords (%d) " +
+                        "does not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
             }
 
             return new Porcupine(accessKey, libraryPath, modelPath, keywordPaths, sensitivities);

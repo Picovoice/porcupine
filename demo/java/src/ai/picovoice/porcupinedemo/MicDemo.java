@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -24,7 +24,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.*;
 
 public class MicDemo {
     public static void runDemo(String accessKey, String libPath, String modelPath,
@@ -262,14 +262,15 @@ public class MicDemo {
                 throw new IllegalArgumentException("Either '--keywords' or '--keyword_paths' must be set.");
             }
 
-            if (Porcupine.KEYWORDS.containsAll(Arrays.asList(keywords))) {
-                keywordPaths = new String[keywords.length];
-                for (int i = 0; i < keywords.length; i++) {
-                    keywordPaths[i] = Porcupine.KEYWORD_PATHS.get(keywords[i]);
+            keywordPaths = new String[keywords.length];
+            for (int i = 0; i < keywords.length; i++) {
+                final String keyword = keywords[i].toUpperCase().replace(" ", "_");
+                try {
+                    final Porcupine.BuiltInKeyword builtInKeyword = Porcupine.BuiltInKeyword.valueOf(keyword);
+                    keywordPaths[i] = Porcupine.BUILT_IN_KEYWORD_PATHS.get(builtInKeyword);
+                } catch (Exception e) {
+                    throw new IllegalArgumentException(String.format("'%s' not a built-in keyword", keyword));
                 }
-            } else {
-                throw new IllegalArgumentException("One or more keywords are not available by default. " +
-                        "Available default keywords are:\n" + String.join(",", Porcupine.KEYWORDS));
             }
         }
 
@@ -306,7 +307,7 @@ public class MicDemo {
         options.addOption(Option.builder("a")
                 .longOpt("access_key")
                 .hasArg(true)
-                .desc("AccessKey obtained from Picovoice console.")
+                .desc("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/).")
                 .build());
 
         options.addOption(Option.builder("l")
@@ -324,15 +325,13 @@ public class MicDemo {
         options.addOption(Option.builder("k")
                 .longOpt("keywords")
                 .hasArgs()
-                .desc(String.format("List of default keywords for detection. Available keywords: %s",
-                        String.join(",", Porcupine.KEYWORDS)))
+                .desc(String.format("List of default keywords for detection. Available keywords: %s", Porcupine.BuiltInKeyword.options()))
                 .build());
 
         options.addOption(Option.builder("kp")
                 .longOpt("keyword_paths")
                 .hasArgs()
-                .desc("Absolute paths to keyword model files. If not set it will be populated from " +
-                        "`--keywords` argument")
+                .desc("Absolute paths to keyword model files.")
                 .build());
 
         options.addOption(Option.builder("s")
