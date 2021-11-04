@@ -55,7 +55,7 @@ public class PorcupineDemo : MonoBehaviour {
         {
             SetError("AccessKey has been throttled");
         }
-        catch (Exception ex)
+        catch (PorcupineException ex)
         {
             SetError("PorcupineManager was unable to initialize: " + ex.Message);
         }
