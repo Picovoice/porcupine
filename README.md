@@ -366,7 +366,7 @@ yarn global add @picovoice/porcupine-node-demo
 With a working microphone connected to your device run the following in the terminal:
 
 ```console
-ppn-mic-demo --keywords porcupine
+ppn-mic-demo --access_key ${ACCESS_KEY} --keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
@@ -1427,7 +1427,12 @@ const {
   BUMBLEBEE,
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
-let handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
+let handle = new Porcupine(
+    accessKey,
+    [GRASSHOPPER, BUMBLEBEE], 
+    [0.5, 0.65]);
 ```
 
 `GRASSHOPPER` and `BUMBLEBEE` are built-in keywords. If you wish to use a custom keyword file, you need to identify its path:
@@ -1435,7 +1440,12 @@ let handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
 ```javascript
 const Porcupine = require("@picovoice/porcupine-node");
 
-let handle = new Porcupine(["/path/to/custom/keyword/file"], [0.5]);
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
+let handle = new Porcupine(
+    accessKey, 
+    ["/path/to/custom/keyword/file"], 
+    [0.5]);
 ```
 
 When instantiated, `handle` can process audio via its `.process` method.
