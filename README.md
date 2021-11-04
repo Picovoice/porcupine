@@ -204,7 +204,9 @@ The demo requires `cgo`, which on Windows may mean that you need to install a gc
 
 From [demo/go](/demo/go) run the following command from the terminal to build and run the mic demo:
 ```console
-go run micdemo/porcupine_mic_demo.go -keywords porcupine
+go run micdemo/porcupine_mic_demo.go \
+-access_key "${ACCESS_KEY}" \
+-keywords porcupine
 ```
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects utterances of the word `Porcupine`.
@@ -681,7 +683,9 @@ To create an instance of the engine you first create a Porcupine struct with the
 ```go
 import . "github.com/Picovoice/porcupine/binding/go"
 
-porcupine := Porcupine{BuiltInKeywords: []BuiltInKeyword{PICOVOICE}}
+porcupine := Porcupine{
+  AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) 
+  BuiltInKeywords: []BuiltInKeyword{PICOVOICE}}
 err := porcupine.Init()
 if err != nil {
     // handle init fail
@@ -693,7 +697,9 @@ In the above example, we've initialized the engine to detect the built-in wake w
 To detect non-default keywords, use `KeywordPaths` parameter instead
 
 ```go
-porcupine := Porcupine{KeywordPaths: []string{"/path/to/keyword.ppn"}}
+porcupine := Porcupine{
+  AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) 
+  KeywordPaths: []string{"/path/to/keyword.ppn"}}
 err := porcupine.Init()
 ```
 

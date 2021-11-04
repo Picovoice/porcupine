@@ -20,14 +20,15 @@ import (
 	"strings"
 	"time"
 
-	. "github.com/Picovoice/porcupine/binding/go"
+	porcupine "github.com/Picovoice/porcupine/binding/go"
 	"github.com/go-audio/audio"
 	"github.com/go-audio/wav"
 )
 
 func main() {
 	inputAudioPathArg := flag.String("input_audio_path", "", "Path to input audio file (mono, WAV, 16-bit, 16kHz)")
-	keywordsArg := flag.String("keywords", "", fmt.Sprintf("Comma-separated list of built-in keywords. Available options are: %+q", BuiltInKeywords))
+	accessKeyArg := flag.String("access_key", "", "AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)")
+	keywordsArg := flag.String("keywords", "", fmt.Sprintf("Comma-separated list of built-in keywords. Available options are: %+q", porcupine.BuiltInKeywords))
 	keywordPathsArg := flag.String("keyword_paths", "", "Comma-separated list of paths to keyword model files. "+
 		"If not set it will be populated from -keywords argument")
 	modelPathArg := flag.String("model_path", "", "Path to Porcupine model file")
@@ -53,8 +54,13 @@ func main() {
 		log.Fatal("Invalid WAV file. File must contain mono, 16-bit, 16kHz linearly encoded PCM.")
 	}
 
-	p := Porcupine{}
+	p := porcupine.Porcupine{}
 	defer p.Delete()
+
+	if *accessKeyArg == "" {
+		log.Fatalf("AccessKey is required.")
+	}
+	p.AccessKey = *accessKeyArg
 
 	// validate model
 	if *modelPathArg != "" {
@@ -75,7 +81,7 @@ func main() {
 		}
 
 		for _, k := range keywordsSplit {
-			builtInKeyword := BuiltInKeyword(k)
+			builtInKeyword := porcupine.BuiltInKeyword(k)
 			if !builtInKeyword.IsValid() {
 				log.Fatalf("'%s' is not a valid built-in keyword.", k)
 			}
@@ -118,11 +124,11 @@ func main() {
 			NumChannels: 1,
 			SampleRate:  16000,
 		},
-		Data:           make([]int, FrameLength),
+		Data:           make([]int, porcupine.FrameLength),
 		SourceBitDepth: 16,
 	}
 
-	shortBuf := make([]int16, FrameLength)
+	shortBuf := make([]int16, porcupine.FrameLength)
 	var n int
 	totalRead := 0
 	keywordsDetected := false
@@ -156,7 +162,7 @@ func main() {
 		fmt.Println("None of the provided keywords were found in the input audio file.")
 	}
 
-	audioLen := float64(totalRead) / float64(SampleRate)
+	audioLen := float64(totalRead) / float64(porcupine.SampleRate)
 	elapsed := time.Since(start)
 	realtimeFactor := audioLen / elapsed.Seconds()
 	fmt.Printf("Realtime factor: %fx\n", realtimeFactor)

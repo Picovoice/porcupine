@@ -20,6 +20,15 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
 - NVIDIA Jetson Nano
 - BeagleBone
 
+## AccessKey
+
+The Go demos require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 NOTE: The working directory for the following go commands is:
@@ -35,11 +44,13 @@ Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is pr
 The following processes a file looking for instances of the phrase "Picovoice":
 
 ```console
-go run filedemo/porcupine_file_demo.go -input_audio_path "path/to/input.wav" -keywords picovoice
+go run filedemo/porcupine_file_demo.go \
+-input_audio_path "path/to/input.wav" \
+-access_key "${ACCESS_KEY}" \
+-keywords picovoice
 ```
 
-`keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
-can be seen in the usage string:
+The `keywords` argument refers to the built-in keyword files that are shipped with the package. The list of built-in keywords can be seen in the usage string:
 
 ```console
 go run filedemo/porcupine_file_demo.go -h
@@ -48,22 +59,30 @@ go run filedemo/porcupine_file_demo.go -h
 To detect multiple phrases concurrently provide them as comma-seperated values. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-go run filedemo/porcupine_file_demo.go -input_audio_path "path/to/input.wav" -keywords "grasshopper,hey siri"
+go run filedemo/porcupine_file_demo.go \
+-input_audio_path "path/to/input.wav" \
+-access_key "${ACCESS_KEY}" \
+-keywords "grasshopper,hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument:
 
 ```console
-go run filedemo/porcupine_file_demo.go -input_audio_path "path/to/input.wav" \
+go run filedemo/porcupine_file_demo.go \
+-input_audio_path "path/to/input.wav" \
+-access_key "${ACCESS_KEY}" \
 -keyword_paths "/path/to/keyword/one.ppn,/path/to/keyword/two.ppn"
 ```
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument:
 
 ```console
-go run filedemo/porcupine_file_demo.go -input_audio_path "path/to/input.wav" \
--keywords grasshopper,porcupine -sensitivities 0.3,0.6
+go run filedemo/porcupine_file_demo.go \
+-input_audio_path "path/to/input.wav" \
+-access_key "${ACCESS_KEY}" \
+-keywords grasshopper,porcupine \
+-sensitivities 0.3,0.6
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
@@ -75,11 +94,12 @@ This demo opens an audio stream from a microphone and detects utterances of a gi
 microphone and detects occurrences of "Picovoice":
 
 ```console
-go run micdemo/porcupine_mic_demo.go -keywords picovoice
+go run micdemo/porcupine_mic_demo.go \
+-access_key "${ACCESS_KEY}" \
+-keywords picovoice
 ```
 
-`keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
-can be seen in the usage string:
+The `keywords` argument refers to the built-in keyword files that are shipped with the package. The list of built-in keywords can be seen in the usage string:
 
 ```console
 go run micdemo/porcupine_mic_demo.go -h
@@ -88,14 +108,18 @@ go run micdemo/porcupine_mic_demo.go -h
 To detect multiple phrases concurrently provide them as comma-seperated values. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-go run filedemo/porcupine_file_demo.go -keywords "grasshopper,hey siri"
+go run filedemo/porcupine_file_demo.go \
+-access_key "${ACCESS_KEY}" \
+-keywords "grasshopper,hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument:
 
 ```console
-go run micdemo/porcupine_mic_demo.go -keyword_paths "/path/to/keyword/one.ppn,/path/to/keyword/two.ppn"
+go run micdemo/porcupine_mic_demo.go \
+-access_key "${ACCESS_KEY}" \
+-keyword_paths "/path/to/keyword/one.ppn,/path/to/keyword/two.ppn"
 ```
 
 It is possible that the default audio input device is not the one you wish to use. There are a couple
@@ -116,13 +140,20 @@ You can use the device index to specify which microphone to use for the demo. Fo
 in the above example, you can invoke the demo application as below:
 
 ```console
-go run micdemo/porcupine_mic_demo.go -keywords picovoice -audio_device_index 0
+go run micdemo/porcupine_mic_demo.go \
+-access_key "${ACCESS_KEY}" \
+-keywords picovoice \
+-audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
 ```console
-go run micdemo/porcupine_mic_demo.go -keywords picovoice -audio_device_index 0 -output_path ./test.wav
+go run micdemo/porcupine_mic_demo.go \
+-access_key "${ACCESS_KEY}" \
+-keywords picovoice \
+-audio_device_index 0 \
+-output_path ./test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.

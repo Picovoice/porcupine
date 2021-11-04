@@ -1,4 +1,6 @@
-# Porcupine Wake Word Engine
+# Porcupine Binding for Go
+
+## Porcupine Wake Word Engine
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
@@ -15,7 +17,7 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
 ## Compatibility
 
 - Go 1.16+
-- Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
+- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone.
 
 ## Installation
 
@@ -23,14 +25,25 @@ browsers are supported. Additionally, enterprise customers have access to ARM Co
 go get github.com/Picovoice/porcupine/binding/go
 ```
 
+## AccessKey
+
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
-To create an instance of the engine you first creat a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`.
+To create an instance of the engine you first creat a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`:
 
 ```go
 import . "github.com/Picovoice/porcupine/binding/go"
 
-porcupine := Porcupine{BuiltInKeywords: []BuiltInKeyword{PICOVOICE}}
+porcupine := Porcupine{
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    BuiltInKeywords: []BuiltInKeyword{PICOVOICE}}
 err := porcupine.Init()
 if err != nil {
     // handle init fail
@@ -38,30 +51,36 @@ if err != nil {
 ```
 In the above example, we've initialzed the engine to detect the built-in wake word "Picovoice". Built-in keywords are constants in the package with the BuiltInKeyword type.
 
-Porcupine can detect multiple keywords concurrently
-
+Porcupine can detect multiple keywords concurrently:
 ```go
-porcupine := Porcupine{BuiltInKeywords: []BuiltInKeyword{PICOVOICE, BUMBLEBEE}}
+porcupine := Porcupine{
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    BuiltInKeywords: []BuiltInKeyword{PICOVOICE, BUMBLEBEE}}
 err := porcupine.Init()
 ```
 
-To detect non-default keywords, use `KeywordPaths` parameter instead
-
+To detect non-default keywords, use `KeywordPaths` parameter instead:
 ```go
-porcupine := Porcupine{KeywordPaths: []string{"/path/to/keyword.ppn"}}
+porcupine := Porcupine{
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    KeywordPaths: []string{"/path/to/keyword.ppn"}}
 err := porcupine.Init()
 ```
 
-The sensitivity of the engine can be tuned per keyword using the `sensitivities` parameter
+In addition to custom keywords, you can override the default Porcupine english model file and/or keyword sensitivities.
+
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+
+The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, you'll pass in a different model file.
 
 ```go
 porcupine := Porcupine{
-    BuiltInKeywords: []BuiltInKeyword{PICOVOICE, BUMBLEBEE}
-    Sensitivities: []float32{0.4, 0.9}}
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    BuiltInKeywords: []BuiltInKeyword{PICOVOICE, BUMBLEBEE},
+    Sensitivities: []float32{0.4, 0.9},
+    ModelPath: "/path/to/model.pv"}
 err := porcupine.Init()
 ```
-
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 When initialized, the valid sample rate is given by `SampleRate`. Expected frame length (number of audio samples in an input array) is given by `FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
@@ -94,4 +113,3 @@ In order to detect non-English wake words you need to use the corresponding mode
 ## Demos
 
 Check out the Porcupine Go demos [here](/demo/go)
-

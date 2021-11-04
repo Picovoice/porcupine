@@ -40,10 +40,12 @@ var (
 
 func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus) {
 	var (
+		accessKeyC  = C.CString(porcupine.AccessKey)
 		modelPathC  = C.CString(porcupine.ModelPath)
 		numKeywords = len(porcupine.KeywordPaths)
 		keywordsC   = make([]*C.char, numKeywords)
 	)
+	defer C.free(unsafe.Pointer(accessKeyC))
 	defer C.free(unsafe.Pointer(modelPathC))
 
 	for i, s := range porcupine.KeywordPaths {
@@ -52,6 +54,7 @@ func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus)
 	}
 
 	ret, _, _ := init_func.Call(
+		uintptr(unsafe.Pointer(accessKeyC)),
 		uintptr(unsafe.Pointer(modelPathC)),
 		uintptr(numKeywords),
 		uintptr(unsafe.Pointer(&keywordsC[0])),
