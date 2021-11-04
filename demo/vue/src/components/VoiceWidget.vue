@@ -2,10 +2,13 @@
   <div class="voice-widget">
     <Porcupine
       ref="porcupine"
-      v-bind:porcupineFactoryArgs="[
-        { builtin: 'Grasshopper', sensitivity: 0.5 },
-        { builtin: 'Grapefruit', sensitivity: 0.6 },
-      ]"
+      v-bind:porcupineFactoryArgs="{
+        accessKey:'Nj93iN5VjmLvoeefKxrfqMXtzxYTAYiWo/tFb8JftF7IrNkpyGoyWw==',
+        keywords: [
+          { builtin: 'Grasshopper', sensitivity: 0.5 },
+          { builtin: 'Grapefruit', sensitivity: 0.6 },
+        ]
+      }"
       v-bind:porcupineFactory="factory"
       v-on:ppn-init="ppnInitFn"
       v-on:ppn-ready="ppnReadyFn"

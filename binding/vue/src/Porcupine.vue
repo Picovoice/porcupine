@@ -10,13 +10,19 @@ import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 export default {
   name: 'Porcupine',
   props: {
-    porcupineFactoryArgs: [Object, Array],
+    porcupineFactoryArgs: [Object],
     porcupineFactory: [Function],
   },
   data: function () {
     return { webVp: null, ppnWorker: null };
   },
   methods: {
+    keywordCallback(label) {
+      this.$emit('ppn-keyword', label);
+    },
+    errorCallback(error) {
+      this.$emit('ppn-error', error);
+    },
     start() {
       if (this.webVp !== null) {
         this.webVp.start();
@@ -31,33 +37,21 @@ export default {
       }
       return false;
     },
-    resume() {
-      if (this.webVp !== null) {
-        this.webVp.resume();
-        return true;
-      }
-      return false;
-    },
   },
   async created() {
     this.$emit('ppn-loading');
 
     try {
+      const { accessKey, keywords } = porcupineFactoryArgs;
       this.ppnWorker = await this.porcupineFactory.create(
-        this.porcupineFactoryArgs
+        accessKey,
+        keywords,
+        this.keywordCallback,
+        this.errorCallback,
       );
       this.webVp = await WebVoiceProcessor.init({
         engines: [this.ppnWorker],
       });
-      let _this = this;
-
-      this.ppnWorker.onmessage = function (messageEvent) {
-        switch (messageEvent.data.command) {
-          case 'ppn-keyword':
-            _this.$emit('ppn-keyword', messageEvent.data.keywordLabel);
-            break;
-        }
-      };
     } catch (error) {
       this.$emit('ppn-error', error);
     }
