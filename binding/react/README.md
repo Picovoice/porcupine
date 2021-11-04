@@ -54,7 +54,6 @@ The `usePorcupine` hook provides a collection of fields and methods shown below.
 
 Make sure you handle the possibility of errors with the `isError` and `errorMessage` fields. Users may not have a working microphone, and they can always decline (and revoke) permissions; your application code should anticipate these scenarios.
 
-
 ### Static Import
 
 Using static imports for the `@picovoice/porcupine-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
@@ -88,7 +87,7 @@ function VoiceWidget(props) {
 }
 ```
 
-The `keywordEventHandler` will log the keyword detections to the browser's JavaScript console. The detection callback function can be changed using the `setKeywordEventHandler`.
+The `keywordEventHandler` will log the keyword detections to the browser's JavaScript console. The detection callback function can be changed using the `setKeywordEventHandler` method.
 
 **Important Note**: Internally, `usePorcupine` performs work asynchronously to initialize, as well as asking for microphone permissions. Not until the asynchronous tasks are done and permission given will Porcupine actually be running. Therefore, it makes sense to use the `isLoaded` state to update your UI to let users know your application is actually ready to process voice (and `isError` in case something went wrong). Otherwise, they may start speaking and their audio data will not be processed, leading to a poor/inconsistent experience.
 

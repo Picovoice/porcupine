@@ -44,6 +44,7 @@ export function usePorcupine(
   const [keywordCallback, setKeywordCallback] = useState(
     () => keywordEventHandler
   );
+
   const start = (): boolean => {
     if (webVoiceProcessor !== null) {
       webVoiceProcessor.start();
@@ -60,6 +61,11 @@ export function usePorcupine(
       return true;
     }
     return false;
+  };
+
+  const processErrorCallback = (error: string): void => {
+    setIsError(true);
+    setErrorMessage(error.toString());
   };
 
 
@@ -99,7 +105,8 @@ export function usePorcupine(
       const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(
         accessKey,
         keywords,
-        keywordCallback
+        keywordCallback,
+        processErrorCallback
       );
       const webVp = await WebVoiceProcessor.init({
         engines: [ppnWorker],
