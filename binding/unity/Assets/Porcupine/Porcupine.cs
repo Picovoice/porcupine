@@ -16,6 +16,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
+#if !UNITY_EDITOR && UNITY_ANDROID
+
+using UnityEngine.Networking;
+
+#endif
+
 namespace Pv.Unity
 {
     public class Porcupine : IDisposable
@@ -362,7 +368,7 @@ namespace Pv.Unity
 
             foreach (string keyword in Enum.GetNames(typeof(BuiltInKeyword))) 
             {
-                ExtractResource(Path.Combine(Path.Combine("keyword_files", platform), string.Format("{0}_{1}.ppn", keyword, platform)));
+                ExtractResource(Path.Combine(Path.Combine("keyword_files", platform), string.Format("{0}_{1}.ppn", keyword.Replace("_", " ").ToLower(), platform)));
             }            
 #else
             string keywordFilesDir = Path.Combine(Path.Combine(Application.streamingAssetsPath, "keyword_files"), platform);
@@ -376,6 +382,10 @@ namespace Pv.Unity
                     continue;
                 }
                 string enumName = Path.GetFileName(keywordFile).Split('_')[0].Replace(" ", "_").ToUpper();
+                if (!Enum.IsDefined(typeof(BuiltInKeyword), enumName))
+                {
+                    continue;
+                }
                 BuiltInKeyword builtin = (BuiltInKeyword)Enum.Parse(typeof(BuiltInKeyword), enumName);
                 keywordPaths.Add(builtin, Path.Combine(keywordFilesDir, keywordFile));
             }

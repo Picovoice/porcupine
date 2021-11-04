@@ -8,34 +8,56 @@ using Pv.Unity;
 
 public class PorcupineDemo : MonoBehaviour {
 
-    private const string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    private const string ACCESS_KEY = "Tw4jothrMMLyRYQ793yD/XF3DeithcbeNVsYlNN0Dc1vY26suWNOkg=="; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
     static List<Porcupine.BuiltInKeyword> _keywords = Enum.GetValues(typeof(Porcupine.BuiltInKeyword)).Cast<Porcupine.BuiltInKeyword>().ToList();
     public Texture[] _imgs;
 
     Button _startButton;
     RawImage _outputImg;
-    Text _instructions;
+    Text _textField;
     Color _alphaSubtract = new Color(0, 0, 0, 0.008f);
 
     private bool _isProcessing;
     PorcupineManager _porcupineManager;
+    private bool isError = false;
 
     void Start() 
     {
         _startButton = gameObject.GetComponentInChildren<Button>();
         _startButton.onClick.AddListener(ToggleProcessing);        
         _outputImg = gameObject.GetComponentInChildren<RawImage>();
-        _instructions = gameObject.GetComponentInChildren<Text>();
+        _textField = gameObject.GetComponentInChildren<Text>();
+        _keywords.Remove(Porcupine.BuiltInKeyword.HEY_GOOGLE);
         FillKeywords();
 
         try
         {
-            _porcupineManager = PorcupineManager.FromBuiltInKeywords(ACCESS_KEY, _keywords, OnWakeWordDetected);            
+            _porcupineManager = PorcupineManager.FromBuiltInKeywords(ACCESS_KEY, _keywords, OnWakeWordDetected, processErrorCallback: ErrorCallback);            
+        }
+        catch (PorcupineInvalidArgumentException ex)
+        {
+            SetError($"{ex.Message}\n. Make sure your access key '{ACCESS_KEY}' is a valid access key.");
+        }
+        catch (PorcupineActivationException)
+        {
+            SetError("AccessKey activation error");
+        }
+        catch (PorcupineActivationLimitException)
+        {
+            SetError("AccessKey reached its device limit");
+        }
+        catch (PorcupineActivationRefusedException)
+        {
+            SetError("AccessKey refused");
+        }
+        catch (PorcupineActivationThrottledException)
+        {
+            SetError("AccessKey has been throttled");
         }
         catch (Exception ex)
         {
-            Debug.LogError("PorcupineManager was unable to initialize: " + ex.ToString());
+            SetError("PorcupineManager was unable to initialize: " + ex.Message);
         }
     }
 
@@ -65,15 +87,42 @@ public class PorcupineDemo : MonoBehaviour {
         _isProcessing = false;
     }
 
-    private void OnWakeWordDetected(int keywordIndex) 
-    {		
-        if (keywordIndex >= 0) {
-            Porcupine.BuiltInKeyword keyword = _keywords[keywordIndex];			
-            _outputImg.color = Color.white;
-            _outputImg.texture = _imgs.First(img => img.name == keyword.ToString().Replace("_", " ").ToLower());
+    private void OnWakeWordDetected(int keywordIndex)
+    {
+        if (isError)
+        {
+            return;
         }
-    }	
+
+        if (keywordIndex >= 0)
+        {
+            Porcupine.BuiltInKeyword keyword = _keywords[keywordIndex];
+            _outputImg.color = Color.white;
+            string a = keyword.ToString().ToLower();
+            _outputImg.texture = _imgs.First(img => img.name == keyword.ToString().ToLower());
+        }
+    }
+
+    private void ErrorCallback(Exception e)
+    {
+        SetError(e.Message);
+    }
+
+    private void SetError(string message)
+    {
+        isError = true;
+        _textField.text = message;
+        _textField.color = Color.red;
+        StopProcessing();
+        _startButton.interactable = false;
+    }
+
     void Update () {
+        if (isError)
+        {
+            return;
+        }
+
         if (_outputImg.texture != null)
         {
             _outputImg.color -= _alphaSubtract;
@@ -82,9 +131,9 @@ public class PorcupineDemo : MonoBehaviour {
 
     private void FillKeywords()
     {
-        foreach (string name in Enum.GetNames(typeof(Porcupine.BuiltInKeyword)))
+        foreach (Porcupine.BuiltInKeyword keyword in _keywords)
         {
-            _instructions.text = $"{_instructions.text}\n- '{name.Replace("_", " ").ToLower()}'";
+            _textField.text = $"{_textField.text}\n- '{keyword.ToString().Replace("_", " ").ToLower()}'";
         }
     }
 

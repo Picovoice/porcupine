@@ -22,7 +22,7 @@ namespace Pv.Unity {
         private VoiceProcessor _voiceProcessor;
         private Porcupine _porcupine;
         private Action<int> _wakeWordCallback;
-        private Action<Exception> _errorCallback;
+        private Action<PorcupineException> _processErrorCallback;
 
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine from built-in keywords
@@ -38,13 +38,13 @@ namespace Pv.Unity {
         /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
         /// </param>
-        /// <param name="errorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
+        /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
         /// <returns>An instance of PorcupineManager.</returns>                             
         public static PorcupineManager FromBuiltInKeywords(string accessKey, IEnumerable<Porcupine.BuiltInKeyword> keywords, Action<int> wakeWordCallback,
-                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> errorCallback = null)
+                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> processErrorCallback = null)
         {
             Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey: accessKey, keywords: keywords, modelPath: modelPath, sensitivities: sensitivities);
-            return new PorcupineManager(porcupine, wakeWordCallback, errorCallback);
+            return new PorcupineManager(porcupine, wakeWordCallback, processErrorCallback);
         }
 
         /// <summary>
@@ -58,21 +58,21 @@ namespace Pv.Unity {
         /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
         /// </param>
-        /// <param name="errorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
+        /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
         /// <returns>An instance of PorcupineManager.</returns>                             
         public static PorcupineManager FromKeywordPaths(string accessKey, IEnumerable<string> keywordPaths, Action<int> wakeWordCallback,
-                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> errorCallback = null)
+                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> processErrorCallback = null)
         {
             Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey: accessKey, keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities);
-            return new PorcupineManager(porcupine, wakeWordCallback, errorCallback);
+            return new PorcupineManager(porcupine, wakeWordCallback, processErrorCallback);
         }
 
         // private constructor
-        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<Exception> errorCallback = null) 
+        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<Exception> processErrorCallback = null) 
         {
             _porcupine = porcupine;            
             _wakeWordCallback = wakeWordCallback;
-            _errorCallback = errorCallback;
+            _processErrorCallback = processErrorCallback;
 
             _voiceProcessor = VoiceProcessor.Instance;
             _voiceProcessor.OnFrameCaptured += OnFrameCaptured;
@@ -95,11 +95,11 @@ namespace Pv.Unity {
             }
             catch (Exception ex)
             {
-                if (_errorCallback != null)
-                    _errorCallback(ex);
+                if (_processErrorCallback != null)
+                    _processErrorCallback(new PorcupineException(ex.Message));
                 else
                     Debug.LogError(ex.ToString());
-            }            
+            }
         }
 
         /// <summary>
