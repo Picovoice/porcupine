@@ -22,6 +22,10 @@ const {
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
 program
+  .requiredOption(
+    "-a, --access_key <string>",
+    "AccessKey obtain from the Picovoice Console (https://console.picovoice.ai/)"
+  )
   .option(
     "-k, --keyword_file_paths <string>",
     "absolute path(s) to porcupine keyword files (.ppn)"
@@ -58,6 +62,7 @@ program.parse(process.argv);
 let isInterrupted = false;
 
 async function micDemo() {
+  let accessKey = program["access_key"]  
   let keywordPaths = program["keyword_file_paths"];
   let keywords = program["keywords"];
   let libraryFilePath = program["library_file_path"];
@@ -138,6 +143,7 @@ async function micDemo() {
   }
 
   let handle = new Porcupine(
+    accessKey,  
     keywordPaths,
     sensitivities,
     modelFilePath,
