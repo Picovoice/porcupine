@@ -41,7 +41,7 @@ class Porcupine {
    * [0, 1].
    * @returns An instance of the engine.
    */
-  public static async fromKeywords(
+  public static async fromBuildInKeywords(
     accessKey: string,
     keywords: BuiltInKeywords[],
     modelPath?: string,
@@ -50,11 +50,11 @@ class Porcupine {
     const keywordPaths = keywords.map((keyword) => {
       if (!Object.values(BuiltInKeywords).includes(keyword)) {
         throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          `keyword '${keyword}' is not a build-in keyword.`);
+          `keyword '${keyword}' is not a build-in keyword`);
       }
       if (this.KEYWORD_PATHS[keyword] === undefined || this.KEYWORD_PATHS[keyword] === null) {
         throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          `keyword '${keyword}' is not a supported keyword.`);
+          `keyword '${keyword}' is not a supported keyword`);
       }
 
       return this.KEYWORD_PATHS[keyword];
@@ -80,7 +80,7 @@ class Porcupine {
     sensitivities?: number[]
   ) {
     try {
-      let { handle, frameLength, sampleRate, version } = await Porcupine.fromKeywordPathsNative(
+      let { handle, frameLength, sampleRate, version } = await Porcupine.create(
         accessKey,
         keywordsPaths,
         modelPath,
@@ -107,7 +107,7 @@ class Porcupine {
    * [0, 1].
    * @returns An instance of the engine.
    */
-  private static async fromKeywordPathsNative(
+  private static async create(
     accessKey: string,
     keywordPaths?: string[],
     modelPath?: string,
@@ -115,7 +115,7 @@ class Porcupine {
   ) {
     if (accessKey === undefined || accessKey === null) {
       throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-        "'accessKey' must be set.");
+        "'accessKey' must be set");
     }
 
     if (modelPath === undefined) {
@@ -128,13 +128,13 @@ class Porcupine {
       !Array.isArray(keywordPaths)
     ) {
       throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          "keywordPaths must be set, not empty and an array.");
+          "keywordPaths must be set, not empty and an array");
     }
 
     for (let i = 0; i < keywordPaths.length; i++) {
       if (keywordPaths[i] == null || keywordPaths[i] == "") {
         throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-            "One of the provided keyword paths was empty.");
+            "One of the provided keyword paths was empty");
       }
     }
 

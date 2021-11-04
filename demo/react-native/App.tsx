@@ -12,7 +12,7 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PorcupineManager, BuiltInKeywords} from '@picovoice/porcupine-react-native';
+import {PorcupineManager, BuiltInKeywords, PorcupineExceptions} from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
 
 type Props = {};
@@ -124,7 +124,7 @@ export default class App extends Component<Props, State> {
 
     this.setState({currentKeyword: keyword});
     try {
-      this._porcupineManager = await PorcupineManager.fromKeywords(
+      this._porcupineManager = await PorcupineManager.fromBuildInKeywords(
         this._accessKey,
         [keyword],
         (keywordIndex: number) => {
@@ -150,9 +150,24 @@ export default class App extends Component<Props, State> {
         }
       );
     } catch (err) {
+      let errorMessage = '';
+      if (err instanceof PorcupineExceptions.PorcupineInvalidArgumentException) {
+        errorMessage = `${err.message}\nPlease make sure accessKey ${this._accessKey} is a valid access key.`;
+      } else if (err instanceof PorcupineExceptions.PorcupineActivationException) {
+        errorMessage = "AccessKey activation error";
+      } else if (err instanceof PorcupineExceptions.PorcupineActivationLimitException) {
+        errorMessage = "AccessKey reached its device limit";
+      } else if (err instanceof PorcupineExceptions.PorcupineActivationRefusedException) {
+        errorMessage = "AccessKey refused";
+      } else if (err instanceof PorcupineExceptions.PorcupineActivationThrottledException) {
+        errorMessage = "AccessKey has been throttled";
+      } else {
+        errorMessage = err.toString();
+      }
+
       this.setState({
         isError: true,
-        errorMessage: err.toString()
+        errorMessage: errorMessage
       });
     }
   }

@@ -14,8 +14,9 @@ import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
 import type BuiltInKeywords from './builtin_keywords';
+import type * as PorcupineExceptions from './porcupine_exceptions';
 export type DetectionCallback = (keywordIndex: number) => void;
-export type ProcessErrorCallback = (error: unknown) => void;
+export type ProcessErrorCallback = (error: PorcupineExceptions.PorcupineException) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
@@ -38,7 +39,7 @@ class PorcupineManager {
    * [0, 1].
    * @returns An instance of the Porcupine Manager
    */
-  public static async fromKeywords(
+  public static async fromBuildInKeywords(
     accessKey: string,
     keywords: BuiltInKeywords[],
     detectionCallback: DetectionCallback,
@@ -46,7 +47,7 @@ class PorcupineManager {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    let porcupine = await Porcupine.fromKeywords(
+    let porcupine = await Porcupine.fromBuildInKeywords(
       accessKey,
       keywords,
       modelPath,
@@ -103,7 +104,11 @@ class PorcupineManager {
             this._detectionCallback(keywordIndex);
           }
         } catch (e) {
-          this._processErrorCallback?.(e);
+          if (this._processErrorCallback) {
+            this._processErrorCallback(e as PorcupineExceptions.PorcupineException);
+          } else {
+            console.error(e);
+          }
         }
       }
     );

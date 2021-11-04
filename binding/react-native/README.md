@@ -119,7 +119,7 @@ The module provides you with two levels of API to choose from depending on your 
 [PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
-Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager
+Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the PorcupineManager
 using one or more of the built-in keywords.
 
 ```javascript
@@ -127,9 +127,9 @@ const accessKey = "${ACCESS_KEY}"
 
 async createPorcupineManager(){
     try{
-        this._porcupineManager = await PorcupineManager.fromKeywords(
+        this._porcupineManager = await PorcupineManager.fromBuiltInKeywords(
             accessKey,
-            ["picovoice", "porcupine"],
+            [BuiltInKeywords.Picovoice, BuiltInKeywords.Porcupine],
             detectionCallback,
             processErrorCallback);
     } catch (err) {
@@ -217,14 +217,14 @@ module to capture frames of audio and automatically pass it to the wake word eng
 [Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
 who want to incorporate wake word detection into a already existing audio processing pipeline.
 
-`Porcupine` also has `fromKeywords` and `fromKeywordPaths` static constructors.
+`Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
 const accessKey = "${ACCESS_KEY}"
 
 async createPorcupine(){
     try{
-        this._porcupine = await Porcupine.fromKeywords(accessKey, ["picovoice"]);
+        this._porcupine = await Porcupine.fromBuiltInKeywords(accessKey, ["picovoice"]);
     } catch (err) {
         // handle error
     }

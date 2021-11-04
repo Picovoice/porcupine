@@ -1019,7 +1019,7 @@
 
 "@picovoice/porcupine-react-native@../../binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz":
   version "2.0.0"
-  resolved "../../binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz#bf39988374e9bdd05bb92f9fdc4d28740a97221c"
+  resolved "../../binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz#22a123bd8ff8c6d53af662bc554901108301b14c"
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"

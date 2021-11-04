@@ -13,7 +13,7 @@
 
 @interface RCT_EXTERN_MODULE(PvPorcupine, NSObject)
 
-RCT_EXTERN_METHOD(create: (NSString *)accessKey
+RCT_EXTERN_METHOD(fromKeywordPaths: (NSString *)accessKey
                   modelPath: (NSString *)modelPath 
                   keywordPaths: (NSArray<NSString *>)keywordPaths 
                   sensitivities: (NSArray<NSNumber>)sensitivities 
