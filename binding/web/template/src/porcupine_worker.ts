@@ -35,7 +35,7 @@ async function init(accessKey: string, keywords: Array<PorcupineKeyword | string
     // @ts-ignore
     postMessage(porcupineReadyMessage, undefined);
   } catch (error) {
-    const errorMessage = String(error);
+    const errorMessage = error.toString();
     const porcupineFailedMessage: PorcupineWorkerResponseFailed = {
       command: 'ppn-failed',
       message: errorMessage,
