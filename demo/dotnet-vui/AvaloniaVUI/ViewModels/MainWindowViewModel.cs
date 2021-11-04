@@ -13,6 +13,8 @@ namespace AvaloniaVUI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private const string ACCESS_KEY = "{YOUR_ACCESS_KEY_HERE}";
+
         private Color _backgroundColor = Colors.LightGray;
         public Color BackgroundColor
         {
@@ -76,8 +78,14 @@ namespace AvaloniaVUI.ViewModels
         {
             Task.Factory.StartNew(() =>
             {
-                List<string> commands = new List<string> { "grapefruit", "grasshopper", "bumblebee", "blueberry" };
-                using Porcupine porcupine = Porcupine.Create(keywords: commands);
+                List<BuiltInKeyword> commands = new List<BuiltInKeyword> {
+                    BuiltInKeyword.GRAPEFRUIT,
+                    BuiltInKeyword.GRASSHOPPER,
+                    BuiltInKeyword.BUMBLEBEE,
+                    BuiltInKeyword.BLUEBERRY
+                };
+
+                using Porcupine porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, commands);
 
                 short[] frameBuffer = new short[porcupine.FrameLength];
                 ALCaptureDevice captureDevice = ALC.CaptureOpenDevice(null, porcupine.SampleRate, ALFormat.Mono16, porcupine.FrameLength * 2);

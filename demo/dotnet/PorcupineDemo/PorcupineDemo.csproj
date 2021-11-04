@@ -19,7 +19,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="OpenTK" Version="4.0.1" />
 		<PackageReference Include="Porcupine" Version="1.9.4" />
 		<PackageReference Include="PvRecorder" Version="1.0.0" />
 	</ItemGroup>

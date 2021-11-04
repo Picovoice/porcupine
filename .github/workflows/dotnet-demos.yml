@@ -2,12 +2,12 @@ name: .NET Demos
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
@@ -22,18 +22,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Setup .NET
+  
+    - name: Setup .NET 3.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
 
-    - name: Dotnet dependencies
-      run: sudo apt install libopenal-dev
-
-    - name: Dotnet restore dependencies
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    
+    - name: Pack binding for local ref
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+    
+    - name: Package restore
       run: dotnet restore
-
+    
+    - name: Add binding to demo
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
@@ -44,16 +52,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET
+    - name: Setup .NET 3.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
 
-    - name: Dotnet dependencies
-      run: sudo apt install libopenal-dev
-
-    - name: Dotnet restore dependencies
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    
+    - name: Pack binding for local ref
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+    
+    - name: Package restore
       run: dotnet restore
+    
+    - name: Add binding to demo
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
 
     - name: Dotnet build filedemo
       run: dotnet build -c FileDemo.Release
