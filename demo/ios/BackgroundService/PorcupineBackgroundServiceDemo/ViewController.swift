@@ -30,6 +30,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         textView.text = "Press the Start button and say the wake word \"Porcupine\". Try pressing the home button and saying it again."
         
+        errorLabel.layer.cornerRadius = 10
         errorLabel.isHidden = true
     }
 

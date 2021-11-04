@@ -47,6 +47,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         wakeWordPicker.frame.size = CGSize(width: viewSize.width, height: viewSize.height - (startButtonSize.height + errorLabelSize.height + 40))
         
         
+        errorLabel.layer.cornerRadius = 10
         errorLabel.frame.origin = CGPoint(x: ((viewSize.width - errorLabelSize.width) / 2), y: viewSize.height - (startButtonSize.height + errorLabelSize.height + 60)  )
         errorLabel.frame.size = errorLabelSize
         errorLabel.isHidden = true
