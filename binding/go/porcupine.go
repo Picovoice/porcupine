@@ -304,7 +304,7 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 func getOS() (string, string) {
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		return "mac", runtime.GOARCH
+		return "mac", getMacArch()
 	case "linux":
 		osName, cpu := getLinuxDetails()
 		return osName, cpu
@@ -313,6 +313,14 @@ func getOS() (string, string) {
 	default:
 		log.Fatalf("%s is not a supported OS", os)
 		return "", ""
+	}
+}
+
+func getMacArch() string {
+	if runtime.GOARCH == "arm64" {
+		return "arm64"
+	} else {
+		return "x86_64"
 	}
 }
 
@@ -385,7 +393,7 @@ func extractLib() string {
 	var libPath string
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		libPath = fmt.Sprintf("embedded/lib/%s/x86_64/libpv_porcupine.dylib", osName)
+		libPath = fmt.Sprintf("embedded/lib/%s/%s/libpv_porcupine.dylib", osName, cpu)
 	case "linux":
 		if cpu == "" {
 			libPath = fmt.Sprintf("embedded/lib/%s/libpv_porcupine.so", osName)
