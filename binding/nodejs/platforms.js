@@ -118,11 +118,9 @@ function getLinuxPlatform() {
     }
 }
 
-function getLinuxMachine() {
+function getLinuxMachine(arch) {
     let archInfo = ""
-    if(arch === X86_64) {
-      return "x86_64";
-    } else if(arch == ARM_64) {
+    if(arch == ARM_64) {
       archInfo = ARM_CPU_64;
     } 
 
@@ -185,7 +183,7 @@ function getSystemLibraryPath() {
             SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_LINUX}/${X86_64}`)
           );
         } else if (arch === ARM_32 || arch === ARM_64) {
-          let linuxMachine = getLinuxMachine();
+          let linuxMachine = getLinuxMachine(arch);
           if (linuxMachine !== null) {
             return absoluteLibraryPath(
               SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_LINUX}/${linuxMachine}`)
