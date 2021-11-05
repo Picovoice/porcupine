@@ -49,10 +49,13 @@ In this example we're passing in two keywords: "Grasshopper" and "Grapefruit" wi
 <template>
   <div class="voice-widget">
     <Porcupine
-      v-bind:porcupineFactoryArgs="[
-        { builtin: 'Grasshopper', sensitivity: 0.65 },
-        { builtin: 'Grapefruit', sensitivity: 0.4 },
-      ]"
+      v-bind:porcupineFactoryArgs="{
+        accessKey: "AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)",
+        keywords: [
+          { builtin: "Grasshopper", sensitivity: 0.5 },
+          { builtin: "Grapefruit", sensitivity: 0.6 },
+        ],
+      }"
       v-bind:porcupineFactory="factory"
       v-on:ppn-ready="ppnReadyFn"
       v-on:ppn-keyword="ppnKeywordFn"

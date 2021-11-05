@@ -17,12 +17,6 @@ export default {
     return { webVp: null, ppnWorker: null };
   },
   methods: {
-    keywordCallback(label) {
-      this.$emit('ppn-keyword', label);
-    },
-    errorCallback(error) {
-      this.$emit('ppn-error', error);
-    },
     start() {
       if (this.webVp !== null) {
         this.webVp.start();
@@ -37,26 +31,30 @@ export default {
       }
       return false;
     },
-  },
-  async created() {
-    this.$emit('ppn-loading');
-
-    try {
-      const { accessKey, keywords } = porcupineFactoryArgs;
-      this.ppnWorker = await this.porcupineFactory.create(
-        accessKey,
-        keywords,
-        this.keywordCallback,
-        this.errorCallback,
-      );
-      this.webVp = await WebVoiceProcessor.init({
-        engines: [this.ppnWorker],
-      });
-    } catch (error) {
+    keywordCallback(label) {
+      this.$emit('ppn-keyword', label);
+    },
+    errorCallback(error) {
       this.$emit('ppn-error', error);
-    }
-
-    this.$emit('ppn-ready');
+    },
+    async initEngine() {
+      try {
+        console.log(this.porcupineFactoryArgs);
+        const { accessKey, keywords } = this.porcupineFactoryArgs;
+        this.ppnWorker = await this.porcupineFactory.create(
+          accessKey,
+          JSON.parse(JSON.stringify(keywords)),
+          this.keywordCallback,
+          this.errorCallback
+        );
+        this.webVp = await WebVoiceProcessor.init({
+          engines: [this.ppnWorker],
+        });
+        this.$emit('ppn-ready');
+      } catch (error) {
+        this.$emit('ppn-error', error);
+      }
+    },
   },
   beforeUnmount: function () {
     if (this.webVp !== null) {

@@ -2,20 +2,25 @@
   <div class="voice-widget">
     <Porcupine
       ref="porcupine"
-      v-bind:porcupineFactoryArgs="{
-        accessKey:'Nj93iN5VjmLvoeefKxrfqMXtzxYTAYiWo/tFb8JftF7IrNkpyGoyWw==',
-        keywords: [
-          { builtin: 'Grasshopper', sensitivity: 0.5 },
-          { builtin: 'Grapefruit', sensitivity: 0.6 },
-        ]
-      }"
+      v-bind:porcupineFactoryArgs="factoryArgs"
       v-bind:porcupineFactory="factory"
-      v-on:ppn-init="ppnInitFn"
       v-on:ppn-ready="ppnReadyFn"
       v-on:ppn-keyword="ppnKeywordFn"
       v-on:ppn-error="ppnErrorFn"
     />
     <h2>VoiceWidget</h2>
+    <h3>
+      <label>
+        AccessKey obtained from
+        <a href="https://picovoice.ai/console/">Picovoice Console</a>:
+        <input
+          type="text"
+          name="accessKey"
+          v-on:change="initEngine"
+          :disabled="isLoaded"
+        />
+      </label>
+    </h3>
     <h3>Loaded: {{ isLoaded }}</h3>
     <h3>Listening: {{ isListening }}</h3>
     <h3>Error: {{ isError }}</h3>
@@ -27,9 +32,6 @@
     </button>
     <button v-on:click="pause" :disabled="!isLoaded || isError || !isListening">
       Pause
-    </button>
-    <button v-on:click="resume" :disabled="!isLoaded || isError || isListening">
-      Resume
     </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
@@ -56,6 +58,13 @@ export default {
       isLoaded: false,
       isListening: false,
       factory: PorcupineWorkerFactoryEn,
+      factoryArgs: {
+        accessKey: "",
+        keywords: [
+          { builtin: "Grasshopper", sensitivity: 0.5 },
+          { builtin: "Grapefruit", sensitivity: 0.6 },
+        ],
+      },
     };
   },
   methods: {
@@ -69,13 +78,12 @@ export default {
         this.isListening = !this.isListening;
       }
     },
-    resume: function () {
-      if (this.$refs.porcupine.resume()) {
-        this.isListening = !this.isListening;
-      }
-    },
-    ppnInitFn: function () {
+    initEngine: function (event) {
+      this.factoryArgs.accessKey = event.target.value;
       this.isError = false;
+      this.isLoaded = false;
+      this.isListening = false;
+      this.$refs.porcupine.initEngine();
     },
     ppnReadyFn: function () {
       this.isLoaded = true;
@@ -83,7 +91,6 @@ export default {
     },
     ppnKeywordFn: function (keywordLabel) {
       console.log(keywordLabel);
-
       this.detections = [...this.detections, keywordLabel];
     },
     ppnErrorFn: function (error) {
