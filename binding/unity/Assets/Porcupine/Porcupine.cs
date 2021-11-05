@@ -196,21 +196,22 @@ namespace Pv.Unity
 
 #if !UNITY_EDITOR && UNITY_ANDROID
 
-            keywordPaths = keywordPaths.Select(path => {
-                if (!File.Exists(path))
+            List<String> keywordList = keywordPaths.ToList();
+            for (int i = 0; i < keywordList.Count(); i++)
+            {
+                if (!File.Exists(keywordList[i]))
                 {
                     try
                     {
-                        return ExtractResource(path);
+                        keywordList[i] = ExtractResource(keywordList[i]);
                     } 
                     catch
                     {
-                        throw new PorcupineIOException($"Couldn't find keyword file at '{path}'");
+                        throw new PorcupineIOException($"Couldn't find keyword file at '{keywordList[i]}'");
                     }
                 }
-
-                return path;
-            });
+            }
+            keywordPaths = keywordList;
 
 #else
 
