@@ -20,7 +20,7 @@ If you are using this library with the [@picovoice/web-voice-processor](https://
 
 The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model, which is of nontrivial size. There are separate worker and factory packages as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
 
-Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create. The `.ppn` files can be encoded with Base64 and then passed to the Porcupine `create` function as arguments.
+Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create. The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. The Base64 encoded models can then be passed into the Porcupine `create` function as arguments.
 
 ### Workers 
 

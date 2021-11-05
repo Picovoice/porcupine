@@ -101,7 +101,7 @@ Each language includes a set of built-in keywords. The quickest way to get start
 
 Custom wake words are generated using [Picovoice Console](https://picovoice.ai/console/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the Angular library.
 
-Convert the `.ppn` file to base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that the `PorcupineService` can tell you which keyword occurred ("Deep Sky Blue", in this case):
+The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that the `PorcupineService` can tell you which keyword occurred ("Deep Sky Blue", in this case):
 
 ```typescript
 const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
@@ -109,7 +109,7 @@ const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
 ...
   // Listen for "Deep Sky Blue": pass in a base64-encoded string of the .ppn file:
   await this.porcupineService.init(porcupineFactoryEn,
-  {keywords: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
+  {accessKey: accessKey, keywords: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
 
 ...
 ```
