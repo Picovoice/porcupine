@@ -10,7 +10,7 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
 ## Compatibility
 
 - Linux (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Windows (x86_64)
 - Raspberry Pi:
   - Zero
