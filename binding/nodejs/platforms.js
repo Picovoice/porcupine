@@ -18,7 +18,7 @@ const { PvUnsupportedPlatformError } = require("./errors");
 
 const SYSTEM_LINUX = "linux";
 const SYSTEM_MAC = "darwin";
-const SYSTEM_WINDOWS = "windows";
+const SYSTEM_WINDOWS = "win32";
 
 const X86_64 = "x64";
 const ARM_32 = "arm";
@@ -67,7 +67,7 @@ SYSTEM_TO_LIBRARY_PATH.set(
 );
 SYSTEM_TO_LIBRARY_PATH.set(
     `${SYSTEM_WINDOWS}/${X86_64}`,
-    `${PLATFORM_WINDOWS}/x86_64/pv_porcupine.node`
+    `${PLATFORM_WINDOWS}/amd64/pv_porcupine.node`
 );
 
 function absoluteLibraryPath(libraryPath) {
@@ -102,8 +102,12 @@ function getPlatform() {
   const system = os.platform();
   const arch = os.arch();
 
-  if (system === SYSTEM_MAC && arch === X86_64) {
+  if (system === SYSTEM_MAC && (arch === X86_64 || arch === ARM_64)) {
     return PLATFORM_MAC;
+  }
+
+  if (system === SYSTEM_WINDOWS && arch === X86_64) {
+    return PLATFORM_WINDOWS;
   }
 
   if (system === SYSTEM_LINUX) {
