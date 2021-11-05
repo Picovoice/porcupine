@@ -1,6 +1,7 @@
 name: React Demos
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master, v2.0 ]
     paths:
