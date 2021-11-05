@@ -37,6 +37,15 @@ The easiest way to install the Porcupine Unity SDK is to import [porcupine.unity
 
 **NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from github. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
 
+## AccessKey
+
+All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Packaging
 To build the package from source, you have first have to clone the repo with submodules:
 ```console
@@ -57,13 +66,16 @@ The module provides you with two levels of API to choose from depending on your 
 
 >**NOTE:** If running on iOS, you must fill in the Microphone Usage Description under Project Settings>Other Settings in order to enable audio recording.
 
-Using the constructor `PorcupineManager.FromKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords.
+Using the constructor `PorcupineManager.FromBuiltInKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords.
 ```csharp
 using Pv.Unity;
 
+string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try {
-    List<string> keywords = new List<string>(){ "picovoice", "porcupine" };
-    PorcupineManager _porcupineManager = PorcupineManager.FromKeywords(
+    List<Porcupine.BuiltInKeywords> keywords = new List<BuiltInKeywords>(){ Porcupine.BuiltInKeyword.PICOVOICE, Porcupine.BuiltInKeyword.PORCUPINE };
+    PorcupineManager _porcupineManager = PorcupineManager.FromBuiltInKeywords(
+                                            accessKey,
                                             keywords,
                                             OnWakeWordDetected);
 }
@@ -86,13 +98,16 @@ private void OnWakeWordDetected(int keywordIndex){
 }
 ```
 
-Available built-in keywords are stored in the constants `PorcupineManager.BUILT_IN_KEYWORDS` and `Porcupine.BUILT_IN_KEYWORDS`.
+Available built-in keywords are stored in the constants `Porcupine.BuiltInKeyword`.
 
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.FromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
 ```csharp
+string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 List<string> keywordPaths = new List<string>(){ "/path/to/keyword.ppn" };
 PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths( 
+                                        accessKey,
                                         keywordPaths, 
                                         OnWakeWordDetected);
 ```
@@ -101,6 +116,8 @@ In addition to custom keywords, you can override the default Porcupine model fil
 
 These optional parameters can be passed in like so:
 ```csharp
+string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 List<string> keywordPaths = new List<string>()
 { 
     "/path/to/keyword/file/one.ppn", 
@@ -110,8 +127,9 @@ string modelPath = "path/to/model/file.pv";
 List<float> sensitivites = new List<float>(){ 0.25f, 0.6f };
 
 PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths(
+                                        accessKey,
                                         keywordPaths,
-                                        OnWakWordDetected,
+                                        OnWakeWordDetected,
                                         modelPath: modelPath,
                                         sensitivities: sensitivities,
                                         errorCallback: OnError);
@@ -152,10 +170,12 @@ To create an instance of `Porcupine`, use the `.Create` static constructor. You 
 ```csharp
 using Pv.Unity;
 
+string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try
 {
-    List<string> keywords = new List<string>(){ "porcupine", "picovoice" };
-    Porcupine _porcupine = Porcupine.Create(keywords: keywords);
+    List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>(){ Porcupine.BuiltInKeyword.PORCUPINE, Porcupine.BuiltInKeyword.PICOVOICE };
+    Porcupine _porcupine = Porcupine.FromBuiltInKeywords(accessKey: accessKey, keywords: keywords);
 } 
 catch (Exception ex) 
 {
