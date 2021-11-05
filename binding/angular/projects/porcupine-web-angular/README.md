@@ -109,7 +109,7 @@ const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
 ...
   // Listen for "Deep Sky Blue": pass in a base64-encoded string of the .ppn file:
   await this.porcupineService.init(porcupineFactoryEn,
-  {keywords: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
+  {accessKey: accessKey, keywords: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
 
 ...
 ```

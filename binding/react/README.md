@@ -177,7 +177,7 @@ const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
     pause,
   } = usePorcupine(
     workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePorcupine will start.
-    { keywords: keywords },
+    { accessKey: accessKey, keywords: keywords },
     keywordEventHandler
   );
 

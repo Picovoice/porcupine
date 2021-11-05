@@ -50,10 +50,10 @@ In this example we're passing in two keywords: "Grasshopper" and "Grapefruit" wi
   <div class="voice-widget">
     <Porcupine
       v-bind:porcupineFactoryArgs="{
-        accessKey: "AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)",
+        accessKey: 'AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)',
         keywords: [
-          { builtin: "Grasshopper", sensitivity: 0.5 },
-          { builtin: "Grapefruit", sensitivity: 0.6 },
+          { builtin: 'Grasshopper', sensitivity: 0.5 },
+          { builtin: 'Grapefruit', sensitivity: 0.6 },
         ],
       }"
       v-bind:porcupineFactory="factory"
@@ -126,9 +126,12 @@ The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes th
 <template>
   <div class="voice-widget">
     <Porcupine
-      v-bind:porcupineFactoryArgs="[
-        { base64: '/* Base64 representation of deep_sky_blue.ppn */', custom: 'Deep Sky Blue', sensitivity: 0.65 },
-      ]"
+      v-bind:porcupineFactoryArgs="{
+        accessKey: 'AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)',
+        keywords: [
+          { base64: '/* Base64 representation of deep_sky_blue.ppn */', custom: 'Deep Sky Blue', sensitivity: 0.65 },
+        ],
+      }"
       v-bind:porcupineFactory="factory"
       v-on:ppn-ready="ppnReadyFn"
       v-on:ppn-keyword="ppnKeywordFn"

@@ -155,7 +155,7 @@ func main() {
 
 		if keywordIndex >= 0 {
 			keywordsDetected = true
-			fmt.Printf("Keyword %d detected at %f seconds.\n", keywordIndex, float64(totalRead)/float64(SampleRate))
+			fmt.Printf("Keyword %d detected at %f seconds.\n", keywordIndex, float64(totalRead)/float64(porcupine.SampleRate))
 		}
 	}
 	if !keywordsDetected {
