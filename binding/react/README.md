@@ -150,3 +150,38 @@ export default function VoiceWidget() {
   );
 }
 ```
+
+### Custom wake words
+
+Each language includes a set of built-in keywords. The quickest way to get started is to use one of those. The builtin keywords are licensed under Apache-2.0 and are completely free to use.
+
+Custom wake words are generated using [Picovoice Console](https://picovoice.ai/console/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the React library.
+
+The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that Porcupine can tell you which keyword occurred ("Deep Sky Blue", in this case):
+
+```typescript
+const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
+...
+  const [keywords] = useState([
+    { base64: DEEP_SKY_BLUE_PPN_64, custom: "Deep Sky Blue", sensitivity: 0.7 },
+  ]);
+
+...
+  const {
+    isLoaded,
+    isListening,
+    isError,
+    errorMessage,
+    start,
+    resume,
+    pause,
+  } = usePorcupine(
+    workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePorcupine will start.
+    { keywords: keywords },
+    keywordEventHandler
+  );
+
+...
+```
+
+You may wish to store the base64 string in a separate JavaScript file and export it to keep your application code separate.
