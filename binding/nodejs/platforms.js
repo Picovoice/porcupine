@@ -99,7 +99,7 @@ function getCpuPart() {
     for (let infoLine of cpuInfo.split("\n")) {
       if (infoLine.includes("CPU part")) {
         let infoLineSplit = infoLine.split(' ')
-        return infoLineSplit[infoLine.length - 1].toLowerCase();
+        return infoLineSplit[infoLineSplit.length - 1].toLowerCase();
       }
     }
     throw PvUnsupportedPlatformError(`Unsupported CPU.`);
