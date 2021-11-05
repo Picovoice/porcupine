@@ -4,15 +4,13 @@ on:
   push:
     branches: [ master, v2.0 ]
     paths:
-      - 'binding/react/**'
-      - '!binding/react/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'demo/react/**'
+      - '!demo/react/README.md'
   pull_request:
     branches: [ master, v2.0 ]
     paths:
-      - 'binding/react/**'
-      - '!binding/react/README.md'
+      - 'demo/react/**'
+      - '!demo/react/README.md'
       - 'lib/**'
       - 'resources/**'
 
