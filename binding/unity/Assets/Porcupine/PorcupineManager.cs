@@ -41,7 +41,7 @@ namespace Pv.Unity {
         /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
         /// <returns>An instance of PorcupineManager.</returns>                             
         public static PorcupineManager FromBuiltInKeywords(string accessKey, IEnumerable<Porcupine.BuiltInKeyword> keywords, Action<int> wakeWordCallback,
-                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> processErrorCallback = null)
+                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<PorcupineException> processErrorCallback = null)
         {
             Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey: accessKey, keywords: keywords, modelPath: modelPath, sensitivities: sensitivities);
             return new PorcupineManager(porcupine, wakeWordCallback, processErrorCallback);
@@ -61,14 +61,14 @@ namespace Pv.Unity {
         /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
         /// <returns>An instance of PorcupineManager.</returns>                             
         public static PorcupineManager FromKeywordPaths(string accessKey, IEnumerable<string> keywordPaths, Action<int> wakeWordCallback,
-                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> processErrorCallback = null)
+                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<PorcupineException> processErrorCallback = null)
         {
             Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey: accessKey, keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities);
             return new PorcupineManager(porcupine, wakeWordCallback, processErrorCallback);
         }
 
         // private constructor
-        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<Exception> processErrorCallback = null) 
+        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<PorcupineException> processErrorCallback = null) 
         {
             _porcupine = porcupine;            
             _wakeWordCallback = wakeWordCallback;

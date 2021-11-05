@@ -37,7 +37,7 @@ public class PorcupineDemo : MonoBehaviour {
         }
         catch (PorcupineInvalidArgumentException ex)
         {
-            SetError($"{ex.Message}\n. Make sure your access key '{ACCESS_KEY}' is a valid access key.");
+            SetError($"{ex.Message}\nMake sure your access key '{ACCESS_KEY}' is a valid access key.");
         }
         catch (PorcupineActivationException)
         {

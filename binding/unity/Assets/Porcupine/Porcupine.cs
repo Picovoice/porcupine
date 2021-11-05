@@ -172,13 +172,46 @@ namespace Pv.Unity
             modelPath = modelPath ?? DEFAULT_MODEL_PATH;
             if (!File.Exists(modelPath))
             {
+
+#if !UNITY_EDITOR && UNITY_ANDROID
+
+                try {
+                    modelPath = ExtractResource(modelPath);
+                } catch {
+                    throw new PorcupineIOException($"Couldn't find model file at '{modelPath}'");
+                }
+
+#else
+
                 throw new PorcupineIOException($"Couldn't find model file at '{modelPath}'");
+
+#endif
+
             }
 
             if (keywordPaths == null || keywordPaths.Count() == 0)
             {
                 throw new PorcupineInvalidArgumentException("No keyword file paths were provided to Porcupine");
             }
+
+#if !UNITY_EDITOR && UNITY_ANDROID
+
+            keywordPaths = keywordPaths.Select(path => {
+                if (!File.Exists(path))
+                {
+                    try
+                    {
+                        return ExtractResource(path);
+                    } catch
+                    {
+                        throw new PorcupineIOException($"Couldn't find keyword file at '{path}'");
+                    }
+                }
+
+                return path;
+            });
+
+#else
 
             foreach (string path in keywordPaths)
             {
@@ -187,6 +220,8 @@ namespace Pv.Unity
                     throw new PorcupineIOException($"Couldn't find keyword file at '{path}'");
                 }
             }
+
+#endif
 
             if (sensitivities == null)
             {
