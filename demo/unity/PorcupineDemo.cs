@@ -114,10 +114,9 @@ public class PorcupineDemo : MonoBehaviour {
         _textField.text = message;
         _textField.color = Color.red;
         _startButton.interactable = false;
-        try
-        {
+        if (_porcupineManager != null) {
             StopProcessing();
-        } catch { }
+        }
     }
 
     void Update () {
