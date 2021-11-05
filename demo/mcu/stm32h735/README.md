@@ -37,4 +37,4 @@ The model is now being trained. You will be able to download it within a few hou
 
 1. Download your custom voice model(s) from [Picovoice Console](https://console.picovoice.ai/).
 2. Decompress the zip file. The model for Porcupine wake word is located in two files: A binary `.ppn` file, and as a `.h` header file containing a `C` array version of the binary model.
-3. Copy the contents of the `.h` header file and update the `DEFAULT_KEYWORD_ARRAY` value in [/stm32h735g-dk/Inc/pv_params.h](./stm32h735g-dk/Inc/pv_params.h)
+3. Copy the contents of the array inside the `.h` header file and update the `DEFAULT_KEYWORD_ARRAY` value in [/stm32h735g-dk/Inc/pv_params.h](./stm32h735g-dk/Inc/pv_params.h)
