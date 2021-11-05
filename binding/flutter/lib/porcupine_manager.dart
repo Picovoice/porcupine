@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -17,11 +17,9 @@ import 'package:porcupine/porcupine.dart';
 import 'package:porcupine/porcupine_error.dart';
 
 typedef WakeWordCallback(int keywordIndex);
-typedef ErrorCallback(PvError error);
+typedef ErrorCallback(PorcupineException error);
 
 class PorcupineManager {
-  /// a list of built-in keywords
-  static const List<String> BUILT_IN_KEYWORDS = Porcupine.BUILT_IN_KEYWORDS;
 
   VoiceProcessor? _voiceProcessor;
   Porcupine? _porcupine;
@@ -31,9 +29,11 @@ class PorcupineManager {
   RemoveListener? _removeErrorListener;
 
   /// Static creator for initializing PorcupineManager from a selection of built-in keywords
+  /// 
+  /// [accessKey] AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
   ///
   /// [keywords] is a List of (phrases) for detection. The list of available
-  /// keywords can be retrieved using [Porcupine.BUILT_IN_KEYWORDS]
+  /// keywords can be retrieved using [BuiltInKeyword]
   ///
   /// [wakeWordCallback] A callback that is triggered when one of the given keywords
   /// has been detected by Porcupine
@@ -49,17 +49,19 @@ class PorcupineManager {
   /// experiences a problem while processing audio
   ///
   /// returns an instance of PorcupineManager
-  static Future<PorcupineManager> fromKeywords(
-      List<String> keywords, WakeWordCallback wakeWordCallback,
+  static Future<PorcupineManager> fromBuiltInKeywords(
+      String accessKey, List<BuiltInKeyword> keywords, WakeWordCallback wakeWordCallback,
       {String? modelPath,
       List<double>? sensitivities,
       ErrorCallback? errorCallback}) async {
-    Porcupine porcupine = await Porcupine.fromKeywords(keywords,
+    Porcupine porcupine = await Porcupine.fromBuiltInKeywords(accessKey, keywords,
         modelPath: modelPath, sensitivities: sensitivities);
-    return new PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
+    return PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
   }
 
   /// Static creator for initializing PorcupineManager from a list of paths to custom keyword files
+  /// 
+  /// [accessKey] AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
   ///
   /// [keywordPaths] A List of absolute paths to keyword model files.
   ///
@@ -80,13 +82,13 @@ class PorcupineManager {
   ///
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywordPaths(
-      List<String> keywordPaths, WakeWordCallback wakeWordCallback,
+      String accessKey, List<String> keywordPaths, WakeWordCallback wakeWordCallback,
       {String? modelPath,
       List<double>? sensitivities,
       ErrorCallback? errorCallback}) async {
-    Porcupine porcupine = await Porcupine.fromKeywordPaths(keywordPaths,
+    Porcupine porcupine = await Porcupine.fromKeywordPaths(accessKey, keywordPaths,
         modelPath: modelPath, sensitivities: sensitivities);
-    return new PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
+    return PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
   }
 
   // private constructor
@@ -100,7 +102,7 @@ class PorcupineManager {
       try {
         porcupineFrame = (buffer as List<dynamic>).cast<int>();
       } on Error {
-        PvError castError = new PvError(
+        PorcupineException castError = PorcupineException(
             "flutter_voice_processor sent an unexpected data type.");
         errorCallback == null
             ? print(castError.message)
@@ -114,13 +116,13 @@ class PorcupineManager {
         if (keywordIndex != null && keywordIndex >= 0) {
           _wakeWordCallback(keywordIndex);
         }
-      } on PvError catch (error) {
+      } on PorcupineException catch (error) {
         errorCallback == null ? print(error.message) : errorCallback(error);
       }
     });
 
     _removeErrorListener = _voiceProcessor?.addErrorListener((errorMsg) {
-      PvError nativeRecorderError = new PvError(errorMsg as String);
+      PorcupineException nativeRecorderError = PorcupineException(errorMsg as String);
       errorCallback == null
           ? print(nativeRecorderError.message)
           : errorCallback(nativeRecorderError);
@@ -131,7 +133,7 @@ class PorcupineManager {
   /// Throws a `PvAudioException` if there was a problem starting the audio engine
   Future<void> start() async {
     if (_porcupine == null || _voiceProcessor == null) {
-      throw new PvStateError(
+      throw PorcupineInvalidStateException(
           "Cannot start Porcupine - resources have already been released");
     }
 
@@ -139,11 +141,11 @@ class PorcupineManager {
       try {
         await _voiceProcessor?.start();
       } on PlatformException {
-        throw new PvAudioException(
+        throw PorcupineRuntimeException(
             "Audio engine failed to start. Hardware may not be supported.");
       }
     } else {
-      throw new PvAudioException(
+      throw PorcupineRuntimeException(
           "User did not give permission to record audio.");
     }
   }

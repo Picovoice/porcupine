@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:porcupine/porcupine.dart';
 import 'package:porcupine/porcupine_manager.dart';
 import 'package:porcupine/porcupine_error.dart';
 
@@ -26,23 +27,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  final String accessKey =
+      "{YOUR_ACCESS_KEY_HERE}";
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  Map<String, BuiltInKeyword> _keywordMap = {};
+
+  bool isError = false;
+  String errorMessage = "";
 
   bool isButtonDisabled = false;
   bool isProcessing = false;
-  Color detectionColour = new Color(0xff00e5c3);
-  Color defaultColour = new Color(0xfff5fcff);
+  Color detectionColour = Color(0xff00e5c3);
+  Color defaultColour = Color(0xfff5fcff);
   Color? backgroundColour;
   String currentKeyword = "Click to choose a keyword";
   PorcupineManager? _porcupineManager;
   @override
   void initState() {
     super.initState();
-    this.setState(() {
+    setState(() {
       isButtonDisabled = true;
       backgroundColour = defaultColour;
     });
     WidgetsBinding.instance?.addObserver(this);
+    _initializeKeywordMap();
   }
 
   @override
@@ -61,9 +70,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> loadNewKeyword(String keyword) async {
-    this.setState(() {
+    setState(() {
       isButtonDisabled = true;
     });
+
+    if (!_keywordMap.containsKey(keyword)) {
+      return;
+    }
+
+    BuiltInKeyword builtIn = _keywordMap[keyword]!;
 
     if (isProcessing) {
       await _stopProcessing();
@@ -74,40 +89,46 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       _porcupineManager = null;
     }
     try {
-      _porcupineManager = await PorcupineManager.fromKeywords(
-          [keyword], wakeWordCallback,
+      _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
+          accessKey, [builtIn], wakeWordCallback,
           errorCallback: errorCallback);
-      this.setState(() {
+      setState(() {
         currentKeyword = keyword;
+        isError = false;
       });
-    } on PvError catch (ex) {
-      print("Failed to initialize Porcupine: ${ex.message}");
+    } on PorcupineException catch (ex) {
+      errorCallback(ex);
     } finally {
-      this.setState(() {
+      setState(() {
         isButtonDisabled = false;
       });
     }
   }
 
   void wakeWordCallback(int keywordIndex) {
+    print(keywordIndex);
     if (keywordIndex >= 0) {
-      this.setState(() {
+      setState(() {
         backgroundColour = detectionColour;
       });
       Future.delayed(const Duration(milliseconds: 1000), () {
-        this.setState(() {
+        setState(() {
           backgroundColour = defaultColour;
         });
       });
     }
   }
 
-  void errorCallback(PvError error) {
-    print(error.message);
+  void errorCallback(PorcupineException error) {
+    print(error.toString());
+    setState(() {
+      isError = true;
+      errorMessage = error.message!;
+    });
   }
 
   Future<void> _startProcessing() async {
-    this.setState(() {
+    setState(() {
       isButtonDisabled = true;
     });
 
@@ -117,26 +138,26 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     try {
       await _porcupineManager?.start();
-      this.setState(() {
+      setState(() {
         isProcessing = true;
       });
-    } on PvAudioException catch (ex) {
+    } on PorcupineException catch (ex) {
       print("Failed to start audio capture: ${ex.message}");
     } finally {
-      this.setState(() {
+      setState(() {
         isButtonDisabled = false;
       });
     }
   }
 
   Future<void> _stopProcessing() async {
-    this.setState(() {
+    setState(() {
       isButtonDisabled = true;
     });
 
     await _porcupineManager?.stop();
 
-    this.setState(() {
+    setState(() {
       isButtonDisabled = false;
       isProcessing = false;
     });
@@ -147,6 +168,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       await _stopProcessing();
     } else {
       await _startProcessing();
+    }
+  }
+
+  void _initializeKeywordMap() {
+    for (var builtIn in BuiltInKeyword.values) {
+      String keyword =
+          builtIn.toString().split(".").last.replaceAll("_", " ").toLowerCase();
+      _keywordMap[keyword] = builtIn;
     }
   }
 
@@ -162,14 +191,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           backgroundColor: picoBlue,
         ),
         body: Column(
-          children: [buildPicker(context), buildStartButton(context), footer],
+          children: [
+            buildPicker(context),
+            buildStartButton(context),
+            buildErrorMessage(context),
+            footer
+          ],
         ),
       ),
     );
   }
 
   buildPicker(BuildContext context) {
-    return new Expanded(
+    return Expanded(
       flex: 1,
       child: Container(
           alignment: Alignment.bottomCenter,
@@ -177,7 +211,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           child: FractionallySizedBox(
               widthFactor: 0.9,
               child: OutlinedButton(
-                child: Text(currentKeyword,
+                child: Text(currentKeyword.toString(),
                     style: TextStyle(fontSize: 20, color: picoBlue)),
                 onPressed: () {
                   showPicker(context);
@@ -192,7 +226,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         shape: CircleBorder(),
         textStyle: TextStyle(color: Colors.white));
 
-    return new Expanded(
+    return Expanded(
       flex: 2,
       child: Container(
           child: SizedBox(
@@ -200,11 +234,26 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               height: 150,
               child: ElevatedButton(
                 style: buttonStyle,
-                onPressed: isButtonDisabled ? null : _toggleProcessing,
+                onPressed: (isButtonDisabled || isError) ? null : _toggleProcessing,
                 child: Text(isProcessing ? "Stop" : "Start",
                     style: TextStyle(fontSize: 30)),
               ))),
     );
+  }
+
+  buildErrorMessage(BuildContext context) {
+    return Expanded(
+        flex: 1,
+        child: Container(
+            child: !isError
+                ? null
+                : Text(
+                    errorMessage,
+                    style: TextStyle(
+                        color: Colors.white,
+                        backgroundColor: Colors.red,
+                        fontSize: 20),
+                  )));
   }
 
   Widget footer = Expanded(
@@ -218,9 +267,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           )));
 
   showPicker(BuildContext context) {
-    Picker picker = new Picker(
-        adapter: PickerDataAdapter<String>(
-            pickerdata: PorcupineManager.BUILT_IN_KEYWORDS),
+    Picker picker = Picker(
+        adapter:
+            PickerDataAdapter<String>(pickerdata: _keywordMap.keys.toList()),
         changeToFirst: true,
         textAlign: TextAlign.left,
         columnPadding: const EdgeInsets.all(8.0),
