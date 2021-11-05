@@ -82,6 +82,10 @@ public class PorcupineDemo : MonoBehaviour {
 
     private void StopProcessing() 
     {
+        if (_porcupineManager == null) {
+            return;
+        }
+
         (_startButton.targetGraphic as Text).text = "Start Listening";
         _porcupineManager.Stop();
         _isProcessing = false;
@@ -114,9 +118,7 @@ public class PorcupineDemo : MonoBehaviour {
         _textField.text = message;
         _textField.color = Color.red;
         _startButton.interactable = false;
-        if (_porcupineManager != null) {
-            StopProcessing();
-        }
+        StopProcessing();
     }
 
     void Update () {
