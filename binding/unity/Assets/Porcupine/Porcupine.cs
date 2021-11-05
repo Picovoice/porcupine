@@ -202,7 +202,8 @@ namespace Pv.Unity
                     try
                     {
                         return ExtractResource(path);
-                    } catch
+                    } 
+                    catch
                     {
                         throw new PorcupineIOException($"Couldn't find keyword file at '{path}'");
                     }
