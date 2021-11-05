@@ -102,6 +102,6 @@ export class PorcupineService implements OnDestroy {
 
   private errorCallback = (error: string): void => {
     this.error$.next(error);
-    this.isInit = true;
+    this.isError$.next(true);
   };
 }
