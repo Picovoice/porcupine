@@ -39,7 +39,6 @@ export default {
     },
     async initEngine() {
       try {
-        console.log(this.porcupineFactoryArgs);
         const { accessKey, keywords } = this.porcupineFactoryArgs;
         this.ppnWorker = await this.porcupineFactory.create(
           accessKey,
