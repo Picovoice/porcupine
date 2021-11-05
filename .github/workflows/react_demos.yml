@@ -1,0 +1,60 @@
+name: React
+
+on:
+  push:
+    branches: [ master, v2.0 ]
+    paths:
+      - 'binding/react/**'
+      - '!binding/react/README.md'
+      - 'lib/**'
+      - 'resources/**'
+  pull_request:
+    branches: [ master, v2.0 ]
+    paths:
+      - 'binding/react/**'
+      - '!binding/react/README.md'
+      - 'lib/**'
+      - 'resources/**'
+
+defaults:
+  run:
+    working-directory: demo/react
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Building web binding
+      working-directory: binding/web
+      run: |
+        npm install yarn
+        yarn install
+        yarn build
+        for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
+
+    - name: Building react binding
+      working-directory: binding/react
+      run: |
+        yarn install
+        yarn build
+
+    - name: Pre-build dependencies
+      run: npm install yarn
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build
+      run: yarn build
