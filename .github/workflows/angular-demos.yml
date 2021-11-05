@@ -2,12 +2,12 @@ name: Angular Demos
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/angular/**'
       - '!demo/angular/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/angular/**'
       - '!demo/angular/README.md'
@@ -31,6 +31,20 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Building web binding
+      working-directory: binding/web
+      run: |
+        npm install yarn
+        yarn install
+        yarn build
+        for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
+
+    - name: Building angular binding
+      working-directory: binding/angular
+      run: |
+        yarn install
+        yarn build porcupine-web-angular --prod
 
     - name: Pre-build dependencies
       run: npm install yarn

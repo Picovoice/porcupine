@@ -5,7 +5,6 @@ import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 import type {
   PorcupineWorkerFactory,
   PorcupineServiceArgs,
-  PorcupineWorkerResponse,
   PorcupineWorker,
 } from './porcupine_types';
 
@@ -41,15 +40,6 @@ export class PorcupineService implements OnDestroy {
     return false;
   }
 
-  public resume(): boolean {
-    if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.resume();
-      this.listening$.next(true);
-      return true;
-    }
-    return false;
-  }
-
   public async release(): Promise<void> {
     if (this.porcupineWorker !== null) {
       this.porcupineWorker.postMessage({ command: 'release' });
@@ -67,22 +57,16 @@ export class PorcupineService implements OnDestroy {
     if (this.isInit) {
       throw new Error('Porcupine is already initialized');
     }
-    const { keywords, start = true } = porcupineServiceArgs;
+    const { accessKey, keywords, start = true } = porcupineServiceArgs;
     this.isInit = true;
 
     try {
       this.porcupineWorker = await porcupineWorkerFactory.create(
-        keywords
+        accessKey,
+        keywords,
+        this.keywordCallback,
+        this.errorCallback
       );
-      this.porcupineWorker.onmessage = (
-        message: MessageEvent<PorcupineWorkerResponse>
-      ) => {
-        switch (message.data.command) {
-          case 'ppn-keyword': {
-            this.keyword$.next(message.data.keywordLabel);
-          }
-        }
-      };
     } catch (error) {
       this.isInit = false;
       this.error$.next(error);
@@ -111,4 +95,13 @@ export class PorcupineService implements OnDestroy {
   async ngOnDestroy() {
     this.release();
   }
+
+  private keywordCallback = (label: string): void => {
+    this.keyword$.next(label);
+  };
+
+  private errorCallback = (error: string): void => {
+    this.error$.next(error);
+    this.isError$.next(true);
+  };
 }

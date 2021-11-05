@@ -1305,10 +1305,11 @@ npm install @picovoice/porcupine-web-angular
 async ngOnInit() {
     // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; dynamically imported)
     const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
+    const accessKey = // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
     // Initialize Porcupine Service
     try {
       await this.porcupineService.init(porcupineFactoryEn,
-      {porcupineFactoryArgs: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
+      {accessKey: accessKey, keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
       console.log("Porcupine is now loaded and listening")
     }
     catch (error) {

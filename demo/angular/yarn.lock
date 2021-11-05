@@ -1155,22 +1155,22 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-web-angular@^1.1.0":
+"@picovoice/porcupine-web-angular@^2.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-angular/-/porcupine-web-angular-1.1.0.tgz#338876e4e6780206d9bb70519a41ae43cfa6cbba"
   integrity sha512-3nvTkK7snfW7/zSuXrR44sIbzTkIBiJC4Mt5gj3nnRMGDK0TPPlQtdPwuwOuW3BjzCqiiGrMUu0Dmz9BGmWslQ==
   dependencies:
     tslib "^2.0.0"
 
-"@picovoice/porcupine-web-en-worker@1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.3.tgz#8f6f1059d3cf432a0c9a3da885db138d963b19c2"
-  integrity sha512-NweCrlsBBspwWwJZcbort6nZ/ltotSQdHVTuaHT2tMBt4UO296U9SD+6NN7qRsBQIiByNuLc+cL+WHOdeuGM7g==
+"@picovoice/porcupine-web-en-worker@^2.0.0":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.4.tgz#ec2a04fa009aff8bbd6b9dcb84191c0a745c2395"
+  integrity sha512-fzVCSa1wL7YikLAMOq2Quzcz2o4BlxsPmK2HEaAFBZte3ne/6a9h6YzkNKtbSKEmyPMnaxF9X5hCGlFqYUFedQ==
 
-"@picovoice/web-voice-processor@^2.0.0":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.2.tgz#51ec2838c95d741ecb843ca1fb3401559485fdf2"
-  integrity sha512-4L+WLjEZQLSssSzBNlznuIfLurETJsukPlIdZXYIJqK+H1P0oi5BLDwncKC+VmkywNonQxY/w3ZbBsDL7pfemQ==
+"@picovoice/web-voice-processor@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.0.tgz#dfc0707d0f4f7b76bb5655fd721a5c40613c8b6c"
+  integrity sha512-n4P7TSwZA7q08HyUF+t5S2JA9zBi3y9BexP4Fs6AmGhuD8MkVtao6CaRyYZbQabRk4OYT5fzt0a81ENS3wDz1w==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
