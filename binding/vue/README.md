@@ -30,6 +30,15 @@ E.g. English:
 yarn add @picovoice/porcupine-web-vue @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 Import the Porcupine component and the Porcupine Web Worker component. Bind the worker to Porcupine like the demo `.vue` file below.
@@ -40,10 +49,13 @@ In this example we're passing in two keywords: "Grasshopper" and "Grapefruit" wi
 <template>
   <div class="voice-widget">
     <Porcupine
-      v-bind:porcupineFactoryArgs="[
-        { builtin: 'Grasshopper', sensitivity: 0.65 },
-        { builtin: 'Grapefruit', sensitivity: 0.4 },
-      ]"
+      v-bind:porcupineFactoryArgs="{
+        accessKey: "AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)",
+        keywords: [
+          { builtin: "Grasshopper", sensitivity: 0.5 },
+          { builtin: "Grapefruit", sensitivity: 0.6 },
+        ],
+      }"
       v-bind:porcupineFactory="factory"
       v-on:ppn-ready="ppnReadyFn"
       v-on:ppn-keyword="ppnKeywordFn"

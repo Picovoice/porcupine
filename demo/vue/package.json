@@ -1,6 +1,6 @@
 {
   "name": "porcupine-web-vue-demo",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "private": true,
@@ -11,9 +11,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@picovoice/porcupine-web-en-worker": "^1.9.4",
-    "@picovoice/porcupine-web-vue": "^1.0.1",
-    "@picovoice/web-voice-processor": "^2.0.3",
+    "@picovoice/porcupine-web-en-worker": "file:../../binding/web/porcupine-web-en-worker",
+    "@picovoice/porcupine-web-vue": "file:../../binding/vue",
+    "@picovoice/web-voice-processor": "^2.1.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },

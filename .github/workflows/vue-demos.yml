@@ -2,12 +2,12 @@ name: Vue Demos
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/vue/**'
       - '!demo/vue/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/vue/**'
       - '!demo/vue/README.md'
@@ -32,6 +32,20 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Building web binding
+      working-directory: binding/web
+      run: |
+        npm install yarn
+        yarn install
+        yarn build
+        for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
+
+    - name: Building vue binding
+      working-directory: binding/vue
+      run: |
+        yarn install
+        yarn build
+    
     - name: Pre-build dependencies
       run: npm install yarn
 
