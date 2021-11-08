@@ -32,7 +32,7 @@ const MODEL_PATH_DEFAULT = "lib/common/porcupine_params.pv";
 
 class Porcupine {
   constructor(accessKey, keywords, sensitivities, manualModelPath, manualLibraryPath) {
-    if(!accessKey || accessKey.length === 0) {
+    if(accessKey === null || accessKey === undefined || accessKey.length === 0) {
         throw new PvArgumentError(
             `No AccessKey provided to Porcupine`
           );

@@ -25,6 +25,8 @@ These demos run Porcupine on **NodeJS 12+** on the following platforms:
 - Linux (x86_64)
 - macOS (x86_64, arm64)
 - Raspberry Pi (2,3,4)
+- NVIDIA Jetson (Nano)
+- BeagleBone
 
 ### Web Browsers
 
