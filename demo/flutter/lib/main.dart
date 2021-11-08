@@ -13,9 +13,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:porcupine/porcupine.dart';
-import 'package:porcupine/porcupine_manager.dart';
-import 'package:porcupine/porcupine_error.dart';
+import 'package:flutter_porcupine/porcupine.dart';
+import 'package:flutter_porcupine/porcupine_manager.dart';
+import 'package:flutter_porcupine/porcupine_error.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       "{YOUR_ACCESS_KEY_HERE}";
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  Map<String, BuiltInKeyword> _keywordMap = {};
+  final Map<String, BuiltInKeyword> _keywordMap = {};
 
   bool isError = false;
   String errorMessage = "";
@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.paused) {
       await _stopProcessing();
       await _porcupineManager?.delete();
       _porcupineManager = null;

@@ -9,16 +9,14 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import 'dart:ffi';
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
-import 'package:ffi/ffi.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
-import 'package:porcupine/porcupine_error.dart';
+import 'package:flutter_porcupine/porcupine_error.dart';
 
 enum BuiltInKeyword {
   ALEXA,
@@ -38,22 +36,24 @@ enum BuiltInKeyword {
 }
 
 class Porcupine {
-  static bool _resourcesExtracted = false;
-  static String? _defaultModelPath;
+  static final MethodChannel _channel = MethodChannel("porcupine");
 
+  static String? _defaultModelPath;
   static Map<BuiltInKeyword, String>? _builtInKeywordPaths;
 
-  int? _handle;
-  final Pointer<Int16> _cFrame;
+  String? _handle;
+  final int _frameLength;
+  final int _sampleRate;
+  final String _version;
 
   /// Porcupine version string
-  static String get version => _porcupineVersion().toDartString();
+  String get version => _version;
 
   /// The number of audio samples per frame required by Porcupine
-  static int get frameLength => _porcupineFrameLength();
+  int get frameLength => _frameLength;
 
   /// The audio sample rate required by Porcupine
-  static int get sampleRate => _porcupineSampleRate();
+  int get sampleRate => _sampleRate;
 
   /// Static creator for initializing Porcupine from a selection of built-in keywords
   ///
@@ -73,15 +73,14 @@ class Porcupine {
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromBuiltInKeywords(
-      String accessKey, List<BuiltInKeyword>? keywords,
-      {String? modelPath, List<double>? sensitivities}) {
-    if (keywords == null) {
-      throw PorcupineInvalidArgumentException("'keywords' must be set.");
-    }
+      String accessKey, List<BuiltInKeyword> keywords,
+      {String? modelPath, List<double>? sensitivities}) async {
 
-    List<String> keywordPaths = List.empty(growable: true);
+    await _init();
+
+    List<String?> keywordPaths = List.empty(growable: true);
     for (var builtIn in keywords) {
-      keywordPaths.add(_getResourcePath(builtIn));
+      keywordPaths.add(_builtInKeywordPaths?[builtIn]);
     }
 
     return Porcupine._create(
@@ -108,13 +107,17 @@ class Porcupine {
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromKeywordPaths(
-          String accessKey, List<String?>? keywordPaths,
-          {String? modelPath, List<double>? sensitivities}) =>
-      Porcupine._create(
-          accessKey: accessKey,
-          keywordPaths: keywordPaths,
-          modelPath: modelPath,
-          sensitivities: sensitivities);
+      String accessKey, List<String?>? keywordPaths,
+      {String? modelPath, List<double>? sensitivities}) async {
+        
+    await _init();
+
+    return Porcupine._create(
+        accessKey: accessKey,
+        keywordPaths: keywordPaths,
+        modelPath: modelPath,
+        sensitivities: sensitivities);
+  }
 
   /// private static creator
   static Future<Porcupine> _create(
@@ -122,11 +125,6 @@ class Porcupine {
       List<String?>? keywordPaths,
       String? modelPath,
       List<double>? sensitivities}) async {
-    if (!_resourcesExtracted) {
-      await _extractPorcupineResources();
-      _resourcesExtracted = true;
-    }
-
     if (accessKey == null || accessKey == "") {
       throw PorcupineInvalidArgumentException("'accessKey' must be set.");
     }
@@ -180,40 +178,51 @@ class Porcupine {
       }
     }
 
-    // generate arguments for ffi
-    Pointer<Utf8> cAccessKey = accessKey.toNativeUtf8();
-    Pointer<Utf8> cModelPath = modelPath.toNativeUtf8();
-    Pointer<Pointer<Utf8>> cKeywordPaths = malloc(keywordPaths.length);
-    for (var i = 0; i < keywordPaths.length; i++) {
-      if (keywordPaths[i]?.toNativeUtf8() != null) {
-        cKeywordPaths[i] = keywordPaths[i]!.toNativeUtf8();
+    try {
+      Map<String, dynamic> result =
+          Map<String, dynamic>.from(await _channel.invokeMethod('create', {
+        'accessKey': accessKey,
+        'modelPath': modelPath,
+        'keywordPaths': keywordPaths,
+        'sensitivities': sensitivities
+      }));
+      print("res");
+      print(result);
+
+      return Porcupine._(result['handle'], result['frameLength'],
+          result['sampleRate'], result['version']);
+    } on PlatformException catch (error) {
+      throw porcupineStatusToException(error.code, error.message);
+    } on Exception catch (error) {
+      throw porcupineStatusToException("PorcupineException", error.toString());
+    }
+  }
+
+  static Future<void> _init() async {
+    if (_defaultModelPath != null) {
+      return;
+    }
+
+    try {
+      Map<String, dynamic> result =
+          Map<String, dynamic>.from(await _channel.invokeMethod('init'));
+
+      _defaultModelPath = result['DEFAULT_MODEL_PATH'];
+
+      Map<String, String> keywordMap =
+          Map<String, String>.from(result['KEYWORD_PATHS']);
+
+      for (var builtIn in BuiltInKeyword.values) {
+        String keyword = builtIn.toString().toLowerCase().replaceAll('_', ' ');
+        _builtInKeywordPaths?[builtIn] = keywordMap[keyword]!;
       }
+    } on Exception catch (error) {
+      throw porcupineStatusToException("PorcupineException", error.toString());
     }
-
-    Pointer<Float> cSensitivities = malloc<Float>(sensitivities.length);
-    cSensitivities
-        .asTypedList(sensitivities.length)
-        .setRange(0, sensitivities.length, sensitivities);
-
-    Pointer<IntPtr> handlePtr = malloc<IntPtr>(1);
-
-    String v = _porcupineVersion().toDartString();
-    print(v);
-
-    // init porcupine
-    int status = _porcupineInit(cAccessKey, cModelPath, keywordPaths.length,
-        cKeywordPaths, cSensitivities, handlePtr);
-    PorcupineStatus pvStatus = PorcupineStatus.values[status];
-    if (pvStatus != PorcupineStatus.SUCCESS) {
-      porcupineStatusToException(pvStatus, "Failed to initialize Porcupine.");
-    }
-
-    int handle = handlePtr.value;
-    return Porcupine._(handle);
   }
 
   // private constructor
-  Porcupine._(this._handle) : _cFrame = malloc<Int16>(frameLength);
+  Porcupine._(this._handle, this._frameLength, this._sampleRate, this._version);
 
   /// Process a frame of audio with the wake word engine.
   ///
@@ -222,7 +231,7 @@ class Porcupine {
   /// Audio must be single-channel and 16-bit linearly-encoded.
   ///
   /// Index of the detected keyword, or -1 if no detection occurred
-  int process(List<int>? frame) {
+  Future<int> process(List<int>? frame) async {
     if (_handle == null) {
       throw PorcupineInvalidStateException(
           "Attempted to process an audio frame after Porcupine was been deleted.");
@@ -238,24 +247,16 @@ class Porcupine {
           "Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' ($frameLength)");
     }
 
-    // generate arguments for ffi
-    _cFrame.asTypedList(frame.length).setAll(0, frame);
-    Pointer<Int32> keywordIndexPtr = malloc(1);
+    int keywordIndex = await _channel
+        .invokeMethod('process', {'handle': _handle, 'frame': frame});
 
-    int status = _porcupineProcess(_handle!, _cFrame, keywordIndexPtr);
-    PorcupineStatus pvStatus = PorcupineStatus.values[status];
-    if (pvStatus != PorcupineStatus.SUCCESS) {
-      porcupineStatusToException(
-          pvStatus, "Porcupine failed to process an audio frame.");
-    }
-
-    return keywordIndexPtr.value;
+    return keywordIndex;
   }
 
   /// Frees memory that was allocated for Porcupine
-  void delete() {
+  Future<void> delete() async {
     if (_handle != null) {
-      _porcupineDelete(_handle!);
+      await _channel.invokeMethod('delete', {'handle': _handle});
       _handle = null;
     }
   }
@@ -298,64 +299,3 @@ class Porcupine {
     return outputPath;
   }
 }
-
-// loads lib
-final _porcupineLib = _load();
-
-DynamicLibrary _load() {
-  if (Platform.isAndroid) {
-    return DynamicLibrary.open("libpv_porcupine.so");
-  } else {
-    return DynamicLibrary.process();
-  }
-}
-
-// pv_porcupine_init
-typedef NativeInit = Int32 Function(Pointer<Utf8>, Pointer<Utf8>, Int32,
-    Pointer<Pointer<Utf8>>, Pointer<Float>, Pointer<IntPtr>);
-typedef Init = int Function(Pointer<Utf8>, Pointer<Utf8>, int,
-    Pointer<Pointer<Utf8>>, Pointer<Float>, Pointer<IntPtr>);
-
-final Init _porcupineInit = _porcupineLib
-    .lookup<NativeFunction<NativeInit>>('pv_porcupine_init')
-    .asFunction();
-
-// pv_porcupine_process
-typedef NativeProcess = Int32 Function(IntPtr, Pointer<Int16>, Pointer<Int32>);
-typedef Process = int Function(int, Pointer<Int16>, Pointer<Int32>);
-
-final Process _porcupineProcess = _porcupineLib
-    .lookup<NativeFunction<NativeProcess>>('pv_porcupine_process')
-    .asFunction();
-
-// pv_porcupine_delete
-typedef NativeDelete = Void Function(IntPtr);
-typedef Delete = void Function(int);
-
-final Delete _porcupineDelete = _porcupineLib
-    .lookup<NativeFunction<NativeDelete>>('pv_porcupine_delete')
-    .asFunction();
-
-// pv_porcupine_version
-typedef NativeVersion = Pointer<Utf8> Function();
-typedef Version = Pointer<Utf8> Function();
-
-final Version _porcupineVersion = _porcupineLib
-    .lookup<NativeFunction<NativeVersion>>('pv_porcupine_version')
-    .asFunction();
-
-// pv_porcupine_frame_length
-typedef NativeFrameLength = Int32 Function();
-typedef FrameLength = int Function();
-
-final FrameLength _porcupineFrameLength = _porcupineLib
-    .lookup<NativeFunction<NativeFrameLength>>('pv_porcupine_frame_length')
-    .asFunction();
-
-// pv_sample_rate
-typedef NativeSampleRate = Int32 Function();
-typedef SampleRate = int Function();
-
-final SampleRate _porcupineSampleRate = _porcupineLib
-    .lookup<NativeFunction<NativeSampleRate>>('pv_sample_rate')
-    .asFunction();

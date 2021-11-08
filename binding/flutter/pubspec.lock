@@ -51,7 +51,7 @@ packages:
     source: hosted
     version: "1.2.0"
   ffi:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: ffi
       url: "https://pub.dartlang.org"
