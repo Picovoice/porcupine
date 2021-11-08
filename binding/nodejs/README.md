@@ -25,13 +25,25 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 This binding is for running Porcupine on **NodeJS 10+** on the following platforms:
 
+- Windows (x86_64)
 - Linux (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Raspberry Pi (2,3,4)
+- NVIDIA Jetson (Nano)
+- BeagleBone
 
 ### Web Browsers
 
 This npm package is for NodeJS and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vue).
+
+## AccessKey
+
+Porcupine requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Usage
 
@@ -49,7 +61,12 @@ const {
   BUMBLEBEE,
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
-const handle = new Porcupine([GRASSHOPPER, BUMBLEBEE], [0.5, 0.65]);
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
+const handle = new Porcupine(
+    accessKey,
+    [GRASSHOPPER, BUMBLEBEE], 
+    [0.5, 0.65]);
 
 // process a single frame of audio
 // the keywordIndex provies the index of the keyword detected, or -1 if no keyword was detected
@@ -78,7 +95,12 @@ const keywordIndex = handle.process(frame);
 Providing an array of strings instead of the built-in enums allows you to specify an absolute path to a keyword `.ppn` file:
 
 ```javascript
-const handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
+const handle = new Porcupine(
+    accessKey,
+    ["/absolute/path/to/your/keyword.ppn"], 
+    [0.5]);
 ```
 
 ### Override model and library paths
@@ -86,7 +108,10 @@ const handle = new Porcupine(["/absolute/path/to/your/keyword.ppn"], [0.5]);
 The Porcupine constructor accepts two optional positional parameters for the absolute paths to the model and dynamic library, should you need to override them (typically, you will not).
 
 ```javascript
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
 const handle = new Porcupine(
+  accessKey,
   keywordPaths,
   sensitivities,
   modelFilePath,

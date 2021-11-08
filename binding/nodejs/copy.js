@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -38,7 +38,7 @@ ncp(
   }
 );
 
-let platforms = ["mac", "raspberry-pi", "linux"];
+let platforms = ["beaglebone", "jetson", "linux", "mac", "raspberry-pi",  "windows"];
 
 // Keywords (resources)
 // Only ship keywords that work on every platform (LCD)

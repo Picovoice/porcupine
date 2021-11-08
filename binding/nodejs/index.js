@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -31,7 +31,13 @@ const pvPorcupine = require(getSystemLibraryPath());
 const MODEL_PATH_DEFAULT = "lib/common/porcupine_params.pv";
 
 class Porcupine {
-  constructor(keywords, sensitivities, manualModelPath, manualLibraryPath) {
+  constructor(accessKey, keywords, sensitivities, manualModelPath, manualLibraryPath) {
+    if(accessKey === null || accessKey === undefined || accessKey.length === 0) {
+        throw new PvArgumentError(
+            `No AccessKey provided to Porcupine`
+          );
+    }
+    
     let modelPath = manualModelPath;
     if (modelPath === undefined) {
       modelPath = path.resolve(__dirname, MODEL_PATH_DEFAULT);
@@ -109,14 +115,17 @@ class Porcupine {
       }
     }
 
-
-    const packed = pvPorcupine.init(modelPath, keywordPaths.length, keywordPaths, sensitivities);
+    const packed = pvPorcupine.init(
+        accessKey, 
+        modelPath, 
+        keywordPaths.length, 
+        keywordPaths, 
+        sensitivities);
     const status = Number(packed % 10n);
     if (status !== PV_STATUS_T.SUCCESS) {
       pvStatusToException(status, "Porcupine failed to initialize");
     }
     this.handle = packed / 10n;
-
 
     this.frameLength = pvPorcupine.frame_length();
     this.sampleRate = pvPorcupine.sample_rate();

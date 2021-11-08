@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -17,6 +17,11 @@ const INVALID_ARGUMENT = 3;
 const STOP_ITERATION = 4;
 const KEY_ERROR = 5;
 const INVALID_STATE = 6;
+const RUNTIME_ERROR = 7;
+const ACTIVATION_ERROR = 8;
+const ACTIVATION_LIMIT_REACHED = 9;
+const ACTIVATION_THROTTLED = 10;
+const ACTIVATION_REFUSED = 11;
 
 module.exports = {
   SUCCESS: SUCCESS,
@@ -26,4 +31,9 @@ module.exports = {
   STOP_ITERATION: STOP_ITERATION,
   KEY_ERROR: KEY_ERROR,
   INVALID_STATE: INVALID_STATE,
+  RUNTIME_ERROR: RUNTIME_ERROR,
+  ACTIVATION_ERROR: ACTIVATION_ERROR,
+  ACTIVATION_LIMIT_REACHED: ACTIVATION_LIMIT_REACHED,
+  ACTIVATION_THROTTLED: ACTIVATION_THROTTLED,
+  ACTIVATION_REFUSED: ACTIVATION_REFUSED
 };
