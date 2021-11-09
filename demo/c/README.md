@@ -5,9 +5,7 @@
 You need a C99-compatible compiler to build these demos.
 
 ## Requirements
-- The demo requires [CMake](https://cmake.org/) version 3.4 or higher. 
-- The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data. 
-- The following demo must be run at the [root](/../../) of the directory.
+- The demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 - **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
 
 ## AccessKey

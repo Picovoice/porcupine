@@ -28,19 +28,6 @@
 #include "pv_porcupine.h"
 #include "pv_recorder.h"
 
-typedef struct {
-    int16_t *buffer;
-    int32_t max_size;
-    int32_t filled;
-} frame_buffer_t;
-
-typedef struct {
-    frame_buffer_t frame_buffer;
-    const char *(*pv_status_to_string_func)(pv_status_t);
-    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *);
-    pv_porcupine_t *porcupine;
-} pv_porcupine_data_t;
-
 static volatile bool is_interrupted = false;
 
 static void *open_dl(const char *dl_path) {
@@ -143,7 +130,7 @@ int main(int argc, char *argv[]) {
     const char *library_path = NULL;
     const char *model_path = NULL;
     const char *keyword_path = NULL;
-    float sensitivity = 0.5;
+    float sensitivity = 0.5f;
     const char *access_key = NULL;
     int32_t device_index = -1;
 
