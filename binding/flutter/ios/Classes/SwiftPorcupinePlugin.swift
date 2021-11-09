@@ -36,25 +36,20 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
         
         switch (method) {
         case .INIT:
-            do {
-                var constants: [String: Any] = [:]
-                
-                let modelPath : String = Bundle.main.path(forResource: "porcupine_params", ofType: "pv") ?? "unknown"
-                print(Bundle.main.resourcePath)
-                constants["DEFAULT_MODEL_PATH"] = Bundle.main.resourcePath
-                        
-                let keywordPaths = Bundle.main.paths(forResourcesOfType: "ppn", inDirectory: nil)
-                var keywordDict:Dictionary<String, String> = [:]
-                for keywordPath in keywordPaths{
-                    let keywordName = URL(fileURLWithPath:keywordPath).lastPathComponent.components(separatedBy:"_")[0]
-                    keywordDict[keywordName] = keywordPath
-                }
-                constants["KEYWORD_PATHS"] = keywordDict
-                
-                result(constants)
-            } catch {
-                result(errorToFlutterError(PorcupineError.PorcupineRuntimeError(error.localizedDescription)))
+            var constants: [String: Any] = [:]
+            
+            let modelPath: String = Bundle(for: Porcupine.self).path(forResource: "porcupine_params", ofType: "pv") ?? "unknown"
+            constants["DEFAULT_MODEL_PATH"] = modelPath
+                    
+            let keywordPaths = Bundle(for: Porcupine.self).paths(forResourcesOfType: "ppn", inDirectory: nil)
+            var keywordDict:Dictionary<String, String> = [:]
+            for keywordPath in keywordPaths{
+                let keywordName = URL(fileURLWithPath:keywordPath).lastPathComponent.components(separatedBy:"_")[0]
+                keywordDict[keywordName] = keywordPath
             }
+            constants["KEYWORD_PATHS"] = keywordDict
+            
+            result(constants)
         case .CREATE:
             do {
                 let args = call.arguments as! [String: Any]
@@ -127,29 +122,39 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
     private func errorToFlutterError(_ error: PorcupineError) -> FlutterError {
         switch(error) {
         case .PorcupineOutOfMemoryError:
-            return FlutterError(code: "PorcupineMemoryException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineMemoryException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineIOError:
-            return FlutterError(code: "PorcupineIOException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineIOException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineInvalidArgumentError:
-            return FlutterError(code: "PorcupineInvalidArgumentException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineInvalidArgumentException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineStopIterationError:
-            return FlutterError(code: "PorcupineStopIterationException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineStopIterationException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineKeyError:
-            return FlutterError(code: "PorcupineKeyException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineKeyException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineInvalidStateError:
-            return FlutterError(code: "PorcupineInvalidStateException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineInvalidStateException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineRuntimeError:
-            return FlutterError(code: "PorcupineRuntimeException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineRuntimeException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineActivationError:
-            return FlutterError(code: "PorcupineActivationException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineActivationException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineActivationLimitError:
-            return FlutterError(code: "PorcupineActivationLimitException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineActivationLimitException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineActivationThrottledError:
-            return FlutterError(code: "PorcupineActivationThrottledException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineActivationThrottledException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineActivationRefusedError:
-            return FlutterError(code: "PorcupineActivationRefusedException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineActivationRefusedException", message: extractMessage("\(error)"), details: nil)
         case .PorcupineInternalError:
-            return FlutterError(code: "PorcupineException", message: error.localizedDescription, details: nil)
+            return FlutterError(code: "PorcupineException", message: extractMessage("\(error)"), details: nil)
         }
+    }
+    
+    private func extractMessage(_ errorMessage: String) -> String {
+        let parts = errorMessage.components(separatedBy: "\"")
+        if (parts.count > 2) {
+            if let message = parts.dropFirst().first {
+                return message
+            }
+        }
+        return errorMessage
     }
 }

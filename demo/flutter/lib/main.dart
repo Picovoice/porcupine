@@ -28,7 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final String accessKey =
-      "{YOUR_ACCESS_KEY_HERE}";
+      "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final Map<String, BuiltInKeyword> _keywordMap = {};
@@ -96,6 +96,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         currentKeyword = keyword;
         isError = false;
       });
+    } on PorcupineInvalidArgumentException catch (ex) {
+      errorCallback(PorcupineInvalidArgumentException(
+          "${ex.message}. Please make sure your accessKey '$accessKey' is a valid access key."));
+    } on PorcupineActivationException {
+      errorCallback(PorcupineActivationException(
+          "AccessKey activation error."));
+    } on PorcupineActivationLimitException {
+      errorCallback(PorcupineActivationLimitException(
+          "AccessKey reached its device limit."));
+    } on PorcupineActivationRefusedException {
+      errorCallback(PorcupineActivationRefusedException(
+          "AccessKey refused."));
+    } on PorcupineActivationThrottledException {
+      errorCallback(PorcupineActivationThrottledException(
+          "AccessKey has been throttled."));
     } on PorcupineException catch (ex) {
       errorCallback(ex);
     } finally {
@@ -106,7 +121,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   void wakeWordCallback(int keywordIndex) {
-    print(keywordIndex);
     if (keywordIndex >= 0) {
       setState(() {
         backgroundColour = detectionColour;
@@ -120,7 +134,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   void errorCallback(PorcupineException error) {
-    print(error.toString());
     setState(() {
       isError = true;
       errorMessage = error.message!;
@@ -142,7 +155,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         isProcessing = true;
       });
     } on PorcupineException catch (ex) {
-      print("Failed to start audio capture: ${ex.message}");
+      errorCallback(ex);
     } finally {
       setState(() {
         isButtonDisabled = false;
@@ -194,7 +207,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           children: [
             buildPicker(context),
             buildStartButton(context),
+            SizedBox(height: 100),
             buildErrorMessage(context),
+            SizedBox(height: 100),
             footer
           ],
         ),
@@ -234,7 +249,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               height: 150,
               child: ElevatedButton(
                 style: buttonStyle,
-                onPressed: (isButtonDisabled || isError) ? null : _toggleProcessing,
+                onPressed:
+                    (isButtonDisabled || isError) ? null : _toggleProcessing,
                 child: Text(isProcessing ? "Stop" : "Start",
                     style: TextStyle(fontSize: 30)),
               ))),
@@ -245,13 +261,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return Expanded(
         flex: 1,
         child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(left: 20, right: 20),
+            decoration: !isError
+                ? null
+                : BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
             child: !isError
                 ? null
                 : Text(
                     errorMessage,
                     style: TextStyle(
                         color: Colors.white,
-                        backgroundColor: Colors.red,
                         fontSize: 20),
                   )));
   }

@@ -18,6 +18,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_porcupine/porcupine_error.dart';
 
+/// BuiltInKeywords
 enum BuiltInKeyword {
   ALEXA,
   AMERICANO,
@@ -75,7 +76,6 @@ class Porcupine {
   static Future<Porcupine> fromBuiltInKeywords(
       String accessKey, List<BuiltInKeyword> keywords,
       {String? modelPath, List<double>? sensitivities}) async {
-
     await _init();
 
     List<String?> keywordPaths = List.empty(growable: true);
@@ -109,7 +109,6 @@ class Porcupine {
   static Future<Porcupine> fromKeywordPaths(
       String accessKey, List<String?>? keywordPaths,
       {String? modelPath, List<double>? sensitivities}) async {
-        
     await _init();
 
     return Porcupine._create(
@@ -133,13 +132,10 @@ class Porcupine {
       modelPath = _defaultModelPath;
     }
 
-    if (!await File(modelPath!).exists()) {
+    if (!(await File(modelPath!).exists())) {
       try {
         modelPath = await _extractResource(modelPath);
-      } catch (_) {
-        throw PorcupineInvalidArgumentException(
-            "Could not find model file at path '$modelPath'. If this is a packaged asset, ensure you have added it to your pubspec.yaml file.");
-      }
+      } catch (e) {/* don't do anything on fail */}
     }
 
     if (keywordPaths == null || keywordPaths.isEmpty) {
@@ -152,13 +148,10 @@ class Porcupine {
             "One of the provided keyword paths was empty.");
       }
 
-      if (!await File(keywordPaths[i]!).exists()) {
+      if (!(await File(keywordPaths[i]!).exists())) {
         try {
           keywordPaths[i] = await _extractResource(keywordPaths[i]!);
-        } catch (_) {
-          throw PorcupineInvalidArgumentException(
-              "Could not find keyword file at path '${keywordPaths[i]}'. If this is a packaged asset, ensure you have added it to your pubspec.yaml file.");
-        }
+        } catch (e) {/* don't do anything on fail */}
       }
     }
 
@@ -186,8 +179,6 @@ class Porcupine {
         'keywordPaths': keywordPaths,
         'sensitivities': sensitivities
       }));
-      print("res");
-      print(result);
 
       return Porcupine._(result['handle'], result['frameLength'],
           result['sampleRate'], result['version']);
@@ -198,6 +189,7 @@ class Porcupine {
     }
   }
 
+  /// intialize defaults
   static Future<void> _init() async {
     if (_defaultModelPath != null) {
       return;
@@ -212,9 +204,10 @@ class Porcupine {
       Map<String, String> keywordMap =
           Map<String, String>.from(result['KEYWORD_PATHS']);
 
+      _builtInKeywordPaths = {};
       for (var builtIn in BuiltInKeyword.values) {
-        String keyword = builtIn.toString().toLowerCase().replaceAll('_', ' ');
-        _builtInKeywordPaths?[builtIn] = keywordMap[keyword]!;
+        _builtInKeywordPaths?[builtIn] =
+            keywordMap[_builtInToKeyword(builtIn)]!;
       }
     } on Exception catch (error) {
       throw porcupineStatusToException("PorcupineException", error.toString());
@@ -261,28 +254,13 @@ class Porcupine {
     }
   }
 
-  static final String _platform = Platform.isAndroid ? "android" : "ios";
-  static const String _assetDir = "packages/porcupine/assets";
-  static final String _keywordAssetDir =
-      "$_assetDir/resources/keyword_files/$_platform";
-
-  static String _getResourcePath(BuiltInKeyword builtIn) {
-    String keyword =
-        builtIn.toString().split(".").last.replaceAll("_", " ").toLowerCase();
-    return "$_keywordAssetDir/${keyword}_$_platform.ppn";
-  }
-
-  static Future<void> _extractPorcupineResources() async {
-    _defaultModelPath =
-        await _extractResource("$_assetDir/lib/common/porcupine_params.pv");
-
-    _builtInKeywordPaths = {};
-    for (var builtIn in BuiltInKeyword.values) {
-      String keywordAssetPath = _getResourcePath(builtIn);
-      String extractedPath = await _extractResource(keywordAssetPath);
-
-      _builtInKeywordPaths?[builtIn] = extractedPath;
-    }
+  static String _builtInToKeyword(BuiltInKeyword builtIn) {
+    return builtIn
+        .toString()
+        .split('.')
+        .last
+        .replaceAll('_', ' ')
+        .toLowerCase();
   }
 
   static Future<String> _extractResource(String filePath) async {
@@ -290,7 +268,8 @@ class Porcupine {
     String outputPath = '$resourceDirectory/$filePath';
     File outputFile = File(outputPath);
 
-    ByteData data = await rootBundle.load(filePath);
+    ByteData data =
+        await rootBundle.load(filePath);
     final buffer = data.buffer;
 
     await outputFile.create(recursive: true);

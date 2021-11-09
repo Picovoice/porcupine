@@ -35,17 +35,27 @@ To start, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/i
 To add the Porcupine plugin to your app project, you can reference it in your pub.yaml:
 ```yaml
 dependencies:  
-  porcupine: ^<version>
+  flutter_porcupine: ^<version>
 ```
 
 If you prefer to clone the repo and use it locally, first run `copy_resources.sh` (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the libs into the project.). Then you can reference the local binding location:
 ```yaml
 dependencies:  
-  porcupine:
+  flutter_porcupine:
     path: /path/to/porcupine/flutter/binding
 ```
 
 **NOTE:** When archiving for release on iOS, you may have to change the build settings of your project in order to prevent stripping of the Porcupine library. To do this open the Runner project in XCode and change build setting Deployment -> Strip Style to 'Non-Global Symbols'.
+
+## AccessKey
+
+All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 
 ## Permissions
 
@@ -60,6 +70,7 @@ On iOS, open your Info.plist and add the following line:
 On Android, open your AndroidManifest.xml and add the following line:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 ## Usage
@@ -70,17 +81,20 @@ The module provides you with two levels of API to choose from depending on your 
 
 [PorcupineManager](/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
-Using the constructor `PorcupineManager.fromKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords.
+Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords.
 ```dart
-import 'package:porcupine/porcupine_manager.dart';
-import 'package:porcupine/porcupine_error.dart';
+import 'package:flutter_porcupine/porcupine_manager.dart';
+import 'package:flutter_porcupine/porcupine_error.dart';
+
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 void createPorcupineManager() async {
     try{
-        _porcupineManager = await PorcupineManager.fromKeywords(
-            ["picovoice", "porcupine"],
+        _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
+            accessKey,
+            [BuiltInKeyword.PICOVOICE, BuiltInKeyword.PORCUPINE],
             _wakeWordCallback);
-    } on PvError catch (err) {
+    } on PorcupineException catch (err) {
         // handle porcupine init error
     }
 }
@@ -101,12 +115,15 @@ void _wakeWordCallback(int keywordIndex){
 }
 ```
 
-Available built-in keywords are stored in the constants `PorcupineManager.BUILT_IN_KEYWORDS` and `Porcupine.BUILT_IN_KEYWORDS`.
+Available built-in keywords are stored in the `BuiltInKeyword` enum.
 
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
 ```dart
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 _porcupineManager = await PorcupineManager.fromKeywordPaths(
+    accessKey,
     ["/path/to/keyword.ppn"], 
     _wakeWordCallback);
 ```
@@ -115,14 +132,17 @@ In addition to custom keywords, you can override the default Porcupine model fil
 
 These optional parameters can be passed in like so:
 ```dart
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 _porcupineManager = await PorcupineManager.fromKeywordPaths(
+    accessKey,
     ["/path/to/keyword/file/one.ppn", "/path/to/keyword/file/two.ppn"],
     _wakeWordCallback,
     modelPath: 'path/to/model/file.pv',
     sensitivities: [0.25, 0.6],
     errorCallback: _errorCallback);
 
-void _errorCallback(PvError error){
+void _errorCallback(PorcupineException error){
     print(error.message);
 }
 ```
@@ -132,7 +152,7 @@ Once you have instantiated a PorcupineManager, you can start audio capture and w
 ```dart
 try{
     await _porcupineManager.start();
-} on PvAudioException catch (ex) {
+} on PorcupineException catch (ex) {
     // deal with either audio exception     
 }
 ```
@@ -159,16 +179,20 @@ Flutter plugin to capture frames of audio and automatically pass it to the wake 
 
 [Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
 
-`Porcupine` also has `fromKeywords` and `fromKeywordPaths` static constructors.
+`Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```dart
-import 'package:porcupine/porcupine_manager.dart';
-import 'package:porcupine/porcupine_error.dart';
+import 'package:flutter_porcupine/porcupine_manager.dart';
+import 'package:flutter_porcupine/porcupine_error.dart';
+
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 void createPorcupine() async {
     try{
-        _porcupine = await Porcupine.fromKeywords(["picovoice"]);
-    } on PvError catch (err) {
+        _porcupine = await Porcupine.fromBuiltInKeywords(
+            accessKey,
+            [BuiltInKeyword.PICOVOICE]);
+    } on PorcupineException catch (err) {
         // handle porcupine init error
     }
 }
@@ -183,7 +207,7 @@ try {
     if (keywordIndex >= 0) {
         // detection made!
     }
-} on PvError catch (error) {
+} on PorcupineException catch (error) {
     // handle error
 }
 ```
@@ -209,10 +233,14 @@ flutter:
 
 You can then pass it directly to Porcupine's `fromKeywordPaths` constructor:
 ```dart
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 String keywordAsset = "assets/keyword.ppn"
 try{
-    _porcupine = await Porcupine.fromKeywordPaths([keywordAsset]);
-} on PvError catch (err) {
+    _porcupine = await Porcupine.fromKeywordPaths(
+        accessKey,
+        [keywordAsset]);
+} on PorcupineException catch (err) {
     // handle porcupine init error
 }
 ```
