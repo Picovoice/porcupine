@@ -67,7 +67,7 @@ function frameIndexToSeconds(frameIndex, engineInstance) {
 
 function fileDemo() {
   let audioPath = program["input_audio_file_path"];
-  let access_key = program["access_key"]
+  let accessKey = program["access_key"]
   let keywordPaths = program["keyword_file_paths"];
   let keywords = program["keywords"];
   let libraryFilePath = program["library_file_path"];
@@ -144,7 +144,7 @@ function fileDemo() {
   let engineInstance;
   try {
     engineInstance = new Porcupine(
-      access_key,
+      accessKey,
       keywordPaths,
       sensitivities,
       modelFilePath,
