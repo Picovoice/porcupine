@@ -840,7 +840,7 @@ Add the [Porcupine Flutter plugin](https://pub.dev/packages/porcupine) to your p
 
 ```yaml
 dependencies:
-  porcupine: ^<version>
+  flutter_porcupine: ^<version>
 ```
 
 The SDK provides two APIs:
@@ -849,18 +849,21 @@ The SDK provides two APIs:
 
 [PorcupineManager](/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
-The static constructor `PorcupineManager.fromKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
+The static constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
 
 ```dart
 import 'package:porcupine/porcupine_manager.dart';
 import 'package:porcupine/porcupine_error.dart';
 
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 void createPorcupineManager() async {
     try{
-        _porcupineManager = await PorcupineManager.fromKeywords(
-            ["picovoice", "porcupine"],
+        _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
+            accessKey,
+            [BuiltInKeyword.PICOVOICE, BuiltInKeyword.PORCUPINE],
             _wakeWordCallback);
-    } on PvError catch (err) {
+    } on PorcupineException catch (err) {
         // handle porcupine init error
     }
 }
@@ -869,7 +872,10 @@ void createPorcupineManager() async {
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths` static constructor and provide the paths to the `.ppn` file(s).
 
 ```dart
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 _porcupineManager = await PorcupineManager.fromKeywordPaths(
+    accessKey,
     ["/path/to/keyword.ppn"],
     _wakeWordCallback);
 ```
@@ -879,7 +885,7 @@ Once you have instantiated a PorcupineManager, you can start/stop audio capture 
 ```dart
 try{
     await _porcupineManager.start();
-} on PvAudioException catch (ex) {
+} on PorcupineException catch (ex) {
     // deal with either audio exception
 }
 // .. use porcupine
@@ -897,16 +903,20 @@ This is because it uses [flutter_voice_processor](https://github.com/Picovoice/f
 
 #### Low-Level API
 
-[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.`Porcupine` has `fromKeywords` and `fromKeywordPaths` static constructors.
+[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.`Porcupine` has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```dart
 import 'package:porcupine/porcupine_manager.dart';
 import 'package:porcupine/porcupine_error.dart';
 
+const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 void createPorcupine() async {
     try{
-        _porcupine = await Porcupine.fromKeywords(["picovoice"]);
-    } on PvError catch (err) {
+        _porcupine = await Porcupine.fromBuiltInKeywords(
+          accessKey,
+          [BuiltInKeyword.PICOVOICE]);
+    } on PorcupineException catch (err) {
         // handle porcupine init error
     }
 }
@@ -922,7 +932,7 @@ try {
     if (keywordIndex >= 0) {
         // detection made!
     }
-} on PvError catch (error) {
+} on PorcupineException catch (error) {
     // handle error
 }
 ```
