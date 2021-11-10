@@ -50,7 +50,7 @@ program
       Number,
       -1
   ).option(
-      "-a, --show_audio_devices",
+      "-d, --show_audio_devices",
       "show the list of available devices"
   );
 
