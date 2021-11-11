@@ -35,13 +35,13 @@ To start, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/i
 To add the Porcupine plugin to your app project, you can reference it in your pub.yaml:
 ```yaml
 dependencies:  
-  flutter_porcupine: ^<version>
+  porcupine_flutter: ^<version>
 ```
 
-If you prefer to clone the repo and use it locally, first run `copy_resources.sh` (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the libs into the project.). Then you can reference the local binding location:
+If you prefer to clone the repo and use it locally you can reference the local binding location:
 ```yaml
 dependencies:  
-  flutter_porcupine:
+  porcupine_flutter:
     path: /path/to/porcupine/flutter/binding
 ```
 
