@@ -13,8 +13,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_voice_processor/flutter_voice_processor.dart';
-import 'package:flutter_porcupine/porcupine.dart';
-import 'package:flutter_porcupine/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
 
 typedef WakeWordCallback = Function(int keywordIndex);
 typedef ErrorCallback = Function(PorcupineException error);
@@ -115,7 +115,6 @@ class PorcupineManager {
       // process frame with Porcupine
       try {
         int? keywordIndex = await _porcupine?.process(porcupineFrame);
-        print(keywordIndex);
         if (keywordIndex != null && keywordIndex >= 0) {
           _wakeWordCallback(keywordIndex);
         }

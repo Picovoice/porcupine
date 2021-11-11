@@ -14,11 +14,10 @@ import UIKit
 import Porcupine
 
 enum Method : String {
-    case INIT
-    case CREATE
+    case FROM_BUILTIN_KEYWORDS
+    case FROM_KEYWORD_PATHS
     case PROCESS
     case DELETE
-    case DEFAULT
 }
 
 public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
@@ -32,32 +31,64 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let method = Method(rawValue: call.method.uppercased()) ?? Method.DEFAULT
+        guard let method = Method(rawValue: call.method.uppercased()) else {
+            result(errorToFlutterError(PorcupineError.PorcupineRuntimeError("Porcupine method '\(call.method)' is not a valid function")))
+            return
+        }
         
         switch (method) {
-        case .INIT:
-            var constants: [String: Any] = [:]
-            
-            let modelPath: String = Bundle(for: Porcupine.self).path(forResource: "porcupine_params", ofType: "pv") ?? "unknown"
-            constants["DEFAULT_MODEL_PATH"] = modelPath
-                    
-            let keywordPaths = Bundle(for: Porcupine.self).paths(forResourcesOfType: "ppn", inDirectory: nil)
-            var keywordDict:Dictionary<String, String> = [:]
-            for keywordPath in keywordPaths{
-                let keywordName = URL(fileURLWithPath:keywordPath).lastPathComponent.components(separatedBy:"_")[0]
-                keywordDict[keywordName] = keywordPath
-            }
-            constants["KEYWORD_PATHS"] = keywordDict
-            
-            result(constants)
-        case .CREATE:
+        case .FROM_BUILTIN_KEYWORDS:
             do {
                 let args = call.arguments as! [String: Any]
                 
                 if let accessKey = args["accessKey"] as? String,
-                   let modelPath = args["modelPath"] as? String,
-                   let keywordPaths = args["keywordPaths"] as? [String],
-                   let sensitivities = args["sensitivities"] as? [Float] {
+                   let keywords = args["keywords"] as? [String] {
+                    let modelPath = args["modelPath"] as? String
+                    let sensitivities = args["sensitivities"] as? [Float]
+                    
+                    var keywordValues: [Porcupine.BuiltInKeyword] = []
+                    for keyword in keywords {
+                        if let builtIn = Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) {
+                            keywordValues.append(builtIn)
+                        } else {
+                            result(errorToFlutterError(PorcupineError.PorcupineKeyError("'\(keyword.lowercased())' is not a built in keyword")))
+                            return
+                        }
+                    }
+                    
+                    let porcupine = try Porcupine(
+                        accessKey: accessKey,
+                        keywords: keywordValues,
+                        modelPath: modelPath,
+                        sensitivities: sensitivities)
+                    
+                    let handle: String = String(describing: porcupine)
+                    porcupinePool[handle] = porcupine
+                    
+                    var param: [String: Any] = [:]
+                    param["handle"] = handle
+                    param["frameLength"] = Porcupine.frameLength
+                    param["sampleRate"] = Porcupine.sampleRate
+                    param["version"] = Porcupine.version
+                    
+                    result(param)
+                } else {
+                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("Invalid argument provided to Porcupine 'from_built_in_keywords'")))
+                }
+            } catch let error as PorcupineError {
+                result(errorToFlutterError(error))
+            } catch {
+                result(errorToFlutterError(PorcupineError.PorcupineInternalError(error.localizedDescription)))
+            }
+            break
+        case .FROM_KEYWORD_PATHS:
+            do {
+                let args = call.arguments as! [String: Any]
+                
+                if let accessKey = args["accessKey"] as? String,
+                   let keywordPaths = args["keywordPaths"] as? [String] {
+                    let modelPath = args["modelPath"] as? String
+                    let sensitivities = args["sensitivities"] as? [Float]
                     
                     let porcupine = try Porcupine(
                         accessKey: accessKey,
@@ -76,7 +107,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                     
                     result(param)
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("Invalid argument provided to Porcupine 'create'")))
+                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("Invalid argument provided to Porcupine 'from_keyword_paths'")))
                 }
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
@@ -114,8 +145,6 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                 }
             }
             break
-        default:
-            result(errorToFlutterError(PorcupineError.PorcupineRuntimeError("Porcupine method '\(call.method)' is not a valid function.")))
         }
     }
     

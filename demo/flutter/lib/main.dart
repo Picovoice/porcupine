@@ -13,9 +13,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:flutter_porcupine/porcupine.dart';
-import 'package:flutter_porcupine/porcupine_manager.dart';
-import 'package:flutter_porcupine/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine.dart';
+import 'package:porcupine_flutter/porcupine_manager.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
 
 void main() {
   runApp(MyApp());
@@ -98,16 +98,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       });
     } on PorcupineInvalidArgumentException catch (ex) {
       errorCallback(PorcupineInvalidArgumentException(
-          "${ex.message}. Please make sure your accessKey '$accessKey' is a valid access key."));
+          "${ex.message}\nPlease make sure your accessKey '$accessKey' is a valid access key."));
     } on PorcupineActivationException {
-      errorCallback(PorcupineActivationException(
-          "AccessKey activation error."));
+      errorCallback(
+          PorcupineActivationException("AccessKey activation error."));
     } on PorcupineActivationLimitException {
       errorCallback(PorcupineActivationLimitException(
           "AccessKey reached its device limit."));
     } on PorcupineActivationRefusedException {
-      errorCallback(PorcupineActivationRefusedException(
-          "AccessKey refused."));
+      errorCallback(PorcupineActivationRefusedException("AccessKey refused."));
     } on PorcupineActivationThrottledException {
       errorCallback(PorcupineActivationThrottledException(
           "AccessKey has been throttled."));
@@ -207,9 +206,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           children: [
             buildPicker(context),
             buildStartButton(context),
-            SizedBox(height: 100),
             buildErrorMessage(context),
-            SizedBox(height: 100),
             footer
           ],
         ),
@@ -271,9 +268,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 ? null
                 : Text(
                     errorMessage,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   )));
   }
 

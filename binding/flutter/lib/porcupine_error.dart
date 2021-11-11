@@ -9,8 +9,6 @@
 // specific language governing permissions and limitations under the License.
 //
 
-// ignore_for_file: unnecessary_brace_in_string_interps
-
 class PorcupineException implements Exception {
   final String? message;
   PorcupineException([this.message]);
@@ -87,6 +85,6 @@ porcupineStatusToException(String code, String? message) {
       case 'PorcupineActivationRefusedException':
         return PorcupineActivationRefusedException(message);
       default:
-        return PorcupineException("unexpected code: ${code}, message: ${message}");
+        return PorcupineException("unexpected code: $code, message: $message");
   }
 }

@@ -15,7 +15,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +30,10 @@ import ai.picovoice.porcupine.*;
 public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
 
   private enum Method {
-    INIT,
-    CREATE,
+    FROM_BUILTIN_KEYWORDS,
+    FROM_KEYWORD_PATHS,
     PROCESS,
-    DELETE,
-    DEFAULT
+    DELETE
   }
 
   private Context flutterContext;
@@ -55,55 +53,80 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
     try {
       method = Method.valueOf(call.method.toUpperCase());
     } catch (IllegalArgumentException e) {
-      method = Method.DEFAULT;
+      result.error(
+              PorcupineRuntimeException.class.getSimpleName(),
+              String.format("Porcupine method '%s' is not a valid function", call.method),
+              null);
+      return;
     }
 
     switch (method) {
-      case INIT:
+      case FROM_BUILTIN_KEYWORDS:
         try {
-          // default model file
-          final File resourceDirectory = flutterContext.getFilesDir();
-          final Map<String, Object> constants = new HashMap<>();
-          constants.put("DEFAULT_MODEL_PATH", new File(resourceDirectory, "porcupine_params.pv").getAbsolutePath());
+          String accessKey = call.argument("accessKey");
+          String modelPath = call.argument("modelPath");
+          ArrayList<String> keywordsList = call.argument("keywords");
+          ArrayList<Double> sensitivitiesList = call.argument("sensitivities");
 
-          // default keyword files
-          final Map<String, String> keywordPaths = new HashMap<>();
-          for (Porcupine.BuiltInKeyword x : Porcupine.BuiltInKeyword.values()) {
-            String fileName = x.name().toLowerCase();
-            String keyword = fileName.replace('_', ' ');
-            keywordPaths.put(keyword, new File(resourceDirectory, fileName + ".ppn").getAbsolutePath());
+          Porcupine.BuiltInKeyword[] keywords = null;
+          if (keywordsList != null) {
+            keywords = new Porcupine.BuiltInKeyword[keywordsList.size()];
+            for (int i = 0; i < keywordsList.size(); i++) {
+              keywords[i] = Porcupine.BuiltInKeyword.valueOf(keywordsList.get(i));
+            }
           }
-          constants.put("KEYWORD_PATHS", keywordPaths);
 
-          result.success(constants);
+          float [] sensitivities = null;
+          if (sensitivitiesList != null) {
+            sensitivities = new float[sensitivitiesList.size()];
+            for (int i = 0; i < sensitivitiesList.size(); i++) {
+              sensitivities[i] = sensitivitiesList.get(i).floatValue();
+            }
+          }
+
+          Porcupine porcupine = new Porcupine.Builder()
+                  .setAccessKey(accessKey)
+                  .setModelPath(modelPath)
+                  .setKeywords(keywords)
+                  .setSensitivities(sensitivities)
+                  .build(flutterContext);
+
+          porcupinePool.put(String.valueOf(System.identityHashCode(porcupine)), porcupine);
+
+          Map<String, Object> param = new HashMap<>();
+          param.put("handle", String.valueOf(System.identityHashCode(porcupine)));
+          param.put("frameLength", porcupine.getFrameLength());
+          param.put("sampleRate", porcupine.getSampleRate());
+          param.put("version", porcupine.getVersion());
+
+          result.success(param);
+        } catch (PorcupineException e) {
+          result.error(e.getClass().getSimpleName(), e.getMessage(), null);
         } catch (Exception e) {
-          result.error(
-                  PorcupineException.class.getSimpleName(),
-                  String.format("Failed to get constants: %s", e.getMessage()),
-                  null);
+          result.error(PorcupineException.class.getSimpleName(), e.getMessage(), null);
         }
         break;
-      case CREATE:
+      case FROM_KEYWORD_PATHS:
         try {
           String accessKey = call.argument("accessKey");
           String modelPath = call.argument("modelPath");
           ArrayList<String> keywordPathsList = call.argument("keywordPaths");
           ArrayList<Double> sensitivitiesList = call.argument("sensitivities");
 
-          if (keywordPathsList == null || sensitivitiesList == null) {
-            result.error(
-                    PorcupineInvalidArgumentException.class.getSimpleName(),
-                    "Arguments 'keywordPaths' and 'sensitivities' must be set",
-                    null);
-            return;
+          String[] keywordPaths = null;
+          if (keywordPathsList != null) {
+            keywordPaths = new String[keywordPathsList.size()];
+            for (int i = 0; i < keywordPathsList.size(); i++) {
+              keywordPaths[i] = keywordPathsList.get(i);
+            }
           }
 
-          String[] keywordPaths = new String[keywordPathsList.size()];
-          float [] sensitivities = new float[sensitivitiesList.size()];
-
-          for (int i = 0; i < keywordPaths.length; i++) {
-            keywordPaths[i] = keywordPathsList.get(i);
-            sensitivities[i] = sensitivitiesList.get(i).floatValue();
+          float [] sensitivities = null;
+          if (sensitivitiesList != null) {
+            sensitivities = new float[sensitivitiesList.size()];
+            for (int i = 0; i < sensitivitiesList.size(); i++) {
+              sensitivities[i] = sensitivitiesList.get(i).floatValue();
+            }
           }
 
           Porcupine porcupine = new Porcupine.Builder()
@@ -136,26 +159,20 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
           if (!porcupinePool.containsKey(handle)) {
             result.error(
                     PorcupineInvalidArgumentException.class.getSimpleName(),
-                    "Invalid Porcupine handle provided to native module.",
+                    "Invalid Porcupine handle provided to native module",
                     null);
             return;
           }
 
-          if (pcmList == null) {
-            result.error(
-                    PorcupineInvalidArgumentException.class.getSimpleName(),
-                    "Argument 'frame' must be provided.",
-                    null);
-            return;
+          short[] pcm = null;
+          if (pcmList != null) {
+            pcm = new short[pcmList.size()];
+            for (int i = 0; i < pcmList.size(); i++) {
+              pcm[i] = pcmList.get(i).shortValue();
+            }
           }
 
           Porcupine porcupine = porcupinePool.get(handle);
-          short[] pcm = new short[pcmList.size()];
-
-          for (int i = 0; i < pcmList.size(); i++) {
-            pcm[i] = pcmList.get(i).shortValue();
-          }
-
           int keywordIndex = porcupine.process(pcm);
           result.success(keywordIndex);
         } catch (PorcupineException e) {
@@ -178,13 +195,10 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
 
         Porcupine porcupine = porcupinePool.get(handle);
         porcupine.delete();
+        porcupinePool.remove(handle);
+
         result.success(null);
         break;
-      default:
-        result.error(
-                PorcupineRuntimeException.class.getSimpleName(),
-                String.format("Porcupine method '%s' is not a valid function.", call.method),
-                null);
     }
   }
 

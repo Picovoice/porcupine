@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   
   flutter_picker: ^2.0.1
-  flutter_porcupine: 
+  porcupine_flutter: 
     path: ../../binding/flutter
   
 dev_dependencies:
@@ -21,5 +21,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/

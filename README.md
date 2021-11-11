@@ -852,8 +852,8 @@ The SDK provides two APIs:
 The static constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
 
 ```dart
-import 'package:porcupine/porcupine_manager.dart';
-import 'package:porcupine/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine_manager.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
 
 const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
@@ -906,8 +906,8 @@ This is because it uses [flutter_voice_processor](https://github.com/Picovoice/f
 [Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.`Porcupine` has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```dart
-import 'package:porcupine/porcupine_manager.dart';
-import 'package:porcupine/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine_manager.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
 
 const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 

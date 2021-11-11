@@ -83,8 +83,8 @@ The module provides you with two levels of API to choose from depending on your 
 
 Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords.
 ```dart
-import 'package:flutter_porcupine/porcupine_manager.dart';
-import 'package:flutter_porcupine/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine_manager.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
 
 const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
@@ -182,8 +182,8 @@ Flutter plugin to capture frames of audio and automatically pass it to the wake 
 `Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```dart
-import 'package:flutter_porcupine/porcupine_manager.dart';
-import 'package:flutter_porcupine/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine_manager.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
 
 const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 

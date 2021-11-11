@@ -16,7 +16,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_porcupine/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
 
 /// BuiltInKeywords
 enum BuiltInKeyword {
@@ -38,9 +38,6 @@ enum BuiltInKeyword {
 
 class Porcupine {
   static final MethodChannel _channel = MethodChannel("porcupine");
-
-  static String? _defaultModelPath;
-  static Map<BuiltInKeyword, String>? _builtInKeywordPaths;
 
   String? _handle;
   final int _frameLength;
@@ -70,24 +67,37 @@ class Porcupine {
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
   ///
-  /// Thows a `PvError` if not initialized correctly
+  /// Thows a `PorcupineException` if not initialized correctly
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromBuiltInKeywords(
       String accessKey, List<BuiltInKeyword> keywords,
       {String? modelPath, List<double>? sensitivities}) async {
-    await _init();
-
-    List<String?> keywordPaths = List.empty(growable: true);
-    for (var builtIn in keywords) {
-      keywordPaths.add(_builtInKeywordPaths?[builtIn]);
+    if (modelPath != null) {
+      modelPath = await _extractResource(modelPath);
     }
 
-    return Porcupine._create(
-        accessKey: accessKey,
-        keywordPaths: keywordPaths,
-        modelPath: modelPath,
-        sensitivities: sensitivities);
+    List<String> keywordValues = List.empty(growable: true);
+    for (var keyword in keywords) {
+      keywordValues.add(keyword.toString().split('.').last);
+    }
+
+    try {
+      Map<String, dynamic> result = Map<String, dynamic>.from(
+          await _channel.invokeMethod('from_builtin_keywords', {
+        'accessKey': accessKey,
+        'modelPath': modelPath,
+        'keywords': keywordValues,
+        'sensitivities': sensitivities
+      }));
+
+      return Porcupine._(result['handle'], result['frameLength'],
+          result['sampleRate'], result['version']);
+    } on PlatformException catch (error) {
+      throw porcupineStatusToException(error.code, error.message);
+    } on Exception catch (error) {
+      throw porcupineStatusToException("PorcupineException", error.toString());
+    }
   }
 
   /// Static creator for initializing Porcupine from a list of paths to custom keyword files
@@ -103,77 +113,23 @@ class Porcupine {
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
   ///
-  /// Thows a `PvError` if not initialized correctly
+  /// Thows a `PorcupineException` if not initialized correctly
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromKeywordPaths(
-      String accessKey, List<String?>? keywordPaths,
+      String accessKey, List<String> keywordPaths,
       {String? modelPath, List<double>? sensitivities}) async {
-    await _init();
-
-    return Porcupine._create(
-        accessKey: accessKey,
-        keywordPaths: keywordPaths,
-        modelPath: modelPath,
-        sensitivities: sensitivities);
-  }
-
-  /// private static creator
-  static Future<Porcupine> _create(
-      {String? accessKey,
-      List<String?>? keywordPaths,
-      String? modelPath,
-      List<double>? sensitivities}) async {
-    if (accessKey == null || accessKey == "") {
-      throw PorcupineInvalidArgumentException("'accessKey' must be set.");
-    }
-
-    if (modelPath == null || modelPath == "") {
-      modelPath = _defaultModelPath;
-    }
-
-    if (!(await File(modelPath!).exists())) {
-      try {
-        modelPath = await _extractResource(modelPath);
-      } catch (e) {/* don't do anything on fail */}
-    }
-
-    if (keywordPaths == null || keywordPaths.isEmpty) {
-      throw PorcupineInvalidArgumentException("'keywordPaths' must be set.");
+    if (modelPath != null) {
+      modelPath = await _extractResource(modelPath);
     }
 
     for (var i = 0; i < keywordPaths.length; i++) {
-      if (keywordPaths[i] == null || keywordPaths[i] == "") {
-        throw PorcupineInvalidArgumentException(
-            "One of the provided keyword paths was empty.");
-      }
-
-      if (!(await File(keywordPaths[i]!).exists())) {
-        try {
-          keywordPaths[i] = await _extractResource(keywordPaths[i]!);
-        } catch (e) {/* don't do anything on fail */}
-      }
-    }
-
-    if (sensitivities == null || sensitivities.isEmpty) {
-      sensitivities = List.filled(keywordPaths.length, 0.5);
-    } else {
-      for (double sensitivity in sensitivities) {
-        if (sensitivity < 0 || sensitivity > 1 || sensitivity == double.nan) {
-          throw PorcupineInvalidArgumentException(
-              "Sensitivity value ($sensitivity) in given 'sensitivities' not in range [0,1]");
-        }
-      }
-
-      if (keywordPaths.length != sensitivities.length) {
-        throw PorcupineInvalidArgumentException(
-            "Number of keywords (${keywordPaths.length}) does not match number of sensitivities (${sensitivities.length})");
-      }
+      keywordPaths[i] = await _extractResource(keywordPaths[i]);
     }
 
     try {
-      Map<String, dynamic> result =
-          Map<String, dynamic>.from(await _channel.invokeMethod('create', {
+      Map<String, dynamic> result = Map<String, dynamic>.from(
+          await _channel.invokeMethod('from_keyword_paths', {
         'accessKey': accessKey,
         'modelPath': modelPath,
         'keywordPaths': keywordPaths,
@@ -184,31 +140,6 @@ class Porcupine {
           result['sampleRate'], result['version']);
     } on PlatformException catch (error) {
       throw porcupineStatusToException(error.code, error.message);
-    } on Exception catch (error) {
-      throw porcupineStatusToException("PorcupineException", error.toString());
-    }
-  }
-
-  /// intialize defaults
-  static Future<void> _init() async {
-    if (_defaultModelPath != null) {
-      return;
-    }
-
-    try {
-      Map<String, dynamic> result =
-          Map<String, dynamic>.from(await _channel.invokeMethod('init'));
-
-      _defaultModelPath = result['DEFAULT_MODEL_PATH'];
-
-      Map<String, String> keywordMap =
-          Map<String, String>.from(result['KEYWORD_PATHS']);
-
-      _builtInKeywordPaths = {};
-      for (var builtIn in BuiltInKeyword.values) {
-        _builtInKeywordPaths?[builtIn] =
-            keywordMap[_builtInToKeyword(builtIn)]!;
-      }
     } on Exception catch (error) {
       throw porcupineStatusToException("PorcupineException", error.toString());
     }
@@ -225,25 +156,16 @@ class Porcupine {
   ///
   /// Index of the detected keyword, or -1 if no detection occurred
   Future<int> process(List<int>? frame) async {
-    if (_handle == null) {
-      throw PorcupineInvalidStateException(
-          "Attempted to process an audio frame after Porcupine was been deleted.");
+    try {
+      int keywordIndex = await _channel
+          .invokeMethod('process', {'handle': _handle, 'frame': frame});
+
+      return keywordIndex;
+    } on PlatformException catch (error) {
+      throw porcupineStatusToException(error.code, error.message);
+    } on Exception catch (error) {
+      throw porcupineStatusToException("PorcupineException", error.toString());
     }
-
-    if (frame == null) {
-      throw PorcupineInvalidArgumentException(
-          "Frame array provided to Porcupine process was null.");
-    }
-
-    if (frame.length != frameLength) {
-      throw PorcupineInvalidArgumentException(
-          "Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' ($frameLength)");
-    }
-
-    int keywordIndex = await _channel
-        .invokeMethod('process', {'handle': _handle, 'frame': frame});
-
-    return keywordIndex;
   }
 
   /// Frees memory that was allocated for Porcupine
@@ -254,27 +176,28 @@ class Porcupine {
     }
   }
 
-  static String _builtInToKeyword(BuiltInKeyword builtIn) {
-    return builtIn
-        .toString()
-        .split('.')
-        .last
-        .replaceAll('_', ' ')
-        .toLowerCase();
-  }
-
   static Future<String> _extractResource(String filePath) async {
-    String resourceDirectory = (await getApplicationDocumentsDirectory()).path;
-    String outputPath = '$resourceDirectory/$filePath';
-    File outputFile = File(outputPath);
+    ByteData data;
+    try {
+      data = await rootBundle.load(filePath);
+    } catch (_) {
+      return filePath;
+    }
 
-    ByteData data =
-        await rootBundle.load(filePath);
-    final buffer = data.buffer;
+    try {
+      String resourceDirectory =
+          (await getApplicationDocumentsDirectory()).path;
+      String outputPath = '$resourceDirectory/$filePath';
+      File outputFile = File(outputPath);
+      final buffer = data.buffer;
 
-    await outputFile.create(recursive: true);
-    await outputFile.writeAsBytes(
-        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-    return outputPath;
+      await outputFile.create(recursive: true);
+      await outputFile.writeAsBytes(
+          buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+      return outputPath;
+    } catch (_) {
+      throw porcupineStatusToException(
+          "PorcupineIOException", "failed to extract '$filePath'");
+    }
   }
 }

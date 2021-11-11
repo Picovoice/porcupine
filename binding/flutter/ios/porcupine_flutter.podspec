@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name             = 'flutter_porcupine'
+  s.name             = 'porcupine_flutter'
   s.version          = '2.0.0'
   s.summary          = 'A Flutter package plugin for Picovoice\'s Porcupine wake word engine'
   s.description      = <<-DESC
