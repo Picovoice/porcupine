@@ -35,12 +35,11 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
             result(errorToFlutterError(PorcupineError.PorcupineRuntimeError("Porcupine method '\(call.method)' is not a valid function")))
             return
         }
+        let args = call.arguments as! [String: Any]
         
         switch (method) {
         case .FROM_BUILTIN_KEYWORDS:
             do {
-                let args = call.arguments as! [String: Any]
-                
                 if let accessKey = args["accessKey"] as? String,
                    let keywords = args["keywords"] as? [String] {
                     let modelPath = args["modelPath"] as? String
@@ -83,8 +82,6 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
             break
         case .FROM_KEYWORD_PATHS:
             do {
-                let args = call.arguments as! [String: Any]
-                
                 if let accessKey = args["accessKey"] as? String,
                    let keywordPaths = args["keywordPaths"] as? [String] {
                     let modelPath = args["modelPath"] as? String
@@ -117,8 +114,6 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
             break
         case .PROCESS:
             do {
-                let args = call.arguments as! [String: Any]
-                
                 if let handle = args["handle"] as? String,
                    let frame = args["frame"] as? [Int16] {
                     if let porcupine = porcupinePool[handle] {
@@ -137,8 +132,6 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
             }
             break
         case .DELETE:
-            let args = call.arguments as! [String: Any]
-            
             if let handle = args["handle"] as? String {
                 if let porcupine = porcupinePool.removeValue(forKey: handle) {
                     porcupine.delete()
