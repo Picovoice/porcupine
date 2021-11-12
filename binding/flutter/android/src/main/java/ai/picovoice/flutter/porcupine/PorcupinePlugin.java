@@ -72,7 +72,14 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
           if (keywordsList != null) {
             keywords = new Porcupine.BuiltInKeyword[keywordsList.size()];
             for (int i = 0; i < keywordsList.size(); i++) {
-              keywords[i] = Porcupine.BuiltInKeyword.valueOf(keywordsList.get(i));
+              try {
+                keywords[i] = Porcupine.BuiltInKeyword.valueOf(keywordsList.get(i));
+              } catch (IllegalArgumentException e) {
+                result.error(
+                        PorcupineInvalidArgumentException.class.getSimpleName(),
+                        String.format("'%s' is not a built-in keyword", keywordsList.get(i)),
+                        null);
+              }
             }
           }
 

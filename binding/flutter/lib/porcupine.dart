@@ -74,7 +74,7 @@ class Porcupine {
       String accessKey, List<BuiltInKeyword> keywords,
       {String? modelPath, List<double>? sensitivities}) async {
     if (modelPath != null) {
-      modelPath = await _extractResource(modelPath);
+      modelPath = await _tryExtractFlutterAsset(modelPath);
     }
 
     List<String> keywordValues = List.empty(growable: true);
@@ -120,11 +120,11 @@ class Porcupine {
       String accessKey, List<String> keywordPaths,
       {String? modelPath, List<double>? sensitivities}) async {
     if (modelPath != null) {
-      modelPath = await _extractResource(modelPath);
+      modelPath = await _tryExtractFlutterAsset(modelPath);
     }
 
     for (var i = 0; i < keywordPaths.length; i++) {
-      keywordPaths[i] = await _extractResource(keywordPaths[i]);
+      keywordPaths[i] = await _tryExtractFlutterAsset(keywordPaths[i]);
     }
 
     try {
@@ -176,11 +176,15 @@ class Porcupine {
     }
   }
 
-  static Future<String> _extractResource(String filePath) async {
+  static Future<String> _tryExtractFlutterAsset(String filePath) async {
     ByteData data;
     try {
       data = await rootBundle.load(filePath);
     } catch (_) {
+      // In flutter, a resource can be added through flutter's assets directory
+      // or natively (res for android; bundle for iOS). We try to extract
+      // a resource in flutter's assets directory and if it fails, try to load
+      // the resource using native modules.
       return filePath;
     }
 

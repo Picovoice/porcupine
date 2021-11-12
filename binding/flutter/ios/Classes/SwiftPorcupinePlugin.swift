@@ -72,7 +72,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                     
                     result(param)
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("Invalid argument provided to Porcupine 'from_built_in_keywords'")))
+                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("missing required arguments 'accessKey' and 'keywords'")))
                 }
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
@@ -104,7 +104,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                     
                     result(param)
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("Invalid argument provided to Porcupine 'from_keyword_paths'")))
+                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("missing required arguments 'accessKey' and 'keywordPaths'")))
                 }
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
@@ -123,7 +123,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                         result(errorToFlutterError(PorcupineError.PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'")))
                     }
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("Invalid argument provided to Porcupine 'process'")))
+                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("missing required arguments 'frame'")))
                 }
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))

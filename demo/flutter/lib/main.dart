@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       });
     } on PorcupineInvalidArgumentException catch (ex) {
       errorCallback(PorcupineInvalidArgumentException(
-          "${ex.message}\nPlease make sure your accessKey '$accessKey' is a valid access key."));
+          "${ex.message}\nEnmake sure your accessKey '$accessKey' is a valid access key."));
     } on PorcupineActivationException {
       errorCallback(
           PorcupineActivationException("AccessKey activation error."));
