@@ -79,6 +79,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                         PorcupineInvalidArgumentException.class.getSimpleName(),
                         String.format("'%s' is not a built-in keyword", keywordsList.get(i)),
                         null);
+                return;
               }
             }
           }
