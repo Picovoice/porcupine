@@ -11,11 +11,13 @@ dependencies:
     sdk: flutter
   
   flutter_picker: ^2.0.1
-  porcupine: ^1.9.14
+  porcupine_flutter: 
+    path: ../../binding/flutter
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lints: ^1.0.1
 
 flutter:
   uses-material-design: true

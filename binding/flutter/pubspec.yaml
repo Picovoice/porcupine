@@ -1,6 +1,6 @@
-name: porcupine
+name: porcupine_flutter
 description: A Flutter plugin for Picovoice's Porcupine offline wake word engine.
-version: 1.9.14
+version: 2.0.0
 homepage: https://picovoice.ai/
 
 environment:
@@ -8,7 +8,6 @@ environment:
   flutter: ">=1.20.0"
 
 dependencies:
-  ffi: ^1.1.2
   path_provider: ^2.0.1
   flutter:
     sdk: flutter
@@ -18,6 +17,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lints: ^1.0.1
 
 flutter:
   plugin:
@@ -27,34 +27,3 @@ flutter:
         pluginClass: PorcupinePlugin
       ios:
         pluginClass: PorcupinePlugin
-
-  assets:
-    - assets/lib/common/porcupine_params.pv
-    - assets/resources/keyword_files/android/alexa_android.ppn
-    - assets/resources/keyword_files/android/americano_android.ppn
-    - assets/resources/keyword_files/android/blueberry_android.ppn
-    - assets/resources/keyword_files/android/bumblebee_android.ppn
-    - assets/resources/keyword_files/android/computer_android.ppn
-    - assets/resources/keyword_files/android/grapefruit_android.ppn
-    - assets/resources/keyword_files/android/grasshopper_android.ppn
-    - assets/resources/keyword_files/android/hey google_android.ppn
-    - assets/resources/keyword_files/android/hey siri_android.ppn
-    - assets/resources/keyword_files/android/jarvis_android.ppn
-    - assets/resources/keyword_files/android/ok google_android.ppn
-    - assets/resources/keyword_files/android/picovoice_android.ppn
-    - assets/resources/keyword_files/android/porcupine_android.ppn
-    - assets/resources/keyword_files/android/terminator_android.ppn
-    - assets/resources/keyword_files/ios/alexa_ios.ppn
-    - assets/resources/keyword_files/ios/americano_ios.ppn
-    - assets/resources/keyword_files/ios/blueberry_ios.ppn
-    - assets/resources/keyword_files/ios/bumblebee_ios.ppn
-    - assets/resources/keyword_files/ios/computer_ios.ppn
-    - assets/resources/keyword_files/ios/grapefruit_ios.ppn
-    - assets/resources/keyword_files/ios/grasshopper_ios.ppn
-    - assets/resources/keyword_files/ios/hey google_ios.ppn
-    - assets/resources/keyword_files/ios/hey siri_ios.ppn
-    - assets/resources/keyword_files/ios/jarvis_ios.ppn
-    - assets/resources/keyword_files/ios/ok google_ios.ppn
-    - assets/resources/keyword_files/ios/picovoice_ios.ppn
-    - assets/resources/keyword_files/ios/porcupine_ios.ppn
-    - assets/resources/keyword_files/ios/terminator_ios.ppn

@@ -1,14 +1,17 @@
 group 'ai.picovoice.flutter.porcupine'
-version '1.0'
+version '2.0.0'
 
 buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1069/'
+        }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:4.1.3'
     }
 }
 
@@ -16,6 +19,9 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1069/'
+        }
     }
 }
 
@@ -27,7 +33,21 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
-    lintOptions {
-        disable 'InvalidPackage'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
     }
+    lintOptions {
+        disable 'GradleCompatible'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'ai.picovoice:porcupine-android:2.0.0'
 }
