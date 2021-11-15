@@ -408,18 +408,17 @@ namespace Pv.Unity
         private static Dictionary<BuiltInKeyword, string> GetBuiltInKeywordPaths(string platform)
         {
 #if !UNITY_EDITOR && UNITY_ANDROID
-            string keywordFilesDir = Path.Combine(Application.persistentDataPath, "keyword_files", platform);
+            string keywordFilesDir = Path.Combine(Path.Combine(Application.persistentDataPath, "keyword_files"), platform);
             if (!Directory.Exists(keywordFilesDir))
             {
                 Directory.CreateDirectory(keywordFilesDir);
             }
 
+            string assetDir = Path.Combine(Path.Combine(Application.streamingAssetsPath, "keyword_files"), platform);
             foreach (string keyword in Enum.GetNames(typeof(BuiltInKeyword))) 
             {
                 ExtractResource(Path.Combine(
-                    Application.streamingAssetsPath,
-                    "keyword_files",
-                    platform,
+                    assetDir,
                     string.Format("{0}_{1}.ppn", keyword.Replace("_", " ").ToLower(), platform)));
             }            
 #else
@@ -453,9 +452,13 @@ namespace Pv.Unity
                 throw new PorcupineIOException($"File '{filePath}' not found in streaming assets path.");
             }
 
-            string dstPath = Path.Combine(
-                Application.persistentDataPath,
-                filePath.Remove(0, Application.streamingAssetsPath.Length + 1));
+            string dstPath = filePath.Replace(Application.streamingAssetsPath, Application.persistentDataPath);
+            string dstDir = Path.GetDirectoryName(dstPath);
+            if (!Directory.Exists(dstDir))
+            {
+                Directory.CreateDirectory(dstDir);
+            }
+
             var loadingRequest = UnityWebRequest.Get(filePath);
             loadingRequest.SendWebRequest();
 
