@@ -28,23 +28,31 @@ static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice C
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static const int32_t NUM_KEYWORDS = 2;
+static const int32_t NUM_KEYWORDS = 4;
 static const int32_t KEYWORD_MODEL_SIZES[] = {
         sizeof(DEFAULT_KEYWORD_ARRAY),
         sizeof(PICOVOICE_KEYWORD_ARRAY),
+        sizeof(BUMBLEBEE_KEYWORD_ARRAY),
+        sizeof(ALEXA_KEYWORD_ARRAY)
 };
 static const void *KEYWORD_MODELS[] = {
         DEFAULT_KEYWORD_ARRAY,
         PICOVOICE_KEYWORD_ARRAY,
+        BUMBLEBEE_KEYWORD_ARRAY,
+        ALEXA_KEYWORD_ARRAY
 };
 static const float SENSITIVITIES[] = {
         0.75f,
         0.75f,
+        0.75f,
+        0.75f
 };
 
 static const char *KEYWORDS_NAME[] = {
         "Porcupine",
         "Picovoice",
+        "Bumblebee",
+        "Alexa"
 };
 
 static void wake_word_callback(int32_t keyword_index) {
