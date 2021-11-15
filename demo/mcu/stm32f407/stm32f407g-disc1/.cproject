@@ -68,7 +68,7 @@
 									<listOptionValue builtIn="false" value="PDMFilter_CM4_GCC_wc32"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories.641947863" name="Library search path (-L)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../../../../lib/mcu/stm32f407/"/>
+									<listOptionValue builtIn="false" value="../../../../../lib/mcu/stm32f407/en"/>
 									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_Audio/Addons/PDM/Lib/"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input.1226726554" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input">
@@ -164,7 +164,7 @@
 									<listOptionValue builtIn="false" value="PDMFilter_CM4_GCC_wc32"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories.412302644" name="Library search path (-L)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../../../../lib/mcu/stm32f411/"/>
+									<listOptionValue builtIn="false" value="../../../../../lib/mcu/stm32f407/en"/>
 									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_Audio/Addons/PDM/Lib/"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input.687833808" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input">
@@ -209,5 +209,12 @@
 			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="ReleaseSingleWakeWord">
+			<resource resourceType="PROJECT" workspacePath="/stm32f407g-disc1-demo"/>
+		</configuration>
+		<configuration configurationName="ReleaseMultipleWakeWord">
+			<resource resourceType="PROJECT" workspacePath="/stm32f407g-disc1-demo"/>
+		</configuration>
+	</storageModule>
 </cproject>
