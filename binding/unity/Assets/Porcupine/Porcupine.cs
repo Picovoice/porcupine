@@ -453,7 +453,6 @@ namespace Pv.Unity
                 throw new PorcupineIOException($"File '{filePath}' not found in streaming assets path.");
             }
 
-            string tmp = filePath.Remove(0, Application.streamingAssetsPath.Length);
             string dstPath = Path.Combine(
                 Application.persistentDataPath,
                 filePath.Remove(0, Application.streamingAssetsPath.Length + 1));
