@@ -399,7 +399,7 @@ namespace Pv.Unity
         private static string GetDefaultModelPath()
         {
 #if !UNITY_EDITOR && UNITY_ANDROID
-            return ExtractResource("porcupine_params.pv");
+            return ExtractResource(Path.Combine(Application.streamingAssetsPath, "porcupine_params.pv"));
 #else
             return Path.Combine(Application.streamingAssetsPath, "porcupine_params.pv");
 #endif
@@ -414,12 +414,15 @@ namespace Pv.Unity
                 Directory.CreateDirectory(keywordFilesDir);
             }
 
+            string assetDir = Path.Combine(Path.Combine(Application.streamingAssetsPath, "keyword_files"), platform);
             foreach (string keyword in Enum.GetNames(typeof(BuiltInKeyword))) 
             {
-                ExtractResource(Path.Combine(Path.Combine("keyword_files", platform), string.Format("{0}_{1}.ppn", keyword.Replace("_", " ").ToLower(), platform)));
+                ExtractResource(Path.Combine(
+                    assetDir,
+                    string.Format("{0}_{1}.ppn", keyword.Replace("_", " ").ToLower(), platform)));
             }            
 #else
-            string keywordFilesDir = Path.Combine(Path.Combine(Application.streamingAssetsPath, "keyword_files"), platform);
+            string keywordFilesDir = Path.Combine(Application.streamingAssetsPath, "keyword_files", platform);
 #endif
 
             Dictionary<BuiltInKeyword, string> keywordPaths = new Dictionary<BuiltInKeyword, string>();
@@ -444,10 +447,21 @@ namespace Pv.Unity
 #if !UNITY_EDITOR && UNITY_ANDROID
         public static string ExtractResource(string filePath)
         {
-            string srcPath = Path.Combine(Application.streamingAssetsPath, filePath);
-            string dstPath = Path.Combine(Application.persistentDataPath, filePath);
-            var loadingRequest = UnityWebRequest.Get(srcPath);
+            if (!filePath.StartsWith(Application.streamingAssetsPath))
+            {
+                throw new PorcupineIOException($"File '{filePath}' not found in streaming assets path.");
+            }
+
+            string dstPath = filePath.Replace(Application.streamingAssetsPath, Application.persistentDataPath);
+            string dstDir = Path.GetDirectoryName(dstPath);
+            if (!Directory.Exists(dstDir))
+            {
+                Directory.CreateDirectory(dstDir);
+            }
+
+            var loadingRequest = UnityWebRequest.Get(filePath);
             loadingRequest.SendWebRequest();
+
             while (!loadingRequest.isDone)
             {
                 if (loadingRequest.isNetworkError || loadingRequest.isHttpError)
