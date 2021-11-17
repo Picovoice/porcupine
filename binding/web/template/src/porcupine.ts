@@ -320,14 +320,16 @@ export class Porcupine implements PorcupineEngine {
 
   // eslint-disable-next-line
   public static resolveFilePromise(args: any): void {
-    // @ts-ignore
-    Porcupine._resolvePromise(args);
+    if (Porcupine._resolvePromise != null) {
+      Porcupine._resolvePromise(args);
+    }
   }
 
   // eslint-disable-next-line
   public static rejectFilePromise(args: any): void {
-    // @ts-ignore
-    Porcupine._rejectPromise(args);
+    if (Porcupine._rejectPromise != null) {
+      Porcupine._rejectPromise(args);
+    }
   }
 
   private static async initWasm(
