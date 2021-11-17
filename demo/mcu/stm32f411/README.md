@@ -6,8 +6,8 @@ This package contains a demo project for the STM32F411 Discovery kit using Porcu
 ## Supported Languages
 
 1. English
-2. German
-3. French
+2. French
+3. German
 4. Spanish
 
 ## Installation
@@ -48,9 +48,9 @@ Then, to compile and run the demo project on a STM32f411 discovery board, perfor
 For the single wake word demos, the default wake words are:
 
 - `Porcupine` for English language,
+- `salut ordinateur` for French language.
 - `hey computer` for German language,
 - `hola computadora` for Spanish language,
-- `salut ordinateur` for French language.
 
 Below are the LED colors associated with supported wake words for the multiple wake words demo:
 

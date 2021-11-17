@@ -5,8 +5,8 @@ This package contains a demo project for the i.MX RT1050 Evaluation Kit using Po
 ## Supported Languages
 
 1. English
-2. German
-3. French
+2. French
+3. German
 4. Spanish
 
 ## Installation
@@ -43,9 +43,9 @@ Then, to compile and run the demo project on a i.MX RT1050 Evaluation board, per
 For the single wake word demos, the default wake words are:
 
 - `Porcupine` for English language,
+- `salut ordinateur` for French language.
 - `hey computer` for German language,
 - `hola computadora` for Spanish language,
-- `salut ordinateur` for French language.
 
 For the multiple wake words demo `Porcupine`, `Picovoice`, `Bumblebee`, and `Alexa` are considered as the keywords.
 
