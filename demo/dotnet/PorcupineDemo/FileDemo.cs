@@ -146,7 +146,7 @@ namespace PorcupineDemo
             if (args.Length == 0)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
@@ -227,7 +227,7 @@ namespace PorcupineDemo
             if (showHelp)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 

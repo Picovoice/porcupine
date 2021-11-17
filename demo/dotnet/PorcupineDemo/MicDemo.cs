@@ -51,7 +51,7 @@ namespace PorcupineDemo
             Porcupine porcupine = null;
             BinaryWriter outputFileWriter = null;
             int totalSamplesWritten = 0;
-            
+
             // init porcupine wake word engine
             porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
 
@@ -63,10 +63,10 @@ namespace PorcupineDemo
             {
                 outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
                 WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
-            }            
+            }
 
             Console.CancelKeyPress += (s, o) =>
-            {                
+            {
                 Console.WriteLine("Stopping...");
 
                 if (outputFileWriter != null)
@@ -156,7 +156,7 @@ namespace PorcupineDemo
             if (args.Length == 0)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
@@ -252,7 +252,7 @@ namespace PorcupineDemo
             if (showHelp)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
@@ -260,7 +260,7 @@ namespace PorcupineDemo
             if (showAudioDevices)
             {
                 ShowAudioDevices();
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
