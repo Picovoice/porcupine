@@ -70,7 +70,7 @@ export class VoiceWidget {
   }
 
   public async initEngine(accessKey: string) {
-    if (accessKey.length === 56) { 
+    if (accessKey.length >= 0) { 
       this.porcupineService.release();
       const porcupineServiceArgs: PorcupineServiceArgs = { accessKey: accessKey, keywords: this.keywords};
       // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; needs to be dynamically imported)

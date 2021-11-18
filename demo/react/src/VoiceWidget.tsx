@@ -68,7 +68,7 @@ export default function VoiceWidget() {
       <h3>Porcupine Loaded: {JSON.stringify(isLoaded)}</h3>
       <h3>Listening: {JSON.stringify(isListening)}</h3>
       <h3>Error: {JSON.stringify(isError)}</h3>
-      {isError && (
+      {isError && accessKey && (
         <p className="error-message">{JSON.stringify(errorMessage)}</p>
       )}
       <h3>Keywords: {JSON.stringify(keywords)}</h3>
