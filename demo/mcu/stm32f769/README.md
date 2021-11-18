@@ -1,7 +1,13 @@
-
-# Porcupine Wake Word Engine Demo for STM32F769
+# Porcupine Wake Word Engine Demo for STM32F769 (Multiple languages)
 
 This package contains a demo project for the STM32F769 Discovery kit using Porcupine wake word engine. 
+
+## Supported Languages
+
+1. English
+2. French
+3. German
+4. Spanish
 
 ## Installation
 
@@ -9,18 +15,40 @@ For this demo, you need to:
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
 2. Install a serial port monitor on your system to be able to communicate with the board. [Arduino environment's built-in serial monitor](https://www.arduino.cc/en/software) and [Coolterm](https://freeware.the-meiers.org/) are two free options available on all platforms (Windows, Linux, and macOS).
 
+## AccessKey
+
+Porcupine requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
-In order to compile and run the demo project on a STM32f769 discovery board, perform the following steps:
+In the demo project, there is a separate build configuration for each supported languages. In order to activate a specific configuration:
+
+1. Click `Project` > `Build Configuration` > `Set Active`
+2. Select the target configuration
+
+Then, to compile and run the demo project on a STM32f769 discovery board, perform the following steps:
 
 1. Open STM32CubeIDE
 2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f769i-disco](./stm32f769i-disco) folder from this repository, and then press the `Finish` button.
 3. Select the `stm32f769i-disco-demo` project inside the `Project Explorer` window
-4. Click `Project` > `Build All`
-5. Connect the board to the computer and press `Run` > `Run`
-6. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one of them in the `Qualifier` window and press `ok`
+5. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+6. Click `Project` > `Build Project`
+7. Connect the board to the computer and press `Run` > `Run`
+8. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one of them in the `Qualifier` window and press `ok`
 
-For the single wake word demo, the default wake word is `Porcupine`; and below are the LED colors associated with supported wake words for the multiple wake words demo:
+For the single wake word demos, the default wake words are:
+
+- `Porcupine` for English language,
+- `salut ordinateur` for French language.
+- `hey computer` for German language,
+- `hola computadora` for Spanish language,
+
+Below are the LED colors associated with supported wake words for the multiple wake words demo:
 
 - ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Porcupine`
 - ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Picovoice`
@@ -38,4 +66,4 @@ The model is now being trained. You will be able to download it within a few hou
 
 1. Download your custom voice model(s) from [Picovoice Console](https://console.picovoice.ai/).
 2. Decompress the zip file. The model for Porcupine wake word is located in two files: A binary `.ppn` file, and as a `.h` header file containing a `C` array version of the binary model.
-3. Copy the contents of the array inside the `.h` header file and update the `DEFAULT_KEYWORD_ARRAY` value in [/stm32f769i-disco/Inc/pv_params.h](./stm32f769i-disco/Inc/pv_params.h)
+3. Copy the contents of the array inside the `.h` header file and update the `DEFAULT_KEYWORD_ARRAY` value in [/stm32f769i-disco/Inc/pv_params.h](./stm32f769i-disco/Inc/pv_params.h) in the language section for which the model is trained.

@@ -19,8 +19,7 @@
 
 #ifdef __cplusplus
 
-extern "C"
-{
+extern "C" {
 
 #endif
 
@@ -37,6 +36,7 @@ typedef struct pv_porcupine pv_porcupine_t;
 /**
  * Constructor.
  *
+ * @param access_key AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
  * @param memory_size Memory size in bytes.
  * @param memory_buffer Memory buffer needs to be 8-byte aligned.
  * @param num_keywords Number of keywords to monitor.
@@ -48,13 +48,14 @@ typedef struct pv_porcupine pv_porcupine_t;
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' or 'PV_STATUS_OUT_OF_MEMORY' on failure.
  */
 PV_API pv_status_t pv_porcupine_init(
-    int32_t memory_size,
-    void *memory_buffer,
-    int32_t num_keywords,
-    const int32_t *keyword_model_sizes,
-    const void * const *keyword_models,
-    const float *sensitivities,
-    pv_porcupine_t **object);
+        const char *access_key,
+        int32_t memory_size,
+        void *memory_buffer,
+        int32_t num_keywords,
+        const int32_t *keyword_model_sizes,
+        const void *const *keyword_models,
+        const float *sensitivities,
+        pv_porcupine_t **object);
 
 /**
  * Destructor.
@@ -77,6 +78,29 @@ PV_API void pv_porcupine_delete(pv_porcupine_t *object);
 PV_API pv_status_t pv_porcupine_process(pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index);
 
 /**
+ * Computes the minimum required memory buffer size, in bytes, for the given keyword model.
+ * A relatively large value for 'preliminary_memory_buffer' is suggested (e.g., 30 kilobytes).
+ * Then, 'pv_porcupine_init' can be called optimally passing a memory buffer with the size of 'min_memory_buffer_size'.
+ *
+ * @param preliminary_memory_size Memory size in bytes.
+ * @param preliminary_memory_buffer Memory needs to be 8-byte aligned.
+ * @param num_keywords Number of keywords to monitor.
+ * @param keyword_model_sizes Size of each keyword model in bytes.
+ * @param keyword_models Keyword models.
+ * @param[out] min_memory_buffer_size minimum required memory buffer size in bytes.
+ * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_INVALID_STATE', or 'PV_STATUS_OUT_OF_MEMORY'
+ * on failure.
+ * */
+
+PV_API pv_status_t pv_porcupine_get_min_memory_buffer_size(
+        int32_t preliminary_memory_size,
+        void *preliminary_memory_buffer,
+        int32_t num_keywords,
+        const int32_t *keyword_model_sizes,
+        const void *const *keyword_models,
+        int32_t *min_memory_buffer_size);
+
+/**
  * Getter for version.
  *
  * @return Version.
@@ -91,7 +115,6 @@ PV_API const char *pv_porcupine_version(void);
 PV_API int32_t pv_porcupine_frame_length(void);
 
 #ifdef __cplusplus
-
 }
 
 #endif
