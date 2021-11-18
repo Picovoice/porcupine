@@ -124,7 +124,7 @@ export function getRuntimeEnvironment(): string {
 
  export function isAccessKeyValid(accessKey: string): boolean {
   const accessKeyCleaned = accessKey.trim();
-  if (accessKeyCleaned.length !== 56) { return false; }
+  if (accessKeyCleaned === '') { return false; }
   try {
     return btoa(atob(accessKeyCleaned)) === accessKeyCleaned;
   } catch (err) {

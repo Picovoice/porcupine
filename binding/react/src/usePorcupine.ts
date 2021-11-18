@@ -31,7 +31,9 @@ export function usePorcupine(
   webVoiceProcessor: WebVoiceProcessor | null;
   start: () => void;
   pause: () => void;
-  setKeywordEventHandler: React.Dispatch<React.SetStateAction<(label: string) => void>>;
+  setKeywordEventHandler: React.Dispatch<
+    React.SetStateAction<(label: string) => void>
+  >;
 } {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -68,7 +70,6 @@ export function usePorcupine(
     setErrorMessage(error.toString());
   };
 
-
   useEffect(() => {
     // If using dynamic import() on porcupine-web-xx-worker,
     // initially the worker factory may not exist yet; do nothing
@@ -91,11 +92,6 @@ export function usePorcupine(
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { accessKey, keywords, start: startWebVp = true } = porcupineHookArgs!;
-    if (accessKey === null || accessKey === '') {
-      return (): void => {
-        /* NOOP */
-      };
-    }
 
     async function startPorcupine(): Promise<{
       webVp: WebVoiceProcessor;
@@ -119,7 +115,7 @@ export function usePorcupine(
     const startPorcupinePromise = startPorcupine();
 
     startPorcupinePromise
-      .then(({ webVp, }) => {
+      .then(({ webVp }) => {
         setIsLoaded(true);
         setIsListening(webVp.isRecording);
         setWebVoiceProcessor(webVp);
