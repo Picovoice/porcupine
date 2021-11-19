@@ -10,9 +10,8 @@
 //
 
 import { NativeModules } from 'react-native';
-
-import BuiltInKeywords  from './builtin_keywords';
-import * as PorcupineExceptions from './porcupine_exceptions';
+import * as PorcupineErrors from './porcupine_errors';
+import type BuiltInKeywords  from './builtin_keywords';
 
 const RCTPorcupine = NativeModules.PvPorcupine;
 
@@ -41,32 +40,24 @@ class Porcupine {
   public static async fromBuiltInKeywords(
     accessKey: string,
     keywords: BuiltInKeywords[],
-    modelPath?: string,
-    sensitivities?: number[]
+    modelPath: string = '',
+    sensitivities: number[] = []
   ) {
-    const keywordValues = keywords.map((keyword) => {
-      if (!Object.values(BuiltInKeywords).includes(keyword)) {
-        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          `keyword '${keyword}' is not a built-in keyword`);
-      }
-
-      return keyword;
-    });
 
     try {
       let { handle, frameLength, sampleRate, version } = await RCTPorcupine.fromBuiltInKeywords(
         accessKey,
-        keywordValues,
         modelPath,
+        Object.values(keywords),
         sensitivities
       );
       return new Porcupine(handle, frameLength, sampleRate, version);
     } catch (err) {
-      if (err instanceof PorcupineExceptions.PorcupineException) {
+      if (err instanceof PorcupineErrors.PorcupineError) {
         throw err;
       } else {
         const nativeError = err as NativeError;
-        throw this.codeToException(nativeError.code, nativeError.message);
+        throw this.codeToError(nativeError.code, nativeError.message);
       }
     }
   }
@@ -84,23 +75,23 @@ class Porcupine {
   public static async fromKeywordPaths(
     accessKey: string,
     keywordsPaths: string[],
-    modelPath?: string,
-    sensitivities?: number[]
+    modelPath: string = '',
+    sensitivities: number[] = []
   ) {
     try {
       let { handle, frameLength, sampleRate, version } = await RCTPorcupine.fromKeywordPaths(
         accessKey,
-        keywordsPaths,
         modelPath,
+        keywordsPaths,
         sensitivities
       );
       return new Porcupine(handle, frameLength, sampleRate, version);
     } catch (err) {
-      if (err instanceof PorcupineExceptions.PorcupineException) {
+      if (err instanceof PorcupineErrors.PorcupineError) {
         throw err;
       } else {
         const nativeError = err as NativeError;
-        throw this.codeToException(nativeError.code, nativeError.message);
+        throw this.codeToError(nativeError.code, nativeError.message);
       }
     }
   }
@@ -126,16 +117,16 @@ class Porcupine {
    */
   async process(frame: number[]) {
     if (frame === undefined) {
-      throw new PorcupineExceptions.PorcupineInvalidStateException(
+      throw new PorcupineErrors.PorcupineInvalidStateError(
         "Frame array provided to process() is undefined or null");
     } else if (frame.length !== this._frameLength) {
-      throw new PorcupineExceptions.PorcupineInvalidStateException(
+      throw new PorcupineErrors.PorcupineInvalidStateError(
         `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this._frameLength})`);
     }
 
     // sample the first frame to check for non-integer values
     if (!Number.isInteger(frame[0])) {
-      throw new PorcupineExceptions.PorcupineInvalidStateException(
+      throw new PorcupineErrors.PorcupineInvalidStateError(
         `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`);
     }
 
@@ -143,7 +134,7 @@ class Porcupine {
       return await RCTPorcupine.process(this._handle, frame);
     } catch(err) {
       const nativeError = err as NativeError;
-      throw Porcupine.codeToException(nativeError.code, nativeError.message);
+      throw Porcupine.codeToError(nativeError.code, nativeError.message);
     }
   }
 
@@ -179,35 +170,36 @@ class Porcupine {
   }
 
   /**
-   * Gets the exception type given a code.
-   * @param code Code name of nativee exception.
+   * Gets the Error type given a code.
+   * @param code Code name of native Error.
+   * @param message Detailed message of the error.
    */
-  private static codeToException(code: string, message: string) {
+  private static codeToError(code: string, message: string) {
     switch(code) {
-      case 'PorcupineException':
-        return new PorcupineExceptions.PorcupineException(message);
-      case 'PorcupineMemoryException':
-        return new PorcupineExceptions.PorcupineMemoryException(message);
-      case 'PorcupineIOException':
-        return new PorcupineExceptions.PorcupineIOException(message);
-      case 'PorcupineInvalidArgumentException':
-        return new PorcupineExceptions.PorcupineInvalidArgumentException(message);
-      case 'PorcupineStopIterationException':
-        return new PorcupineExceptions.PorcupineStopIterationException(message);
-      case 'PorcupineKeyException':
-        return new PorcupineExceptions.PorcupineKeyException(message);
-      case 'PorcupineInvalidStateException':
-        return new PorcupineExceptions.PorcupineInvalidStateException(message);
-      case 'PorcupineRuntimeException':
-        return new PorcupineExceptions.PorcupineRuntimeException(message);
-      case 'PorcupineActivationException':
-        return new PorcupineExceptions.PorcupineActivationException(message);
-      case 'PorcupineActivationLimitException':
-        return new PorcupineExceptions.PorcupineActivationLimitException(message);
-      case 'PorcupineActivationThrottledException':
-        return new PorcupineExceptions.PorcupineActivationThrottledException(message);
-      case 'PorcupineActivationRefusedException':
-        return new PorcupineExceptions.PorcupineActivationRefusedException(message);
+      case 'PorcupineError':
+        return new PorcupineErrors.PorcupineError(message);
+      case 'PorcupineMemoryError':
+        return new PorcupineErrors.PorcupineMemoryError(message);
+      case 'PorcupineIOError':
+        return new PorcupineErrors.PorcupineIOError(message);
+      case 'PorcupineInvalidArgumentError':
+        return new PorcupineErrors.PorcupineInvalidArgumentError(message);
+      case 'PorcupineStopIterationError':
+        return new PorcupineErrors.PorcupineStopIterationError(message);
+      case 'PorcupineKeyError':
+        return new PorcupineErrors.PorcupineKeyError(message);
+      case 'PorcupineInvalidStateError':
+        return new PorcupineErrors.PorcupineInvalidStateError(message);
+      case 'PorcupineRuntimeError':
+        return new PorcupineErrors.PorcupineRuntimeError(message);
+      case 'PorcupineActivationError':
+        return new PorcupineErrors.PorcupineActivationError(message);
+      case 'PorcupineActivationLimitError':
+        return new PorcupineErrors.PorcupineActivationLimitError(message);
+      case 'PorcupineActivationThrottledError':
+        return new PorcupineErrors.PorcupineActivationThrottledError(message);
+      case 'PorcupineActivationRefusedError':
+        return new PorcupineErrors.PorcupineActivationRefusedError(message);
       default:
         throw new Error(`unexpected code: ${code}, message: ${message}`);
     }

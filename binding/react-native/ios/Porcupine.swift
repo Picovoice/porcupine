@@ -9,6 +9,8 @@
 // specific language governing permissions and limitations under the License.
 //
 
+import Porcupine
+
 @objc(PvPorcupine)
 class PvPorcupine: NSObject {
     private var porcupinePool:Dictionary<String, Porcupine> = [:]
@@ -22,7 +24,8 @@ class PvPorcupine: NSObject {
                 if let builtIn = Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) {
                     keywordValues.append(builtIn)
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineKeyError("'\(keyword.lowercased())' is not a built in keyword")))
+                    let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
+                    reject(code, message, nil)
                     return
                 }
             }
@@ -31,7 +34,7 @@ class PvPorcupine: NSObject {
                 accessKey: accessKey,
                 keywords: keywordValues,
                 modelPath: modelPath.isEmpty ? nil : try getResourcePath(modelPath),
-                sensitivities: sensitivities)
+                sensitivities: sensitivities.isEmpty ? nil : sensitivities)
             
             let handle: String = String(describing: porcupine)
             porcupinePool[handle] = porcupine
@@ -58,9 +61,15 @@ class PvPorcupine: NSObject {
         var keywordPaths = keywordPaths
         
         do {
-            keywordPaths = try keywordPaths.map { try getResourcePath($0) }
-        } catch {
+            for i in 0..<keywordPaths.count {
+                keywordPaths[i] = try getResourcePath(keywordPaths[i])
+            }
+        } catch let error as PorcupineError {
             let (code, message) = errorToCodeAndMessage(error)
+            reject(code, message, nil)
+            return
+        } catch {
+            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
             reject(code, message, nil)
             return
         }
@@ -68,9 +77,9 @@ class PvPorcupine: NSObject {
         do {
             let porcupine = try Porcupine(
                 accessKey: accessKey,
-                keywords: keywordValues,
+                keywordPaths: keywordPaths,
                 modelPath: modelPath.isEmpty ? nil : try getResourcePath(modelPath),
-                sensitivities: sensitivities)
+                sensitivities: sensitivities.isEmpty ? nil : sensitivities)
             
             let handle: String = String(describing: porcupine)
             porcupinePool[handle] = porcupine
@@ -106,7 +115,8 @@ class PvPorcupine: NSObject {
                 let keywordIndex = try porcupine.process(pcm: pcm)
                 resolve(keywordIndex)
             } else {
-                result(errorToFlutterError(PorcupineError.PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'")))
+                let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'"))
+                reject(code, message, nil)
             }
         } catch let error as PorcupineError {
             let (code, message) = errorToCodeAndMessage(error)
@@ -119,7 +129,7 @@ class PvPorcupine: NSObject {
 
     private func getResourcePath(_ filePath: String) throws -> String {
         if (!FileManager.default.fileExists(atPath: filePath)) {
-            if let resourcePath = Bundle.main.resourceURL?.appendingPathComponent(filePath).path {
+            if let resourcePath = Bundle(for: type(of: self)).resourceURL?.appendingPathComponent(filePath).path {
                 if (FileManager.default.fileExists(atPath: resourcePath)) {
                     return resourcePath
                 }

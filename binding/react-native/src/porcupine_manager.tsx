@@ -14,9 +14,9 @@ import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
 import type BuiltInKeywords from './builtin_keywords';
-import type * as PorcupineExceptions from './porcupine_exceptions';
+import type * as PorcupineErrors from './porcupine_errors';
 export type DetectionCallback = (keywordIndex: number) => void;
-export type ProcessErrorCallback = (error: PorcupineExceptions.PorcupineException) => void;
+export type ProcessErrorCallback = (error: PorcupineErrors.PorcupineError) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
@@ -105,7 +105,7 @@ class PorcupineManager {
           }
         } catch (e) {
           if (this._processErrorCallback) {
-            this._processErrorCallback(e as PorcupineExceptions.PorcupineException);
+            this._processErrorCallback(e as PorcupineErrors.PorcupineError);
           } else {
             console.error(e);
           }

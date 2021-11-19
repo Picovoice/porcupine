@@ -12,8 +12,8 @@
 'use strict';
 
 import Porcupine from './porcupine';
-import PorcupineManager from './porcupinemanager';
+import PorcupineManager from './porcupine_manager';
 import BuiltInKeywords from './builtin_keywords';
-import * as PorcupineExceptions from './porcupine_exceptions';
+import * as PorcupineErrors from './porcupine_errors';
 
-export { Porcupine, PorcupineManager, BuiltInKeywords, PorcupineExceptions };
+export { Porcupine, PorcupineManager, BuiltInKeywords, PorcupineErrors };

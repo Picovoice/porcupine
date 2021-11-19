@@ -3,13 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02112C5B25CCC1C800003A93 /* PvPorcupine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02112C5A25CCC1C800003A93 /* PvPorcupine.xcframework */; };
-		0212E0662550E3FC001A11F3 /* porcupine_params.pv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0212E0632550E388001A11F3 /* porcupine_params.pv */; };
-		0212E06A2550E408001A11F3 /* keyword_files in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0212E0642550E3A2001A11F3 /* keyword_files */; };
 		F4FF95D7245B92E800C19C63 /* Porcupine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* Porcupine.swift */; };
 /* End PBXBuildFile section */
 
@@ -20,8 +17,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 7;
 			files = (
-				0212E06A2550E408001A11F3 /* keyword_files in CopyFiles */,
-				0212E0662550E3FC001A11F3 /* porcupine_params.pv in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -29,8 +24,6 @@
 
 /* Begin PBXFileReference section */
 		02112C5A25CCC1C800003A93 /* PvPorcupine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = PvPorcupine.xcframework; sourceTree = "<group>"; };
-		0212E0632550E388001A11F3 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; path = porcupine_params.pv; sourceTree = "<group>"; };
-		0212E0642550E3A2001A11F3 /* keyword_files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = keyword_files; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libPorcupine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPorcupine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5891CC2AC0600A0062D /* Porcupine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Porcupine.m; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* Porcupine-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Porcupine-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -42,7 +35,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02112C5B25CCC1C800003A93 /* PvPorcupine.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,15 +47,6 @@
 				02112C5A25CCC1C800003A93 /* PvPorcupine.xcframework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		0212E0622550E33F001A11F3 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				0212E0642550E3A2001A11F3 /* keyword_files */,
-				0212E0632550E388001A11F3 /* porcupine_params.pv */,
-			);
-			path = resources;
 			sourceTree = "<group>";
 		};
 		02C03F26255B122800D91214 /* Recovered References */ = {
@@ -84,7 +67,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				0212E0622550E33F001A11F3 /* resources */,
 				F4FF95D6245B92E800C19C63 /* Porcupine.swift */,
 				B3E7B5891CC2AC0600A0062D /* Porcupine.m */,
 				F4FF95D5245B92E700C19C63 /* Porcupine-Bridging-Header.h */,

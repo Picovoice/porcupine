@@ -12,7 +12,7 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PorcupineManager, BuiltInKeywords, PorcupineExceptions} from '@picovoice/porcupine-react-native';
+import {PorcupineManager, BuiltInKeywords, PorcupineErrors} from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
 
 type Props = {};
@@ -145,21 +145,23 @@ export default class App extends Component<Props, State> {
           this._stopProcessing();
           this.setState({
             isError: true,
-            errorMessage: error.toString()
+            errorMessage: error.message
           });
-        }
+        },
+        '',
+        [.5]
       );
     } catch (err) {
       let errorMessage = '';
-      if (err instanceof PorcupineExceptions.PorcupineInvalidArgumentException) {
+      if (err instanceof PorcupineErrors.PorcupineInvalidArgumentError) {
         errorMessage = `${err.message}\nPlease make sure accessKey ${this._accessKey} is a valid access key.`;
-      } else if (err instanceof PorcupineExceptions.PorcupineActivationException) {
+      } else if (err instanceof PorcupineErrors.PorcupineActivationError) {
         errorMessage = "AccessKey activation error";
-      } else if (err instanceof PorcupineExceptions.PorcupineActivationLimitException) {
+      } else if (err instanceof PorcupineErrors.PorcupineActivationLimitError) {
         errorMessage = "AccessKey reached its device limit";
-      } else if (err instanceof PorcupineExceptions.PorcupineActivationRefusedException) {
+      } else if (err instanceof PorcupineErrors.PorcupineActivationRefusedError) {
         errorMessage = "AccessKey refused";
-      } else if (err instanceof PorcupineExceptions.PorcupineActivationThrottledException) {
+      } else if (err instanceof PorcupineErrors.PorcupineActivationThrottledError) {
         errorMessage = "AccessKey has been throttled";
       } else {
         errorMessage = err.toString();
