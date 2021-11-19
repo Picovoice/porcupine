@@ -27,9 +27,6 @@ class Porcupine {
   private _sampleRate: number;
   private _version: string;
 
-  private static readonly DEFAULT_MODEL_PATH: string = RCTPorcupine.DEFAULT_MODEL_PATH;
-  private static readonly KEYWORD_PATHS = RCTPorcupine.KEYWORD_PATHS;
-
   /**
    * Static creator for initializing Porcupine from one of the built-in keywords
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/.
@@ -47,20 +44,31 @@ class Porcupine {
     modelPath?: string,
     sensitivities?: number[]
   ) {
-    const keywordPaths = keywords.map((keyword) => {
+    const keywordValues = keywords.map((keyword) => {
       if (!Object.values(BuiltInKeywords).includes(keyword)) {
         throw new PorcupineExceptions.PorcupineInvalidArgumentException(
           `keyword '${keyword}' is not a built-in keyword`);
       }
-      if (this.KEYWORD_PATHS[keyword] === undefined || this.KEYWORD_PATHS[keyword] === null) {
-        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          `keyword '${keyword}' is not a supported keyword`);
-      }
 
-      return this.KEYWORD_PATHS[keyword];
+      return keyword;
     });
 
-    return this.fromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
+    try {
+      let { handle, frameLength, sampleRate, version } = await RCTPorcupine.fromBuiltInKeywords(
+        accessKey,
+        keywordValues,
+        modelPath,
+        sensitivities
+      );
+      return new Porcupine(handle, frameLength, sampleRate, version);
+    } catch (err) {
+      if (err instanceof PorcupineExceptions.PorcupineException) {
+        throw err;
+      } else {
+        const nativeError = err as NativeError;
+        throw this.codeToException(nativeError.code, nativeError.message);
+      }
+    }
   }
 
   /**
@@ -80,7 +88,7 @@ class Porcupine {
     sensitivities?: number[]
   ) {
     try {
-      let { handle, frameLength, sampleRate, version } = await Porcupine.create(
+      let { handle, frameLength, sampleRate, version } = await RCTPorcupine.fromKeywordPaths(
         accessKey,
         keywordsPaths,
         modelPath,
@@ -95,71 +103,6 @@ class Porcupine {
         throw this.codeToException(nativeError.code, nativeError.message);
       }
     }
-  }
-
-  /**
-   * Creates an instance of wake word engine (Porcupine).
-   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
-   * @param keywordPaths Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.
-   * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
-   * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
-   * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
-   * [0, 1].
-   * @returns An instance of the engine.
-   */
-  private static async create(
-    accessKey: string,
-    keywordPaths?: string[],
-    modelPath?: string,
-    sensitivities?: number[]
-  ) {
-    if (accessKey === undefined || accessKey === null) {
-      throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-        "'accessKey' must be set");
-    }
-
-    if (modelPath === undefined) {
-      modelPath = this.DEFAULT_MODEL_PATH;
-    }
-
-    if (
-      keywordPaths === undefined ||
-      keywordPaths.length === 0 ||
-      !Array.isArray(keywordPaths)
-    ) {
-      throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          "keywordPaths must be set, not empty and an array");
-    }
-
-    for (let i = 0; i < keywordPaths.length; i++) {
-      if (keywordPaths[i] == null || keywordPaths[i] == "") {
-        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-            "One of the provided keyword paths was empty");
-      }
-    }
-
-    if (sensitivities === undefined || sensitivities.length === 0) {
-      sensitivities = [];
-      for (let i = 0; i < keywordPaths.length; i++) {
-        sensitivities[i] = 0.5;
-      }
-    }
-
-    for (let sensitivity of sensitivities) {
-      if (sensitivity < 0 || sensitivity > 1 || isNaN(sensitivity)) {
-        throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-          `Sensitivity value in 'sensitivities' not in range [0,1]: ${sensitivity}`
-        );
-      }
-    }
-
-    if (keywordPaths.length !== sensitivities.length) {
-      throw new PorcupineExceptions.PorcupineInvalidArgumentException(
-        `Number of keywords (${keywordPaths.length}) does not match number of sensitivities (${sensitivities.length})`
-      );
-    }
-
-    return RCTPorcupine.fromKeywordPaths(accessKey, modelPath, keywordPaths, sensitivities);
   }
 
   private constructor(
