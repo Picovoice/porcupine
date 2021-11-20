@@ -43,7 +43,7 @@ jobs:
       run: yarn install
 
     - name: Build
-      run: yarn bootstrap
+      run: yarn
 
     - name: Test
       run: yarn test --passWithNoTests
