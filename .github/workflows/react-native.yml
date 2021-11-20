@@ -44,6 +44,3 @@ jobs:
 
     - name: Build
       run: yarn
-
-    - name: Test
-      run: yarn test --passWithNoTests
