@@ -142,31 +142,6 @@ class PvPorcupine: NSObject {
     }
     
     private func errorToCodeAndMessage(_ error: PorcupineError) -> (String, String) {
-        switch(error) {
-        case .PorcupineMemoryError (let message):
-            return ("PorcupineMemoryException", message)
-        case .PorcupineIOError (let message):
-            return ("PorcupineIOException", message)
-        case .PorcupineInvalidArgumentError (let message):
-            return ("PorcupineInvalidArgumentException", message)
-        case .PorcupineStopIterationError (let message):
-            return ("PorcupineStopIterationException", message)
-        case .PorcupineKeyError (let message):
-            return ("PorcupineKeyException", message)
-        case .PorcupineInvalidStateError (let message):
-            return ("PorcupineInvalidStateException", message)
-        case .PorcupineRuntimeError (let message):
-            return ("PorcupineRuntimeException", message)
-        case .PorcupineActivationError (let message):
-            return ("PorcupineActivationException", message)
-        case .PorcupineActivationLimitError (let message):
-            return ("PorcupineActivationLimitException", message)
-        case .PorcupineActivationThrottledError (let message):
-            return ("PorcupineActivationThrottledException", message)
-        case .PorcupineActivationRefusedError (let message):
-            return ("PorcupineActivationRefusedException", message)
-        case .PorcupineError (let message):
-            return ("PorcupineException", message)
-        }
-    }                
+        return (error.code, error.localizedDescription)
+    }
 }

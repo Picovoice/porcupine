@@ -24,6 +24,34 @@ public enum PorcupineError: Error {
     case PorcupineError(_ message:String)
 }
 
+extension PorcupineError : LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .PorcupineMemoryError(let message),
+                .PorcupineIOError(let message),
+                .PorcupineInvalidArgumentError(let message),
+                .PorcupineStopIterationError(let message),
+                .PorcupineKeyError(let message),
+                .PorcupineInvalidStateError(let message),
+                .PorcupineRuntimeError(let message),
+                .PorcupineActivationError(let message),
+                .PorcupineActivationLimitError(let message),
+                .PorcupineActivationThrottledError(let message),
+                .PorcupineActivationRefusedError(let message),
+                .PorcupineError(let message):
+            return NSLocalizedString(message, comment: "")
+        }
+    }
+    
+    public var code : String {
+        get {
+            let error = String(describing: self)
+            return error.replacingOccurrences(of: "Error", with: "Exception").components(separatedBy: "(\"")[0]
+        }
+    }
+}
+
+
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.
 public class Porcupine {
     
