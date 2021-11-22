@@ -77,7 +77,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
             } catch {
-                result(errorToFlutterError(PorcupineError.PorcupineInternalError(error.localizedDescription)))
+                result(errorToFlutterError(PorcupineError.PorcupineError(error.localizedDescription)))
             }
             break
         case .FROM_KEYWORD_PATHS:
@@ -109,7 +109,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
             } catch {
-                result(errorToFlutterError(PorcupineError.PorcupineInternalError(error.localizedDescription)))
+                result(errorToFlutterError(PorcupineError.PorcupineError(error.localizedDescription)))
             }
             break
         case .PROCESS:
@@ -128,7 +128,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
             } catch {
-                result(errorToFlutterError(PorcupineError.PorcupineInternalError(error.localizedDescription)))
+                result(errorToFlutterError(PorcupineError.PorcupineError(error.localizedDescription)))
             }
             break
         case .DELETE:
