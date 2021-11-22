@@ -18,24 +18,41 @@ class PvPorcupine: NSObject {
     @objc(fromBuiltInKeywords:modelPath:keywords:sensitivities:resolver:rejecter:)
     func fromBuiltInKeywords(accessKey: String, modelPath: String, keywords: [String], sensitivities: [Float32],
         resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
-        var keywordPaths: [String] = []
-        for keyword in keywords {
-            if Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) != nil {
-                keywordPaths.append(keyword + "_ios.ppn")
-            } else {
-                let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
-                reject(code, message, nil)
-                return
+        do {
+            var keywordValues: [Porcupine.BuiltInKeyword] = []
+            for keyword in keywords {
+                if let builtIn = Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) {
+                    keywordValues.append(builtIn)
+                } else {
+                    let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
+                    reject(code, message, nil)
+                    return
+                }
             }
-        }
             
-        fromKeywordPaths(
-            accessKey: accessKey,
-            modelPath: modelPath,
-            keywordPaths: keywordPaths,
-            sensitivities: sensitivities,
-            resolver: resolve,
-            rejecter: reject)
+            let porcupine = try Porcupine(
+                accessKey: accessKey,
+                keywords: keywordValues,
+                modelPath: modelPath.isEmpty ? nil : try getResourcePath(modelPath),
+                sensitivities: sensitivities.isEmpty ? nil : sensitivities)
+            
+            let handle: String = String(describing: porcupine)
+            porcupinePool[handle] = porcupine
+            
+            var param: [String: Any] = [:]
+            param["handle"] = handle
+            param["frameLength"] = Porcupine.frameLength
+            param["sampleRate"] = Porcupine.sampleRate
+            param["version"] = Porcupine.version
+            
+            resolve(param)
+        } catch let error as PorcupineError {
+            let (code, message) = errorToCodeAndMessage(error)
+            reject(code, message, nil)
+        } catch {
+            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            reject(code, message, nil)
+        }
     }
 
     @objc(fromKeywordPaths:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
@@ -98,7 +115,7 @@ class PvPorcupine: NSObject {
                 let keywordIndex = try porcupine.process(pcm: pcm)
                 resolve(keywordIndex)
             } else {
-                let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineInvalidStateError("Invalid handle provided to Porcupine 'process'"))
+                let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'"))
                 reject(code, message, nil)
             }
         } catch let error as PorcupineError {
