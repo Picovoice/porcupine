@@ -60,6 +60,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
         }
 
         // check if actual built-in keyword
+        keyword = keyword.replace(' ', '_');
         Porcupine.BuiltInKeyword.valueOf(keyword.toUpperCase());
         keywordPaths.pushString(
                 new File(reactContext.getFilesDir(), keyword + ".ppn").getAbsolutePath());
