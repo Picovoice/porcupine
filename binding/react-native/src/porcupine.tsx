@@ -117,16 +117,16 @@ class Porcupine {
    */
   async process(frame: number[]) {
     if (frame === undefined) {
-      throw new PorcupineErrors.PorcupineInvalidStateError(
+      throw new PorcupineErrors.PorcupineInvalidArgumentError(
         "Frame array provided to process() is undefined or null");
     } else if (frame.length !== this._frameLength) {
-      throw new PorcupineErrors.PorcupineInvalidStateError(
+      throw new PorcupineErrors.PorcupineInvalidArgumentError(
         `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this._frameLength})`);
     }
 
     // sample the first frame to check for non-integer values
     if (!Number.isInteger(frame[0])) {
-      throw new PorcupineErrors.PorcupineInvalidStateError(
+      throw new PorcupineErrors.PorcupineInvalidArgumentError(
         `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`);
     }
 
@@ -176,29 +176,29 @@ class Porcupine {
    */
   private static codeToError(code: string, message: string) {
     switch(code) {
-      case 'PorcupineError':
+      case 'PorcupineException':
         return new PorcupineErrors.PorcupineError(message);
-      case 'PorcupineMemoryError':
+      case 'PorcupineMemoryException':
         return new PorcupineErrors.PorcupineMemoryError(message);
-      case 'PorcupineIOError':
+      case 'PorcupineIOException':
         return new PorcupineErrors.PorcupineIOError(message);
-      case 'PorcupineInvalidArgumentError':
+      case 'PorcupineInvalidArgumentException':
         return new PorcupineErrors.PorcupineInvalidArgumentError(message);
-      case 'PorcupineStopIterationError':
+      case 'PorcupineStopIterationException':
         return new PorcupineErrors.PorcupineStopIterationError(message);
-      case 'PorcupineKeyError':
+      case 'PorcupineKeyException':
         return new PorcupineErrors.PorcupineKeyError(message);
-      case 'PorcupineInvalidStateError':
+      case 'PorcupineInvalidStateException':
         return new PorcupineErrors.PorcupineInvalidStateError(message);
-      case 'PorcupineRuntimeError':
+      case 'PorcupineRuntimeException':
         return new PorcupineErrors.PorcupineRuntimeError(message);
-      case 'PorcupineActivationError':
+      case 'PorcupineActivationException':
         return new PorcupineErrors.PorcupineActivationError(message);
-      case 'PorcupineActivationLimitError':
+      case 'PorcupineActivationLimitException':
         return new PorcupineErrors.PorcupineActivationLimitError(message);
-      case 'PorcupineActivationThrottledError':
+      case 'PorcupineActivationThrottledException':
         return new PorcupineErrors.PorcupineActivationThrottledError(message);
-      case 'PorcupineActivationRefusedError':
+      case 'PorcupineActivationRefusedException':
         return new PorcupineErrors.PorcupineActivationRefusedError(message);
       default:
         throw new Error(`unexpected code: ${code}, message: ${message}`);

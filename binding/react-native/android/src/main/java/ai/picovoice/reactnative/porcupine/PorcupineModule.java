@@ -20,7 +20,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,11 +48,21 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void fromBuiltInKeywords(String accessKey, String modelPath, ReadableArray keywords, ReadableArray sensitivities, Promise promise) {
-    // convert from ReadableArrays to Java types
-    Porcupine.BuiltInKeyword[] keywordsJava = new Porcupine.BuiltInKeyword[keywords.size()];
+    WritableArray keywordPaths = new WritableNativeArray();
     for (int i = 0; i < keywords.size(); i++) {
       try {
-        keywordsJava[i] = Porcupine.BuiltInKeyword.valueOf(keywords.getString(i).toUpperCase());
+        String keyword = keywords.getString(i);
+        if (keyword == null) {
+          promise.reject(
+                  PorcupineInvalidArgumentException.class.getSimpleName(),
+                  "keyword must be a valid string");
+          return;
+        }
+
+        // check if actual built-in keyword
+        Porcupine.BuiltInKeyword.valueOf(keyword.toUpperCase());
+        keywordPaths.pushString(
+                new File(reactContext.getFilesDir(), keyword + ".ppn").getAbsolutePath());
       } catch (IllegalArgumentException e) {
         promise.reject(
                 PorcupineInvalidArgumentException.class.getSimpleName(),
@@ -59,29 +71,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
       }
     }
 
-    float[] sensitivitiesJava = new float[sensitivities.size()];
-    for (int i = 0; i < sensitivities.size(); i++) {
-      sensitivitiesJava[i] = (float) sensitivities.getDouble(i);
-    }
-
-    try {
-      Porcupine porcupine = new Porcupine.Builder()
-                              .setAccessKey(accessKey)
-                              .setModelPath(modelPath.length() == 0 ? null : modelPath)
-                              .setKeywords(keywordsJava)
-                              .setSensitivities(sensitivitiesJava.length == 0 ? null : sensitivitiesJava)
-                              .build(reactContext);
-      porcupinePool.put(String.valueOf(System.identityHashCode(porcupine)), porcupine);
-
-      WritableMap paramMap = Arguments.createMap();
-      paramMap.putString("handle", String.valueOf(System.identityHashCode(porcupine)));
-      paramMap.putInt("frameLength", porcupine.getFrameLength());
-      paramMap.putInt("sampleRate", porcupine.getSampleRate());
-      paramMap.putString("version", porcupine.getVersion());
-      promise.resolve(paramMap);
-    } catch (PorcupineException e) {
-      promise.reject(e.getClass().getSimpleName(), e.getMessage());
-    }
+    fromKeywordPaths(accessKey, modelPath, keywordPaths, sensitivities, promise);
   }
 
   @ReactMethod
@@ -100,8 +90,8 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     try {
       Porcupine porcupine = new Porcupine.Builder()
                               .setAccessKey(accessKey)
-                              .setModelPath(modelPath.length() == 0 ? null : modelPath)
-                              .setKeywordPaths(keywordPathsJava)
+                              .setModelPath(modelPath.isEmpty() ? null : modelPath)
+                              .setKeywordPaths(keywordPathsJava.length == 0 ? null : keywordPathsJava)
                               .setSensitivities(sensitivitiesJava.length == 0 ? null : sensitivitiesJava)
                               .build(reactContext);
       porcupinePool.put(String.valueOf(System.identityHashCode(porcupine)), porcupine);
