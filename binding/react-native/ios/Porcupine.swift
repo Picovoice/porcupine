@@ -9,137 +9,164 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import PvPorcupine
-import Foundation
-
-enum PvPorcupineError: Error {
-    case RuntimeError(_ message: String)
-}
+import Porcupine
 
 @objc(PvPorcupine)
 class PvPorcupine: NSObject {
-    private var porcupinePool:Dictionary<String, OpaquePointer?> = [:]
+    private var porcupinePool:Dictionary<String, Porcupine> = [:]
 
-    @objc func constantsToExport() -> Dictionary<String, Any> {        
-        
-        let modelPath : String = Bundle.main.path(forResource: "porcupine_params", ofType: "pv") ?? "unknown"
-        
-        let keywordPaths = Bundle.main.paths(forResourcesOfType: "ppn", inDirectory: nil)                        
-        var keywordDict:Dictionary<String, String> = [:]
-        for keywordPath in keywordPaths{
+    @objc(fromBuiltInKeywords:modelPath:keywords:sensitivities:resolver:rejecter:)
+    func fromBuiltInKeywords(accessKey: String, modelPath: String, keywords: [String], sensitivities: [Float32],
+        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+        do {
+            var keywordValues: [Porcupine.BuiltInKeyword] = []
+            for keyword in keywords {
+                if let builtIn = Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) {
+                    keywordValues.append(builtIn)
+                } else {
+                    let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
+                    reject(code, message, nil)
+                    return
+                }
+            }
             
-            let keywordName = URL(fileURLWithPath:keywordPath).lastPathComponent.components(separatedBy:"_")[0]            
-            keywordDict[keywordName] = keywordPath
+            let porcupine = try Porcupine(
+                accessKey: accessKey,
+                keywords: keywordValues,
+                modelPath: modelPath.isEmpty ? nil : try getResourcePath(modelPath),
+                sensitivities: sensitivities.isEmpty ? nil : sensitivities)
+            
+            let handle: String = String(describing: porcupine)
+            porcupinePool[handle] = porcupine
+            
+            var param: [String: Any] = [:]
+            param["handle"] = handle
+            param["frameLength"] = Porcupine.frameLength
+            param["sampleRate"] = Porcupine.sampleRate
+            param["version"] = Porcupine.version
+            
+            resolve(param)
+        } catch let error as PorcupineError {
+            let (code, message) = errorToCodeAndMessage(error)
+            reject(code, message, nil)
+        } catch {
+            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            reject(code, message, nil)
         }
-        
-        return [
-            "DEFAULT_MODEL_PATH": modelPath,
-            "KEYWORD_PATHS": keywordDict                 
-        ]
     }
 
     @objc(fromKeywordPaths:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
     func fromKeywordPaths(accessKey: String, modelPath: String, keywordPaths: [String], sensitivities: [Float32],
         resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
-        var modelPath = modelPath
         var keywordPaths = keywordPaths
         
         do {
-            modelPath = try getResourcePath(modelPath)
-            keywordPaths = try keywordPaths.map { try getResourcePath($0) }
+            for i in 0..<keywordPaths.count {
+                keywordPaths[i] = try getResourcePath(keywordPaths[i])
+            }
+        } catch let error as PorcupineError {
+            let (code, message) = errorToCodeAndMessage(error)
+            reject(code, message, nil)
+            return
         } catch {
-            reject(pvStatusToExceptionCode(PV_STATUS_IO_ERROR), "failed to get resource path: \(error)", nil)
+            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            reject(code, message, nil)
+            return
         }
         
-        var porcupine:OpaquePointer?
-        let status = pv_porcupine_init(
-            accessKey,
-            modelPath,
-            Int32(keywordPaths.count),
-            keywordPaths.map{ UnsafePointer(strdup($0)) },
-            sensitivities,
-            &porcupine);
-
-        if status == PV_STATUS_SUCCESS {
-            let handle:String = String(describing:porcupine)
-            porcupinePool[handle] = porcupine;
+        do {
+            let porcupine = try Porcupine(
+                accessKey: accessKey,
+                keywordPaths: keywordPaths,
+                modelPath: modelPath.isEmpty ? nil : try getResourcePath(modelPath),
+                sensitivities: sensitivities.isEmpty ? nil : sensitivities)
             
-            let porcupineParameters:Dictionary<String, Any> = [
-                "handle": handle,
-                "frameLength": UInt32(pv_porcupine_frame_length()),
-                "sampleRate": UInt32(pv_sample_rate()),
-                "version": String(cString: pv_porcupine_version())
-            ]
-            resolve(porcupineParameters)
-        }
-        else {
-            reject(pvStatusToExceptionCode(status), "Failed to initialize Porcupine", nil)
+            let handle: String = String(describing: porcupine)
+            porcupinePool[handle] = porcupine
+            
+            var param: [String: Any] = [:]
+            param["handle"] = handle
+            param["frameLength"] = Porcupine.frameLength
+            param["sampleRate"] = Porcupine.sampleRate
+            param["version"] = Porcupine.version
+            
+            resolve(param)
+        } catch let error as PorcupineError {
+            let (code, message) = errorToCodeAndMessage(error)
+            reject(code, message, nil)
+        } catch {
+            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            reject(code, message, nil)
         }
     }
     
     @objc(delete:)
     func delete(handle:String) -> Void {        
-        if var porcupine = porcupinePool.removeValue(forKey: handle){
-            pv_porcupine_delete(porcupine)
-            porcupine = nil
+        if let porcupine = porcupinePool.removeValue(forKey: handle) {
+            porcupine.delete()
         }
     }
     
     @objc(process:pcm:resolver:rejecter:)
     func process(handle:String, pcm:[Int16], 
         resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
-                
-        if let porcupine = porcupinePool[handle]{
-            var keywordIndex: Int32 = -1
-            pv_porcupine_process(porcupine, pcm, &keywordIndex)        
-            
-            resolve(keywordIndex)
-        }
-        else{
-            reject(pvStatusToExceptionCode(PV_STATUS_INVALID_STATE), "Invalid Porcupine handle provided to native module.", nil)
+        do {
+            if let porcupine = porcupinePool[handle] {
+                let keywordIndex = try porcupine.process(pcm: pcm)
+                resolve(keywordIndex)
+            } else {
+                let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'"))
+                reject(code, message, nil)
+            }
+        } catch let error as PorcupineError {
+            let (code, message) = errorToCodeAndMessage(error)
+            reject(code, message, nil)
+        } catch {
+            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            reject(code, message, nil)
         }
     }
 
     private func getResourcePath(_ filePath: String) throws -> String {
         if (!FileManager.default.fileExists(atPath: filePath)) {
-            if let resourcePath = Bundle.main.resourceURL?.appendingPathComponent("resources/\(filePath)").path {
+            if let resourcePath = Bundle(for: type(of: self)).resourceURL?.appendingPathComponent(filePath).path {
                 if (FileManager.default.fileExists(atPath: resourcePath)) {
                     return resourcePath
                 }
             }
             
-            throw PvPorcupineError.RuntimeError("Could not find file at path '\(filePath)'. If this is a packaged asset, ensure you have added it to your xcode project.")
+            throw PorcupineError.PorcupineIOError("Could not find file at path '\(filePath)'. If this is a packaged asset, ensure you have added it to your xcode project.")
         }
         
         return filePath
     }
     
-    private func pvStatusToExceptionCode(_ status: pv_status_t) -> String {
-        switch (status) {
-        case PV_STATUS_OUT_OF_MEMORY:
-            return "PorcupineMemoryException"
-        case PV_STATUS_IO_ERROR:
-            return "PorcupineIOException"
-        case PV_STATUS_INVALID_ARGUMENT:
-            return "PorcupineInvalidArgumentException"
-        case PV_STATUS_STOP_ITERATION:
-            return "PorcupineStopIterationException"
-        case PV_STATUS_KEY_ERROR:
-            return "PorcupineKeyException"
-        case PV_STATUS_INVALID_STATE:
-            return "PorcupineInvalidStateException"
-        case PV_STATUS_RUNTIME_ERROR:
-            return "PorcupineRuntimeException"
-        case PV_STATUS_ACTIVATION_ERROR:
-            return "PorcupineActivationException"
-        case PV_STATUS_ACTIVATION_LIMIT_REACHED:
-            return "PorcupineActivationLimitException"
-        case PV_STATUS_ACTIVATION_THROTTLED:
-            return "PorcupineActivationThrottledException"
-        case PV_STATUS_ACTIVATION_REFUSED:
-            return "PorcupineActivationRefusedException"
-        default:
-            return "PorcupineException"
+    private func errorToCodeAndMessage(_ error: PorcupineError) -> (String, String) {
+        switch(error) {
+        case .PorcupineMemoryError (let message):
+            return ("PorcupineMemoryException", message)
+        case .PorcupineIOError (let message):
+            return ("PorcupineIOException", message)
+        case .PorcupineInvalidArgumentError (let message):
+            return ("PorcupineInvalidArgumentException", message)
+        case .PorcupineStopIterationError (let message):
+            return ("PorcupineStopIterationException", message)
+        case .PorcupineKeyError (let message):
+            return ("PorcupineKeyException", message)
+        case .PorcupineInvalidStateError (let message):
+            return ("PorcupineInvalidStateException", message)
+        case .PorcupineRuntimeError (let message):
+            return ("PorcupineRuntimeException", message)
+        case .PorcupineActivationError (let message):
+            return ("PorcupineActivationException", message)
+        case .PorcupineActivationLimitError (let message):
+            return ("PorcupineActivationLimitException", message)
+        case .PorcupineActivationThrottledError (let message):
+            return ("PorcupineActivationThrottledException", message)
+        case .PorcupineActivationRefusedError (let message):
+            return ("PorcupineActivationRefusedException", message)
+        case .PorcupineError (let message):
+            return ("PorcupineException", message)
         }
-    }
+    }                
 }

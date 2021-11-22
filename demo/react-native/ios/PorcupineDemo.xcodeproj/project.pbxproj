@@ -217,7 +217,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/porcupine-react-native/PvPorcupine.framework/PvPorcupine",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -235,28 +235,25 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo-resources.sh",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/bumblebee_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
+				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params.pv",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/alexa_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/americano_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/blueberry_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/bumblebee_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/computer_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grapefruit_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grasshopper_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey barista_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey google_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey siri_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/jarvis_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/ok google_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/pico clock_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/picovoice_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/porcupine_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/terminator_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/porcupine_params.pv",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/alexa_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/americano_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/blueberry_ios.ppn",
@@ -264,16 +261,15 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey barista_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pico clock_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

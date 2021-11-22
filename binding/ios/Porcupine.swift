@@ -10,7 +10,7 @@
 import PvPorcupine
 
 public enum PorcupineError: Error {
-    case PorcupineOutOfMemoryError(_ message:String)
+    case PorcupineMemoryError(_ message:String)
     case PorcupineIOError(_ message:String)
     case PorcupineInvalidArgumentError(_ message:String)
     case PorcupineStopIterationError(_ message:String)
@@ -21,7 +21,7 @@ public enum PorcupineError: Error {
     case PorcupineActivationLimitError(_ message:String)
     case PorcupineActivationThrottledError(_ message:String)
     case PorcupineActivationRefusedError(_ message:String)
-    case PorcupineInternalError(_ message:String)
+    case PorcupineError(_ message:String)
 }
 
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.
@@ -193,7 +193,7 @@ public class Porcupine {
         
         switch status {
         case PV_STATUS_OUT_OF_MEMORY:
-            throw PorcupineError.PorcupineOutOfMemoryError(message)
+            throw PorcupineError.PorcupineMemoryError(message)
         case PV_STATUS_IO_ERROR:
             throw PorcupineError.PorcupineIOError(message)
         case PV_STATUS_INVALID_ARGUMENT:
@@ -216,7 +216,7 @@ public class Porcupine {
             throw PorcupineError.PorcupineActivationRefusedError(message)
         default:
             let pvStatusString = String(cString: pv_status_to_string(status))
-            throw PorcupineError.PorcupineInternalError("\(pvStatusString): \(message)")
+            throw PorcupineError.PorcupineError("\(pvStatusString): \(message)")
         }
     }
 }

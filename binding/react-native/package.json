@@ -13,7 +13,6 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "copy": "node copy.js",
     "prepare": "bob build",
-    "bootstrap": "yarn && yarn copy",
     "pkg": "cd pkg && npm pack .. && cd .."
   },
   "keywords": [
