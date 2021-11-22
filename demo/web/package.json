@@ -17,11 +17,11 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web-de-worker": "^2.0.0",
-    "@picovoice/porcupine-web-en-worker": "^2.0.0",
-    "@picovoice/porcupine-web-es-worker": "^2.0.0",
-    "@picovoice/porcupine-web-fr-worker": "^2.0.0",
-    "@picovoice/web-voice-processor": "^2.1.0"
+    "@picovoice/porcupine-web-de-worker": "file:../../binding/web/porcupine-web-de-worker",
+    "@picovoice/porcupine-web-en-worker": "file:../../binding/web/porcupine-web-en-worker",
+    "@picovoice/porcupine-web-es-worker": "file:../../binding/web/porcupine-web-es-worker",
+    "@picovoice/porcupine-web-fr-worker": "file:../../binding/web/porcupine-web-fr-worker",
+    "@picovoice/web-voice-processor": "^2.1.1"
   },
   "devDependencies": {
     "serve": "^11.3.2"

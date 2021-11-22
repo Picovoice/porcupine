@@ -6,7 +6,7 @@
   "dependencies": {
     "@picovoice/porcupine-web-en-worker": "file:../../binding/web/porcupine-web-en-worker",
     "@picovoice/porcupine-web-react": "file:../../binding/react",
-    "@picovoice/web-voice-processor": "^2.1.0",
+    "@picovoice/web-voice-processor": "^2.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

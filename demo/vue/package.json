@@ -13,7 +13,7 @@
   "dependencies": {
     "@picovoice/porcupine-web-en-worker": "file:../../binding/web/porcupine-web-en-worker",
     "@picovoice/porcupine-web-vue": "file:../../binding/vue",
-    "@picovoice/web-voice-processor": "^2.1.0",
+    "@picovoice/web-voice-processor": "^2.1.1",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },
