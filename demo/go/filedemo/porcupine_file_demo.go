@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	porcupine "github.com/Picovoice/porcupine/binding/go"
+	porcupine "github.com/Picovoice/porcupine/binding/go/v2"
 	"github.com/go-audio/audio"
 	"github.com/go-audio/wav"
 )

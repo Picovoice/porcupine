@@ -20,7 +20,7 @@ import (
 	"strconv"
 	"strings"
 
-	porcupine "github.com/Picovoice/porcupine/binding/go"
+	porcupine "github.com/Picovoice/porcupine/binding/go/v2"
 	pvrecorder "github.com/Picovoice/pvrecorder/sdk/go"
 	"github.com/go-audio/wav"
 )
