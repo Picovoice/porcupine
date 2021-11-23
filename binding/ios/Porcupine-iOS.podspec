@@ -23,22 +23,7 @@ Pod::Spec.new do |s|
   s.vendored_frameworks = 'lib/ios/PvPorcupine.xcframework'
   s.resource_bundles = {
     'PorcupineResources' => [
-      'resources/keyword_files/ios/{
-        alexa,
-        americano,
-        blueberry,
-        bumblebee,
-        computer,
-        grapefruit,
-        grasshopper,
-        hey google,
-        hey siri,
-        jarvis,
-        ok google,
-        picovoice,
-        porcupine,
-        terminator
-      }_ios.ppn', 
+      'resources/keyword_files/ios/{alexa,americano,blueberry,bumblebee,computer,grapefruit,grasshopper,hey google,hey siri,jarvis,ok google,picovoice,porcupine,terminator}_ios.ppn', 
       'lib/common/porcupine_params.pv'
     ]
   }
