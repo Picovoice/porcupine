@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Porcupine-iOS:
-    :commit: c4c4b27943279e95d26c749637fae7f29a5ffdce
+    :commit: 3e2b76f5ed6bfeee12a2ae63db9f7b19b7ce32cc
     :git: https://github.com/Picovoice/porcupine.git
 
 SPEC CHECKSUMS:

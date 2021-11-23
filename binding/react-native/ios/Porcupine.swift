@@ -24,7 +24,7 @@ class PvPorcupine: NSObject {
                 if let builtIn = Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) {
                     keywordValues.append(builtIn)
                 } else {
-                    let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
+                    let (code, message) = errorToCodeAndMessage(PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
                     reject(code, message, nil)
                     return
                 }
@@ -50,7 +50,7 @@ class PvPorcupine: NSObject {
             let (code, message) = errorToCodeAndMessage(error)
             reject(code, message, nil)
         } catch {
-            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            let (code, message) = errorToCodeAndMessage(PorcupineError(error.localizedDescription))
             reject(code, message, nil)
         }
     }
@@ -69,7 +69,7 @@ class PvPorcupine: NSObject {
             reject(code, message, nil)
             return
         } catch {
-            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            let (code, message) = errorToCodeAndMessage(PorcupineError(error.localizedDescription))
             reject(code, message, nil)
             return
         }
@@ -95,7 +95,7 @@ class PvPorcupine: NSObject {
             let (code, message) = errorToCodeAndMessage(error)
             reject(code, message, nil)
         } catch {
-            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            let (code, message) = errorToCodeAndMessage(PorcupineError(error.localizedDescription))
             reject(code, message, nil)
         }
     }
@@ -115,14 +115,14 @@ class PvPorcupine: NSObject {
                 let keywordIndex = try porcupine.process(pcm: pcm)
                 resolve(keywordIndex)
             } else {
-                let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'"))
+                let (code, message) = errorToCodeAndMessage(PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'"))
                 reject(code, message, nil)
             }
         } catch let error as PorcupineError {
             let (code, message) = errorToCodeAndMessage(error)
             reject(code, message, nil)
         } catch {
-            let (code, message) = errorToCodeAndMessage(PorcupineError.PorcupineError(error.localizedDescription))
+            let (code, message) = errorToCodeAndMessage(PorcupineError(error.localizedDescription))
             reject(code, message, nil)
         }
     }
@@ -135,13 +135,13 @@ class PvPorcupine: NSObject {
                 }
             }
             
-            throw PorcupineError.PorcupineIOError("Could not find file at path '\(filePath)'. If this is a packaged asset, ensure you have added it to your xcode project.")
+            throw PorcupineIOError("Could not find file at path '\(filePath)'. If this is a packaged asset, ensure you have added it to your xcode project.")
         }
         
         return filePath
     }
     
     private func errorToCodeAndMessage(_ error: PorcupineError) -> (String, String) {
-        return (error.code, error.localizedDescription)
+        return (error.name.replacingOccurrences(of: "Error", with: "Exception"), error.localizedDescription)
     }
 }
