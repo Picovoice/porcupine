@@ -17,12 +17,31 @@ Pod::Spec.new do |s|
   DESC
   s.homepage = 'https://github.com/Picovoice/porcupine/tree/master/binding/ios'
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }
-  s.source = { :git => "https://github.com/Picovoice/porcupine.git", :branch => "v2.0"}
+  s.source = { :git => "https://github.com/Picovoice/porcupine.git", :branch => "v2.0-ios-res-bundle"}
   s.ios.deployment_target = '9.0'
   s.swift_version = '5.0'
   s.vendored_frameworks = 'lib/ios/PvPorcupine.xcframework'
-  s.resources = 'resources/keyword_files/ios/{alexa,americano,blueberry,bumblebee,computer,grapefruit,grasshopper,hey google,hey siri,jarvis,ok google,picovoice,porcupine,terminator}_ios.ppn', 
-  'lib/common/porcupine_params.pv'
+  s.resource_bundles = {
+    'PorcupineResources' => [
+      'resources/keyword_files/ios/{
+        alexa,
+        americano,
+        blueberry,
+        bumblebee,
+        computer,
+        grapefruit,
+        grasshopper,
+        hey google,
+        hey siri,
+        jarvis,
+        ok google,
+        picovoice,
+        porcupine,
+        terminator
+      }_ios.ppn', 
+      'lib/common/porcupine_params.pv'
+    ]
+  }
   s.source_files = 'binding/ios/*.{swift}'
 
   s.dependency 'ios-voice-processor', '~> 1.0.2'
