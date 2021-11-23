@@ -15,8 +15,7 @@ sourceSets {
 }
 
 dependencies {
-    // implementation 'ai.picovoice:porcupine-java:2.0.0'
-    implementation files('../../binding/java/build/libs/Porcupine.jar')
+    implementation 'ai.picovoice:porcupine-java:2.0.0'
     implementation 'commons-cli:commons-cli:1.4'
 }
 
