@@ -12,6 +12,19 @@ import PvPorcupine
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.
 public class Porcupine {
     
+    static let resourceBundle: Bundle = {
+        let myBundle = Bundle(for: Porcupine.self)
+
+        guard let resourceBundleURL = myBundle.url(
+             forResource: "PorcupineResources", withExtension: "bundle")
+        else { fatalError("PorcupineResources.bundle not found") }
+
+        guard let resourceBundle = Bundle(url: resourceBundleURL)
+            else { fatalError("Could not open PorcupineResources.bundle") }
+
+        return resourceBundle
+    }()
+    
     public enum BuiltInKeyword: String, CaseIterable {
         case alexa = "Alexa"
         case americano = "Americano"
@@ -47,8 +60,7 @@ public class Porcupine {
         
         var modelPathArg = modelPath
         if (modelPath == nil){
-            let bundle = Bundle(for: type(of: self))
-            modelPathArg  = bundle.path(forResource: "porcupine_params", ofType: "pv")
+            modelPathArg  = Porcupine.resourceBundle.path(forResource: "porcupine_params", ofType: "pv")
             if modelPathArg == nil {
                 throw PorcupineIOError("Unable to find the default model path")
             }
@@ -113,9 +125,8 @@ public class Porcupine {
     public convenience init(accessKey: String, keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]? = nil) throws {
         
         var keywordPaths = [String]()
-        let bundle = Bundle(for: type(of: self))
         for k in keywords{
-            let keywordPath = bundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
+            let keywordPath = Porcupine.resourceBundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
             if keywordPath == nil {
                 throw PorcupineIOError("Unable to open the default keyword file for keyword '\(k)'")
             }
