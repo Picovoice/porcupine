@@ -17,9 +17,11 @@ public class PorcupineError : LocalizedError {
     public var errorDescription: String? {
         return message
     }
-    
-    public func getPvException() -> String {
-        return String(describing: type(of: self)).replacingOccurrences(of: "Error", with: "Exception")
+
+    public var name: String {
+        get {
+            return String(describing: type(of: self))
+        }
     }
 }
 
