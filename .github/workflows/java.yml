@@ -7,15 +7,27 @@ on:
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/java/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/common/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
   pull_request:
     branches: [ master, v2.0 ]
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/java/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/common/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
 
 defaults:
   run:
