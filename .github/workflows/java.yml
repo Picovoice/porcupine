@@ -7,14 +7,14 @@ on:
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
-      - 'lib/**'
+      - 'lib/java/**'
       - 'resources/**'
   pull_request:
     branches: [ master, v2.0 ]
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
-      - 'lib/**'
+      - 'lib/java/**'
       - 'resources/**'
 
 defaults:
