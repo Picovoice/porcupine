@@ -90,8 +90,12 @@ export function usePorcupine(
       };
     }
 
+    const {
+      accessKey,
+      keywords,
+      start: startWebVp = true,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { accessKey, keywords, start: startWebVp = true } = porcupineHookArgs!;
+    } = porcupineHookArgs!;
 
     async function startPorcupine(): Promise<{
       webVp: WebVoiceProcessor;
