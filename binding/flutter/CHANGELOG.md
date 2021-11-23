@@ -1,35 +1,12 @@
-## [1.9.1] - 2020-12-14
-* Initial version
+## [2.0.0] - 2021-11-23
+* Porcupine v2.0 initial release
+* Version 1 can be accessed through: https://pub.dev/packages/porcupine
 
-## [1.9.3] - 2021-01-05
-* Version bump of voice processor
+## [2.0.1] - 2021-11-23
+* Fix bug for iOS built-in keywords with spaces
 
-## [1.9.4] - 2021-01-08
-* Minor fix
+## [2.0.2] - 2021-11-23
+* Fix android compilation warning
 
-## [1.9.5] - 2021-01-18
-* update iOS porcupine lib
-
-## [1.9.6] - 2021-02-04
-* iOS lib -> xcframework
-
-## [1.9.7] - 2021-03-29
-* Updated Voice Processor
-
-## [1.9.9] - 2021-04-12
-* Flutter 2.0 upgrade
-
-## [1.9.10] - 2021-04-28
-* Migrated to null safety
-
-## [1.9.11] - 2021-04-30
-* Android lib update
-
-## [1.9.12] - 2021-06-04
-* Android lib update
-
-## [1.9.13] - 2021-06-08
-* Supports on-the-fly asset extraction
-
-## [1.9.14] - 2021-09-01
-* Update flutter-voice-processor
+## [2.0.3] - 2021-11-23
+* Fix bug for android with lower case built-in keywords
