@@ -33,11 +33,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    
-    - name: Pack binding for local ref
-      run: dotnet pack -c Release
-      working-directory: binding/dotnet
-    
+
     - name: Package restore
       run: dotnet restore
 
@@ -59,10 +55,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    
-    - name: Pack binding for local ref
-      run: dotnet pack -c Release
-      working-directory: binding/dotnet
     
     - name: Package restore
       run: dotnet restore
