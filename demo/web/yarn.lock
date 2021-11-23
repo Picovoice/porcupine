@@ -9,13 +9,30 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@picovoice/porcupine-web-en-worker@file:../../binding/web/porcupine-web-en-worker":
+"@picovoice/porcupine-web-de-worker@^2.0.0":
   version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-de-worker/-/porcupine-web-de-worker-2.0.0.tgz#3d0be6456ae2396412b7b2fae33be5a2a6c1edbf"
+  integrity sha512-jbHXW03x1tY2namhkhCnwqy5osX6YSCjOv8l27PoeJ2s/4OBS+kwmbMTyE8YAdJ5L12xL1pxTF0BxkiFFHEU+g==
 
-"@picovoice/web-voice-processor@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.0.tgz#dfc0707d0f4f7b76bb5655fd721a5c40613c8b6c"
-  integrity sha512-n4P7TSwZA7q08HyUF+t5S2JA9zBi3y9BexP4Fs6AmGhuD8MkVtao6CaRyYZbQabRk4OYT5fzt0a81ENS3wDz1w==
+"@picovoice/porcupine-web-en-worker@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.0.tgz#6822122316c6791fa0fe3792e70583a052d69311"
+  integrity sha512-7brfI+RFO/m+EDh/zqSkUgoxmFyp2NVPUN2aTen04Mz04qHKuTshYrEE9MJ5ikWY23P49OBH+n4A7ycgnwYuSQ==
+
+"@picovoice/porcupine-web-es-worker@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-es-worker/-/porcupine-web-es-worker-2.0.0.tgz#34d55c8a94a101fd9535847f405fb9a71d88cdc7"
+  integrity sha512-cdOTO74zlUjnJK2PsfBCYj65QziHxL1Yy88YpXOIwpCR+rY1LbXuMOkk6Zo8Ul1uEd7d99r4TsZ3bCHm1JaARQ==
+
+"@picovoice/porcupine-web-fr-worker@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-fr-worker/-/porcupine-web-fr-worker-2.0.0.tgz#0e122f8589cf414c7042e04680ec78adcafb34e3"
+  integrity sha512-cH/lZFrREuTGf/HYQkfj2f5vLs2Eux/yV98XjLsfeCDjU7P+BJehIyPBGBGFh9XwEtJUxEgYvmtF6csTm89IJA==
+
+"@picovoice/web-voice-processor@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.2.tgz#cac4456b3ef06dee5664e27be6db348ae4e2d46a"
+  integrity sha512-tDOFQtB79SX4m44Oj3W7I2q7Qvdwc52gJDHT1JXw80mJaog7RLRRUd7vANlGT0nJmhUWjYE7fxlEctPf2dyJcA==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
