@@ -36,7 +36,7 @@
     "@babel/plugin-transform-runtime": "^7.12.15",
     "@babel/preset-env": "^7.12.13",
     "@babel/runtime": "^7.12.13",
-    "@picovoice/web-voice-processor": "^2.1.1",
+    "@picovoice/web-voice-processor": "^2.1.2",
     "@rollup/plugin-babel": "^5.2.3",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.1.1",
@@ -51,6 +51,6 @@
   },
   "peerDependencies": {
     "vue": "^3.0.0",
-    "@picovoice/web-voice-processor": "^2.1.1"
+    "@picovoice/web-voice-processor": "^2.1.2"
   }
 }

@@ -21,7 +21,7 @@
     "@angular/router": "~11.0.5",
     "@picovoice/porcupine-web-angular": "file:../../binding/angular/dist/porcupine-web-angular",
     "@picovoice/porcupine-web-en-worker": "file:../../binding/web/porcupine-web-en-worker",
-    "@picovoice/web-voice-processor": "^2.1.1",
+    "@picovoice/web-voice-processor": "^2.1.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

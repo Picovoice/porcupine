@@ -5,7 +5,7 @@
   "peerDependencies": {
     "@angular/common": "^11.0.9",
     "@angular/core": "^11.0.9",
-    "@picovoice/web-voice-processor": "^2.1.1",
+    "@picovoice/web-voice-processor": "^2.1.2",
     "rxjs": "~6.6.0"
   },
   "keywords": [
