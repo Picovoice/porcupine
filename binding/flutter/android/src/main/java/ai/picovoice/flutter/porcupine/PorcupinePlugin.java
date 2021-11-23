@@ -73,7 +73,8 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
             keywords = new Porcupine.BuiltInKeyword[keywordsList.size()];
             for (int i = 0; i < keywordsList.size(); i++) {
               try {
-                keywords[i] = Porcupine.BuiltInKeyword.valueOf(keywordsList.get(i));
+                String keyword = keywordsList.get(i).replace(' ', '_').toUpperCase();
+                keywords[i] = Porcupine.BuiltInKeyword.valueOf(keyword);
               } catch (IllegalArgumentException e) {
                 result.error(
                         PorcupineInvalidArgumentException.class.getSimpleName(),

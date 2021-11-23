@@ -31,9 +31,6 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
-  # DELETE
-  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.0/binding/ios/Porcupine-iOS.podspec'
-
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
