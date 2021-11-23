@@ -97,15 +97,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 wakeWordPicker.isUserInteractionEnabled = false
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
-            } catch PorcupineError.PorcupineInvalidArgumentError {
+            } catch is PorcupineInvalidArgumentError {
                 showErrorAlert("AccessKey '\(accessKey)' is invalid")
-            } catch PorcupineError.PorcupineActivationError {
+            } catch is PorcupineActivationError {
                 showErrorAlert("AccessKey activation error")
-            } catch PorcupineError.PorcupineActivationRefusedError {
+            } catch is PorcupineActivationRefusedError {
                 showErrorAlert("AccessKey activation refused")
-            } catch PorcupineError.PorcupineActivationLimitError {
+            } catch is PorcupineActivationLimitError {
                 showErrorAlert("AccessKey reached its limit")
-            } catch PorcupineError.PorcupineActivationThrottledError  {
+            } catch is PorcupineActivationThrottledError  {
                 showErrorAlert("AccessKey is throttled")
             } catch {
                 showErrorAlert("\(error)")

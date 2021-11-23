@@ -51,15 +51,15 @@ class ViewController: UIViewController, UITextViewDelegate {
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
 
-            } catch PorcupineError.PorcupineInvalidArgumentError {
+            } catch is PorcupineInvalidArgumentError {
                 showErrorAlert(message: "AccessKey '\(accessKey)' is invalid")
-            } catch PorcupineError.PorcupineActivationError {
+            } catch is PorcupineActivationError {
                 showErrorAlert(message: "AccessKey activation error")
-            } catch PorcupineError.PorcupineActivationRefusedError {
+            } catch is PorcupineActivationRefusedError {
                 showErrorAlert(message: "AccessKey activation refused")
-            } catch PorcupineError.PorcupineActivationLimitError {
+            } catch is PorcupineActivationLimitError {
                 showErrorAlert(message: "AccessKey reached its limit")
-            } catch PorcupineError.PorcupineActivationThrottledError  {
+            } catch is PorcupineActivationThrottledError  {
                 showErrorAlert(message: "AccessKey is throttled")
             } catch let error {
                 showErrorAlert(message: "\(error)")

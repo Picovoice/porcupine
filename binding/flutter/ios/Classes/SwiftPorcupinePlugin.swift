@@ -32,7 +32,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         guard let method = Method(rawValue: call.method.uppercased()) else {
-            result(errorToFlutterError(PorcupineError.PorcupineRuntimeError("Porcupine method '\(call.method)' is not a valid function")))
+            result(errorToFlutterError(PorcupineRuntimeError("Porcupine method '\(call.method)' is not a valid function")))
             return
         }
         let args = call.arguments as! [String: Any]
@@ -50,7 +50,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                         if let builtIn = Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) {
                             keywordValues.append(builtIn)
                         } else {
-                            result(errorToFlutterError(PorcupineError.PorcupineKeyError("'\(keyword.lowercased())' is not a built in keyword")))
+                            result(errorToFlutterError(PorcupineKeyError("'\(keyword.lowercased())' is not a built in keyword")))
                             return
                         }
                     }
@@ -72,12 +72,12 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                     
                     result(param)
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("missing required arguments 'accessKey' and 'keywords'")))
+                    result(errorToFlutterError(PorcupineInvalidArgumentError("missing required arguments 'accessKey' and 'keywords'")))
                 }
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
             } catch {
-                result(errorToFlutterError(PorcupineError.PorcupineInternalError(error.localizedDescription)))
+                result(errorToFlutterError(PorcupineError(error.localizedDescription)))
             }
             break
         case .FROM_KEYWORD_PATHS:
@@ -104,12 +104,12 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                     
                     result(param)
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("missing required arguments 'accessKey' and 'keywordPaths'")))
+                    result(errorToFlutterError(PorcupineInvalidArgumentError("missing required arguments 'accessKey' and 'keywordPaths'")))
                 }
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
             } catch {
-                result(errorToFlutterError(PorcupineError.PorcupineInternalError(error.localizedDescription)))
+                result(errorToFlutterError(PorcupineError(error.localizedDescription)))
             }
             break
         case .PROCESS:
@@ -120,15 +120,15 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                         let keywordIndex = try porcupine.process(pcm: frame)
                         result(keywordIndex)
                     } else {
-                        result(errorToFlutterError(PorcupineError.PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'")))
+                        result(errorToFlutterError(PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'")))
                     }
                 } else {
-                    result(errorToFlutterError(PorcupineError.PorcupineInvalidArgumentError("missing required arguments 'frame'")))
+                    result(errorToFlutterError(PorcupineInvalidArgumentError("missing required arguments 'frame'")))
                 }
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
             } catch {
-                result(errorToFlutterError(PorcupineError.PorcupineInternalError(error.localizedDescription)))
+                result(errorToFlutterError(PorcupineError(error.localizedDescription)))
             }
             break
         case .DELETE:
@@ -142,41 +142,6 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
     }
     
     private func errorToFlutterError(_ error: PorcupineError) -> FlutterError {
-        switch(error) {
-        case .PorcupineOutOfMemoryError:
-            return FlutterError(code: "PorcupineMemoryException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineIOError:
-            return FlutterError(code: "PorcupineIOException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineInvalidArgumentError:
-            return FlutterError(code: "PorcupineInvalidArgumentException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineStopIterationError:
-            return FlutterError(code: "PorcupineStopIterationException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineKeyError:
-            return FlutterError(code: "PorcupineKeyException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineInvalidStateError:
-            return FlutterError(code: "PorcupineInvalidStateException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineRuntimeError:
-            return FlutterError(code: "PorcupineRuntimeException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineActivationError:
-            return FlutterError(code: "PorcupineActivationException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineActivationLimitError:
-            return FlutterError(code: "PorcupineActivationLimitException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineActivationThrottledError:
-            return FlutterError(code: "PorcupineActivationThrottledException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineActivationRefusedError:
-            return FlutterError(code: "PorcupineActivationRefusedException", message: extractMessage("\(error)"), details: nil)
-        case .PorcupineInternalError:
-            return FlutterError(code: "PorcupineException", message: extractMessage("\(error)"), details: nil)
-        }
-    }
-    
-    private func extractMessage(_ errorMessage: String) -> String {
-        let parts = errorMessage.components(separatedBy: "\"")
-        if (parts.count > 2) {
-            if let message = parts.dropFirst().first {
-                return message
-            }
-        }
-        return errorMessage
+        return FlutterError(code: error.name.replacingOccurrences(of: "Error", with: "Exception"), message: error.localizedDescription, details: nil)
     }
 }

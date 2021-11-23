@@ -9,21 +9,6 @@
 
 import PvPorcupine
 
-public enum PorcupineError: Error {
-    case PorcupineMemoryError(_ message:String)
-    case PorcupineIOError(_ message:String)
-    case PorcupineInvalidArgumentError(_ message:String)
-    case PorcupineStopIterationError(_ message:String)
-    case PorcupineKeyError(_ message:String)
-    case PorcupineInvalidStateError(_ message:String)
-    case PorcupineRuntimeError(_ message:String)
-    case PorcupineActivationError(_ message:String)
-    case PorcupineActivationLimitError(_ message:String)
-    case PorcupineActivationThrottledError(_ message:String)
-    case PorcupineActivationRefusedError(_ message:String)
-    case PorcupineError(_ message:String)
-}
-
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.
 public class Porcupine {
     
@@ -65,31 +50,31 @@ public class Porcupine {
             let bundle = Bundle(for: type(of: self))
             modelPathArg  = bundle.path(forResource: "porcupine_params", ofType: "pv")
             if modelPathArg == nil {
-                throw PorcupineError.PorcupineIOError("Unable to find the default model path")
+                throw PorcupineIOError("Unable to find the default model path")
             }
         }
         
         if accessKey.count == 0 {
-            throw PorcupineError.PorcupineInvalidArgumentError("AccessKey is required for Porcupine initialization")
+            throw PorcupineInvalidArgumentError("AccessKey is required for Porcupine initialization")
         }
         
         let sensitivitiesArg = sensitivities ?? Array(repeating: 0.5, count: keywordPaths.count)
         
         if sensitivitiesArg.count != keywordPaths.count {
-            throw PorcupineError.PorcupineInvalidArgumentError("Number of sensitivity values (\(sensitivitiesArg.count)) does not match number of keywords (\(keywordPaths.count))")
+            throw PorcupineInvalidArgumentError("Number of sensitivity values (\(sensitivitiesArg.count)) does not match number of keywords (\(keywordPaths.count))")
         }
         
         if !sensitivitiesArg.allSatisfy({$0 >= 0 && $0 <= 1}) {
-            throw PorcupineError.PorcupineInvalidArgumentError("One or more sensitivities provided were not floating-point values between [0,1]")
+            throw PorcupineInvalidArgumentError("One or more sensitivities provided were not floating-point values between [0,1]")
         }
         
         if !FileManager().fileExists(atPath: modelPathArg!){
-            throw PorcupineError.PorcupineInvalidArgumentError("Model file at does not exist at '\(modelPathArg!)'")
+            throw PorcupineInvalidArgumentError("Model file at does not exist at '\(modelPathArg!)'")
         }
         
         for keywordPath in keywordPaths {
             if !FileManager().fileExists(atPath: keywordPath){
-                throw PorcupineError.PorcupineInvalidArgumentError("Keyword file at does not exist at '\(keywordPath)'")
+                throw PorcupineInvalidArgumentError("Keyword file at does not exist at '\(keywordPath)'")
             }
         }
         
@@ -132,7 +117,7 @@ public class Porcupine {
         for k in keywords{
             let keywordPath = bundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
             if keywordPath == nil {
-                throw PorcupineError.PorcupineIOError("Unable to open the default keyword file for keyword '\(k)'")
+                throw PorcupineIOError("Unable to open the default keyword file for keyword '\(k)'")
             }
             keywordPaths.append(keywordPath!);
         }
@@ -173,11 +158,11 @@ public class Porcupine {
     /// - Returns:Index of keyword detected or -1 if no keyword was detected
     public func process(pcm:[Int16]) throws -> Int32 {
         if handle == nil {
-            throw PorcupineError.PorcupineInvalidStateError("Porcupine must be initialized before processing")
+            throw PorcupineInvalidStateError("Porcupine must be initialized before processing")
         }
         
         if pcm.count != Porcupine.frameLength {
-            throw PorcupineError.PorcupineInvalidArgumentError("Frame of audio data must contain \(Porcupine.frameLength) samples - given frame contained \(pcm.count)")
+            throw PorcupineInvalidArgumentError("Frame of audio data must contain \(Porcupine.frameLength) samples - given frame contained \(pcm.count)")
         }
         
         var result: Int32 = -1
@@ -193,30 +178,30 @@ public class Porcupine {
         
         switch status {
         case PV_STATUS_OUT_OF_MEMORY:
-            throw PorcupineError.PorcupineMemoryError(message)
+            throw PorcupineMemoryError(message)
         case PV_STATUS_IO_ERROR:
-            throw PorcupineError.PorcupineIOError(message)
+            throw PorcupineIOError(message)
         case PV_STATUS_INVALID_ARGUMENT:
-            throw PorcupineError.PorcupineInvalidArgumentError(message)
+            throw PorcupineInvalidArgumentError(message)
         case PV_STATUS_STOP_ITERATION:
-            throw PorcupineError.PorcupineStopIterationError(message)
+            throw PorcupineStopIterationError(message)
         case PV_STATUS_KEY_ERROR:
-            throw PorcupineError.PorcupineKeyError(message)
+            throw PorcupineKeyError(message)
         case PV_STATUS_INVALID_STATE:
-            throw PorcupineError.PorcupineInvalidStateError(message)
+            throw PorcupineInvalidStateError(message)
         case PV_STATUS_RUNTIME_ERROR:
-            throw PorcupineError.PorcupineRuntimeError(message)
+            throw PorcupineRuntimeError(message)
         case PV_STATUS_ACTIVATION_ERROR:
-            throw PorcupineError.PorcupineActivationError(message)
+            throw PorcupineActivationError(message)
         case PV_STATUS_ACTIVATION_LIMIT_REACHED:
-            throw PorcupineError.PorcupineActivationLimitError(message)
+            throw PorcupineActivationLimitError(message)
         case PV_STATUS_ACTIVATION_THROTTLED:
-            throw PorcupineError.PorcupineActivationThrottledError(message)
+            throw PorcupineActivationThrottledError(message)
         case PV_STATUS_ACTIVATION_REFUSED:
-            throw PorcupineError.PorcupineActivationRefusedError(message)
+            throw PorcupineActivationRefusedError(message)
         default:
             let pvStatusString = String(cString: pv_status_to_string(status))
-            throw PorcupineError.PorcupineError("\(pvStatusString): \(message)")
+            throw PorcupineError("\(pvStatusString): \(message)")
         }
     }
 }
