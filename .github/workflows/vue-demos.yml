@@ -31,20 +31,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Building web binding
-      working-directory: binding/web
-      run: |
-        npm install yarn
-        yarn install
-        yarn build
-        for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
-
-    - name: Building vue binding
-      working-directory: binding/vue
-      run: |
-        yarn install
-        yarn build
     
     - name: Pre-build dependencies
       run: npm install yarn
