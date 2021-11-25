@@ -2,19 +2,25 @@ name: React Native
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/common/**'
+      - 'lib/android/**'
+      - 'lib/ios/**'
+      - 'resources/keyword_files/android/**'
+      - 'resources/keyword_files/ios/**'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/common/**'
+      - 'lib/android/**'
+      - 'lib/ios/**'
+      - 'resources/keyword_files/android/**'
+      - 'resources/keyword_files/ios/**'
 
 defaults:
   run:

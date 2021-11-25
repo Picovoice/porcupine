@@ -3,12 +3,12 @@ name: Angular Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'demo/angular/**'
       - '!demo/angular/README.md'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'demo/angular/**'
       - '!demo/angular/README.md'
