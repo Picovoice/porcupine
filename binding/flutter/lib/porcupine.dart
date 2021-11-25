@@ -79,8 +79,12 @@ class Porcupine {
 
     List<String> keywordValues = List.empty(growable: true);
     for (var keyword in keywords) {
-      keywordValues.add(
-        keyword.toString().split('.').last.replaceAll('_', ' ').toLowerCase());
+      keywordValues.add(keyword
+          .toString()
+          .split('.')
+          .last
+          .replaceAll('_', ' ')
+          .toLowerCase());
     }
 
     try {

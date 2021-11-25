@@ -61,30 +61,30 @@ class PorcupineActivationRefusedException extends PorcupineException {
 porcupineStatusToException(String code, String? message) {
   switch (code) {
     case 'PorcupineException':
-        return PorcupineException(message);
-      case 'PorcupineMemoryException':
-        return PorcupineMemoryException(message);
-      case 'PorcupineIOException':
-        return PorcupineIOException(message);
-      case 'PorcupineInvalidArgumentException':
-        return PorcupineInvalidArgumentException(message);
-      case 'PorcupineStopIterationException':
-        return PorcupineStopIterationException(message);
-      case 'PorcupineKeyException':
-        return PorcupineKeyException(message);
-      case 'PorcupineInvalidStateException':
-        return PorcupineInvalidStateException(message);
-      case 'PorcupineRuntimeException':
-        return PorcupineRuntimeException(message);
-      case 'PorcupineActivationException':
-        return PorcupineActivationException(message);
-      case 'PorcupineActivationLimitException':
-        return PorcupineActivationLimitException(message);
-      case 'PorcupineActivationThrottledException':
-        return PorcupineActivationThrottledException(message);
-      case 'PorcupineActivationRefusedException':
-        return PorcupineActivationRefusedException(message);
-      default:
-        return PorcupineException("unexpected code: $code, message: $message");
+      return PorcupineException(message);
+    case 'PorcupineMemoryException':
+      return PorcupineMemoryException(message);
+    case 'PorcupineIOException':
+      return PorcupineIOException(message);
+    case 'PorcupineInvalidArgumentException':
+      return PorcupineInvalidArgumentException(message);
+    case 'PorcupineStopIterationException':
+      return PorcupineStopIterationException(message);
+    case 'PorcupineKeyException':
+      return PorcupineKeyException(message);
+    case 'PorcupineInvalidStateException':
+      return PorcupineInvalidStateException(message);
+    case 'PorcupineRuntimeException':
+      return PorcupineRuntimeException(message);
+    case 'PorcupineActivationException':
+      return PorcupineActivationException(message);
+    case 'PorcupineActivationLimitException':
+      return PorcupineActivationLimitException(message);
+    case 'PorcupineActivationThrottledException':
+      return PorcupineActivationThrottledException(message);
+    case 'PorcupineActivationRefusedException':
+      return PorcupineActivationRefusedException(message);
+    default:
+      return PorcupineException("unexpected code: $code, message: $message");
   }
 }
