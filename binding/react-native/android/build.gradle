@@ -3,10 +3,7 @@ buildscript {
   repositories {
     google()
     jcenter()
-    mavenCentral()
-    maven {
-      url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1069/'
-    }
+    mavenCentral()    
   }
 
   dependencies {
@@ -53,9 +50,6 @@ repositories {
   mavenCentral()
   jcenter()
   google()
-  maven {
-    url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1069/'
-  }
 
   def found = false
   def defaultDir = null
