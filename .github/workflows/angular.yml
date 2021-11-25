@@ -3,14 +3,14 @@ name: Angular
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'binding/angular/**'
       - '!binding/angular/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ maste ]
     paths:
       - 'binding/angular/**'
       - '!binding/angular/README.md'
