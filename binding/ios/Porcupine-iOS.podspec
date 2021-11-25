@@ -9,11 +9,16 @@ Pod::Spec.new do |s|
   Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications. 
   
   Porcupine is:
-    * using deep neural networks trained in real-world environments.
-    * compact and computationally-efficient. It is perfect for IoT.
-    * cross-platform. Raspberry Pi, BeagleBone, Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and web browsers are supported. Additionally, enterprise customers have access to ARM Cortex-M SDK.
-    * scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
-    * self-service. Developers can train custom wake word models using Picovoice Console.
+    - using deep neural networks trained in real-world environments.
+    - compact and computationally-efficient. It is perfect for IoT.
+    - cross-platform:
+      - Arm Cortex-M, STM32, PSoC, Arduino, and i.MX RT
+      - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
+      - Android and iOS
+      - Chrome, Safari, Firefox, and Edge
+      - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
+    - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
+    - self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
   DESC
   s.homepage = 'https://github.com/Picovoice/porcupine/tree/master/binding/ios'
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }

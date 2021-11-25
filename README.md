@@ -7,7 +7,7 @@
 [![PyPI](https://img.shields.io/pypi/v/pvporcupine)](https://pypi.org/project/pvporcupine/)
 [![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
 [![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/porcupine/binding/go.svg)](https://pkg.go.dev/github.com/Picovoice/porcupine/binding/go)
-[![Pub Version](https://img.shields.io/pub/v/porcupine)](https://pub.dev/packages/porcupine)
+[![Pub Version](https://img.shields.io/pub/v/porcupine_flutter)](https://pub.dev/packages/porcupine_flutter)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
@@ -28,19 +28,19 @@ applications. It is
 
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient. It is perfect for IoT.
-- cross-platform. Raspberry Pi, BeagleBone, Arm Cortex-M, Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and web
-  browsers are supported.
+- cross-platform:
+  - Arm Cortex-M, STM32, PSoC, Arduino, and i.MX RT 
+  - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
+  - Android and iOS
+  - Chrome, Safari, Firefox, and Edge
+  - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
 - self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
-
-> Porcupine wake word models for all major voice assistants (`Alexa`, `Hey Google`, `Ok Google`, and `Hey Siri`) are
-> available for free (under Apache 2.0) in this repo.
 
 ## Table of Contents
 
 - [Porcupine](#porcupine)
   - [Table of Contents](#table-of-contents)
-  - [License & Terms](#license--terms)
   - [Use Cases](#use-cases)
   - [Try It Out](#try-it-out)
   - [Language Support](#language-support)
@@ -87,15 +87,6 @@ applications. It is
   - [Releases](#releases)
   - [FAQ](#faq)
 
-## License & Terms
-
-Porcupine SDK is free and licensed under Apache 2.0 including the [models](/resources/keyword_files) released within the
-repository. [Picovoice Console](https://picovoice.ai/console/) offers two types of subscriptions: Personal and Enterprise.
-Personal accounts can train custom wake word models that run on x86_64, subject to limitations and strictly for
-non-commercial purposes. Personal accounts empower researchers, hobbyists, and tinkerers to experiment. Enterprise
-accounts can unlock all capabilities of Picovoice Console, are permitted for use in commercial settings, and have a path
-to graduate to commercial distribution[<sup>\*</sup>](https://picovoice.ai/pricing/).
-
 ## Use Cases
 
 Porcupine is the right product if you need to detect one or a few static (always-listening) voice commands.
@@ -124,7 +115,7 @@ Porcupine is the right product if you need to detect one or a few static (always
 
 A comparison between accuracy and runtime metrics of Porcupine and two other widely-used libraries, PocketSphinx and
 Snowboy, is provided [here](https://github.com/Picovoice/wakeword-benchmark). Compared to the best-performing engine of
-these two, Porcupine is **6.0 times more accurate** and **6.5 times faster** (on Raspberry Pi 3).
+these two, Porcupine is **11.0 times more accurate** and **6.5 times faster** (on Raspberry Pi 3).
 
 ## Demos
 
@@ -215,7 +206,7 @@ For more information about Go demos go to [demo/go](/demo/go).
 
 ### Unity Demos
 
-To run the Porcupine Unity demo, import the [Porcupine Unity package](/binding/unity/porcupine.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+To run the Porcupine Unity demo, import the [Porcupine Unity package](/binding/unity/porcupine-2.0.0.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 To browse the demo source go to [demo/unity](/demo/unity).
 
@@ -231,7 +222,7 @@ flutter run
 
 ### React Native Demos
 
-To run the React Native Porcupine demo app you will first need to setup your React Native environment. For this,
+To run the React Native Porcupine demo app you will first need to set up your React Native environment. For this,
 please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has
 been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands:
 
@@ -254,7 +245,7 @@ yarn ios-run            # builds and deploys to iOS
 Using [Android Studio](https://developer.android.com/studio/index.html), open
 [demo/android/Activity](/demo/android/Activity) as an Android project, copy your AccessKey into `MainActivity.java` and then run the application.
 
-To learn about how to use Porcupine in long running services go to [demo/android/Service](/demo/android/Service).
+To learn about how to use Porcupine in long-running services go to [demo/android/Service](/demo/android/Service).
 
 To learn about how to use Porcupine with Android Speech to Text recognition go to [demo/android/STT](/demo/android/STT).
 
@@ -735,7 +726,7 @@ porcupine.Delete()
 
 ### Unity
 
-Import the [Porcupine Unity Package](/binding/unity/porcupine.unitypackage) into your Unity project.
+Import the [Porcupine Unity Package](/binding/unity/porcupine-2.0.0.unitypackage) into your Unity project.
 
 The SDK provides two APIs:
 
@@ -797,7 +788,7 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 #### Low-Level API
 
-[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline. To create an instance of `Porcupine`, use the `.FromBuiltInKeywords` static constructor.
+[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline. To create an instance of `Porcupine`, use the `.FromBuiltInKeywords` static constructor.
 
 ```csharp
 using Pv.Unity;
@@ -911,7 +902,7 @@ This is because it uses [flutter_voice_processor](https://github.com/Picovoice/f
 
 #### Low-Level API
 
-[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.`Porcupine` has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
+[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.`Porcupine` has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```dart
 import 'package:porcupine_flutter/porcupine_manager.dart';
@@ -961,7 +952,7 @@ provides two APIs:
 
 #### High-Level API
 
-[PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of
+[PorcupineManager](/binding/react-native/src/porcupine_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the `PorcupineManager`
@@ -1018,7 +1009,7 @@ module to capture frames of audio and automatically pass it to the wake word eng
 #### Low-Level API
 
 [Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
-who want to incorporate wake word detection into a already existing audio processing pipeline. `Porcupine` also has
+who want to incorporate wake word detection into an already existing audio processing pipeline. `Porcupine` also has
 `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
@@ -1169,7 +1160,7 @@ When initialized, input audio can be monitored using `manager.start()`. When don
 
 #### Low-Level API
 
-[Porcupine.swift](/binding/ios/Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
+[Porcupine.swift](/binding/ios/Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 To construct an instance of Porcupine, pass it a keyword. 
 
@@ -1241,9 +1232,7 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
 
         console.log("Porcupine worker ready!");
 
-        console.log(
-          "WebVoiceProcessor initializing. Microphone permissions requested ..."
-        );
+        console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
 
         try {
           let webVp = await window.WebVoiceProcessor.WebVoiceProcessor.init({
@@ -1667,9 +1656,17 @@ pv_porcupine_delete(handle);
 
 ## Releases
 
+### v2.0.0 - Nov 25th, 2021
+
+- Improved accuracy.
+- Added Rust SDK.
+- macOS arm64 support.
+- Added NodeJS support for Windows, NVIDIA Jetson Nano, and BeagleBone.
+- Added .NET support for NVIDIA Jetson Nano and BeagleBone.
+- Runtime optimization.
+
 ### v1.9.0 - December 2nd, 2020
 
-- Added _Alexa_, _Computer_, _Hey Google_, _Hey Siri_, _Jarvis_, and _Okay Google_ models under Apache 2.0.
 - Added React Native SDK.
 - Added Java SDK.
 - Added .NET SDK.
