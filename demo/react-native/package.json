@@ -1,6 +1,6 @@
 {
   "name": "porcupine-react-native-demo",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -13,7 +13,7 @@
     "ios-install": "yarn && yarn ios-link"
   },
   "dependencies": {
-    "@picovoice/porcupine-react-native": "^2.0.0",
+    "@picovoice/porcupine-react-native": "^2.0.1",
     "@picovoice/react-native-voice-processor": "^1.0.4",
     "@react-native-picker/picker": "^1.9.2",
     "react": "16.13.1",
