@@ -11,7 +11,7 @@ export default function VoiceWidget() {
   const [accessKey, setAccessKey] = useState("");
   const [keywords] = useState([
     { builtin: "Alexa", sensitivity: 0.7 },
-    { builtin: "Picovoice", sensitivity: 0.8 }
+    { builtin: "Picovoice", sensitivity: 0.8 },
   ]);
 
   useEffect(() => {
