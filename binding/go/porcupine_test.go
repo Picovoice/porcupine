@@ -12,17 +12,29 @@ package porcupine
 
 import (
 	"encoding/binary"
+	"flag"
 	"io/ioutil"
 	"math"
+	"os"
 	"path/filepath"
 	"testing"
 )
+
+var pvTestAccessKey string
+
+func TestMain(m *testing.M) {
+	flag.StringVar(&pvTestAccessKey, "access_key", "", "AccessKey for testing")
+	flag.Parse()
+	os.Exit(m.Run())
+}
 
 func TestProcess(t *testing.T) {
 
 	test_file, _ := filepath.Abs("../../resources/audio_samples/porcupine.wav")
 
-	p := Porcupine{BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
+	p := Porcupine{
+		AccessKey:       pvTestAccessKey,
+		BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
 	err := p.Init()
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -75,11 +87,29 @@ func TestMultiple(t *testing.T) {
 
 	test_file, _ := filepath.Abs("../../resources/audio_samples/multiple_keywords.wav")
 
-	p := Porcupine{BuiltInKeywords: []BuiltInKeyword{
-		ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE,
-		GRAPEFRUIT, GRASSHOPPER, PICOVOICE, PORCUPINE,
-		TERMINATOR}}
-	expectedResults := []BuiltInKeyword{PORCUPINE, ALEXA, AMERICANO, BLUEBERRY, BUMBLEBEE, GRAPEFRUIT, GRASSHOPPER, PICOVOICE, PORCUPINE, TERMINATOR}
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		BuiltInKeywords: []BuiltInKeyword{
+			ALEXA,
+			AMERICANO,
+			BLUEBERRY,
+			BUMBLEBEE,
+			GRAPEFRUIT,
+			GRASSHOPPER,
+			PICOVOICE,
+			PORCUPINE,
+			TERMINATOR}}
+	expectedResults := []BuiltInKeyword{
+		PORCUPINE,
+		ALEXA,
+		AMERICANO,
+		BLUEBERRY,
+		BUMBLEBEE,
+		GRAPEFRUIT,
+		GRASSHOPPER,
+		PICOVOICE,
+		PORCUPINE,
+		TERMINATOR}
 
 	err := p.Init()
 	if err != nil {

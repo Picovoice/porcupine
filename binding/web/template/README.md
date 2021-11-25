@@ -18,9 +18,9 @@ If you are using this library with the [@picovoice/web-voice-processor](https://
 
 ## Packages
 
-The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model, which is of nontrivial size. There are separate worker and factory pacakges as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
+The Porcupine SDK for Web is split into multiple packages due to each language including the entire Voice AI model, which is of nontrivial size. There are separate worker and factory packages as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
 
-Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create. The `.ppn` files can be encoded with Base64 and then passed to the Porcupine `create` function as arguments.
+Any Porcupine keyword files (`.ppn` files) generated from [Picovoice Console](https://picovoice.ai/console/) must be trained for the WebAssembly (WASM) platform and match the language of the instance you create. The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. The Base64 encoded models can then be passed into the Porcupine `create` function as arguments.
 
 ### Workers 
 
@@ -42,6 +42,15 @@ Factory packages allow you to create instances of `Porcupine` directly. Useful f
 
 ## Installation & Usage
 
+### AccessKey
+
+The Porcupine library requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ### Worker
 
 To obtain a `PorcupineWorker`, we can use the static `create` factory method from the PorcupineWorkerFactory. Here is a complete example that:
@@ -60,26 +69,29 @@ yarn add @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 
-async startPorcupine()
+// The worker will call the callback function upon a detection event
+// Here we tell it to log it to the console
+function keywordDetectionCallback(keyword) {
+  console.log(`Porcupine detected ${keyword}`);
+}
+
+// If during processing an audio stream, anything goes wrong, the worker will
+// call the error callback and pass the error to it.
+function processErrorCallback(error) {
+  console.error(error); 
+}
+
+async function startPorcupine()
   // Create a Porcupine Worker (English language) to listen for 
   // the built-in keyword "Picovoice", at a sensitivity of 0.65
   // Note: you receive a Worker object, _not_ an individual Porcupine instance
+  const accessKey = // .. AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
   const porcupineWorker = await PorcupineWorkerFactory.create(
-    [{builtin: "Picovoice", sensitivity: 0.65}]
+    accessKey,
+    [{builtin: "Picovoice", sensitivity: 0.65}],
+    keywordDetectionCallback,
+    processErrorCallback
   );
-
-  // The worker will send a message with data.command = "ppn-keyword" upon a detection event
-  // Here we tell it to log it to the console
-  porcupineWorker.onmessage = (msg) => {
-    switch (msg.data.command) {
-      case 'ppn-keyword':
-        // Porcupine keyword detection
-        console.log("Porcupine detected " + msg.data.keywordLabel);
-        break;
-      default:
-        break;
-    }
-  };
 
   // Start up the web voice processor. It will request microphone permission 
   // and immediately (start: true) start listening.
@@ -120,9 +132,10 @@ E.g.:
 import { Porcupine } from "@picovoice/porcupine-web-en-factory";
 
 async function startPorcupine() {
-  const handle = await Porcupine.create([
-    {builtin: "Bumblebee", sensitivity: 0.7}
-  ]);
+  const accessKey = // .. AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+  const handle = await Porcupine.create(
+    accessKey,
+    [{builtin: "Bumblebee", sensitivity: 0.7}]);
 
   // Send Porcupine frames of audio (check handle.frameLength for size of array)
   const audioFrames = new Int16Array(/* Provide data with correct format and size */)

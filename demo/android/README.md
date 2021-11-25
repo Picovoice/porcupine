@@ -1,8 +1,19 @@
 # Android Demos
 
+## AccessKey
+
+All Android demos require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Activity
 
 This demo is intended for applications that need to do voice recognition when in focus.
+
+Copy your AccessKey into the `ACCESS_KEY` variable in `MainActivity.java` before building the demo.
 
 ## Service
 
@@ -10,32 +21,28 @@ This demo is intended for applications that need to do voice recognition in the 
 
 **NOTE:** If running the Porcupine as a service on Android < 10, you will need to stop the service before attempting to record audio in another application. This is a limitation of the Android OS that is documented [here](https://developer.android.com/guide/topics/media/sharing-audio-input).
 
+Copy your AccessKey into the `ACCESS_KEY` variable in `PorcupineService.java` before building the demo.
+
 ## Speech to Text
 
 This demo is intended for applications that use Porcupine Wake Work engine with Android's STT recognition service.
 
+Copy your AccessKey into the `ACCESS_KEY` variable in `MainActivity.java` before building the demo.
+
 ## Use Custom Wake Words (.ppn files)
 
-The demos use built-in wake words that are included with Porcupine (e.g. "Computer", "Alexa", "Picovoice"). To add a custom wake word (e.g. one created by [Picovoice Console](https://picovoice.ai/console/) to your Android application a couple of extra steps must be taken:
-
-1. Add your `.ppn` file to the `/res/raw` folder.
-1. All resources are compressed when the build system creates an APK, so you will have to extract your ppn file first before using it:
+The demos use built-in wake words that are included with Porcupine (e.g. "Computer", "Alexa", "Picovoice"). To add a custom wake word or model file to your application, add the files to your assets folder (`src/main/assets`) and then pass the path to the Porcupine Builder:
 
 ```java
-// in this example, our file located at '/res/raw/keyword.ppn'
-try (
-        InputStream is = new BufferedInputStream(
-            getResources().openRawResource(R.raw.keyword), 256);
-        OutputStream os = new BufferedOutputStream(
-            openFileOutput("keyword.ppn", Context.MODE_PRIVATE), 256)
-) {
-    int r;
-    while ((r = is.read()) != -1) {
-        os.write(r);
-    }
-    os.flush();
-}
+// in this example our files are located at '/assets/picovoice_files/keyword.ppn' and '/assets/picovoice_files/model.pv' 
+try {    
+    Porcupine porcupine = new Porcupine.Builder()
+                        .setKeywordPath("picovoice_files/keyword.ppn")
+                        .setModelPath("picovoice_files/model.pv")
+                        .build(context);
+} catch (PorcupineException e) { }
 ```
+
 
 ## Non-English Wake Words
 

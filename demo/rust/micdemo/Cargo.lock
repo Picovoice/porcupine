@@ -178,10 +178,11 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "1.9.1"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0775671a06a3172d5dc408ed95caf7cdc7a587a6aa0da1b38e2868d2b73f5319"
+checksum = "6c3d763f098c54619c84737c145fd925911e859b2972c07ead7f6cd14708ab51"
 dependencies = [
+ "lazy_static",
  "libc",
  "libloading",
  "log",
@@ -202,9 +203,9 @@ dependencies = [
 
 [[package]]
 name = "pv_recorder"
-version = "1.0.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d57dc47df195b00d76d06b9086321e31cf7ca8e61fd05f36367ce8cd53ca1288"
+checksum = "43f749ad06d7aec0204ceb8bc107d9783285468d09378f3565acd703bd667daf"
 dependencies = [
  "lazy_static",
  "libc",

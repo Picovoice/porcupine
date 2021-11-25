@@ -1,10 +1,10 @@
 PODS:
   - ios-voice-processor (1.0.3)
-  - Porcupine-iOS (1.9.4):
+  - Porcupine-iOS (2.0.0):
     - ios-voice-processor (~> 1.0.2)
 
 DEPENDENCIES:
-  - Porcupine-iOS
+  - Porcupine-iOS (~> 2.0.0)
 
 SPEC REPOS:
   trunk:
@@ -13,8 +13,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Porcupine-iOS: cf230daf574fd4bab07b3552445a51ed5154b472
+  Porcupine-iOS: df056ec578ec2b5c321e4961f6b56a99693250e5
 
-PODFILE CHECKSUM: 58188538e32d175767850938a65d7031b050ad09
+PODFILE CHECKSUM: 14622693914eec49628ed537f781eced7bfeb053
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2

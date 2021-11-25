@@ -9,8 +9,9 @@ cp ../../lib/common/porcupine_params.pv ./embedded/lib/common/porcupine_params.p
 echo "Copying Linux lib..."
 cp ../../lib/linux/x86_64/libpv_porcupine.so ./embedded/lib/linux/x86_64/libpv_porcupine.so
 
-echo "Copying macOS lib..."
+echo "Copying macOS libs..."
 cp ../../lib/mac/x86_64/libpv_porcupine.dylib ./embedded/lib/mac/x86_64/libpv_porcupine.dylib
+cp ../../lib/mac/arm64/libpv_porcupine.dylib ./embedded/lib/mac/arm64/libpv_porcupine.dylib
 
 echo "Copying Windows lib..."
 cp ../../lib/windows/amd64/libpv_porcupine.dll ./embedded/lib/windows/amd64/libpv_porcupine.dll

@@ -4,7 +4,7 @@ import { Subscription } from "rxjs"
 import { PorcupineService } from "@picovoice/porcupine-web-angular"
 
 import { DEEP_SKY_BLUE_PPN_64 } from "./porcupine_keywords"
-import { PorcupineServiceArgs } from "@picovoice/porcupine-web-angular/lib/porcupine_types"
+import { PorcupineServiceArgs, PorcupineKeyword } from "@picovoice/porcupine-web-angular/lib/porcupine_types"
 
 @Component({
   selector: 'voice-widget',
@@ -25,7 +25,7 @@ export class VoiceWidget {
   isListening: boolean | null = null
   errorMessage: string
   detections: Array<string> = []
-  porcupineServiceArgs: PorcupineServiceArgs = { keywords: { custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64, sensitivity: 0.75 } }
+  keywords: PorcupineKeyword = { custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64, sensitivity: 0.75 }
 
   constructor(private porcupineService: PorcupineService) {
     // Subscribe to Porcupine Keyword detections
@@ -51,23 +51,6 @@ export class VoiceWidget {
   }
 
   async ngOnInit() {
-    // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; needs to be dynamically imported)
-    const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
-    this.isChunkLoaded = true
-    console.info("Porcupine EN is loaded.")
-    // Initialize Porcupine Service
-    try {
-      await this.porcupineService.init(porcupineFactoryEn,
-        this.porcupineServiceArgs
-      )
-      console.info("Porcupine is ready!")
-      this.isLoaded = true;
-    }
-    catch (error) {
-      console.error(error)
-      this.isError = true;
-      this.errorMessage = error.toString();
-    }
   }
 
   ngOnDestroy() {
@@ -82,11 +65,31 @@ export class VoiceWidget {
     this.porcupineService.pause();
   }
 
-  public resume() {
-    this.porcupineService.resume();
-  }
-
   public start() {
     this.porcupineService.start();
+  }
+
+  public async initEngine(accessKey: string) {
+    if (accessKey.length >= 0) { 
+      this.porcupineService.release();
+      const porcupineServiceArgs: PorcupineServiceArgs = { accessKey: accessKey, keywords: this.keywords};
+      // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; needs to be dynamically imported)
+      const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
+      this.isChunkLoaded = true;
+      console.info("Porcupine EN is loaded.")
+      // Initialize Porcupine Service
+      try {
+        await this.porcupineService.init(porcupineFactoryEn,
+          porcupineServiceArgs
+        )
+        console.info("Porcupine is ready!")
+        this.isLoaded = true;
+      }
+      catch (error) {
+        console.error(error)
+        this.isError = true;
+        this.errorMessage = error.toString();
+      }
+    }
   }
 }

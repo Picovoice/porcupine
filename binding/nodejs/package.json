@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-node",
-  "version": "1.9.2",
+  "version": "2.0.0",
   "description": "Picovoice Porcupine NodeJS binding",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "directory": "binding/nodejs"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=12.0.0"
   },
   "cpu": [
     "!ia32",

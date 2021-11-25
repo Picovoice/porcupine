@@ -23,10 +23,10 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
-	"os/exec"
 )
 
 //go:embed embedded
@@ -37,14 +37,28 @@ type PvStatus int
 
 // Possible status return codes from the Porcupine library
 const (
-	SUCCESS          PvStatus = 0
-	OUT_OF_MEMORY    PvStatus = 1
-	IO_ERROR         PvStatus = 2
-	INVALID_ARGUMENT PvStatus = 3
-	STOP_ITERATION   PvStatus = 4
-	KEY_ERROR        PvStatus = 5
-	INVALID_STATE    PvStatus = 6
+	SUCCESS                  PvStatus = 0
+	OUT_OF_MEMORY            PvStatus = 1
+	IO_ERROR                 PvStatus = 2
+	INVALID_ARGUMENT         PvStatus = 3
+	STOP_ITERATION           PvStatus = 4
+	KEY_ERROR                PvStatus = 5
+	INVALID_STATE            PvStatus = 6
+	RUNTIME_ERROR            PvStatus = 7
+	ACTIVATION_ERROR         PvStatus = 8
+	ACTIVATION_LIMIT_REACHED PvStatus = 9
+	ACTIVATION_THROTTLED     PvStatus = 10
+	ACTIVATION_REFUSED       PvStatus = 11
 )
+
+type PorcupineError struct {
+	StatusCode PvStatus
+	Message    string
+}
+
+func (e *PorcupineError) Error() string {
+	return fmt.Sprintf("%s: %s", pvStatusToString(e.StatusCode), e.Message)
+}
 
 func pvStatusToString(status PvStatus) string {
 	switch status {
@@ -62,6 +76,16 @@ func pvStatusToString(status PvStatus) string {
 		return "KEY_ERROR"
 	case INVALID_STATE:
 		return "INVALID_STATE"
+	case RUNTIME_ERROR:
+		return "RUNTIME_ERROR"
+	case ACTIVATION_ERROR:
+		return "ACTIVATION_ERROR"
+	case ACTIVATION_LIMIT_REACHED:
+		return "ACTIVATION_LIMIT_REACHED"
+	case ACTIVATION_THROTTLED:
+		return "ACTIVATION_THROTTLED"
+	case ACTIVATION_REFUSED:
+		return "ACTIVATION_REFUSED"
 	default:
 		return fmt.Sprintf("Unknown error code: %d", status)
 	}
@@ -108,6 +132,9 @@ func (k BuiltInKeyword) IsValid() bool {
 type Porcupine struct {
 	// handle for porcupine instance in C
 	handle uintptr
+
+	// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
+	AccessKey string
 
 	// Absolute path to the file containing model parameters.
 	ModelPath string
@@ -156,19 +183,29 @@ var (
 )
 
 // Init function for Porcupine. Must be called before attempting process
-func (porcupine *Porcupine) Init() (err error) {
+func (porcupine *Porcupine) Init() error {
+	if porcupine.AccessKey == "" {
+		return &PorcupineError{
+			INVALID_ARGUMENT,
+			"No AccessKey provided to Porcupine"}
+	}
+
 	if porcupine.ModelPath == "" {
 		porcupine.ModelPath = defaultModelFile
 	}
 
 	if _, err := os.Stat(porcupine.ModelPath); os.IsNotExist(err) {
-		return fmt.Errorf("%s: Specified model file could not be found at %s", pvStatusToString(INVALID_ARGUMENT), porcupine.ModelPath)
+		return &PorcupineError{
+			INVALID_ARGUMENT,
+			fmt.Sprintf("Specified model file could not be found at %s", porcupine.ModelPath)}
 	}
 
 	if porcupine.BuiltInKeywords != nil && len(porcupine.BuiltInKeywords) > 0 {
 		for _, keyword := range porcupine.BuiltInKeywords {
 			if !keyword.IsValid() {
-				return fmt.Errorf("%s: '%s' is not a valid built-in keyword", pvStatusToString(INVALID_ARGUMENT), keyword)
+				return &PorcupineError{
+					INVALID_ARGUMENT,
+					fmt.Sprintf("'%s' is not a valid built-in keyword", keyword)}
 			}
 			keywordStr := string(keyword)
 			porcupine.KeywordPaths = append(porcupine.KeywordPaths, builtinKeywords[keywordStr])
@@ -176,12 +213,16 @@ func (porcupine *Porcupine) Init() (err error) {
 	}
 
 	if porcupine.KeywordPaths == nil || len(porcupine.KeywordPaths) == 0 {
-		return fmt.Errorf("%s: No valid keywords were provided", pvStatusToString(INVALID_ARGUMENT))
+		return &PorcupineError{
+			INVALID_ARGUMENT,
+			"No valid keywords were provided"}
 	}
 
 	for _, k := range porcupine.KeywordPaths {
 		if _, err := os.Stat(k); os.IsNotExist(err) {
-			return fmt.Errorf("%s: Keyword file could not be found at %s", pvStatusToString(INVALID_ARGUMENT), k)
+			return &PorcupineError{
+				INVALID_ARGUMENT,
+				fmt.Sprintf("Keyword file could not be found at %s", k)}
 		}
 	}
 
@@ -193,20 +234,26 @@ func (porcupine *Porcupine) Init() (err error) {
 	} else {
 		for _, s := range porcupine.Sensitivities {
 			if s < 0 || s > 1 {
-				return fmt.Errorf("%s: Sensitivity value of %f is invalid. Must be between [0, 1]",
-					pvStatusToString(INVALID_ARGUMENT), s)
+				return &PorcupineError{
+					INVALID_ARGUMENT,
+					fmt.Sprintf("Sensitivity value of %f is invalid. Must be between [0, 1]", s)}
 			}
 		}
 	}
 
 	if len(porcupine.KeywordPaths) != len(porcupine.Sensitivities) {
-		return fmt.Errorf("%s: Keyword array size (%d) is not the same size as sensitivities array (%d)",
-			pvStatusToString(INVALID_ARGUMENT), len(porcupine.KeywordPaths), len(porcupine.Sensitivities))
+		return &PorcupineError{
+			INVALID_ARGUMENT,
+			fmt.Sprintf("Number of keywords (%d) is not the same as number of sensitivities (%d)",
+				len(porcupine.KeywordPaths),
+				len(porcupine.Sensitivities))}
 	}
 
 	ret := nativePorcupine.nativeInit(porcupine)
 	if PvStatus(ret) != SUCCESS {
-		return fmt.Errorf("Porcupine returned error %s", pvStatusToString(INVALID_ARGUMENT))
+		return &PorcupineError{
+			PvStatus(ret),
+			"Porcupine init failed."}
 	}
 
 	return nil
@@ -215,7 +262,9 @@ func (porcupine *Porcupine) Init() (err error) {
 // Releases resources acquired by Porcupine.
 func (porcupine *Porcupine) Delete() error {
 	if porcupine.handle == 0 {
-		return fmt.Errorf("Porcupine has not been initialized or has already been deleted")
+		return &PorcupineError{
+			INVALID_STATE,
+			"Porcupine has not been initialized or has already been deleted."}
 	}
 
 	nativePorcupine.nativeDelete(porcupine)
@@ -230,17 +279,23 @@ func (porcupine *Porcupine) Delete() error {
 func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 
 	if porcupine.handle == 0 {
-		return -1, fmt.Errorf("Porcupine has not been initialized or has been deleted")
+		return -1, &PorcupineError{
+			INVALID_STATE,
+			"Porcupine has not been initialized or has already been deleted."}
 	}
 
 	if len(pcm) != FrameLength {
-		return -1, fmt.Errorf("input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)
+		return -1, &PorcupineError{
+			INVALID_ARGUMENT,
+			fmt.Sprintf("Input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)}
 	}
 
 	// call process
 	ret, index := nativePorcupine.nativeProcess(porcupine, pcm)
 	if PvStatus(ret) != SUCCESS {
-		return -1, fmt.Errorf("process audio frame failed with PvStatus: %d", ret)
+		return -1, &PorcupineError{
+			PvStatus(ret),
+			"Porcupine process failed."}
 	}
 
 	return index, nil
@@ -249,7 +304,7 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 func getOS() (string, string) {
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		return "mac", "x86_64"
+		return "mac", getMacArch()
 	case "linux":
 		osName, cpu := getLinuxDetails()
 		return osName, cpu
@@ -258,6 +313,14 @@ func getOS() (string, string) {
 	default:
 		log.Fatalf("%s is not a supported OS", os)
 		return "", ""
+	}
+}
+
+func getMacArch() string {
+	if runtime.GOARCH == "arm64" {
+		return "arm64"
+	} else {
+		return "x86_64"
 	}
 }
 
@@ -281,7 +344,7 @@ func getLinuxDetails() (string, string) {
 	for _, line := range strings.Split(string(cpuInfo), "\n") {
 		if strings.Contains(line, "CPU part") {
 			split := strings.Split(line, " ")
-			cpuPart = strings.ToLower(split[len(split) - 1])
+			cpuPart = strings.ToLower(split[len(split)-1])
 			break
 		}
 	}
@@ -300,10 +363,8 @@ func getLinuxDetails() (string, string) {
 	case "0xc08":
 		return "beaglebone", ""
 	default:
-		log.Printf(
-			`WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice.\n
-			Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\n For the model, use Raspberry Pi\'s models`, cpuPart)
-		return "raspberry-pi", "arm11" + archInfo
+		log.Fatalf("Unsupported CPU:\n%s", cpuPart)
+		return "", ""
 	}
 }
 
@@ -332,7 +393,7 @@ func extractLib() string {
 	var libPath string
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		libPath = fmt.Sprintf("embedded/lib/%s/x86_64/libpv_porcupine.dylib", osName)
+		libPath = fmt.Sprintf("embedded/lib/%s/%s/libpv_porcupine.dylib", osName, cpu)
 	case "linux":
 		if cpu == "" {
 			libPath = fmt.Sprintf("embedded/lib/%s/libpv_porcupine.so", osName)
@@ -355,8 +416,12 @@ func extractFile(srcFile string, dstDir string) string {
 	}
 
 	extractedFilepath := filepath.Join(dstDir, srcFile)
-	os.MkdirAll(filepath.Dir(extractedFilepath), 0777)
-	writeErr := ioutil.WriteFile(extractedFilepath, bytes, 0777)
+	mkErr := os.MkdirAll(filepath.Dir(extractedFilepath), 0764)
+	if mkErr != nil {
+		log.Fatalf("%v", mkErr)
+	}
+
+	writeErr := ioutil.WriteFile(extractedFilepath, bytes, 0764)
 	if writeErr != nil {
 		log.Fatalf("%v", writeErr)
 	}

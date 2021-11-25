@@ -9,30 +9,25 @@
 // specific language governing permissions and limitations under the License.
 //
 
-using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 
 using UnityEngine;
-using UnityEngine.UI;
 
 
 namespace Pv.Unity {
 
     public class PorcupineManager
     {
-        public static readonly List<string> BUILT_IN_KEYWORDS = Porcupine.BUILT_IN_KEYWORDS;
-
         private VoiceProcessor _voiceProcessor;
         private Porcupine _porcupine;
         private Action<int> _wakeWordCallback;
-        private Action<Exception> _errorCallback;
+        private Action<PorcupineException> _processErrorCallback;
 
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine from built-in keywords
-        /// </summary>        
+        /// </summary>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)</param>
         /// <param name="keywords">
         /// List of built-in keywords (phrases) to detect. The list of available (default) keywords can be retrieved 
         /// using `PorcupineManager.BUILT_IN_KEYWORDS`.
@@ -43,18 +38,19 @@ namespace Pv.Unity {
         /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
         /// </param>
-        /// <param name="errorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
+        /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
         /// <returns>An instance of PorcupineManager.</returns>                             
-        public static PorcupineManager FromKeywords(IEnumerable<string> keywords, Action<int> wakeWordCallback,
-                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> errorCallback = null)
+        public static PorcupineManager FromBuiltInKeywords(string accessKey, IEnumerable<Porcupine.BuiltInKeyword> keywords, Action<int> wakeWordCallback,
+                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<PorcupineException> processErrorCallback = null)
         {
-            Porcupine porcupine = Porcupine.Create(keywords: keywords, modelPath: modelPath, sensitivities: sensitivities);
-            return new PorcupineManager(porcupine, wakeWordCallback, errorCallback);
+            Porcupine porcupine = Porcupine.FromBuiltInKeywords(accessKey: accessKey, keywords: keywords, modelPath: modelPath, sensitivities: sensitivities);
+            return new PorcupineManager(porcupine, wakeWordCallback, processErrorCallback);
         }
 
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine from custom keyword files.
-        /// </summary>        
+        /// </summary>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)</param>
         /// <param name="keywordPaths">List of absolute paths to keyword model files (.ppn).</param>
         /// <param name="wakeWordCallback">A callback that is triggered when one of the given keywords has been detected by Porcupine.</param>
         /// <param name="modelPath">(Optional) Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>        
@@ -62,21 +58,21 @@ namespace Pv.Unity {
         /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
         /// </param>
-        /// <param name="errorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
+        /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
         /// <returns>An instance of PorcupineManager.</returns>                             
-        public static PorcupineManager FromKeywordPaths(IEnumerable<string> keywordPaths, Action<int> wakeWordCallback,
-                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<Exception> errorCallback = null)
+        public static PorcupineManager FromKeywordPaths(string accessKey, IEnumerable<string> keywordPaths, Action<int> wakeWordCallback,
+                                                    string modelPath = null, IEnumerable<float> sensitivities = null, Action<PorcupineException> processErrorCallback = null)
         {
-            Porcupine porcupine = Porcupine.Create(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities);
-            return new PorcupineManager(porcupine, wakeWordCallback, errorCallback);
+            Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey: accessKey, keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities);
+            return new PorcupineManager(porcupine, wakeWordCallback, processErrorCallback);
         }
 
         // private constructor
-        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<Exception> errorCallback = null) 
+        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<PorcupineException> processErrorCallback = null) 
         {
             _porcupine = porcupine;            
             _wakeWordCallback = wakeWordCallback;
-            _errorCallback = errorCallback;
+            _processErrorCallback = processErrorCallback;
 
             _voiceProcessor = VoiceProcessor.Instance;
             _voiceProcessor.OnFrameCaptured += OnFrameCaptured;
@@ -99,11 +95,11 @@ namespace Pv.Unity {
             }
             catch (Exception ex)
             {
-                if (_errorCallback != null)
-                    _errorCallback(ex);
+                if (_processErrorCallback != null)
+                    _processErrorCallback(new PorcupineException(ex.Message));
                 else
                     Debug.LogError(ex.ToString());
-            }            
+            }
         }
 
         /// <summary>
@@ -125,7 +121,7 @@ namespace Pv.Unity {
         /// <summary>
         /// Starts audio capture and wake word detection
         /// </summary>
-        public void Start() 
+        public void Start()
         {
             if (_porcupine == null || _voiceProcessor == null) 
             {

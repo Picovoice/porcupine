@@ -1223,10 +1223,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/web-voice-processor@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.0.tgz#e4743389e846f42c7532e1ae4c32a45f6f9feff6"
-  integrity sha512-WWSpb/HCdJknpdcSYTbzMzmWnXIiM7jP96EhTR7FG92PGERyhhyWc+vem7+Ne59uEb1JtNlUdH8hQv64sf+vmw==
+"@picovoice/web-voice-processor@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.2.tgz#cac4456b3ef06dee5664e27be6db348ae4e2d46a"
+  integrity sha512-tDOFQtB79SX4m44Oj3W7I2q7Qvdwc52gJDHT1JXw80mJaog7RLRRUd7vANlGT0nJmhUWjYE7fxlEctPf2dyJcA==
   dependencies:
     "@babel/runtime" "^7.12.18"
 

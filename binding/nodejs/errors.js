@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -21,6 +21,11 @@ class PvStatusInvalidArgumentError extends Error {}
 class PvStatusStopIterationError extends Error {}
 class PvStatusKeyError extends Error {}
 class PvStatusInvalidStateError extends Error {}
+class PvStatusRuntimeError extends Error {}
+class PvStatusActivationError extends Error {}
+class PvStatusActivationLimitReached extends Error {}
+class PvStatusActivationThrottled extends Error {}
+class PvStatusActivationRefused extends Error {}
 
 const PV_STATUS_T = require("./pv_status_t");
 
@@ -38,6 +43,16 @@ function pvStatusToException(pvStatusInt, errorMessage) {
       throw new PvStatusKeyError(errorMessage);
     case PV_STATUS_T.INVALID_STATE:
       throw new PvStatusInvalidStateError(errorMessage);
+    case PV_STATUS_T.RUNTIME_ERROR:
+      throw new PvStatusRuntimeError(errorMessage);
+    case PV_STATUS_T.ACTIVATION_ERROR:
+      throw new PvStatusActivationError(errorMessage);
+    case PV_STATUS_T.ACTIVATION_LIMIT_REACHED:
+      throw new PvStatusActivationLimitReached(errorMessage);
+    case PV_STATUS_T.ACTIVATION_THROTTLED:
+      throw new PvStatusActivationThrottled(errorMessage);
+    case PV_STATUS_T.ACTIVATION_REFUSED:
+      throw new PvStatusActivationRefused(errorMessage);      
     default:
       console.warn(`Unmapped error code: ${pvStatusInt}`);
       throw new Error(errorMessage);
@@ -45,6 +60,10 @@ function pvStatusToException(pvStatusInt, errorMessage) {
 }
 
 module.exports = {
+  PvStatusActivationError,
+  PvStatusActivationLimitReached,
+  PvStatusActivationRefused,
+  PvStatusActivationThrottled,
   PvArgumentError,
   PvStateError,
   PvStatusInvalidArgumentError,
@@ -52,6 +71,7 @@ module.exports = {
   PvStatusIoError,
   PvStatusKeyError,
   PvStatusOutOfMemoryError,
+  PvStatusRuntimeError,
   PvStatusStopIterationError,
   pvStatusToException,
   PvUnsupportedPlatformError,

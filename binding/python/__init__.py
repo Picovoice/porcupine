@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -21,10 +21,11 @@ KEYWORD_PATHS = pv_keyword_paths('')
 KEYWORDS = set(KEYWORD_PATHS.keys())
 
 
-def create(library_path=None, model_path=None, keyword_paths=None, keywords=None, sensitivities=None):
+def create(access_key, library_path=None, model_path=None, keyword_paths=None, keywords=None, sensitivities=None):
     """
     Factory method for Porcupine wake word engine.
 
+    :param access_key: AccessKey obtained from Picovoice Console.
     :param library_path: Absolute path to Porcupine's dynamic library. If not set it will be set to the default
     location.
     :param model_path: Absolute path to the file containing model parameters. If not set it will be set to the default
@@ -62,6 +63,7 @@ def create(library_path=None, model_path=None, keyword_paths=None, keywords=None
         raise ValueError("Number of keywords does not match the number of sensitivities.")
 
     return Porcupine(
+        access_key=access_key,
         library_path=library_path,
         model_path=model_path,
         keyword_paths=keyword_paths,

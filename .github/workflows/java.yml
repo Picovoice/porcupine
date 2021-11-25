@@ -1,20 +1,33 @@
 name: Java
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/java/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/common/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/java/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/common/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
 
 defaults:
   run:
@@ -37,7 +50,7 @@ jobs:
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
     - name: Build
-      run: ./gradlew build
+      run: ./gradlew assemble
 
     - name: Test
-      run: ./gradlew test
+      run: ./gradlew test -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}"

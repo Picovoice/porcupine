@@ -8,7 +8,7 @@
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
     specific language governing permissions and limitations under the License.
 */
-                                                                                                               
+
 using System;
 using System.IO;
 using System.Reflection;
@@ -22,28 +22,37 @@ namespace PorcupineTest
     [TestClass]
     public class MainTest
     {
-        [TestMethod]
-        public void TestFrameLength() 
+        private static string ACCESS_KEY;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
         {
-            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });            
+            if (testContext.Properties.Contains("pvTestAccessKey"))
+            {
+                ACCESS_KEY = testContext.Properties["pvTestAccessKey"].ToString();
+            }
+        }
+
+        [TestMethod]
+        public void TestFrameLength()
+        {
+            using Porcupine p = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             Assert.IsTrue(p.FrameLength > 0, "Specified frame length was not a valid number.");
-            p.Dispose();
         }
 
         [TestMethod]
         public void TestVersion()
         {
-            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });
+            using Porcupine p = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             Assert.IsFalse(string.IsNullOrWhiteSpace(p.Version), "Porcupine did not return a valid version number.");
-            p.Dispose();
         }
 
         [TestMethod]
         public void TestProcess()
-        {                     
-            Porcupine p = Porcupine.Create(keywords: new List<string> { "porcupine" });            
+        {
+            using Porcupine p = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             int frameLen = p.FrameLength;
-            
+
             string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/porcupine.wav");
             List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);
 
@@ -69,15 +78,33 @@ namespace PorcupineTest
         [TestMethod]
         public void TestProcessMultiple()
         {
-            List<string> inputKeywords = new List<string> 
-            { 
-                "alexa", "americano", "blueberry", 
-                "bumblebee", "grapefruit", "grasshopper", 
-                "picovoice", "porcupine", "terminator" 
+            List<BuiltInKeyword> inputKeywords = new List<BuiltInKeyword>
+            {
+                BuiltInKeyword.ALEXA,
+                BuiltInKeyword.AMERICANO,
+                BuiltInKeyword.BLUEBERRY,
+                BuiltInKeyword.BUMBLEBEE,
+                BuiltInKeyword.GRAPEFRUIT,
+                BuiltInKeyword.GRASSHOPPER,
+                BuiltInKeyword.PICOVOICE,
+                BuiltInKeyword.PORCUPINE,
+                BuiltInKeyword.TERMINATOR
             };
-            List<int> expectedResults = new List<int>() { 7, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-            Porcupine p = Porcupine.Create(keywords: inputKeywords);
+            List<BuiltInKeyword> expectedResults = new List<BuiltInKeyword>() {
+                BuiltInKeyword.PORCUPINE,
+                BuiltInKeyword.ALEXA,
+                BuiltInKeyword.AMERICANO,
+                BuiltInKeyword.BLUEBERRY,
+                BuiltInKeyword.BUMBLEBEE,
+                BuiltInKeyword.GRAPEFRUIT,
+                BuiltInKeyword.GRASSHOPPER,
+                BuiltInKeyword.PICOVOICE,
+                BuiltInKeyword.PORCUPINE,
+                BuiltInKeyword.TERMINATOR
+            };
+
+            Porcupine p = Porcupine.FromBuiltInKeywords(ACCESS_KEY, inputKeywords);
             int frameLen = p.FrameLength;
 
             string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/multiple_keywords.wav");
@@ -97,19 +124,21 @@ namespace PorcupineTest
                 {
                     results.Add(result);
                 }
-            }            
+            }
 
             Assert.AreEqual(expectedResults.Count, results.Count, $"Should have found {expectedResults.Count} keywords, but {results.Count} were found.");
             for (int i = 0; i < results.Count; i++)
             {
-                Assert.AreEqual(expectedResults[i], results[i], 
-                    $"Expected '{Porcupine.KEYWORDS[expectedResults[i]]}', but '{Porcupine.KEYWORDS[results[i]]}' was detected.");
+                Assert.AreEqual(
+                    expectedResults[i],
+                    inputKeywords[results[i]],
+                    $"Expected '{expectedResults[i]}', but '{inputKeywords[results[i]]}' was detected.");
             }
 
             p.Dispose();
         }
 
-        private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate) 
+        private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
             List<short> data = new List<short>();
             using (BinaryReader reader = new BinaryReader(File.Open(audioFilePath, FileMode.Open)))

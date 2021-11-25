@@ -36,6 +36,15 @@ yarn add @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovo
 npm install @picovoice/porcupine-web-angular @picovoice/web-voice-processor @picovoice/porcupine-web-en-worker
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 In your Angular component, add the `PorcupineService`. The `PorcupineService` has a detection event to which you can subscribe:
@@ -62,10 +71,12 @@ We need to initialize Porcupine to tell it which keywords we want to listen to (
   async ngOnInit() {
     // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; dynamically imported)
     const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
+    const accessKey = // AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)
+    
     // Initialize Porcupine Service
     try {
       await this.porcupineService.init(porcupineFactoryEn,
-      {keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
+      {accessKey: accessKey, keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
       console.log("Porcupine is now loaded and listening")
     }
     catch (error) {
@@ -90,7 +101,7 @@ Each language includes a set of built-in keywords. The quickest way to get start
 
 Custom wake words are generated using [Picovoice Console](https://picovoice.ai/console/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the Angular library.
 
-Convert the `.ppn` file to base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that the `PorcupineService` can tell you which keyword occurred ("Deep Sky Blue", in this case):
+The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that the `PorcupineService` can tell you which keyword occurred ("Deep Sky Blue", in this case):
 
 ```typescript
 const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
@@ -98,7 +109,7 @@ const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
 ...
   // Listen for "Deep Sky Blue": pass in a base64-encoded string of the .ppn file:
   await this.porcupineService.init(porcupineFactoryEn,
-  {keywords: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
+  {accessKey: accessKey, keywords: [{ custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64 }]})
 
 ...
 ```

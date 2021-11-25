@@ -53,6 +53,7 @@ public class Porcupine {
     /**
      * Constructor.
      *
+     * @param accessKey     AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
      * @param modelPath     Absolute path to the file containing model parameters.
      * @param keywordPaths  Absolute paths to keyword model files.
      * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
@@ -60,12 +61,12 @@ public class Porcupine {
      *                      of increasing the false alarm rate.
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
-    private Porcupine(String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
-        try {
-            handle = init(modelPath, keywordPaths, sensitivities);
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
+    private Porcupine(
+            String accessKey,
+            String modelPath,
+            String[] keywordPaths,
+            float[] sensitivities) throws PorcupineException {
+        handle = init(accessKey, modelPath, keywordPaths, sensitivities);
     }
 
     /**
@@ -107,11 +108,7 @@ public class Porcupine {
                                     "Received frame of size %d.", getFrameLength(), pcm.length)));
         }
 
-        try {
-            return process(handle, pcm);
-        } catch (Exception e) {
-            throw new PorcupineException(e);
-        }
+        return process(handle, pcm);
     }
 
     /**
@@ -135,7 +132,11 @@ public class Porcupine {
      */
     public native int getSampleRate();
 
-    private native long init(String modelPath, String[] keywordPaths, float[] sensitivities);
+    private native long init(
+            String accessKey,
+            String modelPath,
+            String[] keywordPaths,
+            float[] sensitivities);
 
     private native void delete(long object);
 
@@ -163,10 +164,16 @@ public class Porcupine {
      */
     public static class Builder {
 
+        private String accessKey = null;
         private String modelPath = null;
         private String[] keywordPaths = null;
         private BuiltInKeyword[] keywords = null;
         private float[] sensitivities = null;
+
+        public Builder setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+            return this;
+        }
 
         public Builder setModelPath(String modelPath) {
             this.modelPath = modelPath;
@@ -203,7 +210,7 @@ public class Porcupine {
             return this;
         }
 
-        private void extractPackageResources(Context context) throws PorcupineException {
+        private void extractPackageResources(Context context) throws PorcupineIOException {
             final Resources resources = context.getResources();
 
             try {
@@ -221,7 +228,7 @@ public class Porcupine {
 
                 isExtracted = true;
             } catch (IOException ex) {
-                throw new PorcupineException(ex);
+                throw new PorcupineIOException(ex);
             }
         }
 
@@ -263,20 +270,23 @@ public class Porcupine {
                                 context.getAssets().open(modelPath),
                                 modelFilename);
                     } catch (IOException ex) {
-                        throw new PorcupineException(ex);
+                        throw new PorcupineIOException(ex);
                     }
                 }
             }
 
+            if (this.accessKey == null || this.accessKey.equals("")) {
+                throw new PorcupineInvalidArgumentException("No AccessKey provided to Porcupine.");
+            }
+
             if (this.keywordPaths != null && this.keywords != null) {
-                throw new PorcupineException(new IllegalArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
-                        "Only one of the two arguments may be set for initialization."));
+                throw new PorcupineInvalidArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
+                        "Only one of the two arguments may be set for initialization.");
             }
 
             if (this.keywordPaths == null) {
                 if (this.keywords == null) {
-                    throw new PorcupineException(
-                            new IllegalArgumentException("Either 'keywords' or 'keywordPaths' must be set."));
+                    throw new PorcupineInvalidArgumentException("Either 'keywords' or 'keywordPaths' must be set.");
                 }
 
                 this.keywordPaths = new String[keywords.length];
@@ -286,8 +296,7 @@ public class Porcupine {
             } else {
                 for (int i = 0; i < keywordPaths.length; i++) {
                     if (keywordPaths[i] == null || keywordPaths[i].equals("")) {
-                        throw new PorcupineException(
-                                new IllegalArgumentException("Empty keyword path passed to Porcupine."));
+                        throw new PorcupineInvalidArgumentException("Empty keyword path passed to Porcupine.");
                     }
 
                     File keywordFile = new File(keywordPaths[i]);
@@ -298,7 +307,7 @@ public class Porcupine {
                                     context.getAssets().open(keywordPaths[i]),
                                     keywordFilename);
                         } catch (IOException ex) {
-                            throw new PorcupineException(ex);
+                            throw new PorcupineIOException(ex);
                         }
                     }
                 }
@@ -310,11 +319,14 @@ public class Porcupine {
             }
 
             if (sensitivities.length != keywordPaths.length) {
-                throw new PorcupineException(new IllegalArgumentException(String.format("Number of keywords (%d) " +
-                        "does not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length)));
+                throw new PorcupineInvalidArgumentException(
+                        String.format("Number of keywords (%d) " +
+                                "does not match number of sensitivities (%d)",
+                                keywordPaths.length,
+                                sensitivities.length));
             }
 
-            return new Porcupine(modelPath, keywordPaths, sensitivities);
+            return new Porcupine(accessKey, modelPath, keywordPaths, sensitivities);
         }
     }
 }

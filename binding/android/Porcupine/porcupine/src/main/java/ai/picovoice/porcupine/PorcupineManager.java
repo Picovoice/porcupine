@@ -90,11 +90,17 @@ public class PorcupineManager {
      */
     public static class Builder {
 
+        private String accessKey = null;
         private String modelPath = null;
         private String[] keywordPaths = null;
         private Porcupine.BuiltInKeyword[] keywords = null;
         private float[] sensitivities = null;
         private PorcupineManagerErrorCallback errorCallback = null;
+
+        public PorcupineManager.Builder setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+            return this;
+        }
 
         public PorcupineManager.Builder setModelPath(String modelPath) {
             this.modelPath = modelPath;
@@ -147,6 +153,7 @@ public class PorcupineManager {
         public PorcupineManager build(Context context, PorcupineManagerCallback callback) throws PorcupineException {
 
             Porcupine porcupine = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setModelPath(modelPath)
                     .setKeywordPaths(keywordPaths)
                     .setKeywords(keywords)

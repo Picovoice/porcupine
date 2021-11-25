@@ -1,44 +1,21 @@
 name: Rust
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/rust/**'
       - '!binding/rust/README.md'
-      - 'lib/beaglebone/**'
-      - 'lib/common/**'
-      - 'lib/jetson/**'
-      - 'lib/linux/**'
-      - 'lib/mac/**'
-      - 'lib/raspberry-pi/**'
-      - 'lib/windows/**'
-      - 'resources/keyword_files/beaglebone/**'
-      - 'resources/keyword_files/common/**'
-      - 'resources/keyword_files/jetson/**'
-      - 'resources/keyword_files/linux/**'
-      - 'resources/keyword_files/mac/**'
-      - 'resources/keyword_files/raspberry-pi/**'
-      - 'resources/keyword_files/windows/**'
+      - 'lib/**'
+      - 'res/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/rust/**'
       - '!binding/rust/README.md'
-      - 'lib/beaglebone/**'
-      - 'lib/common/**'
-      - 'lib/jetson/**'
-      - 'lib/linux/**'
-      - 'lib/mac/**'
-      - 'lib/raspberry-pi/**'
-      - 'lib/windows/**'
-      - 'resources/keyword_files/beaglebone/**'
-      - 'resources/keyword_files/common/**'
-      - 'resources/keyword_files/jetson/**'
-      - 'resources/keyword_files/linux/**'
-      - 'resources/keyword_files/mac/**'
-      - 'resources/keyword_files/raspberry-pi/**'
-      - 'resources/keyword_files/windows/**'
+      - 'lib/**'
+      - 'res/**'
 
 env:
   CARGO_TERM_COLOR: always
@@ -62,5 +39,5 @@ jobs:
       working-directory: binding/rust
 
     - name: Rust run tests
-      run: cargo test --verbose
+      run: PV_ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}} cargo test --verbose
       working-directory: binding/rust

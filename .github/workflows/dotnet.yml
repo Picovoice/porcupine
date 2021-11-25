@@ -1,46 +1,56 @@
 name: .NET
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths: 
       - 'binding/dotnet/**'
+      - 'lib/beaglebone/**'
       - 'lib/linux/**'
+      - 'lib/jetson/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
       - '!binding/dotnet/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths: 
       - 'binding/dotnet/**'
+      - 'lib/beaglebone/**'
       - 'lib/linux/**'
+      - 'lib/jetson/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
       - '!binding/dotnet/README.md'
 
+defaults:
+  run:
+    working-directory: binding/dotnet
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET
+    - name: Setup .NET 3.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
 
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+        
     - name: Restore dependencies
-      run: dotnet restore
-      working-directory: binding/dotnet/Porcupine
+      run: dotnet restore    
 
     - name: Build
-      run: dotnet build --no-restore
-      working-directory: binding/dotnet/Porcupine
+      run: dotnet build --no-restore      
 
     - name: Test
-      run: dotnet test
-      working-directory: binding/dotnet/PorcupineTest
+      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)

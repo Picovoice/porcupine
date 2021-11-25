@@ -1,15 +1,16 @@
 name: Go
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'
@@ -46,4 +47,4 @@ jobs:
       run: go build
 
     - name: Test
-      run: go test
+      run: go test -access_key ${{secrets.PV_VALID_ACCESS_KEY}}

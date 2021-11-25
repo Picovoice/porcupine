@@ -27,15 +27,33 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.PorcupineActivationException;
+import ai.picovoice.porcupine.PorcupineActivationLimitException;
+import ai.picovoice.porcupine.PorcupineActivationRefusedException;
+import ai.picovoice.porcupine.PorcupineActivationThrottledException;
 import ai.picovoice.porcupine.PorcupineException;
+import ai.picovoice.porcupine.PorcupineInvalidArgumentException;
 import ai.picovoice.porcupine.PorcupineManager;
+import ai.picovoice.porcupine.PorcupineManagerCallback;
 
 public class PorcupineService extends Service {
     private static final String CHANNEL_ID = "PorcupineServiceChannel";
+    private static final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}";
 
     private PorcupineManager porcupineManager;
-
     private int numUtterances;
+    private final PorcupineManagerCallback porcupineManagerCallback = (keywordIndex) -> {
+        numUtterances++;
+
+        final String contentText = numUtterances == 1 ? " time!" : " times!";
+        Notification n = getNotification(
+                "Wake word",
+                "Detected " + numUtterances + contentText);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
+        notificationManager.notify(1234, n);
+    };
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -51,57 +69,60 @@ public class PorcupineService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        numUtterances = 0;
         createNotificationChannel();
 
+        try {
+            porcupineManager = new PorcupineManager.Builder()
+                    .setAccessKey(ACCESS_KEY)
+                    .setKeyword(Porcupine.BuiltInKeyword.COMPUTER)
+                    .setSensitivity(0.7f).build(
+                            getApplicationContext(),
+                            porcupineManagerCallback);
+            porcupineManager.start();
+
+        } catch (PorcupineInvalidArgumentException e) {
+            onPorcupineInitError(String.format("AccessKey '%s' is invalid", ACCESS_KEY));
+        } catch (PorcupineActivationException e) {
+            onPorcupineInitError("AccessKey activation error");
+        } catch (PorcupineActivationLimitException e) {
+            onPorcupineInitError("AccessKey reached its device limit");
+        } catch (PorcupineActivationRefusedException e) {
+            onPorcupineInitError("AccessKey refused");
+        } catch (PorcupineActivationThrottledException e) {
+            onPorcupineInitError("AccessKey has been throttled");
+        } catch (PorcupineException e) {
+            onPorcupineInitError("Failed to initialize Porcupine " + e.getMessage());
+        }
+
+        Notification notification = porcupineManager == null ?
+                getNotification("Porcupine init failed", "Service will be shut down") :
+                getNotification("Wake word", "Service running");
+        startForeground(1234, notification);
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void onPorcupineInitError(String message) {
+        Intent i = new Intent("PorcupineInitError");
+        i.putExtra("errorMessage", message);
+        sendBroadcast(i);
+    }
+
+    private Notification getNotification(String title, String message) {
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
                 0,
                 new Intent(this, MainActivity.class),
                 0);
 
-        numUtterances = 0;
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Wake word")
-                .setContentText("Service running")
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(message)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
-
-        startForeground(1234, notification);
-
-        try {
-            porcupineManager = new PorcupineManager.Builder()
-                    .setKeyword(Porcupine.BuiltInKeyword.COMPUTER)
-                    .setSensitivity(0.7f).build(
-                            getApplicationContext(),
-                            (keywordIndex) -> {
-                                numUtterances++;
-
-                                PendingIntent contentIntent = PendingIntent.getActivity(
-                                        this,
-                                        0,
-                                        new Intent(this, MainActivity.class),
-                                        0);
-
-                                final String contentText = numUtterances == 1 ? " time!" : " times!";
-                                Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                        .setContentTitle("Wake word")
-                                        .setContentText("Detected " + numUtterances + contentText)
-                                        .setSmallIcon(R.drawable.ic_launcher_background)
-                                        .setContentIntent(contentIntent)
-                                        .build();
-
-                                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                                assert notificationManager != null;
-                                notificationManager.notify(1234, n);
-                            });
-            porcupineManager.start();
-        } catch (PorcupineException e) {
-            Log.e("PORCUPINE", e.toString());
-        }
-
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable
@@ -112,11 +133,13 @@ public class PorcupineService extends Service {
 
     @Override
     public void onDestroy() {
-        try {
-            porcupineManager.stop();
-            porcupineManager.delete();
-        } catch (PorcupineException e) {
-            Log.e("PORCUPINE", e.toString());
+        if (porcupineManager != null) {
+            try {
+                porcupineManager.stop();
+                porcupineManager.delete();
+            } catch (PorcupineException e) {
+                Log.e("PORCUPINE", e.toString());
+            }
         }
 
         super.onDestroy();

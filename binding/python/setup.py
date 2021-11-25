@@ -48,6 +48,7 @@ include pvporcupine/lib/beaglebone/libpv_porcupine.so
 recursive-include pvporcupine/lib/jetson *
 include pvporcupine/lib/linux/x86_64/libpv_porcupine.so
 include pvporcupine/lib/mac/x86_64/libpv_porcupine.dylib
+include pvporcupine/lib/mac/arm64/libpv_porcupine.dylib
 recursive-include pvporcupine/lib/raspberry-pi *
 include pvporcupine/lib/windows/amd64/libpv_porcupine.dll
 recursive-include pvporcupine/resources/keyword_files/beaglebone *
@@ -66,7 +67,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="1.9.5",
+    version="2.0.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",

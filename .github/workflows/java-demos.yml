@@ -1,20 +1,21 @@
 name: Java Demos
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
 
 defaults:
   run:
-    working-directory: binding/java
+    working-directory: demo/java
 
 jobs:
   build:
@@ -34,4 +35,3 @@ jobs:
 
     - name: Build
       run: ./gradlew build
-

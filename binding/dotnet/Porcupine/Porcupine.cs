@@ -20,14 +20,43 @@ using System.Runtime.InteropServices;
 namespace Pv
 {
     /// <summary>
-    ///  Status codes returned by Picovoice library
+    ///  Status codes returned by Porcupine library
     /// </summary>
     public enum PorcupineStatus
     {
         SUCCESS = 0,
         OUT_OF_MEMORY = 1,
         IO_ERROR = 2,
-        INVALID_ARGUMENT = 3
+        INVALID_ARGUMENT = 3,
+        STOP_ITERATION = 4,
+        KEY_ERROR = 5,
+        INVALID_STATE = 6,
+        RUNTIME_ERROR = 7,
+        ACTIVATION_ERROR = 8,
+        ACTIVATION_LIMIT_REACHED = 9,
+        ACTIVATION_THROTTLED = 10,
+        ACTIVATION_REFUSED = 11
+    }
+
+    /// <summary>
+    ///  Built-in keywords
+    /// </summary>
+    public enum BuiltInKeyword
+    {
+        ALEXA,
+        AMERICANO,
+        BLUEBERRY,
+        BUMBLEBEE,
+        COMPUTER,
+        GRAPEFRUIT,
+        GRASSHOPPER,
+        HEY_GOOGLE,
+        HEY_SIRI,
+        JARVIS,
+        OK_GOOGLE,
+        PICOVOICE,
+        PORCUPINE,
+        TERMINATOR
     }
 
     /// <summary>
@@ -37,32 +66,42 @@ namespace Pv
     {
         private const string LIBRARY = "libpv_porcupine";
         private IntPtr _libraryPointer = IntPtr.Zero;
-        
-        public static string MODEL_PATH;
-        public static Dictionary<string, string> KEYWORD_PATHS;
-        public static List<string> KEYWORDS;
-      
+
+        public static readonly string DEFAULT_MODEL_PATH;
+        public static readonly Dictionary<BuiltInKeyword, string> BUILT_IN_KEYWORD_PATHS;
+
         static Porcupine()
-        {            
+        {
+
 #if NETCOREAPP3_1
+
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
+
 #endif
-            MODEL_PATH = Utils.PvModelPath();
-            KEYWORD_PATHS = Utils.PvKeywordPaths();
-            KEYWORDS = KEYWORD_PATHS.Keys.ToList();
+
+            DEFAULT_MODEL_PATH = Utils.PvModelPath();
+            BUILT_IN_KEYWORD_PATHS = Utils.PvKeywordPaths();
         }
 
 #if NETCOREAPP3_1
-        private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) 
+
+        private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            IntPtr libHandle = IntPtr.Zero;                                   
+            IntPtr libHandle = IntPtr.Zero;
             NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
             return libHandle;
         }
+
 #endif
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern PorcupineStatus pv_porcupine_init(string modelPath, int numKeywords, string[] keywordPaths, float[] sensitivities, out IntPtr handle);
+        private static extern PorcupineStatus pv_porcupine_init(
+            string accessKey,
+            string modelPath,
+            int numKeywords,
+            string[] keywordPaths,
+            float[] sensitivities,
+            out IntPtr handle);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_sample_rate();
@@ -71,52 +110,102 @@ namespace Pv
         private static extern void pv_porcupine_delete(IntPtr handle);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern PorcupineStatus pv_porcupine_process(IntPtr handle, short[] pcm, out int keywordIndex);
+        private static extern PorcupineStatus pv_porcupine_process(
+            IntPtr handle,
+            short[] pcm,
+            out int keywordIndex);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern IntPtr pv_porcupine_version();
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_porcupine_frame_length();
+
+        /// <summary>
+        /// Creates an instance of the Porcupine wake word engine from built-in keywords.
+        /// </summary>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
+        /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
+        /// <param name="keywords">List of built-in keywords for detection.</param>
+        /// <param name="sensitivities">
+        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
+        /// misses at the cost of increasing the false alarm rate. If not set, 0.5 will be used.
+        /// </param>
+        /// <returns>An instance of Porcupine wake word engine.</returns> 
+        public static Porcupine FromBuiltInKeywords(
+            string accessKey,
+            IEnumerable<BuiltInKeyword> keywords,
+            string modelPath = null,
+            IEnumerable<float> sensitivities = null)
+        {
+            if (keywords == null || keywords.Count() == 0)
+            {
+                throw new PorcupineInvalidArgumentException("No built-in keywords were specified.");
+            }
+
+            IEnumerable<string> keywordPaths = keywords
+                .Where(k => BUILT_IN_KEYWORD_PATHS.ContainsKey(k))
+                .Select(k => BUILT_IN_KEYWORD_PATHS[k]);
+
+            return new Porcupine(accessKey, keywordPaths, modelPath, sensitivities);
+        }
+
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine.
         /// </summary>
-        /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
-        /// <param name="keywordPaths"> Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>
-        /// <param name="keywords">
-        /// List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved 
-        /// using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
-        /// </param>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
+        /// <param name="modelPath">Absolute path to file containing model parameters.</param>
+        /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
         /// <param name="sensitivities">
-        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
-        /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
-        /// </param>
-        /// <returns>An instance of Porcupine wake word engine.</returns>                             
-        public static Porcupine Create(string modelPath = null, IEnumerable<string> keywordPaths = null,
-                                       IEnumerable<string> keywords = null, IEnumerable<float> sensitivities = null)
+        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased 
+        /// false alarm rate. A sensitivity value should be within [0, 1]. 
+        /// </param>  
+        public static Porcupine FromKeywordPaths(
+            string accessKey,
+            IEnumerable<string> keywordPaths,
+            string modelPath = null,
+            IEnumerable<float> sensitivities = null)
         {
-            modelPath = modelPath ?? MODEL_PATH;
+            return new Porcupine(accessKey, keywordPaths, modelPath, sensitivities);
+        }
 
-            if (keywordPaths != null && keywords != null) 
+        /// <summary>
+        /// Creates an instance of the Porcupine wake word engine.
+        /// </summary>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
+        /// <param name="modelPath">Absolute path to file containing model parameters.</param>
+        /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
+        /// <param name="sensitivities">
+        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased 
+        /// false alarm rate. A sensitivity value should be within [0, 1]. 
+        /// </param>  
+        private Porcupine(
+            string accessKey,
+            IEnumerable<string> keywordPaths,
+            string modelPath = null,
+            IEnumerable<float> sensitivities = null)
+        {
+            if (string.IsNullOrEmpty(accessKey))
             {
-                throw new ArgumentException("Both 'keywords' and 'keywordPaths' were set. Only one of the two arguments may be set for intializtion.");
+                throw new PorcupineInvalidArgumentException("No AccessKey provided to Porcupine");
             }
 
-            if (keywordPaths == null)
+            modelPath = modelPath ?? DEFAULT_MODEL_PATH;
+            if (!File.Exists(modelPath))
             {
-                if (keywords == null)
-                {
-                    throw new ArgumentNullException("keywords", "Either 'keywords' or 'keywordPaths' must be set.");
-                }
+                throw new PorcupineIOException($"Couldn't find model file at '{modelPath}'");
+            }
 
-                if (keywords.All(k => KEYWORDS.Contains(k)))
-                {                    
-                    keywordPaths = keywords.Select(k => KEYWORD_PATHS[k]);
-                }
-                else
+            if (keywordPaths == null || keywordPaths.Count() == 0)
+            {
+                throw new PorcupineInvalidArgumentException("No keyword file paths were provided to Porcupine");
+            }
+
+            foreach (string path in keywordPaths)
+            {
+                if (!File.Exists(path))
                 {
-                    throw new ArgumentException("One or more keywords are not available by default. Available default keywords are:\n" +
-                                                 string.Join(",", KEYWORDS));
+                    throw new PorcupineIOException($"Couldn't find keyword file at '{path}'");
                 }
             }
 
@@ -124,60 +213,29 @@ namespace Pv
             {
                 sensitivities = Enumerable.Repeat(0.5f, keywordPaths.Count());
             }
-
-            if (sensitivities.Count() != keywordPaths.Count())
+            else
             {
-                throw new ArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
-            }
-
-            return new Porcupine(modelPath, keywordPaths, sensitivities);
-        }
-
-        /// <summary>
-        /// Creates an instance of the Porcupine wake word engine.
-        /// </summary>
-        /// <param name="modelPath">Absolute path to file containing model parameters.</param>
-        /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
-        /// <param name="sensitivities">
-        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased 
-        /// false alarm rate. A sensitivity value should be within [0, 1]. 
-        /// </param>        
-        public Porcupine(string modelPath, IEnumerable<string> keywordPaths, IEnumerable<float> sensitivities)
-        {
-            if (string.IsNullOrWhiteSpace(modelPath) ||
-                keywordPaths == null || keywordPaths.Count() == 0 ||
-                sensitivities == null || sensitivities.Count() == 0)
-            {
-                throw new ArgumentNullException("One or more of the constructor arguments were null or empty. ");
-            }
-
-            if (!File.Exists(modelPath))
-            {
-                throw new IOException($"Couldn't find model file at '{modelPath}'");
-            }
-
-            foreach (string path in keywordPaths)
-            {
-                if (!File.Exists(path))
+                if (sensitivities.Any(s => s < 0 || s > 1))
                 {
-                    throw new IOException($"Couldn't find keyword file at '{path}'");
+                    throw new PorcupineInvalidArgumentException("Sensitivities should be within [0, 1].");
                 }
             }
 
-            if (sensitivities.Any(s => s < 0 || s > 1))
+            if (sensitivities.Count() != keywordPaths.Count())
             {
-                throw new ArgumentException("Sensitivities should be within [0, 1].");
+                throw new PorcupineInvalidArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
             }
 
-            if (keywordPaths.Count() != sensitivities.Count())
-            {
-                throw new ArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
-            }
-
-            PorcupineStatus status = pv_porcupine_init(modelPath, keywordPaths.Count(), keywordPaths.ToArray(), sensitivities.ToArray(), out _libraryPointer);
+            PorcupineStatus status = pv_porcupine_init(
+                accessKey,
+                modelPath,
+                keywordPaths.Count(),
+                keywordPaths.ToArray(),
+                sensitivities.ToArray(),
+                out _libraryPointer);
             if (status != PorcupineStatus.SUCCESS)
             {
-                throw PorcupineStatusToException(status);
+                throw PorcupineStatusToException(status, "Porcupine init failed.");
             }
 
             Version = Marshal.PtrToStringAnsi(pv_porcupine_version());
@@ -199,7 +257,8 @@ namespace Pv
         {
             if (pcm.Length != FrameLength)
             {
-                throw new ArgumentException($"Input audio frame size ({pcm.Length}) was not the size specified by Porcupine engine ({FrameLength}). " +
+                throw new PorcupineInvalidArgumentException(
+                    $"Input audio frame size ({pcm.Length}) was not the size specified by Porcupine engine ({FrameLength}). " +
                     $"Use Porcupine.FrameLength to get the correct size.");
             }
 
@@ -207,7 +266,7 @@ namespace Pv
             PorcupineStatus status = pv_porcupine_process(_libraryPointer, pcm, out keywordIndex);
             if (status != PorcupineStatus.SUCCESS)
             {
-                throw PorcupineStatusToException(status);
+                throw PorcupineStatusToException(status, "Porcupine process failed.");
             }
 
             return keywordIndex;
@@ -237,18 +296,36 @@ namespace Pv
         /// </summary>
         /// <param name="status">Picovoice library status code.</param>
         /// <returns>.NET exception</returns>
-        private static Exception PorcupineStatusToException(PorcupineStatus status)
+        private static PorcupineException PorcupineStatusToException(
+            PorcupineStatus status,
+            string message = "")
         {
             switch (status)
             {
                 case PorcupineStatus.OUT_OF_MEMORY:
-                    return new OutOfMemoryException();
+                    return new PorcupineMemoryException(message);
                 case PorcupineStatus.IO_ERROR:
-                    return new IOException();
+                    return new PorcupineIOException(message);
                 case PorcupineStatus.INVALID_ARGUMENT:
-                    return new ArgumentException();                
+                    return new PorcupineInvalidArgumentException(message);
+                case PorcupineStatus.STOP_ITERATION:
+                    return new PorcupineStopIterationException(message);
+                case PorcupineStatus.KEY_ERROR:
+                    return new PorcupineKeyException(message);
+                case PorcupineStatus.INVALID_STATE:
+                    return new PorcupineInvalidStateException(message);
+                case PorcupineStatus.RUNTIME_ERROR:
+                    return new PorcupineRuntimeException(message);
+                case PorcupineStatus.ACTIVATION_ERROR:
+                    return new PorcupineActivationException(message);
+                case PorcupineStatus.ACTIVATION_LIMIT_REACHED:
+                    return new PorcupineActivationLimitException(message);
+                case PorcupineStatus.ACTIVATION_THROTTLED:
+                    return new PorcupineActivationThrottledException(message);
+                case PorcupineStatus.ACTIVATION_REFUSED:
+                    return new PorcupineActivationRefusedException(message);
                 default:
-                    return new Exception($"Unmapped error code returned from Porcupine.");
+                    return new PorcupineException("Unmapped error code returned from Porcupine.");
             }
         }
 
@@ -261,7 +338,7 @@ namespace Pv
             {
                 pv_porcupine_delete(_libraryPointer);
                 _libraryPointer = IntPtr.Zero;
-                
+
                 // ensures finalizer doesn't trigger if already manually disposed
                 GC.SuppressFinalize(this);
             }

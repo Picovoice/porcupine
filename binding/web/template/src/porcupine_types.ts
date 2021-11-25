@@ -27,25 +27,49 @@ export type PorcupineKeywordBuiltin = {
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
-export type WorkerRequestProcess = {
+export type PorcupineWorkerRequestProcess = {
   command: 'process';
   inputFrame: Int16Array;
 };
 
-export type WorkerRequestVoid = {
+export type PorcupineWorkerRequestVoid = {
   command: 'reset' | 'pause' | 'resume' | 'release';
 };
 
 export type PorcupineWorkerRequestInit = {
   command: 'init';
+  accessKey: string;
   keywords: Array<PorcupineKeyword | string>;
   start?: boolean;
 };
 
-export type PorcupineWorkerRequest = PorcupineWorkerRequestInit | WorkerRequestProcess | WorkerRequestVoid
+export type PorcupineWorkerRequestFileOperation = {
+  command:
+    | 'file-save-succeeded'
+    | 'file-save-failed'
+    | 'file-load-succeeded'
+    | 'file-load-failed'
+    | 'file-exists-succeeded'
+    | 'file-exists-failed'
+    | 'file-delete-succeeded'
+    | 'file-delete-failed';
+  message: string;
+  content?: string;
+};
+
+export type PorcupineWorkerRequest =
+  | PorcupineWorkerRequestInit
+  | PorcupineWorkerRequestProcess
+  | PorcupineWorkerRequestVoid
+  | PorcupineWorkerRequestFileOperation;
 
 export type PorcupineWorkerResponseReady = {
   command: 'ppn-ready';
+};
+
+export type PorcupineWorkerResponseFailed = {
+  command: 'ppn-failed';
+  message: string;
 };
 
 export type PorcupineWorkerResponseKeyword = {
@@ -53,13 +77,29 @@ export type PorcupineWorkerResponseKeyword = {
   keywordLabel: string;
 };
 
-export type PorcupineWorkerResponse = PorcupineWorkerResponseReady | PorcupineWorkerResponseKeyword
+export type PorcupineWorkerResponseError = {
+  command: 'ppn-error';
+  message: string;
+};
+
+export type PorcupineWorkerResponseFileOperation = {
+  command: 'file-save' | 'file-load' | 'file-exists' | 'file-delete';
+  path: string;
+  content?: string;
+};
+
+export type PorcupineWorkerResponse =
+  | PorcupineWorkerResponseReady
+  | PorcupineWorkerResponseFailed
+  | PorcupineWorkerResponseKeyword
+  | PorcupineWorkerResponseError
+  | PorcupineWorkerResponseFileOperation;
 
 export interface PorcupineEngine {
   /** Release all resources acquired by Porcupine */
-  release(): void;
+  release(): Promise<void>;
   /** Process a single frame of 16-bit 16kHz PCM audio */
-  process(frame: Int16Array): number;
+  process(frame: Int16Array): Promise<number>;
   /** The version of the Porcupine engine */
   readonly version: string;
   /** The sampling rate of audio expected by the Porcupine engine */

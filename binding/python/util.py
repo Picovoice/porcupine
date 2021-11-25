@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -13,6 +13,7 @@ import logging
 import os
 import platform
 import subprocess
+
 
 log = logging.getLogger('PPN')
 log.setLevel(logging.WARNING)
@@ -78,7 +79,10 @@ _JETSON_MACHINES = {'cortex-a57-aarch64'}
 
 def pv_library_path(relative):
     if _PV_SYSTEM == 'Darwin':
-        return os.path.join(os.path.dirname(__file__), relative, 'lib/mac/x86_64/libpv_porcupine.dylib')
+        if _PV_MACHINE == 'x86_64':
+            return os.path.join(os.path.dirname(__file__), relative, 'lib/mac/x86_64/libpv_porcupine.dylib')
+        elif _PV_MACHINE == "arm64":
+            return os.path.join(os.path.dirname(__file__), relative, 'lib/mac/arm64/libpv_porcupine.dylib')
     elif _PV_SYSTEM == 'Linux':
         if _PV_MACHINE == 'x86_64':
             return os.path.join(os.path.dirname(__file__), relative, 'lib/linux/x86_64/libpv_porcupine.so')

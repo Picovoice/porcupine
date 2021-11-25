@@ -13,7 +13,9 @@ import Porcupine
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var wakeWordPicker: UIPickerView!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var errorPanel: UITextView!
 
+    let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     var wakeWordDict = [String:Porcupine.BuiltInKeyword]()
     var wakeWordKeys = [String]()
     var wakeWord = Porcupine.BuiltInKeyword.alexa
@@ -33,14 +35,22 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
         let viewSize = view.frame.size
         let startButtonSize = CGSize(width: 120, height: 120)
+        let errorLabelSize = CGSize(width: (viewSize.width - 40), height: 120)
+        
         startButton.frame.size = startButtonSize
         startButton.frame.origin =
             CGPoint(x: (viewSize.width - startButtonSize.width) / 2, y: viewSize.height - (startButtonSize.height + 40))
         startButton.layer.cornerRadius = 0.5 * startButton.bounds.size.width
         startButton.clipsToBounds = true
 
-        wakeWordPicker.frame.origin = CGPoint(x: 0, y: 40)
-        wakeWordPicker.frame.size = CGSize(width: viewSize.width, height: viewSize.height - startButtonSize.height - 120)
+        wakeWordPicker.frame.origin = CGPoint(x: 0, y: 0)
+        wakeWordPicker.frame.size = CGSize(width: viewSize.width, height: viewSize.height - (startButtonSize.height + errorLabelSize.height + 40))
+        
+        
+        errorPanel.layer.cornerRadius = 10
+        errorPanel.frame.origin = CGPoint(x: ((viewSize.width - errorLabelSize.width) / 2), y: viewSize.height - (startButtonSize.height + errorLabelSize.height + 60)  )
+        errorPanel.frame.size = errorLabelSize
+        errorPanel.isHidden = true
     }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -59,9 +69,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         wakeWord = wakeWordDict[wakeWordKeys[row]]!
     }
 
+    func showErrorAlert(_ message: String) {
+        errorPanel.text = message
+        errorPanel.isHidden = false
+        wakeWordPicker.isUserInteractionEnabled = false
+        startButton.isEnabled = false
+    }
+
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
-
             let originalColor = self.view.backgroundColor
             let keywordCallback: ((Int32) -> Void) = { keywordIndex in
                 self.view.backgroundColor = UIColor.orange
@@ -69,23 +85,31 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     self.view.backgroundColor = originalColor
                 }
             }
-
-            do {
-                porcupineManager = try PorcupineManager(keyword: wakeWord, onDetection: keywordCallback)
-                try porcupineManager.start()
-            } catch {
-                let alert = UIAlertController(
-                        title: "Alert",
-                        message: "Something went wrong",
-                        preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
+            
+            let errorCallback: ((Error) -> Void) = {error in
+                self.showErrorAlert("\(error)")
             }
 
-            wakeWordPicker.isUserInteractionEnabled = false
-            isRecording = true
-            startButton.setTitle("STOP", for: UIControl.State.normal)
+            do {
+                porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback, errorCallback: errorCallback)
+                try porcupineManager.start()
+                
+                wakeWordPicker.isUserInteractionEnabled = false
+                isRecording = true
+                startButton.setTitle("STOP", for: UIControl.State.normal)
+            } catch is PorcupineInvalidArgumentError {
+                showErrorAlert("AccessKey '\(accessKey)' is invalid")
+            } catch is PorcupineActivationError {
+                showErrorAlert("AccessKey activation error")
+            } catch is PorcupineActivationRefusedError {
+                showErrorAlert("AccessKey activation refused")
+            } catch is PorcupineActivationLimitError {
+                showErrorAlert("AccessKey reached its limit")
+            } catch is PorcupineActivationThrottledError  {
+                showErrorAlert("AccessKey is throttled")
+            } catch {
+                showErrorAlert("\(error)")
+            }
         } else {
             porcupineManager.stop()
 

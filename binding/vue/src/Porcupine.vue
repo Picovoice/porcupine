@@ -10,7 +10,7 @@ import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 export default {
   name: 'Porcupine',
   props: {
-    porcupineFactoryArgs: [Object, Array],
+    porcupineFactoryArgs: [Object],
     porcupineFactory: [Function],
   },
   data: function () {
@@ -31,38 +31,29 @@ export default {
       }
       return false;
     },
-    resume() {
-      if (this.webVp !== null) {
-        this.webVp.resume();
-        return true;
-      }
-      return false;
+    keywordCallback(label) {
+      this.$emit('ppn-keyword', label);
     },
-  },
-  async created() {
-    this.$emit('ppn-loading');
-
-    try {
-      this.ppnWorker = await this.porcupineFactory.create(
-        this.porcupineFactoryArgs
-      );
-      this.webVp = await WebVoiceProcessor.init({
-        engines: [this.ppnWorker],
-      });
-      let _this = this;
-
-      this.ppnWorker.onmessage = function (messageEvent) {
-        switch (messageEvent.data.command) {
-          case 'ppn-keyword':
-            _this.$emit('ppn-keyword', messageEvent.data.keywordLabel);
-            break;
-        }
-      };
-    } catch (error) {
+    errorCallback(error) {
       this.$emit('ppn-error', error);
-    }
-
-    this.$emit('ppn-ready');
+    },
+    async initEngine() {
+      try {
+        const { accessKey, keywords } = this.porcupineFactoryArgs;
+        this.ppnWorker = await this.porcupineFactory.create(
+          accessKey,
+          JSON.parse(JSON.stringify(keywords)),
+          this.keywordCallback,
+          this.errorCallback
+        );
+        this.webVp = await WebVoiceProcessor.init({
+          engines: [this.ppnWorker],
+        });
+        this.$emit('ppn-ready');
+      } catch (error) {
+        this.$emit('ppn-error', error);
+      }
+    },
   },
   beforeUnmount: function () {
     if (this.webVp !== null) {

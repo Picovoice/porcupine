@@ -1,15 +1,16 @@
 name: Vue
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/vue/**'
       - '!binding/vue/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/vue/**'
       - '!binding/vue/README.md'

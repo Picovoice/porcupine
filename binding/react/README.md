@@ -38,6 +38,16 @@ yarn add @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker @pico
 npm install @picovoice/porcupine-web-react @picovoice/porcupine-web-en-worker @picovoice/web-voice-processor`
 ```
 
+
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 The `usePorcupine` hook provides a collection of fields and methods shown below. You can pass the `keywordEventHandler` to respond to Porcupine detection events. This example uses the builtin keyword "Picovoice" with a sensitivity of 0.65.
@@ -53,6 +63,7 @@ import React, { useState } from 'react';
 import { PorcupineWorkerFactory } from '@picovoice/porcupine-web-en-worker';
 import { usePorcupine } from '@picovoice/porcupine-web-react';
 
+const accessKey = // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
 const keywords = [{ builtin: 'Picovoice', sensitivity: 0.65 }];
 
 function VoiceWidget(props) {
@@ -66,17 +77,17 @@ function VoiceWidget(props) {
     isError,
     errorMessage,
     start,
-    resume,
     pause,
+    setKeywordEventHandler
   } = usePorcupine(
     PorcupineWorkerFactory,
-    { keywords: keywords, start: true },
-    keywordEventHandler
+    { accessKey: accessKey, keywords: keywords, start: true },
+    keywordEventHandler,
   );
 }
 ```
 
-The `keywordEventHandler` will log the keyword detections to the browser's JavaScript console.
+The `keywordEventHandler` will log the keyword detections to the browser's JavaScript console. The detection callback function can be changed using the `setKeywordEventHandler` method.
 
 **Important Note**: Internally, `usePorcupine` performs work asynchronously to initialize, as well as asking for microphone permissions. Not until the asynchronous tasks are done and permission given will Porcupine actually be running. Therefore, it makes sense to use the `isLoaded` state to update your UI to let users know your application is actually ready to process voice (and `isError` in case something went wrong). Otherwise, they may start speaking and their audio data will not be processed, leading to a poor/inconsistent experience.
 
@@ -95,6 +106,9 @@ import { usePorcupine } from '@picovoice/porcupine-web-react';
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [workerChunk, setWorkerChunk] = useState({ workerFactory: null });
+  const [accessKey] = useState(
+    // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+  );
   const [keywords] = useState([
     { builtin: 'Alexa', sensitivity: 0.7 },
     'Picovoice',
@@ -127,12 +141,47 @@ export default function VoiceWidget() {
     isError,
     errorMessage,
     start,
-    resume,
     pause,
+    setKeywordEventHandler,
   } = usePorcupine(
     workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePorcupine will start.
-    { keywords: keywords },
+    { accessKey: accessKey, keywords: keywords },
     keywordEventHandler
   );
 }
 ```
+
+### Custom wake words
+
+Each language includes a set of built-in keywords. The quickest way to get started is to use one of those. The builtin keywords are licensed under Apache-2.0 and are completely free to use.
+
+Custom wake words are generated using [Picovoice Console](https://picovoice.ai/console/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the React library.
+
+The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that Porcupine can tell you which keyword occurred ("Deep Sky Blue", in this case):
+
+```typescript
+const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */
+...
+  const [keywords] = useState([
+    { base64: DEEP_SKY_BLUE_PPN_64, custom: "Deep Sky Blue", sensitivity: 0.7 },
+  ]);
+
+...
+  const {
+    isLoaded,
+    isListening,
+    isError,
+    errorMessage,
+    start,
+    resume,
+    pause,
+  } = usePorcupine(
+    workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePorcupine will start.
+    { accessKey: accessKey, keywords: keywords },
+    keywordEventHandler
+  );
+
+...
+```
+
+You may wish to store the base64 string in a separate JavaScript file and export it to keep your application code separate.

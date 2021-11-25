@@ -1,12 +1,12 @@
+import fs, { readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import ncp from "ncp";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const LANGUAGES = ["en", "de", "es", "fr"];
 
-console.log("Copying wasm/JS code from /lib/wasm/ ...");
+console.log("Updating the WASM models...");
 
 for (const language of LANGUAGES) {
   console.log(`--- Language: '${language}' ---`);
@@ -22,13 +22,19 @@ for (const language of LANGUAGES) {
 
   const outputDirectory = join(__dirname, "..", language);
 
-  ncp(sourceDirectory, outputDirectory, (error) => {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(`Copied ${sourceDirectory} => ${outputDirectory}`);
-    }
-  });
+  try {
+    fs.mkdirSync(outputDirectory, { recursive: true });
+
+    const wasmFile = readFileSync(
+      join(sourceDirectory, "pv_porcupine.wasm")
+    );
+    const strBase64 = Buffer.from(wasmFile).toString("base64");
+    const jsSourceFileOutput = `export const PORCUPINE_WASM_BASE64 = '${strBase64}';\n`;
+  
+    writeFileSync(join(outputDirectory, "porcupine_b64.ts"), jsSourceFileOutput);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 console.log("... Done!");

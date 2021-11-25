@@ -29,9 +29,9 @@ export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
 export interface PorcupineEngine {
   /** Release all resources acquired by Porcupine */
-  release(): void;
+  release(): Promise<void>;
   /** Process a single frame of 16-bit 16kHz PCM audio */
-  process(frame: Int16Array): number;
+  process(frame: Int16Array): Promise<number>;
   /** The version of the Porcupine engine */
   readonly version: string;
   /** The sampling rate of audio expected by the Porcupine engine */
@@ -44,28 +44,60 @@ export interface PorcupineEngine {
 
 // Worker
 
-export type WorkerRequestProcess = {
+export type PorcupineWorkerRequestProcess = {
   command: 'process';
   /** A frame of 16-bit 16kHz PCM audio */
   inputFrame: Int16Array;
 };
 
-export type WorkerRequestVoid = {
+export type PorcupineWorkerRequestVoid = {
   command: 'reset' | 'pause' | 'resume' | 'release';
 };
 
 export type PorcupineWorkerRequestInit = {
   command: 'init';
+  accessKey: string;
   keywords: Array<PorcupineKeyword | string>;
+};
+
+export type PorcupineWorkerRequestFileOperation = {
+  command:
+    | 'file-save-succeeded'
+    | 'file-save-failed'
+    | 'file-load-succeeded'
+    | 'file-load-failed'
+    | 'file-exists-succeeded'
+    | 'file-exists-failed'
+    | 'file-delete-succeeded'
+    | 'file-delete-failed';
+  message: string;
+  content?: string;
 };
 
 export type PorcupineWorkerRequest =
   | PorcupineWorkerRequestInit
-  | WorkerRequestProcess
-  | WorkerRequestVoid;
+  | PorcupineWorkerRequestProcess
+  | PorcupineWorkerRequestVoid
+  | PorcupineWorkerRequestFileOperation;
 
 export type PorcupineWorkerResponseReady = {
   command: 'ppn-ready';
+};
+
+export type PorcupineWorkerResponseFailed = {
+  command: 'ppn-failed';
+  message: string;
+};
+
+export type PorcupineWorkerResponseError = {
+  command: 'ppn-error';
+  message: string;
+};
+
+export type PorcupineWorkerResponseFileOperation = {
+  command: 'file-save' | 'file-load' | 'file-exists' | 'file-delete';
+  path: string;
+  content?: string;
 };
 
 export type PorcupineWorkerResponseKeyword = {
@@ -75,7 +107,10 @@ export type PorcupineWorkerResponseKeyword = {
 
 export type PorcupineWorkerResponse =
   | PorcupineWorkerResponseReady
-  | PorcupineWorkerResponseKeyword;
+  | PorcupineWorkerResponseFailed
+  | PorcupineWorkerResponseKeyword
+  | PorcupineWorkerResponseError
+  | PorcupineWorkerResponseFileOperation;
 
 export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PorcupineWorkerRequest): void;
@@ -83,7 +118,10 @@ export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
 
 export interface PorcupineWorkerFactory {
   create: (
+    accessKey: string,
     keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
+    keywordDetectionCallback?: CallableFunction,
+    processErrorCallback?: CallableFunction,
     start?: boolean
   ) => Promise<PorcupineWorker>;
 }
@@ -93,6 +131,8 @@ export interface PorcupineWorkerFactory {
 export type PorcupineHookArgs = {
   /** Immediately start the microphone upon initialization? */
   start: boolean;
+  /** AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+  accessKey: string;
   /** Keywords to listen for */
   keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
 };

@@ -9,15 +9,21 @@
 
 import PvPorcupine
 
-public enum PorcupineError: Error {
-    case invalidArgument(message:String)
-    case io
-    case outOfMemory
-    case invalidState
-}
-
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.
 public class Porcupine {
+    
+    static let resourceBundle: Bundle = {
+        let myBundle = Bundle(for: Porcupine.self)
+
+        guard let resourceBundleURL = myBundle.url(
+             forResource: "PorcupineResources", withExtension: "bundle")
+        else { fatalError("PorcupineResources.bundle not found") }
+
+        guard let resourceBundle = Bundle(url: resourceBundleURL)
+            else { fatalError("Could not open PorcupineResources.bundle") }
+
+        return resourceBundle
+    }()
     
     public enum BuiltInKeyword: String, CaseIterable {
         case alexa = "Alexa"
@@ -44,96 +50,103 @@ public class Porcupine {
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public init(keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]? = nil) throws {
+    public init(accessKey: String, keywordPaths: [String], modelPath:String? = nil, sensitivities: [Float32]? = nil) throws {
         
         var modelPathArg = modelPath
         if (modelPath == nil){
-            let bundle = Bundle(for: type(of: self))
-            modelPathArg  = bundle.path(forResource: "porcupine_params", ofType: "pv")
+            modelPathArg  = Porcupine.resourceBundle.path(forResource: "porcupine_params", ofType: "pv")
             if modelPathArg == nil {
-                throw PorcupineError.io
+                throw PorcupineIOError("Unable to find the default model path")
             }
+        }
+        
+        if accessKey.count == 0 {
+            throw PorcupineInvalidArgumentError("AccessKey is required for Porcupine initialization")
         }
         
         let sensitivitiesArg = sensitivities ?? Array(repeating: 0.5, count: keywordPaths.count)
         
         if sensitivitiesArg.count != keywordPaths.count {
-            throw PorcupineError.invalidArgument(message: "Number of sensitivity values (\(sensitivitiesArg.count)) does not match number of keywords (\(keywordPaths.count))")
+            throw PorcupineInvalidArgumentError("Number of sensitivity values (\(sensitivitiesArg.count)) does not match number of keywords (\(keywordPaths.count))")
         }
         
         if !sensitivitiesArg.allSatisfy({$0 >= 0 && $0 <= 1}) {
-            throw PorcupineError.invalidArgument(message: "One or more sensitivities provided were not floating-point values between [0,1]")
+            throw PorcupineInvalidArgumentError("One or more sensitivities provided were not floating-point values between [0,1]")
         }
         
         if !FileManager().fileExists(atPath: modelPathArg!){
-            throw PorcupineError.invalidArgument(message: "Model file at does not exist at '\(modelPathArg!)'")
+            throw PorcupineInvalidArgumentError("Model file at does not exist at '\(modelPathArg!)'")
         }
         
         for keywordPath in keywordPaths {
             if !FileManager().fileExists(atPath: keywordPath){
-                throw PorcupineError.invalidArgument(message: "Keyword file at does not exist at '\(keywordPath)'")
+                throw PorcupineInvalidArgumentError("Keyword file at does not exist at '\(keywordPath)'")
             }
         }
         
         let status = pv_porcupine_init(
+            accessKey,
             modelPathArg,
             Int32(keywordPaths.count),
             keywordPaths.map { UnsafePointer(strdup($0)) },
             sensitivitiesArg,
             &handle)
-        try checkStatus(status)
+        try checkStatus(status, "Porcupine init failed")
     }
     
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPath: Absolute paths to a keyword model file.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public convenience init(keywordPath: String, modelPath:String? = nil, sensitivity: Float32 = 0.5) throws {
-        try self.init(keywordPaths: [keywordPath], modelPath:modelPath, sensitivities: [sensitivity])
+    public convenience init(accessKey: String, keywordPath: String, modelPath:String? = nil, sensitivity: Float32 = 0.5) throws {
+        try self.init(accessKey: accessKey, keywordPaths: [keywordPath], modelPath:modelPath, sensitivities: [sensitivity])
     }
     
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywords: An array of built-in keywords from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public convenience init(keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]? = nil) throws {
+    public convenience init(accessKey: String, keywords:[Porcupine.BuiltInKeyword], modelPath:String? = nil, sensitivities: [Float32]? = nil) throws {
         
         var keywordPaths = [String]()
-        let bundle = Bundle(for: type(of: self))
         for k in keywords{
-            let keywordPath = bundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
+            let keywordPath = Porcupine.resourceBundle.path(forResource: k.rawValue.lowercased() + "_ios", ofType: "ppn")
             if keywordPath == nil {
-                throw PorcupineError.io
+                throw PorcupineIOError("Unable to open the default keyword file for keyword '\(k)'")
             }
             keywordPaths.append(keywordPath!);
         }
         
-        try self.init(keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities)
+        try self.init(accessKey: accessKey, keywordPaths: keywordPaths, modelPath: modelPath, sensitivities: sensitivities)
     }
     
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
-    public convenience init(keyword: Porcupine.BuiltInKeyword, modelPath:String? = nil, sensitivity: Float32 = 0.5) throws {
-        try self.init(keywords: [keyword], modelPath:modelPath, sensitivities: [sensitivity])
+    public convenience init(accessKey: String, keyword: Porcupine.BuiltInKeyword, modelPath:String? = nil, sensitivity: Float32 = 0.5) throws {
+        try self.init(accessKey: accessKey, keywords: [keyword], modelPath:modelPath, sensitivities: [sensitivity])
     }
     
     deinit {
@@ -156,31 +169,50 @@ public class Porcupine {
     /// - Returns:Index of keyword detected or -1 if no keyword was detected
     public func process(pcm:[Int16]) throws -> Int32 {
         if handle == nil {
-            throw PorcupineError.invalidState
+            throw PorcupineInvalidStateError("Porcupine must be initialized before processing")
         }
         
         if pcm.count != Porcupine.frameLength {
-            throw PorcupineError.invalidArgument(message: "Frame of audio data must contain \(Porcupine.frameLength) samples - given frame contained \(pcm.count)")
+            throw PorcupineInvalidArgumentError("Frame of audio data must contain \(Porcupine.frameLength) samples - given frame contained \(pcm.count)")
         }
         
         var result: Int32 = -1
         let status = pv_porcupine_process(self.handle, pcm, &result)
-        try checkStatus(status)
+        try checkStatus(status, "Porcupine process failed")
         return result
     }
     
-    private func checkStatus(_ status: pv_status_t) throws {
-        switch status {
-        case PV_STATUS_IO_ERROR:
-            throw PorcupineError.io
-        case PV_STATUS_OUT_OF_MEMORY:
-            throw PorcupineError.outOfMemory
-        case PV_STATUS_INVALID_ARGUMENT:
-            throw PorcupineError.invalidArgument(message:"Porcupine rejected one of the provided arguments.")
-        case PV_STATUS_INVALID_STATE:
-            throw PorcupineError.invalidState
-        default:
+    private func checkStatus(_ status: pv_status_t, _ message: String) throws {
+        if status == PV_STATUS_SUCCESS {
             return
+        }
+        
+        switch status {
+        case PV_STATUS_OUT_OF_MEMORY:
+            throw PorcupineMemoryError(message)
+        case PV_STATUS_IO_ERROR:
+            throw PorcupineIOError(message)
+        case PV_STATUS_INVALID_ARGUMENT:
+            throw PorcupineInvalidArgumentError(message)
+        case PV_STATUS_STOP_ITERATION:
+            throw PorcupineStopIterationError(message)
+        case PV_STATUS_KEY_ERROR:
+            throw PorcupineKeyError(message)
+        case PV_STATUS_INVALID_STATE:
+            throw PorcupineInvalidStateError(message)
+        case PV_STATUS_RUNTIME_ERROR:
+            throw PorcupineRuntimeError(message)
+        case PV_STATUS_ACTIVATION_ERROR:
+            throw PorcupineActivationError(message)
+        case PV_STATUS_ACTIVATION_LIMIT_REACHED:
+            throw PorcupineActivationLimitError(message)
+        case PV_STATUS_ACTIVATION_THROTTLED:
+            throw PorcupineActivationThrottledError(message)
+        case PV_STATUS_ACTIVATION_REFUSED:
+            throw PorcupineActivationRefusedError(message)
+        default:
+            let pvStatusString = String(cString: pv_status_to_string(status))
+            throw PorcupineError("\(pvStatusString): \(message)")
         }
     }
 }

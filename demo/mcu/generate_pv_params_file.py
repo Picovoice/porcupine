@@ -10,10 +10,7 @@
 #
 
 import os
-import shutil
 import struct
-import subprocess
-import sys
 
 HEADER = """
 /*
@@ -39,27 +36,48 @@ FOOTER = """
 
 """
 
-def generate_pv_params(ppn_files, header_file_folders):
+LANGUAGE_CODE_TO_NAME = {
+    'en': 'english',
+    'de': 'german',
+    'es': 'spanish',
+    'fr': 'french',
+}
 
+
+def generate_pv_params(ppn_files, header_file_folders):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     repo_dir = os.path.join(script_dir, '../..')
-    ppn_dir = os.path.join(repo_dir, 'resources/keyword_files/cortexm')
 
     for header_file_path in header_file_folders:
         header_file = os.path.join(header_file_path, 'pv_params.h')
         with open(os.path.join(script_dir, header_file), 'w') as f_out:
             f_out.write(HEADER)
-            for keyword in ppn_files:
-                keyword_file_path = os.path.join(ppn_dir, keyword + '_cortexm.ppn')
-                ppn_c_array = ppn_to_c_array(keyword_file_path)
-                if (keyword == 'porcupine'):
-                    f_out.write('static const uint8_t DEFAULT_KEYWORD_ARRAY[] = {\n')
+
+            for language, keywords in ppn_files.items():
+                if language == 'en':
+                    ppn_dir = os.path.join(repo_dir, 'resources/keyword_files/cortexm')
                 else:
-                    f_out.write('static const uint8_t %s_KEYWORD_ARRAY[] = {\n' % keyword.upper())
-                f_out.write('\n'.join(ppn_c_array))
-                f_out.write('};\n\n')
+                    ppn_dir = os.path.join(repo_dir, f'resources/keyword_files_{language}/cortexm')
+
+                f_out.write(f'#if defined(__PV_LANGUAGE_{LANGUAGE_CODE_TO_NAME[language].upper()}__)\n\n')
+                for index, keyword in enumerate(keywords):
+                    keyword_file_path = os.path.join(ppn_dir, keyword + '_cortexm.ppn')
+                    ppn_c_array = ppn_to_c_array(keyword_file_path)
+                    f_out.write(f'// Wake-word = {keyword}\n')
+                    if index == 0:
+                        f_out.write('static const uint8_t DEFAULT_KEYWORD_ARRAY[] '
+                                    '__attribute__ ((aligned (16))) = {\n')
+                    else:
+                        f_out.write(
+                            f'static const uint8_t {keyword.upper()}_KEYWORD_ARRAY[] '
+                            '__attribute__ ((aligned (16))) = {\n')
+                    f_out.write('\n'.join(ppn_c_array))
+                    f_out.write('};\n\n')
+
+                f_out.write(f'#endif\n\n')
 
             f_out.write(FOOTER)
+
 
 def ppn_to_c_array(ppn_file_path):
     indent = 8
@@ -86,14 +104,21 @@ def ppn_to_c_array(ppn_file_path):
 
 
 if __name__ == '__main__':
-    wake_words = ('porcupine', 'picovoice', 'bumblebee', 'alexa',)
-    include_folders = ('stm32h747/stm32h747i-disco/CM7/Inc/',
-                'stm32f469/stm32f469i-disco/Inc/',
-                'stm32f769/stm32f769i-disco/Inc/',
-                'stm32f411/stm32f411e-disco/Inc/',
-                'stm32f407/stm32f407g-disc1/Inc/',
-                'stm32h735/stm32h735g-dk/Inc/',
-                'imxrt1050/imxrt1050-evkb/inc',
-                'psoc062s2/include')
+    wake_words = {
+        'en': ('porcupine', 'picovoice', 'bumblebee', 'alexa',),
+        'de': ('hey computer',),
+        'es': ('hola computadora',),
+        'fr': ('salut ordinateur',)
+    }
+    include_folders = (
+        'stm32h747/stm32h747i-disco/CM7/Inc/',
+        'stm32f469/stm32f469i-disco/Inc/',
+        'stm32f769/stm32f769i-disco/Inc/',
+        'stm32f411/stm32f411e-disco/Inc/',
+        'stm32f407/stm32f407g-disc1/Inc/',
+        'stm32h735/stm32h735g-dk/Inc/',
+        'imxrt1050/imxrt1050-evkb/inc',
+        'psoc062s2/include'
+    )
 
     generate_pv_params(wake_words, include_folders)

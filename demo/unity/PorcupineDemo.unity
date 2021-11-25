@@ -192,23 +192,8 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Press ''Start Listening'' and
 
-    then try saying:
-
-    - "americano"
-
-    -
-    "blueberry"
-
-    - "bumblebee"
-
-    - "computer"
-
-    - "grapefruit"
-
-    - "grasshopper"
-
-    -
-    "porcupine"'
+    then try saying one of the following
+    keywords:'
 --- !u!222 &11966359
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -424,13 +409,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _imgs:
+  - {fileID: 2800000, guid: 4efa701666a17074fb2aa3a22a819fcd, type: 3}
   - {fileID: 2800000, guid: 6ee171cad653b4b45bba7c231e29f35f, type: 3}
   - {fileID: 2800000, guid: 1d3794296a075704c9049ff999ed9096, type: 3}
   - {fileID: 2800000, guid: 857446099587ef54eb9bcad6e1a874f5, type: 3}
   - {fileID: 2800000, guid: 97a5af0dd6d34284d9220c82aacd506c, type: 3}
   - {fileID: 2800000, guid: c6c99118fc136394caca7e4fbbcc7852, type: 3}
   - {fileID: 2800000, guid: b72329f6cec4a8048beaeaeb45cf49ac, type: 3}
+  - {fileID: 2800000, guid: f3af57c5adadf0e46b947df756559ece, type: 3}
+  - {fileID: 2800000, guid: a90f30de5cc7074488b8117d197b7925, type: 3}
+  - {fileID: 2800000, guid: 740a55465f05a914396e9909af5efa73, type: 3}
+  - {fileID: 2800000, guid: e9592ed309f93fb4aa83ebad430544f3, type: 3}
   - {fileID: 2800000, guid: ef015821d4f75864ebc63e07410e8560, type: 3}
+  - {fileID: 2800000, guid: 3dfc0824597b6bb47b393295fbbc9609, type: 3}
 --- !u!1 &934203905
 GameObject:
   m_ObjectHideFlags: 0

@@ -941,20 +941,20 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-web-en-worker@^1.9.4":
-  version "1.9.4"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-1.9.4.tgz#ec2a04fa009aff8bbd6b9dcb84191c0a745c2395"
-  integrity sha512-fzVCSa1wL7YikLAMOq2Quzcz2o4BlxsPmK2HEaAFBZte3ne/6a9h6YzkNKtbSKEmyPMnaxF9X5hCGlFqYUFedQ==
+"@picovoice/porcupine-web-en-worker@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.0.tgz#6822122316c6791fa0fe3792e70583a052d69311"
+  integrity sha512-7brfI+RFO/m+EDh/zqSkUgoxmFyp2NVPUN2aTen04Mz04qHKuTshYrEE9MJ5ikWY23P49OBH+n4A7ycgnwYuSQ==
 
-"@picovoice/porcupine-web-vue@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-vue/-/porcupine-web-vue-1.0.1.tgz#15775aeef42c899179fb246b42fadd91121584ac"
-  integrity sha512-EnOBnqMEsQK/+mn9a4aQWM41lFXs5yPvpr9zMOmN/OXInfuem0Sm8wmgCEpmOJZ7bpONnJMzj+kGYNqO5UevzQ==
+"@picovoice/porcupine-web-vue@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-vue/-/porcupine-web-vue-2.0.0.tgz#9b823b23fbc0accc53afae0cfd65b5b19d92d840"
+  integrity sha512-HgPgkPPugrAw62z0nTzNihvKiYGUyTbdvu4Dk9Ype/6O1ZTcFYTwvVMqjdtnvEZ9IRJkQ5ZAS0D2uTl67jzVvQ==
 
-"@picovoice/web-voice-processor@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.3.tgz#72d089e19eaf7f782c0338ef8751fc91e8662b2d"
-  integrity sha512-lvEsEvpUXbMUsEcrJ+pmCF6+O/jWyzhs9Gu24jNlVs/yFKjuLAckusdTWeURLjYMzOLwcvdMCD+aK2fcNRhOSw==
+"@picovoice/web-voice-processor@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.2.tgz#cac4456b3ef06dee5664e27be6db348ae4e2d46a"
+  integrity sha512-tDOFQtB79SX4m44Oj3W7I2q7Qvdwc52gJDHT1JXw80mJaog7RLRRUd7vANlGT0nJmhUWjYE7fxlEctPf2dyJcA==
   dependencies:
     "@babel/runtime" "^7.12.18"
 

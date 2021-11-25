@@ -1,4 +1,4 @@
 .settings/
 *.launch
-ReleaseSingleWakeWord/
-ReleaseMultipleWakeWord/
+ReleaseSingleWakeWord*
+ReleaseMultipleWakeWord*

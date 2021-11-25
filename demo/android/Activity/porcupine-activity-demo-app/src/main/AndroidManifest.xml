@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="ai.picovoice.porcupine.demo.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

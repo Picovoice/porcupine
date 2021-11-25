@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -12,39 +12,43 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PorcupineManager} from '@picovoice/porcupine-react-native';
+import {PorcupineManager, BuiltInKeywords, PorcupineErrors} from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
 
 type Props = {};
 type State = {
-  currentKeyword: string;
-  keywordOptions: string[];
+  currentKeyword: BuiltInKeywords;
+  keywordOptions: (string | BuiltInKeywords)[];
   buttonText: string;
   buttonDisabled: boolean;
   isListening: boolean;
   backgroundColour: string;
+  isError: boolean;
+  errorMessage: string;
 };
 
 export default class App extends Component<Props, State> {
   _porcupineManager: PorcupineManager | undefined;
   _detectionColour: string = '#00E5C3';
   _defaultColour: string = '#F5FCFF';
+  _accessKey: string = "${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
   constructor(props: Props) {
     super(props);
-    let keywordOptions = PorcupineManager.KEYWORDS;
     this.state = {
-      keywordOptions: keywordOptions,
-      currentKeyword: keywordOptions[0],
+      keywordOptions: Object.values(BuiltInKeywords),
+      currentKeyword: BuiltInKeywords.ALEXA,
       buttonText: 'Start',
       buttonDisabled: false,
       isListening: false,
       backgroundColour: this._defaultColour,
+      isError: false,
+      errorMessage: null
     };
   }
 
   async componentDidMount() {
-    this._loadNewKeyword(this.state.currentKeyword as string);
+    this._loadNewKeyword(this.state.currentKeyword);
   }
 
   componentWillUnmount() {
@@ -112,7 +116,7 @@ export default class App extends Component<Props, State> {
     else this._startProcessing();
   }
 
-  async _loadNewKeyword(keyword: string) {
+  async _loadNewKeyword(keyword: BuiltInKeywords) {
     if (this.state.isListening) {
       this._stopProcessing();
     }
@@ -120,7 +124,8 @@ export default class App extends Component<Props, State> {
 
     this.setState({currentKeyword: keyword});
     try {
-      this._porcupineManager = await PorcupineManager.fromKeywords(
+      this._porcupineManager = await PorcupineManager.fromBuiltInKeywords(
+        this._accessKey,
         [keyword],
         (keywordIndex: number) => {
                     
@@ -136,9 +141,36 @@ export default class App extends Component<Props, State> {
             }, 1000);
           }
         },
+        (error) => {
+          this._stopProcessing();
+          this.setState({
+            isError: true,
+            errorMessage: error.message
+          });
+        },
+        '',
+        [.5]
       );
     } catch (err) {
-      console.error(err);
+      let errorMessage = '';
+      if (err instanceof PorcupineErrors.PorcupineInvalidArgumentError) {
+        errorMessage = `${err.message}\nPlease make sure accessKey ${this._accessKey} is a valid access key.`;
+      } else if (err instanceof PorcupineErrors.PorcupineActivationError) {
+        errorMessage = "AccessKey activation error";
+      } else if (err instanceof PorcupineErrors.PorcupineActivationLimitError) {
+        errorMessage = "AccessKey reached its device limit";
+      } else if (err instanceof PorcupineErrors.PorcupineActivationRefusedError) {
+        errorMessage = "AccessKey refused";
+      } else if (err instanceof PorcupineErrors.PorcupineActivationThrottledError) {
+        errorMessage = "AccessKey has been throttled";
+      } else {
+        errorMessage = err.toString();
+      }
+
+      this.setState({
+        isError: true,
+        errorMessage: errorMessage
+      });
     }
   }
 
@@ -157,7 +189,10 @@ export default class App extends Component<Props, State> {
       );
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
-      console.error(err);
+      this.setState({
+        isError: true,
+        errorMessage: err.toString()
+      });
       return false;
     }
   }
@@ -194,7 +229,7 @@ export default class App extends Component<Props, State> {
               style={{}}
               itemStyle={styles.itemStyle}
               onValueChange={(keyword) =>
-                this._loadNewKeyword(keyword as string)
+                this._loadNewKeyword(keyword)
               }>
               {keywordOptions}
             </Picker>
@@ -213,10 +248,20 @@ export default class App extends Component<Props, State> {
               borderRadius: 100,
             }}
             onPress={() => this._toggleListening()}
-            disabled={this.state.buttonDisabled}>
+            disabled={this.state.buttonDisabled || this.state.isError}>
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
+        {this.state.isError &&
+          <View style={styles.errorBox}>
+            <Text style={{
+              color: 'white',
+              fontSize: 16
+            }}>
+              {this.state.errorMessage}
+            </Text>
+          </View>
+        }
         <View style={{flex: 1, justifyContent: 'flex-end', paddingBottom: 25}}>
           <Text style={styles.instructions}>
             Made in Vancouver, Canada by Picovoice
@@ -268,5 +313,12 @@ const styles = StyleSheet.create({
   instructions: {
     textAlign: 'center',
     color: '#666666',
+  },
+  errorBox: {
+    backgroundColor: 'red',
+    borderRadius: 5,
+    margin: 20,
+    padding: 20,
+    textAlign: 'center'
   },
 });

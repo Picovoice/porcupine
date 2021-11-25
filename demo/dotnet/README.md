@@ -1,11 +1,10 @@
-# Porcupine Wake Word Engine Demos
+# Porcupine Demos for .NET
 
-Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
-
-This package contains .NET Core command line demos for processing real-time audio (i.e. microphone) and audio files
-using Porcupine wake word engine.
+This project contains .NET Core command line demos for processing real-time audio (i.e. microphone) and audio files using the Porcupine wake word engine.
 
 ## Porcupine
+
+Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
 applications. 
@@ -44,6 +43,15 @@ dotnet build -c MicDemo.Release
 dotnet build -c FileDemo.Release
 ```
 
+## AccessKey
+
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 NOTE: File path arguments must be absolute paths. The working directory for the following dotnet commands is:
@@ -59,11 +67,13 @@ Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is pr
 The following processes a file looking for instances of the phrase "Picovoice":
 
 ```console
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords picovoice
+dotnet run -c FileDemo.Release -- \
+--input_audio_path ${AUDIO_PATH} \
+--access_key ${ACCESS_KEY} \
+--keywords picovoice
 ```
 
-`keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
-can be seen in the usage string:
+`keywords` is a shorthand for using built-in keyword files shipped with the package. The list of default keyword files can be seen in the usage string:
 
 ```console
 dotnet run -c FileDemo.Release -- --help
@@ -72,22 +82,30 @@ dotnet run -c FileDemo.Release -- --help
 To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords grasshopper "hey siri"
+dotnet run -c FileDemo.Release -- \ 
+--input_audio_path ${AUDIO_PATH} \
+--access_key ${ACCESS_KEY} \
+--keywords grasshopper "hey siri"
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
 use `keyword_paths` argument:
 
 ```console
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} \
+dotnet run -c FileDemo.Release -- \ 
+--input_audio_path ${AUDIO_PATH} \
+--access_key ${ACCESS_KEY} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument:
 
 ```console
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} \
---keywords grasshopper porcupine --sensitivities 0.3 0.6
+dotnet run -c FileDemo.Release -- \ 
+--input_audio_path ${AUDIO_PATH} \
+--access_key ${ACCESS_KEY} \
+--keywords grasshopper porcupine \ 
+--sensitivities 0.3 0.6
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
@@ -99,7 +117,9 @@ This demo opens an audio stream from a microphone and detects utterances of a gi
 microphone and detects occurrences of "Picovoice":
 
 ```console
-dotnet run -c MicDemo.Release -- --keywords picovoice
+dotnet run -c MicDemo.Release -- \ 
+--access_key ${ACCESS_KEY} \ 
+--keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
@@ -112,14 +132,17 @@ dotnet run -c MicDemo.Release -- --help
 To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-dotnet run -c MicDemo.Release -- --keywords picovoice "hey siri"
+dotnet run -c MicDemo.Release -- \ 
+--access_key ${ACCESS_KEY} \ 
+--keywords picovoice "hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
-use `keyword_paths` argument:
+To detect custom keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/)) use `keyword_paths` argument:
 
 ```console
-dotnet run -c MicDemo.Release -- --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
+dotnet run -c MicDemo.Release -- \ 
+--access_key ${ACCESS_KEY} \ 
+--keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
 It is possible that the default audio input device is not the one you wish to use. There are a couple
@@ -139,13 +162,20 @@ index: 1, device name: MacBook Air Microphone
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Auio Device in the above example, you can invoke the demo application as below:
 
 ```console
-dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 0
+dotnet run -c MicDemo.Release -- \ 
+--access_key ${ACCESS_KEY} \  
+--keywords picovoice 
+--audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
 ```console
-dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 0 --output_path ./test.wav
+dotnet run -c MicDemo.Release -- \ 
+--access_key ${ACCESS_KEY} \ 
+--keywords picovoice \
+--audio_device_index 0 \
+--output_path ./test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.

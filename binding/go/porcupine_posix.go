@@ -42,16 +42,45 @@ char* pv_porcupine_version_wrapper(void* f) {
      return ((pv_porcupine_version_func) f)();
 }
 
-typedef int32_t (*pv_porcupine_init_func)(const char *, int32_t, const char * const *, const float *, void **);
+typedef int32_t (*pv_porcupine_init_func)(
+	const char *access_key,
+	const char *model_path,
+	int32_t num_keywords,
+	const char * const *keyword_paths,
+	const float *sensitivities,
+	void **object);
 
-int32_t pv_porcupine_init_wrapper(void *f, const char *model_path, int32_t num_keywords, const char * const *keyword_paths, const float *sensitivities, void **object) {
-	return ((pv_porcupine_init_func) f)(model_path, num_keywords, keyword_paths, sensitivities, object);
+int32_t pv_porcupine_init_wrapper(
+	void *f,
+	const char *access_key,
+	const char *model_path,
+	int32_t num_keywords,
+	const char * const *keyword_paths,
+	const float *sensitivities,
+	void **object) {
+	return ((pv_porcupine_init_func) f)(
+		access_key,
+		model_path,
+		num_keywords,
+		keyword_paths,
+		sensitivities,
+		object);
 }
 
-typedef int32_t (*pv_porcupine_process_func)(void *, const int16_t *, int32_t *);
+typedef int32_t (*pv_porcupine_process_func)(
+	void * object,
+	const int16_t *pcm,
+	int32_t *keyword_index);
 
-int32_t pv_porcupine_process_wrapper(void *f, void *object, const int16_t *pcm, int32_t *keyword_index) {
-	return ((pv_porcupine_process_func) f)(object, pcm, keyword_index);
+int32_t pv_porcupine_process_wrapper(
+	void *f,
+	void *object,
+	const int16_t *pcm,
+	int32_t *keyword_index) {
+	return ((pv_porcupine_process_func) f)(
+		object,
+		pcm,
+		keyword_index);
 }
 
 typedef void (*pv_porcupine_delete_func)(void *);
@@ -81,11 +110,13 @@ var (
 
 func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus) {
 	var (
+		accessKeyC  = C.CString(porcupine.AccessKey)
 		modelPathC  = C.CString(porcupine.ModelPath)
 		numKeywords = len(porcupine.KeywordPaths)
 		keywordsC   = make([]*C.char, numKeywords)
 		ptrC        = make([]unsafe.Pointer, 1)
 	)
+	defer C.free(unsafe.Pointer(accessKeyC))
 	defer C.free(unsafe.Pointer(modelPathC))
 
 	for i, s := range porcupine.KeywordPaths {
@@ -93,7 +124,9 @@ func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus)
 		defer C.free(unsafe.Pointer(keywordsC[i]))
 	}
 
-	var ret = C.pv_porcupine_init_wrapper(pv_porcupine_init_ptr,
+	var ret = C.pv_porcupine_init_wrapper(
+		pv_porcupine_init_ptr,
+		accessKeyC,
 		modelPathC,
 		(C.int32_t)(numKeywords),
 		(**C.char)(unsafe.Pointer(&keywordsC[0])),

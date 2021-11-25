@@ -32,6 +32,10 @@ program
     "-i, --input_audio_file_path <string>",
     "input audio wave file in 16-bit 16KHz linear PCM format (mono)"
   )
+  .requiredOption(
+    "-a, --access_key <string>",
+    "AccessKey obtain from the Picovoice Console (https://console.picovoice.ai/)"
+  )
   .option(
     "-k, --keyword_file_paths <string>",
     "absolute path(s) to porcupine keyword files (.ppn)"
@@ -63,6 +67,7 @@ function frameIndexToSeconds(frameIndex, engineInstance) {
 
 function fileDemo() {
   let audioPath = program["input_audio_file_path"];
+  let accessKey = program["access_key"]
   let keywordPaths = program["keyword_file_paths"];
   let keywords = program["keywords"];
   let libraryFilePath = program["library_file_path"];
@@ -139,6 +144,7 @@ function fileDemo() {
   let engineInstance;
   try {
     engineInstance = new Porcupine(
+      accessKey,
       keywordPaths,
       sensitivities,
       modelFilePath,

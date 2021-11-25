@@ -21,6 +21,8 @@
 
 #define MEMORY_BUFFER_SIZE (20 * 1024)
 
+static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
 static const int32_t KEYWORD_MODEL_SIZES = sizeof(DEFAULT_KEYWORD_ARRAY);
@@ -70,6 +72,7 @@ int main(void) {
     pv_porcupine_t *handle = NULL;
 
     status = pv_porcupine_init(
+            ACCESS_KEY,
             MEMORY_BUFFER_SIZE,
             memory_buffer,
             1,

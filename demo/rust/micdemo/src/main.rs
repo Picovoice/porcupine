@@ -22,15 +22,18 @@ static LISTENING: AtomicBool = AtomicBool::new(false);
 
 fn porcupine_demo(
     audio_device_index: i32,
+    access_key: &str,
     keywords_or_paths: KeywordsOrPaths,
     sensitivities: Option<Vec<f32>>,
     model_path: Option<&str>,
     output_path: Option<&str>,
 ) {
     let mut porcupine_builder = match keywords_or_paths {
-        KeywordsOrPaths::Keywords(ref keywords) => PorcupineBuilder::new_with_keywords(&keywords),
+        KeywordsOrPaths::Keywords(ref keywords) => {
+            PorcupineBuilder::new_with_keywords(access_key, &keywords)
+        }
         KeywordsOrPaths::KeywordPaths(ref keyword_paths) => {
-            PorcupineBuilder::new_with_keyword_paths(&keyword_paths)
+            PorcupineBuilder::new_with_keyword_paths(access_key, &keyword_paths)
         }
     };
 
@@ -64,9 +67,7 @@ fn porcupine_demo(
     let mut audio_data = Vec::new();
     while LISTENING.load(Ordering::SeqCst) {
         let mut pcm = vec![0; recorder.frame_length()];
-        recorder
-            .read(&mut pcm)
-            .expect("Failed to read audio frame");
+        recorder.read(&mut pcm).expect("Failed to read audio frame");
 
         let keyword_index = porcupine.process(&pcm).unwrap();
         if keyword_index >= 0 {
@@ -92,7 +93,8 @@ fn porcupine_demo(
             bits_per_sample: 16,
             sample_format: hound::SampleFormat::Int,
         };
-        let mut writer = hound::WavWriter::create(output_path, wavspec).expect("Failed to open output audio file");
+        let mut writer = hound::WavWriter::create(output_path, wavspec)
+            .expect("Failed to open output audio file");
         for sample in audio_data {
             writer.write_sample(sample).unwrap();
         }
@@ -133,11 +135,20 @@ fn show_audio_devices() {
 fn main() {
     let matches = App::new("Picovoice Porcupine Rust Mic Demo")
         .group(
-            ArgGroup::with_name("keywords_group")
+            ArgGroup::with_name("actions_group")
+            .arg("access_key")
             .arg("keywords")
             .arg("keyword_paths")
             .arg("show_audio_devices")
             .required(true)
+            .multiple(true)
+        )
+        .arg(
+            Arg::with_name("access_key")
+                .long("access_key")
+                .value_name("ACCESS_KEY")
+                .help("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)")
+                .takes_value(true)
         )
         .arg(
             Arg::with_name("keywords")
@@ -239,8 +250,13 @@ fn main() {
     let model_path = matches.value_of("model_path");
     let output_path = matches.value_of("output_path");
 
+    let access_key = matches
+        .value_of("access_key")
+        .expect("AccessKey is REQUIRED for Porcupine operation");
+
     porcupine_demo(
         audio_device_index,
+        access_key,
         keywords_or_paths,
         sensitivities,
         model_path,

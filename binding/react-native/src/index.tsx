@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -12,6 +12,8 @@
 'use strict';
 
 import Porcupine from './porcupine';
-import PorcupineManager from './porcupinemanager';
+import PorcupineManager from './porcupine_manager';
+import BuiltInKeywords from './builtin_keywords';
+import * as PorcupineErrors from './porcupine_errors';
 
-export { Porcupine, PorcupineManager };
+export { Porcupine, PorcupineManager, BuiltInKeywords, PorcupineErrors };

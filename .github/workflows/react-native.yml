@@ -1,14 +1,15 @@
 name: React Native
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
@@ -42,7 +43,4 @@ jobs:
       run: yarn install
 
     - name: Build
-      run: yarn bootstrap
-
-    - name: Test
-      run: yarn test --passWithNoTests
+      run: yarn

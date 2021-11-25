@@ -1,5 +1,8 @@
 package ai.picovoice.porcupine.demo;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import android.content.Context;
 import android.content.res.AssetManager;
 
@@ -30,9 +33,6 @@ import java.util.ArrayList;
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 
 @RunWith(AndroidJUnit4.class)
 public class PorcupineTest {
@@ -42,6 +42,7 @@ public class PorcupineTest {
     Context appContext;
     AssetManager assetManager;
     String testResourcesPath;
+    String accessKey;
 
     @After
     public void TearDown() {
@@ -55,11 +56,14 @@ public class PorcupineTest {
         assetManager = testContext.getAssets();
         extractAssetsRecursively("test_resources");
         testResourcesPath = new File(appContext.getFilesDir(), "test_resources").getAbsolutePath();
+
+        accessKey = appContext.getString(R.string.pvTestingAccessKey);
     }
 
     @Test
     public void testInitSuccessWithSingleBuiltIn() throws PorcupineException {
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
@@ -80,6 +84,7 @@ public class PorcupineTest {
         };
 
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeywords(inputBuiltInKeywords)
                 .build(appContext);
 
@@ -95,6 +100,7 @@ public class PorcupineTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/en/hey_barista_android.ppn");
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params.pv");
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setModelPath(modelPath.getAbsolutePath())
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setSensitivity(0.25f)
@@ -113,6 +119,7 @@ public class PorcupineTest {
         File keywordPath2 = new File(testResourcesPath, "keyword_files/en/pico_clock_android.ppn");
         String[] keywordPaths = new String[]{keywordPath.getAbsolutePath(), keywordPath2.getAbsolutePath()};
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPaths(keywordPaths)
                 .setSensitivities(new float[]{0.35f, 0.6f})
                 .build(appContext);
@@ -131,10 +138,11 @@ public class PorcupineTest {
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params.pv");
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setModelPath(modelPath.getAbsolutePath())
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -147,10 +155,11 @@ public class PorcupineTest {
         File modelPath = new File(testResourcesPath, "bad_path/bad_path.pv");
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setModelPath(modelPath.getAbsolutePath())
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -162,10 +171,11 @@ public class PorcupineTest {
         boolean didFail = false;
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .setSensitivity(10)
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -177,10 +187,11 @@ public class PorcupineTest {
         boolean didFail = false;
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .setSensitivities(new float[]{0.4f, 0.8f})
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -192,8 +203,9 @@ public class PorcupineTest {
         boolean didFail = false;
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -206,9 +218,10 @@ public class PorcupineTest {
         File keywordPath = new File(testResourcesPath, "bad_path/bad_path.ppn");
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -221,10 +234,11 @@ public class PorcupineTest {
         boolean didFail = false;
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -237,9 +251,10 @@ public class PorcupineTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/en/alexa_linux.ppn");
         try {
             Porcupine p = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
-        } catch (PorcupineException e){
+        } catch (PorcupineException e) {
             didFail = true;
         }
 
@@ -249,6 +264,7 @@ public class PorcupineTest {
     @Test
     public void testProcSuccessSingleBuiltIn() throws Exception {
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
@@ -305,6 +321,7 @@ public class PorcupineTest {
         };
 
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeywords(inputBuiltInKeywords)
                 .build(appContext);
 
@@ -344,6 +361,7 @@ public class PorcupineTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/de/ananas_android.ppn");
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params_de.pv");
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setModelPath(modelPath.getAbsolutePath())
                 .build(appContext);
@@ -360,6 +378,7 @@ public class PorcupineTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/es/emparedado_android.ppn");
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params_es.pv");
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setModelPath(modelPath.getAbsolutePath())
                 .build(appContext);
@@ -376,6 +395,7 @@ public class PorcupineTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/fr/framboise_android.ppn");
         File modelPath = new File(testResourcesPath, "model_files/porcupine_params_fr.pv");
         Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setModelPath(modelPath.getAbsolutePath())
                 .build(appContext);

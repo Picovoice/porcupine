@@ -9,6 +9,7 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import sys
 import unittest
 
 import soundfile
@@ -19,6 +20,7 @@ from util import *
 class PorcupineTestCase(unittest.TestCase):
     def test_process(self):
         porcupine = Porcupine(
+            access_key=sys.argv[1],
             library_path=pv_library_path('../..'),
             model_path=pv_model_path('../../'),
             keyword_paths=[pv_keyword_paths('../..')['porcupine']],
@@ -50,6 +52,7 @@ class PorcupineTestCase(unittest.TestCase):
             keyword_paths.append(pv_keyword_paths('../..')[x])
 
         porcupine = Porcupine(
+            access_key=sys.argv[1],
             library_path=pv_library_path('../..'),
             model_path=pv_model_path('../..'),
             keyword_paths=keyword_paths,
@@ -74,4 +77,8 @@ class PorcupineTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    if len(sys.argv) != 2:
+        print("usage: test_porcupine.py ${AccessKey}")
+        exit(1)
+
+    unittest.main(argv=sys.argv[:1])

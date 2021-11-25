@@ -1,7 +1,7 @@
-github.com/Picovoice/porcupine/binding/go v1.9.2 h1:yGXxn3zSLmt5BBBwMgtdh8uI1gCLOWAxaAnExhrdUP0=
-github.com/Picovoice/porcupine/binding/go v1.9.2/go.mod h1:gOmG9lfydCV4EG4YdM4pTSbSsRhHvcDUn/3hJ9G1Nag=
-github.com/Picovoice/pvrecorder/sdk/go v1.0.1 h1:fyKSvcoxW2KllNgg18GIJ/UkqgFFaXWEpnbwuAi410Q=
-github.com/Picovoice/pvrecorder/sdk/go v1.0.1/go.mod h1:vkNmQAJCFgKBhSfqdff3OuxvXVpIuwv48odGc3ki83M=
+github.com/Picovoice/porcupine/binding/go/v2 v2.0.1 h1:ZdWn2pd5Uxpwk1NYfTekTGQtuPkQPU2gB4TEF6YdcJw=
+github.com/Picovoice/porcupine/binding/go/v2 v2.0.1/go.mod h1:ZoCMGeBEiDKYVDE+6jRg1/cdSOCjM4cuoBKV3+EBtM8=
+github.com/Picovoice/pvrecorder/sdk/go v1.0.2 h1:UMgGSRjT5ro3DmncOYu6aiCikQp9pZlR3MPQa6QatEo=
+github.com/Picovoice/pvrecorder/sdk/go v1.0.2/go.mod h1:vkNmQAJCFgKBhSfqdff3OuxvXVpIuwv48odGc3ki83M=
 github.com/go-audio/audio v1.0.0 h1:zS9vebldgbQqktK4H0lUqWrG8P0NxCJVqcj7ZpNnwd4=
 github.com/go-audio/audio v1.0.0/go.mod h1:6uAu0+H2lHkwdGsAY+j2wHPNPpPoeg5AaEFh9FlA+Zs=
 github.com/go-audio/riff v1.0.0 h1:d8iCGbDvox9BfLagY94fBynxSPHO80LmZCaOsmKxokA=
@@ -9,5 +9,6 @@ github.com/go-audio/riff v1.0.0/go.mod h1:l3cQwc85y79NQFCRB7TiPoNiaijp6q8Z0Uv38r
 github.com/go-audio/wav v1.0.0 h1:WdSGLhtyud6bof6XHL28xKeCQRzCV06pOFo3LZsFdyE=
 github.com/go-audio/wav v1.0.0/go.mod h1:3yoReyQOsiARkvPl3ERCi8JFjihzG6WhjYpZCf5zAWE=
 golang.org/x/sys v0.0.0-20210514084401-e8d321eab015/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf h1:2ucpDCmfkl8Bd/FsLtiD653Wf96cW37s+iGx93zsu4k=
 golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.0.0-20211123173158-ef496fb156ab h1:rfJ1bsoJQQIAoAxTxB7bme+vHrNkRw8CqfsYh9w54cw=
+golang.org/x/sys v0.0.0-20211123173158-ef496fb156ab/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
