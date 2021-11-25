@@ -3,12 +3,12 @@ name: Java Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
