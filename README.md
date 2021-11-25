@@ -1605,6 +1605,8 @@ Porcupine is implemented in ANSI C and therefore can be directly linked to embed
 #define MEMORY_BUFFER_SIZE ...
 uint8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
+static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+
 const uint8_t keyword_array[] = {...};
 
 const int32_t keyword_model_sizes = sizeof(keyword_array);
@@ -1614,6 +1616,7 @@ const float sensitivity = 0.5f;
 pv_porcupine_t *handle = NULL;
 
 const pv_status_t status = pv_porcupine_init(
+        ACCESS_KEY,
         MEMORY_BUFFER_SIZE,
         memory_buffer,
         1,
@@ -1630,7 +1633,9 @@ if (status != PV_STATUS_SUCCESS) {
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating-point number
 within [0, 1]. A higher sensitivity reduces miss rate (false reject rate) at cost of increased false alarm rate.
 
-Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio. The sample rate can be retrieved using `pv_sample_rate()`. Finally, Picovoice accepts input audio in consecutive chunks (aka frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
+Now the `handle` can be used to monitor incoming audio stream. Porcupine accepts single channel, 16-bit PCM audio. The
+sample rate can be retrieved using `pv_sample_rate()`. Finally, Picovoice accepts input audio in consecutive chunks (aka
+frames) the length of each frame can be retrieved using `pv_porcupine_frame_length()`.
 
 ```c
 extern const int16_t *get_next_audio_frame(void);
