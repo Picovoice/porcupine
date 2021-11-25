@@ -1387,10 +1387,13 @@ npm install @picovoice/porcupine-web-vue
 <template>
   <div class="voice-widget">
     <Porcupine
-      v-bind:porcupineFactoryArgs="[
-        { builtin: 'Grasshopper', sensitivity: 0.65 },
-        { builtin: 'Grapefruit', sensitivity: 0.4 },
-      ]"
+      v-bind:porcupineFactoryArgs="{
+        accessKey: '',
+        keywords: [
+          { builtin: 'Grasshopper', sensitivity: 0.5 },
+          { builtin: 'Grapefruit', sensitivity: 0.6 },
+        ],
+      }"
       v-bind:porcupineFactory="factory"
       v-on:ppn-ready="ppnReadyFn"
       v-on:ppn-keyword="ppnKeywordFn"
@@ -1429,6 +1432,9 @@ npm install @picovoice/porcupine-web-vue
       ppnErrorFn: function (data) {
         this.isError = true;
         this.errorMessage = data.toString();
+      },
+      initEngine: function () {
+        this.$refs.porcupine.initEngine();
       },
     },
   };
