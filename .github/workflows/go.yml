@@ -3,19 +3,41 @@ name: Go
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/jetson/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'      
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'
-      - 'lib/**'
-      - 'resources/**'
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/jetson/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'      
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
 
 defaults:
   run:
