@@ -233,7 +233,7 @@ For example usage refer to the
 
 ## Resource Usage 
 
-The following profile graph was captured running the [Porcupine Activity demo](/demo/android/Activity/) on a Google Pixel 3:
+The following profile graph was captured running the [Porcupine Activity demo](/demo/android/Activity) on a Google Pixel 3:
 
 ![](/binding/android/android_profiling.gif)
 

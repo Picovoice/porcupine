@@ -2,7 +2,7 @@
 
 This demo application includes a sample `VoiceWidget` Vue component which uses the `Porcupine` renderless Vue component service to allow listening for keywords. Porcupine keyword detections are handled via the `ppn-keyword` event. Our VoiceWidget subscribes to this event and displays the results.
 
-The demo uses dynamic imports to split the VoiceWidget away from the main application bundle. This means that the initial download size of the Vue app will not be impacted by the ~1-2MB requirement of Porcupine. While small for all-in-one offline Voice AI, the size is large for an initial web app load.
+The demo uses dynamic imports to split the VoiceWidget away from the main application bundle. This means that the initial download size of the Vue app will not be impacted by the ~1-2 MB requirement of Porcupine. While small for all-in-one offline Voice AI, the size is large for an initial web app load.
 
 If you decline microphone permission in the browser, or another such issue prevents Porcupine from starting, the error will be displayed.
 

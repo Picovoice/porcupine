@@ -56,7 +56,7 @@ The `keywords` argument refers to the built-in keyword files that are shipped wi
 go run filedemo/porcupine_file_demo.go -h
 ```
 
-To detect multiple phrases concurrently provide them as comma-seperated values. If the wake word is more than a single word, surround the argument in quotation marks:
+To detect multiple phrases concurrently provide them as comma-separated values. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
 go run filedemo/porcupine_file_demo.go \
@@ -105,7 +105,7 @@ The `keywords` argument refers to the built-in keyword files that are shipped wi
 go run micdemo/porcupine_mic_demo.go -h
 ```
 
-To detect multiple phrases concurrently provide them as comma-seperated values. If the wake word is more than a single word, surround the argument in quotation marks:
+To detect multiple phrases concurrently provide them as comma-separated values. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
 go run filedemo/porcupine_file_demo.go \

@@ -2,7 +2,7 @@
 
 ## Porcupine
 
-Porcupine is is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
+Porcupine is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
 
 Porcupine is:
 
@@ -33,9 +33,9 @@ This binding is for running Porcupine on **Unity 2017.4+** on the following plat
 
 ## Installation
 
-The easiest way to install the Porcupine Unity SDK is to import [porcupine.unitypackage](/binding/unity/porcupine.unitypackage) into your Unity project by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.0.0.unitypackage](/binding/unity/porcupine-2.0.0.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
-**NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from github. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
+**NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from GitHub. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
 
 ## AccessKey
 
@@ -47,14 +47,14 @@ To obtain your `AccessKey`:
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Packaging
-To build the package from source, you have first have to clone the repo with submodules:
+To build the package from source, first you have to clone the repo with submodules:
 ```console
 git clone --recurse-submodules git@github.com:Picovoice/porcupine.git
 # or 
 git clone --recurse-submodules https://github.com/Picovoice/porcupine.git
 ```
 
-You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/binding/unity](/binding/unity) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
+You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/binding/unity](/binding/unity) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right-click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
 
 ## Usage
 
@@ -163,9 +163,9 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 #### Low-Level API
 
-[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
+[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
-To create an instance of `Porcupine`, use the `.Create` static constructor. You can pass a list of built-in keywords as its `keywords` argument or a list or paths to custom keywords using its `keywordPaths` arguement. 
+To create an instance of `Porcupine`, use the `.Create` static constructor. You can pass a list of built-in keywords as its `keywords` argument or a list or paths to custom keywords using its `keywordPaths` argument. 
 
 ```csharp
 using Pv.Unity;
@@ -205,7 +205,7 @@ catch (Exception ex)
 For process to work correctly, the audio data must be in the audio format required by Picovoice.
 The required sample rate is specified by the `SampleRate` property and the required number of audio samples in each frame is specified by the `FrameLength` property. Audio must be single-channel and 16-bit linearly-encoded.
 
-Porcupine implements the `IDisposable` interface, so you can use Porcupine in a `using` block. If you don't use a `using` block, resources will be released by the garbage collector automatically or you can explicitly release the resources like so:
+Porcupine implements the `IDisposable` interface, so you can use Porcupine in a `using` block. If you don't use a `using` block, resources will be released by the garbage collector automatically, or you can explicitly release the resources like so:
 
 ```csharp
 _porcupine.Dispose();

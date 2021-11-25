@@ -123,6 +123,6 @@ const handle = new Porcupine(
 
 ## Unit Tests
 
-Run `yarn` (or`npm install`) from the [binding/nodejs](https://github.com/Picovoice/porcupine/tree/master/binding/nodejs) directory to install project dependencies. This will also run a script to copy all of the necessary shared resources from the Porcupine repository into the package directory.
+Run `yarn` (or`npm install`) from the [binding/nodejs](https://github.com/Picovoice/porcupine/tree/master/binding/nodejs) directory to install project dependencies. This will also run a script to copy all the necessary shared resources from the Porcupine repository into the package directory.
 
 Run `yarn test` (or `npm run test`) from the [binding/nodejs](https://github.com/Picovoice/porcupine/tree/master/binding/nodejs) directory to execute the test suite.

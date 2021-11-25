@@ -40,7 +40,7 @@ To obtain your `AccessKey`:
 
 ## Usage
 
-To create an instance of the engine you first creat a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`:
+To create an instance of the engine you first create a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`:
 
 ```go
 import . "github.com/Picovoice/porcupine/binding/go"
@@ -53,7 +53,7 @@ if err != nil {
     // handle init fail
 }
 ```
-In the above example, we've initialzed the engine to detect the built-in wake word "Picovoice". Built-in keywords are constants in the package with the BuiltInKeyword type.
+In the above example, we've initialized the engine to detect the built-in wake word "Picovoice". Built-in keywords are constants in the package with the BuiltInKeyword type.
 
 Porcupine can detect multiple keywords concurrently:
 ```go
@@ -108,7 +108,7 @@ When done resources have to be released explicitly.
 porcupine.Delete()
 ```
 
-Using a defer call to `Delete()` after `Init()` is also a good way to ensure cleanup.
+Using a `defer` call to `Delete()` after `Init()` is also a good way to ensure cleanup.
 
 ## Non-English Wake Words
 
