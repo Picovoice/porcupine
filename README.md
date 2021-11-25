@@ -1388,7 +1388,7 @@ npm install @picovoice/porcupine-web-vue
   <div class="voice-widget">
     <Porcupine
       v-bind:porcupineFactoryArgs="{
-        accessKey: '',
+        accessKey: '${ACCESS_KEY}' // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/),
         keywords: [
           { builtin: 'Grasshopper', sensitivity: 0.5 },
           { builtin: 'Grapefruit', sensitivity: 0.6 },
