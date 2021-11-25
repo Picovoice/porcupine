@@ -159,7 +159,7 @@ index: 0, device name: USB Audio Device
 index: 1, device name: MacBook Air Microphone
 ``` 
 
-You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Auio Device in the above example, you can invoke the demo application as below:
+You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device in the above example, you can invoke the demo application as below:
 
 ```console
 dotnet run -c MicDemo.Release -- \ 

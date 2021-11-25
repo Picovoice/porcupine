@@ -1,6 +1,6 @@
 # porcupine-web-react
 
-React hook for Porcupine for Web.
+React Hook for Porcupine for Web.
 
 ## Porcupine
 
@@ -22,7 +22,7 @@ The Picovoice SDKs for Web are powered by WebAssembly (WASM), the Web Audio API,
 
 All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, including on mobile. Internet Explorer is _not_ supported.
 
-Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
+Using the Web Audio API requires a secure context (HTTPS connection), except for `localhost`, for local development.
 
 ## Installation
 
@@ -56,7 +56,7 @@ Make sure you handle the possibility of errors with the `isError` and `errorMess
 
 ### Static Import
 
-Using static imports for the `@picovoice/porcupine-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
+Using static imports for the `@picovoice/porcupine-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional ~2 MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
 
 ```javascript
 import React, { useState } from 'react';
@@ -93,7 +93,7 @@ The `keywordEventHandler` will log the keyword detections to the browser's JavaS
 
 ### Dynamic Import / Code Splitting
 
-If you are shipping Porcupine for Web and wish to avoid adding its ~2MB to your application's initial bundle, you can use dynamic imports. These will split off the porcupine-web-xx-worker packages into separate bundles and load them asynchronously. This means we need additional logic.
+If you are shipping Porcupine for Web and wish to avoid adding its ~2 MB to your application's initial bundle, you can use dynamic imports. These will split off the porcupine-web-xx-worker packages into separate bundles and load them asynchronously. This means we need additional logic.
 
 We add a `useEffect` hook to kick off the dynamic import. We store the result of the dynamically loaded worker chunk into a `useState` hook. When `usePorcupine` receives a non-null/undefined value for the worker factory, it will start up Porcupine.
 
@@ -157,7 +157,7 @@ Each language includes a set of built-in keywords. The quickest way to get start
 
 Custom wake words are generated using [Picovoice Console](https://picovoice.ai/console/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the React library.
 
-The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that Porcupine can tell you which keyword occurred ("Deep Sky Blue", in this case):
+The `.zip` file contains a `.ppn` file and a `_b64.txt` file which contains the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that Porcupine can tell you which keyword occurred ("Deep Sky Blue", in this case):
 
 ```typescript
 const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */

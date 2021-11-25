@@ -2,7 +2,7 @@
 
 ## Porcupine
 
-Porcupine is is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
+Porcupine is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
 
 Porcupine is:
 
@@ -48,7 +48,7 @@ Link the iOS package
 cd ios && pod install && cd ..
 ```
 
-**NOTE**: Due to a limitation in React Native CLI autolinking, these two native modules cannot be included as transitive depedencies. If you are creating a module that depends on porcupine-react-native and/or react-native-voice-processor, you will have to list these as peer dependencies and require developers to install them alongside.
+**NOTE**: Due to a limitation in React Native CLI auto-linking, these two native modules cannot be included as transitive dependencies. If you are creating a module that depends on porcupine-react-native and/or react-native-voice-processor, you will have to list these as peer dependencies and require developers to install them alongside.
 
 ## AccessKey
 
@@ -116,7 +116,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PorcupineManager](/binding/react-native/src/porcupinemanager.tsx) provides a high-level API that takes care of
+[PorcupineManager](/binding/react-native/src/porcupine_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the PorcupineManager
@@ -215,7 +215,7 @@ module to capture frames of audio and automatically pass it to the wake word eng
 #### Low-Level API
 
 [Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
-who want to incorporate wake word detection into a already existing audio processing pipeline.
+who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 `Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
@@ -261,17 +261,17 @@ To add a custom wake word to your React Native application you'll need to add th
 
 ### Adding Android Models
 
-Android custom models and keywords must be added to [`./android/app/src/main/assets/`](android/app/src/main/assets/).
+Android custom models and keywords must be added to `./android/app/src/main/assets/`
 
 ### Adding iOS Models
 
-iOS models can be added anywhere under [`./ios`](ios), but it must be included as a bundled resource. 
+iOS models can be added anywhere under `./ios`, but it must be included as a bundled resource.
 The easiest way to include a bundled resource in the iOS project is to:
 
 1. Open XCode.
 2. Either:
   - Drag and Drop the model/keyword file to the navigation tab.
-  - Right click on the navigation tab, and click `Add Files To ...`.
+  - Right-click on the navigation tab, and click `Add Files To ...`.
 
 This will bundle your models together when the app is built.
 

@@ -2,7 +2,7 @@
 
 ## Porcupine
 
-Porcupine is is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
+Porcupine is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
 
 Porcupine is:
 
@@ -168,7 +168,7 @@ Once the app is done with using an instance of PorcupineManager, be sure you exp
 await _porcupineManager.delete();
 ```
 
-NOTE: Avoid calling `delete()` from the `paused` state unless you have overidden the back button functionality on Android with [WillPopScope](https://api.flutter.dev/flutter/widgets/WillPopScope-class.html).
+NOTE: Avoid calling `delete()` from the `paused` state unless you have overridden the back button functionality on Android with [WillPopScope](https://api.flutter.dev/flutter/widgets/WillPopScope-class.html).
 
 There is no need to deal with audio capture to enable wake word detection with PorcupineManager.
 This is because it uses our
@@ -177,7 +177,7 @@ Flutter plugin to capture frames of audio and automatically pass it to the wake 
 
 ### Low-Level API
 
-[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
+[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 `Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
