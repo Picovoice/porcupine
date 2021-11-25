@@ -10,3 +10,6 @@
 
 ## [2.0.3] - 2021-11-23
 * Fix bug for android with lower case built-in keywords
+
+## [2.0.4] - 2021-11-25
+* Run formatter
