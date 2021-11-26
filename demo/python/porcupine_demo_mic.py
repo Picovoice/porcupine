@@ -87,12 +87,12 @@ class PorcupineDemo(Thread):
                 keyword_paths=self._keyword_paths,
                 sensitivities=self._sensitivities)
 
+            recorder = PvRecorder(device_index=self._input_device_index, frame_length=porcupine.frame_length)
+            recorder.start()
+
             if self._output_path is not None:
                 wav_file = wave.open(self._output_path, "w")
                 wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
-
-            recorder = PvRecorder(device_index=self._input_device_index, frame_length=porcupine.frame_length)
-            recorder.start()
 
             print(f'Using device: {recorder.selected_device}')
 
