@@ -11,10 +11,10 @@
 
 import argparse
 import os
+import struct
+import wave
 from datetime import datetime
 from threading import Thread
-import wave
-import struct
 
 import pvporcupine
 from pvrecorder import PvRecorder
