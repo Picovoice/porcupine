@@ -20,7 +20,7 @@ import {
 } from './porcupine_types';
 
 export function usePorcupine(
-  /** The language-specific worker factory, imported as { PorcupineWorkerFactory } 
+  /** The language-specific worker factory, imported as { PorcupineWorkerFactory }
    * from the @picovoice/porcupine-web-xx-worker series of packages, where xx is the two-letter language code. */
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
   /** usePorcupine Hook Parameters. */
