@@ -7,14 +7,14 @@ on:
     paths:
       - 'binding/react/**'
       - '!binding/react/README.md'
-      - 'lib/**'
+      - 'lib/wasm/**'
       - 'resources/**'
   pull_request:
     branches: [ master ]
     paths:
       - 'binding/react/**'
       - '!binding/react/README.md'
-      - 'lib/**'
+      - 'lib/wasm/**'
       - 'resources/**'
 
 defaults:
