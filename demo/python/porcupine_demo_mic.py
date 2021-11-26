@@ -104,7 +104,7 @@ class PorcupineDemo(Thread):
             while True:
                 pcm = recorder.read()
 
-                if self._output_path is not None:
+                if wav_file is not None:
                     wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
 
                 result = porcupine.process(pcm)
@@ -120,7 +120,7 @@ class PorcupineDemo(Thread):
             if recorder is not None:
                 recorder.delete()
 
-            if self._output_path is not None:
+            if wav_file is not None:
                 wav_file.close()
 
     @classmethod
