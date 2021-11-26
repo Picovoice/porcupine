@@ -13,10 +13,10 @@ import argparse
 import os
 from datetime import datetime
 from threading import Thread
+import wave
+import struct
 
-import numpy as np
 import pvporcupine
-import soundfile
 from pvrecorder import PvRecorder
 
 
@@ -61,8 +61,6 @@ class PorcupineDemo(Thread):
         self._input_device_index = input_device_index
 
         self._output_path = output_path
-        if self._output_path is not None:
-            self._recorded_frames = []
 
     def run(self):
         """
@@ -80,6 +78,7 @@ class PorcupineDemo(Thread):
 
         porcupine = None
         recorder = None
+        wav_file = None
         try:
             porcupine = pvporcupine.create(
                 access_key=self._access_key,
@@ -87,6 +86,10 @@ class PorcupineDemo(Thread):
                 model_path=self._model_path,
                 keyword_paths=self._keyword_paths,
                 sensitivities=self._sensitivities)
+
+            if self._output_path is not None:
+                wav_file = wave.open(self._output_path, "w")
+                wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
 
             recorder = PvRecorder(device_index=self._input_device_index, frame_length=porcupine.frame_length)
             recorder.start()
@@ -102,7 +105,7 @@ class PorcupineDemo(Thread):
                 pcm = recorder.read()
 
                 if self._output_path is not None:
-                    self._recorded_frames.append(pcm)
+                    wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
 
                 result = porcupine.process(pcm)
                 if result >= 0:
@@ -117,9 +120,8 @@ class PorcupineDemo(Thread):
             if recorder is not None:
                 recorder.delete()
 
-            if self._output_path is not None and len(self._recorded_frames) > 0:
-                recorded_audio = np.concatenate(self._recorded_frames, axis=0).astype(np.int16)
-                soundfile.write(self._output_path, recorded_audio, samplerate=porcupine.sample_rate, subtype='PCM_16')
+            if self._output_path is not None:
+                wav_file.close()
 
     @classmethod
     def show_audio_devices(cls):
