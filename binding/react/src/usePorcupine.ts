@@ -20,17 +20,29 @@ import {
 } from './porcupine_types';
 
 export function usePorcupine(
+  /** The language-specific worker factory, imported as { PorcupineWorkerFactory }
+   * from the @picovoice/porcupine-web-xx-worker series of packages, where xx is the two-letter language code. */
   porcupineWorkerFactory: PorcupineWorkerFactory | null,
+  /** usePorcupine Hook Parameters. */
   porcupineHookArgs: PorcupineHookArgs | null,
+  /** User-defined callback function invoked upon detection of the keywords. */
   keywordEventHandler: (label: string) => void
 ): {
+  /** A state indicating whether the engine is initialized successfully */
   isLoaded: boolean;
+  /** A state indicating whether the webVoiceProcessor is passing audio to the engine. */
   isListening: boolean;
+  /** A state indicating whether the Hook returned an error. */
   isError: boolean | null;
+  /** A string expression of the error. */
   errorMessage: string | null;
+  /** A pointer to the internal webVoiceProcessor object. */
   webVoiceProcessor: WebVoiceProcessor | null;
+  /** A method to start processing the audio. */
   start: () => void;
+  /** A method to stop processing the audio. */
   pause: () => void;
+  /** Setter for keywordEventHandler */
   setKeywordEventHandler: React.Dispatch<
     React.SetStateAction<(label: string) => void>
   >;
