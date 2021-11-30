@@ -39,12 +39,12 @@ class Porcupine {
     }
     
     let modelPath = manualModelPath;
-    if (modelPath === undefined) {
+    if (modelPath === undefined || modelPath === null) {
       modelPath = path.resolve(__dirname, MODEL_PATH_DEFAULT);
     }
 
     let libraryPath = manualLibraryPath;
-    if (libraryPath === undefined) {
+    if (libraryPath === undefined || modelPath === null) {
       libraryPath = getSystemLibraryPath();
     }
 
