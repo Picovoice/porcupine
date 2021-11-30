@@ -24,7 +24,7 @@ def _pv_linux_machine(machine):
         return machine
     elif machine == 'aarch64':
         arch_info = '-' + machine
-    elif machine == 'armv7l':
+    elif machine in ['armv7l', 'armv6l']:
         arch_info = ''
     else:
         raise NotImplementedError("Unsupported CPU architecture: '%s'" % machine)
