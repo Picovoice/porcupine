@@ -1,5 +1,5 @@
 #
-# Copyright 2019-2020 Picovoice Inc.
+# Copyright 2019-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -67,7 +67,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="2.0.0",
+    version="2.0.1",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",
