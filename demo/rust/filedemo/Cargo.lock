@@ -150,9 +150,9 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "2.0.0"
+version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c3d763f098c54619c84737c145fd925911e859b2972c07ead7f6cd14708ab51"
+checksum = "cb4829d637d654f03db843a79cf1868185d910fb5b38e319fdbf687c5b7ddbcf"
 dependencies = [
  "lazy_static",
  "libc",
