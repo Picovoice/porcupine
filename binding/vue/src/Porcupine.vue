@@ -7,6 +7,18 @@
 <script>
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
+/**
+ * Porcupine Vue Component.
+ * 
+ * Props
+ * - porcupineFactoryArgs: Arguments for PorcupineWorkerFactory.
+ * - PorcupineWorkerFactory: The language-specific worker factory.
+ * 
+ * Events
+ * - ppn-ready: A method invoked after component has initialized.
+ * - ppn-keyword: A method invoked upon detection of the keywords.
+ * - ppn-error: A method invoked if an error occurs within `PorcupineWorkerFactory`.
+ */
 export default {
   name: 'Porcupine',
   props: {
@@ -17,6 +29,9 @@ export default {
     return { webVp: null, ppnWorker: null };
   },
   methods: {
+    /**
+     * Method to start processing audio.
+     */
     start() {
       if (this.webVp !== null) {
         this.webVp.start();
@@ -24,6 +39,9 @@ export default {
       }
       return false;
     },
+    /**
+     * Method to stop processing audio.
+     */
     pause() {
       if (this.webVp !== null) {
         this.webVp.pause();
@@ -37,6 +55,9 @@ export default {
     errorCallback(error) {
       this.$emit('ppn-error', error);
     },
+    /**
+     * Method to initialize PorcupineWorker.
+     */
     async initEngine() {
       try {
         const { accessKey, keywords } = this.porcupineFactoryArgs;
