@@ -123,6 +123,9 @@ export function getRuntimeEnvironment(): string {
  */
 
  export function isAccessKeyValid(accessKey: string): boolean {
+  if (typeof accessKey !== 'string' || accessKey === undefined || accessKey === null) {
+    return false;
+  }
   const accessKeyCleaned = accessKey.trim();
   if (accessKeyCleaned === '') { return false; }
   try {
