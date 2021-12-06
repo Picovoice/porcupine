@@ -64,7 +64,6 @@ jobs:
       if: runner.os == 'Linux'
       run: sudo apt install libsndfile1-dev
 
-
     - name: Pre-build dependencies
       run: python -m pip install --upgrade pip
 
