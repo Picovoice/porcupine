@@ -49,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [windows-latest, macos-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
@@ -62,7 +62,6 @@ jobs:
 
     - name: Pre-build dependencies
       run: |
-        sudo apt install libsndfile1-dev
         python -m pip install --upgrade pip
 
     - name: Install dependencies
