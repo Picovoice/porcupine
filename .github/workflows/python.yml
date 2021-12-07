@@ -44,7 +44,7 @@ defaults:
     working-directory: binding/python
 
 jobs:
-  build:
+  build-git-hosted:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -74,7 +74,7 @@ jobs:
       run: python test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
 
   build-self-hosted:
-      runs-on: self-hosted
+    runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v2
