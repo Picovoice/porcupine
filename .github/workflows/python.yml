@@ -52,7 +52,7 @@ jobs:
 
     - name: Pre-build dependencies
       run: |
-        sudo apt install libsndfile1-dev
+        sudo apt install libsndfile1-dev -y
         python3 -m pip install --upgrade pip
 
     - name: Install dependencies
