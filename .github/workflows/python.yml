@@ -50,11 +50,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Pre-build dependencies
-      run: |
-        sudo apt install libsndfile1-dev
-        python3 -m pip install --upgrade pip
-
     - name: Install dependencies
       run: pip3 install -r requirements.txt
 
