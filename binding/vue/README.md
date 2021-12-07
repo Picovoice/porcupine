@@ -12,7 +12,7 @@ applications.
 
 ## Compatibility
 
-This library is compatible with Vue 3.
+This library is compatible with Vue 2.6.11+.
 
 The Picovoice SDKs for Web are powered by WebAssembly (WASM), the Web Audio API, and Web Workers.
 
@@ -69,7 +69,7 @@ In this example we're passing in two keywords: "Grasshopper" and "Grapefruit" wi
 </template>
 ```
 
-```javascript
+```typescript
 <script>
 import Porcupine from "@picovoice/porcupine-web-vue";
 import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
@@ -81,8 +81,8 @@ export default {
   },
   data: function() {
     return {
-      detections: [],
-      isError: null,
+      detections: [] as string[],
+      isError: false,
       isLoaded: false,
       factory: PorcupineWorkerFactoryEn,
     };
@@ -91,12 +91,12 @@ export default {
     ppnReadyFn: function() {
       this.isLoaded = true;
     },
-    ppnKeywordFn: function(data) {
+    ppnKeywordFn: function(data: string) {
       this.detections = [...this.detections, data.keywordLabel];
     },
-    ppnErrorFn: function(data) {
+    ppnErrorFn: function(error: Error) {
       this.isError = true;
-      this.errorMessage = data.toString();
+      this.errorMessage = error.toString();
     },
   },
 };

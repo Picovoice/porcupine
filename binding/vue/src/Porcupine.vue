@@ -4,8 +4,64 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
+
+/**
+ * Type alias for the Porcupine keywords.
+ */
+export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
+
+/**
+ * Type alias for builtin keywords.
+ */
+export type PorcupineKeywordBuiltin = {
+  builtin: string;
+  sensitivity?: number;
+};
+
+/**
+ * Type alias for custom keywords.
+ */
+export type PorcupineKeywordCustom = {
+  base64: string;
+  custom: string;
+  sensitivity?: number;
+};
+
+/**
+ * Type alias for PorcupineWorkerFactory arguments.
+ */
+export type PorcupineWorkerFactoryArgs = {
+  accessKey: string;
+  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
+  start?: boolean;
+};
+
+/**
+ * The language-specific worker factory, imported as { PorcupineWorkerFactory } from the 
+ * @picovoice/porcupine-web-xx-worker series of packages, where xx is the two-letter language code.
+ */
+interface PorcupineWorkerFactory extends FunctionConstructor {
+  create: (
+    accessKey: String, 
+    keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
+    keywordDetectionCallback?: CallableFunction,
+    processErrorCallback?: CallableFunction,
+    start?: boolean) => Promise<Worker>,
+};
+
+/**
+ * Function interface for Porcupine Vue Component.
+ */
+interface FunctionArgs extends Vue {
+  webVp: WebVoiceProcessor | null,
+  ppnWorker: Worker | null,
+  porcupineFactoryArgs: PorcupineWorkerFactoryArgs,
+  porcupineFactory: PorcupineWorkerFactory,
+};
 
 /**
  * Porcupine Vue Component.
@@ -22,17 +78,26 @@ import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 export default {
   name: 'Porcupine',
   props: {
-    porcupineFactoryArgs: [Object],
-    porcupineFactory: [Function],
+    porcupineFactoryArgs: {
+      type: Object as PropType<PorcupineWorkerFactoryArgs>,
+      required: true,
+    },
+    porcupineFactory: {
+      type: Function as PropType<PorcupineWorkerFactory>,
+      required: true,
+    },
   },
-  data: function () {
-    return { webVp: null, ppnWorker: null };
+  data() {
+    return {
+      webVp: null as WebVoiceProcessor | null,
+      ppnWorker: null as Worker | null,
+    };
   },
   methods: {
     /**
      * Method to start processing audio.
      */
-    start() {
+    start(this: FunctionArgs) {
       if (this.webVp !== null) {
         this.webVp.start();
         return true;
@@ -42,30 +107,28 @@ export default {
     /**
      * Method to stop processing audio.
      */
-    pause() {
+    pause(this: FunctionArgs) {
       if (this.webVp !== null) {
         this.webVp.pause();
         return true;
       }
       return false;
     },
-    keywordCallback(label) {
-      this.$emit('ppn-keyword', label);
-    },
-    errorCallback(error) {
-      this.$emit('ppn-error', error);
-    },
     /**
      * Method to initialize PorcupineWorker.
      */
-    async initEngine() {
+    async initEngine(this: FunctionArgs) {
       try {
         const { accessKey, keywords } = this.porcupineFactoryArgs;
-        this.ppnWorker = await this.porcupineFactory.create(
+        this['ppnWorker'] = await this.porcupineFactory.create(
           accessKey,
           JSON.parse(JSON.stringify(keywords)),
-          this.keywordCallback,
-          this.errorCallback
+          (label: string) => {
+            this.$emit('ppn-keyword', label);
+          },
+          (error: Error) => {
+            this.$emit('ppn-error', error);
+          },
         );
         this.webVp = await WebVoiceProcessor.init({
           engines: [this.ppnWorker],
@@ -76,7 +139,7 @@ export default {
       }
     },
   },
-  beforeUnmount: function () {
+  beforeDestroy: function (this: FunctionArgs) {
     if (this.webVp !== null) {
       this.webVp.release();
     }

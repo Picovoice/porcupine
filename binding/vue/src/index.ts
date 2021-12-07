@@ -1,8 +1,12 @@
+// @ts-nocheck
+
+import { VueConstructor } from 'vue';
+
 // Import vue component
 import component from './Porcupine.vue';
 
 // Declare install function executed by Vue.use()
-export function install(Vue) {
+export function install(Vue: VueConstructor) {
   if (install.installed) return;
   install.installed = true;
   Vue.component('Porcupine', component);

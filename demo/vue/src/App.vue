@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
-import VoiceWidget from "./components/VoiceWidget.vue";
 
 export default defineComponent({
   name: "App",
