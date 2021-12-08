@@ -45,7 +45,7 @@ defaults:
 
 jobs:
   build-self-hosted:
-    runs-on: raspberrypi3
+    runs-on: rpi3
 
     steps:
     - uses: actions/checkout@v2
