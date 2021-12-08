@@ -139,7 +139,17 @@ export default {
       }
     },
   },
+  // Vue 2 release resources
   beforeDestroy: function (this: FunctionArgs) {
+    if (this.webVp !== null) {
+      this.webVp.release();
+    }
+    if (this.ppnWorker !== null) {
+      this.ppnWorker.postMessage({ command: 'release' });
+    }
+  },
+  // Vue 3 release resources
+  beforeUnmount: function(this: FunctionArgs) {
     if (this.webVp !== null) {
       this.webVp.release();
     }
