@@ -49,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3, rpi4]
+        machine: [beaglebone]
 
     steps:
     - uses: actions/checkout@v2
