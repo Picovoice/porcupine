@@ -4,6 +4,13 @@ import { VueConstructor } from 'vue';
 
 // Import vue component
 import component from './Porcupine.vue';
+import {
+  PorcupineKeyword,
+  PorcupineKeywordCustom,
+  PorcupineKeywordBuiltin,
+  PorcupineWorkerFactoryArgs, 
+  PorcupineWorkerFactory
+} from './porcupine_types';
 
 // Declare install function executed by Vue.use()
 export function install(Vue: VueConstructor) {
@@ -30,3 +37,12 @@ if (GlobalVue) {
 
 // To allow use as module (npm/webpack/etc.) export component
 export default component;
+
+// export types
+export {
+  PorcupineKeyword,
+  PorcupineKeywordCustom,
+  PorcupineKeywordBuiltin,
+  PorcupineWorkerFactoryArgs, 
+  PorcupineWorkerFactory
+}

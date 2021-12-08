@@ -5,63 +5,14 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { PropType } from 'vue';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
-/**
- * Type alias for the Porcupine keywords.
- */
-export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
-
-/**
- * Type alias for builtin keywords.
- */
-export type PorcupineKeywordBuiltin = {
-  builtin: string;
-  sensitivity?: number;
-};
-
-/**
- * Type alias for custom keywords.
- */
-export type PorcupineKeywordCustom = {
-  base64: string;
-  custom: string;
-  sensitivity?: number;
-};
-
-/**
- * Type alias for PorcupineWorkerFactory arguments.
- */
-export type PorcupineWorkerFactoryArgs = {
-  accessKey: string;
-  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
-  start?: boolean;
-};
-
-/**
- * The language-specific worker factory, imported as { PorcupineWorkerFactory } from the 
- * @picovoice/porcupine-web-xx-worker series of packages, where xx is the two-letter language code.
- */
-interface PorcupineWorkerFactory extends FunctionConstructor {
-  create: (
-    accessKey: String, 
-    keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
-    keywordDetectionCallback?: CallableFunction,
-    processErrorCallback?: CallableFunction,
-    start?: boolean) => Promise<Worker>,
-};
-
-/**
- * Function interface for Porcupine Vue Component.
- */
-interface FunctionArgs extends Vue {
-  webVp: WebVoiceProcessor | null,
-  ppnWorker: Worker | null,
-  porcupineFactoryArgs: PorcupineWorkerFactoryArgs,
-  porcupineFactory: PorcupineWorkerFactory,
-};
+import {
+  PorcupineWorkerFactoryArgs, 
+  PorcupineWorkerFactory
+} from './porcupine_types';
 
 /**
  * Porcupine Vue Component.
@@ -97,7 +48,7 @@ export default {
     /**
      * Method to start processing audio.
      */
-    start(this: FunctionArgs) {
+    start(this: Vue) {
       if (this.webVp !== null) {
         this.webVp.start();
         return true;
@@ -107,7 +58,7 @@ export default {
     /**
      * Method to stop processing audio.
      */
-    pause(this: FunctionArgs) {
+    pause(this: Vue) {
       if (this.webVp !== null) {
         this.webVp.pause();
         return true;
@@ -117,10 +68,10 @@ export default {
     /**
      * Method to initialize PorcupineWorker.
      */
-    async initEngine(this: FunctionArgs) {
+    async initEngine(this: Vue) {
       try {
         const { accessKey, keywords } = this.porcupineFactoryArgs;
-        this['ppnWorker'] = await this.porcupineFactory.create(
+        this.ppnWorker = await this.porcupineFactory.create(
           accessKey,
           JSON.parse(JSON.stringify(keywords)),
           (label: string) => {
@@ -140,7 +91,7 @@ export default {
     },
   },
   // Vue 2 release resources
-  beforeDestroy: function (this: FunctionArgs) {
+  beforeDestroy: function (this: Vue) {
     if (this.webVp !== null) {
       this.webVp.release();
     }
@@ -149,7 +100,7 @@ export default {
     }
   },
   // Vue 3 release resources
-  beforeUnmount: function(this: FunctionArgs) {
+  beforeUnmount: function(this: Vue) {
     if (this.webVp !== null) {
       this.webVp.release();
     }
