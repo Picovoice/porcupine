@@ -43,7 +43,7 @@
   },
   "peerDependencies": {
     "@picovoice/web-voice-processor": "^2.1.2",
-    "@vue": "^2.6.11 || ^3.0.0"
+    "vue": "^2.6.11 || ^3.0.0"
   },
   "keywords": [
     "porcupine",
