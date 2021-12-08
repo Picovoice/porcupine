@@ -45,7 +45,11 @@ defaults:
 
 jobs:
   build-self-hosted:
-    runs-on: rpi3
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi3, rpi4]
 
     steps:
     - uses: actions/checkout@v2
