@@ -49,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2]
+        machine: [jetson]
 
     steps:
     - uses: actions/checkout@v2
