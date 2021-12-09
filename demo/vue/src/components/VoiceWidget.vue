@@ -1,13 +1,5 @@
 <template>
   <div class="voice-widget">
-    <Porcupine
-      ref="porcupine"
-      v-bind:porcupineFactoryArgs="factoryArgs"
-      v-bind:porcupineFactory="factory"
-      v-on:ppn-ready="ppnReadyFn"
-      v-on:ppn-keyword="ppnKeywordFn"
-      v-on:ppn-error="ppnErrorFn"
-    />
     <h2>VoiceWidget</h2>
     <h3>
       <label>
@@ -43,16 +35,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue, { VueConstructor } from 'vue';
 
-import Porcupine from "@picovoice/porcupine-web-vue";
 import { PorcupineWorkerFactory as PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-web-vue";
 
-export default defineComponent({
+const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).extend({
   name: "VoiceWidget",
-  components: {
-    Porcupine,
-  },
+  mixins: [porcupineMixin],
   data() {
     return {
       detections: [] as string[],
@@ -70,20 +60,14 @@ export default defineComponent({
       },
     };
   },
-  computed: {
-    porcupine(): typeof Porcupine {
-      return this.$refs.porcupine as typeof Porcupine;
-    }
-  },
   methods: {
     start: function () {
-      this.porcupine.start()
-      if (this.porcupine.start()) {
+      if (this.$porcupine.start()) {
         this.isListening = !this.isListening;
       }
     },
     pause: function () {
-      if (this.porcupine.pause()) {
+      if (this.$porcupine.pause()) {
         this.isListening = !this.isListening;
       }
     },
@@ -92,8 +76,14 @@ export default defineComponent({
       this.isError = false;
       this.isLoaded = false;
       this.isListening = false;
-      this.porcupine.initEngine();
-    },
+      this.$porcupine.init(
+        this.factoryArgs,
+        PorcupineWorkerFactoryEn,
+        this.ppnKeywordFn,
+        this.ppnReadyFn,
+        this.ppnErrorFn
+      );
+    }, 
     ppnReadyFn: function () {
       this.isLoaded = true;
       this.isListening = true;
@@ -108,6 +98,8 @@ export default defineComponent({
     },
   },
 });
+
+export default VoiceWidget;
 </script>
 
 <style scoped>

@@ -1,34 +1,29 @@
-// @ts-nocheck
+import porcupineMixin from './porcupine';
 
-import { VueConstructor } from 'vue';
-
-// Import vue component
-import component from './Porcupine.vue';
 import {
   PorcupineKeyword,
   PorcupineKeywordCustom,
   PorcupineKeywordBuiltin,
   PorcupineWorkerFactoryArgs, 
-  PorcupineWorkerFactory
+  PorcupineWorkerFactory,
+  PorcupineVue
 } from './porcupine_types';
-
-// Declare install function executed by Vue.use()
-export function install(Vue: VueConstructor) {
-  if (install.installed) return;
-  install.installed = true;
-  Vue.component('Porcupine', component);
-}
 
 // Create module definition for Vue.use()
 const plugin = {
-  install,
+  install: function(Vue: any) {
+    Vue.mixin(porcupineMixin);
+  }
 };
 
-// Auto-install when vue is found (eg. in browser via <script> tag)
+// // Auto-install when vue is found (eg. in browser via <script> tag)
 let GlobalVue = null;
 if (typeof window !== 'undefined') {
+  // @ts-ignore
   GlobalVue = window.Vue;
+// @ts-ignore
 } else if (typeof global !== 'undefined') {
+  // @ts-ignore
   GlobalVue = global.Vue;
 }
 if (GlobalVue) {
@@ -36,7 +31,9 @@ if (GlobalVue) {
 }
 
 // To allow use as module (npm/webpack/etc.) export component
-export default component;
+// export default component;
+
+export default porcupineMixin;
 
 // export types
 export {
@@ -44,5 +41,6 @@ export {
   PorcupineKeywordCustom,
   PorcupineKeywordBuiltin,
   PorcupineWorkerFactoryArgs, 
-  PorcupineWorkerFactory
-}
+  PorcupineWorkerFactory,
+  PorcupineVue
+};

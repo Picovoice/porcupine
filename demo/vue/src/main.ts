@@ -1,8 +1,6 @@
-import { createApp } from "vue";
+import Vue from "vue";
 import App from "./App.vue";
 
-const porcupineDemoApp = createApp(App)
-porcupineDemoApp.component('VoiceWidget',
-  () => import('./components/VoiceWidget.vue')
-)
-porcupineDemoApp.mount("#app");
+new Vue({
+  render: h => h(App),
+}).$mount('#app');
