@@ -175,7 +175,7 @@ class Porcupine {
   /**
    * Process a frame of pcm audio.
    *
-   * @param {Array} frame 16-bit integers of 16kHz linear PCM mono audio.
+   * @param {Array} frame of mono, 16-bit, linear-encoded PCM audio.
    * The specific array length can be attained by calling `.frameLength`. 
    * The incoming audio needs to have a sample rate equal to `.sampleRate` and be 16-bit linearly-encoded. 
    * Porcupine operates on single-channel audio.
