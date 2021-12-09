@@ -1418,10 +1418,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-web-en-worker@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.0.tgz#6822122316c6791fa0fe3792e70583a052d69311"
-  integrity sha512-7brfI+RFO/m+EDh/zqSkUgoxmFyp2NVPUN2aTen04Mz04qHKuTshYrEE9MJ5ikWY23P49OBH+n4A7ycgnwYuSQ==
+"@picovoice/porcupine-web-en-worker@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.1.tgz#3bd6a60d5ad68ff505e0741604f0a2015214cd92"
+  integrity sha512-dJFwA6w/rxY7wiD9aXxmOehig1IPm4gYJAT1fkGFEK1J7DuYHmN9ng8UjPHgi95ftCddH2eDp7NBQDuo30rH9A==
 
 "@picovoice/porcupine-web-react@^2.0.0":
   version "2.0.0"

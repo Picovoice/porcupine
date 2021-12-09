@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { usePorcupine } from "@picovoice/porcupine-web-react";
-import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
-  const [workerChunk, setWorkerChunk] = useState<
-    Record<string, PorcupineWorkerFactory | null>
-  >({ factory: null });
+  const [workerChunk, setWorkerChunk] = useState<any>({ factory: null });
   const [isChunkLoaded, setIsChunkLoaded] = useState(false);
   const [accessKey, setAccessKey] = useState("");
   const [keywords] = useState([
@@ -44,7 +41,7 @@ export default function VoiceWidget() {
 
   const { isLoaded, isListening, isError, errorMessage, start, pause } =
     usePorcupine(
-      PorcupineWorkerFactory,
+      workerChunk.factory,
       { accessKey, keywords, start: true },
       keywordEventHandler
     );
