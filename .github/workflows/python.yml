@@ -49,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [jetson]
+        machine: [beaglebone]
 
     steps:
     - uses: actions/checkout@v2
