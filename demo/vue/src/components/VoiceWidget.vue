@@ -78,7 +78,7 @@ const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).ex
       this.isListening = false;
       this.$porcupine.init(
         this.factoryArgs,
-        PorcupineWorkerFactoryEn,
+        this.factory,
         this.ppnKeywordFn,
         this.ppnReadyFn,
         this.ppnErrorFn
