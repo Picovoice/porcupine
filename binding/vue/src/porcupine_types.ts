@@ -44,7 +44,10 @@ export interface PorcupineWorkerFactory extends Object {
     start?: boolean) => Promise<Worker>,
 };
 
-
+/**
+ * Type alias for Porcupine Vue Mixin.
+ * Use with `Vue as VueConstructor extends {$porcupine: PorcupineVue}` to get types in typescript.
+ */
 export interface PorcupineVue {
   $_ppnWorker_: Worker | null;
   $_webVp_: WebVoiceProcessor | null;

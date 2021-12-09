@@ -3,10 +3,22 @@ import { PorcupineVue } from './porcupine_types';
 
 export default {
   computed: {
+    /**
+     * Porcupine Vue Mixin.
+     */
     $porcupine(): PorcupineVue {
       return {
         $_ppnWorker_: null as Worker | null,
         $_webVp_: null as WebVoiceProcessor | null,
+        /**
+         * Init function for Porcupine.
+         * 
+         * @param porcupineFactoryArgs Arguments for PorcupineWorkerFactory.
+         * @param porcupineFactory The language-specific worker factory
+         * @param keywordCallback A method invoked upon detection of the keywords.
+         * @param readyCallback A method invoked after component has initialized.
+         * @param errorCallback A method invoked if an error occurs within `PorcupineWorkerFactory`.
+         */
         async init(
           porcupineFactoryArgs,
           porcupineFactory,
@@ -30,6 +42,9 @@ export default {
             errorCallback(error as Error);
           }
         },
+        /**
+         * Start processing audio.
+         */
         start() {
           if (this.$_webVp_ !== null) {
             this.$_webVp_.start();
@@ -37,6 +52,9 @@ export default {
           }
           return false;
         },
+        /**
+         * Stop processing audio.
+         */
         pause() {
           if (this.$_webVp_ !== null) {
             this.$_webVp_.pause();
@@ -44,6 +62,9 @@ export default {
           }
           return false;
         },
+        /**
+         * Delete used resources.
+         */
         delete() {
           this.$_webVp_?.release();
           this.$_ppnWorker_?.postMessage({ command: 'release' });
@@ -51,9 +72,11 @@ export default {
       }
     }
   },
+  // Vue 3 method to clean resources.
   beforeUnmount(this: any) {
     this.$porcupine.delete();
   },
+  // Vue 2 method to clean resources.
   beforeDestory(this: any) {
     this.$porcupine.delete();
   }
