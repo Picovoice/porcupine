@@ -1,6 +1,6 @@
 # porcupine-web-vue
 
-Renderless Vue component for Porcupine for Web.
+Vue mixin for Porcupine for Web.
 
 ## Porcupine
 
@@ -67,7 +67,7 @@ export default {
       isLoaded: false,
       factory: PorcupineWorkerFactoryEn,
       factoryArgs: {
-        accessKey: 'AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)',
+        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)
         keywords: [
           { builtin: 'Grasshopper', sensitivity: 0.5 },
           { builtin: 'Grapefruit', sensitivity: 0.6 },
