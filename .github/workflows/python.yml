@@ -44,13 +44,16 @@ defaults:
     working-directory: binding/python
 
 jobs:
-  build-git-hosted:
-    runs-on: ${{ matrix.os }}
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        machine: [rpi4, macos-latest]
+        include:
+        - machine: macos-latest
+          python-version: [3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -59,30 +62,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Pre-build dependencies specific to Ubuntu
-      if: runner.os == 'Linux'
-      run: sudo apt install libsndfile1-dev
-
-    - name: Pre-build dependencies
-      run: python -m pip install --upgrade pip
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Test
-      run: python test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
-
-
-  build-self-hosted:
-    runs-on: ${{ matrix.machine }}
-
-    strategy:
-      matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
-
-    steps:
-    - uses: actions/checkout@v2
 
     - name: Pre-build dependencies
       run: python3 -m pip install --upgrade pip
