@@ -47,7 +47,7 @@ Import the Porcupine mixin and the Porcupine Web Worker component. When a compon
 
 - `init`: initializes Porcupine.
 - `start`: starts processing audio and detecting keywords.
-- `stop`: stops processing audio.
+- `pause`: stops processing audio.
 - `delete`: cleans up used resources.
 
 In this example we're passing in two keywords: "Grasshopper" and "Grapefruit" with sensitivities 0.65 and 0.4, respectively. The demo maintains an array of detections which is updated every time the Porcupine detects a keyword.
