@@ -83,9 +83,18 @@ export default {
       this.ppnReadyFn,      // Callback invoked after loading Porcupine
       this.ppnErrorFn       // Callback invoked in an error occurs while initializing Porcupine
     );
-    this.$porcupine.start();
   },
   methods: {
+    start: function () {
+      if (this.$refs.$porcupine.start()) {
+        this.isListening = !this.isListening;
+      }
+    },
+    pause: function () {
+      if (this.$refs.$porcupine.pause()) {
+        this.isListening = !this.isListening;
+      }
+    },
     ppnReadyFn: function() {
       this.isLoaded = true;
     },
