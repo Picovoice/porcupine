@@ -61,7 +61,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up Python version
-      if: runner.os==macOS
+      if: runner.os == 'macOS'
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
