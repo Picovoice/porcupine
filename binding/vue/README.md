@@ -86,12 +86,12 @@ export default {
   },
   methods: {
     start: function () {
-      if (this.$refs.$porcupine.start()) {
+      if (this.$porcupine.start()) {
         this.isListening = !this.isListening;
       }
     },
     pause: function () {
-      if (this.$refs.$porcupine.pause()) {
+      if (this.$porcupine.pause()) {
         this.isListening = !this.isListening;
       }
     },
