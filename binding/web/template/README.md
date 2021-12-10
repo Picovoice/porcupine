@@ -33,7 +33,7 @@ For typical cases, use the worker packages. Worker packages create complete `Por
 
 ### Factories
 
-Factory packages allow you to create instances of `Porcupine` directly. Useful for building your own custom Worker/Worklet, or some other bespoke purpose.
+Factory packages allow you to create instances of `Porcupine` directly on the main thread.
 
 * [@picovoice/porcupine-web-de-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-de-factory)
 * [@picovoice/porcupine-web-en-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-en-factory)
@@ -122,9 +122,9 @@ if (done) {
 
 ### Factory
 
-If you wish to build your own worker, or perhaps not use workers at all, use the factory packages. This will let you instantiate Porcupine engine instances directly.
+If you wish to not use workers at all, use the factory packages. This will let you instantiate Porcupine engine instances directly.
 
-The audio passed to the worker in the `process` function must be of the correct format. The `WebVoiceProcessor` handles downsampling in the examples above to standard voice recognition format (16-bit, 16kHz linear PCM, single-channel). Use an `Int16Array` [typed array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays). If you are not using `WebVoiceProcessor`, you must ensure the audio passed to Porcupine is of that format. The Porcupine instance provides the length of the array required via `.frameLength`.
+The audio passed to the engine in the `process` function must be of the correct format. The `WebVoiceProcessor` handles downsampling in the examples above to standard voice recognition format (16-bit, 16kHz linear PCM, single-channel). Use an `Int16Array` [typed array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays). If you are not using `WebVoiceProcessor`, you must ensure the audio passed to Porcupine is of that format. The Porcupine instance provides the length of the array required via `.frameLength`.
 
 E.g.:
 
