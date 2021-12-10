@@ -51,7 +51,7 @@ jobs:
     strategy:
       matrix:
         machine: [rpi4, macos-latest]
-        python-version: [3.7]
+        python-version: [3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
