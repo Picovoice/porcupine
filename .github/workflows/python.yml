@@ -50,14 +50,14 @@ jobs:
 
     strategy:
       matrix:
-        machine: [pi4, macos-latest]
+        machine: [rpi4, macos-latest]
         python-version: [3.7]
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
-      if: runner.name == 'macos-latest'
+      if: runner.os == 'macOS'
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
