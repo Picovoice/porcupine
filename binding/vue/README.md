@@ -1,6 +1,6 @@
 # porcupine-web-vue
 
-Vue mixin for Porcupine for Web.
+Vue mixin for Porcupine Web.
 
 ## Porcupine
 
