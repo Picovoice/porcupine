@@ -31,13 +31,30 @@ const pvPorcupine = require(getSystemLibraryPath());
 const MODEL_PATH_DEFAULT = "lib/common/porcupine_params.pv";
 
 class Porcupine {
-  constructor(accessKey, keywords, sensitivities, manualModelPath, manualLibraryPath) {
-    if(accessKey === null || accessKey === undefined || accessKey.length === 0) {
-        throw new PvArgumentError(
-            `No AccessKey provided to Porcupine`
-          );
+  /**
+   * Creates an instance of Porcupine.
+   * @param {string} accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
+   * @param {Array} keywords Absolute paths to keyword model files (`.ppn`).
+   * @param {Array} sensitivities Sensitivity values for detecting keywords. 
+   * Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+   * @param {string} manualModelPath Absolute path to the file containing model parameters (`.pv`).
+   * @param {string} manualLibraryPath Absolute path to Porcupine's dynamic library (platform-dependent extension).
+   */
+  constructor(
+    accessKey,
+    keywords,
+    sensitivities,
+    manualModelPath,
+    manualLibraryPath
+  ) {
+    if (
+      accessKey === null ||
+      accessKey === undefined ||
+      accessKey.length === 0
+    ) {
+      throw new PvArgumentError(`No AccessKey provided to Porcupine`);
     }
-    
+
     let modelPath = manualModelPath;
     if (modelPath === undefined || modelPath === null) {
       modelPath = path.resolve(__dirname, MODEL_PATH_DEFAULT);
@@ -116,22 +133,56 @@ class Porcupine {
     }
 
     const packed = pvPorcupine.init(
-        accessKey, 
-        modelPath, 
-        keywordPaths.length, 
-        keywordPaths, 
-        sensitivities);
+      accessKey,
+      modelPath,
+      keywordPaths.length,
+      keywordPaths,
+      sensitivities
+    );
     const status = Number(packed % 10n);
     if (status !== PV_STATUS_T.SUCCESS) {
       pvStatusToException(status, "Porcupine failed to initialize");
     }
     this.handle = packed / 10n;
 
-    this.frameLength = pvPorcupine.frame_length();
-    this.sampleRate = pvPorcupine.sample_rate();
-    this.version = pvPorcupine.version();
+    this._frameLength = pvPorcupine.frame_length();
+    this._sampleRate = pvPorcupine.sample_rate();
+    this._version = pvPorcupine.version();
   }
 
+  /**
+   * @returns number of audio samples per frame (i.e. the length of the array provided to the process function)
+   * @see {@link process}
+   */
+  get frameLength() {
+    return this._frameLength;
+  }
+
+  /**
+   * @returns the audio sampling rate accepted by Porcupine
+   */
+  get sampleRate() {
+    return this._sampleRate;
+  }
+
+  /**
+   * @returns the version of the Porcupine engine
+   */
+  get version() {
+    return this._version;
+  }
+
+  /**
+   * Process a frame of pcm audio.
+   *
+   * @param {Array} frame of mono, 16-bit, linear-encoded PCM audio.
+   * The specific array length can be attained by calling `.frameLength`. 
+   * The incoming audio needs to have a sample rate equal to `.sampleRate` and be 16-bit linearly-encoded. 
+   * Porcupine operates on single-channel audio.
+   * @returns {number} Index of observed keyword at the end of the current frame. 
+   * Indexing is 0-based and matches the ordering of keyword models provided to the constructor. 
+   * If no keyword is detected then it returns -1.
+   */
   process(frame) {
     if (this.handle === 0) {
       throw new PvStateError("Porcupine is not initialized");
@@ -166,6 +217,12 @@ class Porcupine {
     return keywordIndex;
   }
 
+  /**
+   * Releases the resources acquired by Porcupine.
+   *
+   * Be sure to call this when finished with the instance
+   * to reclaim the memory that was allocated by the C library.
+   */
   release() {
     if (this.handle > 0) {
       pvPorcupine.delete(this.handle);
