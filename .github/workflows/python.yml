@@ -53,7 +53,9 @@ jobs:
         machine: [rpi4, macos-latest]
         include:
         - machine: macos-latest
-          python-version: [3.7, 3.8]
+          python-version: 3.7
+        - machine: macos-latest
+          python-version: 3.8        
 
     steps:
     - uses: actions/checkout@v2
