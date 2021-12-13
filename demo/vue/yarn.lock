@@ -991,8 +991,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.1.tgz#3bd6a60d5ad68ff505e0741604f0a2015214cd92"
   integrity sha512-dJFwA6w/rxY7wiD9aXxmOehig1IPm4gYJAT1fkGFEK1J7DuYHmN9ng8UjPHgi95ftCddH2eDp7NBQDuo30rH9A==
 
-"@picovoice/porcupine-web-vue@../../binding/vue":
+"@picovoice/porcupine-web-vue@^2.0.1":
   version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-vue/-/porcupine-web-vue-2.0.1.tgz#41a4b6ad3a5e172b55a142c3d6aba02c90955784"
+  integrity sha512-kQ2Qg9QzlXyUjChF7dewdX1hTm0OciPQEkBJZH3t0p++JhXHkT5CAsUDZ4kGaQEcTxX4uIfM7rKSCNdoq2/gLA==
 
 "@picovoice/web-voice-processor@^2.1.2":
   version "2.1.2"
