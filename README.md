@@ -1384,60 +1384,60 @@ npm install @picovoice/porcupine-web-vue
 ```
 
 ```html
-<template>
-  <div class="voice-widget">
-    <Porcupine
-      v-bind:porcupineFactoryArgs="{
-        accessKey: '${ACCESS_KEY}' // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/),
+<script lang="ts">
+import porcupineMixin from "@picovoice/porcupine-web-vue";
+import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+
+export default {
+  name: "App",
+  mixins: [porcupineMixin],
+  data: function() {
+    return {
+      detections: [] as string[],
+      isError: false,
+      isLoaded: false,
+      factory: PorcupineWorkerFactoryEn,
+      factoryArgs: {
+        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)
         keywords: [
           { builtin: 'Grasshopper', sensitivity: 0.5 },
           { builtin: 'Grapefruit', sensitivity: 0.6 },
         ],
-      }"
-      v-bind:porcupineFactory="factory"
-      v-on:ppn-ready="ppnReadyFn"
-      v-on:ppn-keyword="ppnKeywordFn"
-      v-on:ppn-error="ppnErrorFn"
-    />
-    <h3>Keyword Detections:</h3>
-    <ul v-if="detections.length > 0">
-      <li v-for="(item, index) in detections" :key="index">{{ item }}</li>
-    </ul>
-  </div>
-</template>
-<script>
-  import Porcupine from "@picovoice/porcupine-web-vue";
-  import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
-
-  export default {
-    name: "VoiceWidget",
-    components: {
-      Porcupine,
+      }
+    };
+  },
+  async created() {
+    await this.$porcupine.init(
+      this.factoryArgs,     // Porcupine factory arguments
+      this.factory,         // Porcupine Web Worker component
+      this.ppnKeywordFn,    // Callback invoked after detection of keyword
+      this.ppnReadyFn,      // Callback invoked after loading Porcupine
+      this.ppnErrorFn       // Callback invoked in an error occurs while initializing Porcupine
+    );
+  },
+  methods: {
+    start: function () {
+      if (this.$porcupine.start()) {
+        this.isListening = !this.isListening;
+      }
     },
-    data: function () {
-      return {
-        detections: [],
-        isError: null,
-        isLoaded: false,
-        factory: PorcupineWorkerFactoryEn,
-      };
+    pause: function () {
+      if (this.$porcupine.pause()) {
+        this.isListening = !this.isListening;
+      }
     },
-    methods: {
-      ppnReadyFn: function () {
-        this.isLoaded = true;
-      },
-      ppnKeywordFn: function (data) {
-        this.detections = [...this.detections, data.keywordLabel];
-      },
-      ppnErrorFn: function (data) {
-        this.isError = true;
-        this.errorMessage = data.toString();
-      },
-      initEngine: function () {
-        this.$refs.porcupine.initEngine();
-      },
+    ppnReadyFn: function() {
+      this.isLoaded = true;
     },
-  };
+    ppnKeywordFn: function(data: string) {
+      this.detections = [...this.detections, data.keywordLabel];
+    },
+    ppnErrorFn: function(error: Error) {
+      this.isError = true;
+      this.errorMessage = error.toString();
+    },
+  },
+};
 </script>
 ```
 

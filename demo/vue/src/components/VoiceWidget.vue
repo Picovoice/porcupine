@@ -1,13 +1,5 @@
 <template>
   <div class="voice-widget">
-    <Porcupine
-      ref="porcupine"
-      v-bind:porcupineFactoryArgs="factoryArgs"
-      v-bind:porcupineFactory="factory"
-      v-on:ppn-ready="ppnReadyFn"
-      v-on:ppn-keyword="ppnKeywordFn"
-      v-on:ppn-error="ppnErrorFn"
-    />
     <h2>VoiceWidget</h2>
     <h3>
       <label>
@@ -42,19 +34,20 @@
   </div>
 </template>
 
-<script>
-import Porcupine from "@picovoice/porcupine-web-vue";
-import { PorcupineWorkerFactory as PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+<script lang="ts">
+import Vue, { VueConstructor } from 'vue';
 
-export default {
+import { PorcupineWorkerFactory as PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-web-vue";
+
+const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).extend({
   name: "VoiceWidget",
-  components: {
-    Porcupine,
-  },
-  data: function () {
+  mixins: [porcupineMixin],
+  data() {
     return {
-      detections: [],
+      detections: [] as string[],
       isError: false,
+      errorMessage: null as string | null,
       isLoaded: false,
       isListening: false,
       factory: PorcupineWorkerFactoryEn,
@@ -69,36 +62,44 @@ export default {
   },
   methods: {
     start: function () {
-      if (this.$refs.porcupine.start()) {
+      if (this.$porcupine.start()) {
         this.isListening = !this.isListening;
       }
     },
     pause: function () {
-      if (this.$refs.porcupine.pause()) {
+      if (this.$porcupine.pause()) {
         this.isListening = !this.isListening;
       }
     },
-    initEngine: function (event) {
+    initEngine: function (event: any) {
       this.factoryArgs.accessKey = event.target.value;
       this.isError = false;
       this.isLoaded = false;
       this.isListening = false;
-      this.$refs.porcupine.initEngine();
-    },
+      this.$porcupine.init(
+        this.factoryArgs,
+        this.factory,
+        this.ppnKeywordFn,
+        this.ppnReadyFn,
+        this.ppnErrorFn
+      );
+    }, 
     ppnReadyFn: function () {
       this.isLoaded = true;
       this.isListening = true;
     },
-    ppnKeywordFn: function (keywordLabel) {
+    ppnKeywordFn: function (keywordLabel: string) {
       console.log(keywordLabel);
       this.detections = [...this.detections, keywordLabel];
     },
-    ppnErrorFn: function (error) {
+    ppnErrorFn: function (error: Error) {
       this.isError = true;
       this.errorMessage = error.toString();
     },
   },
-};
+});
+
+export default VoiceWidget;
 </script>
 
 <style scoped>
