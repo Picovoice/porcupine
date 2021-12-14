@@ -946,10 +946,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.2.tgz#645968b5570e6629143eedd5c574fcc14c6ebd23"
   integrity sha512-FbsQca3ebnaX4u/N/WP7c6uicqgvQHbgKHhidccrLjG9CVO5zyCVMgvzvQ+D+XzXwEbc9RvXe9ZfMdZLDSTZ0A==
 
-"@picovoice/porcupine-web-vue@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-vue/-/porcupine-web-vue-2.0.0.tgz#9b823b23fbc0accc53afae0cfd65b5b19d92d840"
-  integrity sha512-HgPgkPPugrAw62z0nTzNihvKiYGUyTbdvu4Dk9Ype/6O1ZTcFYTwvVMqjdtnvEZ9IRJkQ5ZAS0D2uTl67jzVvQ==
+"@picovoice/porcupine-web-vue@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-vue/-/porcupine-web-vue-2.0.1.tgz#41a4b6ad3a5e172b55a142c3d6aba02c90955784"
+  integrity sha512-kQ2Qg9QzlXyUjChF7dewdX1hTm0OciPQEkBJZH3t0p++JhXHkT5CAsUDZ4kGaQEcTxX4uIfM7rKSCNdoq2/gLA==
 
 "@picovoice/web-voice-processor@^2.1.2":
   version "2.1.2"
