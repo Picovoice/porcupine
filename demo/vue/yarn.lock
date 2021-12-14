@@ -941,10 +941,10 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-web-en-worker@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.0.tgz#6822122316c6791fa0fe3792e70583a052d69311"
-  integrity sha512-7brfI+RFO/m+EDh/zqSkUgoxmFyp2NVPUN2aTen04Mz04qHKuTshYrEE9MJ5ikWY23P49OBH+n4A7ycgnwYuSQ==
+"@picovoice/porcupine-web-en-worker@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.0.2.tgz#645968b5570e6629143eedd5c574fcc14c6ebd23"
+  integrity sha512-FbsQca3ebnaX4u/N/WP7c6uicqgvQHbgKHhidccrLjG9CVO5zyCVMgvzvQ+D+XzXwEbc9RvXe9ZfMdZLDSTZ0A==
 
 "@picovoice/porcupine-web-vue@^2.0.0":
   version "2.0.0"
