@@ -2,13 +2,14 @@
 const path = require('path');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
+const typescript = require('rollup-plugin-typescript2');
+const workerLoader = require('rollup-plugin-web-worker-loader');
 const pkg = require('./package.json');
 const { babel } = require('@rollup/plugin-babel');
 const terser = require('rollup-plugin-terser').terser;
-const vue = require('rollup-plugin-vue');
 const { DEFAULT_EXTENSIONS } = require('@babel/core');
 
-const extensions = DEFAULT_EXTENSIONS;
+const extensions = [...DEFAULT_EXTENSIONS, '.ts'];
 
 console.log(process.env.TARGET);
 console.log(extensions);
@@ -26,7 +27,6 @@ console.log(iifeBundleName);
 
 export default {
   input: [path.resolve(__dirname, pkg.entry)],
-  external: ['vue'],
   output: [
     {
       file: path.resolve(__dirname, pkg['module']),
@@ -60,9 +60,14 @@ export default {
     },
   ],
   plugins: [
-    vue(),
     nodeResolve({ extensions }),
     commonjs(),
+    workerLoader({ targetPlatform: 'browser', sourcemap: false }),
+    typescript({
+      typescript: require('typescript'),
+      cacheRoot: path.resolve(__dirname, '.rts2_cache'),
+      clean: true,
+    }),
     babel({
       extensions: extensions,
       babelHelpers: 'runtime',

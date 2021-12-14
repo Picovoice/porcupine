@@ -1,22 +1,24 @@
 <template>
-  <h1>Porcupine Web + Vue ("Porcupine" Renderless Component)</h1>
-  <button v-on:click="toggle">
-    Toggle VoiceWidget <span v-if="show">"OFF"</span><span v-else>"ON"</span>
-  </button>
-  <br />
-  <br />
-  <VoiceWidget v-if="show" />
+  <div>
+    <h1>Porcupine Web + Vue ("Porcupine" Renderless Component)</h1>
+    <button v-on:click="toggle">
+      Toggle VoiceWidget <span v-if="show">"OFF"</span><span v-else>"ON"</span>
+    </button>
+    <br />
+    <br />
+    <VoiceWidget v-if="show" />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent } from "vue";
-import VoiceWidget from "./components/VoiceWidget.vue";
+import Vue from "vue";
 
-export default defineComponent({
+export default Vue.extend({
   name: "App",
   components: {
-    VoiceWidget: defineAsyncComponent(
-      () => import("./components/VoiceWidget.vue")
+    VoiceWidget: Vue.component(
+      'VoiceWidget',
+      async () => await import("./components/VoiceWidget.vue")
     ),
   },
   data: function () {
