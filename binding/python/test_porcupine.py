@@ -61,13 +61,13 @@ class PorcupineTestCase(unittest.TestCase):
             keywords = ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
             ground_truth = [6, 0, 1, 2, 3, 4, 5, 6, 7])
 
-    # def test_model_es(self):
-    #     lang = 'es'
+    def test_model_es(self):
+        lang = 'es'
 
-    #     self.run_porcupine(lang = lang,
-    #         audio_file_name = 'multiple_keywords_es.wav',
-    #         keywords = ['emparedado', 'murciélago', 'leopardo', 'manzana'],
-    #         ground_truth = [0, 2, 3, 1])
+        self.run_porcupine(lang = lang,
+            audio_file_name = 'multiple_keywords_es.wav',
+            keywords = ['emparedado', 'murciélago', 'leopardo', 'manzana'],
+            ground_truth = [0, 2, 3, 1])
 
     # def test_model_de(self):
     #     lang = 'de'
