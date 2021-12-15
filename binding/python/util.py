@@ -104,8 +104,9 @@ def pv_library_path(relative):
     raise NotImplementedError('Unsupported platform.')
 
 
-def pv_model_path(relative):
-    return os.path.join(os.path.dirname(__file__), relative, 'lib/common/porcupine_params.pv')
+def pv_model_path(relative, lang):
+    model_path_subdir = _modify_dir_by_lang('lib/common/porcupine_params', lang) + '.pv'
+    return os.path.join(os.path.dirname(__file__), relative, model_path_subdir)
 
 
 def _pv_keyword_files_subdir():
@@ -125,13 +126,18 @@ def _pv_keyword_files_subdir():
 
     raise NotImplementedError('Unsupported platform')
 
-
-def pv_keyword_paths(relative):
+def pv_keyword_paths(relative, lang):
+    keyword_files_root = _modify_dir_by_lang('resources/keyword_files', lang)
     keyword_files_dir = \
-        os.path.join(os.path.dirname(__file__), relative, 'resources/keyword_files', _pv_keyword_files_subdir())
+        os.path.join(os.path.dirname(__file__), relative, keyword_files_root, _pv_keyword_files_subdir())
 
     res = dict()
     for x in os.listdir(keyword_files_dir):
         res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
 
     return res
+
+def _modify_dir_by_lang(dir, lang):
+    if lang == 'en': # remove this _en is appended to the name of dir
+        return dir
+    return dir + '_' + lang
