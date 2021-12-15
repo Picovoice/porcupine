@@ -49,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
@@ -74,21 +74,21 @@ jobs:
       run: python test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
 
 
-  build-self-hosted:
-    runs-on: ${{ matrix.machine }}
+  # build-self-hosted:
+  #   runs-on: ${{ matrix.machine }}
 
-    strategy:
-      matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+  #   strategy:
+  #     matrix:
+  #       machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
 
-    steps:
-    - uses: actions/checkout@v2
+  #   steps:
+  #   - uses: actions/checkout@v2
 
-    - name: Pre-build dependencies
-      run: python3 -m pip install --upgrade pip
+  #   - name: Pre-build dependencies
+  #     run: python3 -m pip install --upgrade pip
 
-    - name: Install dependencies
-      run: pip3 install -r requirements.txt
+  #   - name: Install dependencies
+  #     run: pip3 install -r requirements.txt
 
-    - name: Test
-      run: python3 test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
+  #   - name: Test
+  #     run: python3 test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
