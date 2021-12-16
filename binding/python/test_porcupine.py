@@ -13,6 +13,7 @@ import sys
 import unittest
 
 import soundfile
+
 from porcupine import Porcupine
 from util import *
 
@@ -68,7 +69,7 @@ class PorcupineTestCase(unittest.TestCase):
 
         porcupine.delete()
 
-        self.assertEqual(results, ground_truth)   
+        self.assertEqual(results, ground_truth)
 
     def test_single_keyword_en(self):
         self.run_porcupine(
