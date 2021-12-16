@@ -14,19 +14,39 @@ import unittest
 
 import soundfile
 from porcupine import Porcupine
-from test_utils import *
+from util import *
+
+def _append_language(dir, language):
+    if language == 'en':
+        return dir
+    return dir + '_' + language
+
+def pv_model_path_by_language(relative, language):
+    model_path_subdir = _append_language('lib/common/porcupine_params', language) + '.pv'
+    return os.path.join(os.path.dirname(__file__), relative, model_path_subdir)
+
+def pv_keyword_paths_by_language(relative, language):
+    keyword_files_root = _append_language('resources/keyword_files', language)
+    keyword_files_dir = \
+        os.path.join(os.path.dirname(__file__), relative, keyword_files_root, pv_keyword_files_subdir())
+
+    res = dict()
+    for x in os.listdir(keyword_files_dir):
+        res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
+
+    return res
 
 
 class PorcupineTestCase(unittest.TestCase):
     def run_porcupine(self, language, audio_file_name, keywords, ground_truth) :
         keyword_paths = list()
         for x in keywords:
-            keyword_paths.append(pv_keyword_paths('../..', language)[x])
+            keyword_paths.append(pv_keyword_paths_by_language('../..', language)[x])
 
         porcupine = Porcupine(
             access_key=sys.argv[1],
             library_path=pv_library_path('../..'),
-            model_path=pv_model_path('../..', language),
+            model_path=pv_model_path_by_language('../..', language),
             keyword_paths=keyword_paths,
             sensitivities=[0.5] * len(keyword_paths))
 
