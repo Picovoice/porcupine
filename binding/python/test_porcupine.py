@@ -6,7 +6,7 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-# specific language governing permissions and limitations under the License.
+# specific languageuage governing permissions and limitations under the License.
 #
 
 import sys
@@ -14,25 +14,24 @@ import unittest
 
 import soundfile
 from porcupine import Porcupine
-from util import *
+from test_utils import *
 
 
 class PorcupineTestCase(unittest.TestCase):
-    def run_porcupine(self, lang, audio_file_name, keywords, ground_truth) :
+    def run_porcupine(self, language, audio_file_name, keywords, ground_truth) :
         keyword_paths = list()
         for x in keywords:
-            keyword_paths.append(pv_keyword_paths('../..', lang)[x])
+            keyword_paths.append(pv_keyword_paths('../..', language)[x])
 
         porcupine = Porcupine(
             access_key=sys.argv[1],
             library_path=pv_library_path('../..'),
-            model_path=pv_model_path('../..', lang),
+            model_path=pv_model_path('../..', language),
             keyword_paths=keyword_paths,
             sensitivities=[0.5] * len(keyword_paths))
 
-        audio_file_path = '../../resources/audio_samples/' + audio_file_name
         audio, sample_rate = soundfile.read(
-            os.path.join(os.path.dirname(__file__), audio_file_path),
+            os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/', audio_file_name),
             dtype='int16')
         assert sample_rate == porcupine.sample_rate
 
@@ -49,44 +48,38 @@ class PorcupineTestCase(unittest.TestCase):
         self.assertEqual(results, ground_truth)   
 
     def test_model_en(self):
-        lang = 'en'
+        language = 'en'
 
-        self.run_porcupine(lang = lang,
+        self.run_porcupine(language = language,
             audio_file_name = 'porcupine.wav',
             keywords = ['porcupine'],
             ground_truth = [0])        
 
-        self.run_porcupine(lang = lang,
+        self.run_porcupine(language = language,
             audio_file_name = 'multiple_keywords.wav',
             keywords = ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
             ground_truth = [6, 0, 1, 2, 3, 4, 5, 6, 7])
 
     def test_model_es(self):
-        lang = 'es'
+        language = 'es'
 
-        # this test failed due to utf8 problem in windows
-        # self.run_porcupine(lang = lang,
-        #     audio_file_name = 'multiple_keywords_es.wav',
-        #     keywords = ['emparedado', 'murciélago', 'leopardo', 'manzana'],
-        #     ground_truth = [0, 2, 3, 1])
-
-        self.run_porcupine(lang = lang,
+        self.run_porcupine(language = language,
             audio_file_name = 'multiple_keywords_es.wav',
             keywords = ['emparedado', 'leopardo', 'manzana'],
             ground_truth = [0, 1, 2])           
 
     def test_model_de(self):
-        lang = 'de'
+        language = 'de'
 
-        self.run_porcupine(lang = lang,
+        self.run_porcupine(language = language,
             audio_file_name = 'multiple_keywords_de.wav',
             keywords = ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'],
             ground_truth = [0, 1, 2, 3])
 
     def test_model_fr(self):
-        lang = 'fr'
+        language = 'fr'
 
-        self.run_porcupine(lang = lang,
+        self.run_porcupine(language = language,
             audio_file_name = 'multiple_keywords_fr.wav',
             keywords = ['framboise', 'mon chouchou', 'parapluie'],
             ground_truth = [0, 1, 0, 2])
