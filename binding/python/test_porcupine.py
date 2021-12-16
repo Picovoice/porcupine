@@ -47,7 +47,7 @@ class PorcupineTestCase(unittest.TestCase):
 
         self.assertEqual(results, ground_truth)   
 
-    def test_en_0(self):
+    def test_en_single_keyword(self):
         self.run_porcupine(language = 'en',
             audio_file_name = 'porcupine.wav',
             keywords = ['porcupine'],
