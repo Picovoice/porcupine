@@ -65,7 +65,7 @@ class PorcupineTestCase(unittest.TestCase):
             keywords = ['emparedado', 'leopardo', 'manzana'],
             ground_truth = [0, 1, 2])           
 
-    def test_de_0(self):
+    def test_de_multiple_keywords(self):
         self.run_porcupine(language = 'de',
             audio_file_name = 'multiple_keywords_de.wav',
             keywords = ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'],
