@@ -47,39 +47,32 @@ class PorcupineTestCase(unittest.TestCase):
 
         self.assertEqual(results, ground_truth)   
 
-    def test_model_en(self):
-        language = 'en'
-
-        self.run_porcupine(language = language,
+    def test_en_0(self):
+        self.run_porcupine(language = 'en',
             audio_file_name = 'porcupine.wav',
             keywords = ['porcupine'],
-            ground_truth = [0])        
+            ground_truth = [0])
 
-        self.run_porcupine(language = language,
+    def test_en_1(self):
+        self.run_porcupine(language = 'en',
             audio_file_name = 'multiple_keywords.wav',
             keywords = ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
             ground_truth = [6, 0, 1, 2, 3, 4, 5, 6, 7])
 
-    def test_model_es(self):
-        language = 'es'
-
-        self.run_porcupine(language = language,
+    def test_es_0(self):
+        self.run_porcupine(language = 'es',
             audio_file_name = 'multiple_keywords_es.wav',
             keywords = ['emparedado', 'leopardo', 'manzana'],
             ground_truth = [0, 1, 2])           
 
-    def test_model_de(self):
-        language = 'de'
-
-        self.run_porcupine(language = language,
+    def test_de_0(self):
+        self.run_porcupine(language = 'de',
             audio_file_name = 'multiple_keywords_de.wav',
             keywords = ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'],
             ground_truth = [0, 1, 2, 3])
 
-    def test_model_fr(self):
-        language = 'fr'
-
-        self.run_porcupine(language = language,
+    def test_fr_0(self):
+        self.run_porcupine(language = 'fr',
             audio_file_name = 'multiple_keywords_fr.wav',
             keywords = ['framboise', 'mon chouchou', 'parapluie'],
             ground_truth = [0, 1, 0, 2])
