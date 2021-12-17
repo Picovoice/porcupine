@@ -25,14 +25,14 @@ class PorcupineTestCase(unittest.TestCase):
             return s
         return f'{s}_{language}'
 
-    @staticmethod
-    def __pv_model_path_by_language(relative, language):
-        model_path_subdir = PorcupineTestCase.__append_language('lib/common/porcupine_params', language)
+    @classmethod
+    def __pv_model_path_by_language(cls, relative, language):
+        model_path_subdir = cls.__append_language('lib/common/porcupine_params', language)
         return os.path.join(os.path.dirname(__file__), relative, f'{model_path_subdir}.pv')
 
-    @staticmethod
-    def __pv_keyword_paths_by_language(relative, language):
-        keyword_files_root = PorcupineTestCase.__append_language('resources/keyword_files', language)
+    @classmethod
+    def __pv_keyword_paths_by_language(cls, relative, language):
+        keyword_files_root = cls.__append_language('resources/keyword_files', language)
         keyword_files_dir = \
             os.path.join(os.path.dirname(__file__), relative, keyword_files_root, pv_keyword_files_subdir())
 
@@ -44,19 +44,16 @@ class PorcupineTestCase(unittest.TestCase):
 
     def run_porcupine(self, language, keywords, ground_truth, audio_file_name=None):
         if audio_file_name is None:
-            if len(keywords) > 1:
-                _audio_file_name_prefix = PorcupineTestCase.__append_language('multiple_keywords', language)
-                audio_file_name = f'{_audio_file_name_prefix}.wav'
-            else:
-                audio_file_name = f'{keywords[0]}.wav'
+            _audio_file_name_prefix = self.__append_language('multiple_keywords', language)
+            audio_file_name = f'{_audio_file_name_prefix}.wav'
         keyword_paths = list()
         for x in keywords:
-            keyword_paths.append(PorcupineTestCase.__pv_keyword_paths_by_language('../..', language)[x])
+            keyword_paths.append(self.__pv_keyword_paths_by_language('../..', language)[x])
 
         porcupine = Porcupine(
             access_key=sys.argv[1],
             library_path=pv_library_path('../..'),
-            model_path=PorcupineTestCase.__pv_model_path_by_language('../..', language),
+            model_path=self.__pv_model_path_by_language('../..', language),
             keyword_paths=keyword_paths,
             sensitivities=[0.5] * len(keyword_paths))
 
@@ -81,7 +78,8 @@ class PorcupineTestCase(unittest.TestCase):
         self.run_porcupine(
             language='en',
             keywords=['porcupine'],
-            ground_truth=[0])
+            ground_truth=[0],
+            audio_file_name='porcupine.wav')
 
     def test_multiple_keywords(self):
         keywords = [
@@ -97,7 +95,8 @@ class PorcupineTestCase(unittest.TestCase):
         self.run_porcupine(
             language='es',
             keywords=['manzana'],
-            ground_truth=[0])
+            ground_truth=[0],
+            audio_file_name='manzana.wav')
 
     def test_multiple_keywords_es(self):
         self.run_porcupine(
@@ -109,13 +108,21 @@ class PorcupineTestCase(unittest.TestCase):
         self.run_porcupine(
             language='de',
             keywords=['heuschrecke'],
-            ground_truth=[0])
+            ground_truth=[0],
+            audio_file_name='heuschrecke.wav')
 
     def test_multiple_keywords_de(self):
         self.run_porcupine(
             language='de',
             keywords=['ananas', 'heuschrecke', 'leguan', 'stachelschwein'],
             ground_truth=[0, 1, 2, 3])
+
+    def test_single_keyword_fr(self):
+        self.run_porcupine(
+            language='fr',
+            keywords=['mon chouchou'],
+            ground_truth=[0],
+            audio_file_name='mon_chouchou.wav')
 
     def test_multiple_keywords_fr(self):
         self.run_porcupine(
