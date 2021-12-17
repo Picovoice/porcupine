@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2018-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -18,39 +18,39 @@ from porcupine import Porcupine
 from util import *
 
 
-def _append_language(s, language):
-    if language == 'en':
-        return s
-    return s + '_' + language
-
-
-def pv_model_path_by_language(relative, language):
-    model_path_subdir = _append_language('lib/common/porcupine_params', language) + '.pv'
-    return os.path.join(os.path.dirname(__file__), relative, model_path_subdir)
-
-
-def pv_keyword_paths_by_language(relative, language):
-    keyword_files_root = _append_language('resources/keyword_files', language)
-    keyword_files_dir = \
-        os.path.join(os.path.dirname(__file__), relative, keyword_files_root, pv_keyword_files_subdir())
-
-    res = dict()
-    for x in os.listdir(keyword_files_dir):
-        res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
-
-    return res
-
-
 class PorcupineTestCase(unittest.TestCase):
+    @staticmethod
+    def __append_language(s, language):
+        if language == 'en':
+            return s
+        return f'{s}_{language}'
+
+    @staticmethod
+    def __pv_model_path_by_language(relative, language):
+        model_path_subdir = PorcupineTestCase.__append_language('lib/common/porcupine_params', language)
+        return os.path.join(os.path.dirname(__file__), relative, f'{model_path_subdir}.pv')
+
+    @staticmethod
+    def __pv_keyword_paths_by_language(relative, language):
+        keyword_files_root = PorcupineTestCase.__append_language('resources/keyword_files', language)
+        keyword_files_dir = \
+            os.path.join(os.path.dirname(__file__), relative, keyword_files_root, pv_keyword_files_subdir())
+
+        res = dict()
+        for x in os.listdir(keyword_files_dir):
+            res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
+
+        return res
+
     def run_porcupine(self, language, audio_file_name, keywords, ground_truth):
         keyword_paths = list()
         for x in keywords:
-            keyword_paths.append(pv_keyword_paths_by_language('../..', language)[x])
+            keyword_paths.append(PorcupineTestCase.__pv_keyword_paths_by_language('../..', language)[x])
 
         porcupine = Porcupine(
             access_key=sys.argv[1],
             library_path=pv_library_path('../..'),
-            model_path=pv_model_path_by_language('../..', language),
+            model_path=PorcupineTestCase.__pv_model_path_by_language('../..', language),
             keyword_paths=keyword_paths,
             sensitivities=[0.5] * len(keyword_paths))
 
@@ -79,11 +79,14 @@ class PorcupineTestCase(unittest.TestCase):
             ground_truth=[0])
 
     def test_multiple_keywords_en(self):
+        keywords = [
+            'americano', 'blueberry', 'bumblebee', 'grapefruit',
+            'grasshopper', 'picovoice', 'porcupine', 'terminator'
+        ]
         self.run_porcupine(
             language='en',
             audio_file_name='multiple_keywords.wav',
-            keywords=['americano', 'blueberry', 'bumblebee', 'grapefruit',
-                      'grasshopper', 'picovoice', 'porcupine', 'terminator'],
+            keywords=keywords,
             ground_truth=[6, 0, 1, 2, 3, 4, 5, 6, 7])
 
     def test_multiple_keywords_es(self):
