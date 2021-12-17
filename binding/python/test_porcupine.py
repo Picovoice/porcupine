@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2020 Picovoice Inc.
+# Copyright 2018-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -13,53 +13,52 @@ import sys
 import unittest
 
 import soundfile
+
 from porcupine import Porcupine
 from util import *
 
 
 class PorcupineTestCase(unittest.TestCase):
-    def test_process(self):
-        porcupine = Porcupine(
-            access_key=sys.argv[1],
-            library_path=pv_library_path('../..'),
-            model_path=pv_model_path('../../'),
-            keyword_paths=[pv_keyword_paths('../..')['porcupine']],
-            sensitivities=[0.5])
+    @staticmethod
+    def __append_language(s, language):
+        if language == 'en':
+            return s
+        return f'{s}_{language}'
 
-        audio, sample_rate = soundfile.read(
-            os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/porcupine.wav'),
-            dtype='int16')
-        assert sample_rate == porcupine.sample_rate
+    @classmethod
+    def __pv_model_path_by_language(cls, relative, language):
+        model_path_subdir = cls.__append_language('lib/common/porcupine_params', language)
+        return os.path.join(os.path.dirname(__file__), relative, f'{model_path_subdir}.pv')
 
-        num_frames = len(audio) // porcupine.frame_length
-        results = []
-        for i in range(num_frames):
-            frame = audio[i * porcupine.frame_length:(i + 1) * porcupine.frame_length]
-            keyword_index = porcupine.process(frame)
-            if keyword_index >= 0:
-                results.append(keyword_index)
+    @classmethod
+    def __pv_keyword_paths_by_language(cls, relative, language):
+        keyword_files_root = cls.__append_language('resources/keyword_files', language)
+        keyword_files_dir = \
+            os.path.join(os.path.dirname(__file__), relative, keyword_files_root, pv_keyword_files_subdir())
 
-        porcupine.delete()
+        res = dict()
+        for x in os.listdir(keyword_files_dir):
+            res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
 
-        self.assertEqual(results, [0])
+        return res
 
-    def test_process_multiple(self):
-        keywords = \
-            ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator']
-
+    def run_porcupine(self, language, keywords, ground_truth, audio_file_name=None):
+        if audio_file_name is None:
+            _audio_file_name_prefix = self.__append_language('multiple_keywords', language)
+            audio_file_name = f'{_audio_file_name_prefix}.wav'
         keyword_paths = list()
         for x in keywords:
-            keyword_paths.append(pv_keyword_paths('../..')[x])
+            keyword_paths.append(self.__pv_keyword_paths_by_language('../..', language)[x])
 
         porcupine = Porcupine(
             access_key=sys.argv[1],
             library_path=pv_library_path('../..'),
-            model_path=pv_model_path('../..'),
+            model_path=self.__pv_model_path_by_language('../..', language),
             keyword_paths=keyword_paths,
             sensitivities=[0.5] * len(keyword_paths))
 
         audio, sample_rate = soundfile.read(
-            os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/multiple_keywords.wav'),
+            os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/', audio_file_name),
             dtype='int16')
         assert sample_rate == porcupine.sample_rate
 
@@ -73,7 +72,63 @@ class PorcupineTestCase(unittest.TestCase):
 
         porcupine.delete()
 
-        self.assertEqual(results, [6, 0, 1, 2, 3, 4, 5, 6, 7])
+        self.assertEqual(results, ground_truth)
+
+    def test_single_keyword(self):
+        self.run_porcupine(
+            language='en',
+            keywords=['porcupine'],
+            ground_truth=[0],
+            audio_file_name='porcupine.wav')
+
+    def test_multiple_keywords(self):
+        keywords = [
+            'americano', 'blueberry', 'bumblebee', 'grapefruit',
+            'grasshopper', 'picovoice', 'porcupine', 'terminator'
+        ]
+        self.run_porcupine(
+            language='en',
+            keywords=keywords,
+            ground_truth=[6, 0, 1, 2, 3, 4, 5, 6, 7])
+
+    def test_single_keyword_es(self):
+        self.run_porcupine(
+            language='es',
+            keywords=['manzana'],
+            ground_truth=[0],
+            audio_file_name='manzana.wav')
+
+    def test_multiple_keywords_es(self):
+        self.run_porcupine(
+            language='es',
+            keywords=['emparedado', 'leopardo', 'manzana'],
+            ground_truth=[0, 1, 2])
+
+    def test_single_keyword_de(self):
+        self.run_porcupine(
+            language='de',
+            keywords=['heuschrecke'],
+            ground_truth=[0],
+            audio_file_name='heuschrecke.wav')
+
+    def test_multiple_keywords_de(self):
+        self.run_porcupine(
+            language='de',
+            keywords=['ananas', 'heuschrecke', 'leguan', 'stachelschwein'],
+            ground_truth=[0, 1, 2, 3])
+
+    def test_single_keyword_fr(self):
+        self.run_porcupine(
+            language='fr',
+            keywords=['mon chouchou'],
+            ground_truth=[0],
+            audio_file_name='mon_chouchou.wav')
+
+    def test_multiple_keywords_fr(self):
+        self.run_porcupine(
+            language='fr',
+            keywords=['framboise', 'mon chouchou', 'parapluie'],
+            ground_truth=[0, 1, 0, 2])
 
 
 if __name__ == '__main__':

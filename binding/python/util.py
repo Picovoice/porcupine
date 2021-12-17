@@ -108,7 +108,7 @@ def pv_model_path(relative):
     return os.path.join(os.path.dirname(__file__), relative, 'lib/common/porcupine_params.pv')
 
 
-def _pv_keyword_files_subdir():
+def pv_keyword_files_subdir():
     if _PV_SYSTEM == 'Darwin':
         return 'mac'
     elif _PV_SYSTEM == 'Linux':
@@ -128,7 +128,7 @@ def _pv_keyword_files_subdir():
 
 def pv_keyword_paths(relative):
     keyword_files_dir = \
-        os.path.join(os.path.dirname(__file__), relative, 'resources/keyword_files', _pv_keyword_files_subdir())
+        os.path.join(os.path.dirname(__file__), relative, 'resources/keyword_files', pv_keyword_files_subdir())
 
     res = dict()
     for x in os.listdir(keyword_files_dir):
