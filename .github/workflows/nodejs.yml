@@ -62,14 +62,10 @@ jobs:
 
     strategy:
       matrix:
-        machine: [jetson]
-        # node-version: [14, 16]
+        machine: [beaglebone]
 
     steps:
     - uses: actions/checkout@v2
-
-    # - name: Use Node.js ${{ matrix.node-version }}
-    #   run: nvm use ${{ matrix.node-version }}
 
     - name: Pre-build dependencies
       run: npm install --global yarn
