@@ -42,6 +42,7 @@ MANIFEST_IN = """
 include pvporcupine/LICENSE
 include pvporcupine/__init__.py
 include pvporcupine/porcupine.py
+include pvporcupine/porcupine_error.py
 include pvporcupine/util.py
 include pvporcupine/lib/common/porcupine_params.pv
 include pvporcupine/lib/beaglebone/libpv_porcupine.so

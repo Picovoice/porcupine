@@ -13,53 +13,7 @@ import os
 from ctypes import *
 from enum import Enum
 
-
-class PorcupineError(Exception):
-    pass
-
-
-class PorcupineMemoryError(PorcupineError):
-    pass
-
-
-class PorcupineIOError(PorcupineError):
-    pass
-
-
-class PorcupineInvalidArgumentError(PorcupineError):
-    pass
-
-
-class PorcupineStopIterationError(PorcupineError):
-    pass
-
-
-class PorcupineKeyError(PorcupineError):
-    pass
-
-
-class PorcupineInvalidStateError(PorcupineError):
-    pass
-
-
-class PorcupineRuntimeError(PorcupineError):
-    pass
-
-
-class PorcupineActivationError(PorcupineError):
-    pass
-
-
-class PorcupineActivationLimitError(PorcupineError):
-    pass
-
-
-class PorcupineActivationThrottledError(PorcupineError):
-    pass
-
-
-class PorcupineActivationRefusedError(PorcupineError):
-    pass
+from porcupine_error import *
 
 
 class Porcupine(object):
