@@ -72,9 +72,7 @@ jobs:
     #   run: nvm use ${{ matrix.node-version }}
 
     - name: Pre-build dependencies
-      run: |
-        whoami
-        npm install yarn
+      run: npm install yarn
 
     - name: Install dependencies
       run: yarn install
