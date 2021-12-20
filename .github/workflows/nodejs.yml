@@ -62,7 +62,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi4]
+        machine: [rpi2]
         # node-version: [14, 16]
 
     steps:
@@ -72,7 +72,7 @@ jobs:
     #   run: nvm use ${{ matrix.node-version }}
 
     - name: Pre-build dependencies
-      run: npm install yarn
+      run: npm install --global yarn
 
     - name: Install dependencies
       run: yarn install
