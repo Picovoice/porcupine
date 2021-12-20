@@ -32,30 +32,30 @@ defaults:
     working-directory: binding/nodejs
 
 jobs:
-  build-github-hosted:
-    runs-on: ${{ matrix.os }}
+  # build-github-hosted:
+  #   runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [14.x, 16.x]
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest, macos-latest]
+  #       node-version: [14.x, 16.x]
 
-    steps:
-    - uses: actions/checkout@v2
+  #   steps:
+  #   - uses: actions/checkout@v2
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
+  #   - name: Use Node.js ${{ matrix.node-version }}
+  #     uses: actions/setup-node@v2
+  #     with:
+  #       node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
+  #   - name: Pre-build dependencies
+  #     run: npm install yarn
 
-    - name: Install dependencies
-      run: yarn install
+  #   - name: Install dependencies
+  #     run: yarn install
 
-    - name: Test
-      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
+  #   - name: Test
+  #     run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -68,8 +68,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      run: nvm use ${{ matrix.node-version }}
+    # - name: Use Node.js ${{ matrix.node-version }}
+    #   run: nvm use ${{ matrix.node-version }}
 
     - name: Pre-build dependencies
       run: npm install yarn
