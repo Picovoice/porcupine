@@ -13,6 +13,8 @@ import os
 from ctypes import *
 from enum import Enum
 
+from porcupine_error import *
+
 
 class Porcupine(object):
     """
@@ -37,17 +39,17 @@ class Porcupine(object):
         ACTIVATION_REFUSED = 11
 
     _PICOVOICE_STATUS_TO_EXCEPTION = {
-        PicovoiceStatuses.OUT_OF_MEMORY: MemoryError,
-        PicovoiceStatuses.IO_ERROR: IOError,
-        PicovoiceStatuses.INVALID_ARGUMENT: ValueError,
-        PicovoiceStatuses.STOP_ITERATION: StopIteration,
-        PicovoiceStatuses.KEY_ERROR: KeyError,
-        PicovoiceStatuses.INVALID_STATE: ValueError,
-        PicovoiceStatuses.RUNTIME_ERROR: RuntimeError,
-        PicovoiceStatuses.ACTIVATION_ERROR: RuntimeError,
-        PicovoiceStatuses.ACTIVATION_LIMIT_REACHED: PermissionError,
-        PicovoiceStatuses.ACTIVATION_THROTTLED: PermissionError,
-        PicovoiceStatuses.ACTIVATION_REFUSED: PermissionError
+        PicovoiceStatuses.OUT_OF_MEMORY: PorcupineMemoryError,
+        PicovoiceStatuses.IO_ERROR: PorcupineIOError,
+        PicovoiceStatuses.INVALID_ARGUMENT: PorcupineInvalidArgumentError,
+        PicovoiceStatuses.STOP_ITERATION: PorcupineStopIterationError,
+        PicovoiceStatuses.KEY_ERROR: PorcupineKeyError,
+        PicovoiceStatuses.INVALID_STATE: PorcupineInvalidStateError,
+        PicovoiceStatuses.RUNTIME_ERROR: PorcupineRuntimeError,
+        PicovoiceStatuses.ACTIVATION_ERROR: PorcupineActivationError,
+        PicovoiceStatuses.ACTIVATION_LIMIT_REACHED: PorcupineActivationLimitError,
+        PicovoiceStatuses.ACTIVATION_THROTTLED: PorcupineActivationThrottledError,
+        PicovoiceStatuses.ACTIVATION_REFUSED: PorcupineActivationRefusedError
     }
 
     class CPorcupine(Structure):

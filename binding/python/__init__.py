@@ -10,6 +10,7 @@
 #
 
 from .porcupine import Porcupine
+from .porcupine_error import *
 from .util import *
 
 LIBRARY_PATH = pv_library_path('')
