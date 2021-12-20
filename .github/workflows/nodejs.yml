@@ -62,7 +62,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        machine: [rpi4]
         node-version: [14, 16]
 
     steps:
