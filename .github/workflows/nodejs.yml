@@ -32,7 +32,7 @@ defaults:
     working-directory: binding/nodejs
 
 jobs:
-  build:
+  build-github-hosted:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -56,3 +56,26 @@ jobs:
 
     - name: Test
       run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        node-version: [14, 16]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      run: nvm use ${{ matrix.node-version }}
+
+    - name: Pre-build dependencies
+      run: npm install yarn
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Test
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}  
