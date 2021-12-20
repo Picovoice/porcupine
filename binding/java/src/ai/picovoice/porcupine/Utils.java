@@ -153,13 +153,24 @@ class Utils {
 
     private static String getArchitecture() throws RuntimeException {
         String arch = System.getProperty("os.arch");
-        if (arch.equals("amd64") || arch.equals("x86_64")) {
-            if (ENVIRONMENT_NAME.equals("windows")) {
-                return "amd64";
-            } else {
+        boolean isArm = arch.equals("arm") || arch.equals("aarch64");
+        boolean isX86_64 = arch.equals("amd64") || arch.equals("x86_64");
+
+        if (ENVIRONMENT_NAME.equals("mac")) {
+            if (isArm) {
+                return "arm64";
+            } else if (isX86_64) {
                 return "x86_64";
             }
-        } else if (arch.equals("arm") || arch.equals("aarch64")) {
+        } else if (ENVIRONMENT_NAME.equals("windows")) {
+            if (isX86_64) {
+                return "amd64";
+            }
+        } else if (ENVIRONMENT_NAME.equals("linux")) {
+            if (isX86_64) {
+                return "x86_64";
+            }
+        } else if (isArm) {  // RPI, Beaglebone, etc..
             String cpuPart = getCpuPart();
             String archInfo = (arch.equals("aarch64")) ? "-aarch64" : "";
 
@@ -176,12 +187,14 @@ class Utils {
                     return "";
                 default:
                     throw new RuntimeException(
-                            String.format("Platform architecture with CPU Part (%s) is not supported by Porcupine.", cpuPart)
+                            String.format("Environment (%s) with CPU Part (%s) is not supported by Porcupine.", ENVIRONMENT_NAME, cpuPart)
                     );
             }
-        } else {
-            throw new RuntimeException(String.format("Platform architecture (%s) is not supported by Porcupine.", arch));
         }
+
+        throw new RuntimeException(
+                String.format("Environment (%s) with architecture (%s) is not supported by Porcupine.", ENVIRONMENT_NAME, arch)
+        );
     }
 
     private static String getCpuPart() throws RuntimeException {
@@ -223,7 +236,9 @@ class Utils {
             case "windows":
                 return RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
             case "mac":
-                return RESOURCE_DIRECTORY.resolve("lib/java/mac/x86_64/libpv_porcupine_jni.dylib").toString();
+                return RESOURCE_DIRECTORY.resolve("lib/java/mac")
+                                         .resolve(ARCHITECTURE)
+                                         .resolve("libpv_porcupine_jni.dylib").toString();
             case "jetson":
             case "beaglebone":
             case "raspberry-pi":

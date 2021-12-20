@@ -153,7 +153,10 @@ task copyLinuxLib(type: Copy) {
     from('../../lib/java/linux/x86_64/libpv_porcupine_jni.so') into "${outputDir}/porcupine/lib/java/linux/x86_64/"
 }
 task copyMacLib(type: Copy) {
-    from('../../lib/java/mac/x86_64/libpv_porcupine_jni.dylib') into "${outputDir}/porcupine/lib/java/mac/x86_64/"
+    from('../../lib/java/mac/')
+    include('x86_64/libpv_porcupine_jni.dylib',
+            'arm64/libpv_porcupine_jni.dylib')
+    into "${outputDir}/porcupine/lib/java/mac/"
 }
 task copyWindowsLib(type: Copy) {
     from('../../lib/java/windows/amd64/pv_porcupine_jni.dll') into "${outputDir}/porcupine/lib/java/windows/amd64/"
@@ -174,7 +177,7 @@ task copyBeagleboneLib(type: Copy) {
     from('../../lib/java/beaglebone/libpv_porcupine_jni.so') into "${outputDir}/porcupine/lib/java/beaglebone/"
 }
 
-assemble {
+jar {
     dependsOn 'copyLinuxKeywordResources'
     dependsOn 'copyMacKeywordResources'
     dependsOn 'copyWindowsKeywordResources'
@@ -196,6 +199,10 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+}
+
+compileTestJava {
+    dependsOn 'assemble'
 }
 
 test {
