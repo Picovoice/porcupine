@@ -14,6 +14,54 @@ from ctypes import *
 from enum import Enum
 
 
+class PorcupineError(Exception):
+    pass
+
+
+class PorcupineMemoryError(PorcupineError):
+    pass
+
+
+class PorcupineIOError(PorcupineError):
+    pass
+
+
+class PorcupineInvalidArgumentError(PorcupineError):
+    pass
+
+
+class PorcupineStopIterationError(PorcupineError):
+    pass
+
+
+class PorcupineKeyError(PorcupineError):
+    pass
+
+
+class PorcupineInvalidStateError(PorcupineError):
+    pass
+
+
+class PorcupineRuntimeError(PorcupineError):
+    pass
+
+
+class PorcupineActivationError(PorcupineError):
+    pass
+
+
+class PorcupineActivationLimitError(PorcupineError):
+    pass
+
+
+class PorcupineActivationThrottledError(PorcupineError):
+    pass
+
+
+class PorcupineActivationRefusedError(PorcupineError):
+    pass
+
+
 class Porcupine(object):
     """
     Python binding for Porcupine wake word engine. It detects utterances of given keywords within an incoming stream of
@@ -37,17 +85,17 @@ class Porcupine(object):
         ACTIVATION_REFUSED = 11
 
     _PICOVOICE_STATUS_TO_EXCEPTION = {
-        PicovoiceStatuses.OUT_OF_MEMORY: MemoryError,
-        PicovoiceStatuses.IO_ERROR: IOError,
-        PicovoiceStatuses.INVALID_ARGUMENT: ValueError,
-        PicovoiceStatuses.STOP_ITERATION: StopIteration,
-        PicovoiceStatuses.KEY_ERROR: KeyError,
-        PicovoiceStatuses.INVALID_STATE: ValueError,
-        PicovoiceStatuses.RUNTIME_ERROR: RuntimeError,
-        PicovoiceStatuses.ACTIVATION_ERROR: RuntimeError,
-        PicovoiceStatuses.ACTIVATION_LIMIT_REACHED: PermissionError,
-        PicovoiceStatuses.ACTIVATION_THROTTLED: PermissionError,
-        PicovoiceStatuses.ACTIVATION_REFUSED: PermissionError
+        PicovoiceStatuses.OUT_OF_MEMORY: PorcupineMemoryError,
+        PicovoiceStatuses.IO_ERROR: PorcupineIOError,
+        PicovoiceStatuses.INVALID_ARGUMENT: PorcupineInvalidArgumentError,
+        PicovoiceStatuses.STOP_ITERATION: PorcupineStopIterationError,
+        PicovoiceStatuses.KEY_ERROR: PorcupineKeyError,
+        PicovoiceStatuses.INVALID_STATE: PorcupineInvalidStateError,
+        PicovoiceStatuses.RUNTIME_ERROR: PorcupineRuntimeError,
+        PicovoiceStatuses.ACTIVATION_ERROR: PorcupineActivationError,
+        PicovoiceStatuses.ACTIVATION_LIMIT_REACHED: PorcupineActivationLimitError,
+        PicovoiceStatuses.ACTIVATION_THROTTLED: PorcupineActivationThrottledError,
+        PicovoiceStatuses.ACTIVATION_REFUSED: PorcupineActivationRefusedError
     }
 
     class CPorcupine(Structure):

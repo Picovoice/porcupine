@@ -10,6 +10,18 @@
 #
 
 from .porcupine import Porcupine
+from .porcupine import PorcupineError
+from .porcupine import PorcupineMemoryError
+from .porcupine import PorcupineIOError
+from .porcupine import PorcupineInvalidArgumentError
+from .porcupine import PorcupineStopIterationError
+from .porcupine import PorcupineKeyError
+from .porcupine import PorcupineInvalidStateError
+from .porcupine import PorcupineRuntimeError
+from .porcupine import PorcupineActivationError
+from .porcupine import PorcupineActivationLimitError
+from .porcupine import PorcupineActivationThrottledError
+from .porcupine import PorcupineActivationRefusedError
 from .util import *
 
 LIBRARY_PATH = pv_library_path('')
