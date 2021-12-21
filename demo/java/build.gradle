@@ -15,7 +15,7 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:2.0.1'
+    implementation 'ai.picovoice:porcupine-java:2.0.2'
     implementation 'commons-cli:commons-cli:1.4'
 }
 
@@ -33,7 +33,7 @@ jar {
 task fileDemoJar(type: Jar) {
     manifest {
         attributes "Main-Class": "ai.picovoice.porcupinedemo.FileDemo",
-                "Class-Path" : "porcupine-2.0.0.jar;commons-cli-1.4.jar"
+                "Class-Path" : "porcupine-2.0.2.jar;commons-cli-1.4.jar"
     }
     from sourceSets.main.output
     exclude "**/MicDemo.class"
