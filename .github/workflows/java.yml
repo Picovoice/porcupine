@@ -50,9 +50,6 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: test
-      run: echo "machine is $RUNNER_NAME ok"
-
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
@@ -67,13 +64,10 @@ jobs:
 
     strategy:
       matrix:
-        machine: [jetson]
+        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: test
-      run: echo "machine is $RUNNER_NAME ok"
 
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
