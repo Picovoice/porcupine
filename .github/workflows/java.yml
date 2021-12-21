@@ -34,7 +34,7 @@ defaults:
     working-directory: binding/java
 
 jobs:
-  build-github-hosted:
+  # build-github-hosted:
     # runs-on: ${{ matrix.os }}
 
     # strategy:
