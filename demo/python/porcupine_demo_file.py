@@ -89,12 +89,32 @@ def main():
     if len(keyword_paths) != len(args.sensitivities):
         raise ValueError('Number of keywords does not match the number of sensitivities.')
 
-    porcupine = pvporcupine.create(
-        access_key=args.access_key,
-        library_path=args.library_path,
-        model_path=args.model_path,
-        keyword_paths=keyword_paths,
-        sensitivities=args.sensitivities)
+    try:
+        porcupine = pvporcupine.create(
+            access_key=args.access_key,
+            library_path=args.library_path,
+            model_path=args.model_path,
+            keyword_paths=keyword_paths,
+            sensitivities=args.sensitivities)
+    except pvporcupine.PorcupineInvalidArgumentError as e:
+        print(f"One or more arguments provided to Porcupine is invalid: {args}")
+        print(f"If all other arguments seem valid, ensure that '{args.access_key}' is a valid AccessKey")
+        raise e
+    except pvporcupine.PorcupineActivationError as e:
+        print("AccessKey activation error")
+        raise e
+    except pvporcupine.PorcupineActivationLimitError as e:
+        print(f"AccessKey '{args.access_key}' has reached it's temporary device limit")
+        raise e
+    except pvporcupine.PorcupineActivationRefusedError as e:
+        print(f"AccessKey '{args.access_key}' refused")
+        raise e
+    except pvporcupine.PorcupineActivationThrottledError as e:
+        print(f"AccessKey '{args.access_key}' has been throttled")
+        raise e
+    except pvporcupine.PorcupineError as e:
+        print(f"Failed to initialize Porcupine")
+        raise e
 
     audio = read_file(args.input_audio_path, porcupine.sample_rate)
 

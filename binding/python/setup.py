@@ -42,7 +42,6 @@ MANIFEST_IN = """
 include pvporcupine/LICENSE
 include pvporcupine/__init__.py
 include pvporcupine/porcupine.py
-include pvporcupine/porcupine_error.py
 include pvporcupine/util.py
 include pvporcupine/lib/common/porcupine_params.pv
 include pvporcupine/lib/beaglebone/libpv_porcupine.so
@@ -68,7 +67,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="2.0.1",
+    version="2.0.4",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",
