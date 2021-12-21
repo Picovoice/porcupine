@@ -110,7 +110,25 @@ class PorcupineDemo(Thread):
                 result = porcupine.process(pcm)
                 if result >= 0:
                     print('[%s] Detected %s' % (str(datetime.now()), keywords[result]))
-
+        except pvporcupine.PorcupineInvalidArgumentError as e:
+            print("One or more arguments provided to Porcupine is invalid")
+            print("If all other arguments seem valid, ensure that 'access_key' is a valid AccessKey")
+            raise e
+        except pvporcupine.PorcupineActivationError as e:
+            print("AccessKey activation error")
+            raise e
+        except pvporcupine.PorcupineActivationLimitError as e:
+            print(f"AccessKey '{args.access_key}' has reached it's temporary device limit")
+            raise e
+        except pvporcupine.PorcupineActivationRefusedError as e:
+            print(f"AccessKey '{args.access_key}' refused")
+            raise e
+        except pvporcupine.PorcupineActivationThrottledError as e:
+            print(f"AccessKey '{args.access_key}' has been throttled")
+            raise e
+        except pvporcupine.PorcupineError as e:
+            print(f"Failed to initialize Porcupine")
+            raise e
         except KeyboardInterrupt:
             print('Stopping ...')
         finally:
