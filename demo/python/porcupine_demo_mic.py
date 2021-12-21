@@ -111,20 +111,26 @@ class PorcupineDemo(Thread):
                 if result >= 0:
                     print('[%s] Detected %s' % (str(datetime.now()), keywords[result]))
         except pvporcupine.PorcupineInvalidArgumentError as e:
-            print("One or more arguments provided to Porcupine is invalid")
-            print("If all other arguments seem valid, ensure that 'access_key' is a valid AccessKey")
+            print("One or more arguments provided to Porcupine is invalid: {\n" +
+                  f"\t{self._access_key=}\n" +
+                  f"\t{self._library_path=}\n" +
+                  f"\t{self._model_path=}\n" +
+                  f"\t{self._keyword_paths=}\n" +
+                  f"\t{self._sensitivities=}\n" +
+                  "}")
+            print(f"If all other arguments seem valid, ensure that '{self._access_key}' is a valid AccessKey")
             raise e
         except pvporcupine.PorcupineActivationError as e:
             print("AccessKey activation error")
             raise e
         except pvporcupine.PorcupineActivationLimitError as e:
-            print(f"AccessKey '{args.access_key}' has reached it's temporary device limit")
+            print(f"AccessKey '{self._access_key}' has reached it's temporary device limit")
             raise e
         except pvporcupine.PorcupineActivationRefusedError as e:
-            print(f"AccessKey '{args.access_key}' refused")
+            print(f"AccessKey '{self._access_key}' refused")
             raise e
         except pvporcupine.PorcupineActivationThrottledError as e:
-            print(f"AccessKey '{args.access_key}' has been throttled")
+            print(f"AccessKey '{self._access_key}' has been throttled")
             raise e
         except pvporcupine.PorcupineError as e:
             print(f"Failed to initialize Porcupine")
