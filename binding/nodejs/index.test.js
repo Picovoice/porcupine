@@ -84,7 +84,9 @@ const keywordPathsMultipleFr = [
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
 
-function porcupineDetectionCounts(engineInstance, waveFilePath) {
+function porcupineDetectionCounts(engineInstance, relativeWaveFilePath) {
+  const path = require("path");
+  const waveFilePath = path.join(__dirname, relativeWaveFilePath);
   const waveBuffer = fs.readFileSync(waveFilePath);
   const waveAudioFile = new WaveFile(waveBuffer);
 
