@@ -79,7 +79,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [beaglebone]
+        machine: [rpi4]
 
     steps:
     - uses: actions/checkout@v2
