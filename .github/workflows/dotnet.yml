@@ -45,26 +45,45 @@ defaults:
     working-directory: binding/dotnet
 
 jobs:
-  build-github-hosted:
-    runs-on: ${{ matrix.os }}
+  # build-github-hosted:
+  #   runs-on: ${{ matrix.os }}
+
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest, macos-latest]  
+
+  #   steps:
+  #   - uses: actions/checkout@v2
+
+  #   - name: Setup .NET 3.1
+  #     uses: actions/setup-dotnet@v1
+  #     with:
+  #       dotnet-version: 3.1.x
+
+  #   - name: Setup .NET 5.0
+  #     uses: actions/setup-dotnet@v1
+  #     with:
+  #       dotnet-version: 5.0.x
+        
+  #   - name: Restore dependencies
+  #     run: dotnet restore    
+
+  #   - name: Build
+  #     run: dotnet build --no-restore      
+
+  #   - name: Test
+  #     run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]  
+        machine: [beaglebone]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
-
-    - name: Setup .NET 5.0
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-        
     - name: Restore dependencies
       run: dotnet restore    
 
@@ -73,22 +92,3 @@ jobs:
 
     - name: Test
       run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
-
-  # build-self-hosted:
-  #   runs-on: ${{ matrix.machine }}
-
-  #   strategy:
-  #     matrix:
-  #       machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
-
-  #   steps:
-  #   - uses: actions/checkout@v2
-
-  #   - name: Pre-build dependencies
-  #     run: python3 -m pip install --upgrade pip
-
-  #   - name: Install dependencies
-  #     run: pip3 install -r requirements.txt
-
-  #   - name: Test
-  #     run: python3 test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
