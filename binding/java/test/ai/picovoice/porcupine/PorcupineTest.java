@@ -65,15 +65,9 @@ public class PorcupineTest {
         assertTrue(porcupine.getSampleRate() > 0);
     }
 
-    @Test
-    void testProcess() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        porcupine = new Porcupine.Builder()
-                .setAccessKey(accessKey)
-                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
-                .build();
-
+    void runProcess(String audioFilePath, ArrayList<Integer> expectedResults) throws IOException, UnsupportedAudioFileException, PorcupineException { 
         int frameLen = porcupine.getFrameLength();
-        File testAudioPath = new File("../../resources/audio_samples/porcupine.wav");
+        File testAudioPath = new File(audioFilePath);
 
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(testAudioPath);
         assertEquals(audioInputStream.getFormat().getFrameRate(), 16000);
@@ -90,18 +84,30 @@ public class PorcupineTest {
 
                 ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
                 int result = porcupine.process(porcupineFrame);
-                assertTrue(result == -1 || result == 0);
+                assertTrue(result >= -1);
                 if (result >= 0) {
                     results.add(result);
                 }
             }
         }
 
-        assertTrue(results.size() == 1 && results.get(0) == 0);
+        assertEquals(results, expectedResults);        
     }
 
     @Test
-    void testProcessMultiple() throws IOException, UnsupportedAudioFileException, PorcupineException {
+    void testSingleKeyword() throws IOException, UnsupportedAudioFileException, PorcupineException {
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                .build();
+
+        runProcess(
+            "../../resources/audio_samples/porcupine.wav",
+            new ArrayList<>(Arrays.asList(0)));
+    }
+
+    @Test
+    void testMultipleKeywords() throws IOException, UnsupportedAudioFileException, PorcupineException {
         final Porcupine.BuiltInKeyword[] keywords = new Porcupine.BuiltInKeyword[]{
             Porcupine.BuiltInKeyword.ALEXA,
             Porcupine.BuiltInKeyword.AMERICANO,
@@ -119,32 +125,9 @@ public class PorcupineTest {
                 .setBuiltInKeywords(keywords)
                 .build();
 
-        int frameLen = porcupine.getFrameLength();
-        File testAudioPath = new File("../../resources/audio_samples/multiple_keywords.wav");
-
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(testAudioPath);
-        assertEquals(audioInputStream.getFormat().getFrameRate(), 16000);
-
-        int byteDepth = audioInputStream.getFormat().getFrameSize();
-        int bufferSize = frameLen * byteDepth;
-        byte[] pcm = new byte[bufferSize];
-        short[] porcupineFrame = new short[frameLen];
-        int numBytesRead = 0;
-        ArrayList<Integer> results = new ArrayList<>();
-        while ((numBytesRead = audioInputStream.read(pcm)) != -1) {
-
-            if (numBytesRead / byteDepth == frameLen) {
-
-                ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
-                int result = porcupine.process(porcupineFrame);
-                assertTrue(result >= -1 && result < keywords.length);
-                if (result >= 0) {
-                    results.add(result);
-                }
-            }
-        }
-
-        ArrayList<Integer> expectedResults = new ArrayList<>(Arrays.asList(7, 0, 1, 2, 3, 4, 5, 6, 7, 8));
-        assertEquals(results, expectedResults);
+        runProcess(
+            "../../resources/audio_samples/multiple_keywords.wav",
+            new ArrayList<>(Arrays.asList(7, 0, 1, 2, 3, 4, 5, 6, 7, 8)));
     }
+
 }
