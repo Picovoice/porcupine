@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 class Utils {
 
     private static final Path RESOURCE_DIRECTORY;
-    private static final String ENVIRONMENT_NAME;
+    public static final String ENVIRONMENT_NAME;
     private static final String ARCHITECTURE;
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
