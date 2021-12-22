@@ -13,3 +13,6 @@
 
 ## [2.0.4] - 2021-11-25
 * Run formatter
+
+## [2.0.5] - 2021-12-22
+* Update Android native package
