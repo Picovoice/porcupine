@@ -41,39 +41,39 @@ public class PorcupineTest {
         ENVIRONMENT_NAME = Utils.getEnvironmentName();
     }
 
-    private static String append_language(String s, String language) {
+    private static String appendLanguage(String s, String language) {
         if (language == "en")
             return s;
         return s + "_" + language;
     }
 
-    private static String getKeywordPath(String language, String keyword) {
+    private static String getTestKeywordPath(String language, String keyword) {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../resources")
-            .resolve(append_language("keyword_files", language))
+            .resolve(appendLanguage("keyword_files", language))
             .resolve(ENVIRONMENT_NAME)
             .resolve(keyword + "_" + ENVIRONMENT_NAME + ".ppn")
             .toString();
     }
 
-    private static String getModelPath(String language) {
+    private static String getTestModelPath(String language) {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../lib/common")
-            .resolve(append_language("porcupine_params", language)+".pv")
+            .resolve(appendLanguage("porcupine_params", language)+".pv")
             .toString();
     }
 
-    private static String getAudioFilePath(String AuadioFileName) {
+    private static String getTestAudioFilePath(String audioFileName) {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../resources/audio_samples")
-            .resolve(AuadioFileName)
+            .resolve(audioFileName)
             .toString();
     }
 
-    private static String[] getKeywordPaths(String language, String[] keywords) {
+    private static String[] getTestKeywordPaths(String language, String[] keywords) {
         String keywordPaths[] = new String[keywords.length];
         for (int i=0; i<keywords.length; i++) {
-            keywordPaths[i] = getKeywordPath(language, keywords[i]);
+            keywordPaths[i] = getTestKeywordPath(language, keywords[i]);
         }
         return keywordPaths;
     }
@@ -85,8 +85,8 @@ public class PorcupineTest {
         porcupine = new Porcupine(
                 accessKey,
                 Utils.getPackagedLibraryPath(),
-                getModelPath(language),
-                getKeywordPaths(language, keywords),
+                getTestModelPath(language),
+                getTestKeywordPaths(language, keywords),
                 sensitivities);
     }
 
@@ -124,7 +124,7 @@ public class PorcupineTest {
 
     private void runProcess(String audioFileName, ArrayList<Integer> expectedResults) throws IOException, UnsupportedAudioFileException, PorcupineException { 
         int frameLen = porcupine.getFrameLength();
-        String audioFilePath = getAudioFilePath(audioFileName);
+        String audioFilePath = getTestAudioFilePath(audioFileName);
         File testAudioPath = new File(audioFilePath);
 
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(testAudioPath);
@@ -192,8 +192,11 @@ public class PorcupineTest {
     void testSingleKeywordDe() throws IOException, UnsupportedAudioFileException, PorcupineException {
         String language = "de";
         String keywords[] = {"heuschrecke"};
-        createPorcupineWrapper(language, keywords);
-
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath(language))
+                .setKeywordPaths(getTestKeywordPaths(language, keywords))
+                .build();
         runProcess(
             "heuschrecke.wav",
             new ArrayList<>(Arrays.asList(0)));
@@ -203,7 +206,11 @@ public class PorcupineTest {
     void testMultipleKeywordsDe() throws IOException, UnsupportedAudioFileException, PorcupineException {
         String language = "de";
         String keywords[] = {"ananas", "heuschrecke", "leguan", "stachelschwein"};
-        createPorcupineWrapper(language, keywords);
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath(language))
+                .setKeywordPaths(getTestKeywordPaths(language, keywords))
+                .build();
 
         runProcess(
             "multiple_keywords_de.wav",
@@ -214,7 +221,11 @@ public class PorcupineTest {
     void testSingleKeywordEs() throws IOException, UnsupportedAudioFileException, PorcupineException {
         String language = "es";
         String keywords[] = {"manzana"};
-        createPorcupineWrapper(language, keywords);
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath(language))
+                .setKeywordPaths(getTestKeywordPaths(language, keywords))
+                .build();
 
         runProcess(
             "manzana.wav",
@@ -225,7 +236,11 @@ public class PorcupineTest {
     void testMultipleKeywordsEs() throws IOException, UnsupportedAudioFileException, PorcupineException {
         String language = "es";
         String keywords[] = {"emparedado", "leopardo", "manzana"};
-        createPorcupineWrapper(language, keywords);
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath(language))
+                .setKeywordPaths(getTestKeywordPaths(language, keywords))
+                .build();
 
         runProcess(
             "multiple_keywords_es.wav",
@@ -236,7 +251,11 @@ public class PorcupineTest {
     void testSingleKeywordFr() throws IOException, UnsupportedAudioFileException, PorcupineException {
         String language = "fr";
         String keywords[] = {"mon chouchou"};
-        createPorcupineWrapper(language, keywords);
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath(language))
+                .setKeywordPaths(getTestKeywordPaths(language, keywords))
+                .build();
 
         runProcess(
             "mon_chouchou.wav",
@@ -247,7 +266,11 @@ public class PorcupineTest {
     void testMultipleKeywordsFr() throws IOException, UnsupportedAudioFileException, PorcupineException {
         String language = "fr";
         String keywords[] = {"framboise", "mon chouchou", "parapluie"};
-        createPorcupineWrapper(language, keywords);
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath(language))
+                .setKeywordPaths(getTestKeywordPaths(language, keywords))
+                .build();
 
         runProcess(
             "multiple_keywords_fr.wav",
