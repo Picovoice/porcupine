@@ -72,13 +72,12 @@ namespace PorcupineTest
 
         private static string getKeywordPath(string language, string keyword)
         {
-            return Path.Combine(new string[] {
+            return Path.Combine(
                 _relativeDir,
                 "../../../../../../resources",
                 appendLanguage("keyword_files", language),
-                _env,
-                $"{keyword}_{_env}.ppn"
-            });
+                $"{_env}/{keyword}_{_env}.ppn"
+            );
         }
 
         private static List<string> getKeywordPaths(string language, List<string> keywords)
@@ -94,11 +93,11 @@ namespace PorcupineTest
         private static string getModelPath(string language)
         {
             string file_name = appendLanguage("porcupine_params", language);
-            return Path.Combine(new string[] {
+            return Path.Combine(
                 _relativeDir,
                 "../../../../../../lib/common",
                 $"{file_name}.pv"
-            });
+            );
         }
 
         private Porcupine createPorcupineWrapper(string language, List<string> keywords)
