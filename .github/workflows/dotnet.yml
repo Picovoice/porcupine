@@ -50,7 +50,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]  
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -79,7 +80,8 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        # machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        machine: [rpi4, jetson]
 
     steps:
     - uses: actions/checkout@v2
