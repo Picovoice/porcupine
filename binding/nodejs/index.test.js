@@ -222,7 +222,7 @@ describe("keyword detection in DE", () => {
     expect(heuschreckeCount).toEqual(1);
   });
 
-  test("multiple keyword multiple detection", () => {
+  test("multiple keyword multiple detection in DE", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsMultipleDe,
