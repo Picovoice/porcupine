@@ -25,7 +25,7 @@ const MODEL_PATH_DE = "../../lib/common/porcupine_params_de.pv";
 const MODEL_PATH_ES = "../../lib/common/porcupine_params_es.pv";
 const MODEL_PATH_FR = "../../lib/common/porcupine_params_fr.pv";
 
-const SENSITIVITIES_1 = [0.5];
+const DEFAULT_SENSITIVITY_ARRAY = [0.5];
 const WAV_PATH_PORCUPINE =
   "../../resources/audio_samples/porcupine.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS =
@@ -121,7 +121,7 @@ describe("successful keyword detections", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsSinglePorcupine,
-      SENSITIVITIES_1
+      DEFAULT_SENSITIVITY_ARRAY
     );
 
     let counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_PORCUPINE);
@@ -133,7 +133,7 @@ describe("successful keyword detections", () => {
     let porcupineEngine = new Porcupine(
         ACCESS_KEY,
         [GRASSHOPPER], 
-        SENSITIVITIES_1
+        DEFAULT_SENSITIVITY_ARRAY
     );
 
     let counts = porcupineDetectionCounts(
@@ -149,7 +149,7 @@ describe("successful keyword detections", () => {
       let porcupineEngine = new Porcupine(
         ACCESS_KEY,
         [99], 
-        SENSITIVITIES_1
+        DEFAULT_SENSITIVITY_ARRAY
       );
     }).toThrow(PvArgumentError);
   });
@@ -158,7 +158,7 @@ describe("successful keyword detections", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsSinglePorcupine,
-      SENSITIVITIES_1
+      DEFAULT_SENSITIVITY_ARRAY
     );
 
     let counts = porcupineDetectionCounts(
@@ -193,7 +193,7 @@ describe("manual paths", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,  
       keywordPathsSinglePorcupine,
-      SENSITIVITIES_1,
+      DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH
     );
 
@@ -208,7 +208,7 @@ describe("keyword detection in DE", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,  
       keywordPathsSingleDe,
-      SENSITIVITIES_1,
+      DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH_DE
     );
 
@@ -249,7 +249,7 @@ describe("keyword detection in ES", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,  
       keywordPathsSingleEs,
-      SENSITIVITIES_1,
+      DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH_ES
     );
 
@@ -289,7 +289,7 @@ describe("keyword detection in FR", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,  
       keywordPathsSingleFr,
-      SENSITIVITIES_1,
+      DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH_FR
     );
 
@@ -338,7 +338,7 @@ describe("basic parameter validation", () => {
       let porcupineEngine = new Porcupine(
         ACCESS_KEY,  
         `../../resources/keyword_files/${platform}/porcupine_${platform}.ppn`,
-        SENSITIVITIES_1
+        DEFAULT_SENSITIVITY_ARRAY
       );
     } catch (error) {
       expect(error.message.includes("array"));
@@ -403,7 +403,7 @@ describe("invalid state", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsSinglePorcupine,
-      SENSITIVITIES_1
+      DEFAULT_SENSITIVITY_ARRAY
     );
 
     let counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_PORCUPINE);
