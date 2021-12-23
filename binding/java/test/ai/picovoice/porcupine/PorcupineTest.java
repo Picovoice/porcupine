@@ -33,8 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PorcupineTest {
 
+    private static final String ENVIRONMENT_NAME;
     private Porcupine porcupine;
     private String accessKey = System.getProperty("pvTestingAccessKey");
+
+    static {
+        ENVIRONMENT_NAME = Utils.getEnvironmentName();
+    }
 
     private static String append_language(String s, String language) {
         if (language == "en")
@@ -46,8 +51,8 @@ public class PorcupineTest {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../resources")
             .resolve(append_language("keyword_files", language))
-            .resolve(Utils.ENVIRONMENT_NAME)
-            .resolve(keyword + "_" + Utils.ENVIRONMENT_NAME + ".ppn")
+            .resolve(ENVIRONMENT_NAME)
+            .resolve(keyword + "_" + ENVIRONMENT_NAME + ".ppn")
             .toString();
     }
 
