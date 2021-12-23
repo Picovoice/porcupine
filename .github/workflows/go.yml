@@ -44,11 +44,12 @@ defaults:
     working-directory: binding/go
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         go: [ '1.16' ]
 
     steps:
@@ -58,6 +59,29 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: ${{ matrix.go }}
+
+    - name: Pre-build dependencies
+      run: ./copy.sh
+
+    - name: Install dependencies
+      run: go get
+
+    - name: Build
+      run: go build
+
+    - name: Test
+      run: go test -access_key ${{secrets.PV_VALID_ACCESS_KEY}}
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        # machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        machine: [rpi4]
+
+    steps:
+    - uses: actions/checkout@v2
 
     - name: Pre-build dependencies
       run: ./copy.sh
