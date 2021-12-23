@@ -26,9 +26,6 @@ const MODEL_PATH_ES = "../../lib/common/porcupine_params_es.pv";
 const MODEL_PATH_FR = "../../lib/common/porcupine_params_fr.pv";
 
 const SENSITIVITIES_1 = [0.5];
-const SENSITIVITIES_2 = [0.5, 0.5];
-const SENSITIVITIES_3 = [0.5, 0.5, 0.5];
-const SENSITIVITIES_4 = [0.5, 0.5, 0.5, 0.5];
 const WAV_PATH_PORCUPINE =
   "../../resources/audio_samples/porcupine.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS =
@@ -173,10 +170,11 @@ describe("successful keyword detections", () => {
   });
 
   test("multiple keyword multiple detection", () => {
+    const sensitivities = new Array(keywordPathsMultipleAmericanoBumblebee.length).fill(0.5);
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsMultipleAmericanoBumblebee,
-      SENSITIVITIES_2
+      sensitivities
     );
 
     let counts = porcupineDetectionCounts(
@@ -206,7 +204,7 @@ describe("manual paths", () => {
 });
 
 describe("keyword detection in DE", () => {
-  test("single keyword single detection", () => {
+  test("single keyword single detection in DE", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,  
       keywordPathsSingleDe,
@@ -223,10 +221,11 @@ describe("keyword detection in DE", () => {
   });
 
   test("multiple keyword multiple detection in DE", () => {
+    const sensitivities = new Array(keywordPathsMultipleDe.length).fill(0.5);
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsMultipleDe,
-      SENSITIVITIES_4,
+      sensitivities,
       MODEL_PATH_DE
     );
 
@@ -246,7 +245,7 @@ describe("keyword detection in DE", () => {
 });
 
 describe("keyword detection in ES", () => {
-  test("single keyword single detection", () => {
+  test("single keyword single detection in ES", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,  
       keywordPathsSingleEs,
@@ -263,10 +262,11 @@ describe("keyword detection in ES", () => {
   });
 
   test("multiple keyword multiple detection in ES", () => {
+    const sensitivities = new Array(keywordPathsMultipleEs.length).fill(0.5);
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsMultipleEs,
-      SENSITIVITIES_3,
+      sensitivities,
       MODEL_PATH_ES
     );
 
@@ -284,7 +284,8 @@ describe("keyword detection in ES", () => {
 });
 
 describe("keyword detection in FR", () => {
-  test("single keyword single detection", () => {
+  test("single keyword single detection in FR", () => {
+    
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,  
       keywordPathsSingleFr,
@@ -301,10 +302,11 @@ describe("keyword detection in FR", () => {
   });
 
   test("multiple keyword multiple detection in FR", () => {
+    const sensitivities = new Array(keywordPathsMultipleFr.length).fill(0.5);
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsMultipleFr,
-      SENSITIVITIES_3,
+      sensitivities,
       MODEL_PATH_FR
     );
 
