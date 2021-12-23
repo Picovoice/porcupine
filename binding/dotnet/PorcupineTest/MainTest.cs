@@ -25,6 +25,7 @@ namespace PorcupineTest
     public class MainTest
     {
         private static string ACCESS_KEY;
+        private static string _relativeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
@@ -72,7 +73,7 @@ namespace PorcupineTest
         private static string getKeywordPath(string language, string keyword)
         {
             return Path.Combine(new string[] {
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                _relativeDir,
                 "../../../../../../resources",
                 appendLanguage("keyword_files", language),
                 _env,
@@ -94,7 +95,7 @@ namespace PorcupineTest
         {
             string file_name = appendLanguage("porcupine_params", language);
             return Path.Combine(new string[] {
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                _relativeDir,
                 "../../../../../../lib/common",
                 $"{file_name}.pv"
             });
@@ -115,7 +116,7 @@ namespace PorcupineTest
         private void runProcess(Porcupine p, string audioFileName, List<int> expectedResults)
         {
             int frameLen = p.FrameLength;
-            string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples", audioFileName);
+            string testAudioPath = Path.Combine(_relativeDir, "resources/audio_samples", audioFileName);
             List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);
 
             int framecount = (int)Math.Floor((float)(data.Count / frameLen));
