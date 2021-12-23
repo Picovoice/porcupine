@@ -300,7 +300,7 @@ describe("keyword detection in FR", () => {
     expect(monChouchouCount).toEqual(1);
   });
 
-  test("multiple keyword multiple detection", () => {
+  test("multiple keyword multiple detection in FR", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsMultipleFr,
