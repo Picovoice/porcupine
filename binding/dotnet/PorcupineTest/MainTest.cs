@@ -10,9 +10,10 @@
 */
 
 using System;
-using System.IO;
-using System.Reflection;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Pv;
@@ -33,6 +34,87 @@ namespace PorcupineTest
             }
         }
 
+        private static string appendLanguage(string s, string language)
+        {
+            if(language == "en")
+                return s;
+            return $"{s}_{language}";
+        }
+
+        private static string getKeywordPath(string language, string keyword)
+        {
+            string _env = Utils._env;
+            return Path.Combine(new string[] {
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                "../../../../../../resources",
+                appendLanguage("keyword_files", language),
+                _env,
+                $"{keyword}_{_env}.ppn"
+            });
+        }
+
+        private static List<string> getKeywordPaths(string language, List<string> keywords)
+        {
+            List<string> keywordPaths = new List<string>();
+            foreach (string keyword in keywords)
+            {
+                keywordPaths.Add(getKeywordPath(language, keyword));
+            }
+            return keywordPaths;
+        }
+
+        private static string getModelPath(string language)
+        {
+            string file_name = appendLanguage("porcupine_params", language);
+            return Path.Combine(new string[] {
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                "../../../../../../lib/common",
+                $"{file_name}.pv"
+            });
+        }
+
+        private Porcupine createPorcupineWrapper(string language, List<string> keywords)
+        {
+            List<string> keywordPaths = getKeywordPaths(language, keywords);
+            IEnumerable<float> sensitivities = Enumerable.Repeat(0.5f, keywords.Count());
+            return Porcupine.FromKeywordPaths(
+                ACCESS_KEY,
+                getKeywordPaths(language, keywords),
+                getModelPath(language),
+                Enumerable.Repeat(0.5f, keywords.Count())
+            );
+        }
+
+        private void runProcess(Porcupine p, string audioFileName, List<int> expectedResults)
+        {
+            int frameLen = p.FrameLength;
+            string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples", audioFileName);
+            List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);
+
+            int framecount = (int)Math.Floor((float)(data.Count / frameLen));
+            var results = new List<int>();
+            for (int i = 0; i < framecount; i++)
+            {
+                int start = i * frameLen;
+                int count = frameLen;
+                List<short> frame = data.GetRange(start, count);
+                int result = p.Process(frame.ToArray());
+                Assert.IsTrue(result >= -1, "Porcupine returned an unexpected result (<-1)");
+                if (result >= 0)
+                {
+                    results.Add(result);
+                }
+            }
+
+            Assert.AreEqual(expectedResults.Count, results.Count, $"Should have found {expectedResults.Count} keywords, but {results.Count} were found.");
+            for (int i = 0; i < results.Count; i++)
+            {
+                Assert.AreEqual(expectedResults[i], results[i], $"Porcupine did not detect keyword #{i+1} correctly.");
+            }
+
+            p.Dispose(); 
+        }
+
         [TestMethod]
         public void TestFrameLength()
         {
@@ -48,35 +130,17 @@ namespace PorcupineTest
         }
 
         [TestMethod]
-        public void TestProcess()
+        public void TestSingleKeyword()
         {
             using Porcupine p = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
-            int frameLen = p.FrameLength;
-
-            string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/porcupine.wav");
-            List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);
-
-            int framecount = (int)Math.Floor((float)(data.Count / frameLen));
-            var results = new List<int>();
-            for (int i = 0; i < framecount; i++)
-            {
-                int start = i * frameLen;
-                int count = frameLen;
-                List<short> frame = data.GetRange(start, count);
-                int result = p.Process(frame.ToArray());
-                Assert.IsTrue(result == -1 || result == 0, "Porcupine returned an unexpected result (should return 0 or -1)");
-                if (result >= 0)
-                {
-                    results.Add(result);
-                }
-            }
-
-            Assert.IsTrue(results.Count == 1 && results[0] == 0, "Expected to find keyword 'porcupine', but no keyword was detected.");
-            p.Dispose();
+            runProcess(
+                p,
+                "porcupine.wav",
+                new List<int>() {0});
         }
 
         [TestMethod]
-        public void TestProcessMultiple()
+        public void TestMultipleKeyword()
         {
             List<BuiltInKeyword> inputKeywords = new List<BuiltInKeyword>
             {
@@ -90,53 +154,127 @@ namespace PorcupineTest
                 BuiltInKeyword.PORCUPINE,
                 BuiltInKeyword.TERMINATOR
             };
+            using Porcupine p = Porcupine.FromBuiltInKeywords(ACCESS_KEY, inputKeywords);
+            runProcess(
+                p,
+                "multiple_keywords.wav",
+                new List<int>() {7, 0, 1, 2, 3, 4, 5, 6, 7, 8});
+        }
 
-            List<BuiltInKeyword> expectedResults = new List<BuiltInKeyword>() {
-                BuiltInKeyword.PORCUPINE,
-                BuiltInKeyword.ALEXA,
-                BuiltInKeyword.AMERICANO,
-                BuiltInKeyword.BLUEBERRY,
-                BuiltInKeyword.BUMBLEBEE,
-                BuiltInKeyword.GRAPEFRUIT,
-                BuiltInKeyword.GRASSHOPPER,
-                BuiltInKeyword.PICOVOICE,
-                BuiltInKeyword.PORCUPINE,
-                BuiltInKeyword.TERMINATOR
+        [TestMethod]
+        public void TestSingleKeywordDe()
+        {
+            List<string> keywords = new List<string>() {
+                "heuschrecke"
             };
 
-            Porcupine p = Porcupine.FromBuiltInKeywords(ACCESS_KEY, inputKeywords);
-            int frameLen = p.FrameLength;
+            using Porcupine p = createPorcupineWrapper(
+                "de",
+                keywords
+            );
 
-            string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/multiple_keywords.wav");
-            List<short> data = GetPcmFromFile(testAudioPath, p.SampleRate);
-
-            int framecount = (int)Math.Floor((float)(data.Count / frameLen));
-            var results = new List<int>();
-            for (int i = 0; i < framecount; i++)
-            {
-                int start = i * frameLen;
-                int count = frameLen;
-                List<short> frame = data.GetRange(start, count);
-                int result = p.Process(frame.ToArray());
-                Assert.IsTrue(result >= -1, "Porcupine returned an unexpected result (<-1)");
-
-                if (result >= 0)
-                {
-                    results.Add(result);
-                }
-            }
-
-            Assert.AreEqual(expectedResults.Count, results.Count, $"Should have found {expectedResults.Count} keywords, but {results.Count} were found.");
-            for (int i = 0; i < results.Count; i++)
-            {
-                Assert.AreEqual(
-                    expectedResults[i],
-                    inputKeywords[results[i]],
-                    $"Expected '{expectedResults[i]}', but '{inputKeywords[results[i]]}' was detected.");
-            }
-
-            p.Dispose();
+            runProcess(
+                p,
+                "heuschrecke.wav",
+                new List<int>() {0});
         }
+
+        [TestMethod]
+        public void TestMultipleKeywordDe()
+        {
+            List<string> keywords = new List<string>() {
+                "heuschrecke",
+                "ananas",
+                "leguan",
+                "stachelschwein"
+            };
+
+            using Porcupine p = createPorcupineWrapper(
+                "de",
+                keywords
+            );
+
+            runProcess(
+                p,
+                "multiple_keywords_de.wav",
+                new List<int>() {1, 0, 2, 3});
+        }
+
+        [TestMethod]
+        public void TestSingleKeywordEs()
+        {
+            List<string> keywords = new List<string>() {
+                "manzana"
+            };
+
+            using Porcupine p = createPorcupineWrapper(
+                "es",
+                keywords
+            );
+
+            runProcess(
+                p,
+                "manzana.wav",
+                new List<int>() {0});
+        }
+
+        [TestMethod]
+        public void TestMultipleKeywordEs()
+        {
+            List<string> keywords = new List<string>() {
+                "emparedado",
+                "leopardo",
+                "manzana"
+            };
+
+            using Porcupine p = createPorcupineWrapper(
+                "es",
+                keywords
+            );
+
+            runProcess(
+                p,
+                "multiple_keywords_es.wav",
+                new List<int>() {0, 1, 2});
+        }
+
+        [TestMethod]
+        public void TestSingleKeywordFr()
+        {
+            List<string> keywords = new List<string>() {
+                "mon chouchou"
+            };
+
+            using Porcupine p = createPorcupineWrapper(
+                "fr",
+                keywords
+            );
+
+            runProcess(
+                p,
+                "mon_chouchou.wav",
+                new List<int>() {0});
+        }
+
+        [TestMethod]
+        public void TestMultipleKeywordFr()
+        {
+            List<string> keywords = new List<string>() {
+                "framboise",
+                "mon chouchou",
+                "parapluie"
+            };
+
+            using Porcupine p = createPorcupineWrapper(
+                "fr",
+                keywords
+            );
+
+            runProcess(
+                p,
+                "multiple_keywords_fr.wav",
+                new List<int>() {0, 1, 0, 2});
+        }                 
 
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {

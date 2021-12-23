@@ -22,7 +22,7 @@ namespace Pv
     {
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
 
-        private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
+        public static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
