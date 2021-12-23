@@ -262,7 +262,7 @@ describe("keyword detection in ES", () => {
     expect(manzanaCount).toEqual(1);
   });
 
-  test("multiple keyword multiple detection", () => {
+  test("multiple keyword multiple detection in ES", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       keywordPathsMultipleEs,
