@@ -50,8 +50,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        # os: [ubuntu-latest, macos-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -78,22 +78,22 @@ jobs:
     - name: Test
       run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
 
-  # build-self-hosted:
-  #   runs-on: ${{ matrix.machine }}
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
 
-  #   strategy:
-  #     matrix:
-  #       # machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
-  #       machine: [rpi2, rpi3, rpi4, jetson]
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        # machine: [rpi4, jetson]
 
-  #   steps:
-  #   - uses: actions/checkout@v2
+    steps:
+    - uses: actions/checkout@v2
 
-  #   - name: Restore dependencies
-  #     run: dotnet restore    
+    - name: Restore dependencies
+      run: dotnet restore    
 
-  #   - name: Build
-  #     run: dotnet build --no-restore      
+    - name: Build
+      run: dotnet build --no-restore      
 
-  #   - name: Test
-  #     run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
+    - name: Test
+      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
