@@ -65,6 +65,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+
+    - name: Test .NET
+      run: dotnet --list-sdks
         
     - name: Restore dependencies
       run: dotnet restore    
@@ -75,22 +78,22 @@ jobs:
     - name: Test
       run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
 
-  build-self-hosted:
-    runs-on: ${{ matrix.machine }}
+  # build-self-hosted:
+  #   runs-on: ${{ matrix.machine }}
 
-    strategy:
-      matrix:
-        # machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
-        machine: [rpi2, rpi3, rpi4, jetson]
+  #   strategy:
+  #     matrix:
+  #       # machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+  #       machine: [rpi2, rpi3, rpi4, jetson]
 
-    steps:
-    - uses: actions/checkout@v2
+  #   steps:
+  #   - uses: actions/checkout@v2
 
-    - name: Restore dependencies
-      run: dotnet restore    
+  #   - name: Restore dependencies
+  #     run: dotnet restore    
 
-    - name: Build
-      run: dotnet build --no-restore      
+  #   - name: Build
+  #     run: dotnet build --no-restore      
 
-    - name: Test
-      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
+  #   - name: Test
+  #     run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
