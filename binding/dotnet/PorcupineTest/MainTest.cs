@@ -10,10 +10,11 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Pv;
@@ -24,6 +25,33 @@ namespace PorcupineTest
     public class MainTest
     {
         private static string ACCESS_KEY;
+        private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
+        private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
+                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
+
+        private static string PvLinuxEnv()
+        {
+            string cpuInfo = File.ReadAllText("/proc/cpuinfo");
+            string[] cpuPartList = cpuInfo.Split('\n').Where(x => x.Contains("CPU part")).ToArray();
+            if (cpuPartList.Length == 0)
+                throw new PlatformNotSupportedException($"Unsupported CPU.\n{cpuInfo}");
+
+            string cpuPart = cpuPartList[0].Split(' ').Last().ToLower();
+
+            switch (cpuPart)
+            {
+                case "0xc07":
+                case "0xd03":
+                case "0xd08": return "raspberry-pi";
+                case "0xd07": return "jetson";
+                case "0xc08": return "beaglebone";
+                default:
+                    throw new PlatformNotSupportedException($"This device (CPU part = {cpuPart}) is not supported by Picovoice.");
+            }
+        }                                                    
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
@@ -43,7 +71,6 @@ namespace PorcupineTest
 
         private static string getKeywordPath(string language, string keyword)
         {
-            string _env = Utils._env;
             return Path.Combine(new string[] {
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 "../../../../../../resources",
