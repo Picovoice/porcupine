@@ -190,8 +190,8 @@ public class PorcupineTest {
 
     @Test
     void testSingleKeywordDe() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        String language = "de";
-        String keywords[] = {"heuschrecke"};
+        final String language = "de";
+        final String keywords[] = {"heuschrecke"};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(getTestModelPath(language))
@@ -204,8 +204,8 @@ public class PorcupineTest {
 
     @Test
     void testMultipleKeywordsDe() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        String language = "de";
-        String keywords[] = {"ananas", "heuschrecke", "leguan", "stachelschwein"};
+        final String language = "de";
+        final String keywords[] = {"ananas", "heuschrecke", "leguan", "stachelschwein"};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(getTestModelPath(language))
@@ -219,8 +219,8 @@ public class PorcupineTest {
 
     @Test
     void testSingleKeywordEs() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        String language = "es";
-        String keywords[] = {"manzana"};
+        final String language = "es";
+        final String keywords[] = {"manzana"};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(getTestModelPath(language))
@@ -234,8 +234,8 @@ public class PorcupineTest {
 
     @Test
     void testMultipleKeywordsEs() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        String language = "es";
-        String keywords[] = {"emparedado", "leopardo", "manzana"};
+        final String language = "es";
+        final String keywords[] = {"emparedado", "leopardo", "manzana"};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(getTestModelPath(language))
@@ -249,8 +249,8 @@ public class PorcupineTest {
 
     @Test
     void testSingleKeywordFr() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        String language = "fr";
-        String keywords[] = {"mon chouchou"};
+        final String language = "fr";
+        final String keywords[] = {"mon chouchou"};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(getTestModelPath(language))
@@ -264,8 +264,8 @@ public class PorcupineTest {
 
     @Test
     void testMultipleKeywordsFr() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        String language = "fr";
-        String keywords[] = {"framboise", "mon chouchou", "parapluie"};
+        final String language = "fr";
+        final String keywords[] = {"framboise", "mon chouchou", "parapluie"};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(getTestModelPath(language))
