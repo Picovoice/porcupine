@@ -78,18 +78,6 @@ public class PorcupineTest {
         return keywordPaths;
     }
 
-    private void createPorcupineWrapper(String language, String[] keywords) throws PorcupineException{
-        float sensitivities[] = new float[keywords.length];
-        Arrays.fill(sensitivities, 0.5f);
-
-        porcupine = new Porcupine(
-                accessKey,
-                Utils.getPackagedLibraryPath(),
-                getTestModelPath(language),
-                getTestKeywordPaths(language, keywords),
-                sensitivities);
-    }
-
     @AfterEach
     void tearDown() {
         porcupine.delete();
