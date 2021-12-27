@@ -18,6 +18,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"reflect"
 )
 
 var pvTestAccessKey string
@@ -28,88 +29,38 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestProcess(t *testing.T) {
-
-	test_file, _ := filepath.Abs("../../resources/audio_samples/porcupine.wav")
-
-	p := Porcupine{
-		AccessKey:       pvTestAccessKey,
-		BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
-	err := p.Init()
-	if err != nil {
-		t.Fatalf("%v", err)
+func appendLanguage(s string, language string) string {
+	if language == "en" {
+		return s;
 	}
-
-	t.Logf("Porcupine Version: %s", Version)
-	t.Logf("Frame Length: %d", FrameLength)
-	t.Logf("Sample Rate: %d", SampleRate)
-
-	data, err := ioutil.ReadFile(test_file)
-	if err != nil {
-		t.Fatalf("Could not read test file: %v", err)
-	}
-	data = data[44:] // skip header
-
-	frameLenBytes := FrameLength * 2
-	frameCount := int(math.Floor(float64(len(data)) / float64(frameLenBytes)))
-	sampleBuffer := make([]int16, FrameLength)
-	var results []int
-	for i := 0; i < frameCount; i++ {
-		start := i * frameLenBytes
-
-		for j := 0; j < FrameLength; j++ {
-			dataOffset := start + (j * 2)
-			sampleBuffer[j] = int16(binary.LittleEndian.Uint16(data[dataOffset : dataOffset+2]))
-		}
-
-		result, err := p.Process(sampleBuffer)
-		if err != nil {
-			t.Fatalf("Could not read test file: %v", err)
-		}
-
-		if result == 0 {
-			results = append(results, result)
-			t.Logf("Keyword triggered at %f", float64((i+1)*FrameLength)/float64(SampleRate))
-		}
-	}
-
-	if len(results) != 1 || results[0] != 0 {
-		t.Fatalf("Failed to find keyword '%s.'", p.BuiltInKeywords[0])
-	}
-
-	delErr := p.Delete()
-	if delErr != nil {
-		t.Fatalf("%v", delErr)
-	}
+	return s + "_" + language
 }
 
-func TestMultiple(t *testing.T) {
+func getTestModelPath(language string) string {
+	return filepath.Join(
+		"../../lib/common",
+		appendLanguage("porcupine_params", language) + ".pv")
+}
 
-	test_file, _ := filepath.Abs("../../resources/audio_samples/multiple_keywords.wav")
+func getTestKeywordPath(language string, keyword string) string {
+	return filepath.Join(
+		"../../resources",
+		appendLanguage("keyword_files", language),
+		osName,
+		keyword + "_" + osName + ".ppn")
+}
 
-	p := Porcupine{
-		AccessKey: pvTestAccessKey,
-		BuiltInKeywords: []BuiltInKeyword{
-			ALEXA,
-			AMERICANO,
-			BLUEBERRY,
-			BUMBLEBEE,
-			GRAPEFRUIT,
-			GRASSHOPPER,
-			PICOVOICE,
-			PORCUPINE,
-			TERMINATOR}}
-	expectedResults := []BuiltInKeyword{
-		PORCUPINE,
-		ALEXA,
-		AMERICANO,
-		BLUEBERRY,
-		BUMBLEBEE,
-		GRAPEFRUIT,
-		GRASSHOPPER,
-		PICOVOICE,
-		PORCUPINE,
-		TERMINATOR}
+func getTestKeywordPaths(language string, keywords []string) []string {
+	keywordPaths := []string{}
+	for _, keyword := range keywords {
+		keywordPaths = append(keywordPaths, getTestKeywordPath(language, keyword))
+	}
+	return keywordPaths
+}
+
+func runTestCase(t *testing.T, p Porcupine, audioFileName string, expectedResults []int) {
+	audioFilePath := filepath.Join("../../resources/audio_samples", audioFileName)
+	test_file, _ := filepath.Abs(audioFilePath)
 
 	err := p.Init()
 	if err != nil {
@@ -148,15 +99,131 @@ func TestMultiple(t *testing.T) {
 		}
 	}
 
-	for i := range results {
-		detectedKeyword := p.BuiltInKeywords[results[i]]
-		if detectedKeyword != expectedResults[i] {
-			t.Fatalf("Expected keyword %s, but %s was detected.", expectedResults[i], detectedKeyword)
-		}
+	if !reflect.DeepEqual(results, expectedResults) {
+		t.Fatalf("Detections are not correct")
 	}
 
 	delErr := p.Delete()
 	if delErr != nil {
 		t.Fatalf("%v", delErr)
 	}
+}
+
+func TestProcess(t *testing.T) {
+	p := Porcupine{
+		AccessKey:       pvTestAccessKey,
+		BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
+	runTestCase(
+		t,
+		p,
+		"porcupine.wav",
+		[]int{0})
+}
+
+func TestMultiple(t *testing.T) {
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		BuiltInKeywords: []BuiltInKeyword{
+			ALEXA,
+			AMERICANO,
+			BLUEBERRY,
+			BUMBLEBEE,
+			GRAPEFRUIT,
+			GRASSHOPPER,
+			PICOVOICE,
+			PORCUPINE,
+			TERMINATOR}}
+	runTestCase(
+		t,
+		p,
+		"multiple_keywords.wav",
+		[]int{7, 0, 1, 2, 3, 4, 5, 6, 7, 8})
+}
+
+func TestSingleKeywordDe(t *testing.T) {
+	language := "de"
+	keywords := []string{"heuschrecke"}
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		p,
+		"heuschrecke.wav",
+		[]int{0})
+}
+
+func TestMultipleKeywordDe(t *testing.T) {
+	language := "de"
+	keywords := []string{
+		"ananas",
+		"heuschrecke",
+		"leguan",
+		"stachelschwein"}
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		p,
+		"multiple_keywords_de.wav",
+		[]int{0, 1, 2, 3})
+}
+
+func TestSingleKeywordEs(t *testing.T) {
+	language := "es"
+	keywords := []string{"manzana"}
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		p,
+		"manzana.wav",
+		[]int{0})
+}
+
+func TestMultipleKeywordEs(t *testing.T) {
+	language := "es"
+	keywords := []string{"emparedado", "leopardo", "manzana"}
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		p,
+		"multiple_keywords_es.wav",
+		[]int{0, 1, 2})
+}
+
+func TestSingleKeywordFr(t *testing.T) {
+	language := "fr"
+	keywords := []string{"mon chouchou"}
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		p,
+		"mon_chouchou.wav",
+		[]int{0})
+}
+
+func TestMultipleKeywordFr(t *testing.T) {
+	language := "fr"
+	keywords := []string{"framboise", "mon chouchou", "parapluie"}
+	p := Porcupine{
+		AccessKey: pvTestAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		p,
+		"multiple_keywords_fr.wav",
+		[]int{0, 1, 0, 2})
 }
