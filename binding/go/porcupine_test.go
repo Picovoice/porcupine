@@ -79,8 +79,8 @@ func runTestCase(t *testing.T, audioFileName string, expectedResults []int) {
 	t.Logf("Frame Length: %d", FrameLength)
 	t.Logf("Sample Rate: %d", SampleRate)
 
-	testAduioPath, _ := filepath.Abs(filepath.Join("../../resources/audio_samples", audioFileName))
-	data, err := ioutil.ReadFile(testAduioPath)
+	testAudioPath, _ := filepath.Abs(filepath.Join("../../resources/audio_samples", audioFileName))
+	data, err := ioutil.ReadFile(testAudioPath)
 	if err != nil {
 		t.Fatalf("Could not read test file: %v", err)
 	}
