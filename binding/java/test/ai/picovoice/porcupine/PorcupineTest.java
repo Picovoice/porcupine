@@ -110,7 +110,7 @@ public class PorcupineTest {
         assertTrue(porcupine.getSampleRate() > 0);
     }
 
-    private void testPorcupineByAudio(String audioFileName, ArrayList<Integer> expectedResults) throws IOException, UnsupportedAudioFileException, PorcupineException { 
+    private void runTestCase(String audioFileName, ArrayList<Integer> expectedResults) throws IOException, UnsupportedAudioFileException, PorcupineException { 
         int frameLen = porcupine.getFrameLength();
         String audioFilePath = getTestAudioFilePath(audioFileName);
         File testAudioPath = new File(audioFilePath);
@@ -147,7 +147,7 @@ public class PorcupineTest {
                 .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
 
-        testPorcupineByAudio(
+        runTestCase(
             "porcupine.wav",
             new ArrayList<>(Arrays.asList(0)));
     }
@@ -171,7 +171,7 @@ public class PorcupineTest {
                 .setBuiltInKeywords(keywords)
                 .build();
 
-        testPorcupineByAudio(
+        runTestCase(
             "multiple_keywords.wav",
             new ArrayList<>(Arrays.asList(7, 0, 1, 2, 3, 4, 5, 6, 7, 8)));
     }
@@ -185,7 +185,7 @@ public class PorcupineTest {
                 .setModelPath(getTestModelPath(language))
                 .setKeywordPaths(getTestKeywordPaths(language, keywords))
                 .build();
-        testPorcupineByAudio(
+        runTestCase(
             "heuschrecke.wav",
             new ArrayList<>(Arrays.asList(0)));
     }
@@ -200,7 +200,7 @@ public class PorcupineTest {
                 .setKeywordPaths(getTestKeywordPaths(language, keywords))
                 .build();
 
-        testPorcupineByAudio(
+        runTestCase(
             "multiple_keywords_de.wav",
             new ArrayList<>(Arrays.asList(0, 1, 2, 3)));
     }
@@ -215,7 +215,7 @@ public class PorcupineTest {
                 .setKeywordPaths(getTestKeywordPaths(language, keywords))
                 .build();
 
-        testPorcupineByAudio(
+        runTestCase(
             "manzana.wav",
             new ArrayList<>(Arrays.asList(0)));
     }
@@ -230,7 +230,7 @@ public class PorcupineTest {
                 .setKeywordPaths(getTestKeywordPaths(language, keywords))
                 .build();
 
-        testPorcupineByAudio(
+        runTestCase(
             "multiple_keywords_es.wav",
             new ArrayList<>(Arrays.asList(0, 1, 2)));
     }
@@ -245,7 +245,7 @@ public class PorcupineTest {
                 .setKeywordPaths(getTestKeywordPaths(language, keywords))
                 .build();
 
-        testPorcupineByAudio(
+        runTestCase(
             "mon_chouchou.wav",
             new ArrayList<>(Arrays.asList(0)));
     }
@@ -260,7 +260,7 @@ public class PorcupineTest {
                 .setKeywordPaths(getTestKeywordPaths(language, keywords))
                 .build();
 
-        testPorcupineByAudio(
+        runTestCase(
             "multiple_keywords_fr.wav",
             new ArrayList<>(Arrays.asList(0, 1, 0, 2)));
     }
