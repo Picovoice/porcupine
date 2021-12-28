@@ -72,7 +72,7 @@ func runTestCase(t *testing.T, audioFileName string, expectedResults []int) {
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
-	
+
 	t.Logf("Porcupine Version: %s", Version)
 	t.Logf("Frame Length: %d", FrameLength)
 	t.Logf("Sample Rate: %d", SampleRate)
