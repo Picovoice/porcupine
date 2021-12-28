@@ -34,8 +34,12 @@ defaults:
     working-directory: binding/java
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -45,6 +49,25 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
+
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
+    - name: Build
+      run: ./gradlew assemble
+
+    - name: Test
+      run: ./gradlew test -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}"
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+
+    steps:
+    - uses: actions/checkout@v2
 
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
