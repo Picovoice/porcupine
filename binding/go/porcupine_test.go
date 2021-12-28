@@ -72,6 +72,7 @@ func runTestCase(t *testing.T, audioFileName string, expectedResults []int) {
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
+	
 	t.Logf("Porcupine Version: %s", Version)
 	t.Logf("Frame Length: %d", FrameLength)
 	t.Logf("Sample Rate: %d", SampleRate)
@@ -115,7 +116,7 @@ func runTestCase(t *testing.T, audioFileName string, expectedResults []int) {
 	}
 }
 
-func TestProcess(t *testing.T) {
+func TestSingleKeyword(t *testing.T) {
 
 	p = Porcupine{
 		AccessKey:       pvTestAccessKey,
@@ -126,7 +127,7 @@ func TestProcess(t *testing.T) {
 		[]int{0})
 }
 
-func TestMultiple(t *testing.T) {
+func TestMultipleKeywords(t *testing.T) {
 
 	p = Porcupine{
 		AccessKey: pvTestAccessKey,
