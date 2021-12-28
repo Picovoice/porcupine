@@ -13,6 +13,7 @@ package porcupine
 import (
 	"encoding/binary"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"math"
 	"os"
@@ -21,11 +22,16 @@ import (
 	"reflect"
 )
 
-var pvTestAccessKey string
+var (
+	pvTestAccessKey string
+	p               Porcupine	
+)
 
 func TestMain(m *testing.M) {
+
 	flag.StringVar(&pvTestAccessKey, "access_key", "", "AccessKey for testing")
 	flag.Parse()
+
 	os.Exit(m.Run())
 }
 
@@ -37,17 +43,20 @@ func appendLanguage(s string, language string) string {
 }
 
 func getTestModelPath(language string) string {
-	return filepath.Join(
-		"../../lib/common",
-		appendLanguage("porcupine_params", language) + ".pv")
+	modelPath, _ := filepath.Abs(fmt.Sprintf(
+		"../../lib/common/%s.pv",
+		appendLanguage("porcupine_params", language)))
+	return modelPath
 }
 
 func getTestKeywordPath(language string, keyword string) string {
-	return filepath.Join(
-		"../../resources",
+	keywordPath, _ := filepath.Abs(fmt.Sprintf(
+		"../../resources/%s/%s/%s_%s.ppn",
 		appendLanguage("keyword_files", language),
 		osName,
-		keyword + "_" + osName + ".ppn")
+		keyword,
+		osName))
+	return keywordPath
 }
 
 func getTestKeywordPaths(language string, keywords []string) []string {
@@ -58,20 +67,17 @@ func getTestKeywordPaths(language string, keywords []string) []string {
 	return keywordPaths
 }
 
-func runTestCase(t *testing.T, p Porcupine, audioFileName string, expectedResults []int) {
-	audioFilePath := filepath.Join("../../resources/audio_samples", audioFileName)
-	test_file, _ := filepath.Abs(audioFilePath)
-
+func runTestCase(t *testing.T, audioFileName string, expectedResults []int) {
 	err := p.Init()
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
-
 	t.Logf("Porcupine Version: %s", Version)
 	t.Logf("Frame Length: %d", FrameLength)
-	t.Logf("Samples Rate: %d", SampleRate)
+	t.Logf("Sample Rate: %d", SampleRate)
 
-	data, err := ioutil.ReadFile(test_file)
+	testFile, _ := filepath.Abs(filepath.Join("../../resources/audio_samples", audioFileName))
+	data, err := ioutil.ReadFile(testFile)
 	if err != nil {
 		t.Fatalf("Could not read test file: %v", err)
 	}
@@ -110,18 +116,19 @@ func runTestCase(t *testing.T, p Porcupine, audioFileName string, expectedResult
 }
 
 func TestProcess(t *testing.T) {
-	p := Porcupine{
+
+	p = Porcupine{
 		AccessKey:       pvTestAccessKey,
 		BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
 	runTestCase(
 		t,
-		p,
 		"porcupine.wav",
 		[]int{0})
 }
 
 func TestMultiple(t *testing.T) {
-	p := Porcupine{
+
+	p = Porcupine{
 		AccessKey: pvTestAccessKey,
 		BuiltInKeywords: []BuiltInKeyword{
 			ALEXA,
@@ -135,95 +142,91 @@ func TestMultiple(t *testing.T) {
 			TERMINATOR}}
 	runTestCase(
 		t,
-		p,
 		"multiple_keywords.wav",
 		[]int{7, 0, 1, 2, 3, 4, 5, 6, 7, 8})
 }
 
 func TestSingleKeywordDe(t *testing.T) {
+
 	language := "de"
 	keywords := []string{"heuschrecke"}
-	p := Porcupine{
+	p = Porcupine{
 		AccessKey: pvTestAccessKey,
 		ModelPath: getTestModelPath(language),
 		KeywordPaths: getTestKeywordPaths(language, keywords)}
 	runTestCase(
 		t,
-		p,
 		"heuschrecke.wav",
 		[]int{0})
 }
 
-func TestMultipleKeywordDe(t *testing.T) {
+func TestMultipleKeywordsDe(t *testing.T) {
+
 	language := "de"
-	keywords := []string{
-		"ananas",
-		"heuschrecke",
-		"leguan",
-		"stachelschwein"}
-	p := Porcupine{
+	keywords := []string{"ananas", "heuschrecke", "leguan", "stachelschwein"}
+
+	p = Porcupine{
 		AccessKey: pvTestAccessKey,
 		ModelPath: getTestModelPath(language),
 		KeywordPaths: getTestKeywordPaths(language, keywords)}
 	runTestCase(
 		t,
-		p,
 		"multiple_keywords_de.wav",
 		[]int{0, 1, 2, 3})
 }
 
 func TestSingleKeywordEs(t *testing.T) {
+
 	language := "es"
 	keywords := []string{"manzana"}
-	p := Porcupine{
+	p = Porcupine{
 		AccessKey: pvTestAccessKey,
 		ModelPath: getTestModelPath(language),
 		KeywordPaths: getTestKeywordPaths(language, keywords)}
 	runTestCase(
 		t,
-		p,
 		"manzana.wav",
 		[]int{0})
 }
 
-func TestMultipleKeywordEs(t *testing.T) {
+func TestMultipleKeywordsEs(t *testing.T) {
+
 	language := "es"
 	keywords := []string{"emparedado", "leopardo", "manzana"}
-	p := Porcupine{
+	p = Porcupine{
 		AccessKey: pvTestAccessKey,
 		ModelPath: getTestModelPath(language),
 		KeywordPaths: getTestKeywordPaths(language, keywords)}
 	runTestCase(
 		t,
-		p,
 		"multiple_keywords_es.wav",
 		[]int{0, 1, 2})
 }
 
 func TestSingleKeywordFr(t *testing.T) {
+
 	language := "fr"
 	keywords := []string{"mon chouchou"}
-	p := Porcupine{
+	p = Porcupine{
 		AccessKey: pvTestAccessKey,
 		ModelPath: getTestModelPath(language),
 		KeywordPaths: getTestKeywordPaths(language, keywords)}
 	runTestCase(
 		t,
-		p,
 		"mon_chouchou.wav",
 		[]int{0})
 }
 
-func TestMultipleKeywordFr(t *testing.T) {
+func TestMultipleKeywordsFr(t *testing.T) {
+
 	language := "fr"
 	keywords := []string{"framboise", "mon chouchou", "parapluie"}
-	p := Porcupine{
+	p = Porcupine{
 		AccessKey: pvTestAccessKey,
 		ModelPath: getTestModelPath(language),
 		KeywordPaths: getTestKeywordPaths(language, keywords)}
 	runTestCase(
 		t,
-		p,
 		"multiple_keywords_fr.wav",
 		[]int{0, 1, 0, 2})
 }
