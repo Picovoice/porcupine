@@ -1,0 +1,35 @@
+name: C Demos
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'demo/c/**'
+      - '!demo/c/README.md'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'demo/c/**'
+      - '!demo/c/README.md'
+
+
+defaults:
+  run:
+    working-directory: demo/c
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
