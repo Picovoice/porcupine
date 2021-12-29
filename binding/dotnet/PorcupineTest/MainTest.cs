@@ -101,18 +101,6 @@ namespace PorcupineTest
             );
         }
 
-        private Porcupine createPorcupineWrapper(string language, List<string> keywords)
-        {
-            List<string> keywordPaths = getKeywordPaths(language, keywords);
-            IEnumerable<float> sensitivities = Enumerable.Repeat(0.5f, keywords.Count());
-            return Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
-                getKeywordPaths(language, keywords),
-                getModelPath(language),
-                Enumerable.Repeat(0.5f, keywords.Count())
-            );
-        }
-
         private void runProcess(string audioFileName, List<int> expectedResults)
         {
             int frameLen = porcupine.FrameLength;
