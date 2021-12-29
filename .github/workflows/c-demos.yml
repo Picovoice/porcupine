@@ -19,17 +19,49 @@ defaults:
     working-directory: demo/c
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.8]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
+    - name: actions-setup-cmake
+      uses: jwlawson/actions-setup-cmake@v1.11
+
+    - name: Build File Demo
+      run: cmake -S . -B build && cmake --build build --target porcupine_demo_file
+
+    - name: Test
+      run: python test_demo.py ${{secrets.PV_VALID_ACCESS_KEY}}
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build File Demo
+      run: cmake -S . -B build && cmake --build build --target porcupine_demo_file
+
+    - name: Test
+      run: python3 test_demo.py ${{secrets.PV_VALID_ACCESS_KEY}}
