@@ -45,8 +45,12 @@ defaults:
     working-directory: binding/dotnet
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -61,6 +65,25 @@ jobs:
       with:
         dotnet-version: 5.0.x
         
+    - name: Restore dependencies
+      run: dotnet restore    
+
+    - name: Build
+      run: dotnet build --no-restore      
+
+    - name: Test
+      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+
+    steps:
+    - uses: actions/checkout@v2
+
     - name: Restore dependencies
       run: dotnet restore    
 
