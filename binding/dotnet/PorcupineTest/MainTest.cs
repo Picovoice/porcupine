@@ -125,7 +125,7 @@ namespace PorcupineTest
             Assert.AreEqual(expectedResults.Count, results.Count, $"Should have found {expectedResults.Count} keywords, but {results.Count} were found.");
             for (int i = 0; i < results.Count; i++)
             {
-                Assert.AreEqual(expectedResults[i], results[i], $"Porcupine did not detect keyword #{i+1} correctly.");
+                Assert.AreEqual(expectedResults[i], results[i], $"Expected keyword {expectedResults[i]}, but Porcupine detected keyword {results[i]}.");
             }
 
             porcupine.Dispose(); 
