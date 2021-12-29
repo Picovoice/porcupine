@@ -64,36 +64,36 @@ namespace PorcupineTest
             }
         }
 
-        private static string appendLanguage(string s, string language)
+        private static string AppendLanguage(string s, string language)
         {
             if(language == "en")
                 return s;
             return $"{s}_{language}";
         }
 
-        private static string getKeywordPath(string language, string keyword)
+        private static string GetKeywordPath(string language, string keyword)
         {
             return Path.Combine(
                 _relativeDir,
                 "../../../../../../resources",
-                appendLanguage("keyword_files", language),
+                AppendLanguage("keyword_files", language),
                 $"{_env}/{keyword}_{_env}.ppn"
             );
         }
 
-        private static List<string> getKeywordPaths(string language, List<string> keywords)
+        private static List<string> GetKeywordPaths(string language, List<string> keywords)
         {
             List<string> keywordPaths = new List<string>();
             foreach (string keyword in keywords)
             {
-                keywordPaths.Add(getKeywordPath(language, keyword));
+                keywordPaths.Add(GetKeywordPath(language, keyword));
             }
             return keywordPaths;
         }
 
-        private static string getModelPath(string language)
+        private static string GetModelPath(string language)
         {
-            string file_name = appendLanguage("porcupine_params", language);
+            string file_name = AppendLanguage("porcupine_params", language);
             return Path.Combine(
                 _relativeDir,
                 "../../../../../../lib/common",
@@ -101,7 +101,7 @@ namespace PorcupineTest
             );
         }
 
-        private void runProcess(string audioFileName, List<int> expectedResults)
+        private void RunTestCase(string audioFileName, List<int> expectedResults)
         {
             int frameLen = porcupine.FrameLength;
             string testAudioPath = Path.Combine(_relativeDir, "resources/audio_samples", audioFileName);
@@ -151,7 +151,7 @@ namespace PorcupineTest
         public void TestSingleKeyword()
         {
             porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
-            runProcess(
+            RunTestCase(
                 "porcupine.wav",
                 new List<int>() {0});
         }
@@ -172,7 +172,7 @@ namespace PorcupineTest
                 BuiltInKeyword.TERMINATOR
             };
             porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, inputKeywords);
-            runProcess(
+            RunTestCase(
                 "multiple_keywords.wav",
                 new List<int>() {7, 0, 1, 2, 3, 4, 5, 6, 7, 8});
         }
@@ -185,12 +185,11 @@ namespace PorcupineTest
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
-                getKeywordPaths(language, keywords),
-                getModelPath(language),
-                Enumerable.Repeat(0.5f, keywords.Count())
+                GetKeywordPaths(language, keywords),
+                GetModelPath(language)
             );
 
-            runProcess(
+            RunTestCase(
                 "heuschrecke.wav",
                 new List<int>() {0});
         }
@@ -208,12 +207,11 @@ namespace PorcupineTest
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
-                getKeywordPaths(language, keywords),
-                getModelPath(language),
-                Enumerable.Repeat(0.5f, keywords.Count())
+                GetKeywordPaths(language, keywords),
+                GetModelPath(language)
             );
 
-            runProcess(
+            RunTestCase(
                 "multiple_keywords_de.wav",
                 new List<int>() {1, 0, 2, 3});
         }
@@ -228,12 +226,11 @@ namespace PorcupineTest
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
-                getKeywordPaths(language, keywords),
-                getModelPath(language),
-                Enumerable.Repeat(0.5f, keywords.Count())
+                GetKeywordPaths(language, keywords),
+                GetModelPath(language)
             );
 
-            runProcess(
+            RunTestCase(
                 "manzana.wav",
                 new List<int>() {0});
         }
@@ -250,12 +247,11 @@ namespace PorcupineTest
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
-                getKeywordPaths(language, keywords),
-                getModelPath(language),
-                Enumerable.Repeat(0.5f, keywords.Count())
+                GetKeywordPaths(language, keywords),
+                GetModelPath(language)
             );
 
-            runProcess(
+            RunTestCase(
                 "multiple_keywords_es.wav",
                 new List<int>() {0, 1, 2});
         }
@@ -270,12 +266,11 @@ namespace PorcupineTest
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
-                getKeywordPaths(language, keywords),
-                getModelPath(language),
-                Enumerable.Repeat(0.5f, keywords.Count())
+                GetKeywordPaths(language, keywords),
+                GetModelPath(language)
             );
 
-            runProcess(
+            RunTestCase(
                 "mon_chouchou.wav",
                 new List<int>() {0});
         }
@@ -292,12 +287,11 @@ namespace PorcupineTest
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
-                getKeywordPaths(language, keywords),
-                getModelPath(language),
-                Enumerable.Repeat(0.5f, keywords.Count())
+                GetKeywordPaths(language, keywords),
+                GetModelPath(language)
             );
 
-            runProcess(
+            RunTestCase(
                 "multiple_keywords_fr.wav",
                 new List<int>() {0, 1, 0, 2});
         }                 
