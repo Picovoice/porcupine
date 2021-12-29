@@ -13,29 +13,64 @@ package porcupine
 import (
 	"encoding/binary"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"math"
 	"os"
 	"path/filepath"
 	"testing"
+	"reflect"
 )
 
-var pvTestAccessKey string
+var (
+	testAccessKey string
+	porcupine       Porcupine	
+)
 
 func TestMain(m *testing.M) {
-	flag.StringVar(&pvTestAccessKey, "access_key", "", "AccessKey for testing")
+
+	flag.StringVar(&testAccessKey, "access_key", "", "AccessKey for testing")
 	flag.Parse()
+
 	os.Exit(m.Run())
 }
 
-func TestProcess(t *testing.T) {
+func appendLanguage(s string, language string) string {
+	if language == "en" {
+		return s;
+	}
+	return s + "_" + language
+}
 
-	test_file, _ := filepath.Abs("../../resources/audio_samples/porcupine.wav")
+func getTestModelPath(language string) string {
+	modelRelPath := fmt.Sprintf(
+		"../../lib/common/%s.pv",
+		appendLanguage("porcupine_params", language));
+	modelPath, _ := filepath.Abs(modelRelPath);
+	return modelPath
+}
 
-	p := Porcupine{
-		AccessKey:       pvTestAccessKey,
-		BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
-	err := p.Init()
+func getTestKeywordPath(language string, keyword string) string {
+	keywordRelPath := fmt.Sprintf(
+		"../../resources/%s/%s/%s_%s.ppn",
+		appendLanguage("keyword_files", language),
+		osName,
+		keyword,
+		osName);
+	keywordPath, _ := filepath.Abs(keywordRelPath);
+	return keywordPath
+}
+
+func getTestKeywordPaths(language string, keywords []string) []string {
+	keywordPaths := []string{}
+	for _, keyword := range keywords {
+		keywordPaths = append(keywordPaths, getTestKeywordPath(language, keyword))
+	}
+	return keywordPaths
+}
+
+func runTestCase(t *testing.T, audioFileName string, expectedResults []int) {
+	err := porcupine.Init()
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
@@ -44,16 +79,17 @@ func TestProcess(t *testing.T) {
 	t.Logf("Frame Length: %d", FrameLength)
 	t.Logf("Sample Rate: %d", SampleRate)
 
-	data, err := ioutil.ReadFile(test_file)
+	testAudioPath, _ := filepath.Abs(filepath.Join("../../resources/audio_samples", audioFileName))
+	data, err := ioutil.ReadFile(testAudioPath)
 	if err != nil {
 		t.Fatalf("Could not read test file: %v", err)
 	}
 	data = data[44:] // skip header
 
+	var results []int
 	frameLenBytes := FrameLength * 2
 	frameCount := int(math.Floor(float64(len(data)) / float64(frameLenBytes)))
 	sampleBuffer := make([]int16, FrameLength)
-	var results []int
 	for i := 0; i < frameCount; i++ {
 		start := i * frameLenBytes
 
@@ -62,33 +98,41 @@ func TestProcess(t *testing.T) {
 			sampleBuffer[j] = int16(binary.LittleEndian.Uint16(data[dataOffset : dataOffset+2]))
 		}
 
-		result, err := p.Process(sampleBuffer)
+		result, err := porcupine.Process(sampleBuffer)
 		if err != nil {
 			t.Fatalf("Could not read test file: %v", err)
 		}
-
-		if result == 0 {
+		if result >= 0 {
+			t.Logf("Keyword %d triggered at %f", result, float64((i+1)*FrameLength)/float64(SampleRate))
 			results = append(results, result)
-			t.Logf("Keyword triggered at %f", float64((i+1)*FrameLength)/float64(SampleRate))
 		}
 	}
 
-	if len(results) != 1 || results[0] != 0 {
-		t.Fatalf("Failed to find keyword '%s.'", p.BuiltInKeywords[0])
+	if !reflect.DeepEqual(results, expectedResults) {
+		t.Fatalf("Detections are not correct")
 	}
 
-	delErr := p.Delete()
+	delErr := porcupine.Delete()
 	if delErr != nil {
 		t.Fatalf("%v", delErr)
 	}
 }
 
-func TestMultiple(t *testing.T) {
+func TestSingleKeyword(t *testing.T) {
 
-	test_file, _ := filepath.Abs("../../resources/audio_samples/multiple_keywords.wav")
+	porcupine = Porcupine{
+		AccessKey:       testAccessKey,
+		BuiltInKeywords: []BuiltInKeyword{PORCUPINE}}
+	runTestCase(
+		t,
+		"porcupine.wav",
+		[]int{0})
+}
 
-	p := Porcupine{
-		AccessKey: pvTestAccessKey,
+func TestMultipleKeywords(t *testing.T) {
+
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
 		BuiltInKeywords: []BuiltInKeyword{
 			ALEXA,
 			AMERICANO,
@@ -99,64 +143,92 @@ func TestMultiple(t *testing.T) {
 			PICOVOICE,
 			PORCUPINE,
 			TERMINATOR}}
-	expectedResults := []BuiltInKeyword{
-		PORCUPINE,
-		ALEXA,
-		AMERICANO,
-		BLUEBERRY,
-		BUMBLEBEE,
-		GRAPEFRUIT,
-		GRASSHOPPER,
-		PICOVOICE,
-		PORCUPINE,
-		TERMINATOR}
+	runTestCase(
+		t,
+		"multiple_keywords.wav",
+		[]int{7, 0, 1, 2, 3, 4, 5, 6, 7, 8})
+}
 
-	err := p.Init()
-	if err != nil {
-		t.Fatalf("%v", err)
-	}
+func TestSingleKeywordDe(t *testing.T) {
 
-	t.Logf("Porcupine Version: %s", Version)
-	t.Logf("Frame Length: %d", FrameLength)
-	t.Logf("Samples Rate: %d", SampleRate)
+	language := "de"
+	keywords := []string{"heuschrecke"}
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		"heuschrecke.wav",
+		[]int{0})
+}
 
-	data, err := ioutil.ReadFile(test_file)
-	if err != nil {
-		t.Fatalf("Could not read test file: %v", err)
-	}
-	data = data[44:] // skip header
+func TestMultipleKeywordsDe(t *testing.T) {
 
-	var results []int
-	frameLenBytes := FrameLength * 2
-	frameCount := int(math.Floor(float64(len(data)) / float64(frameLenBytes)))
-	sampleBuffer := make([]int16, FrameLength)
-	for i := 0; i < frameCount; i++ {
-		start := i * frameLenBytes
+	language := "de"
+	keywords := []string{"ananas", "heuschrecke", "leguan", "stachelschwein"}
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		"multiple_keywords_de.wav",
+		[]int{0, 1, 2, 3})
+}
 
-		for j := 0; j < FrameLength; j++ {
-			dataOffset := start + (j * 2)
-			sampleBuffer[j] = int16(binary.LittleEndian.Uint16(data[dataOffset : dataOffset+2]))
-		}
+func TestSingleKeywordEs(t *testing.T) {
 
-		result, err := p.Process(sampleBuffer)
-		if err != nil {
-			t.Fatalf("Could not read test file: %v", err)
-		}
-		if result >= 0 {
-			t.Logf("Keyword %d triggered at %f", result, float64((i+1)*FrameLength)/float64(SampleRate))
-			results = append(results, result)
-		}
-	}
+	language := "es"
+	keywords := []string{"manzana"}
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		"manzana.wav",
+		[]int{0})
+}
 
-	for i := range results {
-		detectedKeyword := p.BuiltInKeywords[results[i]]
-		if detectedKeyword != expectedResults[i] {
-			t.Fatalf("Expected keyword %s, but %s was detected.", expectedResults[i], detectedKeyword)
-		}
-	}
+func TestMultipleKeywordsEs(t *testing.T) {
 
-	delErr := p.Delete()
-	if delErr != nil {
-		t.Fatalf("%v", delErr)
-	}
+	language := "es"
+	keywords := []string{"emparedado", "leopardo", "manzana"}
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		"multiple_keywords_es.wav",
+		[]int{0, 1, 2})
+}
+
+func TestSingleKeywordFr(t *testing.T) {
+
+	language := "fr"
+	keywords := []string{"mon chouchou"}
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		"mon_chouchou.wav",
+		[]int{0})
+}
+
+func TestMultipleKeywordsFr(t *testing.T) {
+
+	language := "fr"
+	keywords := []string{"framboise", "mon chouchou", "parapluie"}
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		"multiple_keywords_fr.wav",
+		[]int{0, 1, 0, 2})
 }
