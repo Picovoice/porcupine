@@ -32,7 +32,6 @@ class PorcupineDemoTestCase(unittest.TestCase):
         cls.__RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72', 'cortex-a53-aarch64', 'cortex-a72-aarch64'}
         cls.__JETSON_MACHINES = {'cortex-a57-aarch64'}  
         cls.__PV_SYSTEM, cls.__PV_MACHINE = cls.__pv_platform()
-        # cls.__PV_ENVIRONMENT = cls.__pv_keyword_files_subdir()
         cls.__ENVIRONMENT = cls.__get_environemnt()
 
     def setUp(self):
