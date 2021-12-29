@@ -64,9 +64,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-
-    - name: Test .NET
-      run: dotnet --list-sdks
         
     - name: Restore dependencies
       run: dotnet restore    
