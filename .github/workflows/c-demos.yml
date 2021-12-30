@@ -41,6 +41,9 @@ jobs:
     - name: actions-setup-cmake
       uses: jwlawson/actions-setup-cmake@v1.11
 
+    - name: Install Dependencies
+      run: pip install pvporcupine
+
     - name: Build File Demo
       run: cmake -S . -B build && cmake --build build --target porcupine_demo_file
 
@@ -59,6 +62,9 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: recursive
+
+    - name: Install Dependencies
+      run: pip3 install pvporcupine        
 
     - name: Build File Demo
       run: cmake -S . -B build && cmake --build build --target porcupine_demo_file

@@ -16,6 +16,8 @@ import subprocess
 import sys
 import unittest
 
+from pvporcupine import util
+
 class PorcupineDemoTestCase(unittest.TestCase):
     @staticmethod
     def __has_detected(s):
@@ -29,15 +31,12 @@ class PorcupineDemoTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.__RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72', 'cortex-a53-aarch64', 'cortex-a72-aarch64'}
-        cls.__JETSON_MACHINES = {'cortex-a57-aarch64'}  
-        cls.__PV_SYSTEM, cls.__PV_MACHINE = cls.__pv_platform()
         cls.__ENVIRONMENT = cls.__get_environemnt()
 
     def setUp(self):
         self.command = ["./build/porcupine_demo_file",
-                    "-l", self.__pv_library_path(),
-                    "-m", self.__pv_model_path("en"),
+                    "-l", util.pv_library_path('.'),
+                    "-m", util.pv_model_path('.'),
                     "-k", "",
                     "-t", "0.5",
                     "-w", "",
@@ -83,92 +82,11 @@ class PorcupineDemoTestCase(unittest.TestCase):
         run_demo = subprocess.run(self.command, capture_output=True, text=True)
 
         self.assertEqual(run_demo.returncode, 0)
-        self.assertTrue(self.__has_detected(run_demo.stdout))               
+        self.assertTrue(self.__has_detected(run_demo.stdout))
 
-    @classmethod
-    def __pv_linux_machine(cls, machine):
-        if machine == 'x86_64':
-            return machine
-        elif machine == 'aarch64':
-            arch_info = '-' + machine
-        elif machine in ['armv7l', 'armv6l']:
-            arch_info = ''
-        else:
-            raise NotImplementedError("Unsupported CPU architecture: '%s'" % machine)
-
-        cpu_info = ''
-        try:
-            cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
-            cpu_part_list = [x for x in cpu_info.split('\n') if 'CPU part' in x]
-            cpu_part = cpu_part_list[0].split(' ')[-1].lower()
-        except Exception as error:
-            raise RuntimeError("Failed to identify the CPU with '%s'\nCPU info: %s" % (error, cpu_info))
-
-        if '0xb76' == cpu_part:
-            return 'arm11' + arch_info
-        elif '0xc07' == cpu_part:
-            return 'cortex-a7' + arch_info
-        elif '0xd03' == cpu_part:
-            return 'cortex-a53' + arch_info
-        elif '0xd07' == cpu_part:
-            return 'cortex-a57' + arch_info
-        elif '0xd08' == cpu_part:
-            return 'cortex-a72' + arch_info
-        elif '0xc08' == cpu_part:
-            return 'beaglebone' + arch_info
-        elif machine == 'armv7l':
-            log.warning(
-                'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
-                'Falling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.' % cpu_part)
-            return 'arm11'
-        else:
-            raise NotImplementedError("Unsupported CPU: '%s'." % cpu_part)
-
-    @classmethod
-    def __pv_platform(cls):
-        pv_system = platform.system()
-        if pv_system not in {'Darwin', 'Linux', 'Windows'}:
-            raise ValueError("Unsupported system '%s'." % pv_system)
-
-        if pv_system == 'Linux':
-            pv_machine = cls.__pv_linux_machine(platform.machine())
-        else:
-            pv_machine = platform.machine()
-
-        return pv_system, pv_machine
-
-    @classmethod
-    def __pv_library_path(cls):
-        _PV_SYSTEM, _PV_MACHINE = cls.__PV_SYSTEM, cls.__PV_MACHINE
-        _RASPBERRY_PI_MACHINES, _JETSON_MACHINES = cls.__RASPBERRY_PI_MACHINES, cls.__JETSON_MACHINES        
-        relative = "../.."
-
-        if _PV_SYSTEM == 'Darwin':
-            if _PV_MACHINE == 'x86_64':
-                return os.path.join(os.path.dirname(__file__), relative, 'lib/mac/x86_64/libpv_porcupine.dylib')
-            elif _PV_MACHINE == "arm64":
-                return os.path.join(os.path.dirname(__file__), relative, 'lib/mac/arm64/libpv_porcupine.dylib')
-        elif _PV_SYSTEM == 'Linux':
-            if _PV_MACHINE == 'x86_64':
-                return os.path.join(os.path.dirname(__file__), relative, 'lib/linux/x86_64/libpv_porcupine.so')
-            elif _PV_MACHINE in _JETSON_MACHINES:
-                return os.path.join(
-                    os.path.dirname(__file__),
-                    relative,
-                    'lib/jetson/%s/libpv_porcupine.so' % _PV_MACHINE)
-            elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
-                return os.path.join(
-                    os.path.dirname(__file__),
-                    relative,
-                    'lib/raspberry-pi/%s/libpv_porcupine.so' % _PV_MACHINE)
-            elif _PV_MACHINE == 'beaglebone':
-                return os.path.join(os.path.dirname(__file__), relative, 'lib/beaglebone/libpv_porcupine.so')
-        elif _PV_SYSTEM == 'Windows':
-            return os.path.join(os.path.dirname(__file__), relative, 'lib/windows/amd64/libpv_porcupine.dll')
-
-    @classmethod
-    def __get_environemnt(cls):
-        system = cls.__PV_SYSTEM
+    @staticmethod
+    def __get_environemnt():
+        system = platform.system()
         if system == 'Darwin':
             return 'mac'
         elif system == 'Windows':
