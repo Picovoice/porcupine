@@ -323,12 +323,12 @@ export class Porcupine implements PorcupineEngine {
     const memoryBufferFloat32 = new Float32Array(memory.buffer);
 
     const storage = getPvStorage();
-    
+
     const pvConsoleLogWasm = function (index: number): void {
       // eslint-disable-next-line no-console
       console.log(arrayBufferToStringAtIndex(memoryBufferUint8, index));
     };
-  
+
     const pvAssertWasm = function (
       expr: number,
       line: number,
@@ -342,11 +342,11 @@ export class Porcupine implements PorcupineEngine {
         throw new Error(`assertion failed at line ${line} in "${fileName}"`);
       }
     };
-  
+
     const pvTimeWasm = function (): number {
       return Date.now() / 1000;
     };
-  
+
     const pvHttpsRequestWasm = async function (
       httpMethodAddress: number,
       serverNameAddress: number,
@@ -375,13 +375,13 @@ export class Porcupine implements PorcupineEngine {
         headerAddress
       );
       const body = arrayBufferToStringAtIndex(memoryBufferUint8, bodyAddress);
-  
+
       const headerObject = stringHeaderToObject(header);
-  
+
       let response: Response;
       let responseText: string;
       let statusCode: number;
-  
+
       try {
         response = await fetchWithTimeout(
           'https://' + serverName + endpoint,
@@ -412,25 +412,25 @@ export class Porcupine implements PorcupineEngine {
         if (responseAddress === 0) {
           throw new Error('malloc failed: Cannot allocate memory');
         }
-  
+
         memoryBufferInt32[
           responseSizeAddress / Int32Array.BYTES_PER_ELEMENT
         ] = responseText.length + 1;
         memoryBufferInt32[
           responseAddressAddress / Int32Array.BYTES_PER_ELEMENT
         ] = responseAddress;
-  
+
         for (let i = 0; i < responseText.length; i++) {
           memoryBufferUint8[responseAddress + i] = responseText.charCodeAt(i);
         }
         memoryBufferUint8[responseAddress + responseText.length] = 0;
       }
-  
+
       memoryBufferInt32[
         responseCodeAddress / Int32Array.BYTES_PER_ELEMENT
       ] = statusCode;
     };
-  
+
     const pvFileLoadWasm = async function (
       pathAddress: number,
       numContentBytesAddress: number,
@@ -446,11 +446,11 @@ export class Porcupine implements PorcupineEngine {
           Uint8Array.BYTES_PER_ELEMENT,
           contentBuffer.length * Uint8Array.BYTES_PER_ELEMENT
         );
-  
+
         if (contentAddress === 0) {
           throw new Error('malloc failed: Cannot allocate memory');
         }
-  
+
         memoryBufferInt32[
           numContentBytesAddress / Int32Array.BYTES_PER_ELEMENT
         ] = contentBuffer.byteLength;
@@ -467,7 +467,7 @@ export class Porcupine implements PorcupineEngine {
         ] = 0;
       }
     };
-  
+
     const pvFileSaveWasm = async function (
       pathAddress: number,
       numContentBytes: number,
@@ -491,14 +491,14 @@ export class Porcupine implements PorcupineEngine {
         ] = 0;
       }
     };
-  
+
     const pvFileExistsWasm = async function (
       pathAddress: number,
       isExistsAddress: number,
       succeededAddress: number
     ): Promise<void> {
       const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
-  
+
       try {
         const isExists = await storage.getItem(path);
         memoryBufferUint8[isExistsAddress] = (isExists === undefined || isExists === null) ? 0 : 1;
@@ -511,7 +511,7 @@ export class Porcupine implements PorcupineEngine {
         ] = 0;
       }
     };
-  
+
     const pvFileDeleteWasm = async function (
       pathAddress: number,
       succeededAddress: number
@@ -528,7 +528,7 @@ export class Porcupine implements PorcupineEngine {
         ] = 0;
       }
     };
-  
+
     const pvGetBrowserInfo = async function (browserInfoAddressAddress: number): Promise<void> {
       const userAgent =
         navigator.userAgent !== undefined ? navigator.userAgent : 'unknown';
@@ -537,11 +537,11 @@ export class Porcupine implements PorcupineEngine {
         Uint8Array.BYTES_PER_ELEMENT,
         (userAgent.length + 1) * Uint8Array.BYTES_PER_ELEMENT
       );
-  
+
       if (browserInfoAddress === 0) {
         throw new Error('malloc failed: Cannot allocate memory');
       }
-  
+
       memoryBufferInt32[
         browserInfoAddressAddress / Int32Array.BYTES_PER_ELEMENT
       ] = browserInfoAddress;
@@ -550,7 +550,7 @@ export class Porcupine implements PorcupineEngine {
       }
       memoryBufferUint8[browserInfoAddress + userAgent.length] = 0;
     };
-  
+
     const pvGetOriginInfo = async function(originInfoAddressAddress: number): Promise<void> {
       const origin = self.origin ?? self.location.origin;
       // eslint-disable-next-line
@@ -558,11 +558,11 @@ export class Porcupine implements PorcupineEngine {
         Uint8Array.BYTES_PER_ELEMENT,
         (origin.length + 1) * Uint8Array.BYTES_PER_ELEMENT
       );
-  
+
       if (originInfoAddress === 0) {
         throw new Error('malloc failed: Cannot allocate memory');
       }
-  
+
       memoryBufferInt32[
         originInfoAddressAddress / Int32Array.BYTES_PER_ELEMENT
       ] = originInfoAddress;
