@@ -79,7 +79,7 @@ onmessage = function (
 ): void {
   switch (event.data.command) {
     case 'init':
-      init(event.data.accessKey, event.data.keywords,event.data.start);
+      init(event.data.accessKey, event.data.keywords, event.data.start);
       break;
     case 'process':
       process(event.data.inputFrame);
