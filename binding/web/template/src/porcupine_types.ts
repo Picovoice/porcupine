@@ -67,18 +67,11 @@ export type PorcupineWorkerResponseError = {
   message: string;
 };
 
-export type PorcupineWorkerResponseFileOperation = {
-  command: 'file-save' | 'file-load' | 'file-exists' | 'file-delete';
-  path: string;
-  content?: string;
-};
-
 export type PorcupineWorkerResponse =
   | PorcupineWorkerResponseReady
   | PorcupineWorkerResponseFailed
   | PorcupineWorkerResponseKeyword
-  | PorcupineWorkerResponseError
-  | PorcupineWorkerResponseFileOperation;
+  | PorcupineWorkerResponseError;
 
 export interface PorcupineEngine {
   /** Release all resources acquired by Porcupine */
