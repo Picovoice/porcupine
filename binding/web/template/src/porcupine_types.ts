@@ -43,25 +43,10 @@ export type PorcupineWorkerRequestInit = {
   start?: boolean;
 };
 
-export type PorcupineWorkerRequestFileOperation = {
-  command:
-    | 'file-save-succeeded'
-    | 'file-save-failed'
-    | 'file-load-succeeded'
-    | 'file-load-failed'
-    | 'file-exists-succeeded'
-    | 'file-exists-failed'
-    | 'file-delete-succeeded'
-    | 'file-delete-failed';
-  message: string;
-  content?: string;
-};
-
 export type PorcupineWorkerRequest =
   | PorcupineWorkerRequestInit
   | PorcupineWorkerRequestProcess
-  | PorcupineWorkerRequestVoid
-  | PorcupineWorkerRequestFileOperation;
+  | PorcupineWorkerRequestVoid;
 
 export type PorcupineWorkerResponseReady = {
   command: 'ppn-ready';
@@ -82,18 +67,11 @@ export type PorcupineWorkerResponseError = {
   message: string;
 };
 
-export type PorcupineWorkerResponseFileOperation = {
-  command: 'file-save' | 'file-load' | 'file-exists' | 'file-delete';
-  path: string;
-  content?: string;
-};
-
 export type PorcupineWorkerResponse =
   | PorcupineWorkerResponseReady
   | PorcupineWorkerResponseFailed
   | PorcupineWorkerResponseKeyword
-  | PorcupineWorkerResponseError
-  | PorcupineWorkerResponseFileOperation;
+  | PorcupineWorkerResponseError;
 
 export interface PorcupineEngine {
   /** Release all resources acquired by Porcupine */

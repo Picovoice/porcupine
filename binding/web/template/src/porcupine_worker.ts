@@ -78,55 +78,23 @@ onmessage = function (
   event: MessageEvent<PorcupineWorkerRequest>
 ): void {
   switch (event.data.command) {
-    case 'file-save-succeeded':
-      Porcupine.resolveFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
+    case 'init':
+      init(event.data.accessKey, event.data.keywords, event.data.start);
       break;
-    case 'file-save-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
+    case 'process':
+      process(event.data.inputFrame);
       break;
-    case 'file-load-succeeded':
-      Porcupine.resolveFilePromise(event.data.content);
-      Porcupine.clearFilePromises();
+    case 'pause':
+      paused = true;
       break;
-    case 'file-load-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
+    case 'resume':
+      paused = false;
       break;
-    case 'file-exists-succeeded':
-      Porcupine.resolveFilePromise(event.data.content);
-      Porcupine.clearFilePromises();
+    case 'release':
+      release();
       break;
-    case 'file-exists-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      break;
-    case 'file-delete-succeeded':
-      Porcupine.resolveFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      break;
-    case 'file-delete-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      break;
-      case 'init':
-        init(event.data.accessKey, event.data.keywords,event.data.start);
-        break;
-      case 'process':
-        process(event.data.inputFrame);
-        break;
-      case 'pause':
-        paused = true;
-        break;
-      case 'resume':
-        paused = false;
-        break;
-      case 'release':
-        release();
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.warn('Unhandled command in porcupine_worker: ' + event.data.command);
+    default:
+      // eslint-disable-next-line no-console
+      console.warn('Unhandled command in porcupine_worker: ' + event.data.command);
   }
 };
