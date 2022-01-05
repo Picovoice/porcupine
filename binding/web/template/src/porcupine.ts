@@ -39,8 +39,6 @@ import {
 const DEFAULT_SENSITIVITY = 0.5;
 const PV_STATUS_SUCCESS = 10000;
 
-type EmptyPromise = (value: void) => void;
-
 /**
  * JavaScript/WebAssembly Binding for the Picovoice Porcupine wake word engine.
  *
