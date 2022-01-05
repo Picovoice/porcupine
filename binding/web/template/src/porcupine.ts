@@ -85,8 +85,6 @@ export class Porcupine implements PorcupineEngine {
 
   private static _porcupineMutex = new Mutex;
 
-  private static _storage = getPvStorage();
-
   private constructor(handleWasm: PorcupineWasmOutput, keywordLabels: ArrayLike<string>) {
     Porcupine._frameLength = handleWasm.frameLength;
     Porcupine._sampleRate = handleWasm.sampleRate;
@@ -323,6 +321,8 @@ export class Porcupine implements PorcupineEngine {
     const memoryBufferUint8 = new Uint8Array(memory.buffer);
     const memoryBufferInt32 = new Int32Array(memory.buffer);
     const memoryBufferFloat32 = new Float32Array(memory.buffer);
+
+    const storage = getPvStorage();
     
     const pvConsoleLogWasm = function (index: number): void {
       // eslint-disable-next-line no-console
@@ -439,7 +439,7 @@ export class Porcupine implements PorcupineEngine {
     ): Promise<void> {
       const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
       try {
-        const contentBase64 = await Porcupine._storage.getItem(path);
+        const contentBase64 = await storage.getItem(path);
         const contentBuffer = base64ToUint8Array(contentBase64);
         // eslint-disable-next-line
         const contentAddress = await aligned_alloc(
@@ -481,7 +481,7 @@ export class Porcupine implements PorcupineEngine {
         contentAddress
       );
       try {
-        await Porcupine._storage.setItem(path, content);
+        await storage.setItem(path, content);
         memoryBufferInt32[
           succeededAddress / Int32Array.BYTES_PER_ELEMENT
         ] = 1;
@@ -500,7 +500,7 @@ export class Porcupine implements PorcupineEngine {
       const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
   
       try {
-        const isExists = await Porcupine._storage.getItem(path);
+        const isExists = await storage.getItem(path);
         memoryBufferUint8[isExistsAddress] = (isExists === undefined || isExists === null) ? 0 : 1;
         memoryBufferInt32[
           succeededAddress / Int32Array.BYTES_PER_ELEMENT
@@ -518,7 +518,7 @@ export class Porcupine implements PorcupineEngine {
     ): Promise<void> {
       const path = arrayBufferToStringAtIndex(memoryBufferUint8, pathAddress);
       try {
-        await Porcupine._storage.removeItem(path);
+        await storage.removeItem(path);
         memoryBufferInt32[
           succeededAddress / Int32Array.BYTES_PER_ELEMENT
         ] = 1;
