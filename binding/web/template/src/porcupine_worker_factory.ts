@@ -76,65 +76,6 @@ export default class PorcupineWorkerFactory {
               processErrorCallback(event.data.message);
             }
             break;
-          case 'file-save':
-            try {
-              localStorage.setItem(event.data.path, event.data.content || '');
-              porcupineWorker.postMessage({
-                command: 'file-save-succeeded',
-                message: `Saved ${event.data.path} successfully`,
-              });
-            } catch (error) {
-              porcupineWorker.postMessage({
-                command: 'file-save-failed',
-                message: `${error}`,
-              });
-            }
-            break;
-          case 'file-load':
-            try {
-              const content = localStorage.getItem(event.data.path);
-              if (content === null) {
-                throw new Error('file does not exist.');
-              }
-              porcupineWorker.postMessage({
-                command: 'file-load-succeeded',
-                content: content,
-              });
-            } catch (error) {
-              porcupineWorker.postMessage({
-                command: 'file-load-failed',
-                message: `${error}`,
-              });
-            }
-            break;
-          case 'file-exists':
-            try {
-              const content = localStorage.getItem(event.data.path);
-              porcupineWorker.postMessage({
-                command: 'file-exists-succeeded',
-                content: content,
-              });
-            } catch (error) {
-              porcupineWorker.postMessage({
-                command: 'file-exists-failed',
-                message: `${error}`,
-              });
-            }
-            break;
-          case 'file-delete':
-            try {
-              localStorage.removeItem(event.data.path);
-              porcupineWorker.postMessage({
-                command: 'file-delete-succeeded',
-                message: `Deleted ${event.data.path} successfully`,
-              });
-            } catch (error) {
-              porcupineWorker.postMessage({
-                command: 'file-delete-failed',
-                message: `${error}`,
-              });
-            }
-            break;
           default:
             // eslint-disable-next-line no-console
             console.warn(`Unhandled message in main.js: ${event.data}`);
