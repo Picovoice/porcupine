@@ -52,7 +52,7 @@ function getDB(): Promise<IDBDatabase> {
   */
 export function getPvStorage(): PvStorage {
   if (self.indexedDB) {
-    const requestHelper = (request: IDBRequest<IDBValidKey>): Promise<any> => {
+    const requestHelper = (request: IDBRequest): Promise<any> => {
       return new Promise((resolve, reject) => {
         request.onerror = () => {
           reject(request.error);
@@ -85,7 +85,7 @@ export function getPvStorage(): PvStorage {
       }
     }
   } else if (self.localStorage) {
-    return self.localStorage;
+    return self.localStorage as PvStorage;
   }
 
   throw new Error("Cannot get a presistent storage object.");
