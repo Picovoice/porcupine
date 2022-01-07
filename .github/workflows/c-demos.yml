@@ -19,41 +19,41 @@ defaults:
     working-directory: demo/c
 
 jobs:
-  build-micdemo-github-hosted:
-    runs-on: ${{ matrix.os }}
+  # build-micdemo-github-hosted:
+  #   runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest, macos-latest]
 
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
 
-    - name: Create build directory
-      run: cmake -B ./build
+  #   - name: Create build directory
+  #     run: cmake -B ./build
 
-    - name: Build micdemo
-      run: cmake --build ./build --target porcupine_demo_mic
+  #   - name: Build micdemo
+  #     run: cmake --build ./build --target porcupine_demo_mic
   
-  build-micdemo-self-hosted:
-    runs-on: ${{ matrix.machine }}
+  # build-micdemo-self-hosted:
+  #   runs-on: ${{ matrix.machine }}
 
-    strategy:
-      matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+  #   strategy:
+  #     matrix:
+  #       machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
 
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
 
-    - name: Create build directory
-      run: cmake -B ./build
+  #   - name: Create build directory
+  #     run: cmake -B ./build
 
-    - name: Build micdemo
-      run: cmake --build ./build --target porcupine_demo_mic
+  #   - name: Build micdemo
+  #     run: cmake --build ./build --target porcupine_demo_mic
 
   build-filedemo-github-hosted:
     runs-on: ${{ matrix.os }}
@@ -87,7 +87,7 @@ jobs:
       run: cmake --build ./build --target porcupine_demo_file
 
     - name: Run filedemo
-      run: |
+      run: >
         ./build/porcupine_demo_file
         -a ${{secrets.PV_VALID_ACCESS_KEY}}
         -l ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
@@ -96,20 +96,20 @@ jobs:
         -t 0.5
         -w ../../resources/audio_samples/multiple_keywords.wav
   
-  build-filedemo-self-hosted:
-    runs-on: ${{ matrix.machine }}
+  # build-filedemo-self-hosted:
+  #   runs-on: ${{ matrix.machine }}
 
-    strategy:
-      matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+  #   strategy:
+  #     matrix:
+  #       machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
 
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
 
-    - name: Create build directory
-      run: cmake -B ./build
+  #   - name: Create build directory
+  #     run: cmake -B ./build
 
-    - name: Build filedemo
-      run: cmake --build ./build --target porcupine_demo_file
+  #   - name: Build filedemo
+  #     run: cmake --build ./build --target porcupine_demo_file
