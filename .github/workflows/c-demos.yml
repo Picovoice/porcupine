@@ -129,7 +129,7 @@ jobs:
         - machine: jetson
           platform: jetson
           arch: cortex-a57-aarch64
-        - machine: rpi4
+        - machine: beaglebone
           platform: beaglebone
           arch: ''
         - lang: en
