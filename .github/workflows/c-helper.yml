@@ -12,12 +12,12 @@ runs:
   using: "composite"
   steps:
   - name: Run filedemo (${{ inputs.lang }})
-      run: >
-        ./build/porcupine_demo_file
-        -a ${{secrets.PV_VALID_ACCESS_KEY}}
-        -l ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
-        -m ../../lib/common/porcupine_params${{ inputs.lang-ext }}.pv
-        -k ../../resources/keyword_files${{ inputs.lang-ext }}/${{ matrix.platform }}/${{ inputs.keyword_file }}_${{ matrix.platform }}.ppn
-        -t 0.5
-        -w ../../resources/audio_samples/multiple_keywords${{ inputs.lang-ext }}.wav
+    run: >
+      ./build/porcupine_demo_file
+      -a ${{secrets.PV_VALID_ACCESS_KEY}}
+      -l ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
+      -m ../../lib/common/porcupine_params${{ inputs.lang-ext }}.pv
+      -k ../../resources/keyword_files${{ inputs.lang-ext }}/${{ matrix.platform }}/${{ inputs.keyword_file }}_${{ matrix.platform }}.ppn
+      -t 0.5
+      -w ../../resources/audio_samples/multiple_keywords${{ inputs.lang-ext }}.wav
   
