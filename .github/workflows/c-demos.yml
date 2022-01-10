@@ -88,6 +88,8 @@ jobs:
     
     - uses: ./.github/actions/c-filedemo
       with:
+        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        matrix: ${{ matrix }}
         lang: en
         lang-ext: ''
         keyword_file: porcupine
