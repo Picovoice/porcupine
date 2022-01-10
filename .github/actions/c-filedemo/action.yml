@@ -24,4 +24,5 @@ runs:
       -k ../../resources/keyword_files${{ inputs.lang-ext }}/${{ inputs.matrix.platform }}/${{ inputs.keyword_file }}_${{ inputs.matrix.platform }}.ppn
       -t 0.5
       -w ../../resources/audio_samples/multiple_keywords${{ inputs.lang-ext }}.wav
+    shell: bash
   
