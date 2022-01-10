@@ -3,7 +3,11 @@ name: Run filedemo
 inputs:
   access-key:
     required: true
-  matrix:
+  platform:
+    required: true
+  arch:
+    required: true
+  ext:
     required: true
   lang:
     required: true
