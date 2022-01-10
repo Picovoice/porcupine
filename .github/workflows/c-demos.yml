@@ -86,7 +86,7 @@ jobs:
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file
     
-    - uses: ./.github/workflows/c-helper.yml
+    - uses: ./.github/actions/c-filedemo
       with:
         lang: en
         lang-ext: ''
