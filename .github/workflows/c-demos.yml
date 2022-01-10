@@ -3,7 +3,7 @@ name: C Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master, c-actions ]
+    branches: [ master ]
     paths:
       - 'demo/c/**'
       - '!demo/c/README.md'
