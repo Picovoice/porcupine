@@ -19,7 +19,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    run: >
+  - run: >
       ./build/porcupine_demo_file
       -a ${{ inputs.access-key }}
       -l ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.${{ inputs.ext }}
