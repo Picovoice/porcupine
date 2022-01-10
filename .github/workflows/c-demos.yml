@@ -19,41 +19,41 @@ defaults:
     working-directory: demo/c
 
 jobs:
-  build-micdemo-github-hosted:
-    runs-on: ${{ matrix.os }}
+  # build-micdemo-github-hosted:
+  #   runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest, macos-latest]
 
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
 
-    - name: Create build directory
-      run: cmake -B ./build
+  #   - name: Create build directory
+  #     run: cmake -B ./build
 
-    - name: Build micdemo
-      run: cmake --build ./build --target porcupine_demo_mic
+  #   - name: Build micdemo
+  #     run: cmake --build ./build --target porcupine_demo_mic
   
-  build-micdemo-self-hosted:
-    runs-on: ${{ matrix.machine }}
+  # build-micdemo-self-hosted:
+  #   runs-on: ${{ matrix.machine }}
 
-    strategy:
-      matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+  #   strategy:
+  #     matrix:
+  #       machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
 
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
 
-    - name: Create build directory
-      run: cmake -B ./build
+  #   - name: Create build directory
+  #     run: cmake -B ./build
 
-    - name: Build micdemo
-      run: cmake --build ./build --target porcupine_demo_mic
+  #   - name: Build micdemo
+  #     run: cmake --build ./build --target porcupine_demo_mic
 
   build-filedemo-github-hosted:
     runs-on: ${{ matrix.os }}
@@ -61,32 +61,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        lang: [en, de, es, fr]
-        include:
-        - os: ubuntu-latest
-          platform: linux
-          arch: x86_64
-          ext: so
-        - os: windows-latest
-          platform: windows
-          arch: amd64
-          ext: dll
-        - os: macos-latest
-          platform: mac
-          arch: x86_64
-          ext: dylib
-        - lang: en
-          lang-ext: ''
-          keyword_file: porcupine
-        - lang: de
-          lang-ext: _de
-          keyword_file: ananas
-        - lang: es
-          lang-ext: _es
-          keyword_file: manzana
-        - lang: fr
-          lang-ext: _fr
-          keyword_file: framboise
 
     steps:
     - uses: actions/checkout@v2
@@ -99,6 +73,29 @@ jobs:
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file
 
+  run-filedemo-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    needs: build-filedemo-github-hosted
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        lang: [en, de, es, fr]
+        - lang: en
+          lang-ext: ''
+          keyword_file: porcupine
+        - lang: de
+          lang-ext: _de
+          keyword_file: ananas
+        - lang: es
+          lang-ext: _es
+          keyword_file: manzana
+        - lang: fr
+          lang-ext: _fr
+          keyword_file: framboise
+    
+    steps:
     - name: Run filedemo
       run: >
         ./build/porcupine_demo_file
@@ -109,59 +106,59 @@ jobs:
         -t 0.5
         -w ../../resources/audio_samples/multiple_keywords${{ matrix.lang-ext }}.wav
   
-  build-filedemo-self-hosted:
-    runs-on: ${{ matrix.machine }}
+  # build-filedemo-self-hosted:
+  #   runs-on: ${{ matrix.machine }}
 
-    strategy:
-      matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
-        lang: [en, de, es, fr]
-        include:
-        - machine: rpi2
-          platform: raspberry-pi
-          arch: cortex-a7
-        - machine: rpi3
-          platform: raspberry-pi
-          arch: cortex-a53
-        - machine: rpi4
-          platform: raspberry-pi
-          arch: cortex-a72
-        - machine: jetson
-          platform: jetson
-          arch: cortex-a57-aarch64
-        - machine: beaglebone
-          platform: beaglebone
-          arch: ''
-        - lang: en
-          lang-ext: ''
-          keyword_file: porcupine
-        - lang: de
-          lang-ext: _de
-          keyword_file: ananas
-        - lang: es
-          lang-ext: _es
-          keyword_file: manzana
-        - lang: fr
-          lang-ext: _fr
-          keyword_file: framboise
+  #   strategy:
+  #     matrix:
+  #       machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+  #       lang: [en, de, es, fr]
+  #       include:
+  #       - machine: rpi2
+  #         platform: raspberry-pi
+  #         arch: cortex-a7
+  #       - machine: rpi3
+  #         platform: raspberry-pi
+  #         arch: cortex-a53
+  #       - machine: rpi4
+  #         platform: raspberry-pi
+  #         arch: cortex-a72
+  #       - machine: jetson
+  #         platform: jetson
+  #         arch: cortex-a57-aarch64
+  #       - machine: beaglebone
+  #         platform: beaglebone
+  #         arch: ''
+  #       - lang: en
+  #         lang-ext: ''
+  #         keyword_file: porcupine
+  #       - lang: de
+  #         lang-ext: _de
+  #         keyword_file: ananas
+  #       - lang: es
+  #         lang-ext: _es
+  #         keyword_file: manzana
+  #       - lang: fr
+  #         lang-ext: _fr
+  #         keyword_file: framboise
 
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
 
-    - name: Create build directory
-      run: cmake -B ./build
+  #   - name: Create build directory
+  #     run: cmake -B ./build
 
-    - name: Build filedemo
-      run: cmake --build ./build --target porcupine_demo_file
+  #   - name: Build filedemo
+  #     run: cmake --build ./build --target porcupine_demo_file
 
-    - name: Run filedemo
-      run: >
-        ./build/porcupine_demo_file
-        -a ${{secrets.PV_VALID_ACCESS_KEY}}
-        -l ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
-        -m ../../lib/common/porcupine_params${{ matrix.lang-ext }}.pv
-        -k ../../resources/keyword_files${{ matrix.lang-ext }}/${{ matrix.platform }}/${{ matrix.keyword_file }}_${{ matrix.platform }}.ppn
-        -t 0.5
-        -w ../../resources/audio_samples/multiple_keywords${{ matrix.lang-ext }}.wav
+  #   - name: Run filedemo
+  #     run: >
+  #       ./build/porcupine_demo_file
+  #       -a ${{secrets.PV_VALID_ACCESS_KEY}}
+  #       -l ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
+  #       -m ../../lib/common/porcupine_params${{ matrix.lang-ext }}.pv
+  #       -k ../../resources/keyword_files${{ matrix.lang-ext }}/${{ matrix.platform }}/${{ matrix.keyword_file }}_${{ matrix.platform }}.ppn
+  #       -t 0.5
+  #       -w ../../resources/audio_samples/multiple_keywords${{ matrix.lang-ext }}.wav
