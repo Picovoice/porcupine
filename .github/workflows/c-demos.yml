@@ -61,6 +61,19 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+        - os: ubuntu-latest
+          platform: linux
+          arch: x86_64
+          ext: so
+        - os: windows-latest
+          platform: windows
+          arch: amd64
+          ext: dll
+        - os: macos-latest
+          platform: mac
+          arch: x86_64
+          ext: dylib
 
     steps:
     - uses: actions/checkout@v2
@@ -72,40 +85,12 @@ jobs:
 
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file
-
-  run-filedemo-github-hosted:
-    runs-on: ${{ matrix.os }}
-
-    needs: build-filedemo-github-hosted
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        lang: [en, de, es, fr]
-        include:
-        - lang: en
-          lang-ext: ''
-          keyword_file: porcupine
-        - lang: de
-          lang-ext: _de
-          keyword_file: ananas
-        - lang: es
-          lang-ext: _es
-          keyword_file: manzana
-        - lang: fr
-          lang-ext: _fr
-          keyword_file: framboise
     
-    steps:
-    - name: Run filedemo
-      run: >
-        ./build/porcupine_demo_file
-        -a ${{secrets.PV_VALID_ACCESS_KEY}}
-        -l ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
-        -m ../../lib/common/porcupine_params${{ matrix.lang-ext }}.pv
-        -k ../../resources/keyword_files${{ matrix.lang-ext }}/${{ matrix.platform }}/${{ matrix.keyword_file }}_${{ matrix.platform }}.ppn
-        -t 0.5
-        -w ../../resources/audio_samples/multiple_keywords${{ matrix.lang-ext }}.wav
+    - uses: c-helper.yml
+      with:
+        lang: en
+        lang-ext: ''
+        keyword_file: porcupine
   
   # build-filedemo-self-hosted:
   #   runs-on: ${{ matrix.machine }}
