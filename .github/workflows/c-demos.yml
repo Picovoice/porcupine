@@ -82,6 +82,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         lang: [en, de, es, fr]
+        include:
         - lang: en
           lang-ext: ''
           keyword_file: porcupine
