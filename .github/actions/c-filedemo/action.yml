@@ -28,5 +28,6 @@ runs:
       -k ../../resources/keyword_files${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.keyword_file }}_${{ inputs.platform }}.ppn
       -t 0.5
       -w ../../resources/audio_samples/multiple_keywords${{ inputs.lang-ext }}.wav
+    working-directory: demo/c
     shell: bash
   
