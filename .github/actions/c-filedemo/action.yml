@@ -14,10 +14,6 @@ inputs:
   audio_path:
     required: true
 
-defaults:
-  run:
-    working-directory: demo/c
-
 runs:
   using: "composite"
   steps:
@@ -29,5 +25,6 @@ runs:
       -k ${{ inputs.keyword_path }}
       -t ${{ inputs.sensitivity }}
       -w ${{ inputs.audio_path }}
+    working-directory: demo/c
     shell: bash
   
