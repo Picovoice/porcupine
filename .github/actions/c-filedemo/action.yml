@@ -17,6 +17,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+  - run: echo $(pwd)
+    shell: bash
+
   - run: >
       ./demo/c/build/porcupine_demo_file
       -a ${{ inputs.access_key }}
