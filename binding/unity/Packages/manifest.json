@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "com.unity.collab-proxy": "1.2.16",
+    "com.unity.collab-proxy": "1.14.4",
     "com.unity.ide.rider": "1.2.1",
-    "com.unity.ide.visualstudio": "2.0.8",
-    "com.unity.ide.vscode": "1.2.3",
-    "com.unity.test-framework": "1.1.24",
+    "com.unity.ide.visualstudio": "2.0.12",
+    "com.unity.ide.vscode": "1.2.4",
+    "com.unity.test-framework": "1.1.29",
     "com.unity.textmeshpro": "2.1.4",
     "com.unity.timeline": "1.2.18",
     "com.unity.ugui": "1.0.0",

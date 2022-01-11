@@ -16,3 +16,6 @@
 
 ## [2.0.5] - 2021-12-22
 * Update Android native package
+
+## [2.0.6] - 2022-01-11
+* Android support patch

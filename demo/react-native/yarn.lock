@@ -1017,10 +1017,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@picovoice/porcupine-react-native@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.0.2.tgz#1453d0f9e5da829be932516b7094cc159b6621d1"
-  integrity sha512-BTyhVYKatu5tcB/HLY4Hwk1b73a0IL28yCCqnsdLs68iVoF0TVysSbPHzBNfj5VPOg5OmcRPNPZ5OzStKfGx5g==
+"@picovoice/porcupine-react-native@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.0.3.tgz#d321ff2b5648998f31a39ea77112d90224d3fec1"
+  integrity sha512-7IWsvRwRjHTDxBjW6aeTfidL/eJrA8xb1qBi5QDkl2+k8mr4TtI4XB0kTaE03nhGKmEb/bF54w7/YQWjr6kKqw==
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"
