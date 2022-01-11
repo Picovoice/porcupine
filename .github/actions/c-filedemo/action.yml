@@ -18,8 +18,8 @@ runs:
   using: "composite"
   steps:
   - run: >
-      ./build/porcupine_demo_file
-      -a ${{ inputs.access-key }}
+      ./demo/c/build/porcupine_demo_file
+      -a ${{ inputs.access_key }}
       -l ${{ inputs.library_path }}
       -m ${{ inputs.model_path }}
       -k ${{ inputs.keyword_path }}
