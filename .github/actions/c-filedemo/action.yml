@@ -14,14 +14,15 @@ inputs:
   audio_path:
     required: true
 
+defaults:
+  run:
+    working-directory: demo/c
+
 runs:
   using: "composite"
   steps:
-  - run: echo $(pwd)
-    shell: bash
-
   - run: >
-      ./demo/c/build/porcupine_demo_file
+      ./build/porcupine_demo_file
       -a ${{ inputs.access_key }}
       -l ${{ inputs.library_path }}
       -m ${{ inputs.model_path }}
