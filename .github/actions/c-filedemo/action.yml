@@ -1,19 +1,17 @@
 name: Run filedemo
 
 inputs:
-  access-key:
+  access_key:
     required: true
-  platform:
+  library_path:
     required: true
-  arch:
+  model_path:
     required: true
-  ext:
-    default: so
-  lang:
+  keyword_path:
     required: true
-  lang-ext:
-    required: true
-  keyword_file:
+  sensitivity:
+    default: 0.5
+  audio_path:
     required: true
 
 runs:
@@ -22,11 +20,10 @@ runs:
   - run: >
       ./build/porcupine_demo_file
       -a ${{ inputs.access-key }}
-      -l ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.${{ inputs.ext }}
-      -m ../../lib/common/porcupine_params${{ inputs.lang-ext }}.pv
-      -k ../../resources/keyword_files${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.keyword_file }}_${{ inputs.platform }}.ppn
-      -t 0.5
-      -w ../../resources/audio_samples/multiple_keywords${{ inputs.lang-ext }}.wav
-    working-directory: demo/c
+      -l ${{ inputs.library_path }}
+      -m ${{ inputs.model_path }}
+      -k ${{ inputs.keyword_path }}
+      -t ${{ inputs.sensitivity }}
+      -w ${{ inputs.audio_path }}
     shell: bash
   

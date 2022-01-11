@@ -89,46 +89,38 @@ jobs:
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (en)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: en
-        lang-ext: ''
-        keyword_file: porcupine
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.${{ inputs.ext }}
+        model_path: ../../lib/common/porcupine_params.pv
+        keyword_path: ../../resources/keyword_files$/${{ inputs.platform }}/porcupine_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: de
-        lang-ext: '_de'
-        keyword_file: ananas
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.${{ inputs.ext }}
+        model_path: ../../lib/common/porcupine_params_de.pv
+        keyword_path: ../../resources/keyword_files_de$/${{ inputs.platform }}/ananas_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords_de.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (es)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: es
-        lang-ext: '_es'
-        keyword_file: manzana
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.${{ inputs.ext }}
+        model_path: ../../lib/common/porcupine_params_es.pv
+        keyword_path: ../../resources/keyword_files_es$/${{ inputs.platform }}/manzana_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords_es.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (fr)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: fr
-        lang-ext: '_fr'
-        keyword_file: framboise
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.${{ inputs.ext }}
+        model_path: ../../lib/common/porcupine_params_fr.pv
+        keyword_path: ../../resources/keyword_files_fr$/${{ inputs.platform }}/framboise_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
   
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -167,39 +159,35 @@ jobs:
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (en)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: en
-        lang-ext: ''
-        keyword_file: porcupine
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.so
+        model_path: ../../lib/common/porcupine_params.pv
+        keyword_path: ../../resources/keyword_files$/${{ inputs.platform }}/porcupine_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: de
-        lang-ext: '_de'
-        keyword_file: ananas
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.so
+        model_path: ../../lib/common/porcupine_params_de.pv
+        keyword_path: ../../resources/keyword_files_de$/${{ inputs.platform }}/ananas_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords_de.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (es)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: es
-        lang-ext: '_es'
-        keyword_file: manzana
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.so
+        model_path: ../../lib/common/porcupine_params_es.pv
+        keyword_path: ../../resources/keyword_files_es$/${{ inputs.platform }}/manzana_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords_es.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (fr)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: fr
-        lang-ext: '_fr'
-        keyword_file: framboise
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpv_porcupine.so
+        model_path: ../../lib/common/porcupine_params_fr.pv
+        keyword_path: ../../resources/keyword_files_fr$/${{ inputs.platform }}/framboise_${{ inputs.platform }}.ppn
+        audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
