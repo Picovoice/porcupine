@@ -25,7 +25,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 14
     }
 
     buildTypes {
@@ -43,5 +43,5 @@ android {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-android:2.0.1'
+    implementation 'ai.picovoice:porcupine-android:2.0.2'
 }
