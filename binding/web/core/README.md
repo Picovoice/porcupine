@@ -2,8 +2,6 @@
 
 Package containing types for Porcupine web bindings. 
 
-For more details, check [binding/web](binding/web).
-
 ## Build 
 
 To build Porcupine typescript types, run:
