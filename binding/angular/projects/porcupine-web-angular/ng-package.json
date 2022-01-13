@@ -3,6 +3,5 @@
   "dest": "../../dist/porcupine-web-angular",
   "lib": {
     "entryFile": "src/public-api.ts"
-  },
-  "allowedNonPeerDependencies": ["@picovoice/porcupine-web-core"]
+  }
 }
