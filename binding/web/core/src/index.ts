@@ -87,3 +87,17 @@ export interface PorcupineEngine {
   /** Maps the keyword detection index (e.g. 0, 1) returned by Porcupine to the label (e.g. "Hey Pico", "Grasshopper") */
   readonly keywordLabels: Map<number, string>;
 }
+
+export interface PorcupineWorker extends Omit<Worker, 'postMessage'> {
+  postMessage(command: PorcupineWorkerRequest): void;
+}
+
+export interface PorcupineWorkerFactory {
+  create(
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
+    keywordDetectionCallback?: (label: string) => void,
+    processErrorCallback?: (error: string | Error) => void,
+    start?: boolean
+  ): Promise<PorcupineWorker>;
+}
