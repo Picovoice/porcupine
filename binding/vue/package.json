@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-web-vue",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Vue mixin for Porcupine Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",
@@ -16,6 +16,9 @@
     "prepack": "npm-run-all build",
     "start": "cross-env TARGET='debug' rollup --config --watch",
     "watch": "rollup --config --watch"
+  },
+  "dependencies": {
+    "@picovoice/porcupine-web-core": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",

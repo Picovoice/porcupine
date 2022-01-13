@@ -1,5 +1,48 @@
+/*
+  Copyright 2022 Picovoice Inc.
+
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
-import { PorcupineVue } from './porcupine_types';
+
+import {
+  PorcupineKeyword,
+  PorcupineWorker,
+  PorcupineWorkerFactory
+} from "@picovoice/porcupine-web-core";
+
+/**
+* Type alias for PorcupineWorkerFactory arguments.
+*/
+export type PorcupineWorkerFactoryArgs = {
+  accessKey: string;
+  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
+  start?: boolean;
+};
+
+/**
+ * Type alias for Porcupine Vue Mixin.
+ * Use with `Vue as VueConstructor extends {$porcupine: PorcupineVue}` to get types in typescript.
+ */
+export interface PorcupineVue {
+  $_ppnWorker_: Worker | null;
+  $_webVp_: WebVoiceProcessor | null;
+  init: (
+    porcupineFactoryArgs: PorcupineWorkerFactoryArgs,
+    porcupineFactory: PorcupineWorkerFactory,
+    keywordCallback: (label: string) => void,
+    readyCallback: () => void,
+    errorCallback: (error: string | Error) => void) => void;
+  start: () => boolean;
+  pause: () => boolean;
+  delete: () => void;
+}
 
 export default {
   computed: {
@@ -8,7 +51,7 @@ export default {
      */
     $porcupine(): PorcupineVue {
       return {
-        $_ppnWorker_: null as Worker | null,
+        $_ppnWorker_: null as PorcupineWorker | null,
         $_webVp_: null as WebVoiceProcessor | null,
         /**
          * Init function for Porcupine.
@@ -24,7 +67,7 @@ export default {
           porcupineFactory,
           keywordCallback = (_: string) => {},
           readyCallback = () => {},
-          errorCallback = (error: Error) => {console.error(error)}
+          errorCallback = (error: string | Error) => {console.error(error)}
         ) {
           try {
             const { accessKey, keywords } = porcupineFactoryArgs;

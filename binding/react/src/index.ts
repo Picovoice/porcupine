@@ -1,18 +1,6 @@
-import { usePorcupine } from './usePorcupine';
-
-import {
-  PorcupineHookArgs,
-  PorcupineKeyword,
-  PorcupineKeywordBuiltin,
-  PorcupineKeywordCustom,
-  PorcupineWorkerFactory,
-} from './porcupine_types';
+import { usePorcupine, PorcupineHookArgs } from './use_porcupine';
 
 export {
   usePorcupine,
-  PorcupineHookArgs,
-  PorcupineKeyword,
-  PorcupineKeywordBuiltin,
-  PorcupineKeywordCustom,
-  PorcupineWorkerFactory,
+  PorcupineHookArgs
 };

@@ -924,6 +924,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@picovoice/porcupine-web-core@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.0.1.tgz#f4346c408a241c582000955fff081ac679f88696"
+  integrity sha512-ouj9MJHwqz/PNdACPwUxzkmExY/5Kep3a/H6zq5C17FVlWF+D2akevleFChoVd9wCLcKLtWRkF98PWq4HljPjw==
+
 "@picovoice/web-voice-processor@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.2.tgz#cac4456b3ef06dee5664e27be6db348ae4e2d46a"

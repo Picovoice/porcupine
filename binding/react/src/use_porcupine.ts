@@ -1,12 +1,12 @@
 /*
-    Copyright 2021 Picovoice Inc.
+  Copyright 2021-2022 Picovoice Inc.
 
-    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
-    file accompanying this source.
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
 
-    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
-    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-    specific language governing permissions and limitations under the License.
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
 */
 
 import { useState, useEffect } from 'react';
@@ -14,10 +14,19 @@ import { useState, useEffect } from 'react';
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
-  PorcupineHookArgs,
+  PorcupineKeyword,
   PorcupineWorker,
   PorcupineWorkerFactory,
-} from './porcupine_types';
+} from '@picovoice/porcupine-web-core';
+
+export type PorcupineHookArgs = {
+  /** Immediately start the microphone upon initialization? */
+  start: boolean;
+  /** AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+  accessKey: string;
+  /** Keywords to listen for */
+  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
+};
 
 export function usePorcupine(
   /** The language-specific worker factory, imported as { PorcupineWorkerFactory }
@@ -77,7 +86,7 @@ export function usePorcupine(
     return false;
   };
 
-  const processErrorCallback = (error: string): void => {
+  const processErrorCallback = (error: string | Error): void => {
     setIsError(true);
     setErrorMessage(error.toString());
   };
