@@ -3,7 +3,8 @@
   "description": "Angular service for Porcupine Web SDK",
   "version": "2.0.1",
   "dependencies": {
-    "@picovoice/porcupine-web-core": "^2.0.1"
+    "@picovoice/porcupine-web-core": "^2.0.1",
+    "tslib": "^2.0.0"
   },
   "peerDependencies": {
     "@angular/common": "^11.0.9",
