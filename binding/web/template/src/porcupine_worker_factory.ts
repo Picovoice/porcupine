@@ -1,12 +1,12 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+  Copyright 2018-2022 Picovoice Inc.
 
-    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
-    file accompanying this source.
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
 
-    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
-    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-    specific language governing permissions and limitations under the License.
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
 */
 
 import PorcupineWorker from 'web-worker:./porcupine_worker.ts';
@@ -14,7 +14,7 @@ import {
   PorcupineKeyword,
   PorcupineWorkerRequestInit,
   PorcupineWorkerResponse,
-} from './porcupine_types';
+} from '@picovoice/porcupine-web-core';
 
 export default class PorcupineWorkerFactory {
   private constructor() { }
@@ -33,8 +33,8 @@ export default class PorcupineWorkerFactory {
   public static async create(
     accessKey: string,
     keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
-    keywordDetectionCallback?: CallableFunction,
-    processErrorCallback?: CallableFunction,
+    keywordDetectionCallback?: (label: string) => Promise<void>,
+    processErrorCallback?: (error: string) => Promise<void>,
     start?: boolean
   ): Promise<Worker> {
     // n.b. The *worker* creation is itself synchronous. But, inside the worker is an async

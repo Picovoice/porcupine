@@ -1,12 +1,32 @@
+/*
+  Copyright 2022 Picovoice Inc.
+
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
-import type {
+import {
+  PorcupineKeyword,
   PorcupineWorkerFactory,
-  PorcupineServiceArgs,
   PorcupineWorker,
-} from './porcupine_types';
+} from '@picovoice/porcupine-web-core';
+
+export type PorcupineServiceArgs = {
+  /** Immediately start the microphone upon initialization? (defaults to true) */
+  start?: boolean;
+  /** AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+  accessKey: string;
+  /** Arguments forwarded to PorcupineWorkerFactory */
+  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -69,7 +89,7 @@ export class PorcupineService implements OnDestroy {
       );
     } catch (error) {
       this.isInit = false;
-      this.error$.next(error);
+      this.error$.next(error as Error);
       this.isError$.next(true);
       throw error;
     }
@@ -84,7 +104,7 @@ export class PorcupineService implements OnDestroy {
       this.porcupineWorker.postMessage({ command: 'release' });
       this.porcupineWorker = null;
       this.isInit = false;
-      this.error$.next(error);
+      this.error$.next(error as Error);
       this.isError$.next(true);
       throw error;
     }
@@ -100,7 +120,7 @@ export class PorcupineService implements OnDestroy {
     this.keyword$.next(label);
   };
 
-  private errorCallback = (error: string): void => {
+  private errorCallback = (error: string | Error): void => {
     this.error$.next(error);
     this.isError$.next(true);
   };

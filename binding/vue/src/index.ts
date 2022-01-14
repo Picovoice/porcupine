@@ -1,13 +1,4 @@
-import porcupineMixin from './porcupine';
-
-import {
-  PorcupineKeyword,
-  PorcupineKeywordCustom,
-  PorcupineKeywordBuiltin,
-  PorcupineWorkerFactoryArgs, 
-  PorcupineWorkerFactory,
-  PorcupineVue
-} from './porcupine_types';
+import porcupineMixin, { PorcupineVue, PorcupineWorkerFactoryArgs } from './porcupine';
 
 // Create module definition for Vue.use()
 const plugin = {
@@ -34,11 +25,4 @@ if (GlobalVue) {
 export default porcupineMixin;
 
 // export types
-export {
-  PorcupineKeyword,
-  PorcupineKeywordCustom,
-  PorcupineKeywordBuiltin,
-  PorcupineWorkerFactoryArgs, 
-  PorcupineWorkerFactory,
-  PorcupineVue
-};
+export { PorcupineVue, PorcupineWorkerFactoryArgs };

@@ -1,12 +1,12 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+  Copyright 2018-2022 Picovoice Inc.
 
-    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
-    file accompanying this source.
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
 
-    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
-    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-    specific language governing permissions and limitations under the License.
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
 */
 
 /* eslint camelcase: 0 */
@@ -15,7 +15,7 @@
 import * as Asyncify from 'asyncify-wasm';
 import { Mutex } from 'async-mutex';
 
-import { PorcupineKeyword, PorcupineEngine } from './porcupine_types';
+import { PorcupineKeyword, PorcupineEngine } from '@picovoice/porcupine-web-core';
 
 // @ts-ignore
 import { PORCUPINE_WASM_BASE64 } from './lang/porcupine_b64';
@@ -40,6 +40,26 @@ const DEFAULT_SENSITIVITY = 0.5;
 const PV_STATUS_SUCCESS = 10000;
 
 /**
+ * WebAssembly function types
+ */
+
+ type aligned_alloc_type = (alignment: number, size: number) => Promise<number>;
+ type pv_porcupine_init_type = (
+   accessKey: number, 
+   numKeywords: number, 
+   keywordModelSizes: number, 
+   keywordModels: number, 
+   sensitivies: number, 
+   object: number
+ ) => Promise<number>;
+ type pv_porcupine_process_type = (object: number, buffer: number, keywordIndex: number) => Promise<number>;
+ type pv_porcupine_delete_type = (object: number) => Promise<void>;
+ type pv_status_to_string_type = (status: number) => Promise<number>
+ type pv_sample_rate_type = () => Promise<number>;
+ type pv_porcupine_frame_length_type = () => Promise<number>;
+ type pv_porcupine_version_type = () => Promise<number>;
+
+/**
  * JavaScript/WebAssembly Binding for the Picovoice Porcupine wake word engine.
  *
  * It initializes the WebAssembly module and exposes an async factory method `create` for creating
@@ -54,18 +74,18 @@ type PorcupineWasmOutput = {
   inputBufferAddress: number;
   memory: WebAssembly.Memory;
   objectAddress: number;
-  pvPorcupineDelete: CallableFunction;
-  pvPorcupineProcess: CallableFunction;
-  pvStatusToString: CallableFunction;
+  pvPorcupineDelete: pv_porcupine_delete_type;
+  pvPorcupineProcess: pv_porcupine_process_type;
+  pvStatusToString: pv_status_to_string_type;
   sampleRate: number;
   version: string;
   keywordIndexAddress: number;
 };
 
 export class Porcupine implements PorcupineEngine {
-  private _pvPorcupineDelete: CallableFunction;
-  private _pvPorcupineProcess: CallableFunction;
-  private _pvStatusToString: CallableFunction;
+  private _pvPorcupineDelete: pv_porcupine_delete_type;
+  private _pvPorcupineProcess: pv_porcupine_process_type;
+  private _pvStatusToString: pv_status_to_string_type;
 
   private _wasmMemory: WebAssembly.Memory;
   private _memoryBuffer: Int16Array;
@@ -604,19 +624,19 @@ export class Porcupine implements PorcupineEngine {
       importObject
     );
 
-    const aligned_alloc = instance.exports.aligned_alloc as CallableFunction;
+    const aligned_alloc = instance.exports.aligned_alloc as aligned_alloc_type;
     const pv_porcupine_version = instance.exports
-      .pv_porcupine_version as CallableFunction;
+      .pv_porcupine_version as pv_porcupine_version_type;
     const pv_porcupine_frame_length = instance.exports
-      .pv_porcupine_frame_length as CallableFunction;
+      .pv_porcupine_frame_length as pv_porcupine_frame_length_type;
     const pv_porcupine_process = instance.exports
-      .pv_porcupine_process as CallableFunction;
+      .pv_porcupine_process as pv_porcupine_process_type;
     const pv_porcupine_delete = instance.exports
-      .pv_porcupine_delete as CallableFunction;
-    const pv_porcupine_init = instance.exports.pv_porcupine_init as CallableFunction;
+      .pv_porcupine_delete as pv_porcupine_delete_type;
+    const pv_porcupine_init = instance.exports.pv_porcupine_init as pv_porcupine_init_type;
     const pv_status_to_string = instance.exports
-      .pv_status_to_string as CallableFunction;
-    const pv_sample_rate = instance.exports.pv_sample_rate as CallableFunction;
+      .pv_status_to_string as pv_status_to_string_type;
+    const pv_sample_rate = instance.exports.pv_sample_rate as pv_sample_rate_type;
     const keywordIndexAddress = await aligned_alloc(
       Int32Array.BYTES_PER_ELEMENT,
       Int32Array.BYTES_PER_ELEMENT
