@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (PorcupineInvalidArgumentException e) {
             onPorcupineInitError(
-            onPorcupineInitError(
                 String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
             );
         } catch (PorcupineActivationException e) {
