@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2021 Picovoice Inc.
+# Copyright 2018-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -11,8 +11,6 @@
 
 import sys
 import unittest
-
-import soundfile
 
 from porcupine import Porcupine
 from util import *
@@ -57,10 +55,9 @@ class PorcupineTestCase(unittest.TestCase):
             keyword_paths=keyword_paths,
             sensitivities=[0.5] * len(keyword_paths))
 
-        audio, sample_rate = soundfile.read(
+        audio = read_file(
             os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/', audio_file_name),
-            dtype='int16')
-        assert sample_rate == porcupine.sample_rate
+            porcupine.sample_rate)
 
         num_frames = len(audio) // porcupine.frame_length
         results = []
