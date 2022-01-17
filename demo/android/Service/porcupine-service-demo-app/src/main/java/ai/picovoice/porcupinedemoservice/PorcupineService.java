@@ -84,7 +84,7 @@ public class PorcupineService extends Service {
 
         } catch (PorcupineInvalidArgumentException e) {
             onPorcupineInitError(
-                    e.getMessage() + String.format("\nEnsure your accessKey '%s' is a valid access key.", ACCESS_KEY)
+                String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
             );
         } catch (PorcupineActivationException e) {
             onPorcupineInitError("AccessKey activation error");
