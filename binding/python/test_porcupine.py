@@ -23,7 +23,7 @@ class PorcupineTestCase(unittest.TestCase):
     def __append_language(s, language):
         if language == 'en':
             return s
-        return f'{s}_{language}'
+        return "%s_%s" % (s, language)
 
     @staticmethod
     def __read_file(file_name, sample_rate):
@@ -48,7 +48,7 @@ class PorcupineTestCase(unittest.TestCase):
     @classmethod
     def __pv_model_path_by_language(cls, relative, language):
         model_path_subdir = cls.__append_language('lib/common/porcupine_params', language)
-        return os.path.join(os.path.dirname(__file__), relative, f'{model_path_subdir}.pv')
+        return os.path.join(os.path.dirname(__file__), relative, '%s.pv' % model_path_subdir)
 
     @classmethod
     def __pv_keyword_paths_by_language(cls, relative, language):
@@ -65,7 +65,7 @@ class PorcupineTestCase(unittest.TestCase):
     def run_porcupine(self, language, keywords, ground_truth, audio_file_name=None):
         if audio_file_name is None:
             _audio_file_name_prefix = self.__append_language('multiple_keywords', language)
-            audio_file_name = f'{_audio_file_name_prefix}.wav'
+            audio_file_name = '%s.wav' % _audio_file_name_prefix
         keyword_paths = list()
         for x in keywords:
             keyword_paths.append(self.__pv_keyword_paths_by_language('../..', language)[x])
