@@ -33,7 +33,7 @@ class PorcupineTestCase(unittest.TestCase):
 
         if wav_file.getframerate() != sample_rate:
             raise ValueError(
-                "Audio file should have a sample rate of %d. got %d" % (sample_rate, wav_file.getframerate()))
+                "Audio file should have a sample rate of %d, got %d" % (sample_rate, wav_file.getframerate()))
 
         samples = wav_file.readframes(num_frames)
         wav_file.close()
