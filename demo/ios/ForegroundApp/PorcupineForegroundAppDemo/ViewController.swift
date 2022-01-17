@@ -98,7 +98,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
             } catch let error as PorcupineInvalidArgumentError {
-                showErrorAlert("\(error.localizedDescription).\nEnsure your accessKey '\(accessKey)' is a valid access key.")
+                showErrorAlert("\(error.localizedDescription)\nEnsure your accessKey '\(accessKey)' is valid")
             } catch is PorcupineActivationError {
                 showErrorAlert("AccessKey activation error")
             } catch is PorcupineActivationRefusedError {
