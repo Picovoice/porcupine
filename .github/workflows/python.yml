@@ -60,9 +60,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Pre-build dependencies
-      run: python -m pip install --upgrade pip
-
     - name: Test
       run: python test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
 
@@ -76,9 +73,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Pre-build dependencies
-      run: python3 -m pip install --upgrade pip
 
     - name: Test
       run: python3 test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
