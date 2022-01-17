@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             porcupineManager.start();
         } catch (PorcupineInvalidArgumentException e) {
             onPorcupineInitError(
-                    e.getMessage() + String.format("\nEnsure your accessKey '$s' is a valid access key.", ACCESS_KEY)
+                    e.getMessage() + String.format("\nEnsure your accessKey '%s' is a valid access key.", ACCESS_KEY)
             );
         } catch (PorcupineActivationException e) {
             onPorcupineInitError("AccessKey activation error");
