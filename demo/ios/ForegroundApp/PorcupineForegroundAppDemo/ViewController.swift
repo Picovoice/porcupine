@@ -97,8 +97,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 wakeWordPicker.isUserInteractionEnabled = false
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
-            } catch is PorcupineInvalidArgumentError {
-                showErrorAlert("AccessKey '\(accessKey)' is invalid")
+            } catch let error as PorcupineInvalidArgumentError {
+                showErrorAlert("\(error.localizedDescription).\nEnsure your accessKey '\(accessKey)' is a valid access key.")
             } catch is PorcupineActivationError {
                 showErrorAlert("AccessKey activation error")
             } catch is PorcupineActivationRefusedError {
