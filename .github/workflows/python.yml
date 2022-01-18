@@ -50,7 +50,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: ['3.5', '3.6', '3.7', '3.8', '3.9', '3.10']
 
     steps:
     - uses: actions/checkout@v2
@@ -59,16 +59,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Pre-build dependencies specific to Ubuntu
-      if: runner.os == 'Linux'
-      run: sudo apt install libsndfile1-dev
-
-    - name: Pre-build dependencies
-      run: python -m pip install --upgrade pip
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
 
     - name: Test
       run: python test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}
@@ -83,12 +73,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Pre-build dependencies
-      run: python3 -m pip install --upgrade pip
-
-    - name: Install dependencies
-      run: pip3 install -r requirements.txt
 
     - name: Test
       run: python3 test_porcupine.py ${{secrets.PV_VALID_ACCESS_KEY}}

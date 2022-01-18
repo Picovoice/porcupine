@@ -1,5 +1,5 @@
 #
-# Copyright 2019-2021 Picovoice Inc.
+# Copyright 2019-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -75,7 +75,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/porcupine",
     packages=["pvporcupine"],
-    install_requires=["enum34", "numpy"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -85,6 +84,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Sound/Audio :: Speech"
     ],
-    python_requires='>=3',
+    python_requires='>=3.5',
     keywords="wake word engine, hotword detection, keyword spotting, wake word detection, voice commands",
 )
