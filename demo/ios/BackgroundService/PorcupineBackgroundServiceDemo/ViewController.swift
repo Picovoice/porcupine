@@ -51,8 +51,8 @@ class ViewController: UIViewController, UITextViewDelegate {
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
 
-            } catch is PorcupineInvalidArgumentError {
-                showErrorAlert(message: "AccessKey '\(accessKey)' is invalid")
+            } catch let error as PorcupineInvalidArgumentError {
+                showErrorAlert(message: "\(error.localizedDescription)\nEnsure your accessKey '\(accessKey)' is valid")
             } catch is PorcupineActivationError {
                 showErrorAlert(message: "AccessKey activation error")
             } catch is PorcupineActivationRefusedError {
