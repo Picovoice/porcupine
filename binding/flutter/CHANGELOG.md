@@ -19,3 +19,6 @@
 
 ## [2.0.6] - 2022-01-11
 * Android support patch
+
+## [2.1.0] - 2022-01-19
+* Android/iOS dev support patch
