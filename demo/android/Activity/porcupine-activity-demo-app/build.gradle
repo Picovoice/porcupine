@@ -16,7 +16,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 31
         versionCode 5
-        versionName "2.1.0"
+        versionName "2.0.2"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resValue 'string', 'pvTestingAccessKey', properties.getProperty("pvTestingAccessKey", "")
