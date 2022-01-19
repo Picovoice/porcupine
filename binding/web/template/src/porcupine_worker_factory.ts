@@ -33,8 +33,8 @@ export default class PorcupineWorkerFactory {
   public static async create(
     accessKey: string,
     keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string,
-    keywordDetectionCallback?: (label: string) => Promise<void>,
-    processErrorCallback?: (error: string) => Promise<void>,
+    keywordDetectionCallback?: (label: string) => void,
+    processErrorCallback?: (error: string) => void,
     start?: boolean
   ): Promise<Worker> {
     // n.b. The *worker* creation is itself synchronous. But, inside the worker is an async
