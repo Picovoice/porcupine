@@ -1,5 +1,5 @@
-github.com/Picovoice/porcupine/binding/go/v2 v2.0.1 h1:ZdWn2pd5Uxpwk1NYfTekTGQtuPkQPU2gB4TEF6YdcJw=
-github.com/Picovoice/porcupine/binding/go/v2 v2.0.1/go.mod h1:ZoCMGeBEiDKYVDE+6jRg1/cdSOCjM4cuoBKV3+EBtM8=
+github.com/Picovoice/porcupine/binding/go/v2 v2.1.0 h1:ud0tmnWUCdnT2FZClM5AVdC/abnm7E2g4ecqwHCdvZM=
+github.com/Picovoice/porcupine/binding/go/v2 v2.1.0/go.mod h1:ZoCMGeBEiDKYVDE+6jRg1/cdSOCjM4cuoBKV3+EBtM8=
 github.com/Picovoice/pvrecorder/sdk/go v1.0.2 h1:UMgGSRjT5ro3DmncOYu6aiCikQp9pZlR3MPQa6QatEo=
 github.com/Picovoice/pvrecorder/sdk/go v1.0.2/go.mod h1:vkNmQAJCFgKBhSfqdff3OuxvXVpIuwv48odGc3ki83M=
 github.com/go-audio/audio v1.0.0 h1:zS9vebldgbQqktK4H0lUqWrG8P0NxCJVqcj7ZpNnwd4=
