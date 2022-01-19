@@ -1,10 +1,10 @@
 import { Component } from "@angular/core"
 import { Subscription } from "rxjs"
 
-import { PorcupineService } from "@picovoice/porcupine-web-angular"
+import { PorcupineService, PorcupineServiceArgs } from "@picovoice/porcupine-web-angular"
 
 import { DEEP_SKY_BLUE_PPN_64 } from "./porcupine_keywords"
-import { PorcupineServiceArgs, PorcupineKeyword } from "@picovoice/porcupine-web-angular/lib/porcupine_types"
+import { PorcupineKeyword } from "@picovoice/porcupine-web-core"
 
 @Component({
   selector: 'voice-widget',
