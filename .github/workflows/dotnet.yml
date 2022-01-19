@@ -3,7 +3,7 @@ name: .NET
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths: 
       - 'binding/dotnet/**'
       - '!binding/dotnet/README.md'
@@ -22,7 +22,7 @@ on:
       - 'resources/keyword_files/windows/**'
             
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths: 
       - 'binding/dotnet/**'
       - '!binding/dotnet/README.md'
