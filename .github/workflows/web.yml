@@ -3,14 +3,14 @@ name: Web
 on:
   workflow_dispatch:
   push:
-    branches: [ master, 2.1 ]
+    branches: [ master, v2.1 ]
     paths:
       - 'binding/web/**'
       - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
   pull_request:
-    branches: [ master, 2.1 ]
+    branches: [ master, v2.1 ]
     paths:
       - 'binding/web/**'
       - '!binding/web/README.md'
