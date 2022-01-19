@@ -178,5 +178,4 @@ dotnet run -c MicDemo.Release -- \
 --output_path ./test.wav
 ```
 
-
 If after listening to stored file there is no apparent problem detected please open an issue.
