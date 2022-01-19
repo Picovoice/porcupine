@@ -1,5 +1,5 @@
 group 'ai.picovoice.flutter.porcupine'
-version '2.0.0'
+version '2.1.0'
 
 buildscript {
     repositories {
@@ -22,10 +22,10 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 19
     }
 
     buildTypes {
@@ -43,5 +43,5 @@ android {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-android:2.0.2'
+    implementation 'ai.picovoice:porcupine-android:2.1.0'
 }
