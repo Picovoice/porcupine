@@ -3,12 +3,12 @@ name: .NET Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
