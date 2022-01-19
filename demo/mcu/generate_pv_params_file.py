@@ -14,7 +14,7 @@ import struct
 
 HEADER = """
 /*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -24,8 +24,8 @@ HEADER = """
     specific language governing permissions and limitations under the License.
 */
 
-#ifndef PV_PRAMS_H
-#define PV_PRAMS_H
+#ifndef PV_PARAMS_H
+#define PV_PARAMS_H
 
 #include <stdint.h>
 
