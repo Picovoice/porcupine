@@ -162,8 +162,6 @@ namespace Pv.Unity
         /// </param>        
         private Porcupine(string accessKey, string modelPath, IEnumerable<string> keywordPaths, IEnumerable<float> sensitivities)
         {
-            CheckArchitecture();
-
             if (string.IsNullOrEmpty(accessKey))
             {
                 throw new PorcupineInvalidArgumentException("No AccessKey provided to Porcupine");
@@ -385,15 +383,6 @@ namespace Pv.Unity
                 default:
                     throw new PorcupineRuntimeException(string.Format("Platform '{0}' not supported by Porcupine Unity binding", Application.platform));
             } 
-        }
-
-        private static void CheckArchitecture()
-        {
-
-            if (SystemInfo.processorType.ToLower().Equals("apple m1"))
-            {
-                throw new PorcupineRuntimeException("Apple M1 is not supported by Porcupine Unity binding");
-            }
         }
 
         private static string GetDefaultModelPath()
