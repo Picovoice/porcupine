@@ -11,7 +11,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1EFFC8692799E38900E5A925 /* raspberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1EFFC8682799E38900E5A925 /* raspberry_ios.ppn */; };
 		545D08A9865AA1DC2FE16674 /* libPods-PorcupineDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 262FE5E535CF9CF9DD6AEBC8 /* libPods-PorcupineDemo.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -25,7 +24,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PorcupineDemo/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PorcupineDemo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PorcupineDemo/main.m; sourceTree = "<group>"; };
-		1EFFC8682799E38900E5A925 /* raspberry_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = raspberry_ios.ppn; path = ../../../../picovoice/demo/flutter/assets/keyword_files/ios/raspberry_ios.ppn; sourceTree = "<group>"; };
 		262FE5E535CF9CF9DD6AEBC8 /* libPods-PorcupineDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43ED59E665B01E99A2746971 /* Pods-PorcupineDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PorcupineDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -48,7 +46,6 @@
 		13B07FAE1A68108700A75B9A /* PorcupineDemo */ = {
 			isa = PBXGroup;
 			children = (
-				1EFFC8682799E38900E5A925 /* raspberry_ios.ppn */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -170,7 +167,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				1EFFC8692799E38900E5A925 /* raspberry_ios.ppn in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
