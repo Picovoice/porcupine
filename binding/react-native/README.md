@@ -25,8 +25,8 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 This binding is for running Porcupine on **React Native 0.62.2+** on the following platforms:
 
-- Android 4.1+ (API 16+)
-- iOS 9.0+
+- Android 4.4+ (API 19+)
+- iOS 10.0+
 
 ## Installation
 
