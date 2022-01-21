@@ -25,8 +25,8 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 [Porcupine unity package](./porcupine-2.1.0.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
 
-- Android 4.1+ (API 16+) (ARM only)
-- iOS 9.0+
+- Android 4.4+ (API 19+) (ARM only)
+- iOS 10.0+
 - Windows (x86_64)
 - macOS (x86_64)
 - Linux (x86_64)
