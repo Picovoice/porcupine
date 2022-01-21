@@ -10,7 +10,6 @@ on:
   pull_request:
     branches: [ master ]
     paths: 
-      - '.github/workflows/android-appcenter.yml'
       - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
 
 defaults:

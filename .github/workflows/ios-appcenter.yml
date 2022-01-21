@@ -9,7 +9,6 @@ on:
   pull_request:
     branches: [ master ]
     paths: 
-      - '.github/workflows/ios-appcenter.yml'
       - 'demo/ios/ForegroundApp/Podfile.lock'
       
 defaults:
