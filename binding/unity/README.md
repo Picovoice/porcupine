@@ -31,7 +31,8 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 - macOS (x86_64)
 - Linux (x86_64)
 
-For running Porcupine on **macOS M1 (arm64)**, use the [Apple silicon](./porcupine-2.1.0-Apple-silicon.unitypackage) version on **Unity 2021.2+**
+For running Porcupine on **macOS M1 (arm64)**, use the [Apple silicon](./porcupine-2.1.0-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
+
 ## Installation
 
 The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.0.0.unitypackage](/binding/unity/porcupine-2.0.0.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
