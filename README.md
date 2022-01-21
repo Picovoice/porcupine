@@ -1667,6 +1667,11 @@ pv_porcupine_delete(handle);
 
 ## Releases
 
+### v2.1.0 - January 20th, 2022
+
+- Added macOS arm64 (Apple Silicon) support for Java and Unity SDKs
+- Various bug fixes and improvements
+
 ### v2.0.0 - Nov 25th, 2021
 
 - Improved accuracy.
