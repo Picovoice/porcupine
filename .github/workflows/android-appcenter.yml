@@ -3,12 +3,12 @@ name: Android AppCenter Tests
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths: 
       - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
     
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths: 
       - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
 

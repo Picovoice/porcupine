@@ -3,7 +3,7 @@ name: Nodejs
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'
@@ -15,7 +15,7 @@ on:
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'

@@ -3,7 +3,7 @@ name: Go
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'
@@ -21,7 +21,7 @@ on:
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'

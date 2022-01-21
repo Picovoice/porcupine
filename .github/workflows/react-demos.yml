@@ -3,12 +3,12 @@ name: React Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'demo/react/**'
       - '!demo/react/README.md'
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'demo/react/**'
       - '!demo/react/README.md'

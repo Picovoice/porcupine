@@ -3,12 +3,12 @@ name: Go Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'demo/go/**'
       - '!demo/go/README.md'
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'demo/go/**'
       - '!demo/go/README.md'
