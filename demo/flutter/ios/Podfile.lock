@@ -15,12 +15,12 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
+    - Porcupine-iOS
 
 EXTERNAL SOURCES:
   Flutter:
@@ -29,24 +29,17 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_voice_processor/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec
   porcupine_flutter:
     :path: ".symlinks/plugins/porcupine_flutter/ios"
-
-CHECKOUT OPTIONS:
-  Porcupine-iOS:
-    :commit: 69d93e4aea98f9d582d34a890843a30b31a5fe86
-    :git: https://github.com/Picovoice/porcupine.git
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_voice_processor: afb59b604d99397a1ccf15c935ac8f2c2327f09f
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  Porcupine-iOS: 3ba921ebae3daf2edff3f9aee4ac71e3c3bc6e36
+  Porcupine-iOS: 35f3cd9e60b1178631a819e16462ff41894cbf20
   porcupine_flutter: d07702351800af8cd7918e1333bb87359771c347
 
-PODFILE CHECKSUM: 018fc0dab91cf4c7313c15f2be373be87ec6d970
+PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 
 COCOAPODS: 1.11.2

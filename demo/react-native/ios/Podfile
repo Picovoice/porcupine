@@ -6,7 +6,4 @@ platform :ios, '10.0'
 target 'PorcupineDemo' do
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])
-
-  # remove
-  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec'
 end

@@ -32,9 +32,6 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-
-  # remove
-  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec'
 end
 
 post_install do |installer|
