@@ -2,7 +2,7 @@ name: React Native
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'
@@ -12,7 +12,7 @@ on:
       - 'resources/keyword_files/android/**'
       - 'resources/keyword_files/ios/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'binding/react-native/**'
       - '!binding/react-native/README.md'

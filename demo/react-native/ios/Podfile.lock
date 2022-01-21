@@ -20,10 +20,10 @@ PODS:
     - glog
   - glog (0.3.5)
   - ios-voice-processor (1.0.3)
-  - Porcupine-iOS (2.0.0):
+  - Porcupine-iOS (2.1.0):
     - ios-voice-processor (~> 1.0.2)
-  - porcupine-react-native (2.0.0):
-    - Porcupine-iOS
+  - porcupine-react-native (2.1.0):
+    - Porcupine-iOS (~> 2.1.0)
     - React
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
@@ -263,6 +263,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec`)
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -294,7 +295,6 @@ SPEC REPOS:
   trunk:
     - boost-for-react-native
     - ios-voice-processor
-    - Porcupine-iOS
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -307,6 +307,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Porcupine-iOS:
+    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec
   porcupine-react-native:
     :path: "../node_modules/@picovoice/porcupine-react-native"
   RCTRequired:
@@ -364,8 +366,8 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Porcupine-iOS: df056ec578ec2b5c321e4961f6b56a99693250e5
-  porcupine-react-native: 2bf8f4d81bd7f233d32ac7fc6bd3c8aa2c9d036a
+  Porcupine-iOS: 3ba921ebae3daf2edff3f9aee4ac71e3c3bc6e36
+  porcupine-react-native: bbb4e37c3617bcbb2a555bfb413b0095d1d3217d
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -390,6 +392,6 @@ SPEC CHECKSUMS:
   RNCPicker: 0991c56da7815c0cf946d6f63cf920b25296e5f6
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: dbacea9ba79da517ca6fb72d15a44049206fe690
+PODFILE CHECKSUM: 3a0cf2f1b2cb2cba621d58fae449dba32c16fac9
 
 COCOAPODS: 1.11.2

@@ -92,7 +92,7 @@ const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).ex
       console.log(keywordLabel);
       this.detections = [...this.detections, keywordLabel];
     },
-    ppnErrorFn: function (error: Error) {
+    ppnErrorFn: function (error: string | Error) {
       this.isError = true;
       this.errorMessage = error.toString();
     },

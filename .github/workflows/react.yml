@@ -3,14 +3,14 @@ name: React
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'binding/react/**'
       - '!binding/react/README.md'
       - 'lib/wasm/**'
       - 'resources/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'binding/react/**'
       - '!binding/react/README.md'

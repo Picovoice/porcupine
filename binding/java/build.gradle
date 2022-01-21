@@ -7,7 +7,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '2.0.2'
+    PUBLISH_VERSION = '2.1.0'
     PUBLISH_ARTIFACT_ID = 'porcupine-java'
 }
 

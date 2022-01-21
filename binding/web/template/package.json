@@ -1,6 +1,6 @@
 {
   "name": "$",
-  "version": "2.0.4",
+  "version": "2.1.1",
   "description": "Porcupine library for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
@@ -35,7 +35,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@picovoice/porcupine-web-core": "^2.0.1"
+    "@picovoice/porcupine-web-core": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",

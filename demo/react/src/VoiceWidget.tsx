@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { usePorcupine } from "@picovoice/porcupine-web-react";
-import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-react";
+import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-core";
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
