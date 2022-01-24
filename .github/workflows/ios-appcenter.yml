@@ -6,10 +6,12 @@ on:
     branches: [ master ]
     paths: 
       - 'demo/ios/ForegroundApp/Podfile.lock'
+      - '.github/workflows/ios-appcenter.yml'
   pull_request:
     branches: [ master ]
     paths: 
       - 'demo/ios/ForegroundApp/Podfile.lock'
+      - '.github/workflows/ios-appcenter.yml'
       
 defaults:
   run:

@@ -7,11 +7,13 @@ on:
     paths:
       - 'demo/react/**'
       - '!demo/react/README.md'
+      - '.github/workflows/react-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/react/**'
       - '!demo/react/README.md'
+      - '.github/workflows/react-demos.yml'
 
 defaults:
   run:

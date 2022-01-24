@@ -9,6 +9,7 @@ on:
       - '!binding/vue/README.md'
       - 'lib/**'
       - 'resources/**'
+      - '.github/workflows/vue.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -16,6 +17,7 @@ on:
       - '!binding/vue/README.md'
       - 'lib/**'
       - 'resources/**'
+      - '.github/workflows/vue.yml'
 
 defaults:
   run:

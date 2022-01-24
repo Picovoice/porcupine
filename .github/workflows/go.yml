@@ -20,6 +20,7 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
+      - '.github/workflows/go.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -38,6 +39,7 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
+      - '.github/workflows/go.yml'
 
 defaults:
   run:
@@ -77,7 +79,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, jetson, beaglebone]
 
     steps:
     - uses: actions/checkout@v2

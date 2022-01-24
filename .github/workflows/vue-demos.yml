@@ -6,11 +6,13 @@ on:
     paths:
       - 'demo/vue/**'
       - '!demo/vue/README.md'
+      - '.github/workflows/vue-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/vue/**'
       - '!demo/vue/README.md'
+      - '.github/workflows/vue-demos.yml'
 
 defaults:
   run:
