@@ -20,7 +20,7 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/dontnet.yml'
+      - '.github/workflows/dotnet.yml'
   pull_request:
     branches: [ master ]
     paths: 
@@ -39,7 +39,7 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/dontnet.yml'
+      - '.github/workflows/dotnet.yml'
 
 defaults:
   run:
