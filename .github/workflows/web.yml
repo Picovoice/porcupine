@@ -9,6 +9,7 @@ on:
       - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
+      - '.github/workflows/web.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -16,6 +17,7 @@ on:
       - '!binding/web/README.md'
       - 'lib/**'
       - 'resources/**'
+      - '.github/workflows/web.yml'
 
 defaults:
   run:

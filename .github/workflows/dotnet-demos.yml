@@ -7,11 +7,13 @@ on:
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
+      - '.github/workflows/dotnet-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
+      - '.github/workflows/dotnet-demos.yml'
 
 defaults:
   run:

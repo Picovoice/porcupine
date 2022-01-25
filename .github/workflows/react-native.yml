@@ -11,6 +11,7 @@ on:
       - 'lib/ios/**'
       - 'resources/keyword_files/android/**'
       - 'resources/keyword_files/ios/**'
+      - '.github/workflows/react-native.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -21,6 +22,7 @@ on:
       - 'lib/ios/**'
       - 'resources/keyword_files/android/**'
       - 'resources/keyword_files/ios/**'
+      - '.github/workflows/react-native.yml'
 
 defaults:
   run:

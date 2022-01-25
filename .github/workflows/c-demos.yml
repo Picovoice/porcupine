@@ -7,11 +7,13 @@ on:
     paths:
       - 'demo/c/**'
       - '!demo/c/README.md'
+      - '.github/workflows/c-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/c/**'
       - '!demo/c/README.md'
+      - '.github/workflows/c-demos.yml'
 
 
 defaults:
@@ -42,7 +44,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
     - uses: actions/checkout@v2
@@ -127,17 +129,23 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
         include:
         - machine: rpi2
           platform: raspberry-pi
           arch: cortex-a7
-        - machine: rpi3
+        - machine: rpi3-32
           platform: raspberry-pi
           arch: cortex-a53
-        - machine: rpi4
+        - machine: rpi3-64
+          platform: raspberry-pi
+          arch: cortex-a53-aarch64
+        - machine: rpi4-32
           platform: raspberry-pi
           arch: cortex-a72
+        - machine: rpi4-64
+          platform: raspberry-pi
+          arch: cortex-a72-aarch64
         - machine: jetson
           platform: jetson
           arch: cortex-a57-aarch64

@@ -7,11 +7,13 @@ on:
     paths:
       - 'demo/angular/**'
       - '!demo/angular/README.md'
+      - '.github/workflows/angular-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/angular/**'
       - '!demo/angular/README.md'
+      - '.github/workflows/angular-demos.yml'
 
 defaults:
   run:

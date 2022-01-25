@@ -6,11 +6,12 @@ on:
     branches: [ master ]
     paths: 
       - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
-    
+      - '.github/workflows/android-appcenter.yml'
   pull_request:
     branches: [ master ]
     paths: 
       - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
+      - '.github/workflows/android-appcenter.yml'
 
 defaults:
   run:

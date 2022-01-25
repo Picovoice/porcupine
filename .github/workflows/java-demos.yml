@@ -7,11 +7,13 @@ on:
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
+      - '.github/workflows/java-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/java/**'
       - '!demo/java/README.md'
+      - '.github/workflows/java-demos.yml'
 
 defaults:
   run:

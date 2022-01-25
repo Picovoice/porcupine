@@ -9,6 +9,7 @@ on:
       - '!binding/react/README.md'
       - 'lib/wasm/**'
       - 'resources/**'
+      - '.github/workflows/react.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -16,6 +17,7 @@ on:
       - '!binding/react/README.md'
       - 'lib/wasm/**'
       - 'resources/**'
+      - '.github/workflows/react.yml'
 
 defaults:
   run:
