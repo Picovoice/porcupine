@@ -15,8 +15,8 @@ android {
         applicationId "ai.picovoice.porcupine.demo"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 5
-        versionName "2.0.2"
+        versionCode 7
+        versionName "2.1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resValue 'string', 'pvTestingAccessKey', properties.getProperty("pvTestingAccessKey", "")
@@ -45,3 +45,27 @@ dependencies {
 
     androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
 }
+
+task copyPorcupineResources(type: Copy) {
+    from("$projectDir/../../../../resources/keyword_files/android")
+    include('alexa_android.ppn',
+            'americano_android.ppn',
+            'blueberry_android.ppn',
+            'bumblebee_android.ppn',
+            'computer_android.ppn',
+            'grapefruit_android.ppn',
+            'grasshopper_android.ppn',
+            'hey google_android.ppn',
+            'hey siri_android.ppn',
+            'jarvis_android.ppn',
+            'ok google_android.ppn',
+            'picovoice_android.ppn',
+            'porcupine_android.ppn',
+            'terminator_android.ppn')
+    into("$projectDir/src/main/assets")
+    rename { String fileName ->
+        fileName.replace("_android", "").replace(" ", "_")
+    }
+}
+
+preBuild.dependsOn(copyPorcupineResources)
