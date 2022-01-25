@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
             final Spinner mySpinner = findViewById(R.id.keyword_spinner);
             final String keywordName = mySpinner.getSelectedItem().toString();
 
-            Porcupine.BuiltInKeyword keyword = Porcupine.BuiltInKeyword.valueOf(keywordName.toUpperCase().replace(" ", "_"));
+            String keyword = keywordName.toLowerCase().replace(" ", "_") + ".ppn";
             porcupineManager = new PorcupineManager.Builder()
                     .setAccessKey(ACCESS_KEY)
-                    .setKeyword(keyword)
+                    .setKeywordPath(keyword)
                     .setSensitivity(0.7f)
                     .build(getApplicationContext(), porcupineManagerCallback);
             porcupineManager.start();
