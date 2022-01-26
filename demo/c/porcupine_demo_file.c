@@ -99,7 +99,7 @@ void print_usage(const char *program_name) {
     fprintf(stderr, "Usage : %s -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSITIVITY -a ACCESS_KEY -w WAV_PATH\n", program_name);
 }
 
-int main(int argc, char *argv[]) {
+int picovoice_main(int argc, char *argv[]) {
     const char *library_path = NULL;
     const char *model_path = NULL;
     const char *keyword_path = NULL;
@@ -262,4 +262,47 @@ int main(int argc, char *argv[]) {
     close_dl(porcupine_library);
 
     return 0;
+}
+
+int main(int argc, char *argv[]) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+#define UTF8_COMPOSITION_FLAG (0)
+#define NULL_TERMINATED (-1)
+
+    LPWSTR *wargv = CommandLineToArgvW(GetCommandLineW(), &argc);
+    if (wargv == NULL) {
+        fprintf(stderr, "CommandLineToArgvW failed\n");
+        exit(1);
+    }
+    
+    char *utf8_argv[argc];
+
+    for (int i = 0; i < argc; ++i) {
+        // WideCharToMultiByte: https://docs.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+        int arg_chars_num = WideCharToMultiByte(CP_UTF8, UTF8_COMPOSITION_FLAG, wargv[i], NULL_TERMINATED, NULL, 0, NULL, NULL);
+        utf8_argv[i] = (char *) malloc(arg_chars_num * sizeof(char));
+        if (!utf8_argv[i]) {
+            fprintf(stderr, "failed to to allocate memory for converting args");
+        }
+        WideCharToMultiByte(CP_UTF8, UTF8_COMPOSITION_FLAG, wargv[i], NULL_TERMINATED, utf8_argv[i], arg_chars_num, NULL, NULL);
+    }
+
+    LocalFree(wargv);
+    argv = utf8_argv;
+
+#endif
+
+    int result = picovoice_main(argc, argv);
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    for (int i = 0; i < argc; ++i) {
+        free(utf8_argv[i]);
+    }
+
+#endif
+
+    return result;
 }
