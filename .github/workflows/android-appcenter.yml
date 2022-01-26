@@ -56,7 +56,7 @@ jobs:
       run: appcenter test run espresso 
         --token ${{secrets.APPCENTERAPITOKEN}}
         --app "Picovoice/Porcupine-Android" 
-        --devices "Picovoice/single-android" 
+        --devices "Picovoice/android-min-max"
         --app-path porcupine-activity-demo-app/build/outputs/apk/debug/porcupine-activity-demo-app-debug.apk 
         --test-series "porcupine-android" 
         --locale "en_US" 
