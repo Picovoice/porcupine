@@ -407,6 +407,23 @@ public class PorcupineTest {
         p.delete();
     }
 
+    @Test
+    public void testInitWithNonAsciiModelName() throws PorcupineException {
+        File keywordPath = new File(testResourcesPath, "keyword_files/es/murciélago_android.ppn");
+        File modelPath = new File(testResourcesPath, "model_files/porcupine_params_es.pv");
+        Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setKeywordPath(keywordPath.getAbsolutePath())
+                .setModelPath(modelPath.getAbsolutePath())
+                .build(appContext);
+
+        assertTrue(p.getVersion() != null && !p.getVersion().equals(""));
+        assertTrue(p.getFrameLength() > 0);
+        assertTrue(p.getSampleRate() > 0);
+
+        p.delete();
+    }
+
     private void extractAssetsRecursively(String path) throws IOException {
 
         String[] list = assetManager.list(path);

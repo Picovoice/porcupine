@@ -232,3 +232,17 @@ func TestMultipleKeywordsFr(t *testing.T) {
 		"multiple_keywords_fr.wav",
 		[]int{0, 1, 0, 2})
 }
+
+func TestInitWithNonAsciiModelName(t *testing.T) {
+
+	language := "es"
+	keywords := []string{"murciélago"}
+	porcupine = Porcupine{
+		AccessKey: testAccessKey,
+		ModelPath: getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+	runTestCase(
+		t,
+		"murciélago.wav",
+		[]int{0, 0})
+}

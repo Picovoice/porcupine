@@ -294,7 +294,26 @@ namespace PorcupineTest
             RunTestCase(
                 "multiple_keywords_fr.wav",
                 new List<int>() {0, 1, 0, 2});
-        }                 
+        }       
+
+        [TestMethod]
+        public void TestInitWithNonAsciiModelName()
+        {
+            string language = "es";
+            List<string> keywords = new List<string>() {
+                "murciélago",
+            };
+
+            porcupine = Porcupine.FromKeywordPaths(
+                ACCESS_KEY,
+                GetKeywordPaths(language, keywords),
+                GetModelPath(language)
+            );
+
+            RunTestCase(
+                "murciélago.wav",
+                new List<int>() {0, 0});
+        }          
 
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
