@@ -159,10 +159,10 @@ export function usePorcupine(
 
     return async (): Promise<void> => {
       startPorcupinePromise.then(({ webVp, ppnWorker }) => {
-        if (webVp !== null) {
+        if (webVp !== undefined || webVp !== null) {
           webVp.release();
         }
-        if (ppnWorker !== null) {
+        if (ppnWorker !== undefined || ppnWorker !== null) {
           ppnWorker.postMessage({ command: 'release' });
         }
       }).catch(() => {
