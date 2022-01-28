@@ -1259,10 +1259,15 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-web-core@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.0.1.tgz#f4346c408a241c582000955fff081ac679f88696"
-  integrity sha512-ouj9MJHwqz/PNdACPwUxzkmExY/5Kep3a/H6zq5C17FVlWF+D2akevleFChoVd9wCLcKLtWRkF98PWq4HljPjw==
+"@picovoice/porcupine-web-core@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
+  integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
+
+"@picovoice/web-utils@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.0.0.tgz#eec7d783c19cced58cb0893bc5ab7743c681085b"
+  integrity sha512-ed2kQcLOO1IGcDROydnnu6YvOx3EbG13dZrc8rjrDnDjDWfgdjLVGuBtGjkVSXe/+FnZRaZggd486SKvsTECxw==
 
 "@rollup/plugin-babel@^5.2.3":
   version "5.2.3"
@@ -1668,11 +1673,6 @@ async-mutex@^0.3.2:
   integrity sha512-HuTK7E7MT7jZEh1P9GtRW9+aTWiDWWi9InbZ5hjxrnRa39KS4BW04+xLBhYNS2aXhHUIKZSw3gj4Pn1pj+qGAA==
   dependencies:
     tslib "^2.3.1"
-
-asyncify-wasm@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/asyncify-wasm/-/asyncify-wasm-1.2.1.tgz#a15c0480e858619a4f971e44e6fc05c49015d9e8"
-  integrity sha512-ZS7tZ8H8EVbUxAZnkKHvMt9UkYoALue2jwrVl7cnLByjq+1MRrbq7rL5TS+EHQduwkfXD/cNZNa+I0ZyLEBBRQ==
 
 asynckit@^0.4.0:
   version "0.4.0"
