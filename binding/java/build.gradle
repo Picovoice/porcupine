@@ -1,6 +1,3 @@
-compileJava.options.encoding = "UTF-8"
-compileTestJava.options.encoding = "UTF-8"
-
 plugins {
     id 'java'
     id 'java-library'
@@ -212,3 +209,6 @@ test {
     systemProperty 'pvTestingAccessKey', System.getProperty('pvTestingAccessKey')
     useJUnitPlatform()
 }
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
