@@ -297,7 +297,7 @@ namespace PorcupineTest
         }       
 
         [TestMethod]
-        public void TestInitWithNonAsciiModelName()
+        public void TestWithNonAsciiModelName()
         {
             string language = "es";
             List<string> keywords = new List<string>() {

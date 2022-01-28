@@ -266,7 +266,7 @@ public class PorcupineTest {
     }
 
     @Test
-    void testInitWithNonAsciiModelName() throws IOException, UnsupportedAudioFileException, PorcupineException {
+    void testWithNonAsciiModelName() throws IOException, UnsupportedAudioFileException, PorcupineException {
         final String language = "es";
         final String keywords[] = {"murciélago"};
         porcupine = new Porcupine.Builder()

@@ -233,7 +233,7 @@ func TestMultipleKeywordsFr(t *testing.T) {
 		[]int{0, 1, 0, 2})
 }
 
-func TestInitWithNonAsciiModelName(t *testing.T) {
+func TestWithNonAsciiModelName(t *testing.T) {
 
 	language := "es"
 	keywords := []string{"murciélago"}
