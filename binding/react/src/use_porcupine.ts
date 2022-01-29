@@ -129,12 +129,18 @@ export function usePorcupine(
         keywordCallback,
         processErrorCallback
       );
-      const webVp = await WebVoiceProcessor.init({
-        engines: [ppnWorker],
-        start: startWebVp,
-      });
 
-      return { webVp, ppnWorker };
+      try {
+        const webVp = await WebVoiceProcessor.init({
+          engines: [ppnWorker],
+          start: startWebVp,
+        });
+
+        return { webVp, ppnWorker };
+      } catch (error) {
+        ppnWorker.postMessage({ command: 'release' });
+        throw error;
+      }
     }
 
     const startPorcupinePromise = startPorcupine();
@@ -152,9 +158,16 @@ export function usePorcupine(
       });
 
     return async (): Promise<void> => {
-      const { webVp, ppnWorker } = await startPorcupinePromise;
-      webVp.release();
-      ppnWorker.postMessage({ command: 'release' });
+      startPorcupinePromise.then(({ webVp, ppnWorker }) => {
+        if (webVp !== undefined && webVp !== null) {
+          webVp.release();
+        }
+        if (ppnWorker !== undefined && ppnWorker !== null) {
+          ppnWorker.postMessage({ command: 'release' });
+        }
+      }).catch(() => {
+        // do nothing
+      });
     };
   }, [
     porcupineWorkerFactory,
