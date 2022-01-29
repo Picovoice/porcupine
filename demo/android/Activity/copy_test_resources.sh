@@ -24,6 +24,7 @@ cp ../../../resources/keyword_files/linux/alexa_linux.ppn ./porcupine-activity-d
 cp ../../../resources/keyword_files_de/android/ananas_android.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/de/ananas_android.ppn
 cp ../../../resources/keyword_files_es/android/emparedado_android.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/es/emparedado_android.ppn
 cp ../../../resources/keyword_files_fr/android/framboise_android.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/fr/framboise_android.ppn
+cp ../../../resources/keyword_files_es/android/murciélago_android.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/es/murciélago_android.ppn
 
 if [ ! -d "./porcupine-activity-demo-app/src/androidTest/assets/test_resources/model_files" ]
 then 

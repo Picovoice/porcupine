@@ -20,6 +20,7 @@
 		1E1A678C26C34B0500EDD6EC /* porcupine_params_fr.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A678926C34B0500EDD6EC /* porcupine_params_fr.pv */; };
 		1E1A679126C34B2200EDD6EC /* porcupine.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A678F26C34B2200EDD6EC /* porcupine.wav */; };
 		1E1A679226C34B2200EDD6EC /* multiple_keywords.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A679026C34B2200EDD6EC /* multiple_keywords.wav */; };
+		80B5FC0127A4884E00850E24 /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 80B5FC0027A4884E00850E24 /* murciélago_ios.ppn */; };
 		9402441AE2D4F0A739E9838E /* libPods-PorcupineForegroundAppDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 164DB4D4CAA7F4BDEBF99C20 /* libPods-PorcupineForegroundAppDemoUITests.a */; };
 		98C07FAE08204ECF35C62683 /* libPods-PorcupineForegroundAppDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E42DB18835CE685BCEE511C /* libPods-PorcupineForegroundAppDemo.a */; };
 		BBE66BCE205DD6F7006005B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */; };
@@ -72,6 +73,7 @@
 		1E1A679026C34B2200EDD6EC /* multiple_keywords.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords.wav; path = ../../../../resources/audio_samples/multiple_keywords.wav; sourceTree = "<group>"; };
 		1E42DB18835CE685BCEE511C /* libPods-PorcupineForegroundAppDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineForegroundAppDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CC3815B148D5148AA1A5964 /* Pods-PorcupineForegroundAppDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineForegroundAppDemo.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		80B5FC0027A4884E00850E24 /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "murciélago_ios.ppn"; path = "../../../resources/keyword_files_es/ios/murciélago_ios.ppn"; sourceTree = "<group>"; };
 		AE6078105CAFE02E14A4C4BA /* Pods-PorcupineForegroundAppDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineForegroundAppDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-PorcupineForegroundAppDemoUITests/Pods-PorcupineForegroundAppDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		BBE66BCA205DD6F7006005B1 /* PorcupineForegroundAppDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineForegroundAppDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 		BBE66BC1205DD6F7006005B1 = {
 			isa = PBXGroup;
 			children = (
+				80B5FC0027A4884E00850E24 /* murciélago_ios.ppn */,
 				BBE66BCC205DD6F7006005B1 /* PorcupineForegroundAppDemo */,
 				1E1A676A26C3434300EDD6EC /* PorcupineForegroundAppDemoUITests */,
 				BBE66BCB205DD6F7006005B1 /* Products */,
@@ -339,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80B5FC0127A4884E00850E24 /* murciélago_ios.ppn in Resources */,
 				1E1A678326C34AB600EDD6EC /* hey barista_ios.ppn in Resources */,
 				1E1A678526C34AC000EDD6EC /* alexa_linux.ppn in Resources */,
 				1E1A678B26C34B0500EDD6EC /* porcupine_params_de.pv in Resources */,

@@ -199,3 +199,12 @@ jobs:
         model_path: ../../lib/common/porcupine_params_fr.pv
         keyword_path: ../../resources/keyword_files_fr/${{ matrix.platform }}/framboise_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
+
+    - uses: ./.github/actions/c-filedemo
+      name: Run the demo with a non ascii wake word file
+      with:
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
+        model_path: ../../lib/common/porcupine_params_es.pv
+        keyword_path: ../../resources/keyword_files_es/${{ matrix.platform }}/murciélago_${{ matrix.platform }}.ppn
+        audio_path: ../../resources/audio_samples/murciélago.wav

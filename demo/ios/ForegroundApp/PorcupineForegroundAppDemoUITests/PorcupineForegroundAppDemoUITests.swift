@@ -196,7 +196,16 @@ class PorcupineDemoUITests: XCTestCase {
         
         XCTAssert(results.count == 1 && results[0] == 0)
     }
-    
+
+    func testInitWithNonAsciiModelName() throws {
+        let bundle = Bundle(for: type(of: self))
+        let keywordPath = bundle.path(forResource: "murciélago_ios", ofType: "ppn")!
+        let modelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
+        
+        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
+        p.delete()
+    }
+
     func testProcSuccessWithMultipleBuiltIns() throws {
         let keywords = [
             Porcupine.BuiltInKeyword.alexa,

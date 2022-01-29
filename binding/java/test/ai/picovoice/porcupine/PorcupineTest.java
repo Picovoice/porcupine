@@ -264,4 +264,19 @@ public class PorcupineTest {
             "multiple_keywords_fr.wav",
             new ArrayList<>(Arrays.asList(0, 1, 0, 2)));
     }
+
+    @Test
+    void testWithNonAsciiModelName() throws IOException, UnsupportedAudioFileException, PorcupineException {
+        final String language = "es";
+        final String keywords[] = {"murciélago"};
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath(language))
+                .setKeywordPaths(getTestKeywordPaths(language, keywords))
+                .build();
+
+        runTestCase(
+            "murciélago.wav",
+            new ArrayList<>(Arrays.asList(0, 0)));
+    }
 }

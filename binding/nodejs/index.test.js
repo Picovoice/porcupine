@@ -42,7 +42,8 @@ const WAV_PATH_SINGLE_KEYWORD_FR =
   "../../resources/audio_samples/mon_chouchou.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS_FR =
   "../../resources/audio_samples/multiple_keywords_fr.wav";  
-
+  const WAV_PATH_NON_ASCII =
+  "../../resources/audio_samples/murciélago.wav";
 const platform = getPlatform();
 
 const keywordPathsSinglePorcupine = [
@@ -77,7 +78,9 @@ const keywordPathsMultipleFr = [
   `../../resources/keyword_files_fr/${platform}/mon chouchou_${platform}.ppn`,
   `../../resources/keyword_files_fr/${platform}/parapluie_${platform}.ppn`,
 ];
-
+const keywordPathsNonAscii = [
+  `../../resources/keyword_files_es/${platform}/murciélago_${platform}.ppn`,
+];
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
 
@@ -321,6 +324,25 @@ describe("keyword detection in FR", () => {
     expect(monChouchouCount).toEqual(1);
     expect(parapluieCount).toEqual(1);
   });  
+});
+
+describe("Non ascii characters", () => {
+  test("single non ascii character in the model name", () => {
+    let porcupineEngine = new Porcupine(
+      ACCESS_KEY,
+      keywordPathsNonAscii,
+      DEFAULT_SENSITIVITY_ARRAY,
+      MODEL_PATH_ES
+    );
+
+    let counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_NON_ASCII);
+    expect(counts.get(0)).toEqual(2);
+    porcupineEngine.release();
+
+    expect(() => {
+      count = porcupineDetectionCounts(porcupineEngine, WAV_PATH_NON_ASCII);
+    }).toThrow(PvStateError);
+  });
 });
 
 describe("basic parameter validation", () => {

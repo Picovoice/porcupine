@@ -149,6 +149,12 @@ class PorcupineTestCase(unittest.TestCase):
             keywords=['framboise', 'mon chouchou', 'parapluie'],
             ground_truth=[0, 1, 0, 2])
 
+    def test_with_non_ascii_model_name(self):
+        self.run_porcupine(
+            language='es',
+            keywords=['murciélago'],
+            ground_truth=[0, 0],
+            audio_file_name='murciélago.wav')
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
