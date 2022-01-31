@@ -17,6 +17,7 @@ use porcupine::{BuiltinKeywords, PorcupineBuilder};
 use pv_recorder::{Recorder, RecorderBuilder};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::str::FromStr;
 
 static LISTENING: AtomicBool = AtomicBool::new(false);
 
@@ -228,8 +229,8 @@ fn main() {
                     .values_of("keywords")
                     .unwrap()
                     .flat_map(|keyword| match BuiltinKeywords::from_str(keyword) {
-                        Some(keyword) => vec![keyword],
-                        None => vec![],
+                        Ok(keyword) => vec![keyword],
+                        Err(_) => vec![],
                     })
                     .collect(),
             )

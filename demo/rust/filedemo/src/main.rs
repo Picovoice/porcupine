@@ -15,6 +15,7 @@ use hound;
 use itertools::Itertools;
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 use std::path::PathBuf;
+use std::str::FromStr;
 
 fn porcupine_demo(
     input_audio_path: PathBuf,
@@ -194,8 +195,8 @@ fn main() {
                     .values_of("keywords")
                     .unwrap()
                     .flat_map(|keyword| match BuiltinKeywords::from_str(keyword) {
-                        Some(keyword) => vec![keyword],
-                        None => vec![],
+                        Ok(keyword) => vec![keyword],
+                        Err(_) => vec![],
                     })
                     .collect(),
             )
