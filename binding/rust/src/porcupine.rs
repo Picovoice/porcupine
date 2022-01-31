@@ -193,7 +193,7 @@ impl PorcupineBuilder {
             })
             .collect();
 
-        return Self::new_with_keyword_paths(access_key, &keyword_paths);
+        Self::new_with_keyword_paths(access_key, &keyword_paths)
     }
 
     pub fn new_with_keyword_paths<S: Into<String>, P: Into<PathBuf> + AsRef<OsStr>>(
@@ -205,41 +205,41 @@ impl PorcupineBuilder {
         let mut sensitivities = Vec::new();
         sensitivities.resize_with(keyword_paths.len(), || 0.5);
 
-        return Self {
+        Self {
             access_key: access_key.into(),
             library_path: pv_library_path(),
             model_path: pv_model_path(),
             keyword_paths,
             sensitivities,
-        };
+        }
     }
 
-    pub fn access_key<'a, S: Into<String>>(&'a mut self, access_key: S) -> &'a mut Self {
+    pub fn access_key<S: Into<String>>(&mut self, access_key: S) -> &mut Self {
         self.access_key = access_key.into();
-        return self;
+        self
     }
 
-    pub fn library_path<'a, P: Into<PathBuf>>(&'a mut self, library_path: P) -> &'a mut Self {
+    pub fn library_path<P: Into<PathBuf>>(&mut self, library_path: P) -> &mut Self {
         self.library_path = library_path.into();
-        return self;
+        self
     }
 
-    pub fn model_path<'a, P: Into<PathBuf>>(&'a mut self, model_path: P) -> &'a mut Self {
+    pub fn model_path<P: Into<PathBuf>>(&mut self, model_path: P) -> &mut Self {
         self.model_path = model_path.into();
-        return self;
+        self
     }
 
-    pub fn keyword_paths<'a, P: Into<PathBuf> + AsRef<OsStr>>(
-        &'a mut self,
+    pub fn keyword_paths<P: Into<PathBuf> + AsRef<OsStr>>(
+        &mut self,
         keyword_paths: &[P],
-    ) -> &'a mut Self {
+    ) -> &mut Self {
         self.keyword_paths = keyword_paths.iter().map(|path| path.into()).collect();
-        return self;
+        self
     }
 
-    pub fn sensitivities<'a>(&'a mut self, sensitivities: &[f32]) -> &'a mut Self {
-        self.sensitivities = sensitivities.iter().map(|s| *s).collect();
-        return self;
+    pub fn sensitivities(&mut self, sensitivities: &[f32]) -> &mut Self {
+        self.sensitivities = sensitivities.to_vec();
+        self
     }
 
     pub fn init(&self) -> Result<Porcupine, PorcupineError> {
@@ -250,12 +250,12 @@ impl PorcupineBuilder {
             &self.keyword_paths,
             &self.sensitivities,
         );
-        return match inner {
+        match inner {
             Ok(inner) => Ok(Porcupine {
                 inner: Arc::new(inner),
             }),
             Err(err) => Err(err),
-        };
+        }
     }
 }
 
@@ -266,19 +266,19 @@ pub struct Porcupine {
 
 impl Porcupine {
     pub fn process(&self, pcm: &[i16]) -> Result<i32, PorcupineError> {
-        return self.inner.process(pcm);
+        self.inner.process(pcm)
     }
 
     pub fn frame_length(&self) -> u32 {
-        return self.inner.frame_length as u32;
+        self.inner.frame_length as u32
     }
 
     pub fn sample_rate(&self) -> u32 {
-        return self.inner.sample_rate as u32;
+        self.inner.sample_rate as u32
     }
 
     pub fn version(&self) -> String {
-        return self.inner.version.clone();
+        self.inner.version.clone()
     }
 }
 
@@ -372,14 +372,14 @@ impl PorcupineInner {
             ));
         }
 
-        if keyword_paths.len() == 0 {
+        if keyword_paths.is_empty() {
             return Err(PorcupineError::new(
                 PorcupineErrorStatus::ArgumentError,
                 "Keywords should be length of at least one",
             ));
         }
 
-        if sensitivities.len() == 0 {
+        if sensitivities.is_empty() {
             return Err(PorcupineError::new(
                 PorcupineErrorStatus::ArgumentError,
                 "Sensitivities should be length of at least one",
@@ -435,7 +435,7 @@ impl PorcupineInner {
         let pv_model_path = pathbuf_to_cstring(&model_path);
         let pv_keyword_paths = keyword_paths
             .iter()
-            .map(|keyword_path| pathbuf_to_cstring(keyword_path))
+            .map(pathbuf_to_cstring)
             .collect::<Vec<_>>();
         let pv_keyword_paths_ptrs = pv_keyword_paths
             .iter()
@@ -477,13 +477,13 @@ impl PorcupineInner {
             (pv_sample_rate(), pv_porcupine_frame_length(), version)
         };
 
-        return Ok(Self {
+        Ok(Self {
             cporcupine,
             sample_rate,
             frame_length,
             version,
             vtable: PorcupineInnerVTable::new(lib)?,
-        });
+        })
     }
 
     pub fn process(&self, pcm: &[i16]) -> Result<i32, PorcupineError> {
@@ -504,7 +504,7 @@ impl PorcupineInner {
         };
         check_fn_call_status!(status, "pv_porcupine_process");
 
-        return Ok(result);
+        Ok(result)
     }
 }
 

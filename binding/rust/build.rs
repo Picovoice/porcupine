@@ -14,8 +14,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 fn copy_dir<U: AsRef<Path>, V: AsRef<Path>>(from: U, to: V) -> Result<(), std::io::Error> {
-    let mut stack = Vec::new();
-    stack.push(PathBuf::from(from.as_ref()));
+    let mut stack = vec![PathBuf::from(from.as_ref())];
 
     let output_root = PathBuf::from(to.as_ref());
     let input_root = PathBuf::from(from.as_ref()).components().count();
@@ -38,14 +37,9 @@ fn copy_dir<U: AsRef<Path>, V: AsRef<Path>>(from: U, to: V) -> Result<(), std::i
             let path = entry.path();
             if path.is_dir() {
                 stack.push(path);
-            } else {
-                match path.file_name() {
-                    Some(filename) => {
-                        let dest_path = dest.join(filename);
-                        fs::copy(&path, &dest_path)?;
-                    }
-                    None => {}
-                }
+            } else if let Some(filename) = path.file_name() {
+                let dest_path = dest.join(filename);
+                fs::copy(&path, &dest_path)?;
             }
         }
     }
@@ -57,11 +51,11 @@ fn main() {
     let base_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("data/");
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
-    let lib_base_dir = base_dir.clone().join("lib/");
-    let lib_out_dir = out_dir.clone().join("lib/");
+    let lib_base_dir = base_dir.join("lib/");
+    let lib_out_dir = out_dir.join("lib/");
     copy_dir(lib_base_dir, lib_out_dir).unwrap();
 
-    let resources_base_dir = base_dir.clone().join("resources/");
-    let resources_out_dir = out_dir.clone().join("resources/");
+    let resources_base_dir = base_dir.join("resources/");
+    let resources_out_dir = out_dir.join("resources/");
     copy_dir(resources_base_dir, resources_out_dir).unwrap();
 }
