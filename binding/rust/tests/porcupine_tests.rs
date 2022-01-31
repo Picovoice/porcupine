@@ -10,37 +10,35 @@
 */
 
 mod platform {
-    #[allow(dead_code)]
-    const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
-    #[allow(dead_code)]
-    const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
-
     #[cfg(target_os = "macos")]
     pub fn pv_platform() -> String {
-        return String::from("mac");
+        String::from("mac")
     }
 
     #[cfg(target_os = "windows")]
     pub fn pv_platform() -> String {
-        return String::from("windows");
+        String::from("windows")
     }
 
     #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
     pub fn pv_platform() -> String {
-        return String::from("linux");
+        String::from("linux")
     }
 
     #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
     pub fn pv_platform() -> String {
+        const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+        const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+
         let machine = find_machine_type();
-        return match machine.as_str() {
+        match machine.as_str() {
             machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),
             machine if JETSON_MACHINES.contains(&machine) => String::from("jetson"),
             "beaglebone" => String::from("beaglebone"),
             _ => {
                 panic!("ERROR: Please be advised that this device is not officially supported by Picovoice");
             }
-        };
+        }
     }
 }
 
@@ -157,12 +155,10 @@ mod tests {
             pv_platform(),
             pv_platform(),
         );
-        let porcupine = PorcupineBuilder::new_with_keyword_paths(
-            access_key, 
-            &[keyword_path])
-        .model_path("../../lib/common/porcupine_params_es.pv")
-        .init()
-        .expect("Unable to create Porcupine");
+        let porcupine = PorcupineBuilder::new_with_keyword_paths(access_key, &[keyword_path])
+            .model_path("../../lib/common/porcupine_params_es.pv")
+            .init()
+            .expect("Unable to create Porcupine");
 
         let soundfile_path = concat!(
             env!("CARGO_MANIFEST_DIR"),

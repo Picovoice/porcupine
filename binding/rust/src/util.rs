@@ -9,12 +9,6 @@
     specific language governing permissions and limitations under the License.
 */
 
-#[allow(unused_imports)]
-use log::*;
-
-#[allow(unused_imports)]
-use std::process::Command;
-
 use std::collections::HashMap;
 use std::ffi::CString;
 use std::fs;
@@ -24,14 +18,10 @@ const DEFAULT_RELATIVE_KEYWORDS_DIR: &str = "resources/keyword_files/";
 const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "lib/";
 const DEFAULT_RELATIVE_MODEL_PATH: &str = "lib/common/porcupine_params.pv";
 
-#[allow(dead_code)]
-const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
-#[allow(dead_code)]
-const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
-
-#[cfg(target_os = "linux")]
-#[allow(dead_code)]
+#[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn find_machine_type() -> String {
+    use std::process::Command;
+
     let cpu_info = Command::new("cat")
         .arg("/proc/cpuinfo")
         .output()
@@ -63,33 +53,36 @@ fn find_machine_type() -> String {
         _ => "unsupported",
     };
 
-    return String::from(machine);
+    String::from(machine)
 }
 
 #[cfg(all(target_os = "macos", target_arch = "x86_64"))]
 fn base_library_path() -> PathBuf {
-    return PathBuf::from("mac/x86_64/libpv_porcupine.dylib");
+    PathBuf::from("mac/x86_64/libpv_porcupine.dylib")
 }
 
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
 fn base_library_path() -> PathBuf {
-    return PathBuf::from("mac/arm64/libpv_porcupine.dylib");
+    PathBuf::from("mac/arm64/libpv_porcupine.dylib")
 }
 
 #[cfg(target_os = "windows")]
 fn base_library_path() -> PathBuf {
-    return PathBuf::from("windows/amd64/libpv_porcupine.dll");
+    PathBuf::from("windows/amd64/libpv_porcupine.dll")
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 fn base_library_path() -> PathBuf {
-    return PathBuf::from("linux/x86_64/libpv_porcupine.so");
+    PathBuf::from("linux/x86_64/libpv_porcupine.so")
 }
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn base_library_path() -> PathBuf {
+    const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+    const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+
     let machine = find_machine_type();
-    return match machine.as_str() {
+    match machine.as_str() {
         machine if RPI_MACHINES.contains(&machine) => {
             if cfg!(target_arch = "aarch64") {
                 PathBuf::from(format!(
@@ -105,51 +98,51 @@ fn base_library_path() -> PathBuf {
         }
         "beaglebone" => PathBuf::from("beaglebone/libpv_porcupine.so"),
         _ => {
-            warn!("WARNING: Please be advised that this device is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models");
+            eprintln!("WARNING: Please be advised that this device is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models");
             PathBuf::from("raspberry-pi/arm11/libpv_porcupine.so")
         }
-    };
+    }
 }
 
 pub fn pv_library_path() -> PathBuf {
     let mut path = PathBuf::from(env!("OUT_DIR"));
     path.push(DEFAULT_RELATIVE_LIBRARY_DIR);
     path.push(base_library_path());
-    return path;
+    path
 }
 
 pub fn pv_model_path() -> PathBuf {
     let mut path = PathBuf::from(env!("OUT_DIR"));
     path.push(DEFAULT_RELATIVE_MODEL_PATH);
-    return path;
+    path
 }
 
 #[cfg(target_os = "macos")]
 fn pv_platform() -> String {
-    return String::from("mac");
+    String::from("mac")
 }
 
 #[cfg(target_os = "windows")]
 fn pv_platform() -> String {
-    return String::from("windows");
+    String::from("windows")
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 fn pv_platform() -> String {
-    return String::from("linux");
+    String::from("linux")
 }
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn pv_platform() -> String {
     let machine = find_machine_type();
-    return match machine.as_str() {
+    match machine.as_str() {
         machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),
         machine if JETSON_MACHINES.contains(&machine) => String::from("jetson"),
         "beaglebone" => String::from("beaglebone"),
         _ => {
             panic!("ERROR: Please be advised that this device is not officially supported by Picovoice");
         }
-    };
+    }
 }
 
 pub fn pv_keyword_paths() -> HashMap<String, String> {
@@ -158,36 +151,32 @@ pub fn pv_keyword_paths() -> HashMap<String, String> {
 
     let mut dir = PathBuf::from(env!("OUT_DIR"));
     dir.push(DEFAULT_RELATIVE_KEYWORDS_DIR);
-    dir.push(pv_platform.clone());
+    dir.push(pv_platform);
 
     let mut keyword_paths = HashMap::new();
-    let dir_entries = fs::read_dir(dir.clone()).expect(&format!(
-        "Can't find default keyword_files dir: {}",
-        dir.display()
-    ));
+    let dir_entries = fs::read_dir(&dir)
+        .unwrap_or_else(|_| panic!("Can't find default keyword_files dir: {}", dir.display()));
 
-    for entry in dir_entries {
-        if let Ok(entry) = entry {
-            let path = entry.path();
-            let keyword_string = entry.file_name().into_string().unwrap();
+    for entry in dir_entries.flatten() {
+        let path = entry.path();
+        let keyword_string = entry.file_name().into_string().unwrap();
 
-            if keyword_string.contains(&keyword_file_pattern)
-                && keyword_string.len() > keyword_file_pattern.len()
-            {
-                if let Some(keyword) = keyword_string.split("_").next() {
-                    keyword_paths.insert(
-                        keyword.to_string(),
-                        path.into_os_string().into_string().unwrap(),
-                    );
-                }
+        if keyword_string.contains(&keyword_file_pattern)
+            && keyword_string.len() > keyword_file_pattern.len()
+        {
+            if let Some(keyword) = keyword_string.split('_').next() {
+                keyword_paths.insert(
+                    keyword.to_string(),
+                    path.into_os_string().into_string().unwrap(),
+                );
             }
         }
     }
 
-    return keyword_paths;
+    keyword_paths
 }
 
 pub fn pathbuf_to_cstring<P: AsRef<Path>>(pathbuf: P) -> CString {
     let pathstr = pathbuf.as_ref().to_str().unwrap();
-    return CString::new(pathstr).unwrap();
+    CString::new(pathstr).unwrap()
 }
