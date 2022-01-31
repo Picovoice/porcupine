@@ -10,11 +10,6 @@
 */
 
 mod platform {
-    #[allow(dead_code)]
-    const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
-    #[allow(dead_code)]
-    const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
-
     #[cfg(target_os = "macos")]
     pub fn pv_platform() -> String {
         return String::from("mac");
@@ -32,6 +27,9 @@ mod platform {
 
     #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
     pub fn pv_platform() -> String {
+        const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+        const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+
         let machine = find_machine_type();
         return match machine.as_str() {
             machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),
@@ -157,12 +155,10 @@ mod tests {
             pv_platform(),
             pv_platform(),
         );
-        let porcupine = PorcupineBuilder::new_with_keyword_paths(
-            access_key, 
-            &[keyword_path])
-        .model_path("../../lib/common/porcupine_params_es.pv")
-        .init()
-        .expect("Unable to create Porcupine");
+        let porcupine = PorcupineBuilder::new_with_keyword_paths(access_key, &[keyword_path])
+            .model_path("../../lib/common/porcupine_params_es.pv")
+            .init()
+            .expect("Unable to create Porcupine");
 
         let soundfile_path = concat!(
             env!("CARGO_MANIFEST_DIR"),

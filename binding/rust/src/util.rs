@@ -9,9 +9,6 @@
     specific language governing permissions and limitations under the License.
 */
 
-#[allow(unused_imports)]
-use std::process::Command;
-
 use std::collections::HashMap;
 use std::ffi::CString;
 use std::fs;
@@ -21,14 +18,10 @@ const DEFAULT_RELATIVE_KEYWORDS_DIR: &str = "resources/keyword_files/";
 const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "lib/";
 const DEFAULT_RELATIVE_MODEL_PATH: &str = "lib/common/porcupine_params.pv";
 
-#[allow(dead_code)]
-const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
-#[allow(dead_code)]
-const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
-
-#[cfg(target_os = "linux")]
-#[allow(dead_code)]
+#[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn find_machine_type() -> String {
+    use std::process::Command;
+
     let cpu_info = Command::new("cat")
         .arg("/proc/cpuinfo")
         .output()
@@ -85,6 +78,9 @@ fn base_library_path() -> PathBuf {
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn base_library_path() -> PathBuf {
+    const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+    const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+
     let machine = find_machine_type();
     return match machine.as_str() {
         machine if RPI_MACHINES.contains(&machine) => {
