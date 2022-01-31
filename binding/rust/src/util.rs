@@ -10,9 +10,6 @@
 */
 
 #[allow(unused_imports)]
-use log::*;
-
-#[allow(unused_imports)]
 use std::process::Command;
 
 use std::collections::HashMap;
@@ -105,7 +102,7 @@ fn base_library_path() -> PathBuf {
         }
         "beaglebone" => PathBuf::from("beaglebone/libpv_porcupine.so"),
         _ => {
-            warn!("WARNING: Please be advised that this device is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models");
+            eprintln!("WARNING: Please be advised that this device is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models");
             PathBuf::from("raspberry-pi/arm11/libpv_porcupine.so")
         }
     };
