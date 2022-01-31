@@ -162,25 +162,22 @@ pub enum PorcupineErrorStatus {
 
 #[derive(Clone, Debug)]
 pub struct PorcupineError {
-    pub status: PorcupineErrorStatus,
-    pub message: Option<String>,
+    status: PorcupineErrorStatus,
+    message: String,
 }
 
 impl PorcupineError {
-    pub fn new(status: PorcupineErrorStatus, message: &str) -> Self {
+    pub fn new(status: PorcupineErrorStatus, message: impl Into<String>) -> Self {
         PorcupineError {
             status,
-            message: Some(message.to_string()),
+            message: message.into(),
         }
     }
 }
 
 impl std::fmt::Display for PorcupineError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self.message {
-            Some(message) => write!(f, "{}: {:?}", message, self.status),
-            None => write!(f, "Porcupine error: {:?}", self.status),
-        }
+        write!(f, "{}: {:?}", self.message, self.status)
     }
 }
 
@@ -300,7 +297,7 @@ fn load_library_fn<T>(function_name: &[u8]) -> Result<Symbol<T>, PorcupineError>
             lib.get(function_name).map_err(|err| {
                 PorcupineError::new(
                     PorcupineErrorStatus::LibraryLoadError,
-                    &format!(
+                    format!(
                         "Failed to load function symbol from porcupine library: {}",
                         err
                     ),
@@ -316,7 +313,7 @@ macro_rules! check_fn_call_status {
         if $status != PvStatus::SUCCESS {
             return Err(PorcupineError::new(
                 PorcupineErrorStatus::LibraryError($status),
-                &format!(
+                format!(
                     "Function '{}' in the porcupine library failed",
                     $function_name
                 ),
@@ -355,7 +352,7 @@ impl PorcupineInner {
             if !library_path.exists() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    &format!(
+                    format!(
                         "Couldn't find Porcupine's dynamic library at {}",
                         library_path.display()
                     ),
@@ -365,7 +362,7 @@ impl PorcupineInner {
             if !model_path.exists() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    &format!("Couldn't find model file at {}", model_path.display()),
+                    format!("Couldn't find model file at {}", model_path.display()),
                 ));
             }
 
@@ -386,7 +383,7 @@ impl PorcupineInner {
             if keyword_paths.len() != sensitivities.len() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    &format!(
+                    format!(
                         "Number of keywords ({}) does not match the number of sensitivities ({})",
                         keyword_paths.len(),
                         sensitivities.len()
@@ -398,7 +395,7 @@ impl PorcupineInner {
                 if !keyword_path.exists() {
                     return Err(PorcupineError::new(
                         PorcupineErrorStatus::ArgumentError,
-                        &format!("Couldn't find keyword file at {}", keyword_path.display()),
+                        format!("Couldn't find keyword file at {}", keyword_path.display()),
                     ));
                 }
             }
@@ -407,7 +404,7 @@ impl PorcupineInner {
                 if *sensitivity < 0.0 || *sensitivity > 1.0 {
                     return Err(PorcupineError::new(
                         PorcupineErrorStatus::ArgumentError,
-                        &format!("Sensitivity value {} should be within [0, 1]", sensitivity),
+                        format!("Sensitivity value {} should be within [0, 1]", sensitivity),
                     ));
                 }
             }
@@ -420,7 +417,7 @@ impl PorcupineInner {
                 Err(err) => {
                     return Err(PorcupineError::new(
                         PorcupineErrorStatus::ArgumentError,
-                        &format!("AccessKey is not a valid C string {}", err),
+                        format!("AccessKey is not a valid C string {}", err),
                     ))
                 }
             };
@@ -471,7 +468,7 @@ impl PorcupineInner {
                 Err(err) => {
                     return Err(PorcupineError::new(
                         PorcupineErrorStatus::LibraryLoadError,
-                        &format!("Failed to get version info from Porcupine Library: {}", err),
+                        format!("Failed to get version info from Porcupine Library: {}", err),
                     ))
                 }
             };
@@ -495,7 +492,7 @@ impl PorcupineInner {
         if pcm.len() as i32 != self.frame_length {
             return Err(PorcupineError::new(
                 PorcupineErrorStatus::FrameLengthError,
-                &format!(
+                format!(
                     "Found a frame length of {} Expected {}",
                     pcm.len(),
                     self.frame_length
