@@ -12,14 +12,15 @@
 use std::cmp::PartialEq;
 use std::ffi::OsStr;
 use std::ffi::{CStr, CString};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::ptr::addr_of_mut;
+use std::str::FromStr;
 use std::sync::Arc;
 
 use libc::{c_char, c_float};
 use libloading::{Library, Symbol};
 
-use crate::util::*;
+use crate::util::{pathbuf_to_cstring, pv_keyword_paths, pv_library_path, pv_model_path};
 
 #[cfg(unix)]
 use libloading::os::unix::Symbol as RawSymbol;
@@ -44,6 +45,30 @@ pub enum BuiltinKeywords {
     Terminator,
 }
 
+impl FromStr for BuiltinKeywords {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "alexa" => Ok(Self::Alexa),
+            "americano" => Ok(Self::Americano),
+            "blueberry" => Ok(Self::Blueberry),
+            "bumblebee" => Ok(Self::Bumblebee),
+            "computer" => Ok(Self::Computer),
+            "grapefruit" => Ok(Self::Grapefruit),
+            "grasshopper" => Ok(Self::Grasshopper),
+            "hey google" => Ok(Self::HeyGoogle),
+            "hey siri" => Ok(Self::HeySiri),
+            "jarvis" => Ok(Self::Jarvis),
+            "ok google" => Ok(Self::OkGoogle),
+            "picovoice" => Ok(Self::Picovoice),
+            "porcupine" => Ok(Self::Porcupine),
+            "terminator" => Ok(Self::Terminator),
+            _ => Err(()),
+        }
+    }
+}
+
 impl BuiltinKeywords {
     pub fn to_str(&self) -> &'static str {
         match self {
@@ -61,26 +86,6 @@ impl BuiltinKeywords {
             Self::Picovoice => "picovoice",
             Self::Porcupine => "porcupine",
             Self::Terminator => "terminator",
-        }
-    }
-
-    pub fn from_str(str_option: &str) -> Option<Self> {
-        match str_option {
-            "alexa" => Some(Self::Alexa),
-            "americano" => Some(Self::Americano),
-            "blueberry" => Some(Self::Blueberry),
-            "bumblebee" => Some(Self::Bumblebee),
-            "computer" => Some(Self::Computer),
-            "grapefruit" => Some(Self::Grapefruit),
-            "grasshopper" => Some(Self::Grasshopper),
-            "hey google" => Some(Self::HeyGoogle),
-            "hey siri" => Some(Self::HeySiri),
-            "jarvis" => Some(Self::Jarvis),
-            "ok google" => Some(Self::OkGoogle),
-            "picovoice" => Some(Self::Picovoice),
-            "porcupine" => Some(Self::Porcupine),
-            "terminator" => Some(Self::Terminator),
-            _ => None,
         }
     }
 
@@ -159,7 +164,7 @@ pub struct PorcupineError {
 
 impl PorcupineError {
     pub fn new(status: PorcupineErrorStatus, message: impl Into<String>) -> Self {
-        PorcupineError {
+        Self {
             status,
             message: message.into(),
         }
@@ -183,15 +188,15 @@ pub struct PorcupineBuilder {
 impl PorcupineBuilder {
     pub fn new_with_keywords<S: Into<String>>(access_key: S, keywords: &[BuiltinKeywords]) -> Self {
         let default_keyword_paths = pv_keyword_paths();
-        let keyword_paths: Vec<String> = keywords
+        let keyword_paths = keywords
             .iter()
             .map(|keyword| {
                 default_keyword_paths
                     .get(keyword.to_str())
                     .expect("Unable to find keyword file for specified keyword")
-                    .clone()
             })
-            .collect();
+            .cloned()
+            .collect::<Vec<_>>();
 
         Self::new_with_keyword_paths(access_key, &keyword_paths)
     }
@@ -200,7 +205,10 @@ impl PorcupineBuilder {
         access_key: S,
         keyword_paths: &[P],
     ) -> Self {
-        let keyword_paths: Vec<PathBuf> = keyword_paths.iter().map(|path| path.into()).collect();
+        let keyword_paths = keyword_paths
+            .iter()
+            .map(|path| path.into())
+            .collect::<Vec<_>>();
 
         let mut sensitivities = Vec::new();
         sensitivities.resize_with(keyword_paths.len(), || 0.5);
@@ -244,9 +252,9 @@ impl PorcupineBuilder {
 
     pub fn init(&self) -> Result<Porcupine, PorcupineError> {
         let inner = PorcupineInner::init(
-            self.access_key.clone(),
-            self.library_path.clone(),
-            self.model_path.clone(),
+            &self.access_key,
+            &self.library_path,
+            &self.model_path,
             &self.keyword_paths,
             &self.sensitivities,
         );
@@ -277,8 +285,8 @@ impl Porcupine {
         self.inner.sample_rate as u32
     }
 
-    pub fn version(&self) -> String {
-        self.inner.version.clone()
+    pub fn version(&self) -> &str {
+        &self.inner.version
     }
 }
 
@@ -300,18 +308,17 @@ unsafe fn load_library_fn<T>(
         })
 }
 
-macro_rules! check_fn_call_status {
-    ($status:ident, $function_name:literal) => {
-        if $status != PvStatus::SUCCESS {
-            return Err(PorcupineError::new(
-                PorcupineErrorStatus::LibraryError($status),
-                format!(
-                    "Function '{}' in the porcupine library failed",
-                    $function_name
-                ),
-            ));
-        }
-    };
+fn check_fn_call_status(status: PvStatus, function_name: &str) -> Result<(), PorcupineError> {
+    match status {
+        PvStatus::SUCCESS => Ok(()),
+        _ => Err(PorcupineError::new(
+            PorcupineErrorStatus::LibraryError(status),
+            format!(
+                "Function '{}' in the porcupine library failed",
+                function_name
+            ),
+        )),
+    }
 }
 
 struct PorcupineInnerVTable {
@@ -344,31 +351,30 @@ struct PorcupineInner {
 }
 
 impl PorcupineInner {
-    pub fn init<S: Into<String>, P: Into<PathBuf> + AsRef<OsStr>>(
-        access_key: S,
+    pub fn init<P: AsRef<Path>>(
+        access_key: &str,
         library_path: P,
         model_path: P,
-        keyword_paths: &[P],
+        keyword_paths: &[PathBuf],
         sensitivities: &[f32],
     ) -> Result<Self, PorcupineError> {
-        let library_path: PathBuf = library_path.into();
-        let model_path: PathBuf = model_path.into();
-        let keyword_paths: Vec<PathBuf> = keyword_paths.iter().map(|path| path.into()).collect();
-
-        if !library_path.exists() {
+        if !library_path.as_ref().exists() {
             return Err(PorcupineError::new(
                 PorcupineErrorStatus::ArgumentError,
                 format!(
                     "Couldn't find Porcupine's dynamic library at {}",
-                    library_path.display()
+                    library_path.as_ref().display()
                 ),
             ));
         }
 
-        if !model_path.exists() {
+        if !model_path.as_ref().exists() {
             return Err(PorcupineError::new(
                 PorcupineErrorStatus::ArgumentError,
-                format!("Couldn't find model file at {}", model_path.display()),
+                format!(
+                    "Couldn't find model file at {}",
+                    model_path.as_ref().display()
+                ),
             ));
         }
 
@@ -397,7 +403,7 @@ impl PorcupineInner {
             ));
         }
 
-        for keyword_path in &keyword_paths {
+        for keyword_path in keyword_paths.iter() {
             if !keyword_path.exists() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
@@ -407,7 +413,7 @@ impl PorcupineInner {
         }
 
         for sensitivity in sensitivities {
-            if *sensitivity < 0.0 || *sensitivity > 1.0 {
+            if !(0.0..=1.0).contains(sensitivity) {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
                     format!("Sensitivity value {} should be within [0, 1]", sensitivity),
@@ -415,14 +421,14 @@ impl PorcupineInner {
             }
         }
 
-        let lib = unsafe { Library::new(library_path) }.map_err(|err| {
+        let lib = unsafe { Library::new(library_path.as_ref()) }.map_err(|err| {
             PorcupineError::new(
                 PorcupineErrorStatus::LibraryLoadError,
                 format!("Failed to load porcupine dynamic library: {}", err),
             )
         })?;
 
-        let access_key = match CString::new(access_key.into()) {
+        let access_key = match CString::new(access_key) {
             Ok(access_key) => access_key,
             Err(err) => {
                 return Err(PorcupineError::new(
@@ -462,7 +468,7 @@ impl PorcupineInner {
                 sensitivities.as_ptr(),
                 addr_of_mut!(cporcupine),
             );
-            check_fn_call_status!(status, "pv_porcupine_init");
+            check_fn_call_status(status, "pv_porcupine_init")?;
 
             let version = match CStr::from_ptr(pv_porcupine_version()).to_str() {
                 Ok(string) => string.to_string(),
@@ -498,11 +504,11 @@ impl PorcupineInner {
             ));
         }
 
-        let mut result: i32 = -1;
+        let mut result = -1;
         let status = unsafe {
             (self.vtable.pv_porcupine_process)(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
         };
-        check_fn_call_status!(status, "pv_porcupine_process");
+        check_fn_call_status(status, "pv_porcupine_process")?;
 
         Ok(result)
     }

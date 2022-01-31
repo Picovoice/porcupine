@@ -12,17 +12,17 @@
 mod platform {
     #[cfg(target_os = "macos")]
     pub fn pv_platform() -> String {
-        return String::from("mac");
+        String::from("mac")
     }
 
     #[cfg(target_os = "windows")]
     pub fn pv_platform() -> String {
-        return String::from("windows");
+        String::from("windows")
     }
 
     #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
     pub fn pv_platform() -> String {
-        return String::from("linux");
+        String::from("linux")
     }
 
     #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
@@ -31,14 +31,14 @@ mod platform {
         const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
 
         let machine = find_machine_type();
-        return match machine.as_str() {
+        match machine.as_str() {
             machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),
             machine if JETSON_MACHINES.contains(&machine) => String::from("jetson"),
             "beaglebone" => String::from("beaglebone"),
             _ => {
                 panic!("ERROR: Please be advised that this device is not officially supported by Picovoice");
             }
-        };
+        }
     }
 }
 

@@ -154,7 +154,7 @@ pub fn pv_keyword_paths() -> HashMap<String, String> {
     dir.push(pv_platform);
 
     let mut keyword_paths = HashMap::new();
-    let dir_entries = fs::read_dir(dir.clone())
+    let dir_entries = fs::read_dir(&dir)
         .unwrap_or_else(|_| panic!("Can't find default keyword_files dir: {}", dir.display()));
 
     for entry in dir_entries.flatten() {
