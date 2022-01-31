@@ -9,9 +9,6 @@
     specific language governing permissions and limitations under the License.
 */
 
-use lazy_static::lazy_static;
-use libc::{c_char, c_float};
-use libloading::{Library, Symbol};
 use std::cmp::PartialEq;
 use std::ffi::OsStr;
 use std::ffi::{CStr, CString};
@@ -19,21 +16,15 @@ use std::path::PathBuf;
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
 
+use libc::{c_char, c_float};
+use libloading::{Library, Symbol};
+
 use crate::util::*;
 
-lazy_static! {
-    static ref PV_PORCUPINE_LIB: Result<Library, PorcupineError> = {
-        unsafe {
-            match Library::new(pv_library_path()) {
-                Ok(symbol) => Ok(symbol),
-                Err(err) => Err(PorcupineError::new(
-                    PorcupineErrorStatus::LibraryLoadError,
-                    &format!("Failed to load porcupine dynamic library: {}", err),
-                )),
-            }
-        }
-    };
-}
+#[cfg(unix)]
+use libloading::os::unix::Symbol as RawSymbol;
+#[cfg(windows)]
+use libloading::os::windows::Symbol as RawSymbol;
 
 #[derive(PartialEq, Clone, Debug)]
 pub enum BuiltinKeywords {
@@ -291,21 +282,22 @@ impl Porcupine {
     }
 }
 
-fn load_library_fn<T>(function_name: &[u8]) -> Result<Symbol<T>, PorcupineError> {
-    match &*PV_PORCUPINE_LIB {
-        Ok(lib) => unsafe {
-            lib.get(function_name).map_err(|err| {
-                PorcupineError::new(
-                    PorcupineErrorStatus::LibraryLoadError,
-                    format!(
-                        "Failed to load function symbol from porcupine library: {}",
-                        err
-                    ),
-                )
-            })
-        },
-        Err(err) => Err((*err).clone()),
-    }
+unsafe fn load_library_fn<T>(
+    library: &Library,
+    function_name: &[u8],
+) -> Result<RawSymbol<T>, PorcupineError> {
+    library
+        .get(function_name)
+        .map(|s: Symbol<T>| s.into_raw())
+        .map_err(|err| {
+            PorcupineError::new(
+                PorcupineErrorStatus::LibraryLoadError,
+                format!(
+                    "Failed to load function symbol from porcupine library: {}",
+                    err
+                ),
+            )
+        })
 }
 
 macro_rules! check_fn_call_status {
@@ -323,8 +315,24 @@ macro_rules! check_fn_call_status {
 }
 
 struct PorcupineInnerVTable {
-    pv_porcupine_process: Symbol<'static, PvPorcupineProcessFn>,
-    pv_porcupine_delete: Symbol<'static, PvPorcupineDeleteFn>,
+    pv_porcupine_process: RawSymbol<PvPorcupineProcessFn>,
+    pv_porcupine_delete: RawSymbol<PvPorcupineDeleteFn>,
+
+    _lib_guard: Library,
+}
+
+impl PorcupineInnerVTable {
+    pub fn new(lib: Library) -> Result<Self, PorcupineError> {
+        // SAFETY: the library will be hold by this struct and therefore the symbols can't outlive the library
+        unsafe {
+            Ok(Self {
+                pv_porcupine_process: load_library_fn(&lib, b"pv_porcupine_process")?,
+                pv_porcupine_delete: load_library_fn(&lib, b"pv_porcupine_delete")?,
+
+                _lib_guard: lib,
+            })
+        }
+    }
 }
 
 struct PorcupineInner {
@@ -343,94 +351,108 @@ impl PorcupineInner {
         keyword_paths: &[P],
         sensitivities: &[f32],
     ) -> Result<Self, PorcupineError> {
-        unsafe {
-            let library_path: PathBuf = library_path.into();
-            let model_path: PathBuf = model_path.into();
-            let keyword_paths: Vec<PathBuf> =
-                keyword_paths.iter().map(|path| path.into()).collect();
+        let library_path: PathBuf = library_path.into();
+        let model_path: PathBuf = model_path.into();
+        let keyword_paths: Vec<PathBuf> = keyword_paths.iter().map(|path| path.into()).collect();
 
-            if !library_path.exists() {
+        if !library_path.exists() {
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::ArgumentError,
+                format!(
+                    "Couldn't find Porcupine's dynamic library at {}",
+                    library_path.display()
+                ),
+            ));
+        }
+
+        if !model_path.exists() {
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::ArgumentError,
+                format!("Couldn't find model file at {}", model_path.display()),
+            ));
+        }
+
+        if keyword_paths.len() == 0 {
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::ArgumentError,
+                "Keywords should be length of at least one",
+            ));
+        }
+
+        if sensitivities.len() == 0 {
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::ArgumentError,
+                "Sensitivities should be length of at least one",
+            ));
+        }
+
+        if keyword_paths.len() != sensitivities.len() {
+            return Err(PorcupineError::new(
+                PorcupineErrorStatus::ArgumentError,
+                format!(
+                    "Number of keywords ({}) does not match the number of sensitivities ({})",
+                    keyword_paths.len(),
+                    sensitivities.len()
+                ),
+            ));
+        }
+
+        for keyword_path in &keyword_paths {
+            if !keyword_path.exists() {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    format!(
-                        "Couldn't find Porcupine's dynamic library at {}",
-                        library_path.display()
-                    ),
+                    format!("Couldn't find keyword file at {}", keyword_path.display()),
                 ));
             }
+        }
 
-            if !model_path.exists() {
+        for sensitivity in sensitivities {
+            if *sensitivity < 0.0 || *sensitivity > 1.0 {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    format!("Couldn't find model file at {}", model_path.display()),
+                    format!("Sensitivity value {} should be within [0, 1]", sensitivity),
                 ));
             }
+        }
 
-            if keyword_paths.len() == 0 {
+        let lib = unsafe { Library::new(library_path) }.map_err(|err| {
+            PorcupineError::new(
+                PorcupineErrorStatus::LibraryLoadError,
+                format!("Failed to load porcupine dynamic library: {}", err),
+            )
+        })?;
+
+        let access_key = match CString::new(access_key.into()) {
+            Ok(access_key) => access_key,
+            Err(err) => {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    "Keywords should be length of at least one",
-                ));
+                    format!("AccessKey is not a valid C string {}", err),
+                ))
             }
+        };
+        let mut cporcupine = std::ptr::null_mut();
+        let pv_model_path = pathbuf_to_cstring(&model_path);
+        let pv_keyword_paths = keyword_paths
+            .iter()
+            .map(|keyword_path| pathbuf_to_cstring(keyword_path))
+            .collect::<Vec<_>>();
+        let pv_keyword_paths_ptrs = pv_keyword_paths
+            .iter()
+            .map(|keyword_path| keyword_path.as_ptr())
+            .collect::<Vec<_>>();
 
-            if sensitivities.len() == 0 {
-                return Err(PorcupineError::new(
-                    PorcupineErrorStatus::ArgumentError,
-                    "Sensitivities should be length of at least one",
-                ));
-            }
-
-            if keyword_paths.len() != sensitivities.len() {
-                return Err(PorcupineError::new(
-                    PorcupineErrorStatus::ArgumentError,
-                    format!(
-                        "Number of keywords ({}) does not match the number of sensitivities ({})",
-                        keyword_paths.len(),
-                        sensitivities.len()
-                    ),
-                ));
-            }
-
-            for keyword_path in &keyword_paths {
-                if !keyword_path.exists() {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::ArgumentError,
-                        format!("Couldn't find keyword file at {}", keyword_path.display()),
-                    ));
-                }
-            }
-
-            for sensitivity in sensitivities {
-                if *sensitivity < 0.0 || *sensitivity > 1.0 {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::ArgumentError,
-                        format!("Sensitivity value {} should be within [0, 1]", sensitivity),
-                    ));
-                }
-            }
-
-            let pv_porcupine_init: Symbol<PvPorcupineInitFn> =
-                load_library_fn(b"pv_porcupine_init")?;
-
-            let access_key = match CString::new(access_key.into()) {
-                Ok(access_key) => access_key,
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::ArgumentError,
-                        format!("AccessKey is not a valid C string {}", err),
-                    ))
-                }
-            };
-            let pv_model_path = pathbuf_to_cstring(&model_path);
-            let pv_keyword_paths = keyword_paths
-                .iter()
-                .map(|keyword_path| pathbuf_to_cstring(keyword_path))
-                .collect::<Vec<_>>();
-            let pv_keyword_paths_ptrs = pv_keyword_paths
-                .iter()
-                .map(|keyword_path| keyword_path.as_ptr())
-                .collect::<Vec<_>>();
-            let mut cporcupine = std::ptr::null_mut();
+        // SAFETY: most of the unsafe comes from the `load_library_fn` which is
+        // safe, because we don't use the raw symbols after this function
+        // anymore.
+        let (sample_rate, frame_length, version) = unsafe {
+            let pv_porcupine_init =
+                load_library_fn::<PvPorcupineInitFn>(&lib, b"pv_porcupine_init")?;
+            let pv_sample_rate = load_library_fn::<PvSampleRateFn>(&lib, b"pv_sample_rate")?;
+            let pv_porcupine_frame_length =
+                load_library_fn::<PvPorcupineFrameLengthFn>(&lib, b"pv_porcupine_frame_length")?;
+            let pv_porcupine_version =
+                load_library_fn::<PvPorcupineVersionFn>(&lib, b"pv_porcupine_version")?;
 
             let status = pv_porcupine_init(
                 access_key.as_ptr(),
@@ -440,29 +462,8 @@ impl PorcupineInner {
                 sensitivities.as_ptr(),
                 addr_of_mut!(cporcupine),
             );
-            if status != PvStatus::SUCCESS {
-                return Err(PorcupineError::new(
-                    PorcupineErrorStatus::LibraryError(status),
-                    "Failed to initialize the Porcupine library",
-                ));
-            }
+            check_fn_call_status!(status, "pv_porcupine_init");
 
-            let pv_porcupine_process: Symbol<PvPorcupineProcessFn> =
-                load_library_fn(b"pv_porcupine_process")?;
-
-            let pv_porcupine_delete: Symbol<PvPorcupineDeleteFn> =
-                load_library_fn(b"pv_porcupine_delete")?;
-
-            let pv_sample_rate: Symbol<PvSampleRateFn> = load_library_fn(b"pv_sample_rate")?;
-
-            let pv_porcupine_frame_length: Symbol<PvPorcupineFrameLengthFn> =
-                load_library_fn(b"pv_porcupine_frame_length")?;
-
-            let pv_porcupine_version: Symbol<PvPorcupineVersionFn> =
-                load_library_fn(b"pv_porcupine_version")?;
-
-            let sample_rate = pv_sample_rate();
-            let frame_length = pv_porcupine_frame_length();
             let version = match CStr::from_ptr(pv_porcupine_version()).to_str() {
                 Ok(string) => string.to_string(),
                 Err(err) => {
@@ -473,19 +474,16 @@ impl PorcupineInner {
                 }
             };
 
-            let vtable = PorcupineInnerVTable {
-                pv_porcupine_process,
-                pv_porcupine_delete,
-            };
+            (pv_sample_rate(), pv_porcupine_frame_length(), version)
+        };
 
-            return Ok(Self {
-                cporcupine,
-                sample_rate,
-                frame_length,
-                version,
-                vtable,
-            });
-        }
+        return Ok(Self {
+            cporcupine,
+            sample_rate,
+            frame_length,
+            version,
+            vtable: PorcupineInnerVTable::new(lib)?,
+        });
     }
 
     pub fn process(&self, pcm: &[i16]) -> Result<i32, PorcupineError> {
