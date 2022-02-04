@@ -135,9 +135,9 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "2.1.1"
+version = "2.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "60eb78296f457acc74d78c952507ece0effbe5f5502341a4976f1492712cd9cd"
+checksum = "f81705e0dcea59ec97f7af8c7e5b4c6df280b51b0faf084e3c9a1ed5dbb8fc34"
 dependencies = [
  "libc",
  "libloading",
