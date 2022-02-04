@@ -177,6 +177,8 @@ impl std::fmt::Display for PorcupineError {
     }
 }
 
+impl std::error::Error for PorcupineError {}
+
 pub struct PorcupineBuilder {
     access_key: String,
     library_path: PathBuf,
