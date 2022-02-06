@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-node",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Picovoice Porcupine NodeJS binding",
   "main": "index.js",
   "scripts": {

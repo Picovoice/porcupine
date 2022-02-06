@@ -15,14 +15,14 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:2.1.0'
+    implementation 'ai.picovoice:porcupine-java:2.1.1'
     implementation 'commons-cli:commons-cli:1.4'
 }
 
 jar {
     manifest {
         attributes "Main-Class": "ai.picovoice.porcupinedemo.MicDemo",
-                   "Class-Path" : "porcupine-2.1.0.jar;commons-cli-1.4.jar"
+                   "Class-Path" : "porcupine-2.1.1.jar;commons-cli-1.4.jar"
     }
     from sourceSets.main.output
     exclude "**/FileDemo.class"
@@ -33,7 +33,7 @@ jar {
 task fileDemoJar(type: Jar) {
     manifest {
         attributes "Main-Class": "ai.picovoice.porcupinedemo.FileDemo",
-                "Class-Path" : "porcupine-2.1.0.jar;commons-cli-1.4.jar"
+                "Class-Path" : "porcupine-2.1.1.jar;commons-cli-1.4.jar"
     }
     from sourceSets.main.output
     exclude "**/MicDemo.class"
