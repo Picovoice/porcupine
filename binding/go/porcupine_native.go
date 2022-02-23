@@ -14,15 +14,51 @@
 // The number of samples per frame can be attained by calling `.FrameLength`. The incoming audio needs to have a
 // sample rate equal to `.SampleRate` and be 16-bit linearly-encoded. Porcupine operates on single-channel audio.
 
-// +build linux darwin
-
 package porcupine
 
 /*
-#cgo LDFLAGS: -ldl
-#include <dlfcn.h>
+#cgo linux LDFLAGS: -ldl
+#cgo darwin LDFLAGS: -ldl
 #include <stdint.h>
 #include <stdlib.h>
+
+#if defined(_WIN32) || defined(_WIN64)
+
+	#include <windows.h>
+
+#else
+
+	#include <dlfcn.h>
+
+#endif
+
+static void *open_dl(const char *dl_path) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    return LoadLibrary((LPCSTR) dl_path);
+
+#else
+
+    return dlopen(dl_path, RTLD_NOW);
+
+#endif
+
+}
+
+static void *load_symbol(void *handle, const char *symbol) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    return GetProcAddress((HMODULE) handle, symbol);
+
+#else
+
+    return dlsym(handle, symbol);
+
+#endif
+
+}
 
 typedef int32_t (*pv_porcupine_sample_rate_func)();
 
@@ -98,14 +134,14 @@ import (
 
 // private vars
 var (
-	lib = C.dlopen(C.CString(libName), C.RTLD_NOW)
+	lib = C.open_dl(C.CString(libName))
 
-	pv_porcupine_init_ptr         = C.dlsym(lib, C.CString("pv_porcupine_init"))
-	pv_porcupine_process_ptr      = C.dlsym(lib, C.CString("pv_porcupine_process"))
-	pv_sample_rate_ptr            = C.dlsym(lib, C.CString("pv_sample_rate"))
-	pv_porcupine_version_ptr      = C.dlsym(lib, C.CString("pv_porcupine_version"))
-	pv_porcupine_frame_length_ptr = C.dlsym(lib, C.CString("pv_porcupine_frame_length"))
-	pv_porcupine_delete_ptr       = C.dlsym(lib, C.CString("pv_porcupine_delete"))
+	pv_porcupine_init_ptr         = C.load_symbol(lib, C.CString("pv_porcupine_init"))
+	pv_porcupine_process_ptr      = C.load_symbol(lib, C.CString("pv_porcupine_process"))
+	pv_sample_rate_ptr            = C.load_symbol(lib, C.CString("pv_sample_rate"))
+	pv_porcupine_version_ptr      = C.load_symbol(lib, C.CString("pv_porcupine_version"))
+	pv_porcupine_frame_length_ptr = C.load_symbol(lib, C.CString("pv_porcupine_frame_length"))
+	pv_porcupine_delete_ptr       = C.load_symbol(lib, C.CString("pv_porcupine_delete"))
 )
 
 func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus) {
