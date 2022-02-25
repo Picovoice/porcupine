@@ -30,7 +30,7 @@
             accessKey,
             [
               {
-                builtin: "Picovoice",
+                builtin: PorcupineWebEnWorker.BuiltInKeyword.Picovoice,
                 sensitivity: 0.65,
               },
               {
@@ -47,7 +47,7 @@
           let ppnDe = await PorcupineWebDeWorker.PorcupineWorkerFactory.create(
             accessKey,
             {
-              builtin: "Ananas",
+              builtin: PorcupineWebDeWorker.BuiltInKeyword.Ananas,
               sensitivity: 0.7,
             },
             porcupineKeywordCallback,
@@ -56,7 +56,7 @@
           let ppnEs = await PorcupineWebEsWorker.PorcupineWorkerFactory.create(
             accessKey,
             {
-              builtin: "Manzana",
+              builtin: PorcupineWebEsWorker.BuiltInKeyword.Manzana,
               sensitivity: 0.6,
             },
             porcupineKeywordCallback,
@@ -64,7 +64,7 @@
           );
           let ppnFr = await PorcupineWebFrWorker.PorcupineWorkerFactory.create(
             accessKey,
-            ["Framboise"],
+            [PorcupineWebEsWorker.BuiltInKeyword.Framboise],
             porcupineKeywordCallback,
             porcupineErrorCallback
           );

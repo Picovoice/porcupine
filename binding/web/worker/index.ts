@@ -10,5 +10,6 @@
 */
 
 import PorcupineWorkerFactory from './porcupine_worker_factory';
+import { BuiltInKeyword } from './lang/built_in_keywords'
 
-export { PorcupineWorkerFactory };
+export { PorcupineWorkerFactory, BuiltInKeyword };

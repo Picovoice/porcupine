@@ -9,7 +9,7 @@
 
     window.onload = function () {
       const audioContext = new (window.AudioContext || window.webKitAudioContext)(
-        { sampleRate: 16000 }
+        {sampleRate: 16000}
       );
 
       function readAudioFile(selectedFile, callback) {
@@ -34,12 +34,12 @@
           const INT16_MAX = 32767;
           const INT16_MIN = -32768;
           i16PCM.set(
-            f32PCM.map((f) => {
-              let i = Math.trunc(f * INT16_MAX);
-              if (f > INT16_MAX) i = INT16_MAX;
-              if (f < INT16_MIN) i = INT16_MIN;
-              return i;
-            })
+                  f32PCM.map((f) => {
+                    let i = Math.trunc(f * INT16_MAX);
+                    if (f > INT16_MAX) i = INT16_MAX;
+                    if (f < INT16_MIN) i = INT16_MIN;
+                    return i;
+                  })
           );
           pcm = i16PCM;
           document.getElementById("audioLoaded").style.display = "block";
@@ -96,7 +96,9 @@
 
       try {
         writeMessage("Checking builtin keyword 'Grasshopper'...");
-        let handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, { builtin: 'Grasshopper' });
+        let handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, {
+          builtin: PorcupineWebEnFactory.BuiltInKeyword.Grasshopper
+        });
         let counts = await porcupineDetectionCounts(handle, pcm);
         let grasshopperCount = counts.get(0);
         assertEquals(1, grasshopperCount, 'Failed to create an instance with a buildin keyword');
@@ -104,7 +106,9 @@
         writeMessage("Checking builtin keyword 'Grasshopper'... done!");
 
         writeMessage("Checking single keyword multiple detection...");
-        handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, { builtin: 'Porcupine' });
+        handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, {
+          builtin: PorcupineWebEnFactory.BuiltInKeyword.Porcupine
+        });
         counts = await porcupineDetectionCounts(handle, pcm);
         let porcupineCount = counts.get(0);
         assertEquals(2, porcupineCount, 'Failed to detect a single keyword multiple times')
@@ -112,7 +116,10 @@
         writeMessage("Checking single keyword multiple detection... done!");
 
         writeMessage("Checking multiple keyword multiple detection...");
-        handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, ['Americano', 'Bumblebee']);
+        handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, [
+          PorcupineWebEnFactory.BuiltInKeyword.Americano,
+          PorcupineWebEnFactory.BuiltInKeyword.Bumblebee
+        ]);
         counts = await porcupineDetectionCounts(handle, pcm);
         let americanoCount = counts.get(0);
         let bumblebeeCount = counts.get(1);
@@ -120,11 +127,11 @@
         assertEquals(1, bumblebeeCount, 'Failed to detect multiple keywords')
         handle.release()
         writeMessage("Checking multiple keyword multiple detection... done!");
-        
+
         writeMessage("Checking invalid builtin keyword type...");
         is_failed = false;
         try {
-          let handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, { builtin: 'octopus' });
+          let handle = await PorcupineWebEnFactory.Porcupine.create(accessKey, {builtin: 'octopus'});
         } catch (error) {
           is_failed = true;
         }
@@ -134,7 +141,9 @@
         writeMessage("Checking invalid access_key...");
         is_failed = false;
         try {
-          let handle = await PorcupineWebEnFactory.Porcupine.create('1234', { builtin: 'Porcupine' });
+          let handle = await PorcupineWebEnFactory.Porcupine.create('1234', {
+            builtin: PorcupineWebEnFactory.BuiltInKeyword.Porcupine
+          });
         } catch (error) {
           is_failed = true;
         }
@@ -142,7 +151,9 @@
 
         is_failed = false;
         try {
-          let handle = await PorcupineWebEnFactory.Porcupine.create('', { builtin: 'Porcupine' });
+          let handle = await PorcupineWebEnFactory.Porcupine.create('', {
+            builtin: PorcupineWebEnFactory.BuiltInKeyword.Porcupine
+          });
         } catch (error) {
           is_failed = true;
         }
@@ -152,7 +163,10 @@
         writeMessage("Checking basic parameter validation...");
         is_failed = false;
         try {
-          let handle = await PorcupineWebEnFactory.Porcupine.create('1234', { builtin: 'Picovoice', sensitivity: 4.2 });
+          let handle = await PorcupineWebEnFactory.Porcupine.create('1234', {
+            builtin: PorcupineWebEnFactory.BuiltInKeyword.Picovoice,
+            sensitivity: 4.2
+          });
         } catch (error) {
           is_failed = true;
         }
@@ -160,7 +174,9 @@
 
         is_failed = false;
         try {
-          let handle = await PorcupineWebEnFactory.Porcupine.create('1234', { builtin: 'Picovoice', sensitivity: 'high' });
+          let handle = await PorcupineWebEnFactory.Porcupine.create('1234', {
+            builtin: PorcupineWebEnFactory.BuiltInKeyword.Picovoice, sensitivity: 'high'
+          });
         } catch (error) {
           is_failed = true;
         }
@@ -180,29 +196,29 @@
 </head>
 
 <body>
-  <h1>Porcupine web binding test</h1>
-  <p>After entering the AccessKey and audio file, click the "Test Porcupine" button. For the result, refer to the
-    browser console.</p>
+<h1>Porcupine web binding test</h1>
+<p>After entering the AccessKey and audio file, click the "Test Porcupine" button. For the result, refer to the
+  browser console.</p>
 
-  <p>
-    <label for="accessKey">AccessKey string obtained from
-      <a href="https://picovoice.ai/console/">Picovoice Console</a>:</label>
-    <input type="text" id="accessKey" name="accessKey" />
-  </p>
+<p>
+  <label for="accessKey">AccessKey string obtained from
+    <a href="https://picovoice.ai/console/">Picovoice Console</a>:</label>
+  <input type="text" id="accessKey" name="accessKey"/>
+</p>
 
-  <p>
-    <label for="audioFile">Select audio file located on
-      {PROJECT_ROOT}/resources/audio_samples/multiple_keywords.wav:</label>
-    <input type="file" id="audioFile" name="audioFile" accept="audio/*" />
-  </p>
+<p>
+  <label for="audioFile">Select audio file located on
+    {PROJECT_ROOT}/resources/audio_samples/multiple_keywords.wav:</label>
+  <input type="file" id="audioFile" name="audioFile" accept="audio/*"/>
+</p>
 
-  <input type="button" id="sumbit" value="Test Porcupine" onclick="startTest()" />
+<input type="button" id="sumbit" value="Test Porcupine" onclick="startTest()"/>
 
-  <br>
+<br>
 
-  <h4 id="audioLoaded" style="display: none;">Audio file loaded!</h4>
-  <h4 id="testComplete" style="display: none;">Test Complete!</h4>
-  <hr />
+<h4 id="audioLoaded" style="display: none;">Audio file loaded!</h4>
+<h4 id="testComplete" style="display: none;">Test Complete!</h4>
+<hr/>
 </body>
 
 </html>
