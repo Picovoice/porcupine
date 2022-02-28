@@ -16,8 +16,8 @@
     "@picovoice/porcupine-react-native": "^2.1.0",
     "@picovoice/react-native-voice-processor": "^1.0.4",
     "@react-native-picker/picker": "^1.9.2",
-    "react": "16.13.1",
-    "react-native": "0.63.3"
+    "react": "^17.0.2",
+    "react-native": "^0.67.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
