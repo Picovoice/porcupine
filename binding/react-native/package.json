@@ -61,8 +61,8 @@
   },
   "peerDependencies": {
     "@picovoice/react-native-voice-processor": "*",
-    "react": "*",
-    "react-native": "*"
+    "react": ">= 16.11",
+    "react-native": ">= 0.62"
   },
   "jest": {
     "preset": "react-native",
