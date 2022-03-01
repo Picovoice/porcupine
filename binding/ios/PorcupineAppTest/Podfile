@@ -1,0 +1,10 @@
+source 'https://cdn.cocoapods.org/'
+platform :ios, '9.0'
+
+target 'PorcupineAppTest' do
+    pod 'Porcupine-iOS', '~> 2.1.0'
+end
+
+target 'PorcupineAppTestUITests' do
+    pod 'Porcupine-iOS', '~> 2.1.0'
+end

@@ -43,7 +43,3 @@ Open the `PorcupineForegroundAppDemo.xcworkspace` and run the demo.
 
 The demo allows you to select any of our built-in keywords for detection. Press start and say the selected keyword.
 
-## Running the On-Device Unit Tests
-
-Open `PorcupineForegroundAppDemo.xcworkspace` with XCode and run the tests with `Product > Test`.
-

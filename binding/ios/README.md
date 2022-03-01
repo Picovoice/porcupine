@@ -187,6 +187,10 @@ let keywordPath = Bundle.main.path(forResource: "keyword_ios", ofType: "ppn")
 
 In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
 
+## Running Unit Tests
+
+Open [`PorcupineAppTest.xcworkspace`](PorcupineAppTest/PorcupineAppTest.xcworkspace) with XCode and run the tests with `Product > Test`.
+
 ## Demo App
 
 For example usage refer to our [iOS demo application](/demo/ios).
