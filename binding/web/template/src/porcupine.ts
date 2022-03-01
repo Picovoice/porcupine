@@ -328,7 +328,9 @@ export class Porcupine implements PorcupineEngine {
     keywordModels: ArrayLike<Uint8Array>,
     keywordModelSizes: Int32Array,
     sensitivities: Float32Array): Promise<any> {
-    const memory = new WebAssembly.Memory({ initial: 1000, maximum: 2000 });
+    // A WebAssembly page has a constant size of 64KiB. -> 8MiB ~= 128 pages
+    // minimum memory requirements for init: 17 pages
+    const memory = new WebAssembly.Memory({ initial: 128, maximum: 512 });
 
     const memoryBufferUint8 = new Uint8Array(memory.buffer);
     const memoryBufferInt32 = new Int32Array(memory.buffer);
