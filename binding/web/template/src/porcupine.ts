@@ -328,7 +328,7 @@ export class Porcupine implements PorcupineEngine {
     keywordModels: ArrayLike<Uint8Array>,
     keywordModelSizes: Int32Array,
     sensitivities: Float32Array): Promise<any> {
-    const memory = new WebAssembly.Memory({ initial: 10, maximum: 300 });
+    const memory = new WebAssembly.Memory({ initial: 30, maximum: 300 });
 
     const memoryBufferUint8 = new Uint8Array(memory.buffer);
     const memoryBufferInt32 = new Int32Array(memory.buffer);
