@@ -1,17 +1,22 @@
+#! /bin/bash
+
+echo "Removing old data ..."
+rm -rf ./data
+
+
 echo "Preparing dir ..."
 mkdir -p ./data/lib/
-mkdir -p ./data/resources/
+mkdir -p ./data/resources/keyword_files
 
-echo "Copying Library Files ..."
-cp -r ../../lib/beaglebone ./data/lib/
+echo "Copying Model File ..."
 cp -r ../../lib/common ./data/lib/
-cp -r ../../lib/jetson ./data/lib/
-cp -r ../../lib/linux ./data/lib/
-cp -r ../../lib/mac ./data/lib/
-cp -r ../../lib/raspberry-pi ./data/lib/
-cp -r ../../lib/windows ./data/lib/
 
-echo "Copying Resource Files ..."
-cp -r ../../resources/keyword_files ./data/resources/
+
+for platform in beaglebone jetson linux mac raspberry-pi windows
+do
+    echo "Copying Resource & Library Files for $platform ..."
+    cp -r ../../lib/$platform ./data/lib/
+    cp -r ../../resources/keyword_files/$platform ./data/resources/keyword_files
+done
 
 echo "Copy complete!"
