@@ -14,10 +14,10 @@ use clap::{App, Arg, ArgGroup};
 use ctrlc;
 use hound;
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
-use pv_recorder::{Recorder, RecorderBuilder};
+use pv_recorder::RecorderBuilder;
 use std::path::PathBuf;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::str::FromStr;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 static LISTENING: AtomicBool = AtomicBool::new(false);
 
@@ -122,7 +122,10 @@ impl KeywordsOrPaths {
 }
 
 fn show_audio_devices() {
-    let audio_devices = Recorder::get_audio_devices();
+    let audio_devices = RecorderBuilder::new()
+        .init()
+        .expect("Failed to initialize pvrecorder")
+        .get_audio_devices();
     match audio_devices {
         Ok(audio_devices) => {
             for (idx, device) in audio_devices.iter().enumerate() {
