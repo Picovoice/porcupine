@@ -33,6 +33,7 @@ Pod::Spec.new do |s|
     ]
   }
   s.source_files = 'binding/ios/*.{swift}'
+  s.exclude_files = 'binding/ios/PorcupineAppTest/**'
 
   s.dependency 'ios-voice-processor', '~> 1.0.2'
 end

@@ -5,17 +5,17 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - 'demo/ios/ForegroundApp/Podfile.lock'
+      - 'binding/ios/PorcupineAppTest/Podfile.lock'
       - '.github/workflows/ios-appcenter.yml'
   pull_request:
     branches: [ master ]
     paths: 
-      - 'demo/ios/ForegroundApp/Podfile.lock'
+      - 'binding/ios/PorcupineAppTest/Podfile.lock'
       - '.github/workflows/ios-appcenter.yml'
       
 defaults:
   run:
-    working-directory: demo/ios/ForegroundApp
+    working-directory: binding/ios/PorcupineAppTest
     
 jobs:
   build:
@@ -43,14 +43,14 @@ jobs:
 
       - name: Inject AppID
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
-          PorcupineForegroundAppDemoUITests/PorcupineForegroundAppDemoUITests.swift
+          PorcupineAppTestUITests/PorcupineAppTestUITests.swift
 
       - name: XCode Build
         run: xcrun xcodebuild build-for-testing 
           -configuration Debug 
-          -workspace PorcupineForegroundAppDemo.xcworkspace 
+          -workspace PorcupineAppTest.xcworkspace 
           -sdk iphoneos 
-          -scheme PorcupineForegroundAppDemo 
+          -scheme PorcupineAppTest
           -derivedDataPath ddp 
           CODE_SIGNING_ALLOWED=NO
 
