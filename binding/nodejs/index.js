@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -25,8 +25,6 @@ const {
   BUILTIN_KEYWORDS_STRINGS,
   getBuiltinKeywordPath,
 } = require("./builtin_keywords");
-
-const pvPorcupine = require(getSystemLibraryPath());
 
 const MODEL_PATH_DEFAULT = "lib/common/porcupine_params.pv";
 
@@ -132,19 +130,28 @@ class Porcupine {
       }
     }
 
-    const packed = pvPorcupine.init(
-      accessKey,
-      modelPath,
-      keywordPaths.length,
-      keywordPaths,
-      sensitivities
-    );
-    const status = Number(packed % 10n);
+    const pvPorcupine = require(libraryPath);
+
+    let porcupineHandleAndStatus = null;
+    try {
+      porcupineHandleAndStatus = pvPorcupine.init(
+        accessKey,
+        modelPath,
+        keywordPaths.length,
+        keywordPaths,
+        sensitivities
+      );
+    } catch (err) {
+      pvStatusToException(PV_STATUS_T[err.code], err);
+    }
+
+    const status = porcupineHandleAndStatus.status;
     if (status !== PV_STATUS_T.SUCCESS) {
       pvStatusToException(status, "Porcupine failed to initialize");
     }
-    this.handle = packed / 10n;
 
+    this._handle = porcupineHandleAndStatus.handle;
+    this._pvPorcupine = pvPorcupine;
     this._frameLength = pvPorcupine.frame_length();
     this._sampleRate = pvPorcupine.sample_rate();
     this._version = pvPorcupine.version();
@@ -184,7 +191,11 @@ class Porcupine {
    * If no keyword is detected then it returns -1.
    */
   process(frame) {
-    if (this.handle === 0) {
+    if (
+      this._handle === 0 ||
+      this._handle === null ||
+      this._handle === undefined
+    ) {
       throw new PvStateError("Porcupine is not initialized");
     }
 
@@ -207,12 +218,18 @@ class Porcupine {
 
     const frameBuffer = new Int16Array(frame);
 
-    const packed = pvPorcupine.process(this.handle, frameBuffer);
-    const status = packed % 10;
+    let keywordAndStatus = null;
+    try {
+      keywordAndStatus = this._pvPorcupine.process(this._handle, frameBuffer);
+    } catch (err) {
+      pvStatusToException(PV_STATUS_T[err.code], err);
+    }
+
+    const status = keywordAndStatus.status;
     if (status !== PV_STATUS_T.SUCCESS) {
       pvStatusToException(status, "Porcupine failed to process the frame");
     }
-    const keywordIndex = packed / 10;
+    const keywordIndex = keywordAndStatus.keyword_index;
 
     return keywordIndex;
   }
@@ -224,9 +241,9 @@ class Porcupine {
    * to reclaim the memory that was allocated by the C library.
    */
   release() {
-    if (this.handle > 0) {
-      pvPorcupine.delete(this.handle);
-      this.handle = 0;
+    if (this._handle > 0) {
+      this._pvPorcupine.delete(this._handle);
+      this._handle = 0;
     } else {
       console.warn("Porcupine is not initialized; nothing to destroy");
     }
