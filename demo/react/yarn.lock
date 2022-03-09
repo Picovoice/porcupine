@@ -1430,8 +1430,10 @@
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 
-"@picovoice/porcupine-web-react@file:../../binding/react":
-  version "2.1.1"
+"@picovoice/porcupine-web-react@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-2.1.2.tgz#d2fdd310f4b065dc0e19b848b1690d6a3a683196"
+  integrity sha512-f2gYU2GWG33NH2GZ4ugXBr0yiKPLBrFQO/lWtJ7Ky6+ThoKKWAw/R1NeAqgU552R+L1pPiklDqudq6lBm8U8VA==
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 
