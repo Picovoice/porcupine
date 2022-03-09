@@ -47,8 +47,10 @@ export function usePorcupine(
   errorMessage: string | null;
   /** A pointer to the internal webVoiceProcessor object. */
   webVoiceProcessor: WebVoiceProcessor | null;
-  /** A method to start processing the audio. */
+  /** A method to start listening to the mic and processing the audio. */
   start: () => void;
+  /** A method to stop listening to the mic. */
+  stop: () => void;
   /** A method to stop processing the audio. */
   pause: () => void;
   /** Setter for keywordEventHandler */
@@ -70,9 +72,20 @@ export function usePorcupine(
 
   const start = (): boolean => {
     if (webVoiceProcessor !== null) {
-      webVoiceProcessor.start();
-      setIsListening(true);
-      return true;
+      webVoiceProcessor.start().then(() => {
+        setIsListening(true);
+        return true;
+      });
+    }
+    return false;
+  };
+
+  const stop = (): boolean => {
+    if (webVoiceProcessor !== null) {
+      webVoiceProcessor.stop().then(() => {
+        setIsListening(false);
+        return true;
+      });
     }
     return false;
   };
@@ -164,6 +177,7 @@ export function usePorcupine(
         }
         if (ppnWorker !== undefined && ppnWorker !== null) {
           ppnWorker.postMessage({ command: 'release' });
+          ppnWorker.terminate();
         }
       }).catch(() => {
         // do nothing
@@ -187,6 +201,7 @@ export function usePorcupine(
     webVoiceProcessor,
     start,
     pause,
+    stop,
     setKeywordEventHandler: setKeywordCallback,
   };
 }
