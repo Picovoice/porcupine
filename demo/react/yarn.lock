@@ -1423,24 +1423,24 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
   integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
 
-"@picovoice/porcupine-web-en-worker@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.1.1.tgz#683f3ab80eab7ffe20669c81685c7cb8896da6a7"
-  integrity sha512-fZOmQxN2mBVB6n22xkSOJ/R/sqkj1BwXT8xfG7l08AhNs/k8ffFLu7Xjgsdqu55RkWvBQ2hjhQ5G397mhEaehA==
-  dependencies:
-    "@picovoice/porcupine-web-core" "^2.1.0"
-
-"@picovoice/porcupine-web-react@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-2.1.0.tgz#87a3ae1b6fe0c4b672708ce39d84f7eff2c5e64a"
-  integrity sha512-GFLkPO2bBiDNF0ovs7dl995FRqlq8Z7VUwnVduhUnpFfp+5dD2fTqvhOPq0sh5E4vXkFD2bfbkMzukcB8pzAug==
-  dependencies:
-    "@picovoice/porcupine-web-core" "^2.1.0"
-
-"@picovoice/web-voice-processor@^2.1.4":
+"@picovoice/porcupine-web-en-worker@^2.1.4":
   version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.4.tgz#3d7ebabbaa58ec2e4195a5c9e9d7fcd8de88f8a2"
-  integrity sha512-dFdhHnHjZkooSvzhSAdnhB2YrsFxQPjqQTpcpIYnfX3U0TU/KpdBprWaXpL7ShZ3Vbgpkogh/qmpEAzXoNuNBA==
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.1.4.tgz#4b41e1548d600ecedbc642b2e243a146f4b62558"
+  integrity sha512-HIidhb/s4djxFa31ro0HDmaYmcWe1DHIuB8wO4SHfV+erHw3Qi7wCcKp0dKuCbUKRWSOtErLUVroSRxGCHmmxQ==
+  dependencies:
+    "@picovoice/porcupine-web-core" "^2.1.0"
+
+"@picovoice/porcupine-web-react@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-2.1.2.tgz#d2fdd310f4b065dc0e19b848b1690d6a3a683196"
+  integrity sha512-f2gYU2GWG33NH2GZ4ugXBr0yiKPLBrFQO/lWtJ7Ky6+ThoKKWAw/R1NeAqgU552R+L1pPiklDqudq6lBm8U8VA==
+  dependencies:
+    "@picovoice/porcupine-web-core" "^2.1.0"
+
+"@picovoice/web-voice-processor@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.2.1.tgz#2b1165e007405a03ca35e15a23582c9bd6931df5"
+  integrity sha512-680rpHwxU87drvbOv8aZap8pq34u+90pLsVRSPa815+wYmi/L6acMjKJB0plx5Nvto86MoZl7aygGp1AsbuLWA==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
