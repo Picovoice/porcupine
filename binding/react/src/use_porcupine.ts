@@ -131,6 +131,16 @@ export function usePorcupine(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     } = porcupineHookArgs!;
 
+    if (
+      keywords === null ||
+      keywords === undefined ||
+      (Array.isArray(keywords) && keywords.length === 0)
+    ) {
+      return (): void => {
+        /* NOOP */
+      };
+    }
+
     async function startPorcupine(): Promise<{
       webVp: WebVoiceProcessor;
       ppnWorker: PorcupineWorker;
