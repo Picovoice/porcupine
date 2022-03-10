@@ -10,6 +10,12 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Usage
 
+Replace your `AccessKey`, in [`App.tsx`](App.tsx) file:
+
+```typescript
+_accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+```
+
 ### Running On Android
 ```console
 yarn android-install    # sets up environment

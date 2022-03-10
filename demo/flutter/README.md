@@ -10,8 +10,13 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Usage
 
+Replace your `AccessKey` in [lib/main.dart](lib/main.dart) file:
+
+```dart
+final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+```
+
 Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
 ```console
 flutter run
 ```
-
