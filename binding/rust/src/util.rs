@@ -18,7 +18,9 @@ const DEFAULT_RELATIVE_KEYWORDS_DIR: &str = "resources/keyword_files/";
 const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "lib/";
 const DEFAULT_RELATIVE_MODEL_PATH: &str = "lib/common/porcupine_params.pv";
 
+#[allow(dead_code)]
 const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+#[allow(dead_code)]
 const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
