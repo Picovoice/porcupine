@@ -60,7 +60,8 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Rust pre-build
-      run: ./copy.sh
+      run: bash copy.sh
+      shell: bash
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
