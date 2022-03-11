@@ -20,7 +20,7 @@ mod tests {
     use porcupine::util::pv_platform;
     use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-    fn append_lang(path:&str, language:&str) -> String{
+    fn append_lang(path: &str, language: &str) -> String {
         if language == "en" {
             String::from(path)
         } else {
@@ -28,18 +28,19 @@ mod tests {
         }
     }
 
-    fn model_path_by_language(language:&str) -> String{
+    fn model_path_by_language(language: &str) -> String {
         format!(
-            "{}{}{}", 
-            env!("CARGO_MANIFEST_DIR"), 
-            append_lang("/../../lib/common/porcupine_params", language), 
-            ".pv")
+            "{}{}{}",
+            env!("CARGO_MANIFEST_DIR"),
+            append_lang("/../../lib/common/porcupine_params", language),
+            ".pv"
+        )
     }
 
-    fn keyword_path_by_language(keyword_file:&str, language:&str) -> String{
+    fn keyword_path_by_language(keyword_file: &str, language: &str) -> String {
         format!(
-            "{}{}/{}/{}_{}.ppn", 
-            env!("CARGO_MANIFEST_DIR"), 
+            "{}{}/{}/{}_{}.ppn",
+            env!("CARGO_MANIFEST_DIR"),
             append_lang("/../../resources/keyword_files", language),
             pv_platform(),
             keyword_file,
@@ -47,22 +48,31 @@ mod tests {
         )
     }
 
-    fn run_porcupine_test(language:&str, keywords:&[&str], ground_truth:&[i32], audio_file_name:&str) {
+    fn run_porcupine_test(
+        language: &str,
+        keywords: &[&str],
+        ground_truth: &[i32],
+        audio_file_name: &str,
+    ) {
         let access_key = env::var("PV_ACCESS_KEY")
             .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
-        
+
         let mut vec = Vec::new();
         for keyword in keywords.iter() {
             vec.push(keyword_path_by_language(keyword, language));
         }
 
-        let porcupine =
-            PorcupineBuilder::new_with_keyword_paths(access_key, &vec)
-                .model_path(model_path_by_language(language))
-                .init()
-                .expect("Unable to create Porcupine");
+        let porcupine = PorcupineBuilder::new_with_keyword_paths(access_key, &vec)
+            .model_path(model_path_by_language(language))
+            .init()
+            .expect("Unable to create Porcupine");
 
-        let soundfile_path = format!("{}{}{}", env!("CARGO_MANIFEST_DIR"), "/../../resources/audio_samples/", audio_file_name);
+        let soundfile_path = format!(
+            "{}{}{}",
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../resources/audio_samples/",
+            audio_file_name
+        );
 
         let soundfile = BufReader::new(File::open(&soundfile_path).expect(&soundfile_path));
         let source = Decoder::new(soundfile).unwrap();
@@ -178,12 +188,7 @@ mod tests {
 
     #[test]
     fn test_single_keyword() {
-        run_porcupine_test(
-            "en",
-            &["porcupine"],
-            &[0],
-            "porcupine.wav"
-        );
+        run_porcupine_test("en", &["porcupine"], &[0], "porcupine.wav");
     }
 
     #[test]
@@ -191,22 +196,23 @@ mod tests {
         run_porcupine_test(
             "en",
             &[
-                "americano", "blueberry", "bumblebee", "grapefruit",
-                "grasshopper", "picovoice", "porcupine", "terminator"
+                "americano",
+                "blueberry",
+                "bumblebee",
+                "grapefruit",
+                "grasshopper",
+                "picovoice",
+                "porcupine",
+                "terminator",
             ],
             &[6, 0, 1, 2, 3, 4, 5, 6, 7],
-            "multiple_keywords.wav"
+            "multiple_keywords.wav",
         );
     }
 
     #[test]
     fn test_single_keyword_es() {
-        run_porcupine_test(
-            "es",
-            &["murciélago"],
-            &[0, 0],
-            "murciélago.wav"
-        );
+        run_porcupine_test("es", &["murciélago"], &[0, 0], "murciélago.wav");
     }
 
     #[test]
@@ -215,18 +221,13 @@ mod tests {
             "es",
             &["emparedado", "leopardo", "manzana"],
             &[0, 1, 2],
-            "multiple_keywords_es.wav"
+            "multiple_keywords_es.wav",
         );
     }
 
     #[test]
     fn test_single_keyword_de() {
-        run_porcupine_test(
-            "de",
-            &["heuschrecke"],
-            &[0],
-            "heuschrecke.wav"
-        );
+        run_porcupine_test("de", &["heuschrecke"], &[0], "heuschrecke.wav");
     }
 
     #[test]
@@ -235,18 +236,13 @@ mod tests {
             "de",
             &["ananas", "heuschrecke", "leguan", "stachelschwein"],
             &[0, 1, 2, 3],
-            "multiple_keywords_de.wav"
+            "multiple_keywords_de.wav",
         );
     }
 
     #[test]
     fn test_single_keyword_fr() {
-        run_porcupine_test(
-            "fr",
-            &["mon chouchou"],
-            &[0],
-            "mon_chouchou.wav"
-        );
+        run_porcupine_test("fr", &["mon chouchou"], &[0], "mon_chouchou.wav");
     }
 
     #[test]
@@ -255,18 +251,12 @@ mod tests {
             "fr",
             &["framboise", "mon chouchou", "parapluie"],
             &[0, 1, 0, 2],
-            "multiple_keywords_fr.wav"
+            "multiple_keywords_fr.wav",
         );
     }
 
     #[test]
     fn test_with_non_ascii_model_name() {
-        run_porcupine_test(
-            "es",
-            &["murciélago"],
-            &[0, 0],
-            "murciélago.wav"
-        );
+        run_porcupine_test("es", &["murciélago"], &[0, 0], "murciélago.wav");
     }
-
 }
