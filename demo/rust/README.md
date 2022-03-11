@@ -14,7 +14,7 @@ porcupine/demo/rust/micdemo  # Microphone Demo
 ## AccessKey
 
 Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ### File Demo
@@ -42,7 +42,7 @@ If the wake word is more than a single word, surround the argument in quotation 
 cargo run --release -- --access_key ${ACCESS_KEY} --input_audio_path "path/to/input.wav" --keywords picovoice,grasshopper,"hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use `keyword_paths` argument:
 
 ```console
@@ -86,7 +86,7 @@ If the wake word is more than a single word, surround the argument in quotation 
 cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice,grasshopper,"hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use the `keyword_paths` argument:
 
 ```console

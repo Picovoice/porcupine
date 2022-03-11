@@ -15,12 +15,9 @@ For this demo, you need to download and install [MCUXpresso IDE](https://www.nxp
 
 ## AccessKey
 
-Porcupine requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -34,7 +31,7 @@ Then, to compile and run the demo project on a i.MX RT1050 Evaluation board, per
 1. Open `MCUXpresso IDE`
 2. From the main toolbar, select `Install MCUXpresso SDKs` and install `evkbimxrt1050` SDK
 3. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box.Select the [imxrt1050-evkb](./imxrt1050-evkb) folder from this repository, and then press the `Finish` button.
-4. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+4. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
 5. Click `Project` > `Build Project`
 6. Connect the board to the computer, select the imported project inside `Project Explorer` window
 7. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and then select the connected board.

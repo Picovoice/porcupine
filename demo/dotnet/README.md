@@ -14,7 +14,7 @@ Porcupine is:
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient making it perfect for IoT.
 - scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+- self-service. Developers can train custom wake phrases using [Picovoice Console](https://console.picovoice.ai/).
 
 ## Requirements
 
@@ -46,7 +46,7 @@ dotnet build -c FileDemo.Release
 ## AccessKey
 
 Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -85,7 +85,7 @@ dotnet run -c FileDemo.Release -- \
 --keywords grasshopper "hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use `keyword_paths` argument:
 
 ```console
@@ -134,7 +134,7 @@ dotnet run -c MicDemo.Release -- \
 --keywords picovoice "hey siri"
 ```
 
-To detect custom keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/)) use `keyword_paths` argument:
+To detect custom keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/)) use `keyword_paths` argument:
 
 ```console
 dotnet run -c MicDemo.Release -- \ 

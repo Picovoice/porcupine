@@ -5,7 +5,7 @@ please refer to [React Native's documentation](https://reactnative.dev/docs/envi
 ## AccessKey
 
 Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -13,7 +13,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 Replace your `AccessKey`, in [`App.tsx`](App.tsx) file:
 
 ```typescript
-_accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+_accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```
 
 ### Running On Android

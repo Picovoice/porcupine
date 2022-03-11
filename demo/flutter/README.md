@@ -5,7 +5,7 @@ To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flu
 ## AccessKey
 
 Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -13,7 +13,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 Replace your `AccessKey` in [lib/main.dart](lib/main.dart) file:
 
 ```dart
-final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```
 
 Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:

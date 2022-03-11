@@ -17,7 +17,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 
 ### Custom wake words
 
-Porcupine includes several built-in keywords, which are stored as `.ppn` files. To train custom PPN files, see the [Picovoice Console](https://picovoice.ai/console/).
+Porcupine includes several built-in keywords, which are stored as `.ppn` files. To train custom PPN files, see the [Picovoice Console](https://console.picovoice.ai/).
 
 Unlike the built-in keywords, custom PPN files generated with the Picovoice Console carry restrictions including (but not limited to): training allowance, time limits, available platforms, and commercial usage.
 
@@ -53,7 +53,7 @@ cd ios && pod install && cd ..
 ## AccessKey
 
 Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Permissions
@@ -120,7 +120,7 @@ Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an inst
 using one or more of the built-in keywords.
 
 ```javascript
-const accessKey = "${ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+const accessKey = "${ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 async createPorcupineManager(){
     try{
@@ -217,7 +217,7 @@ who want to incorporate wake word detection into an already existing audio proce
 `Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```javascript
-const accessKey = "${ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+const accessKey = "${ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 async createPorcupine(){
     try{

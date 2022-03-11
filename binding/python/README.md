@@ -14,7 +14,7 @@ applications. It is
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
-- self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
+- self-service. Developers can train custom wake word models using [Picovoice Console](https://console.picovoice.ai/).
 
 ## Compatibility
 
@@ -30,7 +30,7 @@ pip3 install pvporcupine
 ## AccessKey
 
 Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -40,7 +40,7 @@ Create an instance of the engine
 ```python
 import pvporcupine
 
-access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 handle = pvporcupine.create(access_key=access_key, keywords=['picovoice'])
 ```
@@ -59,7 +59,7 @@ Porcupine can detect multiple keywords concurrently
 ```python
 import pvporcupine
 
-access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 handle = pvporcupine.create(access_key=access_key, keywords=['bumblebee', 'picovoice'])
 ```
@@ -69,7 +69,7 @@ To detect non-default keywords use `keyword_paths` input argument instead
 ```python
 import pvporcupine
 
-access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 keyword_paths = ['/absolute/path/to/keyword/one', '/absolute/path/to/keyword/two', ...]
 
 handle = pvporcupine.create(access_key=access_key, keyword_paths=keyword_paths)
@@ -80,7 +80,7 @@ The sensitivity of the engine can be tuned per keyword using the `sensitivities`
 ```python
 import pvporcupine
 
-access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 handle = pvporcupine.create(
         access_key=access_key,
