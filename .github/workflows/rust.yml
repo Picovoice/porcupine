@@ -47,6 +47,7 @@ env:
 defaults:
   run:
     working-directory: binding/rust
+    shell: bash
 
 jobs:
   build-github-hosted:
@@ -61,7 +62,6 @@ jobs:
 
     - name: Rust pre-build
       run: bash copy.sh
-      shell: bash
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
@@ -82,7 +82,7 @@ jobs:
 
     - name: Rust run tests
       run: PV_ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}} cargo test --verbose
-
+      
   # build-self-hosted:
   #   runs-on: ${{ matrix.machine }}
 
