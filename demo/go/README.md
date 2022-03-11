@@ -22,12 +22,9 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
 
 ## AccessKey
 
-The Go demos require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -65,7 +62,7 @@ go run filedemo/porcupine_file_demo.go \
 -keywords "grasshopper,hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use `keyword_paths` argument:
 
 ```console
@@ -113,7 +110,7 @@ go run filedemo/porcupine_file_demo.go \
 -keywords "grasshopper,hey siri"
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use `keyword_paths` argument:
 
 ```console

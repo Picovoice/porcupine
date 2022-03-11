@@ -16,7 +16,7 @@ applications. It is
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
-- self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
+- self-service. Developers can train custom wake word models using [Picovoice Console](https://console.picovoice.ai/).
 
 ## Compatibility
 
@@ -31,12 +31,9 @@ go get github.com/Picovoice/porcupine/binding/go
 
 ## AccessKey
 
-Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -46,7 +43,7 @@ To create an instance of the engine you first create a Porcupine struct with the
 import . "github.com/Picovoice/porcupine/binding/go"
 
 porcupine := Porcupine{
-    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
     BuiltInKeywords: []BuiltInKeyword{PICOVOICE}}
 err := porcupine.Init()
 if err != nil {
@@ -58,7 +55,7 @@ In the above example, we've initialized the engine to detect the built-in wake w
 Porcupine can detect multiple keywords concurrently:
 ```go
 porcupine := Porcupine{
-    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
     BuiltInKeywords: []BuiltInKeyword{PICOVOICE, BUMBLEBEE}}
 err := porcupine.Init()
 ```
@@ -66,7 +63,7 @@ err := porcupine.Init()
 To detect non-default keywords, use `KeywordPaths` parameter instead:
 ```go
 porcupine := Porcupine{
-    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
     KeywordPaths: []string{"/path/to/keyword.ppn"}}
 err := porcupine.Init()
 ```
@@ -79,7 +76,7 @@ The model file contains the parameters for the wake word engine. To change the l
 
 ```go
 porcupine := Porcupine{
-    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
     BuiltInKeywords: []BuiltInKeyword{PICOVOICE, BUMBLEBEE},
     Sensitivities: []float32{0.4, 0.9},
     ModelPath: "/path/to/model.pv"}

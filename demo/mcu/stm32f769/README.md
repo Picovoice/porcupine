@@ -17,12 +17,9 @@ For this demo, you need to:
 
 ## AccessKey
 
-Porcupine requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -36,7 +33,7 @@ Then, to compile and run the demo project on a STM32f769 discovery board, perfor
 1. Open STM32CubeIDE
 2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f769i-disco](./stm32f769i-disco) folder from this repository, and then press the `Finish` button.
 3. Select the `stm32f769i-disco-demo` project inside the `Project Explorer` window
-5. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+5. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
 6. Click `Project` > `Build Project`
 7. Connect the board to the computer and press `Run` > `Run`
 8. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one of them in the `Qualifier` window and press `ok`

@@ -34,12 +34,9 @@ yarn add @picovoice/porcupine-web-vue @picovoice/porcupine-web-en-worker @picovo
 
 ## AccessKey
 
-The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -67,7 +64,7 @@ export default {
       isLoaded: false,
       factory: PorcupineWorkerFactoryEn,
       factoryArgs: {
-        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)
+        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console(https://console.picovoice.ai/)
         keywords: [
           { builtin: 'Grasshopper', sensitivity: 0.5 },
           { builtin: 'Grapefruit', sensitivity: 0.6 },
@@ -114,13 +111,13 @@ export default {
 
 Each language includes a set of built-in keywords. The quickest way to get started is to use one of those. The builtin keywords are licensed under Apache-2.0 and are completely free to use.
 
-Custom wake words are generated using [Picovoice Console](https://picovoice.ai/console/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the Vue library.
+Custom wake words are generated using [Picovoice Console](https://console.picovoice.ai/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the Vue library.
 
 The `.zip` file contains a `.ppn` file and a `_b64.txt` file which contains the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that Porcupine can tell you which keyword occurred ("Deep Sky Blue", in this case):
 
 ```typescript
 factoryArgs: {
-  accessKey: 'AccessKey obtained from Picovoice Console(https://picovoice.ai/console/)',
+  accessKey: 'AccessKey obtained from Picovoice Console(https://console.picovoice.ai/)',
   keywords: [
     { custom: base64: '/* Base64 representation of deep_sky_blue.ppn */', custom: 'Deep Sky Blue', sensitivity: 0.65 },
   ],

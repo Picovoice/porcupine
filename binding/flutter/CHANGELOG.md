@@ -22,3 +22,6 @@
 
 ## [2.1.0] - 2022-01-19
 * Android/iOS dev support patch
+
+## [2.1.1] - 2022-03-11
+* Docs update

@@ -13,7 +13,7 @@ applications. It is
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient making it perfect for IoT.
 - scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+- self-service. Developers can train custom wake phrases using [Picovoice Console](https://console.picovoice.ai/).
 
 ## Compatibility
 
@@ -28,12 +28,9 @@ sudo pip3 install pvporcupinedemo
 
 ## AccessKey
 
-The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -59,7 +56,7 @@ To detect multiple phrases concurrently provide them as separate arguments
 porcupine_demo_mic --access_key ${ACCESS_KEY} --keywords picovoice porcupine
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use `keyword_paths` argument
 
 ```console
@@ -128,7 +125,7 @@ To detect multiple phrases concurrently provide them as separate arguments
 porcupine_demo_file --access_key ${ACCESS_KEY} --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
 ```
 
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use `keyword_paths` argument
 
 ```console

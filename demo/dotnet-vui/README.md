@@ -11,7 +11,7 @@ Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey`s
 You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 
 To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+1. Login or Signup for a free account on the [Picovoice Console](https://console.picovoice.ai/).
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 Once you have obtained an `AccessKey`, copy it into the `ACCESS_KEY` variable in `AvaloniaVUI/ViewModelsMainWindowViewModel.cs`.

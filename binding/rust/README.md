@@ -14,7 +14,7 @@ applications. It is
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
-- self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
+- self-service. Developers can train custom wake word models using [Picovoice Console](https://console.picovoice.ai/).
 
 ## Compatibility
 
@@ -40,13 +40,9 @@ pv_porcupine = { path = "/path/to/rust/binding" }
 
 ## AccessKey
 
-The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
-
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -55,7 +51,7 @@ To create an instance of the engine you first create a PorcupineBuilder instance
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
 ```

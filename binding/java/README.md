@@ -58,12 +58,9 @@ Once the task is complete, the output JAR can be found in `porcupine/binding/jav
 
 ## AccessKey
 
-The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -72,7 +69,7 @@ The easiest way to create an instance of the engine is with the Porcupine Builde
 ```java
 import ai.picovoice.porcupine.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 try{
     Porcupine handle = new Porcupine.Builder()
                         .setAccessKey(accessKey)
@@ -99,7 +96,7 @@ Porcupine can detect multiple keywords concurrently:
 ```java
 import ai.picovoice.porcupine.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 try{
     Porcupine handle = new Porcupine.Builder()
                         .setAccessKey(accessKey)
@@ -113,7 +110,7 @@ To detect non-default keywords use the `setKeywordPaths()` builder argument inst
 ```java
 import ai.picovoice.porcupine.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 String[] keywordPaths = new String[]{ "/absolute/path/to/keyword/one", "/absolute/path/to/keyword/two", ...}
 try{
     Porcupine handle = new Porcupine.Builder()
@@ -128,7 +125,7 @@ The sensitivity of the engine can be tuned per-keyword using the `setSensitiviti
 ```java
 import ai.picovoice.porcupine.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 try{
     Porcupine handle = new Porcupine.Builder()
                         .setAccessKey(accessKey)

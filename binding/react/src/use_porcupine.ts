@@ -22,7 +22,7 @@ import {
 export type PorcupineHookArgs = {
   /** Immediately start the microphone upon initialization? */
   start: boolean;
-  /** AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+  /** AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
   accessKey: string;
   /** Keywords to listen for */
   keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;

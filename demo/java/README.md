@@ -48,12 +48,9 @@ cd porcupine/demo/java/build/libs
 
 ## AccessKey
 
-The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ### File Demo
 
@@ -78,7 +75,7 @@ To detect multiple phrases concurrently provide them as separate arguments. If t
 java -jar porcupine-file-demo.jar -a ${ACCESS_KEY} -i ${AUDIO_PATH} -k grasshopper "hey siri"
 ```
 
-To detect custom keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect custom keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use the `-kp` or `--keyword_paths` argument:
 
 ```console
@@ -116,7 +113,7 @@ To detect multiple phrases concurrently provide them as separate arguments. If t
 java -jar porcupine-mic-demo.jar -a ${ACCESS_KEY} -k picovoice "hey siri"
 ```
 
-To detect custom keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
+To detect custom keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
 use the `-kp` or `--keyword_paths` argument:
 
 ```console

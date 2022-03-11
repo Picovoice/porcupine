@@ -22,7 +22,7 @@ import {
 export type PorcupineServiceArgs = {
   /** Immediately start the microphone upon initialization? (defaults to true) */
   start?: boolean;
-  /** AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+  /** AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
   accessKey: string;
   /** Arguments forwarded to PorcupineWorkerFactory */
   keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;

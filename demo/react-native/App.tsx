@@ -31,7 +31,7 @@ export default class App extends Component<Props, State> {
   _porcupineManager: PorcupineManager | undefined;
   _detectionColour: string = '#00E5C3';
   _defaultColour: string = '#F5FCFF';
-  _accessKey: string = "${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+  _accessKey: string = "${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
   constructor(props: Props) {
     super(props);

@@ -4,7 +4,7 @@
     <h3>
       <label>
         AccessKey obtained from
-        <a href="https://picovoice.ai/console/">Picovoice Console</a>:
+        <a href="https://console.picovoice.ai/">Picovoice Console</a>:
         <input
           type="text"
           name="accessKey"
