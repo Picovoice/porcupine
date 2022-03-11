@@ -44,24 +44,63 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+defaults:
+  run:
+    working-directory: binding/rust
+    shell: bash
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Rust dependencies
-      run: sudo apt install libasound2-dev
-
     - name: Rust pre-build
-      run: ./copy.sh
-      working-directory: binding/rust
+      run: bash copy.sh
+
+    - name: Rust dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt install libasound2-dev -y
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
 
     - name: Rust build
       run: cargo build --verbose
-      working-directory: binding/rust
 
     - name: Rust run tests
       run: PV_ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}} cargo test --verbose
-      working-directory: binding/rust
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Rust pre-build
+      run: bash copy.sh
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
+        override: true
+
+    - name: Rust build
+      run: cargo build --verbose
+
+    - name: Rust run tests
+      run: PV_ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}} cargo test --verbose
