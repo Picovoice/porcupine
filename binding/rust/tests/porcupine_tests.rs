@@ -53,6 +53,14 @@ mod tests {
     use super::platform::pv_platform;
     use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
+    fn _append_language(s, language) {
+        if language == 'en' {
+            s
+        } else {
+            format!("{}_{}", s, language)
+        }
+    }
+
     #[test]
     fn test_process() {
         let access_key = env::var("PV_ACCESS_KEY")
