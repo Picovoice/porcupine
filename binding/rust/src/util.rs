@@ -18,6 +18,11 @@ const DEFAULT_RELATIVE_KEYWORDS_DIR: &str = "resources/keyword_files/";
 const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "lib/";
 const DEFAULT_RELATIVE_MODEL_PATH: &str = "lib/common/porcupine_params.pv";
 
+#[allow(dead_code)]
+const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+#[allow(dead_code)]
+const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn find_machine_type() -> String {
     use std::process::Command;
@@ -78,9 +83,6 @@ fn base_library_path() -> PathBuf {
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn base_library_path() -> PathBuf {
-    const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
-    const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
-
     let machine = find_machine_type();
     match machine.as_str() {
         machine if RPI_MACHINES.contains(&machine) => {
@@ -118,22 +120,22 @@ pub fn pv_model_path() -> PathBuf {
 }
 
 #[cfg(target_os = "macos")]
-fn pv_platform() -> String {
+pub fn pv_platform() -> String {
     String::from("mac")
 }
 
 #[cfg(target_os = "windows")]
-fn pv_platform() -> String {
+pub fn pv_platform() -> String {
     String::from("windows")
 }
 
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
-fn pv_platform() -> String {
+pub fn pv_platform() -> String {
     String::from("linux")
 }
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
-fn pv_platform() -> String {
+pub fn pv_platform() -> String {
     let machine = find_machine_type();
     match machine.as_str() {
         machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),

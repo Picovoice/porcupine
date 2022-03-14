@@ -10,6 +10,6 @@
 */
 
 mod porcupine;
-mod util;
+pub mod util;
 
 pub use crate::porcupine::*;
