@@ -1,4 +1,4 @@
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -18,7 +18,10 @@ package porcupine
 
 import (
 	"C"
+	"crypto/sha256"
 	"embed"
+	"encoding/hex"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -415,15 +418,26 @@ func extractFile(srcFile string, dstDir string) string {
 		log.Fatalf("%v", readErr)
 	}
 
-	extractedFilepath := filepath.Join(dstDir, srcFile)
-	mkErr := os.MkdirAll(filepath.Dir(extractedFilepath), 0764)
-	if mkErr != nil {
-		log.Fatalf("%v", mkErr)
+    srcHash := sha256sumBytes(bytes)
+    hashedDstDir := filepath.Join(dstDir, srcHash)
+	extractedFilepath := filepath.Join(hashedDstDir, srcFile)
+
+    if _, err := os.Stat(extractedFilepath); errors.Is(err, os.ErrNotExist) {
+		mkErr := os.MkdirAll(filepath.Dir(extractedFilepath), 0764)
+		if mkErr != nil {
+			log.Fatalf("%v", mkErr)
+		}
+
+		writeErr := ioutil.WriteFile(extractedFilepath, bytes, 0764)
+		if writeErr != nil {
+			log.Fatalf("%v", writeErr)
+		}
 	}
 
-	writeErr := ioutil.WriteFile(extractedFilepath, bytes, 0764)
-	if writeErr != nil {
-		log.Fatalf("%v", writeErr)
-	}
 	return extractedFilepath
+}
+
+func sha256sumBytes(bytes []byte) string {
+    sum := sha256.Sum256(bytes)
+    return hex.EncodeToString(sum[:])
 }
