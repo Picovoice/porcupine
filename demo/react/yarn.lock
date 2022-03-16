@@ -1423,24 +1423,24 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
   integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
 
-"@picovoice/porcupine-web-en-worker@^2.1.4":
+"@picovoice/porcupine-web-en-worker@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.1.5.tgz#a2c55a422c6d072cd7f038b43e40aca567ff639a"
+  integrity sha512-n/cYoZFQiDiRmPcWxxVm2PgqORjHlWFyjA+qIVu1plN72/AQiJ4LJuiDol408nT0OE1vjCrzAx2thFuHFAoN4A==
+  dependencies:
+    "@picovoice/porcupine-web-core" "^2.1.0"
+
+"@picovoice/porcupine-web-react@^2.1.4":
   version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.1.4.tgz#4b41e1548d600ecedbc642b2e243a146f4b62558"
-  integrity sha512-HIidhb/s4djxFa31ro0HDmaYmcWe1DHIuB8wO4SHfV+erHw3Qi7wCcKp0dKuCbUKRWSOtErLUVroSRxGCHmmxQ==
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-2.1.4.tgz#abc184d57cd2ab1316d9aa7ecb8664860d875422"
+  integrity sha512-ihN+VAk3wucfzVoEFu328WYf625nCVSzb510NJoIA9ZDYvXIovFNfCYfTZ8WR01Zt6ywjhZE0uwJGoEEoxff1A==
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 
-"@picovoice/porcupine-web-react@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-react/-/porcupine-web-react-2.1.2.tgz#d2fdd310f4b065dc0e19b848b1690d6a3a683196"
-  integrity sha512-f2gYU2GWG33NH2GZ4ugXBr0yiKPLBrFQO/lWtJ7Ky6+ThoKKWAw/R1NeAqgU552R+L1pPiklDqudq6lBm8U8VA==
-  dependencies:
-    "@picovoice/porcupine-web-core" "^2.1.0"
-
-"@picovoice/web-voice-processor@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.2.1.tgz#2b1165e007405a03ca35e15a23582c9bd6931df5"
-  integrity sha512-680rpHwxU87drvbOv8aZap8pq34u+90pLsVRSPa815+wYmi/L6acMjKJB0plx5Nvto86MoZl7aygGp1AsbuLWA==
+"@picovoice/web-voice-processor@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.2.2.tgz#dcaa18349e2539bb33555532ea0d172b2bf6ba7a"
+  integrity sha512-66DuOQiaZX2OYgBq0+8qJ3r964ai5ebhJkv07SdJudmrSGu/1cCocjt0plMlOkLTWO8SL2J41JZraRf2lSdnDw==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
