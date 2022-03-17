@@ -1165,10 +1165,8 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-web-angular@^2.1.2":
+"@picovoice/porcupine-web-angular@file:../../binding/angular/dist/porcupine-web-angular":
   version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-angular/-/porcupine-web-angular-2.1.2.tgz#9fb70c92f5549c32dacb4d42b383e2c46b8879f0"
-  integrity sha512-A3TYCFBv5o/wQpuKCYIuFeEBCacouNdlC+PL9sA9suGYBg9X1RiOnJjaXsn8vFaTzUSufKyj+SR70u7gYKT+oQ==
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
     tslib "^2.0.0"

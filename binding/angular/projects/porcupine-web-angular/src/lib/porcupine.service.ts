@@ -51,24 +51,24 @@ export class PorcupineService implements OnDestroy {
     return false;
   }
 
-  public stop(): boolean {
+  public async stop(): Promise<boolean> {
     if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.stop().then(() => {
-        this.listening$.next(false);
-        return true;
-      });
+      await this.webVoiceProcessor.stop();
+      this.listening$.next(false);
+      return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
-  public start(): boolean {
+  public async start(): Promise<boolean> {
     if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.start().then(() => {
-        this.listening$.next(true);
-        return true;
-      });
+      await this.webVoiceProcessor.start();
+      this.listening$.next(true);
+      return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   public async release(): Promise<void> {
