@@ -51,11 +51,22 @@ export class PorcupineService implements OnDestroy {
     return false;
   }
 
+  public stop(): boolean {
+    if (this.webVoiceProcessor !== null) {
+      this.webVoiceProcessor.stop().then(() => {
+        this.listening$.next(false);
+        return true;
+      });
+    }
+    return false;
+  }
+
   public start(): boolean {
     if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.start();
-      this.listening$.next(true);
-      return true;
+      this.webVoiceProcessor.start().then(() => {
+        this.listening$.next(true);
+        return true;
+      });
     }
     return false;
   }
@@ -63,6 +74,7 @@ export class PorcupineService implements OnDestroy {
   public async release(): Promise<void> {
     if (this.porcupineWorker !== null) {
       this.porcupineWorker.postMessage({ command: 'release' });
+      this.porcupineWorker.terminate();
     }
     if (this.webVoiceProcessor !== null) {
       await this.webVoiceProcessor.release();
@@ -102,6 +114,7 @@ export class PorcupineService implements OnDestroy {
       this.listening$.next(start);
     } catch (error) {
       this.porcupineWorker.postMessage({ command: 'release' });
+      this.porcupineWorker.terminate();
       this.porcupineWorker = null;
       this.isInit = false;
       this.error$.next(error as Error);

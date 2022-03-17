@@ -65,6 +65,10 @@ export class VoiceWidget {
     this.porcupineService.pause();
   }
 
+  public stop() {
+    this.porcupineService.stop();
+  }
+
   public start() {
     this.porcupineService.start();
   }

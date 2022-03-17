@@ -24,6 +24,7 @@
   <br />
   <button (click)="start()" [disabled]="isError || isListening">Start</button>
   <button (click)="pause()" [disabled]="isError || !isListening">Pause</button>
+  <button (click)="stop()" [disabled]="isError || !isListening">Stop</button>
   <h3>Keyword Detections (listening for "Deep Sky Blue"):</h3>
   <ul>
     <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>

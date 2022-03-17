@@ -40,6 +40,7 @@ export interface PorcupineVue {
     readyCallback: () => void,
     errorCallback: (error: string | Error) => void) => void;
   start: () => boolean;
+  stop: () => boolean;
   pause: () => boolean;
   delete: () => void;
 }
@@ -90,7 +91,18 @@ export default {
          */
         start() {
           if (this.$_webVp_ !== null) {
-            this.$_webVp_.start();
+            this.$_webVp_.start().then(() => {
+              return true;
+            });
+          }
+          return false;
+        },
+        /**
+         * Pause processing audio.
+         */
+        pause() {
+          if (this.$_webVp_ !== null) {
+            this.$_webVp_.pause();
             return true;
           }
           return false;
@@ -98,10 +110,11 @@ export default {
         /**
          * Stop processing audio.
          */
-        pause() {
+         stop() {
           if (this.$_webVp_ !== null) {
-            this.$_webVp_.pause();
-            return true;
+            this.$_webVp_.stop().then(() => {
+              return true;
+            });
           }
           return false;
         },

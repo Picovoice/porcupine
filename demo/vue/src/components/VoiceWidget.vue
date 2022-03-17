@@ -25,6 +25,9 @@
     <button v-on:click="pause" :disabled="!isLoaded || isError || !isListening">
       Pause
     </button>
+    <button v-on:click="stop" :disabled="!isLoaded || isError || !isListening">
+      Stop
+    </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
@@ -63,6 +66,11 @@ const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).ex
   methods: {
     start: function () {
       if (this.$porcupine.start()) {
+        this.isListening = !this.isListening;
+      }
+    },
+    stop: function () {
+      if (this.$porcupine.stop()) {
         this.isListening = !this.isListening;
       }
     },
