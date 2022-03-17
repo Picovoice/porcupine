@@ -39,7 +39,8 @@ export interface PorcupineVue {
     keywordCallback: (label: string) => void,
     readyCallback: () => void,
     errorCallback: (error: string | Error) => void) => void;
-  start: () => boolean;
+  start: () => Promise<boolean>;
+  stop: () => Promise<boolean>;
   pause: () => boolean;
   delete: () => void;
 }
@@ -88,22 +89,35 @@ export default {
         /**
          * Start processing audio.
          */
-        start() {
+        async start() {
           if (this.$_webVp_ !== null) {
-            this.$_webVp_.start();
+            await this.$_webVp_.start();
             return true;
+          } else {
+            return false;
           }
-          return false;
         },
         /**
-         * Stop processing audio.
+         * Pause processing audio.
          */
         pause() {
           if (this.$_webVp_ !== null) {
             this.$_webVp_.pause();
             return true;
+          } else {
+            return false;
           }
-          return false;
+        },
+        /**
+         * Stop processing audio.
+         */
+        async stop() {
+          if (this.$_webVp_ !== null) {
+            await this.$_webVp_.stop();
+            return true;
+          } else {
+            return false;
+          }
         },
         /**
          * Delete used resources.
@@ -111,6 +125,7 @@ export default {
         delete() {
           this.$_webVp_?.release();
           this.$_ppnWorker_?.postMessage({ command: 'release' });
+          this.$_ppnWorker_?.terminate();
         }
       }
     }

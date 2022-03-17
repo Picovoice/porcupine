@@ -929,10 +929,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
   integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
 
-"@picovoice/web-voice-processor@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.4.tgz#3d7ebabbaa58ec2e4195a5c9e9d7fcd8de88f8a2"
-  integrity sha512-dFdhHnHjZkooSvzhSAdnhB2YrsFxQPjqQTpcpIYnfX3U0TU/KpdBprWaXpL7ShZ3Vbgpkogh/qmpEAzXoNuNBA==
+"@picovoice/web-voice-processor@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.2.2.tgz#dcaa18349e2539bb33555532ea0d172b2bf6ba7a"
+  integrity sha512-66DuOQiaZX2OYgBq0+8qJ3r964ai5ebhJkv07SdJudmrSGu/1cCocjt0plMlOkLTWO8SL2J41JZraRf2lSdnDw==
   dependencies:
     "@babel/runtime" "^7.12.18"
 

@@ -51,18 +51,30 @@ export class PorcupineService implements OnDestroy {
     return false;
   }
 
-  public start(): boolean {
+  public async stop(): Promise<boolean> {
     if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.start();
+      await this.webVoiceProcessor.stop();
+      this.listening$.next(false);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public async start(): Promise<boolean> {
+    if (this.webVoiceProcessor !== null) {
+      await this.webVoiceProcessor.start();
       this.listening$.next(true);
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   public async release(): Promise<void> {
     if (this.porcupineWorker !== null) {
       this.porcupineWorker.postMessage({ command: 'release' });
+      this.porcupineWorker.terminate();
     }
     if (this.webVoiceProcessor !== null) {
       await this.webVoiceProcessor.release();
@@ -102,6 +114,7 @@ export class PorcupineService implements OnDestroy {
       this.listening$.next(start);
     } catch (error) {
       this.porcupineWorker.postMessage({ command: 'release' });
+      this.porcupineWorker.terminate();
       this.porcupineWorker = null;
       this.isInit = false;
       this.error$.next(error as Error);

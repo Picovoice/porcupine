@@ -11,9 +11,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@picovoice/porcupine-web-en-worker": "^2.1.1",
-    "@picovoice/porcupine-web-vue": "^2.1.0",
-    "@picovoice/web-voice-processor": "^2.1.4",
+    "@picovoice/porcupine-web-en-worker": "^2.1.4",
+    "@picovoice/porcupine-web-vue": "^2.1.2",
+    "@picovoice/web-voice-processor": "^2.2.2",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11"
