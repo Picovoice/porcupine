@@ -41,6 +41,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [14.x, 16.x]
+        include:
+        - os: ubuntu-latest
+          threshold: 0.2
+        - os: windows-latest
+          threshold: 0.25
+        - os: macos-latest
+          threshold: 0.3
 
     steps:
     - uses: actions/checkout@v2
@@ -57,7 +64,7 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --expected_threshold=${{matrix.threshold}}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -65,6 +72,21 @@ jobs:
     strategy:
       matrix:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        include:
+        - machine: rpi2
+          threshold: 5.5
+        - machine: rpi3-32
+          threshold: 2.0
+        - machine: rpi3-64
+          threshold: 2.5
+        - machine: rpi4-32
+          threshold: 1.25
+        - machine: rpi4-64
+          threshold: 1.25
+        - machine: jetson
+          threshold: 2.0
+        - machine: beaglebone
+          threshold: 10.0
 
     steps:
     - uses: actions/checkout@v2
@@ -76,4 +98,4 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}  
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --expected_threshold=${{matrix.threshold}}
