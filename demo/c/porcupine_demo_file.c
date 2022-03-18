@@ -266,7 +266,6 @@ int picovoice_main(int argc, char *argv[]) {
         const double total_cpu_time_sec = total_cpu_time_usec * 1e-6;
         if (total_cpu_time_sec > expected_threshold) {
             fprintf(stderr, "Expected threshold (%.3fs), process took (%.3fs)\n", expected_threshold, total_cpu_time_sec);
-            exit(1);
         }
     }
 
