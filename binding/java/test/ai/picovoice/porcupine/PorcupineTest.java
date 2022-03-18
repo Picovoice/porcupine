@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2018-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -14,6 +14,7 @@ package ai.picovoice.porcupine;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -22,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,14 +35,23 @@ public class PorcupineTest {
 
     private static final String ENVIRONMENT_NAME;
     private Porcupine porcupine;
-    private String accessKey = System.getProperty("pvTestingAccessKey");
+    private final String accessKey = System.getProperty("pvTestingAccessKey");
+    private double expectedThreshold;
 
     static {
         ENVIRONMENT_NAME = Utils.getEnvironmentName();
     }
 
+    PorcupineTest() {
+        try {
+            expectedThreshold = Double.parseDouble(System.getProperty("expectedThreshold"));
+        } catch (Exception e) {
+            expectedThreshold = 0f;
+        }
+    }
+
     private static String appendLanguage(String s, String language) {
-        if (language == "en")
+        if (language.equals("en"))
             return s;
         return s + "_" + language;
     }
@@ -278,5 +287,50 @@ public class PorcupineTest {
         runTestCase(
             "murciélago.wav",
             new ArrayList<>(Arrays.asList(0, 0)));
+    }
+
+    @Test
+    @DisabledIf("systemProperty.get('expectedThreshold') == null || systemProperty.get('expectedThreshold') == ''")
+    void testPerformance() throws IOException, UnsupportedAudioFileException, PorcupineException {
+        Porcupine.BuiltInKeyword[] keywords = new Porcupine.BuiltInKeyword[]{
+                Porcupine.BuiltInKeyword.AMERICANO,
+                Porcupine.BuiltInKeyword.BUMBLEBEE
+        };
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(getTestModelPath("en"))
+                .setBuiltInKeywords(keywords)
+                .build();
+
+        int frameLen = porcupine.getFrameLength();
+        String audioFilePath = getTestAudioFilePath("multiple_keywords.wav");
+        File testAudioPath = new File(audioFilePath);
+
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(testAudioPath);
+        assertEquals(audioInputStream.getFormat().getFrameRate(), 16000);
+
+        int byteDepth = audioInputStream.getFormat().getFrameSize();
+        int bufferSize = frameLen * byteDepth;
+
+        byte[] pcm = new byte[bufferSize];
+        short[] porcupineFrame = new short[frameLen];
+        int numBytesRead;
+
+        long totalNSec = 0;
+        while ((numBytesRead = audioInputStream.read(pcm)) != -1) {
+            if (numBytesRead / byteDepth == frameLen) {
+                ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
+                long before = System.nanoTime();
+                porcupine.process(porcupineFrame);
+                long after = System.nanoTime();
+                totalNSec += (after - before);
+            }
+        }
+
+        double totalSec = Math.round(((double) totalNSec) * 1e-6) / 1000.f;
+        assertTrue(
+                totalSec <= this.expectedThreshold,
+                String.format("Expected threshold (%.2fs), process took (%.2fs)", this.expectedThreshold, totalSec)
+        );
     }
 }

@@ -92,7 +92,8 @@ static struct option long_options[] = {
         {"keyword_path",       required_argument, NULL, 'k'},
         {"sensitivity",        required_argument, NULL, 't'},
         {"access_key",         required_argument, NULL, 'a'},
-        {"wav_path",           required_argument, NULL, 'w'}
+        {"wav_path",           required_argument, NULL, 'w'},
+        {"expected_threshold", optional_argument, NULL, 'e'}
 };
 
 void print_usage(const char *program_name) {
@@ -106,9 +107,10 @@ int picovoice_main(int argc, char *argv[]) {
     float sensitivity = 0.5;
     const char *access_key = NULL;
     const char *wav_path = NULL;
+    double expected_threshold = 0;
 
     int c;
-    while ((c = getopt_long(argc, argv, "l:m:k:t:a:w:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "l:m:k:t:a:w:e:", long_options, NULL)) != -1) {
         switch (c) {
             case 'l':
                 library_path = optarg;
@@ -127,6 +129,9 @@ int picovoice_main(int argc, char *argv[]) {
                 break;
             case 'w':
                 wav_path = optarg;
+                break;
+            case 'e':
+                expected_threshold = strtod(optarg, NULL);
                 break;
             default:
                 exit(1);
@@ -255,6 +260,15 @@ int picovoice_main(int argc, char *argv[]) {
 
     const double real_time_factor = total_cpu_time_usec / total_processed_time_usec;
     fprintf(stdout, "real time factor : %.3f\n", real_time_factor);
+
+    fprintf(stdout, "total cpu time: %.3fs\n", total_cpu_time_usec * 1e-6);
+    if (expected_threshold > 0) {
+        const double total_cpu_time_sec = total_cpu_time_usec * 1e-6;
+        if (total_cpu_time_sec > expected_threshold) {
+            fprintf(stderr, "Expected threshold (%.3fs), process took (%.3fs)\n", expected_threshold, total_cpu_time_sec);
+            exit(1);
+        }
+    }
 
     free(pcm);
     drwav_uninit(&f);

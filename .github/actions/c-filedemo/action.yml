@@ -13,6 +13,8 @@ inputs:
     default: 0.5
   audio_path:
     required: true
+  threshold:
+    required: true
 
 runs:
   using: "composite"
@@ -25,6 +27,7 @@ runs:
       -k ${{ inputs.keyword_path }}
       -t ${{ inputs.sensitivity }}
       -w ${{ inputs.audio_path }}
+      -e ${{ inputs.threshold }}
     working-directory: demo/c
     shell: bash
   
