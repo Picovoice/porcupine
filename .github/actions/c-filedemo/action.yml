@@ -14,7 +14,8 @@ inputs:
   audio_path:
     required: true
   threshold:
-    required: true
+    required: false
+    type: number
 
 runs:
   using: "composite"
@@ -27,7 +28,20 @@ runs:
       -k ${{ inputs.keyword_path }}
       -t ${{ inputs.sensitivity }}
       -w ${{ inputs.audio_path }}
+    if: "${{ inputs.threshold == '' }}"
+    working-directory: demo/c
+    shell: bash
+
+  - run: >
+      ./build/porcupine_demo_file
+      -a ${{ inputs.access_key }}
+      -l ${{ inputs.library_path }}
+      -m ${{ inputs.model_path }}
+      -k ${{ inputs.keyword_path }}
+      -t ${{ inputs.sensitivity }}
+      -w ${{ inputs.audio_path }}
       -e ${{ inputs.threshold }}
+    if: "${{ inputs.threshold != '' }}"
     working-directory: demo/c
     shell: bash
   

@@ -68,17 +68,17 @@ jobs:
           platform: linux
           arch: x86_64
           ext: so
-          threshold: 0.5
+          threshold: 0.2
         - os: windows-latest
           platform: windows
           arch: amd64
           ext: dll
-          threshold: 0.5
+          threshold: 0.3
         - os: macos-latest
           platform: mac
           arch: x86_64
           ext: dylib
-          threshold: 0.5
+          threshold: 0.3
 
     steps:
     - uses: actions/checkout@v2
@@ -109,7 +109,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params_de.pv
         keyword_path: ../../resources/keyword_files_de/${{ matrix.platform }}/ananas_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_de.wav
-        threshold: ${{ matrix.threshold }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (es)
@@ -119,7 +118,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params_es.pv
         keyword_path: ../../resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_es.wav
-        threshold: ${{ matrix.threshold }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (fr)
@@ -129,7 +127,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params_fr.pv
         keyword_path: ../../resources/keyword_files_fr/${{ matrix.platform }}/framboise_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
-        threshold: ${{ matrix.threshold }}
   
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -141,31 +138,31 @@ jobs:
         - machine: rpi2
           platform: raspberry-pi
           arch: cortex-a7
-          threshold: 0.5
+          threshold: 1.0
         - machine: rpi3-32
           platform: raspberry-pi
           arch: cortex-a53
-          threshold: 0.5
+          threshold: 1.0
         - machine: rpi3-64
           platform: raspberry-pi
           arch: cortex-a53-aarch64
-          threshold: 0.5
+          threshold: 1.0
         - machine: rpi4-32
           platform: raspberry-pi
           arch: cortex-a72
-          threshold: 0.5
+          threshold: 1.0
         - machine: rpi4-64
           platform: raspberry-pi
           arch: cortex-a72-aarch64
-          threshold: 0.5
+          threshold: 1.0
         - machine: jetson
           platform: jetson
           arch: cortex-a57-aarch64
-          threshold: 0.5
+          threshold: 1.0
         - machine: beaglebone
           platform: beaglebone
           arch: ''
-          threshold: 0.5
+          threshold: 1.0
 
     steps:
     - uses: actions/checkout@v2
@@ -196,7 +193,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params_de.pv
         keyword_path: ../../resources/keyword_files_de/${{ matrix.platform }}/ananas_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_de.wav
-        threshold: ${{ matrix.threshold }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (es)
@@ -206,7 +202,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params_es.pv
         keyword_path: ../../resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_es.wav
-        threshold: ${{ matrix.threshold }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (fr)
@@ -216,7 +211,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params_fr.pv
         keyword_path: ../../resources/keyword_files_fr/${{ matrix.platform }}/framboise_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
-        threshold: ${{ matrix.threshold }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run the demo with a non ascii wake word file
@@ -226,4 +220,3 @@ jobs:
         model_path: ../../lib/common/porcupine_params_es.pv
         keyword_path: ../../resources/keyword_files_es/${{ matrix.platform }}/murciélago_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/murciélago.wav
-        threshold: ${{ matrix.threshold }}
