@@ -248,13 +248,13 @@ int picovoice_main(int argc, char *argv[]) {
         struct timeval after;
         gettimeofday(&after, NULL);
 
-        if (keyword_index != -1) {
-            fprintf(stdout, "detected at %.1f seconds\n", (double) frame_index * pv_porcupine_frame_length_func() / pv_sample_rate_func());
-        }
-
         total_cpu_time_usec +=
                 (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
         total_processed_time_usec += (pv_porcupine_frame_length_func() * 1e6) / pv_sample_rate_func();
+
+        if (keyword_index != -1) {
+            fprintf(stdout, "detected at %.1f seconds\n", (double) frame_index * pv_porcupine_frame_length_func() / pv_sample_rate_func());
+        }
         frame_index++;
     }
 
