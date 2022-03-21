@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,13 +10,13 @@
 //
 "use strict";
 
-function chunkArray(array, size) {
+function chunkArray(array: Int16Array, size: number) {
   return Array.from({ length: Math.ceil(array.length / size) }, (v, index) =>
     array.slice(index * size, index * size + size)
   );
 }
 
-function checkWaveFile(waveFile, engineSampleRate) {
+export function checkWaveFile(waveFile: any, engineSampleRate: number) {
   let valid = true;
 
   if (waveFile.bitDepth !== "16") {
@@ -39,7 +39,7 @@ function checkWaveFile(waveFile, engineSampleRate) {
   return valid;
 }
 
-function getInt16Frames(waveFile, frameLength) {
+export function getInt16Frames(waveFile: any, frameLength: number) {
   const samples = waveFile.getSamples(false, Int16Array);
 
   let frames = chunkArray(samples, frameLength);
@@ -51,6 +51,3 @@ function getInt16Frames(waveFile, frameLength) {
 
   return frames;
 }
-
-exports.checkWaveFile = checkWaveFile;
-exports.getInt16Frames = getInt16Frames;

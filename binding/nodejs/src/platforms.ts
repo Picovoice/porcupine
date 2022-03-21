@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,11 +10,11 @@
 //
 "use strict";
 
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
+import * as fs from "fs";
+import * as os from "os";
+import * as path from "path";
 
-const { PvUnsupportedPlatformError } = require("./errors");
+import { PvUnsupportedPlatformError } from "./errors";
 
 const SYSTEM_LINUX = "linux";
 const SYSTEM_MAC = "darwin";
@@ -43,7 +43,7 @@ const SUPPORTED_NODEJS_SYSTEMS = new Set([
   SYSTEM_WINDOWS
 ]);
 
-const LIBRARY_PATH_PREFIX = "lib/";
+const LIBRARY_PATH_PREFIX = "../lib/";
 const SYSTEM_TO_LIBRARY_PATH = new Map();
 SYSTEM_TO_LIBRARY_PATH.set(
   `${SYSTEM_MAC}/${X86_64}`,
@@ -90,7 +90,7 @@ SYSTEM_TO_LIBRARY_PATH.set(
     `${PLATFORM_WINDOWS}/amd64/pv_porcupine.node`
 );
 
-function absoluteLibraryPath(libraryPath) {
+function absoluteLibraryPath(libraryPath: string) {
   return path.resolve(__dirname, LIBRARY_PATH_PREFIX, libraryPath);
 }
 
@@ -102,7 +102,7 @@ function getCpuPart() {
         return infoLineSplit[infoLineSplit.length - 1].toLowerCase();
       }
     }
-    throw PvUnsupportedPlatformError(`Unsupported CPU.`);
+    throw new PvUnsupportedPlatformError(`Unsupported CPU.`);
 }
 
 function getLinuxPlatform() {
@@ -114,11 +114,11 @@ function getLinuxPlatform() {
         case "0xd07": return PLATFORM_JETSON;
         case "0xc08": return PLATFORM_BEAGLEBONE;
         default: 
-            throw PvUnsupportedPlatformError(`Unsupported CPU: '${cpuPart}'`);
+            throw new PvUnsupportedPlatformError(`Unsupported CPU: '${cpuPart}'`);
     }
 }
 
-function getLinuxMachine(arch) {
+function getLinuxMachine(arch: string) {
     let archInfo = ""
     if(arch == ARM_64) {
       archInfo = ARM_CPU_64;
@@ -132,11 +132,11 @@ function getLinuxMachine(arch) {
         case "0xd08": return ARM_CPU_CORTEX_A72 + archInfo;
         case "0xc08": return PLATFORM_BEAGLEBONE;
         default: 
-            throw PvUnsupportedPlatformError(`Unsupported CPU: '${cpuPart}'`);
+            throw new PvUnsupportedPlatformError(`Unsupported CPU: '${cpuPart}'`);
     }
 }
 
-function getPlatform() {
+export function getPlatform() {
   const system = os.platform();
   const arch = os.arch();
 
@@ -159,7 +159,7 @@ function getPlatform() {
   throw `System ${system}/${arch} is not supported by this library.`;
 }
 
-function getSystemLibraryPath() {
+export function getSystemLibraryPath() {
   const system = os.platform();
   const arch = os.arch();
 
@@ -209,6 +209,3 @@ function getSystemLibraryPath() {
     `System ${system}/${arch} is not supported by this library.`
   );
 }
-
-exports.getPlatform = getPlatform;
-exports.getSystemLibraryPath = getSystemLibraryPath;

@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -8,17 +8,20 @@
 // an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 //
+// @ts-nocheck
 "use strict";
 
-const Porcupine = require("./index.js");
-const fs = require("fs");
-const { getInt16Frames, checkWaveFile } = require("./wave_util");
-const WaveFile = require("wavefile").WaveFile;
+import * as fs from "fs";
+import * as path from "path";
 
-const { PvArgumentError, PvStateError } = require("./errors");
-const { getPlatform } = require("./platforms");
-const { GRASSHOPPER } = require("./builtin_keywords.js");
-const { count } = require("console");
+import Porcupine from "../src/porcupine";
+import { getInt16Frames, checkWaveFile } from "../src/wave_util";
+import { WaveFile } from "wavefile";
+
+import { PvArgumentError, PvStateError } from "../src/errors";
+import { getPlatform } from "../src/platforms";
+import { BuiltinKeyword } from "../src/builtin_keywords";
+import { count } from "console";
 
 const MODEL_PATH = "./lib/common/porcupine_params.pv";
 const MODEL_PATH_DE = "../../lib/common/porcupine_params_de.pv";
@@ -27,23 +30,23 @@ const MODEL_PATH_FR = "../../lib/common/porcupine_params_fr.pv";
 
 const DEFAULT_SENSITIVITY_ARRAY = [0.5];
 const WAV_PATH_PORCUPINE =
-  "../../resources/audio_samples/porcupine.wav";
+  "../../../resources/audio_samples/porcupine.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS =
-  "../../resources/audio_samples/multiple_keywords.wav";
+  "../../../resources/audio_samples/multiple_keywords.wav";
 const WAV_PATH_SINGLE_KEYWORD_DE =
-  "../../resources/audio_samples/heuschrecke.wav";
+  "../../../resources/audio_samples/heuschrecke.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS_DE =
-  "../../resources/audio_samples/multiple_keywords_de.wav";
+  "../../../resources/audio_samples/multiple_keywords_de.wav";
 const WAV_PATH_SINGLE_KEYWORD_ES =
-  "../../resources/audio_samples/manzana.wav";
+  "../../../resources/audio_samples/manzana.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS_ES =
-  "../../resources/audio_samples/multiple_keywords_es.wav";
+  "../../../resources/audio_samples/multiple_keywords_es.wav";
 const WAV_PATH_SINGLE_KEYWORD_FR =
-  "../../resources/audio_samples/mon_chouchou.wav";
+  "../../../resources/audio_samples/mon_chouchou.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS_FR =
-  "../../resources/audio_samples/multiple_keywords_fr.wav";  
+  "../../../resources/audio_samples/multiple_keywords_fr.wav";
   const WAV_PATH_NON_ASCII =
-  "../../resources/audio_samples/murciélago.wav";
+  "../../../resources/audio_samples/murciélago.wav";
 const platform = getPlatform();
 
 const keywordPathsSinglePorcupine = [
@@ -84,8 +87,7 @@ const keywordPathsNonAscii = [
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
 
-function porcupineDetectionCounts(engineInstance, relativeWaveFilePath) {
-  const path = require("path");
+function porcupineDetectionCounts(engineInstance: Porcupine, relativeWaveFilePath: string) {
   const waveFilePath = path.join(__dirname, relativeWaveFilePath);
   const waveBuffer = fs.readFileSync(waveFilePath);
   const waveAudioFile = new WaveFile(waveBuffer);
@@ -135,7 +137,7 @@ describe("successful keyword detections", () => {
   test("builtin keyword 'GRASSHOPPER'", () => {
     let porcupineEngine = new Porcupine(
         ACCESS_KEY,
-        [GRASSHOPPER], 
+        [BuiltinKeyword.GRASSHOPPER],
         DEFAULT_SENSITIVITY_ARRAY
     );
 
