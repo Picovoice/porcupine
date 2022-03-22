@@ -54,5 +54,6 @@
     "!mips",
     "!ppc",
     "!ppc64"
-  ]
+  ],
+  "dependencies": {}
 }

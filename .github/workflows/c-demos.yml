@@ -162,7 +162,7 @@ jobs:
         - machine: beaglebone
           platform: beaglebone
           arch: ''
-          threshold: 10.0
+          threshold: 11.0
 
     steps:
     - uses: actions/checkout@v2

@@ -292,14 +292,10 @@ public class PorcupineTest {
     @Test
     @DisabledIf("systemProperty.get('expectedThreshold') == null || systemProperty.get('expectedThreshold') == ''")
     void testPerformance() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        Porcupine.BuiltInKeyword[] keywords = new Porcupine.BuiltInKeyword[]{
-                Porcupine.BuiltInKeyword.AMERICANO,
-                Porcupine.BuiltInKeyword.BUMBLEBEE
-        };
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(getTestModelPath("en"))
-                .setBuiltInKeywords(keywords)
+                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
 
         int frameLen = porcupine.getFrameLength();
@@ -330,7 +326,7 @@ public class PorcupineTest {
         double totalSec = Math.round(((double) totalNSec) * 1e-6) / 1000.f;
         assertTrue(
                 totalSec <= this.expectedThreshold,
-                String.format("Expected threshold (%.2fs), process took (%.2fs)", this.expectedThreshold, totalSec)
+                String.format("Expected threshold (%.3fs), process took (%.3fs)", this.expectedThreshold, totalSec)
         );
     }
 }

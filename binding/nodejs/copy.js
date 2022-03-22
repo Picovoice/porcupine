@@ -35,6 +35,7 @@ ncp(
     if (err) {
       return console.error(err);
     }
+    console.log("../../lib/node copied.");
   }
 );
 
