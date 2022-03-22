@@ -12,7 +12,6 @@
 
 import * as path from "path";
 
-import { PvArgumentError } from "./errors";
 import { getPlatform } from "./platforms";
 
 export enum BuiltinKeyword {

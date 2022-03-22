@@ -140,8 +140,6 @@ async function micDemo() {
     sensitivities.push(sensitivity);
   }
 
-  console.log(Porcupine)
-
   let handle = new Porcupine(
     accessKey,  
     keywordPaths,

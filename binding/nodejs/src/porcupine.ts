@@ -35,9 +35,9 @@ export default class Porcupine {
 
   private _handle: any;
 
-  private _version: string;
-  private _sampleRate: number;
-  private _frameLength: number;
+  private readonly _version: string;
+  private readonly _sampleRate: number;
+  private readonly _frameLength: number;
 
 
   /**
