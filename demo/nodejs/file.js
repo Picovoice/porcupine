@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -15,17 +15,13 @@ const { program } = require("commander");
 const fs = require("fs");
 
 const WaveFile = require("wavefile").WaveFile;
-const Porcupine = require("@picovoice/porcupine-node");
 const {
+  Porcupine,
+  BuiltinKeyword,
+  getBuiltinKeywordPath,
   getInt16Frames,
   checkWaveFile,
-} = require("@picovoice/porcupine-node/wave_util");
-
-const {
-  BUILTIN_KEYWORDS_STRINGS,
-  BUILTIN_KEYWORDS_STRING_TO_ENUM,
-  getBuiltinKeywordPath,
-} = require("@picovoice/porcupine-node/builtin_keywords");
+} = require("@picovoice/porcupine-node");
 
 program
   .requiredOption(
@@ -42,7 +38,7 @@ program
   )
   .option(
     "-b, --keywords <string>",
-    `built in keyword(s) (${Array.from(BUILTIN_KEYWORDS_STRINGS)})`
+    `built in keyword(s) (${Object.keys(BuiltinKeyword)})`
   )
   .option(
     "-l, --library_file_path <string>",
@@ -90,11 +86,11 @@ function fileDemo() {
   if (builtinKeywordsDefined) {
     keywordPaths = [];
     for (let builtinKeyword of keywords.split(",")) {
-      let keywordString = builtinKeyword.trim().toLowerCase();
-      if (BUILTIN_KEYWORDS_STRINGS.has(keywordString)) {
+      let keywordString = builtinKeyword.trim().toUpperCase();
+      if (keywordString in BuiltinKeyword) {
         keywordPaths.push(
           getBuiltinKeywordPath(
-            BUILTIN_KEYWORDS_STRING_TO_ENUM.get(keywordString)
+            BuiltinKeyword[keywordString]
           )
         );
       } else {
@@ -113,7 +109,7 @@ function fileDemo() {
 
   // get the 'friendly' name of the keyword instead of showing index '0','1','2', etc.
   for (let keywordPath of keywordPaths) {
-    if (keywordPathsDefined && BUILTIN_KEYWORDS_STRINGS.has(keywordPath)) {
+    if (keywordPathsDefined && keywordPath in BuiltinKeyword) {
       console.warn(
         `--keyword_path argument '${keywordPath}' matches a built-in keyword. Did you mean to use --keywords ?`
       );
