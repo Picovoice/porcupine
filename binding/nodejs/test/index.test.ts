@@ -12,6 +12,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { performance } from "perf_hooks";
 
 import Porcupine from "../src/porcupine";
 import { getInt16Frames, checkWaveFile } from "../src/wave_util";
@@ -20,7 +21,6 @@ import { WaveFile } from "wavefile";
 import { PorcupineInvalidArgumentError, PorcupineInvalidStateError } from "../src/errors";
 import { getPlatform } from "../src/platforms";
 import { BuiltinKeyword } from "../src/builtin_keywords";
-import { count } from "console";
 
 const MODEL_PATH = "./lib/common/porcupine_params.pv";
 const MODEL_PATH_DE = "../../lib/common/porcupine_params_de.pv";
@@ -472,10 +472,8 @@ describe_if(EXPECTED_THRESHOLD > 0)("performance", () => {
     let total = 0;
     // for (let i = 0; i < frames.length; i++) {
       const frame = frames[0];
-      // @ts-ignore
       const before = performance.now();
       porcupineEngine.process(frame);
-      // @ts-ignore
       const after = performance.now();
       total += (after - before);
     // }
