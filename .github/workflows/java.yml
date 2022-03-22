@@ -44,11 +44,11 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
         - os: ubuntu-latest
-          threshold: 0.2
-        - os: windows-latest
           threshold: 0.25
-        - os: macos-latest
+        - os: windows-latest
           threshold: 0.3
+        - os: macos-latest
+          threshold: 0.35
 
     steps:
     - uses: actions/checkout@v2

@@ -68,17 +68,17 @@ jobs:
           platform: linux
           arch: x86_64
           ext: so
-          threshold: 0.2
+          threshold: 0.25
         - os: windows-latest
           platform: windows
           arch: amd64
           ext: dll
-          threshold: 0.25
+          threshold: 0.3
         - os: macos-latest
           platform: mac
           arch: x86_64
           ext: dylib
-          threshold: 0.3
+          threshold: 0.35
 
     steps:
     - uses: actions/checkout@v2
