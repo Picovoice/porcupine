@@ -14,7 +14,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 
-import { PvUnsupportedPlatformError } from "./errors";
+import { PorcupineRuntimeError } from "./errors";
 
 const SYSTEM_LINUX = "linux";
 const SYSTEM_MAC = "darwin";
@@ -102,7 +102,7 @@ function getCpuPart() {
         return infoLineSplit[infoLineSplit.length - 1].toLowerCase();
       }
     }
-    throw new PvUnsupportedPlatformError(`Unsupported CPU.`);
+    throw new PorcupineRuntimeError(`Unsupported CPU.`);
 }
 
 function getLinuxPlatform() {
@@ -114,7 +114,7 @@ function getLinuxPlatform() {
         case "0xd07": return PLATFORM_JETSON;
         case "0xc08": return PLATFORM_BEAGLEBONE;
         default: 
-            throw new PvUnsupportedPlatformError(`Unsupported CPU: '${cpuPart}'`);
+            throw new PorcupineRuntimeError(`Unsupported CPU: '${cpuPart}'`);
     }
 }
 
@@ -132,7 +132,7 @@ function getLinuxMachine(arch: string) {
         case "0xd08": return ARM_CPU_CORTEX_A72 + archInfo;
         case "0xc08": return PLATFORM_BEAGLEBONE;
         default: 
-            throw new PvUnsupportedPlatformError(`Unsupported CPU: '${cpuPart}'`);
+            throw new PorcupineRuntimeError(`Unsupported CPU: '${cpuPart}'`);
     }
 }
 
@@ -189,7 +189,7 @@ export function getSystemLibraryPath() {
               SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_LINUX}/${linuxMachine}`)
             );
           } else {
-            throw new PvUnsupportedPlatformError(
+            throw new PorcupineRuntimeError(
               `System ${system}/${arch} is not supported by this library for this CPU.`
             );
           }
@@ -205,7 +205,7 @@ export function getSystemLibraryPath() {
     }
   }
 
-  throw new PvUnsupportedPlatformError(
+  throw new PorcupineRuntimeError(
     `System ${system}/${arch} is not supported by this library.`
   );
 }

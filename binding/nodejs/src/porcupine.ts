@@ -15,8 +15,8 @@ import * as path from "path";
 
 import PvStatus from "./pv_status_t";
 import {
-  PvArgumentError,
-  PvStateError,
+  PorcupineInvalidArgumentError,
+  PorcupineInvalidStateError,
   pvStatusToException,
 } from "./errors";
 import { getSystemLibraryPath } from "./platforms";
@@ -39,7 +39,6 @@ export default class Porcupine {
   private readonly _sampleRate: number;
   private readonly _frameLength: number;
 
-
   /**
    * Creates an instance of Porcupine.
    * @param {string} accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
@@ -61,7 +60,7 @@ export default class Porcupine {
       accessKey === undefined ||
       accessKey.length === 0
     ) {
-      throw new PvArgumentError(`No AccessKey provided to Porcupine`);
+      throw new PorcupineInvalidArgumentError(`No AccessKey provided to Porcupine`);
     }
 
     let modelPath = manualModelPath;
@@ -75,7 +74,7 @@ export default class Porcupine {
     }
 
     if (keywords === null || keywords === undefined || keywords.length === 0) {
-      throw new PvArgumentError(
+      throw new PorcupineInvalidArgumentError(
         `keywordPaths are null/undefined/empty (${keywords})`
       );
     }
@@ -85,7 +84,7 @@ export default class Porcupine {
       sensitivities === undefined ||
       sensitivities.length === 0
     ) {
-      throw new PvArgumentError(
+      throw new PorcupineInvalidArgumentError(
         `sensitivities are null/undefined/empty (${sensitivities})`
       );
     }
@@ -99,23 +98,23 @@ export default class Porcupine {
     }
 
     if (!Array.isArray(keywords)) {
-      throw new PvArgumentError(`Keywords is not an array: ${keywords}`);
+      throw new PorcupineInvalidArgumentError(`Keywords is not an array: ${keywords}`);
     }
 
     if (keywords.length !== sensitivities.length) {
-      throw new PvArgumentError(
+      throw new PorcupineInvalidArgumentError(
         `Number of keywords (${keywords.length}) does not match number of sensitivities (${sensitivities.length})`
       );
     }
 
     if (!fs.existsSync(libraryPath)) {
-      throw new PvArgumentError(
+      throw new PorcupineInvalidArgumentError(
         `File not found at 'libraryPath': ${libraryPath}`
       );
     }
 
     if (!fs.existsSync(modelPath)) {
-      throw new PvArgumentError(`File not found at 'modelPath': ${modelPath}`);
+      throw new PorcupineInvalidArgumentError(`File not found at 'modelPath': ${modelPath}`);
     }
 
     const keywordPaths: string[] = [];
@@ -125,7 +124,7 @@ export default class Porcupine {
         keywordPaths[i] = getBuiltinKeywordPath(<BuiltinKeyword>keyword);
       } else {
         if (!fs.existsSync(keyword)) {
-          throw new PvArgumentError(`File not found in 'keywords': ${keyword}`);
+          throw new PorcupineInvalidArgumentError(`File not found in 'keywords': ${keyword}`);
         } else {
           keywordPaths[i] = keyword;
         }
@@ -198,22 +197,22 @@ export default class Porcupine {
       this._handle === null ||
       this._handle === undefined
     ) {
-      throw new PvStateError("Porcupine is not initialized");
+      throw new PorcupineInvalidStateError("Porcupine is not initialized");
     }
 
     if (frame === undefined || frame === null) {
-      throw new PvArgumentError(
+      throw new PorcupineInvalidArgumentError(
         `Frame array provided to process() is undefined or null`
       );
     } else if (frame.length !== this.frameLength) {
-      throw new PvArgumentError(
+      throw new PorcupineInvalidArgumentError(
         `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this.frameLength})`
       );
     }
 
     // sample the first frame to check for non-integer values
     if (!Number.isInteger(frame[0])) {
-      throw new PvArgumentError(
+      throw new PorcupineInvalidArgumentError(
         `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`
       );
     }

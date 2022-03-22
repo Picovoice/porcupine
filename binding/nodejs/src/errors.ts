@@ -10,52 +10,49 @@
 //
 "use strict";
 
-import PvStatusT from "./pv_status_t";
+import PvStatus from "./pv_status_t";
 
-export class PvArgumentError extends Error {}
-export class PvStateError extends Error {}
-export class PvUnsupportedPlatformError extends Error {}
+export class PorcupineError extends Error {}
 
-// pv_status_t error codes
-export class PvStatusOutOfMemoryError extends Error {}
-export class PvStatusIoError extends Error {}
-export class PvStatusInvalidArgumentError extends Error {}
-export class PvStatusStopIterationError extends Error {}
-export class PvStatusKeyError extends Error {}
-export class PvStatusInvalidStateError extends Error {}
-export class PvStatusRuntimeError extends Error {}
-export class PvStatusActivationError extends Error {}
-export class PvStatusActivationLimitReached extends Error {}
-export class PvStatusActivationThrottled extends Error {}
-export class PvStatusActivationRefused extends Error {}
+export class PorcupineOutOfMemoryError extends PorcupineError {}
+export class PorcupineIoError extends PorcupineError {}
+export class PorcupineInvalidArgumentError extends PorcupineError {}
+export class PorcupineStopIterationError extends PorcupineError {}
+export class PorcupineKeyError extends PorcupineError {}
+export class PorcupineInvalidStateError extends PorcupineError {}
+export class PorcupineRuntimeError extends PorcupineError {}
+export class PorcupineActivationError extends PorcupineError {}
+export class PorcupineActivationLimitReached extends PorcupineError {}
+export class PorcupineActivationThrottled extends PorcupineError {}
+export class PorcupineActivationRefused extends PorcupineError {}
 
 
-export function pvStatusToException(pvStatusInt: PvStatusT, errorMessage: string) {
-  switch (pvStatusInt) {
-    case PvStatusT.OUT_OF_MEMORY:
-      throw new PvStatusOutOfMemoryError(errorMessage);
-    case PvStatusT.IO_ERROR:
-      throw new PvStatusIoError(errorMessage);
-    case PvStatusT.INVALID_ARGUMENT:
-      throw new PvStatusInvalidArgumentError(errorMessage);
-    case PvStatusT.STOP_ITERATION:
-      throw new PvStatusStopIterationError(errorMessage);
-    case PvStatusT.KEY_ERROR:
-      throw new PvStatusKeyError(errorMessage);
-    case PvStatusT.INVALID_STATE:
-      throw new PvStatusInvalidStateError(errorMessage);
-    case PvStatusT.RUNTIME_ERROR:
-      throw new PvStatusRuntimeError(errorMessage);
-    case PvStatusT.ACTIVATION_ERROR:
-      throw new PvStatusActivationError(errorMessage);
-    case PvStatusT.ACTIVATION_LIMIT_REACHED:
-      throw new PvStatusActivationLimitReached(errorMessage);
-    case PvStatusT.ACTIVATION_THROTTLED:
-      throw new PvStatusActivationThrottled(errorMessage);
-    case PvStatusT.ACTIVATION_REFUSED:
-      throw new PvStatusActivationRefused(errorMessage);      
+export function pvStatusToException(pvStatus: PvStatus, errorMessage: string) {
+  switch (pvStatus) {
+    case PvStatus.OUT_OF_MEMORY:
+      throw new PorcupineOutOfMemoryError(errorMessage);
+    case PvStatus.IO_ERROR:
+      throw new PorcupineIoError(errorMessage);
+    case PvStatus.INVALID_ARGUMENT:
+      throw new PorcupineInvalidArgumentError(errorMessage);
+    case PvStatus.STOP_ITERATION:
+      throw new PorcupineStopIterationError(errorMessage);
+    case PvStatus.KEY_ERROR:
+      throw new PorcupineKeyError(errorMessage);
+    case PvStatus.INVALID_STATE:
+      throw new PorcupineInvalidStateError(errorMessage);
+    case PvStatus.RUNTIME_ERROR:
+      throw new PorcupineRuntimeError(errorMessage);
+    case PvStatus.ACTIVATION_ERROR:
+      throw new PorcupineActivationError(errorMessage);
+    case PvStatus.ACTIVATION_LIMIT_REACHED:
+      throw new PorcupineActivationLimitReached(errorMessage);
+    case PvStatus.ACTIVATION_THROTTLED:
+      throw new PorcupineActivationThrottled(errorMessage);
+    case PvStatus.ACTIVATION_REFUSED:
+      throw new PorcupineActivationRefused(errorMessage);
     default:
-      console.warn(`Unmapped error code: ${pvStatusInt}`);
-      throw new Error(errorMessage);
+      console.warn(`Unmapped error code: ${pvStatus}`);
+      throw new PorcupineError(errorMessage);
   }
 }
