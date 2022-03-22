@@ -98,7 +98,7 @@ function getCpuPart() {
     const cpuInfo = fs.readFileSync("/proc/cpuinfo", "ascii");
     for (let infoLine of cpuInfo.split("\n")) {
       if (infoLine.includes("CPU part")) {
-        let infoLineSplit = infoLine.split(' ')
+        const infoLineSplit = infoLine.split(' ')
         return infoLineSplit[infoLineSplit.length - 1].toLowerCase();
       }
     }
@@ -106,7 +106,7 @@ function getCpuPart() {
 }
 
 function getLinuxPlatform() {
-    var cpuPart = getCpuPart(); 
+    const cpuPart = getCpuPart();
     switch(cpuPart) {
         case "0xc07": 
         case "0xd03": 
@@ -124,7 +124,7 @@ function getLinuxMachine(arch: string) {
       archInfo = ARM_CPU_64;
     } 
 
-    var cpuPart = getCpuPart(); 
+    const cpuPart = getCpuPart();
     switch(cpuPart) {
         case "0xc07": return ARM_CPU_CORTEX_A7 + archInfo;
         case "0xd03": return ARM_CPU_CORTEX_A53 + archInfo;
