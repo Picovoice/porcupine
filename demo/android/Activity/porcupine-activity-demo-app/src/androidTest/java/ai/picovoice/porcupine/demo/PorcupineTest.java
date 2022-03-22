@@ -13,6 +13,7 @@ import com.microsoft.appcenter.espresso.Factory;
 import com.microsoft.appcenter.espresso.ReportHelper;
 
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,6 +23,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -422,6 +424,48 @@ public class PorcupineTest {
         assertTrue(p.getSampleRate() > 0);
 
         p.delete();
+    }
+
+    @Test
+    public void testPerformance() throws Exception {
+        String thresholdString = appContext.getString(R.string.expectedThreshold);
+        Assume.assumeNotNull(thresholdString);
+        Assume.assumeFalse(thresholdString.equals(""));
+
+        Porcupine p = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                .build(appContext);
+
+        double expectedThreshold = Double.parseDouble(thresholdString);
+
+        File testAudio = new File(testResourcesPath, "audio_samples/multiple_keywords.wav");
+        FileInputStream audioInputStream = new FileInputStream(testAudio);
+
+        byte[] rawData = new byte[p.getFrameLength() * 2];
+        short[] pcm = new short[p.getFrameLength()];
+        ByteBuffer pcmBuff = ByteBuffer.wrap(rawData).order(ByteOrder.LITTLE_ENDIAN);
+
+        audioInputStream.skip(44);
+
+        long totalNSec = 0;
+        while (audioInputStream.available() > 0) {
+            int numRead = audioInputStream.read(pcmBuff.array());
+            if (numRead == p.getFrameLength() * 2) {
+                pcmBuff.asShortBuffer().get(pcm);
+                long before = System.nanoTime();
+                p.process(pcm);
+                long after = System.nanoTime();
+                totalNSec += (after - before);
+            }
+        }
+        p.delete();
+
+        double totalSec = Math.round(((double) totalNSec) * 1e-6) / 1000.0;
+        assertTrue(
+                String.format("Expected threshold (%.3fs), process took (%.3fs)", expectedThreshold, totalSec),
+                totalSec <= expectedThreshold
+        );
     }
 
     private void extractAssetsRecursively(String path) throws IOException {
