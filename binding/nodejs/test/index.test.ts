@@ -86,7 +86,7 @@ const keywordPathsNonAscii = [
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
 const EXPECTED_THRESHOLD = Number(process.argv.filter((x) => x.startsWith('--expected_threshold='))[0]?.split('--expected_threshold=')[1] ?? 0);
-const describe_if = condition => condition ? describe : describe.skip;
+const describe_if = (condition: boolean) => condition ? describe : describe.skip;
 
 function porcupineDetectionCounts(engineInstance: Porcupine, relativeWaveFilePath: string): Map<number, number> {
   const waveFilePath = path.join(__dirname, relativeWaveFilePath);
@@ -472,8 +472,10 @@ describe_if(EXPECTED_THRESHOLD > 0)("performance", () => {
     let total = 0;
     // for (let i = 0; i < frames.length; i++) {
       const frame = frames[0];
+      // @ts-ignore
       const before = performance.now();
       porcupineEngine.process(frame);
+      // @ts-ignore
       const after = performance.now();
       total += (after - before);
     // }
