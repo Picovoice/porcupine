@@ -13,7 +13,7 @@ import XCTest
 import Porcupine
 
 class PorcupineAppTestUITests: XCTestCase {
-    let accessKey: String = "TESTING_ACCESS_KEY_HERE"
+    let accessKey: String = "{TESTING_ACCESS_KEY_HERE}"
     let thresholdString: String = "{EXPECTED_THRESHOLD}"
     
     override func setUp() {
