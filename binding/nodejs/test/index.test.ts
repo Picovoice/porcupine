@@ -392,6 +392,14 @@ describe("basic parameter validation", () => {
 });
 
 describe("frame validation", () => {
+  test("accepts non Int16Array if array is valid", () => {
+    const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
+    const emptyArray = Array.apply(null, Array(porcupineEngine.frameLength)).map((x, i) => i)
+    // @ts-expect-error
+    porcupineEngine.process(emptyArray);
+    porcupineEngine.release();
+  });
+
   test("mismatched frameLength throws error", () => {
     const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
     expect(() => {
