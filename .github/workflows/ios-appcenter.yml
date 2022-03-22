@@ -46,7 +46,7 @@ jobs:
           PorcupineAppTestUITests/PorcupineAppTestUITests.swift
 
       - name: Inject Threshold
-        run: sed -i '.bak' 's:{EXPECTED_THRESHOLD}:${{0.3}}:'
+        run: sed -i '.bak' 's:{EXPECTED_THRESHOLD}:${{0.5}}:'
           PorcupineAppTestUITests/PorcupineAppTestUITests.swift
 
       - name: XCode Build

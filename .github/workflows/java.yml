@@ -44,9 +44,9 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
         - os: ubuntu-latest
-          threshold: 0.25
-        - os: windows-latest
           threshold: 0.3
+        - os: windows-latest
+          threshold: 0.35
         - os: macos-latest
           threshold: 0.35
 
@@ -82,13 +82,13 @@ jobs:
         - machine: rpi3-64
           threshold: 2.5
         - machine: rpi4-32
-          threshold: 1.25
+          threshold: 1.5
         - machine: rpi4-64
-          threshold: 1.25
+          threshold: 1.5
         - machine: jetson
           threshold: 2.0
         - machine: beaglebone
-          threshold: 10.0
+          threshold: 12.0
 
     steps:
     - uses: actions/checkout@v2

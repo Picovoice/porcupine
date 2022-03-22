@@ -44,7 +44,7 @@ jobs:
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
     - name: Inject Threshold
-      run: echo pvTestingAccessKey="0.6" >> local.properties
+      run: echo expectedThreshold="0.5" >> local.properties
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
