@@ -43,11 +43,11 @@ jobs:
         node-version: [14.x, 16.x]
         include:
         - os: ubuntu-latest
-          threshold: 0.3
+          performance_threshold_sec: 0.3
         - os: windows-latest
-          threshold: 0.35
+          performance_threshold_sec: 0.35
         - os: macos-latest
-          threshold: 0.35
+          performance_threshold_sec: 0.35
 
     steps:
     - uses: actions/checkout@v2
@@ -64,7 +64,7 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --expected_threshold=${{matrix.threshold}}
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --performance_threshold_sec=${{matrix.performance_threshold_sec}}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -74,19 +74,19 @@ jobs:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
         include:
         - machine: rpi2
-          threshold: 5.5
+          performance_threshold_sec: 5.5
         - machine: rpi3-32
-          threshold: 2.0
+          performance_threshold_sec: 2.0
         - machine: rpi3-64
-          threshold: 2.5
+          performance_threshold_sec: 2.5
         - machine: rpi4-32
-          threshold: 1.5
+          performance_threshold_sec: 1.5
         - machine: rpi4-64
-          threshold: 1.5
+          performance_threshold_sec: 1.5
         - machine: jetson
-          threshold: 2.0
+          performance_threshold_sec: 2.0
         - machine: beaglebone
-          threshold: 12.0
+          performance_threshold_sec: 12.0
 
     steps:
     - uses: actions/checkout@v2
@@ -98,4 +98,4 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --expected_threshold=${{matrix.threshold}}
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --performance_threshold_sec=${{matrix.performance_threshold_sec}}

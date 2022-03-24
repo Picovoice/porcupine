@@ -68,17 +68,17 @@ jobs:
           platform: linux
           arch: x86_64
           ext: so
-          threshold: 0.3
+          performance_threshold_sec: 0.3
         - os: windows-latest
           platform: windows
           arch: amd64
           ext: dll
-          threshold: 0.35
+          performance_threshold_sec: 0.35
         - os: macos-latest
           platform: mac
           arch: x86_64
           ext: dylib
-          threshold: 0.35
+          performance_threshold_sec: 0.35
 
     steps:
     - uses: actions/checkout@v2
@@ -99,7 +99,7 @@ jobs:
         model_path: ../../lib/common/porcupine_params.pv
         keyword_path: ../../resources/keyword_files/${{ matrix.platform }}/porcupine_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords.wav
-        threshold: ${{ matrix.threshold }}
+        performance_threshold_sec: ${{ matrix.performance_threshold_sec }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)
@@ -138,31 +138,31 @@ jobs:
         - machine: rpi2
           platform: raspberry-pi
           arch: cortex-a7
-          threshold: 5.5
+          performance_threshold_sec: 5.5
         - machine: rpi3-32
           platform: raspberry-pi
           arch: cortex-a53
-          threshold: 2.0
+          performance_threshold_sec: 2.0
         - machine: rpi3-64
           platform: raspberry-pi
           arch: cortex-a53-aarch64
-          threshold: 2.5
+          performance_threshold_sec: 2.5
         - machine: rpi4-32
           platform: raspberry-pi
           arch: cortex-a72
-          threshold: 1.5
+          performance_threshold_sec: 1.5
         - machine: rpi4-64
           platform: raspberry-pi
           arch: cortex-a72-aarch64
-          threshold: 1.5
+          performance_threshold_sec: 1.5
         - machine: jetson
           platform: jetson
           arch: cortex-a57-aarch64
-          threshold: 2.0
+          performance_threshold_sec: 2.0
         - machine: beaglebone
           platform: beaglebone
           arch: ''
-          threshold: 12.0
+          performance_threshold_sec: 12.0
 
     steps:
     - uses: actions/checkout@v2
@@ -183,7 +183,7 @@ jobs:
         model_path: ../../lib/common/porcupine_params.pv
         keyword_path: ../../resources/keyword_files/${{ matrix.platform }}/porcupine_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords.wav
-        threshold: ${{ matrix.threshold }}
+        performance_threshold_sec: ${{ matrix.performance_threshold_sec }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)

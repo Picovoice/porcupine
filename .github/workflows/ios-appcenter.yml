@@ -45,8 +45,8 @@ jobs:
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
           PorcupineAppTestUITests/PorcupineAppTestUITests.swift
 
-      - name: Inject Threshold
-        run: sed -i '.bak' 's:{EXPECTED_THRESHOLD}:1.0:'
+      - name: Inject Performance Threshold
+        run: sed -i '.bak' 's:{PERFORMANCE_THRESHOLD_SEC}:1.0:'
           PorcupineAppTestUITests/PorcupineAppTestUITests.swift
 
       - name: XCode Build

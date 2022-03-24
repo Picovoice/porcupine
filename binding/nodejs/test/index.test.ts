@@ -85,7 +85,7 @@ const keywordPathsNonAscii = [
 ];
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
-const EXPECTED_THRESHOLD = Number(process.argv.filter((x) => x.startsWith('--expected_threshold='))[0]?.split('--expected_threshold=')[1] ?? 0);
+const PERFORMANCE_THRESHOLD_SEC = Number(process.argv.filter((x) => x.startsWith('--performance_threshold_sec='))[0]?.split('--performance_threshold_sec=')[1] ?? 0);
 const describe_if = (condition: boolean) => condition ? describe : describe.skip;
 
 function porcupineDetectionCounts(engineInstance: Porcupine, relativeWaveFilePath: string): Map<number, number> {
@@ -455,7 +455,7 @@ describe("invalid state", () => {
   });
 });
 
-describe_if(EXPECTED_THRESHOLD > 0)("performance", () => {
+describe_if(PERFORMANCE_THRESHOLD_SEC > 0)("performance", () => {
   test("process", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
@@ -470,17 +470,17 @@ describe_if(EXPECTED_THRESHOLD > 0)("performance", () => {
 
     const frames = getInt16Frames(waveAudioFile, porcupineEngine.frameLength);
     let total = 0;
-    // for (let i = 0; i < frames.length; i++) {
+    for (let i = 0; i < frames.length; i++) {
       const frame = frames[0];
       const before = performance.now();
       porcupineEngine.process(frame);
       const after = performance.now();
       total += (after - before);
-    // }
+    }
 
     porcupineEngine.release();
 
     total = Number((total / 1000).toFixed(3));
-    expect(total).toBeLessThanOrEqual(EXPECTED_THRESHOLD);
+    expect(total).toBeLessThanOrEqual(PERFORMANCE_THRESHOLD_SEC);
   })
 })

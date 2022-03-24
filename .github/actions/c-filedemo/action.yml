@@ -13,7 +13,7 @@ inputs:
     default: 0.5
   audio_path:
     required: true
-  threshold:
+  performance_threshold_sec:
     required: false
     type: number
 
@@ -28,7 +28,7 @@ runs:
       -k ${{ inputs.keyword_path }}
       -t ${{ inputs.sensitivity }}
       -w ${{ inputs.audio_path }}
-    if: "${{ inputs.threshold == '' }}"
+    if: "${{ inputs.performance_threshold_sec == '' }}"
     working-directory: demo/c
     shell: bash
 
@@ -40,8 +40,8 @@ runs:
       -k ${{ inputs.keyword_path }}
       -t ${{ inputs.sensitivity }}
       -w ${{ inputs.audio_path }}
-      -e ${{ inputs.threshold }}
-    if: "${{ inputs.threshold != '' }}"
+      -p ${{ inputs.performance_threshold_sec }}
+    if: "${{ inputs.performance_threshold_sec != '' }}"
     working-directory: demo/c
     shell: bash
   

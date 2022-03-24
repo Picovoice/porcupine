@@ -14,7 +14,7 @@ import Porcupine
 
 class PorcupineAppTestUITests: XCTestCase {
     let accessKey: String = "{TESTING_ACCESS_KEY_HERE}"
-    let thresholdString: String = "{EXPECTED_THRESHOLD}"
+    let thresholdString: String = "{PERFORMANCE_THRESHOLD_SEC}"
     
     override func setUp() {
         super.setUp()
@@ -272,10 +272,10 @@ class PorcupineAppTestUITests: XCTestCase {
     }
 
     func testPerformance() throws {
-        try XCTSkipIf(thresholdString == "{EXPECTED_THRESHOLD}")
+        try XCTSkipIf(thresholdString == "{PERFORMANCE_THRESHOLD_SEC}")
 
-        let expectedThreshold = Double(thresholdString)
-        try XCTSkipIf(expectedThreshold == nil)
+        let performanceThresholdSec = Double(thresholdString)
+        try XCTSkipIf(performanceThresholdSec == nil)
 
         let p:Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
 
@@ -299,6 +299,6 @@ class PorcupineAppTestUITests: XCTestCase {
         p.delete()
 
         let totalSec = Double(round(totalNSec * 1000) / 1000)
-        XCTAssertLessThanOrEqual(totalSec, expectedThreshold!)
+        XCTAssertLessThanOrEqual(totalSec, performanceThresholdSec!)
     }
 }

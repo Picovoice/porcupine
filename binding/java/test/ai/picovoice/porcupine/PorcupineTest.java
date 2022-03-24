@@ -36,7 +36,7 @@ public class PorcupineTest {
     private static final String ENVIRONMENT_NAME;
     private Porcupine porcupine;
     private final String accessKey = System.getProperty("pvTestingAccessKey");
-    private double expectedThreshold;
+    private double performanceThresholdSec;
 
     static {
         ENVIRONMENT_NAME = Utils.getEnvironmentName();
@@ -44,9 +44,9 @@ public class PorcupineTest {
 
     PorcupineTest() {
         try {
-            expectedThreshold = Double.parseDouble(System.getProperty("expectedThreshold"));
+            performanceThresholdSec = Double.parseDouble(System.getProperty("performanceThresholdSec"));
         } catch (Exception e) {
-            expectedThreshold = 0f;
+            performanceThresholdSec = 0f;
         }
     }
 
@@ -290,7 +290,7 @@ public class PorcupineTest {
     }
 
     @Test
-    @DisabledIf("systemProperty.get('expectedThreshold') == null || systemProperty.get('expectedThreshold') == ''")
+    @DisabledIf("systemProperty.get('performanceThresholdSec') == null || systemProperty.get('performanceThresholdSec') == ''")
     void testPerformance() throws Exception {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
@@ -325,8 +325,8 @@ public class PorcupineTest {
 
         double totalSec = Math.round(((double) totalNSec) * 1e-6) / 1000.0;
         assertTrue(
-                totalSec <= this.expectedThreshold,
-                String.format("Expected threshold (%.3fs), process took (%.3fs)", this.expectedThreshold, totalSec)
+                totalSec <= this.performanceThresholdSec,
+                String.format("Expected threshold (%.3fs), process took (%.3fs)", this.performanceThresholdSec, totalSec)
         );
     }
 }

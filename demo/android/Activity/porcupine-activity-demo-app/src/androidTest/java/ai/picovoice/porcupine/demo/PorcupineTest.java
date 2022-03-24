@@ -428,7 +428,7 @@ public class PorcupineTest {
 
     @Test
     public void testPerformance() throws Exception {
-        String thresholdString = appContext.getString(R.string.expectedThreshold);
+        String thresholdString = appContext.getString(R.string.performanceThresholdSec);
         Assume.assumeNotNull(thresholdString);
         Assume.assumeFalse(thresholdString.equals(""));
 
@@ -437,7 +437,7 @@ public class PorcupineTest {
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
-        double expectedThreshold = Double.parseDouble(thresholdString);
+        double performanceThresholdSec = Double.parseDouble(performanceThresholdSec);
 
         File testAudio = new File(testResourcesPath, "audio_samples/multiple_keywords.wav");
         FileInputStream audioInputStream = new FileInputStream(testAudio);
@@ -463,8 +463,8 @@ public class PorcupineTest {
 
         double totalSec = Math.round(((double) totalNSec) * 1e-6) / 1000.0;
         assertTrue(
-                String.format("Expected threshold (%.3fs), process took (%.3fs)", expectedThreshold, totalSec),
-                totalSec <= expectedThreshold
+                String.format("Expected threshold (%.3fs), process took (%.3fs)", performanceThresholdSec, totalSec),
+                totalSec <= performanceThresholdSec
         );
     }
 
