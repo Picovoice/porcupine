@@ -467,7 +467,6 @@ public class PorcupineTest {
                 totalSec <= performanceThresholdSec
         );
     }
-    
 
     private void extractAssetsRecursively(String path) throws IOException {
 
