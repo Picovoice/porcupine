@@ -437,7 +437,7 @@ public class PorcupineTest {
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
-        double performanceThresholdSec = Double.parseDouble(performanceThresholdSec);
+        double performanceThresholdSec = Double.parseDouble(thresholdString);
 
         File testAudio = new File(testResourcesPath, "audio_samples/multiple_keywords.wav");
         FileInputStream audioInputStream = new FileInputStream(testAudio);
