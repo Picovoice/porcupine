@@ -2,8 +2,10 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-node@file:../../binding/nodejs":
-  version "2.1.3"
+"@picovoice/porcupine-node@2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.1.5.tgz#81e8e6e9d737358f7dc9fdc91ff9da984460ebf5"
+  integrity sha512-N1Uhl4v+Sr7a2kyr0NfiPmWg56xFRVmcENkhAgg/w14ydPQu6mYV+d5j0d/f4TexejWvbMkG7gJcTg0WvtH3CA==
 
 "@picovoice/pvrecorder-node@1.0.2":
   version "1.0.2"
