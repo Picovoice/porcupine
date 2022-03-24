@@ -46,7 +46,7 @@ jobs:
           PorcupineAppTestUITests/PorcupineAppTestUITests.swift
 
       - name: Inject Performance Threshold
-        run: sed -i '.bak' 's:{PERFORMANCE_THRESHOLD_SEC}:1.0:'
+        run: sed -i '.bak' 's:{PERFORMANCE_THRESHOLD_SEC}:1.25:'
           PorcupineAppTestUITests/PorcupineAppTestUITests.swift
 
       - name: XCode Build

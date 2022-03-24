@@ -68,17 +68,17 @@ jobs:
           platform: linux
           arch: x86_64
           ext: so
-          performance_threshold_sec: 0.3
+          performance_threshold_sec: 0.5
         - os: windows-latest
           platform: windows
           arch: amd64
           ext: dll
-          performance_threshold_sec: 0.35
+          performance_threshold_sec: 0.5
         - os: macos-latest
           platform: mac
           arch: x86_64
           ext: dylib
-          performance_threshold_sec: 0.35
+          performance_threshold_sec: 0.5
 
     steps:
     - uses: actions/checkout@v2

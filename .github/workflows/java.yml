@@ -44,11 +44,11 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
         - os: ubuntu-latest
-          performance_threshold_sec: 0.3
+          performance_threshold_sec: 0.5
         - os: windows-latest
-          performance_threshold_sec: 0.35
+          performance_threshold_sec: 0.5
         - os: macos-latest
-          performance_threshold_sec: 0.35
+          performance_threshold_sec: 0.5
 
     steps:
     - uses: actions/checkout@v2
