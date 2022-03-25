@@ -13,6 +13,9 @@ inputs:
     default: 0.5
   audio_path:
     required: true
+  performance_threshold_sec:
+    required: false
+    type: number
 
 runs:
   using: "composite"
@@ -25,6 +28,20 @@ runs:
       -k ${{ inputs.keyword_path }}
       -t ${{ inputs.sensitivity }}
       -w ${{ inputs.audio_path }}
+    if: "${{ inputs.performance_threshold_sec == '' }}"
+    working-directory: demo/c
+    shell: bash
+
+  - run: >
+      ./build/porcupine_demo_file
+      -a ${{ inputs.access_key }}
+      -l ${{ inputs.library_path }}
+      -m ${{ inputs.model_path }}
+      -k ${{ inputs.keyword_path }}
+      -t ${{ inputs.sensitivity }}
+      -w ${{ inputs.audio_path }}
+      -p ${{ inputs.performance_threshold_sec }}
+    if: "${{ inputs.performance_threshold_sec != '' }}"
     working-directory: demo/c
     shell: bash
   

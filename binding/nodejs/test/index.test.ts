@@ -12,6 +12,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { performance } from "perf_hooks";
 
 import Porcupine from "../src/porcupine";
 import { getInt16Frames, checkWaveFile } from "../src/wave_util";
@@ -20,7 +21,6 @@ import { WaveFile } from "wavefile";
 import { PorcupineInvalidArgumentError, PorcupineInvalidStateError } from "../src/errors";
 import { getPlatform } from "../src/platforms";
 import { BuiltinKeyword } from "../src/builtin_keywords";
-import { count } from "console";
 
 const MODEL_PATH = "./lib/common/porcupine_params.pv";
 const MODEL_PATH_DE = "../../lib/common/porcupine_params_de.pv";
@@ -62,7 +62,7 @@ const keywordPathsMultipleDe = [
   `../../resources/keyword_files_de/${platform}/ananas_${platform}.ppn`,
   `../../resources/keyword_files_de/${platform}/heuschrecke_${platform}.ppn`,
   `../../resources/keyword_files_de/${platform}/leguan_${platform}.ppn`,
-  `../../resources/keyword_files_de/${platform}/stachelschwein_${platform}.ppn`,  
+  `../../resources/keyword_files_de/${platform}/stachelschwein_${platform}.ppn`,
 ];
 const keywordPathsSingleEs = [
   `../../resources/keyword_files_es/${platform}/manzana_${platform}.ppn`,
@@ -84,7 +84,9 @@ const keywordPathsNonAscii = [
   `../../resources/keyword_files_es/${platform}/murciélago_${platform}.ppn`,
 ];
 
-const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
+const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
+const PERFORMANCE_THRESHOLD_SEC = Number(process.argv.filter((x) => x.startsWith('--performance_threshold_sec='))[0]?.split('--performance_threshold_sec=')[1] ?? 0);
+const describe_if = (condition: boolean) => condition ? describe : describe.skip;
 
 function porcupineDetectionCounts(engineInstance: Porcupine, relativeWaveFilePath: string): Map<number, number> {
   const waveFilePath = path.join(__dirname, relativeWaveFilePath);
@@ -245,7 +247,7 @@ describe("keyword detection in DE", () => {
     expect(heuschreckeCount).toEqual(1);
     expect(leguanCount).toEqual(1);
     expect(stachelschweinCount).toEqual(1);
-  });  
+  });
 });
 
 describe("keyword detection in ES", () => {
@@ -284,7 +286,7 @@ describe("keyword detection in ES", () => {
     expect(emparedadoCount).toEqual(1);
     expect(leopardoCount).toEqual(1);
     expect(manzanaCount).toEqual(1);
-  });  
+  });
 });
 
 describe("keyword detection in FR", () => {
@@ -324,7 +326,7 @@ describe("keyword detection in FR", () => {
     expect(framboiseCount).toEqual(2);
     expect(monChouchouCount).toEqual(1);
     expect(parapluieCount).toEqual(1);
-  });  
+  });
 });
 
 describe("Non ascii characters", () => {
@@ -452,3 +454,33 @@ describe("invalid state", () => {
     }).toThrow(PorcupineInvalidStateError);
   });
 });
+
+describe_if(PERFORMANCE_THRESHOLD_SEC > 0)("performance", () => {
+  test("process", () => {
+    let porcupineEngine = new Porcupine(
+      ACCESS_KEY,
+    [BuiltinKeyword.PORCUPINE],
+      [0.5]
+    );
+
+    const path = require("path");
+    const waveFilePath = path.join(__dirname, WAV_PATH_MULTIPLE_KEYWORDS);
+    const waveBuffer = fs.readFileSync(waveFilePath);
+    const waveAudioFile = new WaveFile(waveBuffer);
+
+    const frames = getInt16Frames(waveAudioFile, porcupineEngine.frameLength);
+    let total = 0;
+    for (let i = 0; i < frames.length; i++) {
+      const frame = frames[0];
+      const before = performance.now();
+      porcupineEngine.process(frame);
+      const after = performance.now();
+      total += (after - before);
+    }
+
+    porcupineEngine.release();
+
+    total = Number((total / 1000).toFixed(3));
+    expect(total).toBeLessThanOrEqual(PERFORMANCE_THRESHOLD_SEC);
+  })
+})

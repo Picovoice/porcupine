@@ -14,6 +14,7 @@ import Porcupine
 
 class PorcupineAppTestUITests: XCTestCase {
     let accessKey: String = "{TESTING_ACCESS_KEY_HERE}"
+    let thresholdString: String = "{PERFORMANCE_THRESHOLD_SEC}"
     
     override func setUp() {
         super.setUp()
@@ -227,7 +228,7 @@ class PorcupineAppTestUITests: XCTestCase {
             Porcupine.BuiltInKeyword.porcupine,
             Porcupine.BuiltInKeyword.terminator
         ]
-        
+
         let p:Porcupine = try Porcupine.init(accessKey: accessKey, keywords: keywords)
         
         let bundle = Bundle(for: type(of: self))
@@ -248,7 +249,7 @@ class PorcupineAppTestUITests: XCTestCase {
             index += frameLengthBytes
         }
         p.delete()
-        
+
         let expectedResults = [
             Porcupine.BuiltInKeyword.porcupine,
             Porcupine.BuiltInKeyword.alexa,
@@ -268,5 +269,36 @@ class PorcupineAppTestUITests: XCTestCase {
             let keywordDetected = keywords[Int(results[i])]
             XCTAssert(expectedKeyword == keywordDetected)
         }
+    }
+
+    func testPerformance() throws {
+        try XCTSkipIf(thresholdString == "{PERFORMANCE_THRESHOLD_SEC}")
+
+        let performanceThresholdSec = Double(thresholdString)
+        try XCTSkipIf(performanceThresholdSec == nil)
+
+        let p:Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
+
+        let bundle = Bundle(for: type(of: self))
+        let fileURL:URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav")!
+
+        let data = try Data(contentsOf: fileURL)
+        let frameLengthBytes = Int(Porcupine.frameLength) * 2
+        var pcmBuffer = Array<Int16>(repeating: 0, count: Int(Porcupine.frameLength))
+
+        var totalNSec = 0.0
+        var index = 44
+        while(index + frameLengthBytes < data.count) {
+            _ = pcmBuffer.withUnsafeMutableBytes { data.copyBytes(to: $0, from: index..<(index + frameLengthBytes)) }
+            let before = CFAbsoluteTimeGetCurrent()
+            try p.process(pcm:pcmBuffer)
+            let after = CFAbsoluteTimeGetCurrent()
+            totalNSec += (after - before)
+            index += frameLengthBytes
+        }
+        p.delete()
+
+        let totalSec = Double(round(totalNSec * 1000) / 1000)
+        XCTAssertLessThanOrEqual(totalSec, performanceThresholdSec!)
     }
 }
