@@ -4,9 +4,12 @@ import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-core";
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
-  const [workerChunk, setWorkerChunk] = useState<Record<string, PorcupineWorkerFactory | null>>({ factory: null });
+  const [workerChunk, setWorkerChunk] = useState<
+    Record<string, PorcupineWorkerFactory | null>
+  >({ factory: null });
   const [isChunkLoaded, setIsChunkLoaded] = useState(false);
   const [accessKey, setAccessKey] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [keywords] = useState([
     { builtin: "Alexa", sensitivity: 0.7 },
     { builtin: "Picovoice", sensitivity: 0.8 },
@@ -57,10 +60,13 @@ export default function VoiceWidget() {
           <input
             type="text"
             name="accessKey"
-            onChange={(value) => setAccessKey(value.target.value)}
+            onChange={(value) => setInputValue(value.target.value)}
             disabled={isLoaded}
           />
         </label>
+        <button className="start-button" onClick={() => setAccessKey(inputValue)} disabled={isLoaded}>
+          Start Porcupine
+        </button>
       </h3>
       <h3>Dynamic Import Loaded: {JSON.stringify(isChunkLoaded)}</h3>
       <h3>Porcupine Loaded: {JSON.stringify(isLoaded)}</h3>

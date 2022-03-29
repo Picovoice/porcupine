@@ -8,10 +8,13 @@
         <input
           type="text"
           name="accessKey"
-          v-on:change="initEngine"
+          v-on:change="updateInputValue"
           :disabled="isLoaded"
         />
       </label>
+      <button class="start-button" v-on:click="initEngine" :disabled="isLoaded">
+          Start Porcupine
+      </button>
     </h3>
     <h3>Loaded: {{ isLoaded }}</h3>
     <h3>Listening: {{ isListening }}</h3>
@@ -48,6 +51,7 @@ const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).ex
   mixins: [porcupineMixin],
   data() {
     return {
+      inputValue: "",
       detections: [] as string[],
       isError: false,
       errorMessage: null as string | null,
@@ -80,7 +84,7 @@ const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).ex
       }
     },
     initEngine: function (event: any) {
-      this.factoryArgs.accessKey = event.target.value;
+      this.factoryArgs.accessKey = this.inputValue;
       this.isError = false;
       this.isLoaded = false;
       this.isListening = false;
@@ -92,6 +96,9 @@ const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).ex
         this.ppnErrorFn
       );
     }, 
+    updateInputValue: function (event: any) {
+      this.inputValue = event.target.value;
+    },
     ppnReadyFn: function () {
       this.isLoaded = true;
       this.isListening = true;
@@ -115,6 +122,12 @@ button {
   padding: 1rem;
   font-size: 1.5rem;
   margin-right: 1rem;
+}
+
+.start-button {
+  padding: 0.1rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 }
 
 .voice-widget {

@@ -998,8 +998,10 @@
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 
-"@picovoice/porcupine-web-vue@file:../../binding/vue":
+"@picovoice/porcupine-web-vue@^2.1.2":
   version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-vue/-/porcupine-web-vue-2.1.2.tgz#890fe3fed97b6ec3f9dcc43be164f4d0e4921583"
+  integrity sha512-qgojpt7EMS3qTd/4B93EnwbVaNW5hbnmemn26KpoGbpd4U2FF7+OKV4UojvVPwSNGjwiaRQbilxreQMUm+1h2g==
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 
