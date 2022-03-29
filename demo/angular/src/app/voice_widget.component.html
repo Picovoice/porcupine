@@ -9,9 +9,11 @@
         name="accessKey"
         [disabled]="isLoaded"
         #accessKey
-        (input)="initEngine(accessKey.value)"
       />
     </label>
+    <button class="start-button" (click)="initEngine(accessKey.value)" [disabled]="isLoaded">
+      Start Porcupine
+    </button>
   </h3>
   <h3>Dynamic Import Loaded: {{ isChunkLoaded }}</h3>
   <h3>Porcupine Loaded: {{ isLoaded }}</h3>

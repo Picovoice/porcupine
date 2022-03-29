@@ -8,6 +8,12 @@ button {
   margin-right: 1rem;
 }
 
+.start-button {
+  padding: 0.1rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
 .voice-widget {
   border: 2px double #377dff;
   padding: 2rem;
