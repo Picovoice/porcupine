@@ -9,15 +9,15 @@
     specific language governing permissions and limitations under the License.
 */
 
+#include <dlfcn.h>
+#include <errno.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <alsa/asoundlib.h>
-#include <dlfcn.h>
-
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
+#include <asm/ioctl.h>
+#include <linux/spi/spidev.h>
+#include <sys/ioctl.h>
 
 #include "pv_porcupine.h"
 
@@ -33,10 +33,56 @@ static const uint8_t YELLOW_RGB[3] = {255, 255, 51};
 
 static volatile bool is_interrupted = false;
 
+static const uint8_t spi_mode = 0;
+static const uint8_t spi_BPW = 8;
+static const uint32_t spi_speed = 6000000;
+static const uint16_t spi_delay = 0;
+static int spidev_fd = -1;
+
+static void setup_spi() {
+    spidev_fd = open("/dev/spidev0.0", O_RDWR);
+    if (spidev_fd < 0) {
+        fprintf(stderr, "unable to open SPI device '%s'.\n", strerror(errno));
+        exit(1);
+    }
+
+    if (ioctl(spidev_fd, SPI_IOC_WR_MODE, &spi_mode) < 0) {
+        fprintf(stderr, "failed to change SPI mode '%s'.\n", strerror(errno));
+        exit(1);
+    }
+
+    if (ioctl(spidev_fd, SPI_IOC_WR_BITS_PER_WORD, &spi_BPW) < 0) {
+        fprintf(stderr, "failed to change SPI BPW '%s'.\n", strerror(errno));
+        exit(1);
+    }
+
+    if (ioctl(spidev_fd, SPI_IOC_WR_MAX_SPEED_HZ, &spi_speed) < 0) {
+        fprintf(stderr, "failed to change SPI speed '%s'.\n", strerror(errno));
+        exit(1);
+    }
+}
+
+static void spi_write_data(unsigned char *data, int len) {
+    struct spi_ioc_transfer spi;
+    memset(&spi, 0, sizeof(spi));
+
+    spi.tx_buf = (unsigned long)data;
+    spi.rx_buf = (unsigned long)data;
+    spi.len = len;
+    spi.delay_usecs = spi_delay;
+    spi.speed_hz = spi_speed;
+    spi.bits_per_word = spi_BPW;
+
+    if (ioctl(spidev_fd, SPI_IOC_MESSAGE(1), &spi) < 0) {
+        fprintf(stderr, "failed to write to SPI '%s'.\n", strerror(errno));
+        exit(1);
+    }
+}
+
 static void set_color(const uint8_t rgb[3]) {
     for(int32_t i = 0; i < 4; i++) {
         uint8_t zero = 0x00;
-        wiringPiSPIDataRW(0, &zero, 1);
+        spi_write_data(&zero, 1);
     }
 
     static const uint32_t BRIGHTNESS = 1;
@@ -46,12 +92,12 @@ static void set_color(const uint8_t rgb[3]) {
         led_frame[1] = rgb[2];
         led_frame[2] = rgb[1];
         led_frame[3] = rgb[0];
-        wiringPiSPIDataRW(0, led_frame, 4);
+        spi_write_data(led_frame, 4);
     }
 
     for(int32_t i = 0; i < 4; i++) {
         uint8_t zero = 0x00;
-        wiringPiSPIDataRW(0, &zero, 1);
+        spi_write_data(&zero, 1);
     }
 }
 
@@ -203,15 +249,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    wiringPiSetup();
-    if(wiringPiSPISetup(0, 6000000) < 0) {
-        fprintf(stderr, "failed to setup SPI interface\n");
-        exit(1);
-    }
-
-    pinMode(21, OUTPUT);
-    digitalWrite(21, HIGH);
-
+    setup_spi();
     fprintf(stdout, "[Listening]\n");
 
     while (!is_interrupted) {
@@ -293,6 +331,7 @@ int main(int argc, char *argv[]) {
     snd_pcm_close(alsa_handle);
     pv_porcupine_delete_func(porcupine);
     dlclose(porcupine_library);
+    close(spidev_fd);
 
     return 0;
 }
