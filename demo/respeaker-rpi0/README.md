@@ -38,7 +38,7 @@ From the root of the repository run:
 
 ```console
 ./demo/respeaker-rpi0/porcupine_demo_mic \
-${ACCESS_KEY}
+${ACCESS_KEY} \
 lib/raspberry-pi/arm11/libpv_porcupine.so \
 lib/common/porcupine_params.pv \
 0.65 \
