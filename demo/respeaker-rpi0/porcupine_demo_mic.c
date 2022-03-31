@@ -33,6 +33,12 @@ static const uint8_t YELLOW_RGB[3] = {255, 255, 51};
 
 static volatile bool is_interrupted = false;
 
+/*
+// LED SPI Documentation:
+https://github.com/torvalds/linux/blob/master/include/uapi/linux/spi/spi.h
+https://github.com/torvalds/linux/blob/master/include/uapi/linux/spi/spidev.h
+https://cdn-shop.adafruit.com/datasheets/APA102.pdf
+*/
 static const uint8_t spi_mode = 0;
 static const uint8_t spi_BPW = 8;
 static const uint32_t spi_speed = 6000000;
