@@ -1,7 +1,7 @@
 ## Requirements
 
 ```console
-sudo apt-get install wiringpi
+sudo apt-get install libasound2-dev
 ```
 
 ## AccessKey
@@ -17,7 +17,7 @@ From the root of the repository run:
 ```console
 gcc -std=c99 -O3 -o demo/respeaker-rpi0/porcupine_demo_mic \
 -I include/ demo/respeaker-rpi0/porcupine_demo_mic.c \
--ldl -lasound -lwiringPi
+-ldl -lasound
 ```
 
 ## Run
@@ -38,7 +38,7 @@ From the root of the repository run:
 
 ```console
 ./demo/respeaker-rpi0/porcupine_demo_mic \
-${ACCESS_KEY}
+${ACCESS_KEY} \
 lib/raspberry-pi/arm11/libpv_porcupine.so \
 lib/common/porcupine_params.pv \
 0.65 \
