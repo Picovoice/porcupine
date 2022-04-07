@@ -102,5 +102,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Machine state before
+      working-directory: resources/scripts
+      run: bash machine-state.sh
+
     - name: Test
       run: python3 test_porcupine_perf.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{matrix.num_test_iterations}} ${{matrix.performance_threshold_sec}}
+
+    - name: Machine state after
+      working-directory: resources/scripts
+      run: bash machine-state.sh
