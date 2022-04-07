@@ -1,17 +1,31 @@
-name: Android AppCenter Tests
+name: Android Performance
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths: 
+      - 'lib/node/**'
       - 'lib/common/**'
-      - 'lib/android/**'
+      - 'resources/keyword_files/beaglebone/**'      
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - '.github/workflows/android-perf.yml'
   pull_request:
     branches: [ master ]
     paths: 
+      - 'lib/node/**'
       - 'lib/common/**'
-      - 'lib/android/**'
+      - 'resources/keyword_files/beaglebone/**'      
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - '.github/workflows/android-perf.yml'
 
 defaults:
   run:
