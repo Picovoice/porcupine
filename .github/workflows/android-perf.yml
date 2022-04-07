@@ -7,24 +7,14 @@ on:
     paths: 
       - 'lib/node/**'
       - 'lib/common/**'
-      - 'resources/keyword_files/beaglebone/**'      
-      - 'resources/keyword_files/jetson/**'
-      - 'resources/keyword_files/linux/**'
-      - 'resources/keyword_files/mac/**'
-      - 'resources/keyword_files/raspberry-pi/**'
-      - 'resources/keyword_files/windows/**'
+      - 'resources/keyword_files/android/**'
       - '.github/workflows/android-perf.yml'
   pull_request:
     branches: [ master ]
     paths: 
       - 'lib/node/**'
       - 'lib/common/**'
-      - 'resources/keyword_files/beaglebone/**'      
-      - 'resources/keyword_files/jetson/**'
-      - 'resources/keyword_files/linux/**'
-      - 'resources/keyword_files/mac/**'
-      - 'resources/keyword_files/raspberry-pi/**'
-      - 'resources/keyword_files/windows/**'
+      - 'resources/keyword_files/android/**'
       - '.github/workflows/android-perf.yml'
 
 defaults:
