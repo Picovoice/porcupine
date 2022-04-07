@@ -32,7 +32,7 @@ defaults:
     working-directory: binding/nodejs
 
 jobs:
-  build-github-hosted:
+  performance-github-hosted:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -64,7 +64,7 @@ jobs:
     - name: Test
       run: yarn test test/perf.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --num_test_iterations=100 --performance_threshold_sec=${{matrix.performance_threshold_sec}}
 
-  build-self-hosted:
+  performance-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:

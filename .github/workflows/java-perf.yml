@@ -1,12 +1,10 @@
-name: Java
+name: Java Performance
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - 'binding/java/**'
-      - '!binding/java/README.md'
       - 'lib/common/**'
       - 'lib/java/**'
       - 'resources/keyword_files/beaglebone/**'
@@ -15,12 +13,10 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/java.yml'
+      - '.github/workflows/java-perf.yml'
   pull_request:
     branches: [ master ]
     paths:
-      - 'binding/java/**'
-      - '!binding/java/README.md'
       - 'lib/common/**'
       - 'lib/java/**'
       - 'resources/keyword_files/beaglebone/**'
@@ -29,7 +25,7 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/java.yml'
+      - '.github/workflows/java-perf.yml'
 
 defaults:
   run:
@@ -42,6 +38,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+        - os: ubuntu-latest
+          performance_threshold_sec: 0.5
+        - os: windows-latest
+          performance_threshold_sec: 0.5
+        - os: macos-latest
+          performance_threshold_sec: 0.5
 
     steps:
     - uses: actions/checkout@v2
@@ -56,7 +59,7 @@ jobs:
       run: ./gradlew assemble
 
     - name: Test
-      run: ./gradlew test --info --tests PorcupineTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}"
+      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DnumTestIterations="100" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -64,6 +67,21 @@ jobs:
     strategy:
       matrix:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        include:
+        - machine: rpi2
+          performance_threshold_sec: 5.5
+        - machine: rpi3-32
+          performance_threshold_sec: 2.0
+        - machine: rpi3-64
+          performance_threshold_sec: 2.5
+        - machine: rpi4-32
+          performance_threshold_sec: 1.5
+        - machine: rpi4-64
+          performance_threshold_sec: 1.5
+        - machine: jetson
+          performance_threshold_sec: 2.0
+        - machine: beaglebone
+          performance_threshold_sec: 12.0
 
     steps:
     - uses: actions/checkout@v2
@@ -72,4 +90,4 @@ jobs:
       run: ./gradlew assemble
 
     - name: Test
-      run: ./gradlew test --info --tests PorcupineTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}"
+      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DnumTestIterations="100" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
