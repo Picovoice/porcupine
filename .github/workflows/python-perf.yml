@@ -48,8 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: []
+        os: [ubuntu-latest, windows-latest, macos-latest]        
         include:
         - os: ubuntu-latest
           performance_threshold_sec: 0.5
