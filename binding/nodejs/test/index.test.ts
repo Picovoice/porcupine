@@ -12,15 +12,14 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { performance } from "perf_hooks";
 
 import Porcupine from "../src/porcupine";
-import { getInt16Frames, checkWaveFile } from "../src/wave_util";
-import { WaveFile } from "wavefile";
+import {checkWaveFile, getInt16Frames} from "../src/wave_util";
+import {WaveFile} from "wavefile";
 
-import { PorcupineInvalidArgumentError, PorcupineInvalidStateError } from "../src/errors";
-import { getPlatform } from "../src/platforms";
-import { BuiltinKeyword } from "../src/builtin_keywords";
+import {PorcupineInvalidArgumentError, PorcupineInvalidStateError} from "../src/errors";
+import {getPlatform} from "../src/platforms";
+import {BuiltinKeyword} from "../src/builtin_keywords";
 
 const MODEL_PATH = "./lib/common/porcupine_params.pv";
 const MODEL_PATH_DE = "../../lib/common/porcupine_params_de.pv";
@@ -44,7 +43,7 @@ const WAV_PATH_SINGLE_KEYWORD_FR =
   "../../../resources/audio_samples/mon_chouchou.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS_FR =
   "../../../resources/audio_samples/multiple_keywords_fr.wav";
-  const WAV_PATH_NON_ASCII =
+const WAV_PATH_NON_ASCII =
   "../../../resources/audio_samples/murciélago.wav";
 const platform = getPlatform();
 
@@ -85,8 +84,6 @@ const keywordPathsNonAscii = [
 ];
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
-const PERFORMANCE_THRESHOLD_SEC = Number(process.argv.filter((x) => x.startsWith('--performance_threshold_sec='))[0]?.split('--performance_threshold_sec=')[1] ?? 0);
-const describe_if = (condition: boolean) => condition ? describe : describe.skip;
 
 function porcupineDetectionCounts(engineInstance: Porcupine, relativeWaveFilePath: string): Map<number, number> {
   const waveFilePath = path.join(__dirname, relativeWaveFilePath);
@@ -136,9 +133,9 @@ describe("successful keyword detections", () => {
 
   test("builtin keyword 'GRASSHOPPER'", () => {
     const porcupineEngine = new Porcupine(
-        ACCESS_KEY,
-        [BuiltinKeyword.GRASSHOPPER],
-        DEFAULT_SENSITIVITY_ARRAY
+      ACCESS_KEY,
+      [BuiltinKeyword.GRASSHOPPER],
+      DEFAULT_SENSITIVITY_ARRAY
     );
 
     const counts = porcupineDetectionCounts(
@@ -197,7 +194,7 @@ describe("successful keyword detections", () => {
 describe("manual paths", () => {
   test("manual model path", () => {
     const porcupineEngine = new Porcupine(
-      ACCESS_KEY,  
+      ACCESS_KEY,
       keywordPathsSinglePorcupine,
       DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH
@@ -212,7 +209,7 @@ describe("manual paths", () => {
 describe("keyword detection in DE", () => {
   test("single keyword single detection in DE", () => {
     const porcupineEngine = new Porcupine(
-      ACCESS_KEY,  
+      ACCESS_KEY,
       keywordPathsSingleDe,
       DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH_DE
@@ -253,7 +250,7 @@ describe("keyword detection in DE", () => {
 describe("keyword detection in ES", () => {
   test("single keyword single detection in ES", () => {
     const porcupineEngine = new Porcupine(
-      ACCESS_KEY,  
+      ACCESS_KEY,
       keywordPathsSingleEs,
       DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH_ES
@@ -291,9 +288,9 @@ describe("keyword detection in ES", () => {
 
 describe("keyword detection in FR", () => {
   test("single keyword single detection in FR", () => {
-    
+
     const porcupineEngine = new Porcupine(
-      ACCESS_KEY,  
+      ACCESS_KEY,
       keywordPathsSingleFr,
       DEFAULT_SENSITIVITY_ARRAY,
       MODEL_PATH_FR
@@ -426,7 +423,7 @@ describe("frame validation", () => {
 
   test("passing floating point frame values throws PorcupineInvalidArgumentError", () => {
     const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
-    const floatFrames = Array.from({ length: porcupineEngine.frameLength }).map(
+    const floatFrames = Array.from({length: porcupineEngine.frameLength}).map(
       (x) => 3.1415
     );
     expect(() => {
@@ -454,33 +451,3 @@ describe("invalid state", () => {
     }).toThrow(PorcupineInvalidStateError);
   });
 });
-
-describe_if(PERFORMANCE_THRESHOLD_SEC > 0)("performance", () => {
-  test("process", () => {
-    let porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-    [BuiltinKeyword.PORCUPINE],
-      [0.5]
-    );
-
-    const path = require("path");
-    const waveFilePath = path.join(__dirname, WAV_PATH_MULTIPLE_KEYWORDS);
-    const waveBuffer = fs.readFileSync(waveFilePath);
-    const waveAudioFile = new WaveFile(waveBuffer);
-
-    const frames = getInt16Frames(waveAudioFile, porcupineEngine.frameLength);
-    let total = 0;
-    for (let i = 0; i < frames.length; i++) {
-      const frame = frames[0];
-      const before = performance.now();
-      porcupineEngine.process(frame);
-      const after = performance.now();
-      total += (after - before);
-    }
-
-    porcupineEngine.release();
-
-    total = Number((total / 1000).toFixed(3));
-    expect(total).toBeLessThanOrEqual(PERFORMANCE_THRESHOLD_SEC);
-  })
-})
