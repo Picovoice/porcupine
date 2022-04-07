@@ -1,4 +1,4 @@
-name: Nodejs
+name: Node.js
 
 on:
   workflow_dispatch:
@@ -8,6 +8,7 @@ on:
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'
       - 'lib/node/**'
+      - 'lib/common/**'
       - 'resources/keyword_files/beaglebone/**'      
       - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
@@ -21,6 +22,7 @@ on:
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'
       - 'lib/node/**'
+      - 'lib/common/**'
       - 'resources/keyword_files/beaglebone/**'      
       - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
@@ -40,14 +42,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [14.x, 16.x]
-        include:
-        - os: ubuntu-latest
-          performance_threshold_sec: 0.5
-        - os: windows-latest
-          performance_threshold_sec: 0.5
-        - os: macos-latest
-          performance_threshold_sec: 0.5
+        node-version: [14.x, 16.x]        
 
     steps:
     - uses: actions/checkout@v2
@@ -64,29 +59,14 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --performance_threshold_sec=${{matrix.performance_threshold_sec}}
+      run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
-        include:
-        - machine: rpi2
-          performance_threshold_sec: 5.5
-        - machine: rpi3-32
-          performance_threshold_sec: 2.0
-        - machine: rpi3-64
-          performance_threshold_sec: 2.5
-        - machine: rpi4-32
-          performance_threshold_sec: 1.5
-        - machine: rpi4-64
-          performance_threshold_sec: 1.5
-        - machine: jetson
-          performance_threshold_sec: 2.0
-        - machine: beaglebone
-          performance_threshold_sec: 12.0
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]        
 
     steps:
     - uses: actions/checkout@v2
@@ -98,4 +78,4 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --performance_threshold_sec=${{matrix.performance_threshold_sec}}
+      run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
