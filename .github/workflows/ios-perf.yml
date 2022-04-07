@@ -1,0 +1,85 @@
+name: iOS Performance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths: 
+      - 'lib/node/**'
+      - 'lib/common/**'
+      - 'resources/keyword_files/ios/**'
+      - '.github/workflows/ios-perf.yml'
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - 'lib/node/**'
+      - 'lib/common/**'
+      - 'resources/keyword_files/ios/**'
+      - '.github/workflows/ios-perf.yml'
+      
+defaults:
+  run:
+    working-directory: binding/ios/PorcupineAppTest
+    
+jobs:
+  build:
+    name: Run iOS Tests on AppCenter
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        device: [iOS-14.5, iOS-32bit]
+        include:
+        - device: iOS-14.5
+          performanceThresholdSec: 0.5
+        - device: iOS-32bit
+          performanceThresholdSec: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.0
+
+      - name: Install Cocoapods
+        run: gem install cocoapods
+
+      - name: Install AppCenter CLI
+        run: npm install -g appcenter-cli
+
+      - name: Make build dir
+        run: mkdir ddp
+
+      - name: Run Cocoapods
+        run: pod install
+
+      - name: Inject AppID
+        run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+          PorcupineAppTestUITests/PerformanceTest.swift
+
+      - name: Inject Number of Iterations
+        run: sed -i '.bak' 's:{NUM_TEST_ITERATIONS}:100:'
+          PorcupineAppTestUITests/PerformanceTest.swift
+
+      - name: Inject Performance Threshold
+        run: sed -i '.bak' 's:{PERFORMANCE_THRESHOLD_SEC}:${{ matrix.performanceThresholdSec }}:'
+          PorcupineAppTestUITests/PerformanceTest.swift
+
+      - name: XCode Build
+        run: xcrun xcodebuild build-for-testing 
+          -configuration Debug 
+          -workspace PorcupineAppTest.xcworkspace 
+          -sdk iphoneos 
+          -scheme PorcupineAppTest
+          -derivedDataPath ddp 
+          CODE_SIGNING_ALLOWED=NO
+
+      - name: Run Tests on AppCenter
+        run: appcenter test run xcuitest 
+          --token ${{secrets.APPCENTERAPITOKEN}}
+          --app "Picovoice/Porcupine-iOS" 
+          --devices "Picovoice/${{ matrix.device }}"
+          --test-series "porcupine-ios" 
+          --locale "en_US" 
+          --build-dir ddp/Build/Products/Debug-iphoneos
