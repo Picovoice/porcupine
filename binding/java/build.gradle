@@ -207,6 +207,7 @@ compileTestJava {
 
 test {
     systemProperty 'pvTestingAccessKey', System.getProperty('pvTestingAccessKey')
+    systemProperty 'numTestIterations', System.getProperty('numTestIterations')
     systemProperty 'performanceThresholdSec', System.getProperty('performanceThresholdSec')
     useJUnitPlatform()
 }
