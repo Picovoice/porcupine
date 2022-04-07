@@ -54,7 +54,7 @@ class PorcupinePerformanceTestCase(unittest.TestCase):
         porcupine.delete()
 
         avg_perf = sum(perf_results) / self.NUM_TEST_ITERATIONS
-        print(f"avg_perf: {avg_perf}")
+        print(f"Average performance: %s" % avg_perf)
         self.assertLess(avg_perf, self.PERFORMANCE_THRESHOLD_SEC)
 
 

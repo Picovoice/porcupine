@@ -18,7 +18,7 @@ from util import *
 def _append_language(s, language):
     if language == 'en':
         return s
-    return f"{s}_{language}"
+    return "%s_%s" % (s, language)
 
 
 def read_wav_file(file_name, sample_rate):
@@ -68,5 +68,5 @@ def get_keyword_paths_by_language(relative, language, keywords):
 
 def get_audio_file_by_language(relative, language, audio_file_name=None):
     if audio_file_name is None:
-        audio_file_name = f"{_append_language('multiple_keywords', language)}.wav"
+        audio_file_name = "%s.wav" % _append_language('multiple_keywords', language)
     return os.path.join(os.path.dirname(__file__), relative, 'resources/audio_samples', audio_file_name)
