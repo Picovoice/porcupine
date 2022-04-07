@@ -5,13 +5,13 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
-      - '.github/workflows/android-appcenter.yml'
+      - 'lib/common/**'
+      - 'lib/android/**'
   pull_request:
     branches: [ master ]
     paths: 
-      - 'demo/android/Activity/porcupine-activity-demo-app/build.gradle'
-      - '.github/workflows/android-appcenter.yml'
+      - 'lib/common/**'
+      - 'lib/android/**'
 
 defaults:
   run:
@@ -19,8 +19,17 @@ defaults:
     
 jobs:
   build:
-    name: Run Android Tests on AppCenter
+    name: Run Android Speed Tests on AppCenter
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        device: [single-android, 32bit-android]
+        include:
+        - device: single-android
+          performanceThresholdSec: 0.5
+        - device: 32bit-android
+          performanceThresholdSec: 2
 
     steps:
     - uses: actions/checkout@v2
@@ -42,6 +51,12 @@ jobs:
     
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
+
+    - name: Inject Number of Iterations
+      run: echo numTestIterations="100" >> local.properties
+
+    - name: Inject Performance Threshold
+      run: echo performanceThresholdSec="${{ matrix.performanceThresholdSec }}" >> local.properties
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -56,7 +71,7 @@ jobs:
       run: appcenter test run espresso 
         --token ${{secrets.APPCENTERAPITOKEN}}
         --app "Picovoice/Porcupine-Android" 
-        --devices "Picovoice/android-min-max"
+        --devices "Picovoice/${{ matrix.device }}"
         --app-path porcupine-activity-demo-app/build/outputs/apk/debug/porcupine-activity-demo-app-debug.apk 
         --test-series "porcupine-android" 
         --locale "en_US" 
