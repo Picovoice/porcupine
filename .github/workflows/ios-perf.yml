@@ -73,6 +73,7 @@ jobs:
           -sdk iphoneos 
           -scheme PorcupineAppTest
           -derivedDataPath ddp 
+          -only-testing PorcupineAppTestUITests/PerformanceTest
           CODE_SIGNING_ALLOWED=NO
 
       - name: Run Tests on AppCenter
