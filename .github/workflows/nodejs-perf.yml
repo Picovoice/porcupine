@@ -103,5 +103,13 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
+    - name: Machine state before
+      working-directory: resources/scripts
+      run: bash machine-state.sh
+
     - name: Test
       run: yarn test test/perf.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --num_test_iterations=${{matrix.num_test_iterations}} --performance_threshold_sec=${{matrix.performance_threshold_sec}}
+
+    - name: Machine state after
+      working-directory: resources/scripts
+      run: bash machine-state.sh

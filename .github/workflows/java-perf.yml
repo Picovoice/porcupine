@@ -96,5 +96,13 @@ jobs:
     - name: Build
       run: ./gradlew assemble
 
+    - name: Machine state before
+      working-directory: resources/scripts
+      run: bash machine-state.sh
+
     - name: Test
       run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DnumTestIterations="${{matrix.num_test_iterations}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
+
+    - name: Machine state after
+      working-directory: resources/scripts
+      run: bash machine-state.sh
