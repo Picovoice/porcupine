@@ -56,15 +56,15 @@ jobs:
 
       - name: Inject AppID
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
-          PorcupineAppTestUITests/PerformanceTest.swift
+          PerformanceTest/PerformanceTest.swift
 
       - name: Inject Number of Iterations
         run: sed -i '.bak' 's:{NUM_TEST_ITERATIONS}:100:'
-          PorcupineAppTestUITests/PerformanceTest.swift
+          PerformanceTest/PerformanceTest.swift
 
       - name: Inject Performance Threshold
         run: sed -i '.bak' 's:{PERFORMANCE_THRESHOLD_SEC}:${{ matrix.performanceThresholdSec }}:'
-          PorcupineAppTestUITests/PerformanceTest.swift
+          PerformanceTest/PerformanceTest.swift
 
       - name: XCode Build
         run: xcrun xcodebuild build-for-testing 
