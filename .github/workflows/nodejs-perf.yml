@@ -1,0 +1,115 @@
+name: Node.js Performance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'lib/node/**'
+      - 'lib/common/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - '.github/workflows/nodejs-perf.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'lib/node/**'
+      - 'lib/common/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - '.github/workflows/nodejs-perf.yml'
+
+defaults:
+  run:
+    working-directory: binding/nodejs
+
+jobs:
+  performance-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+        - os: ubuntu-latest
+          performance_threshold_sec: 0.5
+        - os: windows-latest
+          performance_threshold_sec: 0.5
+        - os: macos-latest
+          performance_threshold_sec: 0.65
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js '16.x'
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+
+    - name: Pre-build dependencies
+      run: npm install yarn
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Test
+      run: yarn test test/perf.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --num_test_iterations=100 --performance_threshold_sec=${{matrix.performance_threshold_sec}}
+
+  performance-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        include:
+        - machine: rpi2
+          num_test_iterations: 20
+          performance_threshold_sec: 5.5
+        - machine: rpi3-32
+          num_test_iterations: 50
+          performance_threshold_sec: 2.0
+        - machine: rpi3-64
+          num_test_iterations: 50
+          performance_threshold_sec: 2.5
+        - machine: rpi4-32
+          num_test_iterations: 50
+          performance_threshold_sec: 1.5
+        - machine: rpi4-64
+          num_test_iterations: 50
+          performance_threshold_sec: 1.5
+        - machine: jetson
+          num_test_iterations: 50
+          performance_threshold_sec: 2.0
+        - machine: beaglebone
+          num_test_iterations: 10
+          performance_threshold_sec: 12.0
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Pre-build dependencies
+      run: npm install --global yarn
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Machine state before
+      working-directory: resources/scripts
+      run: bash machine-state.sh
+
+    - name: Test
+      run: yarn test test/perf.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --num_test_iterations=${{matrix.num_test_iterations}} --performance_threshold_sec=${{matrix.performance_threshold_sec}}
+
+    - name: Machine state after
+      working-directory: resources/scripts
+      run: bash machine-state.sh

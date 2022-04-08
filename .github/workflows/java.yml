@@ -23,7 +23,7 @@ on:
       - '!binding/java/README.md'
       - 'lib/common/**'
       - 'lib/java/**'
-      - 'resources/keyword_files/beaglebone/**'      
+      - 'resources/keyword_files/beaglebone/**'
       - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
       - 'resources/keyword_files/mac/**'
@@ -42,13 +42,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        include:
-        - os: ubuntu-latest
-          performance_threshold_sec: 0.5
-        - os: windows-latest
-          performance_threshold_sec: 0.5
-        - os: macos-latest
-          performance_threshold_sec: 0.5
 
     steps:
     - uses: actions/checkout@v2
@@ -59,14 +52,11 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Validate Gradle wrapper
-      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-
     - name: Build
       run: ./gradlew assemble
 
     - name: Test
-      run: ./gradlew test -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
+      run: ./gradlew test --info --tests PorcupineTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}"
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -74,30 +64,12 @@ jobs:
     strategy:
       matrix:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
-        include:
-        - machine: rpi2
-          performance_threshold_sec: 5.5
-        - machine: rpi3-32
-          performance_threshold_sec: 2.0
-        - machine: rpi3-64
-          performance_threshold_sec: 2.5
-        - machine: rpi4-32
-          performance_threshold_sec: 1.5
-        - machine: rpi4-64
-          performance_threshold_sec: 1.5
-        - machine: jetson
-          performance_threshold_sec: 2.0
-        - machine: beaglebone
-          performance_threshold_sec: 12.0
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Validate Gradle wrapper
-      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
     - name: Build
       run: ./gradlew assemble
 
     - name: Test
-      run: ./gradlew test -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
+      run: ./gradlew test --info --tests PorcupineTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}"

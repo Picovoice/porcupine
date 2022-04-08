@@ -1,0 +1,114 @@
+name: Python Perfomance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/jetson/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - '.github/workflows/python-perf.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/jetson/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - '.github/workflows/python-perf.yml'
+
+defaults:
+  run:
+    working-directory: binding/python
+
+jobs:
+  perf-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+        - os: ubuntu-latest
+          performance_threshold_sec: 0.5
+        - os: windows-latest
+          performance_threshold_sec: 0.5
+        - os: macos-latest
+          performance_threshold_sec: 0.65
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python '3.10'
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Test
+      run: python test_porcupine_perf.py ${{secrets.PV_VALID_ACCESS_KEY}} 100 ${{matrix.performance_threshold_sec}}
+
+
+  perf-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        include:
+        - machine: rpi2
+          num_test_iterations: 20
+          performance_threshold_sec: 7.6
+        - machine: rpi3-32
+          num_test_iterations: 50
+          performance_threshold_sec: 3.2
+        - machine: rpi3-64
+          num_test_iterations: 50
+          performance_threshold_sec: 3.5
+        - machine: rpi4-32
+          num_test_iterations: 50
+          performance_threshold_sec: 1.5
+        - machine: rpi4-64
+          num_test_iterations: 50
+          performance_threshold_sec: 1.5
+        - machine: jetson
+          num_test_iterations: 50
+          performance_threshold_sec: 2.0
+        - machine: beaglebone
+          num_test_iterations: 10
+          performance_threshold_sec: 12.0
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Machine state before
+      working-directory: resources/scripts
+      run: bash machine-state.sh
+
+    - name: Test
+      run: python3 test_porcupine_perf.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{matrix.num_test_iterations}} ${{matrix.performance_threshold_sec}}
+
+    - name: Machine state after
+      working-directory: resources/scripts
+      run: bash machine-state.sh

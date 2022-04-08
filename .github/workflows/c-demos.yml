@@ -7,12 +7,38 @@ on:
     paths:
       - 'demo/c/**'
       - '!demo/c/README.md'
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/jetson/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
       - '.github/workflows/c-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/c/**'
       - '!demo/c/README.md'
+      - 'lib/beaglebone/**'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/jetson/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
       - '.github/workflows/c-demos.yml'
 
 
@@ -38,7 +64,7 @@ jobs:
 
     - name: Build micdemo
       run: cmake --build ./build --target porcupine_demo_mic
-  
+
   build-micdemo-self-hosted:
     runs-on: ${{ matrix.machine }}
 
@@ -68,17 +94,14 @@ jobs:
           platform: linux
           arch: x86_64
           ext: so
-          performance_threshold_sec: 0.5
         - os: windows-latest
           platform: windows
           arch: amd64
           ext: dll
-          performance_threshold_sec: 0.5
         - os: macos-latest
           platform: mac
           arch: x86_64
           ext: dylib
-          performance_threshold_sec: 0.5
 
     steps:
     - uses: actions/checkout@v2
@@ -90,7 +113,7 @@ jobs:
 
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file
-    
+
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (en)
       with:
@@ -99,7 +122,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params.pv
         keyword_path: ../../resources/keyword_files/${{ matrix.platform }}/porcupine_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords.wav
-        performance_threshold_sec: ${{ matrix.performance_threshold_sec }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)
@@ -127,7 +149,7 @@ jobs:
         model_path: ../../lib/common/porcupine_params_fr.pv
         keyword_path: ../../resources/keyword_files_fr/${{ matrix.platform }}/framboise_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
-  
+
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
 
@@ -138,31 +160,24 @@ jobs:
         - machine: rpi2
           platform: raspberry-pi
           arch: cortex-a7
-          performance_threshold_sec: 5.5
         - machine: rpi3-32
           platform: raspberry-pi
           arch: cortex-a53
-          performance_threshold_sec: 2.0
         - machine: rpi3-64
           platform: raspberry-pi
           arch: cortex-a53-aarch64
-          performance_threshold_sec: 2.5
         - machine: rpi4-32
           platform: raspberry-pi
           arch: cortex-a72
-          performance_threshold_sec: 1.5
         - machine: rpi4-64
           platform: raspberry-pi
           arch: cortex-a72-aarch64
-          performance_threshold_sec: 1.5
         - machine: jetson
           platform: jetson
           arch: cortex-a57-aarch64
-          performance_threshold_sec: 2.0
         - machine: beaglebone
           platform: beaglebone
           arch: ''
-          performance_threshold_sec: 12.0
 
     steps:
     - uses: actions/checkout@v2
@@ -183,7 +198,6 @@ jobs:
         model_path: ../../lib/common/porcupine_params.pv
         keyword_path: ../../resources/keyword_files/${{ matrix.platform }}/porcupine_${{ matrix.platform }}.ppn
         audio_path: ../../resources/audio_samples/multiple_keywords.wav
-        performance_threshold_sec: ${{ matrix.performance_threshold_sec }}
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)
