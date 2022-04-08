@@ -78,7 +78,7 @@ public class PerformanceTest {
 
         File testAudio = new File(testResourcesPath, "audio_samples/multiple_keywords.wav");
 
-        ArrayList<Long> results = new ArrayList<>();
+        long totalNSec = 0;
         for (int i = 0; i < numTestIterations; i++) {
             FileInputStream audioInputStream = new FileInputStream(testAudio);
 
@@ -87,8 +87,6 @@ public class PerformanceTest {
             ByteBuffer pcmBuff = ByteBuffer.wrap(rawData).order(ByteOrder.LITTLE_ENDIAN);
 
             audioInputStream.skip(44);
-
-            long totalNSec = 0;
             while (audioInputStream.available() > 0) {
                 int numRead = audioInputStream.read(pcmBuff.array());
                 if (numRead == p.getFrameLength() * 2) {
@@ -99,11 +97,10 @@ public class PerformanceTest {
                     totalNSec += (after - before);
                 }
             }
-            results.add(totalNSec);
         }
         p.delete();
 
-        double avgNSec = results.stream().mapToDouble(val -> val).average().orElse(0.0);
+        double avgNSec = totalNSec / (double) numTestIterations;
         double avgSec = ((double) Math.round(avgNSec * 1e-6)) / 1000.0;
         assertTrue(
                 String.format("Expected threshold (%.3fs), process took (%.3fs)", performanceThresholdSec, avgSec),
