@@ -42,9 +42,9 @@ describe("performance", () => {
     let perf_results = []
     for (let i = 0; i < NUM_TEST_ITERATIONS; i++) {
       let total = 0;
-      for (let i = 0; i < frames.length; i++) {
+      for (let j = 0; j < frames.length; j++) {
         const before = performance.now();
-        porcupineEngine.process(frames[i]);
+        porcupineEngine.process(frames[j]);
         total += (performance.now() - before);
       }
       perf_results.push(total)
