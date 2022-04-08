@@ -37,11 +37,6 @@
                BlueprintName = "PorcupineAppTestUITests"
                ReferencedContainer = "container:PorcupineAppTest.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "PerformanceTest">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

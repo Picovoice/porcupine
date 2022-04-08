@@ -32,16 +32,11 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1E7744CF27CD9D7F00491D0B"
-               BuildableName = "PorcupineAppTestUITests.xctest"
-               BlueprintName = "PorcupineAppTestUITests"
+               BlueprintIdentifier = "1E5B7A9B27FFC12000F8BDDB"
+               BuildableName = "PerformanceTest.xctest"
+               BlueprintName = "PerformanceTest"
                ReferencedContainer = "container:PorcupineAppTest.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "PorcupineAppTestUITests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

@@ -33,7 +33,7 @@ jobs:
         - device: iOS-14.5
           performanceThresholdSec: 0.5
         - device: iOS-32bit
-          performanceThresholdSec: 1
+          performanceThresholdSec: 0.5
 
     steps:
       - name: Checkout

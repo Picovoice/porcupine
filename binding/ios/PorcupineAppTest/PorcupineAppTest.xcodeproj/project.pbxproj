@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E5B7AA127FFC12000F8BDDB /* PerformanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32769C288BB32DEA6645EC92 /* PerformanceTest.swift */; };
+		1E5B7AA327FFC12000F8BDDB /* libPods-PorcupineAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */; };
+		1E5B7ABA27FFC18400F8BDDB /* multiple_keywords.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E5B7AB927FFC18400F8BDDB /* multiple_keywords.wav */; };
 		1E7744B427CD9D7E00491D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7744B327CD9D7E00491D0B /* AppDelegate.swift */; };
 		1E7744B827CD9D7E00491D0B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7744B727CD9D7E00491D0B /* ViewController.swift */; };
 		1E7744BB27CD9D7E00491D0B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E7744B927CD9D7E00491D0B /* Main.storyboard */; };
@@ -26,12 +29,18 @@
 		1E77450827CDA42700491D0B /* ananas_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450727CDA42700491D0B /* ananas_ios.ppn */; };
 		1E77450A27CDA4B200491D0B /* alexa_linux.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450927CDA4B200491D0B /* alexa_linux.ppn */; };
 		1E77450C27CDA51200491D0B /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450B27CDA51200491D0B /* murciélago_ios.ppn */; };
-		32769F320804D70A1F06C251 /* PerformanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32769C288BB32DEA6645EC92 /* PerformanceTest.swift */; };
 		9F5D87E08F802DCCB9EB668E /* libPods-PorcupineAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */; };
 		D6D823302608F81422F3B98A /* libPods-PorcupineAppTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE86B9731F9D981EE76C21A /* libPods-PorcupineAppTest.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1E5B7A9D27FFC12000F8BDDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E7744A827CD9D7E00491D0B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E7744AF27CD9D7E00491D0B;
+			remoteInfo = PorcupineAppTest;
+		};
 		1E7744D127CD9D7F00491D0B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1E7744A827CD9D7E00491D0B /* Project object */;
@@ -44,6 +53,9 @@
 /* Begin PBXFileReference section */
 		052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineAppTestUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EE86B9731F9D981EE76C21A /* libPods-PorcupineAppTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineAppTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E5B7AB727FFC12000F8BDDB /* PerformanceTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerformanceTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E5B7AB827FFC15100F8BDDB /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
+		1E5B7AB927FFC18400F8BDDB /* multiple_keywords.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords.wav; path = ../../../../resources/audio_samples/multiple_keywords.wav; sourceTree = "<group>"; };
 		1E7744B027CD9D7E00491D0B /* PorcupineAppTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineAppTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E7744B327CD9D7E00491D0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E7744B727CD9D7E00491D0B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +87,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1E5B7AA227FFC12000F8BDDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E5B7AA327FFC12000F8BDDB /* libPods-PorcupineAppTestUITests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1E7744AD27CD9D7E00491D0B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,9 +125,20 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		1E5B7A9A27FFC0C400F8BDDB /* PerformanceTest */ = {
+			isa = PBXGroup;
+			children = (
+				32769C288BB32DEA6645EC92 /* PerformanceTest.swift */,
+				1E5B7AB827FFC15100F8BDDB /* info.plist */,
+				1E5B7AB927FFC18400F8BDDB /* multiple_keywords.wav */,
+			);
+			path = PerformanceTest;
+			sourceTree = "<group>";
+		};
 		1E7744A727CD9D7E00491D0B = {
 			isa = PBXGroup;
 			children = (
+				1E5B7A9A27FFC0C400F8BDDB /* PerformanceTest */,
 				1E7744B227CD9D7E00491D0B /* PorcupineAppTest */,
 				1E7744D327CD9D7F00491D0B /* PorcupineAppTestUITests */,
 				1E7744B127CD9D7E00491D0B /* Products */,
@@ -121,6 +152,7 @@
 			children = (
 				1E7744B027CD9D7E00491D0B /* PorcupineAppTest.app */,
 				1E7744D027CD9D7F00491D0B /* PorcupineAppTestUITests.xctest */,
+				1E5B7AB727FFC12000F8BDDB /* PerformanceTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -144,7 +176,6 @@
 				1E7744E927CDA2E700491D0B /* test_resources */,
 				1E7744D427CD9D7F00491D0B /* PorcupineAppTestUITests.swift */,
 				1E7744E327CDA13600491D0B /* info.plist */,
-				32769C288BB32DEA6645EC92 /* PerformanceTest.swift */,
 			);
 			path = PorcupineAppTestUITests;
 			sourceTree = "<group>";
@@ -237,6 +268,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1E5B7A9B27FFC12000F8BDDB /* PerformanceTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E5B7AB427FFC12000F8BDDB /* Build configuration list for PBXNativeTarget "PerformanceTest" */;
+			buildPhases = (
+				1E5B7A9E27FFC12000F8BDDB /* [CP] Check Pods Manifest.lock */,
+				1E5B7A9F27FFC12000F8BDDB /* Sources */,
+				1E5B7AA227FFC12000F8BDDB /* Frameworks */,
+				1E5B7AA427FFC12000F8BDDB /* Resources */,
+				1E5B7AB227FFC12000F8BDDB /* [CP] Embed Pods Frameworks */,
+				1E5B7AB327FFC12000F8BDDB /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1E5B7A9C27FFC12000F8BDDB /* PBXTargetDependency */,
+			);
+			name = PerformanceTest;
+			productName = PorcupineAppTestUITests;
+			productReference = 1E5B7AB727FFC12000F8BDDB /* PerformanceTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		1E7744AF27CD9D7E00491D0B /* PorcupineAppTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1E7744DA27CD9D7F00491D0B /* Build configuration list for PBXNativeTarget "PorcupineAppTest" */;
@@ -288,6 +340,9 @@
 				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
+					1E5B7A9B27FFC12000F8BDDB = {
+						TestTargetID = 1E7744AF27CD9D7E00491D0B;
+					};
 					1E7744AF27CD9D7E00491D0B = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
@@ -312,11 +367,20 @@
 			targets = (
 				1E7744AF27CD9D7E00491D0B /* PorcupineAppTest */,
 				1E7744CF27CD9D7F00491D0B /* PorcupineAppTestUITests */,
+				1E5B7A9B27FFC12000F8BDDB /* PerformanceTest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1E5B7AA427FFC12000F8BDDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E5B7ABA27FFC18400F8BDDB /* multiple_keywords.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1E7744AE27CD9D7E00491D0B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -350,6 +414,62 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1E5B7A9E27FFC12000F8BDDB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PorcupineAppTestUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1E5B7AB227FFC12000F8BDDB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1E5B7AB327FFC12000F8BDDB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1EF8F08FE0010CAA361B2C07 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -465,6 +585,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1E5B7A9F27FFC12000F8BDDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E5B7AA127FFC12000F8BDDB /* PerformanceTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1E7744AC27CD9D7E00491D0B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -479,13 +607,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E7744D527CD9D7F00491D0B /* PorcupineAppTestUITests.swift in Sources */,
-				32769F320804D70A1F06C251 /* PerformanceTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1E5B7A9C27FFC12000F8BDDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1E7744AF27CD9D7E00491D0B /* PorcupineAppTest */;
+			targetProxy = 1E5B7A9D27FFC12000F8BDDB /* PBXContainerItemProxy */;
+		};
 		1E7744D227CD9D7F00491D0B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1E7744AF27CD9D7E00491D0B /* PorcupineAppTest */;
@@ -513,6 +645,52 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1E5B7AB527FFC12000F8BDDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D7093B8281C71FD0E23E0DC /* Pods-PorcupineAppTestUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65723695GD;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.PorcupineAppTestUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PorcupineAppTest;
+			};
+			name = Debug;
+		};
+		1E5B7AB627FFC12000F8BDDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E5391C493E5CF88A08DBDADF /* Pods-PorcupineAppTestUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65723695GD;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.PorcupineAppTestUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PorcupineAppTest;
+			};
+			name = Release;
+		};
 		1E7744D827CD9D7F00491D0B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -739,6 +917,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1E5B7AB427FFC12000F8BDDB /* Build configuration list for PBXNativeTarget "PerformanceTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E5B7AB527FFC12000F8BDDB /* Debug */,
+				1E5B7AB627FFC12000F8BDDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1E7744AB27CD9D7E00491D0B /* Build configuration list for PBXProject "PorcupineAppTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
