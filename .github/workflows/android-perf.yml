@@ -5,14 +5,14 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - 'lib/node/**'
+      - 'lib/android/**'
       - 'lib/common/**'
       - 'resources/keyword_files/android/**'
       - '.github/workflows/android-perf.yml'
   pull_request:
     branches: [ master ]
     paths: 
-      - 'lib/node/**'
+      - 'lib/android/**'
       - 'lib/common/**'
       - 'resources/keyword_files/android/**'
       - '.github/workflows/android-perf.yml'

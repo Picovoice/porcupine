@@ -5,14 +5,14 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - 'lib/node/**'
+      - 'lib/ios/**'
       - 'lib/common/**'
       - 'resources/keyword_files/ios/**'
       - '.github/workflows/ios-perf.yml'
   pull_request:
     branches: [ master ]
     paths: 
-      - 'lib/node/**'
+      - 'lib/ios/**'
       - 'lib/common/**'
       - 'resources/keyword_files/ios/**'
       - '.github/workflows/ios-perf.yml'
