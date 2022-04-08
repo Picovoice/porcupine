@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1E5B7AA127FFC12000F8BDDB /* PerformanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32769C288BB32DEA6645EC92 /* PerformanceTest.swift */; };
-		1E5B7AA327FFC12000F8BDDB /* libPods-PorcupineAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */; };
 		1E5B7ABA27FFC18400F8BDDB /* multiple_keywords.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E5B7AB927FFC18400F8BDDB /* multiple_keywords.wav */; };
 		1E7744B427CD9D7E00491D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7744B327CD9D7E00491D0B /* AppDelegate.swift */; };
 		1E7744B827CD9D7E00491D0B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7744B727CD9D7E00491D0B /* ViewController.swift */; };
@@ -29,6 +28,8 @@
 		1E77450827CDA42700491D0B /* ananas_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450727CDA42700491D0B /* ananas_ios.ppn */; };
 		1E77450A27CDA4B200491D0B /* alexa_linux.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450927CDA4B200491D0B /* alexa_linux.ppn */; };
 		1E77450C27CDA51200491D0B /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450B27CDA51200491D0B /* murciélago_ios.ppn */; };
+		3F4E730C6560BFF8341FBC2B /* libPods-PerformanceTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2462DC7A128733C7CD7686B0 /* libPods-PerformanceTest.a */; };
+		6F1FBE676D2C52FF23098433 /* libPods-PorcupineAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 011FA47DB36286585DA78022 /* libPods-PorcupineAppTestUITests.a */; };
 		9F5D87E08F802DCCB9EB668E /* libPods-PorcupineAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */; };
 		D6D823302608F81422F3B98A /* libPods-PorcupineAppTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE86B9731F9D981EE76C21A /* libPods-PorcupineAppTest.a */; };
 /* End PBXBuildFile section */
@@ -51,7 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineAppTestUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		011FA47DB36286585DA78022 /* libPods-PorcupineAppTestUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineAppTestUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EE86B9731F9D981EE76C21A /* libPods-PorcupineAppTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineAppTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E5B7AB727FFC12000F8BDDB /* PerformanceTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerformanceTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E5B7AB827FFC15100F8BDDB /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
@@ -79,10 +80,13 @@
 		1E77450727CDA42700491D0B /* ananas_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = ananas_ios.ppn; path = ../../../../resources/keyword_files_de/ios/ananas_ios.ppn; sourceTree = "<group>"; };
 		1E77450927CDA4B200491D0B /* alexa_linux.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = alexa_linux.ppn; path = ../../../../resources/keyword_files/linux/alexa_linux.ppn; sourceTree = "<group>"; };
 		1E77450B27CDA51200491D0B /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "murciélago_ios.ppn"; path = "../../../../resources/keyword_files_es/ios/murciélago_ios.ppn"; sourceTree = "<group>"; };
+		2462DC7A128733C7CD7686B0 /* libPods-PerformanceTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PerformanceTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D198D7EAF41809AAC56B915 /* Pods-PorcupineAppTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTest.release.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTest/Pods-PorcupineAppTest.release.xcconfig"; sourceTree = "<group>"; };
 		32769C288BB32DEA6645EC92 /* PerformanceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceTest.swift; sourceTree = "<group>"; };
 		4D7093B8281C71FD0E23E0DC /* Pods-PorcupineAppTestUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTestUITests.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5F1DBC0ABD84F719FC65D140 /* Pods-PorcupineAppTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTest.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTest/Pods-PorcupineAppTest.debug.xcconfig"; sourceTree = "<group>"; };
+		6CED4EA1CCD169B32C0E34EB /* Pods-PerformanceTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceTest.release.xcconfig"; path = "Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest.release.xcconfig"; sourceTree = "<group>"; };
+		9BBD91828D5A85912D7932D4 /* Pods-PerformanceTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceTest.debug.xcconfig"; path = "Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest.debug.xcconfig"; sourceTree = "<group>"; };
 		E5391C493E5CF88A08DBDADF /* Pods-PorcupineAppTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTestUITests.release.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E5B7AA327FFC12000F8BDDB /* libPods-PorcupineAppTestUITests.a in Frameworks */,
+				3F4E730C6560BFF8341FBC2B /* libPods-PerformanceTest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F5D87E08F802DCCB9EB668E /* libPods-PorcupineAppTestUITests.a in Frameworks */,
+				6F1FBE676D2C52FF23098433 /* libPods-PorcupineAppTestUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +126,8 @@
 				2D198D7EAF41809AAC56B915 /* Pods-PorcupineAppTest.release.xcconfig */,
 				4D7093B8281C71FD0E23E0DC /* Pods-PorcupineAppTestUITests.debug.xcconfig */,
 				E5391C493E5CF88A08DBDADF /* Pods-PorcupineAppTestUITests.release.xcconfig */,
+				9BBD91828D5A85912D7932D4 /* Pods-PerformanceTest.debug.xcconfig */,
+				6CED4EA1CCD169B32C0E34EB /* Pods-PerformanceTest.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -260,7 +267,8 @@
 			isa = PBXGroup;
 			children = (
 				0EE86B9731F9D981EE76C21A /* libPods-PorcupineAppTest.a */,
-				052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */,
+				2462DC7A128733C7CD7686B0 /* libPods-PerformanceTest.a */,
+				011FA47DB36286585DA78022 /* libPods-PorcupineAppTestUITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -429,7 +437,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PorcupineAppTestUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PerformanceTest-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -442,15 +450,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1E5B7AB327FFC12000F8BDDB /* [CP] Copy Pods Resources */ = {
@@ -459,15 +467,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1EF8F08FE0010CAA361B2C07 /* [CP] Embed Pods Frameworks */ = {
@@ -647,7 +655,7 @@
 /* Begin XCBuildConfiguration section */
 		1E5B7AB527FFC12000F8BDDB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D7093B8281C71FD0E23E0DC /* Pods-PorcupineAppTestUITests.debug.xcconfig */;
+			baseConfigurationReference = 9BBD91828D5A85912D7932D4 /* Pods-PerformanceTest.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -670,7 +678,7 @@
 		};
 		1E5B7AB627FFC12000F8BDDB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5391C493E5CF88A08DBDADF /* Pods-PorcupineAppTestUITests.release.xcconfig */;
+			baseConfigurationReference = 6CED4EA1CCD169B32C0E34EB /* Pods-PerformanceTest.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -8,3 +8,7 @@ end
 target 'PorcupineAppTestUITests' do
     pod 'Porcupine-iOS', '~> 2.1.0'
 end
+
+target 'PerformanceTest' do
+    pod 'Porcupine-iOS', '~> 2.1.0'
+end
