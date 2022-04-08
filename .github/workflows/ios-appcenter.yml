@@ -51,8 +51,7 @@ jobs:
           -workspace PorcupineAppTest.xcworkspace 
           -sdk iphoneos 
           -scheme PorcupineAppTest
-          -derivedDataPath ddp 
-          -only-testing PorcupineAppTestUITests/PorcupineAppTestUITests
+          -derivedDataPath ddp
           CODE_SIGNING_ALLOWED=NO
 
       - name: Run Tests on AppCenter

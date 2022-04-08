@@ -39,7 +39,7 @@
             </BuildableReference>
             <SkippedTests>
                <Test
-                  Identifier = "PerformanceTest">
+                  Identifier = "PorcupineAppTestUITests">
                </Test>
             </SkippedTests>
          </TestableReference>

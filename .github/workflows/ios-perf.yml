@@ -71,9 +71,8 @@ jobs:
           -configuration Debug 
           -workspace PorcupineAppTest.xcworkspace 
           -sdk iphoneos 
-          -scheme PorcupineAppTest
+          -scheme PerformanceTest
           -derivedDataPath ddp 
-          -only-testing PorcupineAppTestUITests/PerformanceTest
           CODE_SIGNING_ALLOWED=NO
 
       - name: Run Tests on AppCenter
