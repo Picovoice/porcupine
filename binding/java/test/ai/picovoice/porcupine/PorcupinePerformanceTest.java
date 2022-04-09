@@ -42,19 +42,16 @@ public class PorcupinePerformanceTest {
         String audioFilePath = PorcupineTestUtils.getTestAudioFilePath("multiple_keywords.wav");
         File testAudioPath = new File(audioFilePath);
 
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(testAudioPath);
-        assertEquals(audioInputStream.getFormat().getFrameRate(), 16000);
 
-        int byteDepth = audioInputStream.getFormat().getFrameSize();
-        int bufferSize = frameLen * byteDepth;
-
-        byte[] pcm = new byte[bufferSize];
         short[] porcupineFrame = new short[frameLen];
-        int numBytesRead;
-
         long[] perfResults = new long[numTestIterations];
         for (int i = 0; i < numTestIterations; i++) {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(testAudioPath);
+            int byteDepth = audioInputStream.getFormat().getFrameSize();
+            byte[] pcm = new byte[frameLen * byteDepth];
+
             long totalNSec = 0;
+            int numBytesRead;
             while ((numBytesRead = audioInputStream.read(pcm)) != -1) {
                 if (numBytesRead / byteDepth == frameLen) {
                     ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
@@ -64,6 +61,10 @@ public class PorcupinePerformanceTest {
                 }
             }
             perfResults[i] = totalNSec;
+            if (i > 0) {
+                perfResults[i] = totalNSec;
+            }
+            audioInputStream.close();
         }
 
         long avgPerfNSec = Arrays.stream(perfResults).sum() / numTestIterations;

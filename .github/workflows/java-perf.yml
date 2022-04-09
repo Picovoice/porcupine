@@ -5,6 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - 'binding/java/**/PorcupinePerformanceTest.java'
       - 'lib/common/**'
       - 'lib/java/**'
       - 'resources/keyword_files/beaglebone/**'
@@ -36,6 +37,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
@@ -65,6 +67,7 @@ jobs:
     runs-on: ${{ matrix.machine }}
 
     strategy:
+      fail-fast: false
       matrix:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
         include:
