@@ -51,18 +51,16 @@ The binding provides the `Porcupine` class. Create instances of the `Porcupine` 
 The built-in keywords give a quick way to get started. Here we can specify that we want to listen for the wake words "grasshopper" and "bumblebee" with [sensitivities](https://picovoice.ai/docs/faq/porcupine/#what-should-i-set-the-sensitivity-value-to) of 0.5 and 0.65, respectively. Since Porcupine can listen to multiple keywords simultaneously, they are provided as an array argument.
 
 ```javascript
-const Porcupine = require("@picovoice/porcupine-node");
-
 const {
-  GRASSHOPPER,
-  BUMBLEBEE,
-} = require("@picovoice/porcupine-node/builtin_keywords");
+  Porcupine,
+  BuiltinKeyword,
+}= require("@picovoice/porcupine-node");
 
 const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
 
 const handle = new Porcupine(
     accessKey,
-    [GRASSHOPPER, BUMBLEBEE], 
+    [BuiltinKeyword.GRASSHOPPER, BuiltinKeyword.BUMBLEBEE],
     [0.5, 0.65]);
 
 // process a single frame of audio
@@ -96,7 +94,7 @@ const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https:
 
 const handle = new Porcupine(
     accessKey,
-    ["/absolute/path/to/your/keyword.ppn"], 
+    ["/absolute/path/to/your/keyword.ppn"],
     [0.5]);
 ```
 
