@@ -23,7 +23,7 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 ## Compatibility
 
-This binding is for running Porcupine on **Flutter 1.20.0+** on the following platforms:
+This binding is for running Porcupine on **Flutter 2.8.1+** on the following platforms:
 
 - Android 5.0+ (API 21+)
 - iOS 9.0+
