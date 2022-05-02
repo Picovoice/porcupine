@@ -9,7 +9,6 @@ environment:
 
 dependencies:
   path_provider: ^2.0.9
-  path_provider_android: ^2.0.13
   flutter:
     sdk: flutter
 
