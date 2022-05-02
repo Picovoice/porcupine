@@ -136,7 +136,7 @@ packages:
       name: path_provider_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.12"
+    version: "2.0.13"
   path_provider_ios:
     dependency: transitive
     description:
@@ -189,9 +189,9 @@ packages:
   porcupine_flutter:
     dependency: "direct main"
     description:
-      name: porcupine_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../binding/flutter"
+      relative: true
+    source: path
     version: "2.1.1"
   process:
     dependency: transitive
@@ -277,4 +277,4 @@ packages:
     version: "0.2.0+1"
 sdks:
   dart: ">=2.15.0 <3.0.0"
-  flutter: ">=2.8.0"
+  flutter: ">=2.8.1"
