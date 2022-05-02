@@ -3,6 +3,8 @@ description: Demonstrates how to use the porcupine plugin.
 
 publish_to: 'none'
 
+version: 1.0.0
+
 environment:
   sdk: ">=2.14.0 <3.0.0"
   flutter: ">=2.8.1"
