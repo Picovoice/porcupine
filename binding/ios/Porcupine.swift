@@ -81,21 +81,13 @@ public class Porcupine {
         }
         
         if !FileManager().fileExists(atPath: modelPathArg!) {
-            do {
-                modelPathArg = try getResourcePath(modelPathArg!)
-            } catch is PorcupineIOError {
-                throw PorcupineInvalidArgumentError("Model file does not exist at '\(modelPathArg!)'")
-            }
+            modelPathArg = try getResourcePath(modelPathArg!)
         }
 
         var keywordPathsArgs = keywordPaths
         for i in 0..<keywordPathsArgs.count {
             if !FileManager().fileExists(atPath: keywordPathsArgs[i]) {
-                do {
-                    keywordPathsArgs[i] = try getResourcePath(keywordPathsArgs[i])
-                } catch is PorcupineIOError {
-                    throw PorcupineInvalidArgumentError("Keyword file does not exist at '\(keywordPathsArgs[i])'")
-                }
+                keywordPathsArgs[i] = try getResourcePath(keywordPathsArgs[i])
             }
         }
         
