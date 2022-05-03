@@ -1,5 +1,5 @@
 //
-//  Copyright 2021 Picovoice Inc.
+//  Copyright 2021-2022 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -80,21 +80,22 @@ public class Porcupine {
             throw PorcupineInvalidArgumentError("One or more sensitivities provided were not floating-point values between [0,1]")
         }
         
-        if !FileManager().fileExists(atPath: modelPathArg!){
-            throw PorcupineInvalidArgumentError("Model file at does not exist at '\(modelPathArg!)'")
+        if !FileManager().fileExists(atPath: modelPathArg!) {
+            modelPathArg = try getResourcePath(modelPathArg!)
         }
-        
-        for keywordPath in keywordPaths {
-            if !FileManager().fileExists(atPath: keywordPath){
-                throw PorcupineInvalidArgumentError("Keyword file at does not exist at '\(keywordPath)'")
+
+        var keywordPathsArgs = keywordPaths
+        for i in 0..<keywordPathsArgs.count {
+            if !FileManager().fileExists(atPath: keywordPathsArgs[i]) {
+                keywordPathsArgs[i] = try getResourcePath(keywordPathsArgs[i])
             }
         }
         
         let status = pv_porcupine_init(
             accessKey,
             modelPathArg,
-            Int32(keywordPaths.count),
-            keywordPaths.map { UnsafePointer(strdup($0)) },
+            Int32(keywordPathsArgs.count),
+            keywordPathsArgs.map { UnsafePointer(strdup($0)) },
             sensitivitiesArg,
             &handle)
         try checkStatus(status, "Porcupine init failed")
@@ -142,7 +143,7 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
     ///   the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
     public convenience init(accessKey: String, keyword: Porcupine.BuiltInKeyword, modelPath:String? = nil, sensitivity: Float32 = 0.5) throws {
@@ -180,6 +181,22 @@ public class Porcupine {
         let status = pv_porcupine_process(self.handle, pcm, &result)
         try checkStatus(status, "Porcupine process failed")
         return result
+    }
+
+    /// Given a path, return the full path to the resource.
+    ///
+    /// - Parameters:
+    ///   - filePath: relative path of a file in the bundle.
+    /// - Throws: PorcupineIOError
+    /// - Returns: The full path of the resource.
+    private func getResourcePath(_ filePath: String) throws -> String {
+        if let resourcePath = Bundle(for: type(of: self)).resourceURL?.appendingPathComponent(filePath).path {
+            if (FileManager.default.fileExists(atPath: resourcePath)) {
+                return resourcePath
+            }
+        }
+
+        throw PorcupineIOError("Could not find file at path '\(filePath)'. If this is a packaged asset, ensure you have added it to your xcode project.")
     }
     
     private func checkStatus(_ status: pv_status_t, _ message: String) throws {

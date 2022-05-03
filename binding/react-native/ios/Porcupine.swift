@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -33,7 +33,7 @@ class PvPorcupine: NSObject {
             let porcupine = try Porcupine(
                 accessKey: accessKey,
                 keywords: keywordValues,
-                modelPath: modelPath.isEmpty ? nil : try getResourcePath(modelPath),
+                modelPath: modelPath.isEmpty ? nil : modelPath,
                 sensitivities: sensitivities.isEmpty ? nil : sensitivities)
             
             let handle: String = String(describing: porcupine)
@@ -58,27 +58,11 @@ class PvPorcupine: NSObject {
     @objc(fromKeywordPaths:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
     func fromKeywordPaths(accessKey: String, modelPath: String, keywordPaths: [String], sensitivities: [Float32],
         resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
-        var keywordPaths = keywordPaths
-        
-        do {
-            for i in 0..<keywordPaths.count {
-                keywordPaths[i] = try getResourcePath(keywordPaths[i])
-            }
-        } catch let error as PorcupineError {
-            let (code, message) = errorToCodeAndMessage(error)
-            reject(code, message, nil)
-            return
-        } catch {
-            let (code, message) = errorToCodeAndMessage(PorcupineError(error.localizedDescription))
-            reject(code, message, nil)
-            return
-        }
-        
         do {
             let porcupine = try Porcupine(
                 accessKey: accessKey,
                 keywordPaths: keywordPaths,
-                modelPath: modelPath.isEmpty ? nil : try getResourcePath(modelPath),
+                modelPath: modelPath.isEmpty ? nil : modelPath,
                 sensitivities: sensitivities.isEmpty ? nil : sensitivities)
             
             let handle: String = String(describing: porcupine)
@@ -125,20 +109,6 @@ class PvPorcupine: NSObject {
             let (code, message) = errorToCodeAndMessage(PorcupineError(error.localizedDescription))
             reject(code, message, nil)
         }
-    }
-
-    private func getResourcePath(_ filePath: String) throws -> String {
-        if (!FileManager.default.fileExists(atPath: filePath)) {
-            if let resourcePath = Bundle(for: type(of: self)).resourceURL?.appendingPathComponent(filePath).path {
-                if (FileManager.default.fileExists(atPath: resourcePath)) {
-                    return resourcePath
-                }
-            }
-            
-            throw PorcupineIOError("Could not find file at path '\(filePath)'. If this is a packaged asset, ensure you have added it to your xcode project.")
-        }
-        
-        return filePath
     }
     
     private func errorToCodeAndMessage(_ error: PorcupineError) -> (String, String) {
