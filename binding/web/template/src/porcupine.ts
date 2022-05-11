@@ -16,8 +16,9 @@ import { Mutex } from 'async-mutex';
 
 import { PorcupineKeyword, PorcupineEngine } from '@picovoice/porcupine-web-core';
 
-import { 
-  aligned_alloc_type, 
+import {
+  aligned_alloc_type,
+  pv_free_type,
   buildWasm,
   arrayBufferToStringAtIndex,
   isAccessKeyValid
@@ -39,11 +40,11 @@ const PV_STATUS_SUCCESS = 10000;
  */
 
  type pv_porcupine_init_type = (
-   accessKey: number, 
-   numKeywords: number, 
-   keywordModelSizes: number, 
-   keywordModels: number, 
-   sensitivies: number, 
+   accessKey: number,
+   numKeywords: number,
+   keywordModelSizes: number,
+   keywordModels: number,
+   sensitivies: number,
    object: number
  ) => Promise<number>;
  type pv_porcupine_process_type = (object: number, buffer: number, keywordIndex: number) => Promise<number>;
@@ -67,6 +68,7 @@ type PorcupineWasmOutput = {
   frameLength: number;
   inputBufferAddress: number;
   memory: WebAssembly.Memory;
+  pvFree: pv_free_type;
   objectAddress: number;
   pvPorcupineDelete: pv_porcupine_delete_type;
   pvPorcupineProcess: pv_porcupine_process_type;
@@ -82,6 +84,7 @@ export class Porcupine implements PorcupineEngine {
   private _pvStatusToString: pv_status_to_string_type;
 
   private _wasmMemory: WebAssembly.Memory;
+  private _pvFree: pv_free_type
   private _memoryBuffer: Int16Array;
   private _memoryBufferView: DataView;
   private _processMutex: Mutex;
@@ -107,6 +110,7 @@ export class Porcupine implements PorcupineEngine {
     this._pvStatusToString = handleWasm.pvStatusToString;
 
     this._wasmMemory = handleWasm.memory;
+    this._pvFree = handleWasm.pvFree;
     this._objectAddress = handleWasm.objectAddress;
     this._inputBufferAddress = handleWasm.inputBufferAddress;
     this._keywordIndexAddress = handleWasm.keywordIndexAddress;
@@ -126,6 +130,8 @@ export class Porcupine implements PorcupineEngine {
    */
   public async release(): Promise<void> {
     await this._pvPorcupineDelete(this._objectAddress);
+    await this._pvFree(this._keywordIndexAddress);
+    await this._pvFree(this._inputBufferAddress);
   }
 
   /**
@@ -339,6 +345,7 @@ export class Porcupine implements PorcupineEngine {
     const exports = await buildWasm(memory, PORCUPINE_WASM_BASE64);
 
     const aligned_alloc = exports.aligned_alloc as aligned_alloc_type;
+    const pv_free = exports.pv_free as pv_free_type;
     const pv_porcupine_version = exports.pv_porcupine_version as pv_porcupine_version_type;
     const pv_porcupine_frame_length = exports.pv_porcupine_frame_length as pv_porcupine_frame_length_type;
     const pv_porcupine_process = exports.pv_porcupine_process as pv_porcupine_process_type;
@@ -429,6 +436,10 @@ export class Porcupine implements PorcupineEngine {
       keywordModelAddressAddress,
       sensitivityAddress,
       objectAddressAddress);
+    await pv_free(accessKeyAddress);
+    await pv_free(keywordModelSizeAddress);
+    await pv_free(keywordModelAddressAddress);
+    await pv_free(sensitivityAddress);
     if (status !== PV_STATUS_SUCCESS) {
       throw new Error(
         `'pv_porcupine_init' failed with status ${arrayBufferToStringAtIndex(
@@ -442,6 +453,7 @@ export class Porcupine implements PorcupineEngine {
       objectAddressAddress,
       true
     );
+    await pv_free(objectAddressAddress);
 
     const sampleRate = await pv_sample_rate();
     const frameLength = await pv_porcupine_frame_length();
@@ -463,6 +475,7 @@ export class Porcupine implements PorcupineEngine {
       frameLength: frameLength,
       inputBufferAddress: inputBufferAddress,
       memory: memory,
+      pvFree: pv_free,
       objectAddress: objectAddress,
       pvPorcupineDelete: pv_porcupine_delete,
       pvPorcupineProcess: pv_porcupine_process,
