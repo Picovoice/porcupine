@@ -1,3 +1,7 @@
+ext {
+    defaultTargetSdkVersion = 31
+}
+
 buildscript {
     
     repositories {

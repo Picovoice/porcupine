@@ -1,5 +1,5 @@
 ext {
-    defaultTargetSdkVersion = 30
+    defaultTargetSdkVersion = 31
 }
 
 buildscript {
