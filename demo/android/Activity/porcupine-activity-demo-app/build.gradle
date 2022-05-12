@@ -15,14 +15,14 @@ if (rootProject.file("local.properties").exists()) {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion defaultTargetSdkVersion
     
     defaultConfig {
         applicationId "ai.picovoice.porcupine.demo"
-        minSdkVersion 19
-        targetSdkVersion 31
+        minSdkVersion 21
+        targetSdkVersion defaultTargetSdkVersion
         versionCode 7
-        versionName "2.1.0"
+        versionName "2.1.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resValue 'string', 'pvTestingAccessKey', properties.getProperty("pvTestingAccessKey", "")
@@ -55,7 +55,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'ai.picovoice:porcupine-android:2.1.0'
+    implementation 'ai.picovoice:porcupine-android:2.1.1'
 
     // Espresso UI Testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
