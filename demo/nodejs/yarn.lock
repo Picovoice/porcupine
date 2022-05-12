@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-node@2.1.5":
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.1.5.tgz#81e8e6e9d737358f7dc9fdc91ff9da984460ebf5"
-  integrity sha512-N1Uhl4v+Sr7a2kyr0NfiPmWg56xFRVmcENkhAgg/w14ydPQu6mYV+d5j0d/f4TexejWvbMkG7gJcTg0WvtH3CA==
+"@picovoice/porcupine-node@2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.1.6.tgz#5c8d66325412fc4e13b7fdf09fe9184405b98c8f"
+  integrity sha512-J3nVdvcWHt8UALW/OnXQWjrBhDnABA+W9CeeZsPM9TvK3ljS8tuHdsY1Oz6/3FREJj191sdr73r4R/iZdx55nw==
 
-"@picovoice/pvrecorder-node@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/pvrecorder-node/-/pvrecorder-node-1.0.2.tgz#c61b42f06181b09f7fdd87ee1b7bfac60e0e5704"
-  integrity sha512-DF8wEAUU3hAZwIBCyX8QAavW0cad1Iuh1OvkglcGUFq/0Ve9whjsd1fKAVaUxY1gSgCfBAK+blEn8alQ2pdpAA==
+"@picovoice/pvrecorder-node@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/pvrecorder-node/-/pvrecorder-node-1.1.0.tgz#24102d553d4efe04c0bc6f50e7024ddf24cfc0ee"
+  integrity sha512-Dfm+DbPs+gRPGd1iOhpsH71VVmLBzuAYeGGD4G2QGE+BdauJcEQpQThhLiMmFNAB1FzJmbuMhGuo81MkUX8tGw==
   dependencies:
     ncp "^2.0.0"
 
