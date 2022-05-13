@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -11,28 +11,40 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 import 'package:porcupine_flutter/porcupine_error.dart';
 
 /// BuiltInKeywords
 enum BuiltInKeyword {
+  // ignore:constant_identifier_names
   ALEXA,
+  // ignore:constant_identifier_names
   AMERICANO,
+  // ignore:constant_identifier_names
   BLUEBERRY,
+  // ignore:constant_identifier_names
   BUMBLEBEE,
+  // ignore:constant_identifier_names
   COMPUTER,
+  // ignore:constant_identifier_names
   GRAPEFRUIT,
+  // ignore:constant_identifier_names
   GRASSHOPPER,
+  // ignore:constant_identifier_names
   HEY_GOOGLE,
+  // ignore:constant_identifier_names
   HEY_SIRI,
+  // ignore:constant_identifier_names
   JARVIS,
+  // ignore:constant_identifier_names
   OK_GOOGLE,
+  // ignore:constant_identifier_names
   PICOVOICE,
+  // ignore:constant_identifier_names
   PORCUPINE,
+  // ignore:constant_identifier_names
   TERMINATOR
 }
 
