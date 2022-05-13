@@ -12,10 +12,10 @@ PODS:
   - fmt (6.2.1)
   - glog (0.3.5)
   - ios-voice-processor (1.0.3)
-  - Porcupine-iOS (2.1.0):
+  - Porcupine-iOS (2.1.1):
     - ios-voice-processor (~> 1.0.2)
-  - porcupine-react-native (2.1.0):
-    - Porcupine-iOS (~> 2.1.0)
+  - porcupine-react-native (2.1.2):
+    - Porcupine-iOS (~> 2.1.1)
     - React
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -399,14 +399,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 808f741ddb0896a20e5b98cc665f5b3413b072e2
   FBReactNativeSpec: 94473205b8741b61402e8c51716dea34aa3f5b2f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Porcupine-iOS: 35f3cd9e60b1178631a819e16462ff41894cbf20
-  porcupine-react-native: bbb4e37c3617bcbb2a555bfb413b0095d1d3217d
+  Porcupine-iOS: afcb0d0c2369e9bdd1a9a9cf3e2318f152dcddb1
+  porcupine-react-native: c80bbe3adc459f27ae72542fb1c608e3fc1fba04
   RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: 3c77b683474faf23920fbefc71c4e13af21470c0
   RCTTypeSafety: 720b1841260dac692444c2822b27403178da8b28

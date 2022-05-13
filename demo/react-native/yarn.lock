@@ -1036,10 +1036,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@picovoice/porcupine-react-native@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.1.0.tgz#3d9ba5907d75c528424f74b229fbff46920d7108"
-  integrity sha512-2HIlk70w7WSn2/pVVzIpPOziFYeOqDZKj5bVlYHrSP+K26QI3iRJGvsr8GxpTKGKaLm3osyTMoSja6gWBIPEJw==
+"@picovoice/porcupine-react-native@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.1.2.tgz#8b8c85620542c9cf6ef979f48c6bb3d0f7cf6ec2"
+  integrity sha512-p65S9XTMmBxTdT/SC6JyPgcrfyproznRCx7DOi3g181dG5wojgVOzpUAwkhH7tnILe6Ivs95fRSqQZLoqOVtpw==
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"
