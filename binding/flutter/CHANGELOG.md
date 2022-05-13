@@ -25,3 +25,6 @@
 
 ## [2.1.1] - 2022-03-11
 * Docs update
+
+## [2.1.2] - 2022-05-13
+* Android/iOS lib patch

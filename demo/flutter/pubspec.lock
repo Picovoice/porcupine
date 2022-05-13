@@ -87,7 +87,7 @@ packages:
       name: flutter_voice_processor
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.7"
   lints:
     dependency: "direct dev"
     description:
@@ -189,10 +189,10 @@ packages:
   porcupine_flutter:
     dependency: "direct main"
     description:
-      path: "../../binding/flutter"
-      relative: true
-    source: path
-    version: "2.1.1"
+      name: porcupine_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.2"
   process:
     dependency: transitive
     description:
