@@ -206,7 +206,7 @@ For more information about Go demos go to [demo/go](/demo/go).
 
 ### Unity Demos
 
-To run the Porcupine Unity demo, import the [Porcupine Unity package](/binding/unity/porcupine-2.0.0.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+To run the Porcupine Unity demo, import the [Porcupine Unity package](/binding/unity/porcupine-2.1.2.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 To browse the demo source go to [demo/unity](/demo/unity).
 
@@ -726,7 +726,7 @@ porcupine.Delete()
 
 ### Unity
 
-Import the [Porcupine Unity Package](/binding/unity/porcupine-2.0.0.unitypackage) into your Unity project.
+Import the [Porcupine Unity Package](/binding/unity/porcupine-2.1.2.unitypackage) into your Unity project.
 
 The SDK provides two APIs:
 
@@ -1553,8 +1553,10 @@ Porcupine is implemented in ANSI C and therefore can be directly linked to C app
 object can be constructed as follows.
 
 ```c
-const char *model_path = ... // Available at lib/common/porcupine_params.pv
-const char *access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+// Available at lib/common/porcupine_params.pv
+const char *model_path = ... 
+// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+const char *access_key = ... 
 const char *keyword_path = ...
 const float sensitivity = 0.5f;
 
@@ -1609,7 +1611,8 @@ Porcupine is implemented in ANSI C and therefore can be directly linked to embed
 #define MEMORY_BUFFER_SIZE ...
 uint8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://console.picovoice.ai/)
+// AccessKey string obtained from Picovoice Console (https://console.picovoice.ai/)
+static const char* ACCESS_KEY = ...
 
 const uint8_t keyword_array[] = {...};
 
