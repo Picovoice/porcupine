@@ -1398,7 +1398,7 @@ export default {
       isLoaded: false,
       factory: PorcupineWorkerFactoryEn,
       factoryArgs: {
-        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console(https://console.picovoice.ai/)
+        accessKey: '${ACCESS_KEY}', // Obtained from Picovoice Console(https://console.picovoice.ai/)
         keywords: [
           { builtin: 'Grasshopper', sensitivity: 0.5 },
           { builtin: 'Grapefruit', sensitivity: 0.6 },
@@ -1457,7 +1457,8 @@ const {
   BuiltinKeyword,
 }= require("@picovoice/porcupine-node");
 
-const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+ // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+const accessKey = "${ACCESS_KEY}"
 
 let handle = new Porcupine(
     accessKey,
@@ -1470,7 +1471,8 @@ let handle = new Porcupine(
 ```javascript
 const Porcupine = require("@picovoice/porcupine-node");
 
-const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+ // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+const accessKey = "${ACCESS_KEY}"
 
 let handle = new Porcupine(
     accessKey,
@@ -1514,17 +1516,24 @@ To create an instance of the engine you first create a `PorcupineBuilder` instan
 ```rust
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 
-let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+let access_key = "${ACCESS_KEY}";
 
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine]).init().expect("Unable to create Porcupine");
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine])
+    .init()
+    .expect("Unable to create Porcupine");
 ```
 In the above example, we've initialized the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
 To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
 ```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(&["/absolute/path/to/keyword/one.ppn", "/absolute/path/to/keyword/two.ppn"])
-    .init().expect("Unable to create Porcupine");
+let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(
+        &["/absolute/path/to/keyword/one.ppn",
+        "/absolute/path/to/keyword/two.ppn"]
+    )
+    .init()
+    .expect("Unable to create Porcupine");
 ```
 
 When initialized, the valid sample rate is given by `sample_rate()`.
