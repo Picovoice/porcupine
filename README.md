@@ -1310,13 +1310,19 @@ npm install @picovoice/porcupine-web-angular
 
 ```typescript
 async ngOnInit() {
-    // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; dynamically imported)
-    const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
+    // Load Porcupine worker chunk with specific language model
+    const porcupineFactoryEn = 
+      await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
     const accessKey = // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
     // Initialize Porcupine Service
     try {
-      await this.porcupineService.init(porcupineFactoryEn,
-      {accessKey: accessKey, keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]})
+      await this.porcupineService.init(
+        porcupineFactoryEn,
+        {
+          accessKey: accessKey,
+          keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]
+        }
+      )
       console.log("Porcupine is now loaded and listening")
     }
     catch (error) {
@@ -1398,7 +1404,7 @@ export default {
       isLoaded: false,
       factory: PorcupineWorkerFactoryEn,
       factoryArgs: {
-        accessKey: '${ACCESS_KEY}', // Obtained from Picovoice Console(https://console.picovoice.ai/)
+        accessKey: '${ACCESS_KEY}', // from Picovoice Console (https://console.picovoice.ai/)
         keywords: [
           { builtin: 'Grasshopper', sensitivity: 0.5 },
           { builtin: 'Grapefruit', sensitivity: 0.6 },
@@ -1519,7 +1525,10 @@ use porcupine::{BuiltinKeywords, PorcupineBuilder};
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 let access_key = "${ACCESS_KEY}";
 
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(access_key, &[BuiltinKeywords::Porcupine])
+let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(
+        access_key,
+        &[BuiltinKeywords::Porcupine]
+    )
     .init()
     .expect("Unable to create Porcupine");
 ```
