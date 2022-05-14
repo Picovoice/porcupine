@@ -429,7 +429,13 @@ List input audio devices with:
 Run the demo using:
 
 ```console
-.\\demo\\c\\build\\porcupine_demo_mic.exe -l lib/windows/amd64/libpv_porcupine.dll -m lib/common/porcupine_params.pv -k resources/keyword_files/windows/porcupine_windows.ppn -t 0.5 -d ${AUDIO_DEVICE_INDEX} -a ${ACCESS_KEY}
+.\\demo\\c\\build\\porcupine_demo_mic.exe ^
+-l lib/windows/amd64/libpv_porcupine.dll ^
+-m lib/common/porcupine_params.pv ^
+-k resources/keyword_files/windows/porcupine_windows.ppn ^
+-t 0.5 ^
+-d ${AUDIO_DEVICE_INDEX} ^
+-a ${ACCESS_KEY}
 ```
 
 Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device and `${ACCESS_KEY}` with your `AccessKey`.
@@ -462,7 +468,13 @@ name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beagle
 Run the demo using:
 
 ```console
-.\\demo\\c\\build\\porcupine_demo_file.exe -l lib/windows/amd64/libpv_porcupine.dll -m lib/common/porcupine_params.pv -k resources/keyword_files/windows/porcupine_windows.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav -a ${ACCESS_KEY}
+.\\demo\\c\\build\\porcupine_demo_file.exe ^
+-l lib/windows/amd64/libpv_porcupine.dll ^
+-m lib/common/porcupine_params.pv ^
+-k resources/keyword_files/windows/porcupine_windows.ppn ^
+-t 0.5 ^
+-w resources/audio_samples/multiple_keywords.wav ^
+-a ${ACCESS_KEY}
 ```
 
 Replace `${ACCESS_KEY}` with your `AccessKey`.
@@ -490,7 +502,8 @@ The SDK exposes a factory method to create instances of the engine:
 ```python
 import pvporcupine
 
-access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+# AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+access_key = "${ACCESS_KEY}"
 
 handle = pvporcupine.create(access_key=access_key, keywords=['picovoice', 'bumblebee'])
 ```
@@ -512,7 +525,9 @@ import pvporcupine
 # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 access_key = "${ACCESS_KEY}"
 
-handle = pvporcupine.create(access_key=access_key, keyword_paths=['path/to/non/default/keyword/file'])
+handle = pvporcupine.create(
+    access_key=access_key,
+    keyword_paths=['path/to/non/default/keyword/file'])
 ```
 
 When initialized, valid sample rate can be obtained using `handle.sample_rate`. The required frame length
@@ -802,7 +817,8 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 ```csharp
 using Pv.Unity;
 
-string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+string accessKey = "${ACCESS_KEY}";
 
 try
 {
@@ -1037,7 +1053,8 @@ const accessKey = "${ACCESS_KEY}"
 
 async createPorcupine(){
     try{
-        this._porcupine = await Porcupine.fromBuiltInKeywords(accessKey, [BuiltInKeywords.PICOVOICE]);
+        this._porcupine = await Porcupine.fromBuiltInKeywords(
+            accessKey, [BuiltInKeywords.PICOVOICE]);
     } catch (err) {
         // handle error
     }
@@ -1231,7 +1248,8 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://unpkg.com/@picovoice/porcupine-web-en-worker/dist/iife/index.js"></script>
+    <script src="https://unpkg.com/@picovoice/porcupine-web-en-worker/dist/iife/index.js">
+    </script>
     <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
       function keywordDetectionCallback(keyword) {
