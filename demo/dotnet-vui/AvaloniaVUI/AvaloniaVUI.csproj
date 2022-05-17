@@ -17,6 +17,6 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.12" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.12" />
     <PackageReference Include="OpenTK" Version="4.4.0" />
-    <PackageReference Include="Porcupine" Version="2.1.1" />
+    <PackageReference Include="Porcupine" Version="2.1.3" />
   </ItemGroup>
 </Project>
