@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Pv
 {
@@ -105,6 +106,31 @@ namespace Pv
             }
         }
 
+        public static IntPtr GetPtrFromUtf8String(string s)
+        {
+            byte[] utf8Bytes = Encoding.UTF8.GetBytes(s + '\0');
+            IntPtr p = Marshal.AllocHGlobal(utf8Bytes.Length);
+            Marshal.Copy(utf8Bytes, 0, p, utf8Bytes.Length);
+
+            return p;
+        }
+
+        public static string GetUtf8StringFromPtr(IntPtr p)
+        {
+            int i = 0;
+            List<byte> data = new List<byte>();
+            while (true)
+            {
+                byte b = Marshal.ReadByte(p, i++);
+                if (b == 0)
+                {
+                    break;
+                }
+                data.Add(b);
+            }
+
+            return Encoding.UTF8.GetString(data.ToArray());
+        }
         private static string GetCpuPart()
         {
             string cpuInfo = File.ReadAllText("/proc/cpuinfo");

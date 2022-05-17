@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -94,31 +94,31 @@ namespace Pv
 
 #endif
 
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern PorcupineStatus pv_porcupine_init(
-            string accessKey,
-            string modelPath,
+            IntPtr accessKey,
+            IntPtr modelPath,
             int numKeywords,
-            string[] keywordPaths,
+            out IntPtr keywordPaths,
             float[] sensitivities,
             out IntPtr handle);
 
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern int pv_sample_rate();
 
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern void pv_porcupine_delete(IntPtr handle);
 
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern PorcupineStatus pv_porcupine_process(
             IntPtr handle,
             short[] pcm,
             out int keywordIndex);
 
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr pv_porcupine_version();
 
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern int pv_porcupine_frame_length();
 
         /// <summary>
@@ -226,13 +226,31 @@ namespace Pv
                 throw new PorcupineInvalidArgumentException($"Number of keywords ({keywordPaths.Count()}) does not match number of sensitivities ({sensitivities.Count()})");
             }
 
+            IntPtr accessKeyPtr = Utils.GetPtrFromUtf8String(accessKey);
+            IntPtr modelPathPtr = Utils.GetPtrFromUtf8String(modelPath);
+
+            string[] keywordPathsArray = keywordPaths.ToArray();
+            IntPtr[] keywordPathsPtr = new IntPtr[keywordPathsArray.Length];
+            for (int i = 0; i < keywordPathsArray.Length; i++)
+            {
+                keywordPathsPtr[i] = Utils.GetPtrFromUtf8String(keywordPathsArray[i]);
+            }
+
             PorcupineStatus status = pv_porcupine_init(
-                accessKey,
-                modelPath,
-                keywordPaths.Count(),
-                keywordPaths.ToArray(),
+                accessKeyPtr,
+                modelPathPtr,
+                keywordPathsPtr.Length,
+                out keywordPathsPtr[0],
                 sensitivities.ToArray(),
                 out _libraryPointer);
+
+            Marshal.FreeHGlobal(accessKeyPtr);
+            Marshal.FreeHGlobal(modelPathPtr);
+            for (int i = 0; i < keywordPathsPtr.Length; i++)
+            {
+                Marshal.FreeHGlobal(keywordPathsPtr[i]);
+            }
+
             if (status != PorcupineStatus.SUCCESS)
             {
                 throw PorcupineStatusToException(status, "Porcupine init failed.");

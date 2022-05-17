@@ -53,20 +53,17 @@ namespace PorcupineTest
                 default:
                     throw new PlatformNotSupportedException($"This device (CPU part = {cpuPart}) is not supported by Picovoice.");
             }
-        }                                                    
+        }
 
         [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
+        public static void ClassInitialize(TestContext _)
         {
-            if (testContext.Properties.Contains("pvTestAccessKey"))
-            {
-                ACCESS_KEY = testContext.Properties["pvTestAccessKey"].ToString();
-            }
+            ACCESS_KEY = Environment.GetEnvironmentVariable("ACCESS_KEY");
         }
 
         private static string AppendLanguage(string s, string language)
         {
-            if(language == "en")
+            if (language == "en")
                 return s;
             return $"{s}_{language}";
         }
@@ -128,7 +125,7 @@ namespace PorcupineTest
                 Assert.AreEqual(expectedResults[i], results[i], $"Expected keyword {expectedResults[i]}, but Porcupine detected keyword {results[i]}.");
             }
 
-            porcupine.Dispose(); 
+            porcupine.Dispose();
         }
 
         [TestMethod]
@@ -136,7 +133,7 @@ namespace PorcupineTest
         {
             porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             Assert.IsTrue(porcupine.FrameLength > 0, "Specified frame length was not a valid number.");
-            porcupine.Dispose(); 
+            porcupine.Dispose();
         }
 
         [TestMethod]
@@ -144,7 +141,7 @@ namespace PorcupineTest
         {
             porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             Assert.IsFalse(string.IsNullOrWhiteSpace(porcupine.Version), "Porcupine did not return a valid version number.");
-            porcupine.Dispose(); 
+            porcupine.Dispose();
         }
 
         [TestMethod]
@@ -153,7 +150,7 @@ namespace PorcupineTest
             porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             RunTestCase(
                 "porcupine.wav",
-                new List<int>() {0});
+                new List<int>() { 0 });
         }
 
         [TestMethod]
@@ -174,14 +171,14 @@ namespace PorcupineTest
             porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, inputKeywords);
             RunTestCase(
                 "multiple_keywords.wav",
-                new List<int>() {7, 0, 1, 2, 3, 4, 5, 6, 7, 8});
+                new List<int>() { 7, 0, 1, 2, 3, 4, 5, 6, 7, 8 });
         }
 
         [TestMethod]
         public void TestSingleKeywordDe()
         {
             string language = "de";
-            List<string> keywords = new List<string>() {"heuschrecke"};
+            List<string> keywords = new List<string>() { "heuschrecke" };
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
@@ -191,7 +188,7 @@ namespace PorcupineTest
 
             RunTestCase(
                 "heuschrecke.wav",
-                new List<int>() {0});
+                new List<int>() { 0 });
         }
 
         [TestMethod]
@@ -213,7 +210,7 @@ namespace PorcupineTest
 
             RunTestCase(
                 "multiple_keywords_de.wav",
-                new List<int>() {1, 0, 2, 3});
+                new List<int>() { 1, 0, 2, 3 });
         }
 
         [TestMethod]
@@ -232,7 +229,7 @@ namespace PorcupineTest
 
             RunTestCase(
                 "manzana.wav",
-                new List<int>() {0});
+                new List<int>() { 0 });
         }
 
         [TestMethod]
@@ -253,7 +250,7 @@ namespace PorcupineTest
 
             RunTestCase(
                 "multiple_keywords_es.wav",
-                new List<int>() {0, 1, 2});
+                new List<int>() { 0, 1, 2 });
         }
 
         [TestMethod]
@@ -272,7 +269,7 @@ namespace PorcupineTest
 
             RunTestCase(
                 "mon_chouchou.wav",
-                new List<int>() {0});
+                new List<int>() { 0 });
         }
 
         [TestMethod]
@@ -293,8 +290,8 @@ namespace PorcupineTest
 
             RunTestCase(
                 "multiple_keywords_fr.wav",
-                new List<int>() {0, 1, 0, 2});
-        }       
+                new List<int>() { 0, 1, 0, 2 });
+        }
 
         [TestMethod]
         public void TestWithNonAsciiModelName()
@@ -312,8 +309,8 @@ namespace PorcupineTest
 
             RunTestCase(
                 "murciélago.wav",
-                new List<int>() {0, 0});
-        }          
+                new List<int>() { 0, 0 });
+        }
 
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
