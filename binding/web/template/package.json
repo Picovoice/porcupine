@@ -1,6 +1,6 @@
 {
   "name": "$",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Porcupine library for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
@@ -38,10 +38,10 @@
     "@picovoice/porcupine-web-core": "^2.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/plugin-transform-runtime": "^7.12.15",
-    "@babel/preset-env": "^7.12.13",
-    "@babel/runtime": "^7.12.13",
+    "@babel/core": "^7.18.2",
+    "@babel/plugin-transform-runtime": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/runtime": "^7.18.3",
     "@picovoice/web-utils": "^1.0.1",
     "@rollup/plugin-babel": "^5.2.3",
     "@rollup/plugin-commonjs": "^17.1.0",
