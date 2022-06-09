@@ -73,7 +73,7 @@ namespace Pv
         static Porcupine()
         {
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET6_0
 
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
 
@@ -83,7 +83,7 @@ namespace Pv
             BUILT_IN_KEYWORD_PATHS = Utils.PvKeywordPaths();
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NET6_0
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
@@ -128,10 +128,10 @@ namespace Pv
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
         /// <param name="keywords">List of built-in keywords for detection.</param>
         /// <param name="sensitivities">
-        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
+        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer
         /// misses at the cost of increasing the false alarm rate. If not set, 0.5 will be used.
         /// </param>
-        /// <returns>An instance of Porcupine wake word engine.</returns> 
+        /// <returns>An instance of Porcupine wake word engine.</returns>
         public static Porcupine FromBuiltInKeywords(
             string accessKey,
             IEnumerable<BuiltInKeyword> keywords,
@@ -157,9 +157,9 @@ namespace Pv
         /// <param name="modelPath">Absolute path to file containing model parameters.</param>
         /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
         /// <param name="sensitivities">
-        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased 
-        /// false alarm rate. A sensitivity value should be within [0, 1]. 
-        /// </param>  
+        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased
+        /// false alarm rate. A sensitivity value should be within [0, 1].
+        /// </param>
         public static Porcupine FromKeywordPaths(
             string accessKey,
             IEnumerable<string> keywordPaths,
@@ -176,9 +176,9 @@ namespace Pv
         /// <param name="modelPath">Absolute path to file containing model parameters.</param>
         /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
         /// <param name="sensitivities">
-        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased 
-        /// false alarm rate. A sensitivity value should be within [0, 1]. 
-        /// </param>  
+        /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased
+        /// false alarm rate. A sensitivity value should be within [0, 1].
+        /// </param>
         private Porcupine(
             string accessKey,
             IEnumerable<string> keywordPaths,
@@ -265,7 +265,7 @@ namespace Pv
         /// Process a frame of audio with the wake word engine.
         /// </summary>
         /// <param name="pcm">
-        /// A frame of audio samples to be assessed by Porcupine. The required audio format is found by calling `.SampleRate` to get the required 
+        /// A frame of audio samples to be assessed by Porcupine. The required audio format is found by calling `.SampleRate` to get the required
         /// sample rate and `.FrameLength` to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
         /// </param>
         /// <returns>

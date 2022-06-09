@@ -13,6 +13,13 @@
 			<Visible>False</Visible>
 		</Content>
 	</ItemGroup>
+	<ItemGroup Condition="$(TargetFramework) == 'net6.0'">
+		<Content Include="$(MSBuildThisFileDirectory)../../lib/net6.0/Porcupine.dll">
+			<Link>Porcupine.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>False</Visible>
+		</Content>
+	</ItemGroup>
 	<ItemGroup>
 		<Content Include="$(MSBuildThisFileDirectory)resources/**">
 			<Link>resources/%(RecursiveDir)%(Filename)%(Extension)</Link>
