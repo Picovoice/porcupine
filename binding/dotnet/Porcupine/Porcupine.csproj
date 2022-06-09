@@ -84,16 +84,16 @@ Porcupine is:
             <Link>lib\beaglebone\libpv_porcupine.so</Link>
             <Visible>false</Visible>
         </Content>
-		<Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
+		<Content Include="..\..\..\lib\mac\**\*" Exclude="..\..\..\lib\mac\arm11\*">
 			<PackagePath>
-				build/netstandard2.0/lib/mac/x86_64/libpv_porcupine.dylib;
-				build/netcoreapp3.1/lib/mac/x86_64/libpv_porcupine.dylib;
-				build/net6.0/lib/mac/x86_64/libpv_porcupine.dylib;
+				build/netstandard2.0/lib/mac;
+				build/netcoreapp3.1/lib/mac;
+				build/net6.0/lib/mac;
 			</PackagePath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
+			<Link>lib\mac\%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<Visible>false</Visible>
-		</Content>
+        </Content>
 		<Content Include="..\..\..\resources\keyword_files\windows\alexa_windows.ppn;
                           ..\..\..\resources\keyword_files\windows\americano_windows.ppn;
                           ..\..\..\resources\keyword_files\windows\blueberry_windows.ppn;
