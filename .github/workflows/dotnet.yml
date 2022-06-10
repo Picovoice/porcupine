@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [ master ]
-    paths: 
+    paths:
       - 'binding/dotnet/**'
       - '!binding/dotnet/README.md'
       - 'lib/beaglebone/**'
@@ -23,7 +23,7 @@ on:
       - '.github/workflows/dotnet.yml'
   pull_request:
     branches: [ master ]
-    paths: 
+    paths:
       - 'binding/dotnet/**'
       - '!binding/dotnet/README.md'
       - 'lib/beaglebone/**'
@@ -48,7 +48,7 @@ defaults:
 jobs:
   build-github-hosted:
     runs-on: ${{ matrix.os }}
-    env: 
+    env:
       ACCESS_KEY: ${{secrets.PV_VALID_ACCESS_KEY}}
 
     strategy:
@@ -58,11 +58,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET 3.1
+    - name: Setup .NET 6.0
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
-        
+        dotnet-version: 6.0.x
+
     - name: Restore dependencies
       run: dotnet restore
 
@@ -74,7 +74,7 @@ jobs:
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
-    env: 
+    env:
       ACCESS_KEY: ${{secrets.PV_VALID_ACCESS_KEY}}
 
     strategy:

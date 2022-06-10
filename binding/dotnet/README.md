@@ -5,7 +5,7 @@
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
-applications. 
+applications.
 
 Porcupine is:
 
@@ -19,6 +19,10 @@ Porcupine is:
 - .NET Core 3.1
 
 ## Compatibility
+
+Platform compatible with .NET 6.0+:
+
+- macOS (arm64)
 
 Platform compatible with .NET Framework 4.6.1+:
 
@@ -73,9 +77,9 @@ Porcupine can detect multiple keywords concurrently:
 
 ```csharp
 const string accessKey = "${ACCESS_KEY}";
-var keywords = new List<BuiltInKeyword> { 
+var keywords = new List<BuiltInKeyword> {
         BuiltInKeyword.BUMBLEBEE,
-        BuiltInKeyword.PICOVOICE 
+        BuiltInKeyword.PICOVOICE
     };
 
 Porcupine handle = Porcupine.FromBuiltInKeywords(accessKey, keywords);
@@ -85,9 +89,9 @@ To detect custom keywords, use the `FromKeywordPaths` constructor instead:
 
 ```csharp
 const string accessKey = "${ACCESS_KEY}";
-var keywordPaths = new List<string> { 
-    "/absolute/path/to/keyword/one", 
-    "/absolute/path/to/keyword/two", 
+var keywordPaths = new List<string> {
+    "/absolute/path/to/keyword/one",
+    "/absolute/path/to/keyword/two",
     ... }
 
 Porcupine handle = Porcupine.FromKeywordPaths(accessKey, keywordPaths);
@@ -95,15 +99,15 @@ Porcupine handle = Porcupine.FromKeywordPaths(accessKey, keywordPaths);
 
 In addition to custom keywords, you can override the default Porcupine english model file and/or keyword sensitivities.
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, you'll pass in a different model file.
 
 ```csharp
 const string accessKey = "${ACCESS_KEY}";
-var keywords = new List<BuiltInKeyword> { 
+var keywords = new List<BuiltInKeyword> {
         BuiltInKeyword.GRAPEFRUIT,
-        BuiltInKeyword.PORCUPINE 
+        BuiltInKeyword.PORCUPINE
     };
 string modelPath = "/path/to/model.pv"
 var sensitivities = new List<float>{ 0.6f, 0.35f };
@@ -137,11 +141,11 @@ while(true)
 ```
 
 Porcupine will have its resources freed by the garbage collector, but to have resources freed  immediately after use,
-wrap it in a using statement: 
+wrap it in a using statement:
 
 ```csharp
 using(Porcupine handle = Porcupine.FromBuiltInKeywords(
-    accessKey, 
+    accessKey,
     new List<BuiltInKeyword> { BuiltInKeyword.PICOVOICE }))
 {
     // .. Porcupine usage here
@@ -154,5 +158,5 @@ In order to detect non-English wake words you need to use the corresponding mode
 
 ## Demos
 
-The [Porcupine dotnet demo project](/demo/dotnet) is a .NET Core command line application that allows for 
+The [Porcupine dotnet demo project](/demo/dotnet) is a .NET Core command line application that allows for
 processing real-time audio (i.e. microphone) and files using Porcupine.

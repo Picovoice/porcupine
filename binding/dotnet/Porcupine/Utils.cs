@@ -23,11 +23,11 @@ namespace Pv
     {
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
 
+        private static bool _isArm => _arch == Architecture.Arm || _arch == Architecture.Arm64;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
-                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
-                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
+                                                 RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _isArm ? PvLinuxEnv() : "";
 
         public static string PvModelPath()
         {
@@ -58,6 +58,10 @@ namespace Pv
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _arch == Architecture.X64)
             {
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/x86_64/{libName}.dylib");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _isArm)
+            {
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/arm64/{libName}.dylib");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
