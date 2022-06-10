@@ -73,7 +73,7 @@ namespace Pv
         static Porcupine()
         {
 
-#if NETCOREAPP3_1 || NET6_0
+#if NETCOREAPP3_1_OR_GREATER
 
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
 
@@ -83,7 +83,7 @@ namespace Pv
             BUILT_IN_KEYWORD_PATHS = Utils.PvKeywordPaths();
         }
 
-#if NETCOREAPP3_1 || NET6_0
+#if NETCOREAPP3_1_OR_GREATER
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {

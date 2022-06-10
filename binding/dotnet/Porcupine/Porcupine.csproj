@@ -84,7 +84,7 @@ Porcupine is:
             <Link>lib\beaglebone\libpv_porcupine.so</Link>
             <Visible>false</Visible>
         </Content>
-		<Content Include="..\..\..\lib\mac\**\*" Exclude="..\..\..\lib\mac\arm11\*">
+		<Content Include="..\..\..\lib\mac\**\*">
 			<PackagePath>
 				build/netstandard2.0/lib/mac;
 				build/netcoreapp3.1/lib/mac;
