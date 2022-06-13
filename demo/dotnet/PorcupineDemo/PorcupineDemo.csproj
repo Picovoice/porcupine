@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<Configurations>FileDemo.Debug;FileDemo.Release;MicDemo.Debug;MicDemo.Release</Configurations>		
+		<Configurations>FileDemo.Debug;FileDemo.Release;MicDemo.Debug;MicDemo.Release</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'FileDemo.Debug' Or '$(Configuration)' == 'FileDemo.Release'">
@@ -11,7 +11,7 @@
 		<TargetName>PorcupineFileDemo</TargetName>
 		<AssemblyName>PorcupineFileDemo</AssemblyName>
 	</PropertyGroup>
-	
+
 	<PropertyGroup Condition="'$(Configuration)' == 'MicDemo.Debug' Or '$(Configuration)' == 'MicDemo.Release'">
 		<StartupObject>PorcupineDemo.MicDemo</StartupObject>
 		<TargetName>PorcupineMicDemo</TargetName>
@@ -19,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Porcupine" Version="2.1.3" />
-		<PackageReference Include="PvRecorder" Version="1.1.0" />
+		<PackageReference Include="Porcupine" Version="2.1.4" />
+		<PackageReference Include="PvRecorder" Version="1.1.1" />
 	</ItemGroup>
 </Project>
