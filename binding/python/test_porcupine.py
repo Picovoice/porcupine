@@ -103,6 +103,30 @@ class PorcupineTestCase(unittest.TestCase):
             keywords=['framboise', 'mon chouchou', 'parapluie'],
             ground_truth=[0, 1, 0, 2])
 
+    def test_multiple_keywords_it(self):
+        self.run_porcupine(
+            language='it',
+            keywords=['espresso', 'cameriere', 'porcospino'],
+            ground_truth=[2, 0, 1])
+
+    def test_multiple_keywords_ja(self):
+        self.run_porcupine(
+            language='ja',
+            keywords=['ninja', 'bushi', 'ringo'],
+            ground_truth=[2, 1, 0])
+
+    def test_multiple_keywords_ko(self):
+        self.run_porcupine(
+            language='ko',
+            keywords=['aiseukeulim', 'bigseubi', 'koppulso'],
+            ground_truth=[1, 2, 0])
+
+    def test_multiple_keywords_pt(self):
+        self.run_porcupine(
+            language='pt',
+            keywords=['abacaxi', 'fenomeno', 'formiga'],
+            ground_truth=[0, 2, 1])
+
     def test_with_non_ascii_model_name(self):
         self.run_porcupine(
             language='es',
