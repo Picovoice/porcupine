@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const LANGUAGES = ["en", "de", "es", "fr"];
+const LANGUAGES = ["en", "de", "es", "fr", "it", "ja", "ko", "pt"];
 
 const BUILT_IN_WAKE_WORDS_EN = [
   "alexa",
@@ -46,17 +46,51 @@ const BUILT_IN_WAKE_WORDS_ES = [
   "murciélago",
 ];
 
+const BUILT_IN_WAKE_WORDS_IT = [
+  "cameriere",
+  "espresso",
+  "porcospino",
+  "silenzio_bruno",
+]
+
+const BUILT_IN_WAKE_WORDS_JA = [
+  "bushi",
+  "ninja",
+  "ringo",
+]
+
+const BUILT_IN_WAKE_WORDS_KO = [
+  "aiseukeulim",
+  "bigseubi",
+  "koppulso",
+]
+
+const BUILT_IN_WAKE_WORDS_PT = [
+  "abacaxi",
+  "fenomeno",
+  "formiga",
+  "porco_espinho"
+]
+
 const SOURCE_DIRECTORY_MAP = new Map();
 SOURCE_DIRECTORY_MAP.set("de", join("keyword_files_de", "wasm"));
 SOURCE_DIRECTORY_MAP.set("en", join("keyword_files", "wasm"));
 SOURCE_DIRECTORY_MAP.set("es", join("keyword_files_es", "wasm"));
 SOURCE_DIRECTORY_MAP.set("fr", join("keyword_files_fr", "wasm"));
+SOURCE_DIRECTORY_MAP.set("it", join("keyword_files_it", "wasm"));
+SOURCE_DIRECTORY_MAP.set("ja", join("keyword_files_ja", "wasm"));
+SOURCE_DIRECTORY_MAP.set("ko", join("keyword_files_ko", "wasm"));
+SOURCE_DIRECTORY_MAP.set("pt", join("keyword_files_pt", "wasm"));
 
 const LANGUAGE_WAKE_WORDS = new Map();
 LANGUAGE_WAKE_WORDS.set("de", BUILT_IN_WAKE_WORDS_DE);
 LANGUAGE_WAKE_WORDS.set("en", BUILT_IN_WAKE_WORDS_EN);
 LANGUAGE_WAKE_WORDS.set("es", BUILT_IN_WAKE_WORDS_ES);
 LANGUAGE_WAKE_WORDS.set("fr", BUILT_IN_WAKE_WORDS_FR);
+LANGUAGE_WAKE_WORDS.set("it", BUILT_IN_WAKE_WORDS_IT);
+LANGUAGE_WAKE_WORDS.set("ja", BUILT_IN_WAKE_WORDS_JA);
+LANGUAGE_WAKE_WORDS.set("ko", BUILT_IN_WAKE_WORDS_KO);
+LANGUAGE_WAKE_WORDS.set("pt", BUILT_IN_WAKE_WORDS_PT);
 
 /**
  * Convert all of the Porcupine .ppn files to base64,

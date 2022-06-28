@@ -5,6 +5,10 @@
     <script src="node_modules/@picovoice/porcupine-web-de-worker/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/porcupine-web-fr-worker/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/porcupine-web-es-worker/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/porcupine-web-it-worker/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/porcupine-web-ja-worker/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/porcupine-web-ko-worker/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/porcupine-web-pt-worker/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
       function writeMessage(message) {
@@ -68,6 +72,30 @@
             porcupineKeywordCallback,
             porcupineErrorCallback
           );
+          let ppnIt = await PorcupineWebItWorker.PorcupineWorkerFactory.create(
+            accessKey,
+            [PorcupineWebItWorker.BuiltInKeyword.Porcospino],
+            porcupineKeywordCallback,
+            porcupineErrorCallback
+          );
+          let ppnJa = await PorcupineWebJaWorker.PorcupineWorkerFactory.create(
+            accessKey,
+            [PorcupineWebJaWorker.BuiltInKeyword.Ninja],
+            porcupineKeywordCallback,
+            porcupineErrorCallback
+          );
+          let ppnKo = await PorcupineWebKoWorker.PorcupineWorkerFactory.create(
+            accessKey,
+            [PorcupineWebKoWorker.BuiltInKeyword.Koppulso],
+            porcupineKeywordCallback,
+            porcupineErrorCallback
+          );
+          let ppnPt = await PorcupineWebPtWorker.PorcupineWorkerFactory.create(
+            accessKey,
+            [PorcupineWebPtWorker.BuiltInKeyword.Formiga],
+            porcupineKeywordCallback,
+            porcupineErrorCallback
+          );
 
           writeMessage("Porcupine worker ready!");
 
@@ -75,7 +103,7 @@
             "WebVoiceProcessor initializing. Microphone permissions requested ..."
           );
           let webVp = await window.WebVoiceProcessor.WebVoiceProcessor.init({
-            engines: [ppnEn, ppnEs, ppnFr, ppnDe],
+            engines: [ppnEn, ppnEs, ppnFr, ppnDe, ppnIt, ppnJa, ppnKo, ppnPt],
           });
           writeMessage("WebVoiceProcessor ready and listening!");
         } catch (err) {
@@ -97,6 +125,10 @@
       <li>Create a German instance of Porcupine to listen for "Ananas".</li>
       <li>Create a French instance of Porcupine to listen for "Framboise".</li>
       <li>Create a Spanish instance of Porcupine to listen for "Manzana".</li>
+      <li>Create an Italian instance of Porcupine to listen for "Porcospino".</li>
+      <li>Create a Japanese instance of Porcupine to listen for "Ninja".</li>
+      <li>Create a Korean instance of Porcupine to listen for "Koppulso".</li>
+      <li>Create a Portuguese instance of Porcupine to listen for "Formiga".</li>
       <li>
         Acquire microphone (& ask permission) data stream and convert to voice
         processing format (16kHz 16-bit linear PCM). The downsampled audio is

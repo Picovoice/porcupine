@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-for (const language of ["en", "de", "es", "fr"]) {
+for (const language of ["en", "de", "es", "fr", "it", "ja", "ko", "pt"]) {
   for (const flavour of ["factory", "worker"]) {
     console.log(`Template: ${language} ${flavour}`);
 

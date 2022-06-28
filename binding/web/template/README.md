@@ -30,6 +30,10 @@ For typical cases, use the worker packages. Worker packages create complete `Por
 * [@picovoice/porcupine-web-en-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker)
 * [@picovoice/porcupine-web-es-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-es-worker)
 * [@picovoice/porcupine-web-fr-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-fr-worker)
+* [@picovoice/porcupine-web-it-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-it-worker)
+* [@picovoice/porcupine-web-ja-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-ja-worker)
+* [@picovoice/porcupine-web-ko-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-ko-worker)
+* [@picovoice/porcupine-web-pt-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-pt-worker)
 
 ### Factories
 
@@ -39,6 +43,10 @@ Factory packages allow you to create instances of `Porcupine` directly on the ma
 * [@picovoice/porcupine-web-en-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-en-factory)
 * [@picovoice/porcupine-web-es-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-es-factory)
 * [@picovoice/porcupine-web-fr-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-fr-factory)
+* [@picovoice/porcupine-web-it-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-it-factory)
+* [@picovoice/porcupine-web-ja-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-ja-factory)
+* [@picovoice/porcupine-web-ko-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-ko-factory)
+* [@picovoice/porcupine-web-pt-factory](https://www.npmjs.com/package/@picovoice/porcupine-web-pt-factory)
 
 ## Installation & Usage
 
