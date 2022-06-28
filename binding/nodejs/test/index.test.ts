@@ -25,8 +25,13 @@ const MODEL_PATH = "./lib/common/porcupine_params.pv";
 const MODEL_PATH_DE = "../../lib/common/porcupine_params_de.pv";
 const MODEL_PATH_ES = "../../lib/common/porcupine_params_es.pv";
 const MODEL_PATH_FR = "../../lib/common/porcupine_params_fr.pv";
+const MODEL_PATH_IT = "../../lib/common/porcupine_params_it.pv";
+const MODEL_PATH_JA = "../../lib/common/porcupine_params_ja.pv";
+const MODEL_PATH_KO = "../../lib/common/porcupine_params_ko.pv";
+const MODEL_PATH_PT = "../../lib/common/porcupine_params_pt.pv";
 
 const DEFAULT_SENSITIVITY_ARRAY = [0.5];
+
 const WAV_PATH_PORCUPINE =
   "../../../resources/audio_samples/porcupine.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS =
@@ -43,6 +48,15 @@ const WAV_PATH_SINGLE_KEYWORD_FR =
   "../../../resources/audio_samples/mon_chouchou.wav";
 const WAV_PATH_MULTIPLE_KEYWORDS_FR =
   "../../../resources/audio_samples/multiple_keywords_fr.wav";
+const WAV_PATH_MULTIPLE_KEYWORDS_IT =
+  "../../../resources/audio_samples/multiple_keywords_it.wav";
+const WAV_PATH_MULTIPLE_KEYWORDS_JA =
+  "../../../resources/audio_samples/multiple_keywords_ja.wav";
+const WAV_PATH_MULTIPLE_KEYWORDS_KO =
+  "../../../resources/audio_samples/multiple_keywords_ko.wav";
+const WAV_PATH_MULTIPLE_KEYWORDS_PT =
+  "../../../resources/audio_samples/multiple_keywords_pt.wav";
+
 const WAV_PATH_NON_ASCII =
   "../../../resources/audio_samples/murciélago.wav";
 const platform = getPlatform();
@@ -78,6 +92,26 @@ const keywordPathsMultipleFr = [
   `../../resources/keyword_files_fr/${platform}/framboise_${platform}.ppn`,
   `../../resources/keyword_files_fr/${platform}/mon chouchou_${platform}.ppn`,
   `../../resources/keyword_files_fr/${platform}/parapluie_${platform}.ppn`,
+];
+const keywordPathsMultipleIt = [
+  `../../resources/keyword_files_it/${platform}/cameriere_${platform}.ppn`,
+  `../../resources/keyword_files_it/${platform}/espresso_${platform}.ppn`,
+  `../../resources/keyword_files_it/${platform}/porcospino_${platform}.ppn`,
+];
+const keywordPathsMultipleJa = [
+  `../../resources/keyword_files_ja/${platform}/bushi_${platform}.ppn`,
+  `../../resources/keyword_files_ja/${platform}/ninja_${platform}.ppn`,
+  `../../resources/keyword_files_ja/${platform}/ringo_${platform}.ppn`,
+];
+const keywordPathsMultipleKo = [
+  `../../resources/keyword_files_ko/${platform}/aiseukeulim_${platform}.ppn`,
+  `../../resources/keyword_files_ko/${platform}/bigseubi_${platform}.ppn`,
+  `../../resources/keyword_files_ko/${platform}/koppulso_${platform}.ppn`,
+];
+const keywordPathsMultiplePt = [
+  `../../resources/keyword_files_pt/${platform}/abacaxi_${platform}.ppn`,
+  `../../resources/keyword_files_pt/${platform}/fenomeno_${platform}.ppn`,
+  `../../resources/keyword_files_pt/${platform}/formiga_${platform}.ppn`,
 ];
 const keywordPathsNonAscii = [
   `../../resources/keyword_files_es/${platform}/murciélago_${platform}.ppn`,
@@ -325,6 +359,99 @@ describe("keyword detection in FR", () => {
     expect(parapluieCount).toEqual(1);
   });
 });
+
+describe("keyword detection in IT", () => {
+  test("multiple keyword multiple detection in IT", () => {
+    const sensitivities = new Array(keywordPathsMultipleIt.length).fill(0.5);
+    const porcupineEngine = new Porcupine(
+      ACCESS_KEY,
+      keywordPathsMultipleIt,
+      sensitivities,
+      MODEL_PATH_IT
+    );
+
+    const counts = porcupineDetectionCounts(
+      porcupineEngine,
+      WAV_PATH_MULTIPLE_KEYWORDS_IT
+    );
+    const cameriereCount = counts.get(0);
+    const porcospinoCount = counts.get(1);
+    const espressoCount = counts.get(2);
+    expect(cameriereCount).toEqual(1);
+    expect(porcospinoCount).toEqual(1);
+    expect(espressoCount).toEqual(1);
+  });
+});
+
+describe("keyword detection in JA", () => {
+  test("multiple keyword multiple detection in JA", () => {
+    const sensitivities = new Array(keywordPathsMultipleJa.length).fill(0.5);
+    const porcupineEngine = new Porcupine(
+      ACCESS_KEY,
+      keywordPathsMultipleJa,
+      sensitivities,
+      MODEL_PATH_JA
+    );
+
+    const counts = porcupineDetectionCounts(
+      porcupineEngine,
+      WAV_PATH_MULTIPLE_KEYWORDS_JA
+    );
+    const cameriereCount = counts.get(0);
+    const porcospinoCount = counts.get(1);
+    const espressoCount = counts.get(2);
+    expect(cameriereCount).toEqual(1);
+    expect(porcospinoCount).toEqual(1);
+    expect(espressoCount).toEqual(1);
+  });
+});
+
+describe("keyword detection in KO", () => {
+  test("multiple keyword multiple detection in KO", () => {
+    const sensitivities = new Array(keywordPathsMultipleKo.length).fill(0.5);
+    const porcupineEngine = new Porcupine(
+      ACCESS_KEY,
+      keywordPathsMultipleKo,
+      sensitivities,
+      MODEL_PATH_KO
+    );
+
+    const counts = porcupineDetectionCounts(
+      porcupineEngine,
+      WAV_PATH_MULTIPLE_KEYWORDS_KO
+    );
+    const cameriereCount = counts.get(0);
+    const porcospinoCount = counts.get(1);
+    const espressoCount = counts.get(2);
+    expect(cameriereCount).toEqual(1);
+    expect(porcospinoCount).toEqual(1);
+    expect(espressoCount).toEqual(1);
+  });
+});
+
+describe("keyword detection in PT", () => {
+  test("multiple keyword multiple detection in PT", () => {
+    const sensitivities = new Array(keywordPathsMultiplePt.length).fill(0.5);
+    const porcupineEngine = new Porcupine(
+      ACCESS_KEY,
+      keywordPathsMultiplePt,
+      sensitivities,
+      MODEL_PATH_PT
+    );
+
+    const counts = porcupineDetectionCounts(
+      porcupineEngine,
+      WAV_PATH_MULTIPLE_KEYWORDS_PT
+    );
+    const cameriereCount = counts.get(0);
+    const porcospinoCount = counts.get(1);
+    const espressoCount = counts.get(2);
+    expect(cameriereCount).toEqual(1);
+    expect(porcospinoCount).toEqual(1);
+    expect(espressoCount).toEqual(1);
+  });
+});
+
 
 describe("Non ascii characters", () => {
   test("single non ascii character in the model name", () => {
