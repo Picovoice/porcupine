@@ -64,7 +64,9 @@ class PorcupineTestCase(unittest.TestCase):
             audio_file_name=audio_file_name)
 
     @parameterized.expand([
-        ['en', ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'], [6, 0, 1, 2, 3, 4, 5, 6, 7]],
+        ['en',
+         ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
+         [6, 0, 1, 2, 3, 4, 5, 6, 7]],
         ['es', ['emparedado', 'leopardo', 'manzana'], [0, 1, 2]],
         ['de', ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'], [0, 1, 2, 3]],
         ['fr', ['framboise', 'mon chouchou', 'parapluie'], [0, 1, 0, 2]],
