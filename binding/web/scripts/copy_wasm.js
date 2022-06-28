@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const LANGUAGES = ["en", "de", "es", "fr"];
+const LANGUAGES = ["en", "de", "es", "fr", "it", "ja", "ko", "pt"];
 
 console.log("Updating the WASM models...");
 
