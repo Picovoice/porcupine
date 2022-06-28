@@ -1178,10 +1178,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
   integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
 
-"@picovoice/porcupine-web-en-worker@^2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.1.6.tgz#7816a8bd7d1df5a83b3233c1c5c71890362f87e1"
-  integrity sha512-mcuFC4L+gCU1p0LDn6uMpMavXcUoOY+BbujUWdbIXv0+GWw+B198vQFtHk1PFU7uDkz7qpva114JfFouvRDejg==
+"@picovoice/porcupine-web-en-worker@^2.1.7":
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-worker/-/porcupine-web-en-worker-2.1.7.tgz#7d4edd2cb4036e982d8d619b4114a7e1615a0823"
+  integrity sha512-DUSTXW1G/p13HMPtVH4dCEL+iWI4Tgb2Uny4EOwSWqaHSaTXFE3wkFRra2n3SqHfUwtsxhKMKL6ENiZ7hb/+1g==
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 
