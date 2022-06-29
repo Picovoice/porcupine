@@ -17,13 +17,25 @@ from parameterized import parameterized
 from porcupine import Porcupine
 from test_util import *
 
-TEST_PARAMETERS = [
+SINGLE_KEYWORD_PARAMETERS = [
     ["en", ['porcupine'], [0], 'porcupine.wav'],
     ['es', ['manzana'], [0], 'manzana.wav'],
     ['de', ['heuschrecke'], [0], 'heuschrecke.wav'],
     ['fr', ['mon chouchou'], [0], 'mon_chouchou.wav'],
 ]
 
+MULTIPLE_KEYWORDS_PARAMETERS = [
+        ['en',
+         ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
+         [6, 0, 1, 2, 3, 4, 5, 6, 7]],
+        ['es', ['emparedado', 'leopardo', 'manzana'], [0, 1, 2]],
+        ['de', ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'], [0, 1, 2, 3]],
+        ['fr', ['framboise', 'mon chouchou', 'parapluie'], [0, 1, 0, 2]],
+        ['it', ['espresso', 'cameriere', 'porcospino'], [2, 0, 1]],
+        ['ja', ['ninja', 'bushi', 'ringo'], [2, 1, 0]],
+        ['ko', ['aiseukeulim', 'bigseubi', 'koppulso'], [1, 2, 0]],
+        ['pt', ['abacaxi', 'fenomeno', 'formiga'], [0, 2, 1]],
+    ]
 
 class PorcupineTestCase(unittest.TestCase):
 
@@ -56,9 +68,7 @@ class PorcupineTestCase(unittest.TestCase):
 
         self.assertEqual(results, ground_truth)
 
-    @parameterized.expand([
-        TEST_PARAMETERS
-    ])
+    @parameterized.expand(SINGLE_KEYWORD_PARAMETERS)
     def test_single_keyword(self, language, keywords, ground_truth, audio_file_name):
         self.run_porcupine(
             language=language,
@@ -66,18 +76,7 @@ class PorcupineTestCase(unittest.TestCase):
             ground_truth=ground_truth,
             audio_file_name=audio_file_name)
 
-    @parameterized.expand([
-        ['en',
-         ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
-         [6, 0, 1, 2, 3, 4, 5, 6, 7]],
-        ['es', ['emparedado', 'leopardo', 'manzana'], [0, 1, 2]],
-        ['de', ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'], [0, 1, 2, 3]],
-        ['fr', ['framboise', 'mon chouchou', 'parapluie'], [0, 1, 0, 2]],
-        ['it', ['espresso', 'cameriere', 'porcospino'], [2, 0, 1]],
-        ['ja', ['ninja', 'bushi', 'ringo'], [2, 1, 0]],
-        ['ko', ['aiseukeulim', 'bigseubi', 'koppulso'], [1, 2, 0]],
-        ['pt', ['abacaxi', 'fenomeno', 'formiga'], [0, 2, 1]],
-    ])
+    @parameterized.expand(MULTIPLE_KEYWORDS_PARAMETERS)
     def test_multiple_keywords(self, language, keywords, ground_truth):
         self.run_porcupine(
             language=language,
