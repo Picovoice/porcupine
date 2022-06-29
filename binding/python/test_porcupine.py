@@ -17,6 +17,13 @@ from parameterized import parameterized
 from porcupine import Porcupine
 from test_util import *
 
+TEST_PARAMETERS = [
+    ["en", ['porcupine'], [0], 'porcupine.wav'],
+    ['es', ['manzana'], [0], 'manzana.wav'],
+    ['de', ['heuschrecke'], [0], 'heuschrecke.wav'],
+    ['fr', ['mon chouchou'], [0], 'mon_chouchou.wav'],
+]
+
 
 class PorcupineTestCase(unittest.TestCase):
 
@@ -50,11 +57,7 @@ class PorcupineTestCase(unittest.TestCase):
         self.assertEqual(results, ground_truth)
 
     @parameterized.expand([
-        ["en", ['porcupine'], [0], 'porcupine.wav'],
-        ['es', ['manzana'], [0], 'manzana.wav'],
-        ['de', ['heuschrecke'], [0], 'heuschrecke.wav'],
-        ['fr', ['mon chouchou'], [0], 'mon_chouchou.wav'],
-
+        TEST_PARAMETERS
     ])
     def test_single_keyword(self, language, keywords, ground_truth, audio_file_name):
         self.run_porcupine(
