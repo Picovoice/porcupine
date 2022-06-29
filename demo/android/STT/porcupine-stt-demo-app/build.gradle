@@ -7,7 +7,7 @@ android {
         minSdkVersion 21
         targetSdkVersion defaultTargetSdkVersion
         versionCode 5
-        versionName "2.1.1"
+        versionName "2.1.2"
     }
     buildTypes {
         release {
@@ -19,7 +19,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-    lintOptions {
+    lint {
         abortOnError false
     }
 }
@@ -27,6 +27,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation 'ai.picovoice:porcupine-android:2.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'ai.picovoice:porcupine-android:2.1.2'
 }
