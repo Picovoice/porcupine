@@ -256,6 +256,46 @@ mod tests {
     }
 
     #[test]
+    fn test_multiple_keywords_ko() {
+        run_porcupine_test(
+            "ko",
+            &["aiseukeulim", "bigseubi", "koppulso"],
+            &[1, 2, 0],
+            "multiple_keywords_ko.wav",
+        );
+    }
+
+    #[test]
+    fn test_multiple_keywords_ja() {
+        run_porcupine_test(
+            "ja",
+            &["ninja", "bushi", "ringo"],
+            &[2, 1, 0],
+            "multiple_keywords_ja.wav",
+        );
+    }
+
+    #[test]
+    fn test_multiple_keywords_it() {
+        run_porcupine_test(
+            "it",
+            &["espresso", "cameriere", "porcospino"],
+            &[2, 0, 1],
+            "multiple_keywords_it.wav",
+        );
+    }
+
+    #[test]
+    fn test_multiple_keywords_pt() {
+        run_porcupine_test(
+            "pt",
+            &["abacaxi", "fenomeno", "formiga"],
+            &[0, 2, 1],
+            "multiple_keywords_pt.wav",
+        );
+    }
+
+    #[test]
     fn test_with_non_ascii_model_name() {
         run_porcupine_test("es", &["murciélago"], &[0, 0], "murciélago.wav");
     }
