@@ -3,14 +3,12 @@
 echo "Removing old data ..."
 rm -rf ./data
 
-
 echo "Preparing dir ..."
-mkdir -p ./data/lib/
+mkdir -p ./data/lib/common
 mkdir -p ./data/resources/keyword_files
 
 echo "Copying Model File ..."
-cp -r ../../lib/common ./data/lib/
-
+cp -r ../../lib/common/porcupine_params.pv ./data/lib/common/
 
 for platform in beaglebone jetson linux mac raspberry-pi windows
 do

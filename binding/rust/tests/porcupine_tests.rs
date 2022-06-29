@@ -93,6 +93,55 @@ mod tests {
         assert_eq!(results, ground_truth);
     }
 
+    macro_rules! porcupine_keywords_tests {
+        ($($language:ident: $values:expr,)*) => {
+        $(
+            #[test]
+            fn $language() {
+                let language = stringify!($language);
+                let (keywords, ground_truth) = $values;
+                let audio_file_name = format!("{}.wav", append_lang("multiple_keywords", language));
+                run_porcupine_test(language, keywords, ground_truth, &audio_file_name);
+            }
+        )*
+        }
+    }
+
+    porcupine_keywords_tests! {
+        en: (
+            &["americano", "blueberry","bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"],
+            &[6, 0, 1, 2, 3, 4, 5, 6, 7],
+        ),
+        es: (
+            &["emparedado", "leopardo", "manzana", "murciélago"],
+            &[0, 1, 2, 3],
+        ),
+        de: (
+            &["ananas", "heuschrecke", "leguan", "stachelschwein"],
+            &[0, 1, 2, 3],
+        ),
+        fr: (
+            &["framboise", "mon chouchou", "parapluie"],
+            &[0, 1, 0, 2],
+        ),
+        ko: (
+            &["aiseukeulim", "bigseubi", "koppulso"],
+            &[1, 2, 0],
+        ),
+        ja: (
+            &["ninja", "bushi", "ringo"],
+            &[2, 1, 0],
+        ),
+        it: (
+            &["espresso", "cameriere", "porcospino"],
+            &[2, 0, 1],
+        ),
+        pt: (
+            &["abacaxi", "fenomeno", "formiga"],
+            &[0, 2, 1],
+        ),
+    }
+
     #[test]
     fn test_process_single_builtin() {
         let access_key = env::var("PV_ACCESS_KEY")
@@ -184,79 +233,5 @@ mod tests {
                 expected_result
             );
         }
-    }
-
-    #[test]
-    fn test_single_keyword() {
-        run_porcupine_test("en", &["porcupine"], &[0], "porcupine.wav");
-    }
-
-    #[test]
-    fn test_multiple_keywords() {
-        run_porcupine_test(
-            "en",
-            &[
-                "americano",
-                "blueberry",
-                "bumblebee",
-                "grapefruit",
-                "grasshopper",
-                "picovoice",
-                "porcupine",
-                "terminator",
-            ],
-            &[6, 0, 1, 2, 3, 4, 5, 6, 7],
-            "multiple_keywords.wav",
-        );
-    }
-
-    #[test]
-    fn test_single_keyword_es() {
-        run_porcupine_test("es", &["murciélago"], &[0, 0], "murciélago.wav");
-    }
-
-    #[test]
-    fn test_multiple_keywords_es() {
-        run_porcupine_test(
-            "es",
-            &["emparedado", "leopardo", "manzana"],
-            &[0, 1, 2],
-            "multiple_keywords_es.wav",
-        );
-    }
-
-    #[test]
-    fn test_single_keyword_de() {
-        run_porcupine_test("de", &["heuschrecke"], &[0], "heuschrecke.wav");
-    }
-
-    #[test]
-    fn test_multiple_keywords_de() {
-        run_porcupine_test(
-            "de",
-            &["ananas", "heuschrecke", "leguan", "stachelschwein"],
-            &[0, 1, 2, 3],
-            "multiple_keywords_de.wav",
-        );
-    }
-
-    #[test]
-    fn test_single_keyword_fr() {
-        run_porcupine_test("fr", &["mon chouchou"], &[0], "mon_chouchou.wav");
-    }
-
-    #[test]
-    fn test_multiple_keywords_fr() {
-        run_porcupine_test(
-            "fr",
-            &["framboise", "mon chouchou", "parapluie"],
-            &[0, 1, 0, 2],
-            "multiple_keywords_fr.wav",
-        );
-    }
-
-    #[test]
-    fn test_with_non_ascii_model_name() {
-        run_porcupine_test("es", &["murciélago"], &[0, 0], "murciélago.wav");
     }
 }
