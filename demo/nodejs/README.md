@@ -1,4 +1,4 @@
-# Porcupine NodeJS Demos
+# Porcupine Node.js Demos
 
 This package provides two demonstration command-line applications for Porcupine: a file based demo, which scans a compatible WAV file for keywords, and a microphone demo, which listens for keywords and outputs detections live.
 
@@ -19,7 +19,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 
 ## Compatibility
 
-These demos run Porcupine on **NodeJS 12+** on the following platforms:
+These demos run Porcupine on **Node.js 12+** on the following platforms:
 
 - Windows (x86_64)
 - Linux (x86_64)
@@ -30,7 +30,7 @@ These demos run Porcupine on **NodeJS 12+** on the following platforms:
 
 ### Web Browsers
 
-These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Porcupine in-browser? See the [@picovoice/porcupine-web-en-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker) package.
+These demos and the bindings upon which they are built are for Node.js and **do not work in a browser**. Looking to run Porcupine in-browser? See the [@picovoice/porcupine-web-en-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker) package.
 
 ## AccessKey
 

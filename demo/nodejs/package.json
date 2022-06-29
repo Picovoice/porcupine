@@ -1,7 +1,7 @@
 {
   "name": "@picovoice/porcupine-node-demo",
   "version": "2.1.7",
-  "description": "Picovoice Porcupine NodeJS file-based and microphone demos",
+  "description": "Picovoice Porcupine Node.js file-based and microphone demos",
   "scripts": {
     "file": "node file.js",
     "mic": "node mic.js"
