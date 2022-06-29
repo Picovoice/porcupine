@@ -74,20 +74,22 @@ function testPorcupineDetection(
 
     const frames = getInt16Frames(waveAudioFile, engineInstance.frameLength);
 
-    const results = []
-    for (let i = 0; i < frames.length; i++) {
-        const frame = frames[i];
-        const keywordIndex = engineInstance.process(frame);
+    for (let iteration = 0; iteration < 2; iteration++) {
+        const results = [];
+        for (let i = 0; i < frames.length; i++) {
+            const frame = frames[i];
+            const keywordIndex = engineInstance.process(frame);
 
-        if (keywordIndex !== -1) {
-            results.push(keywordIndex);
+            if (keywordIndex !== -1) {
+                results.push(keywordIndex);
+            }
         }
-    }
 
-    if (Array.isArray(groundTruth)) {
-        expect(results).toEqual(groundTruth);
-    } else {
-        expect(results.length).toBe(groundTruth);
+        if (Array.isArray(groundTruth)) {
+            expect(results).toEqual(groundTruth);
+        } else {
+            expect(results.length).toBe(groundTruth);
+        }
     }
 
     engineInstance.release();
