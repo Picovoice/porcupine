@@ -1,6 +1,6 @@
 [package]
 name = "pv_porcupine"
-version = "2.1.7"
+version = "2.1.8"
 edition = "2018"
 description = "The Rust bindings for Picovoice's Porcupine library"
 license = "Apache-2.0"
