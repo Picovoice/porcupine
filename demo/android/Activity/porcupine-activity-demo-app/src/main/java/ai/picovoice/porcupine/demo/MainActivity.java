@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -33,15 +33,52 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import ai.picovoice.porcupine.*;
+import ai.picovoice.porcupine.PorcupineActivationException;
+import ai.picovoice.porcupine.PorcupineActivationLimitException;
+import ai.picovoice.porcupine.PorcupineActivationRefusedException;
+import ai.picovoice.porcupine.PorcupineActivationThrottledException;
+import ai.picovoice.porcupine.PorcupineException;
+import ai.picovoice.porcupine.PorcupineInvalidArgumentException;
+import ai.picovoice.porcupine.PorcupineManager;
+import ai.picovoice.porcupine.PorcupineManagerCallback;
 
 
 public class MainActivity extends AppCompatActivity {
-    private PorcupineManager porcupineManager = null;
-
     private static final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}";
-
+    private PorcupineManager porcupineManager = null;
     private MediaPlayer notificationPlayer;
+    private final PorcupineManagerCallback porcupineManagerCallback = new PorcupineManagerCallback() {
+        @Override
+        public void invoke(int keywordIndex) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (!notificationPlayer.isPlaying()) {
+                        notificationPlayer.start();
+                    }
+
+                    final int detectedBackgroundColor = ContextCompat.getColor(
+                            getApplicationContext(),
+                            R.color.colorAccent);
+                    final RelativeLayout layout = findViewById(R.id.layout);
+                    layout.setBackgroundColor(detectedBackgroundColor);
+                    new CountDownTimer(1000, 100) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            if (!notificationPlayer.isPlaying()) {
+                                notificationPlayer.start();
+                            }
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            layout.setBackgroundColor(Color.TRANSPARENT);
+                        }
+                    }.start();
+                }
+            });
+        }
+    };
 
     private void startPorcupine() {
         try {
@@ -57,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             porcupineManager.start();
         } catch (PorcupineInvalidArgumentException e) {
             onPorcupineInitError(
-                String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
+                    String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
             );
         } catch (PorcupineActivationException e) {
             onPorcupineInitError("AccessKey activation error");
@@ -82,37 +119,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    private final PorcupineManagerCallback porcupineManagerCallback = new PorcupineManagerCallback() {
-        @Override
-        public void invoke(int keywordIndex) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (!notificationPlayer.isPlaying()) {
-                        notificationPlayer.start();
-                    }
-
-                    final int detectedBackgroundColor = getResources().getColor(R.color.colorAccent);
-                    final RelativeLayout layout = findViewById(R.id.layout);
-                    layout.setBackgroundColor(detectedBackgroundColor);
-                    new CountDownTimer(1000, 100) {
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-                            if (!notificationPlayer.isPlaying()) {
-                                notificationPlayer.start();
-                            }
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            layout.setBackgroundColor(Color.TRANSPARENT);
-                        }
-                    }.start();
-                }
-            });
-        }
-    };
 
     private void onPorcupineInitError(final String errorMessage) {
         runOnUiThread(new Runnable() {
