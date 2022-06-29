@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>net6.0;netcoreapp3.1;netstandard2.0</TargetFrameworks>
-	  <Version>2.1.4</Version>
+	  <Version>2.1.5</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Porcupine Wake Word Engine</Product>

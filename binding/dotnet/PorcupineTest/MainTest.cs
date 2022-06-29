@@ -145,7 +145,7 @@ namespace PorcupineTest
         }
 
         [TestMethod]
-        public void TestSingleKeyword()
+        public void TestSingleKeywordBuiltin()
         {
             porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             RunTestCase(
@@ -154,7 +154,7 @@ namespace PorcupineTest
         }
 
         [TestMethod]
-        public void TestMultipleKeyword()
+        public void TestMultipleKeywordBuiltin()
         {
             List<BuiltInKeyword> inputKeywords = new List<BuiltInKeyword>
             {
@@ -175,10 +175,13 @@ namespace PorcupineTest
         }
 
         [TestMethod]
-        public void TestSingleKeywordDe()
+        [DataRow("en", "porcupine", "porcupine.wav")]
+        [DataRow("de", "heuschrecke", "heuschrecke.wav")]
+        [DataRow("es", "manzana", "manzana.wav")]
+        [DataRow("fr", "mon chouchou", "mon_chouchou.wav")]
+        public void TestSingleKeyword(string language, string keyword, string audioFileName)
         {
-            string language = "de";
-            List<string> keywords = new List<string>() { "heuschrecke" };
+            List<string> keywords = new List<string>() { keyword };
 
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
@@ -187,110 +190,31 @@ namespace PorcupineTest
             );
 
             RunTestCase(
-                "heuschrecke.wav",
-                new List<int>() { 0 });
+                audioFileName,
+                new List<int>() { 0 }
+            );
         }
 
         [TestMethod]
-        public void TestMultipleKeywordDe()
+        [DataRow("de", new string[] { "heuschrecke", "ananas", "leguan", "stachelschwein" }, new int[] { 1, 0, 2, 3 })]
+        [DataRow("es", new string[] { "emparedado", "leopardo", "manzana" }, new int[] { 0, 1, 2 })]
+        [DataRow("fr", new string[] { "framboise", "mon chouchou", "parapluie" }, new int[] { 0, 1, 0, 2 })]
+        [DataRow("ko", new string[] { "aiseukeulim", "bigseubi", "koppulso" }, new int[] { 1, 2, 0 })]
+        [DataRow("ja", new string[] { "ninja", "bushi", "ringo" }, new int[] { 2, 1, 0 })]
+        [DataRow("it", new string[] { "espresso", "cameriere", "porcospino" }, new int[] { 2, 0, 1 })]
+        [DataRow("pt", new string[] { "abacaxi", "fenomeno", "formiga" }, new int[] { 0, 2, 1 })]
+        public void TestMultipleKeyword(string language, string[] keywords, int[] expectedResults)
         {
-            string language = "de";
-            List<string> keywords = new List<string>() {
-                "heuschrecke",
-                "ananas",
-                "leguan",
-                "stachelschwein"
-            };
-
             porcupine = Porcupine.FromKeywordPaths(
                 ACCESS_KEY,
-                GetKeywordPaths(language, keywords),
+                GetKeywordPaths(language, keywords.ToList()),
                 GetModelPath(language)
             );
 
             RunTestCase(
-                "multiple_keywords_de.wav",
-                new List<int>() { 1, 0, 2, 3 });
-        }
-
-        [TestMethod]
-        public void TestSingleKeywordEs()
-        {
-            string language = "es";
-            List<string> keywords = new List<string>() {
-                "manzana"
-            };
-
-            porcupine = Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
-                GetKeywordPaths(language, keywords),
-                GetModelPath(language)
+                String.Format("multiple_keywords_{0}.wav", language),
+                expectedResults.ToList()
             );
-
-            RunTestCase(
-                "manzana.wav",
-                new List<int>() { 0 });
-        }
-
-        [TestMethod]
-        public void TestMultipleKeywordEs()
-        {
-            string language = "es";
-            List<string> keywords = new List<string>() {
-                "emparedado",
-                "leopardo",
-                "manzana"
-            };
-
-            porcupine = Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
-                GetKeywordPaths(language, keywords),
-                GetModelPath(language)
-            );
-
-            RunTestCase(
-                "multiple_keywords_es.wav",
-                new List<int>() { 0, 1, 2 });
-        }
-
-        [TestMethod]
-        public void TestSingleKeywordFr()
-        {
-            string language = "fr";
-            List<string> keywords = new List<string>() {
-                "mon chouchou"
-            };
-
-            porcupine = Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
-                GetKeywordPaths(language, keywords),
-                GetModelPath(language)
-            );
-
-            RunTestCase(
-                "mon_chouchou.wav",
-                new List<int>() { 0 });
-        }
-
-        [TestMethod]
-        public void TestMultipleKeywordFr()
-        {
-            string language = "fr";
-            List<string> keywords = new List<string>() {
-                "framboise",
-                "mon chouchou",
-                "parapluie"
-            };
-
-            porcupine = Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
-                GetKeywordPaths(language, keywords),
-                GetModelPath(language)
-            );
-
-            RunTestCase(
-                "multiple_keywords_fr.wav",
-                new List<int>() { 0, 1, 0, 2 });
         }
 
         [TestMethod]
