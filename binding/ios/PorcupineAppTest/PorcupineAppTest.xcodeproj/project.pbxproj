@@ -39,7 +39,7 @@
 		A52A753EA560E5302D69D342 /* framboise_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7510A18E4FF2FB72A0F2 /* framboise_ios.ppn */; };
 		A52A75E2308DFB5640E56D73 /* himbeere_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A79DD13E0BABDEFCE76F9 /* himbeere_ios.ppn */; };
 		A52A762CD994AE8F5894DC8D /* multiple_keywords_ko.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A7D31E54D5A911A29B00B /* multiple_keywords_ko.wav */; };
-		A52A764B2A5684105561694E /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */; };
+		A52A764B2A5684105561694E /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */; };
 		A52A776223C3313AAF932096 /* leopardo_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7E4441D6DB8203A32CC5 /* leopardo_ios.ppn */; };
 		A52A7763E1BD8B1F3A4BAC86 /* hey barista_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A71A4FB158BF401F13227 /* hey barista_ios.ppn */; };
 		A52A77A4914991874D74E5EA /* fenomeno_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A79BCCD78C97B06675DFE /* fenomeno_ios.ppn */; };
@@ -110,7 +110,7 @@
 		5F1DBC0ABD84F719FC65D140 /* Pods-PorcupineAppTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTest.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTest/Pods-PorcupineAppTest.debug.xcconfig"; sourceTree = "<group>"; };
 		6CED4EA1CCD169B32C0E34EB /* Pods-PerformanceTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceTest.release.xcconfig"; path = "Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest.release.xcconfig"; sourceTree = "<group>"; };
 		9BBD91828D5A85912D7932D4 /* Pods-PerformanceTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceTest.debug.xcconfig"; path = "Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest.debug.xcconfig"; sourceTree = "<group>"; };
-		A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "murciélago_ios.ppn"; path = "../../../../resources/keyword_files_es/ios/murciélago_ios.ppn"; sourceTree = "<group>"; };
+		A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "murciélago_ios.ppn"; path = "../../../../resources/keyword_files_es/ios/murciélago_ios.ppn"; sourceTree = "<group>"; };
 		A52A717155CF0B71BA5E7017 /* ringo_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = ringo_ios.ppn; path = ../../../../resources/keyword_files_ja/ios/ringo_ios.ppn; sourceTree = "<group>"; };
 		A52A71A4FB158BF401F13227 /* hey barista_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "hey barista_ios.ppn"; path = "../../../../resources/keyword_files/ios/hey barista_ios.ppn"; sourceTree = "<group>"; };
 		A52A7229D7DEE4F4066D3765 /* cameriere_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = cameriere_ios.ppn; path = ../../../../resources/keyword_files_it/ios/cameriere_ios.ppn; sourceTree = "<group>"; };
@@ -327,7 +327,7 @@
 				A52A7AD6184A18A0D49B386C /* emparedado_ios.ppn */,
 				A52A7E4441D6DB8203A32CC5 /* leopardo_ios.ppn */,
 				A52A790B3B21CCA868FDBF6C /* manzana_ios.ppn */,
-				A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */,
+				A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */,
 			);
 			name = es;
 			sourceTree = "<group>";
@@ -569,7 +569,7 @@
 				A52A743CBF27C85028BF1669 /* formiga_ios.ppn in Resources */,
 				A52A7BB9A8F9A3655379498D /* porco_espinho_ios.ppn in Resources */,
 				A52A7BE85C8733EE6835F8D7 /* alexa_linux.ppn in Resources */,
-				A52A764B2A5684105561694E /* murciélago_ios.ppn in Resources */,
+				A52A764B2A5684105561694E /* murciélago_ios.ppn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
