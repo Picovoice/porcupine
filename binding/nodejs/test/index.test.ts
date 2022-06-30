@@ -11,443 +11,223 @@
 "use strict";
 
 import * as fs from "fs";
-import * as path from "path";
 
 import Porcupine from "../src/porcupine";
 import {checkWaveFile, getInt16Frames} from "../src/wave_util";
 import {WaveFile} from "wavefile";
 
-import {PorcupineInvalidArgumentError, PorcupineInvalidStateError} from "../src/errors";
-import {getPlatform} from "../src/platforms";
+import {PorcupineInvalidArgumentError} from "../src/errors";
 import {BuiltinKeyword} from "../src/builtin_keywords";
+import {getAudioFileByLanguage, getKeywordPathsByLanguage, getModelPathByLanguage} from "./test_utils"
 
-const MODEL_PATH = "./lib/common/porcupine_params.pv";
-const MODEL_PATH_DE = "../../lib/common/porcupine_params_de.pv";
-const MODEL_PATH_ES = "../../lib/common/porcupine_params_es.pv";
-const MODEL_PATH_FR = "../../lib/common/porcupine_params_fr.pv";
+const SINGLE_KEYWORD_PARAMETERS: [string, string[], number[], string][] = [
+    ['en', ['porcupine'], [0], 'porcupine.wav'],
+    ['es', ['manzana'], [0], 'manzana.wav'],
+    ['de', ['heuschrecke'], [0], 'heuschrecke.wav'],
+    ['fr', ['mon chouchou'], [0], 'mon_chouchou.wav'],
+];
 
-const DEFAULT_SENSITIVITY_ARRAY = [0.5];
-const WAV_PATH_PORCUPINE =
-  "../../../resources/audio_samples/porcupine.wav";
-const WAV_PATH_MULTIPLE_KEYWORDS =
-  "../../../resources/audio_samples/multiple_keywords.wav";
-const WAV_PATH_SINGLE_KEYWORD_DE =
-  "../../../resources/audio_samples/heuschrecke.wav";
-const WAV_PATH_MULTIPLE_KEYWORDS_DE =
-  "../../../resources/audio_samples/multiple_keywords_de.wav";
-const WAV_PATH_SINGLE_KEYWORD_ES =
-  "../../../resources/audio_samples/manzana.wav";
-const WAV_PATH_MULTIPLE_KEYWORDS_ES =
-  "../../../resources/audio_samples/multiple_keywords_es.wav";
-const WAV_PATH_SINGLE_KEYWORD_FR =
-  "../../../resources/audio_samples/mon_chouchou.wav";
-const WAV_PATH_MULTIPLE_KEYWORDS_FR =
-  "../../../resources/audio_samples/multiple_keywords_fr.wav";
-const WAV_PATH_NON_ASCII =
-  "../../../resources/audio_samples/murciélago.wav";
-const platform = getPlatform();
-
-const keywordPathsSinglePorcupine = [
-  `../../resources/keyword_files/${platform}/porcupine_${platform}.ppn`,
-];
-const keywordPathsMultipleAmericanoBumblebee = [
-  `../../resources/keyword_files/${platform}/americano_${platform}.ppn`,
-  `../../resources/keyword_files/${platform}/bumblebee_${platform}.ppn`,
-];
-const keywordPathsSingleDe = [
-  `../../resources/keyword_files_de/${platform}/heuschrecke_${platform}.ppn`,
-];
-const keywordPathsMultipleDe = [
-  `../../resources/keyword_files_de/${platform}/ananas_${platform}.ppn`,
-  `../../resources/keyword_files_de/${platform}/heuschrecke_${platform}.ppn`,
-  `../../resources/keyword_files_de/${platform}/leguan_${platform}.ppn`,
-  `../../resources/keyword_files_de/${platform}/stachelschwein_${platform}.ppn`,
-];
-const keywordPathsSingleEs = [
-  `../../resources/keyword_files_es/${platform}/manzana_${platform}.ppn`,
-];
-const keywordPathsMultipleEs = [
-  `../../resources/keyword_files_es/${platform}/emparedado_${platform}.ppn`,
-  `../../resources/keyword_files_es/${platform}/leopardo_${platform}.ppn`,
-  `../../resources/keyword_files_es/${platform}/manzana_${platform}.ppn`,
-];
-const keywordPathsSingleFr = [
-  `../../resources/keyword_files_fr/${platform}/mon chouchou_${platform}.ppn`,
-];
-const keywordPathsMultipleFr = [
-  `../../resources/keyword_files_fr/${platform}/framboise_${platform}.ppn`,
-  `../../resources/keyword_files_fr/${platform}/mon chouchou_${platform}.ppn`,
-  `../../resources/keyword_files_fr/${platform}/parapluie_${platform}.ppn`,
-];
-const keywordPathsNonAscii = [
-  `../../resources/keyword_files_es/${platform}/murciélago_${platform}.ppn`,
+const MULTIPLE_KEYWORDS_PARAMETERS: [string, string[], number[]][] = [
+    ['en',
+        ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
+        [6, 0, 1, 2, 3, 4, 5, 6, 7]],
+    ['es', ['emparedado', 'leopardo', 'manzana'], [0, 1, 2]],
+    ['de', ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'], [0, 1, 2, 3]],
+    ['fr', ['framboise', 'mon chouchou', 'parapluie'], [0, 1, 0, 2]],
+    ['it', ['espresso', 'cameriere', 'porcospino'], [2, 0, 1]],
+    ['ja', ['ninja', 'bushi', 'ringo'], [2, 1, 0]],
+    ['ko', ['aiseukeulim', 'bigseubi', 'koppulso'], [1, 2, 0]],
+    ['pt', ['abacaxi', 'fenomeno', 'formiga'], [0, 2, 1]],
 ];
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
 
-function porcupineDetectionCounts(engineInstance: Porcupine, relativeWaveFilePath: string): Map<number, number> {
-  const waveFilePath = path.join(__dirname, relativeWaveFilePath);
-  const waveBuffer = fs.readFileSync(waveFilePath);
-  const waveAudioFile = new WaveFile(waveBuffer);
 
-  if (!checkWaveFile(waveAudioFile, engineInstance.sampleRate)) {
-    fail(
-      "Audio file did not meet requirements. Wave file must be 16KHz, 16-bit, linear PCM (mono)."
+function testPorcupineDetection(
+    language: string,
+    keywords: string[] | BuiltinKeyword[],
+    groundTruth: number[] | number,
+    audioFileName: string | null = null): void {
+
+    const keywordPaths = keywords.map((keyword) => {
+            return getKeywordPathsByLanguage("../../../", language, keyword);
+        }
     );
-  }
 
-  const frames = getInt16Frames(waveAudioFile, engineInstance.frameLength);
+    const modelPath = getModelPathByLanguage("../../../", language);
+    const engineInstance = new Porcupine(
+        ACCESS_KEY,
+        keywordPaths,
+        Array(keywordPaths.length).fill(0.5),
+        modelPath,
+    );
 
-  // build a map of keyword indices to detection counts
-  const detections = new Map();
+    const waveFilePath = getAudioFileByLanguage("../../../", language, audioFileName);
+    const waveBuffer = fs.readFileSync(waveFilePath);
+    const waveAudioFile = new WaveFile(waveBuffer);
 
-  for (let i = 0; i < frames.length; i++) {
-    const frame = frames[i];
-    const keywordIndex = engineInstance.process(frame);
-
-    if (keywordIndex !== -1) {
-      const currentCount = detections.get(keywordIndex);
-
-      if (currentCount === undefined) {
-        detections.set(keywordIndex, 1);
-      } else {
-        detections.set(keywordIndex, currentCount + 1);
-      }
+    if (!checkWaveFile(waveAudioFile, engineInstance.sampleRate)) {
+        fail(
+            "Audio file did not meet requirements. Wave file must be 16KHz, 16-bit, linear PCM (mono)."
+        );
     }
-  }
-  return detections;
+
+    const frames = getInt16Frames(waveAudioFile, engineInstance.frameLength);
+
+    for (let iteration = 0; iteration < 2; iteration++) {
+        const results = [];
+        for (let i = 0; i < frames.length; i++) {
+            const frame = frames[i];
+            const keywordIndex = engineInstance.process(frame);
+
+            if (keywordIndex !== -1) {
+                results.push(keywordIndex);
+            }
+        }
+
+        if (Array.isArray(groundTruth)) {
+            expect(results).toEqual(groundTruth);
+        } else {
+            expect(results.length).toBe(groundTruth);
+        }
+    }
+
+    engineInstance.release();
 }
 
 describe("successful keyword detections", () => {
-  test("single keyword single detection", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsSinglePorcupine,
-      DEFAULT_SENSITIVITY_ARRAY
-    );
+        it.each(SINGLE_KEYWORD_PARAMETERS)(
+            'testing single keyword for %p with %p', (language, keywords, result, filename) => {
+                testPorcupineDetection(language, keywords, result, filename);
+            });
 
-    const counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_PORCUPINE);
-    const porcupineCount = counts.get(0);
-    expect(porcupineCount).toEqual(1);
-  });
+        it.each(MULTIPLE_KEYWORDS_PARAMETERS)(
+            'testing multiple for %p with %p', (language, keywords, result) => {
+                testPorcupineDetection(language, keywords, result);
+            });
 
-  test("builtin keyword 'GRASSHOPPER'", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      [BuiltinKeyword.GRASSHOPPER],
-      DEFAULT_SENSITIVITY_ARRAY
-    );
+        test("builtin keyword 'GRASSHOPPER'", () => {
+            testPorcupineDetection("en", [BuiltinKeyword.GRASSHOPPER], 1);
+        });
 
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_MULTIPLE_KEYWORDS
-    );
-    const grasshopperCount = counts.get(0);
-    expect(grasshopperCount).toEqual(1);
-  });
-
-  test("invalid builtin keyword type", () => {
-    expect(() => {
-      const porcupineEngine = new Porcupine(
-        ACCESS_KEY,
-        // @ts-expect-error
-        [99],
-        DEFAULT_SENSITIVITY_ARRAY
-      );
-    }).toThrow(PorcupineInvalidArgumentError);
-  });
-
-  test("single keyword multiple detection", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsSinglePorcupine,
-      DEFAULT_SENSITIVITY_ARRAY
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_MULTIPLE_KEYWORDS
-    );
-    const porcupineCount = counts.get(0);
-    expect(porcupineCount).toEqual(2);
-  });
-
-  test("multiple keyword multiple detection", () => {
-    const sensitivities = new Array(keywordPathsMultipleAmericanoBumblebee.length).fill(0.5);
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsMultipleAmericanoBumblebee,
-      sensitivities
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_MULTIPLE_KEYWORDS
-    );
-    const americanoCount = counts.get(0);
-    const bumblebeeCount = counts.get(1);
-    expect(americanoCount).toEqual(1);
-    expect(bumblebeeCount).toEqual(1);
-  });
-});
-
-describe("manual paths", () => {
-  test("manual model path", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsSinglePorcupine,
-      DEFAULT_SENSITIVITY_ARRAY,
-      MODEL_PATH
-    );
-
-    const counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_PORCUPINE);
-    const porcupineCount = counts.get(0);
-    expect(porcupineCount).toEqual(1);
-  });
-});
-
-describe("keyword detection in DE", () => {
-  test("single keyword single detection in DE", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsSingleDe,
-      DEFAULT_SENSITIVITY_ARRAY,
-      MODEL_PATH_DE
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_SINGLE_KEYWORD_DE
-    );
-    const heuschreckeCount = counts.get(0);
-    expect(heuschreckeCount).toEqual(1);
-  });
-
-  test("multiple keyword multiple detection in DE", () => {
-    const sensitivities = new Array(keywordPathsMultipleDe.length).fill(0.5);
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsMultipleDe,
-      sensitivities,
-      MODEL_PATH_DE
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_MULTIPLE_KEYWORDS_DE
-    );
-    const ananasCount = counts.get(0);
-    const heuschreckeCount = counts.get(1);
-    const leguanCount = counts.get(2);
-    const stachelschweinCount = counts.get(3);
-    expect(ananasCount).toEqual(1);
-    expect(heuschreckeCount).toEqual(1);
-    expect(leguanCount).toEqual(1);
-    expect(stachelschweinCount).toEqual(1);
-  });
-});
-
-describe("keyword detection in ES", () => {
-  test("single keyword single detection in ES", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsSingleEs,
-      DEFAULT_SENSITIVITY_ARRAY,
-      MODEL_PATH_ES
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_SINGLE_KEYWORD_ES
-    );
-    const manzanaCount = counts.get(0);
-    expect(manzanaCount).toEqual(1);
-  });
-
-  test("multiple keyword multiple detection in ES", () => {
-    const sensitivities = new Array(keywordPathsMultipleEs.length).fill(0.5);
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsMultipleEs,
-      sensitivities,
-      MODEL_PATH_ES
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_MULTIPLE_KEYWORDS_ES
-    );
-    const emparedadoCount = counts.get(0);
-    const leopardoCount = counts.get(1);
-    const manzanaCount = counts.get(2);
-    expect(emparedadoCount).toEqual(1);
-    expect(leopardoCount).toEqual(1);
-    expect(manzanaCount).toEqual(1);
-  });
-});
-
-describe("keyword detection in FR", () => {
-  test("single keyword single detection in FR", () => {
-
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsSingleFr,
-      DEFAULT_SENSITIVITY_ARRAY,
-      MODEL_PATH_FR
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_SINGLE_KEYWORD_FR
-    );
-    const monChouchouCount = counts.get(0);
-    expect(monChouchouCount).toEqual(1);
-  });
-
-  test("multiple keyword multiple detection in FR", () => {
-    const sensitivities = new Array(keywordPathsMultipleFr.length).fill(0.5);
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsMultipleFr,
-      sensitivities,
-      MODEL_PATH_FR
-    );
-
-    const counts = porcupineDetectionCounts(
-      porcupineEngine,
-      WAV_PATH_MULTIPLE_KEYWORDS_FR
-    );
-    const framboiseCount = counts.get(0);
-    const monChouchouCount = counts.get(1);
-    const parapluieCount = counts.get(2);
-    expect(framboiseCount).toEqual(2);
-    expect(monChouchouCount).toEqual(1);
-    expect(parapluieCount).toEqual(1);
-  });
-});
+        test("single keyword multiple detection", () => {
+            testPorcupineDetection("en", ['porcupine'], 2);
+        });
+    }
+);
 
 describe("Non ascii characters", () => {
-  test("single non ascii character in the model name", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsNonAscii,
-      DEFAULT_SENSITIVITY_ARRAY,
-      MODEL_PATH_ES
-    );
-
-    const counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_NON_ASCII);
-    expect(counts.get(0)).toEqual(2);
-    porcupineEngine.release();
-
-    expect(() => {
-      const count = porcupineDetectionCounts(porcupineEngine, WAV_PATH_NON_ASCII);
-    }).toThrow(PorcupineInvalidStateError);
-  });
+    test("single non ascii character in the model name", () => {
+        const porcupineEngine = new Porcupine(
+            ACCESS_KEY,
+            [getKeywordPathsByLanguage("../../../", 'es', 'murciélago')],
+            [0.5],
+            getModelPathByLanguage("../../../", 'es')
+        );
+    });
 });
 
 describe("basic parameter validation", () => {
-  test("num of keywords does not match num of sensitivities", () => {
-    expect(() => {
-      const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [
-        0.1,
-        0.2,
-      ]);
-    }).toThrow(PorcupineInvalidArgumentError);
-  });
+    test("num of keywords does not match num of sensitivities", () => {
+        expect(() => {
+            new Porcupine(
+                ACCESS_KEY,
+                [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+                [0.1, 0.2,]);
+        }).toThrow(PorcupineInvalidArgumentError);
+    });
 
-  test("keywords is not an array", () => {
-    try {
-      const porcupineEngine = new Porcupine(
-        ACCESS_KEY,
-        // @ts-expect-error
-        `../../resources/keyword_files/${platform}/porcupine_${platform}.ppn`,
-        DEFAULT_SENSITIVITY_ARRAY
-      );
-    } catch (error: any) {
-      expect(error.message.includes("array"));
-    }
-  });
+    test("keywords is not an array", () => {
+        expect(() => {
+            new Porcupine(
+                ACCESS_KEY,
+                // @ts-expect-error
+                getKeywordPathsByLanguage("../../../", 'en', 'porcupine'),
+                [0.1]);
+        }).toThrow(PorcupineInvalidArgumentError);
+    });
 
-  test("sensitivity is not in range", () => {
-    expect(() => {
-      const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [4.2]);
-    }).toThrow(RangeError);
-  });
+    test("sensitivity is not in range", () => {
+        expect(() => {
+            new Porcupine(
+                ACCESS_KEY,
+                [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+                [4.2]);
+        }).toThrow(RangeError);
+    });
 
-  test("sensitivity is not a number", () => {
-    expect(() => {
-      const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [
-        // @ts-expect-error
-        "steamed hams",
-      ]);
-    }).toThrow(Error);
-  });
+    test("sensitivity is not a number", () => {
+        expect(() => {
+            new Porcupine(
+                ACCESS_KEY,
+                [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+                // @ts-expect-error
+                "porcupine");
+        }).toThrow(RangeError);
+    });
 
-  test("invalid keyword path", () => {
-    expect(() => {
-      const porcupineEngine = new Porcupine(ACCESS_KEY, ["to be or not to be"], [0.5]);
-    }).toThrow(Error);
-  });
+    test("invalid keyword path", () => {
+        expect(() => {
+            new Porcupine(
+                ACCESS_KEY,
+                ["to be or not to be"],
+                [0.5]);
+        }).toThrow(PorcupineInvalidArgumentError);
+    });
 });
 
 describe("frame validation", () => {
-  test("accepts non Int16Array if array is valid", () => {
-    const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
-    const emptyArray = Array.apply(null, Array(porcupineEngine.frameLength)).map((x, i) => i)
-    // @ts-expect-error
-    porcupineEngine.process(emptyArray);
-    porcupineEngine.release();
-  });
+    test("accepts non Int16Array if array is valid", () => {
+        const porcupineEngine = new Porcupine(
+            ACCESS_KEY,
+            [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+            [0.5]);
+        const emptyArray = Array.apply(null, Array(porcupineEngine.frameLength)).map((x, i) => i)
+        // @ts-expect-error
+        porcupineEngine.process(emptyArray);
+        porcupineEngine.release();
+    });
 
-  test("mismatched frameLength throws error", () => {
-    const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
-    expect(() => {
-      // @ts-expect-error
-      porcupineEngine.process([1, 2, 3]);
-    }).toThrow(PorcupineInvalidArgumentError);
-    porcupineEngine.release();
-  });
+    test("mismatched frameLength throws error", () => {
+        const porcupineEngine = new Porcupine(
+            ACCESS_KEY,
+            [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+            [0.5]);
+        expect(() => {
+            // @ts-expect-error
+            porcupineEngine.process([1, 2, 3]);
+        }).toThrow(PorcupineInvalidArgumentError);
+        porcupineEngine.release();
+    });
 
-  test("null/undefined frames throws error", () => {
-    const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
-    expect(() => {
-      // @ts-expect-error
-      porcupineEngine.process(null);
-    }).toThrow(PorcupineInvalidArgumentError);
-    expect(() => {
-      // @ts-expect-error
-      porcupineEngine.process(undefined);
-    }).toThrow(PorcupineInvalidArgumentError);
-    porcupineEngine.release();
-  });
+    test("null/undefined frames throws error", () => {
+        const porcupineEngine = new Porcupine(
+            ACCESS_KEY,
+            [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+            [0.5]);
+        expect(() => {
+            // @ts-expect-error
+            porcupineEngine.process(null);
+        }).toThrow(PorcupineInvalidArgumentError);
+        expect(() => {
+            // @ts-expect-error
+            porcupineEngine.process(undefined);
+        }).toThrow(PorcupineInvalidArgumentError);
+        porcupineEngine.release();
+    });
 
-  test("passing floating point frame values throws PorcupineInvalidArgumentError", () => {
-    const porcupineEngine = new Porcupine(ACCESS_KEY, keywordPathsSinglePorcupine, [0.5]);
-    const floatFrames = Array.from({length: porcupineEngine.frameLength}).map(
-      (x) => 3.1415
-    );
-    expect(() => {
-      // @ts-expect-error
-      porcupineEngine.process(floatFrames);
-    }).toThrow(PorcupineInvalidArgumentError);
-    porcupineEngine.release();
-  });
-});
-
-describe("invalid state", () => {
-  test("process throws PorcupineInvalidStateError if the engine is released", () => {
-    const porcupineEngine = new Porcupine(
-      ACCESS_KEY,
-      keywordPathsSinglePorcupine,
-      DEFAULT_SENSITIVITY_ARRAY
-    );
-
-    const counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_PORCUPINE);
-    expect(counts.get(0)).toEqual(1);
-    porcupineEngine.release();
-
-    expect(() => {
-      const counts = porcupineDetectionCounts(porcupineEngine, WAV_PATH_PORCUPINE);
-    }).toThrow(PorcupineInvalidStateError);
-  });
+    test("passing floating point frame values throws PorcupineInvalidArgumentError", () => {
+        const porcupineEngine = new Porcupine(
+            ACCESS_KEY,
+            [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+            [0.5]);
+        const floatFrames = Array.from({length: porcupineEngine.frameLength}).map(
+            (x) => 3.1415
+        );
+        expect(() => {
+            // @ts-expect-error
+            porcupineEngine.process(floatFrames);
+        }).toThrow(PorcupineInvalidArgumentError);
+        porcupineEngine.release();
+    });
 });

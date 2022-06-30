@@ -1,4 +1,4 @@
-# Porcupine Binding for NodeJS
+# Porcupine Binding for Node.js
 
 ## Porcupine
 
@@ -23,7 +23,7 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 ## Compatibility
 
-This binding is for running Porcupine on **NodeJS 12+** on the following platforms:
+This binding is for running Porcupine on **Node.js 12+** on the following platforms:
 
 - Windows (x86_64)
 - Linux (x86_64)
@@ -34,7 +34,7 @@ This binding is for running Porcupine on **NodeJS 12+** on the following platfor
 
 ### Web Browsers
 
-This npm package is for NodeJS and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vue).
+This npm package is for Node.js and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vue).
 
 ## AccessKey
 
