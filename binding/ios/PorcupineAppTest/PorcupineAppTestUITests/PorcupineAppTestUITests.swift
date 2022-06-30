@@ -143,29 +143,11 @@ class PorcupineAppTestUITests: BaseTest {
 
         XCTAssert(didFail)
     }
-
-    func testInitSuccessES() throws {
+    
+    func testInitWithNonAsciiModelName() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "emparedado_ios", ofType: "ppn")!
+        let keywordPath = bundle.path(forResource: "murciélago_ios", ofType: "ppn")!
         let modelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
-
-        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
-        p.delete()
-    }
-
-    func testInitSuccessFR() throws {
-        let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "framboise_ios", ofType: "ppn")!
-        let modelPath = bundle.path(forResource: "porcupine_params_fr", ofType: "pv")!
-
-        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
-        p.delete()
-    }
-
-    func testInitSuccessDE() throws {
-        let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "ananas_ios", ofType: "ppn")!
-        let modelPath = bundle.path(forResource: "porcupine_params_de", ofType: "pv")!
 
         let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         p.delete()
@@ -181,15 +163,6 @@ class PorcupineAppTestUITests: BaseTest {
         p.delete()
 
         XCTAssert(results.count == 1 && results[0] == 0)
-    }
-
-    func testInitWithNonAsciiModelName() throws {
-        let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "murciélago_ios", ofType: "ppn")!
-        let modelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
-
-        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
-        p.delete()
     }
 
     func testProcSuccessWithMultipleBuiltIns() throws {
@@ -210,22 +183,7 @@ class PorcupineAppTestUITests: BaseTest {
         let bundle = Bundle(for: type(of: self))
         let fileURL: URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav")!
 
-        let data = try Data(contentsOf: fileURL)
-        let frameLengthBytes = Int(Porcupine.frameLength) * 2
-        var pcmBuffer = Array<Int16>(repeating: 0, count: Int(Porcupine.frameLength))
-        var results: [Int32] = []
-        var index = 44
-        while (index + frameLengthBytes < data.count) {
-            _ = pcmBuffer.withUnsafeMutableBytes {
-                data.copyBytes(to: $0, from: index..<(index + frameLengthBytes))
-            }
-            let keywordIndex: Int32 = try p.process(pcm: pcmBuffer)
-            if (keywordIndex >= 0) {
-                results.append(keywordIndex)
-            }
-
-            index += frameLengthBytes
-        }
+        let results = try processFile(p: p, testAudioURL: fileURL)
         p.delete()
 
         let expectedResults = [
