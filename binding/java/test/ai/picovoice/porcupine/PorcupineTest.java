@@ -195,7 +195,7 @@ public class PorcupineTest {
                 Arguments.of(
                         "pt",
                         new String[] {"abacaxi", "fenomeno", "formiga"},
-                        "multiple_keywords_pt.wav", new ArrayList<>(Arrays.asList(1, 2, 1))
+                        "multiple_keywords_pt.wav", new ArrayList<>(Arrays.asList(0, 2, 1))
                 )
         );
     }

@@ -208,7 +208,6 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-
 }
 
 compileTestJava {
