@@ -243,8 +243,8 @@ try{
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/binding/flutter/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common).
 
 ## Demo App
 
-Check out the [Porcupine Flutter demo](https://github.com/Picovoice/porcupine/tree/master/binding/flutter/demo/flutter) to see what it looks like to use Porcupine in a cross-platform app!
+Check out the [Porcupine Flutter demo](https://github.com/Picovoice/porcupine/tree/master/demo/flutter) to see what it looks like to use Porcupine in a cross-platform app!
