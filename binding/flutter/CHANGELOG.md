@@ -28,3 +28,6 @@
 
 ## [2.1.2] - 2022-05-13
 * Android/iOS lib patch
+
+## [2.1.3] - 2022-06-30
+* Additional language support added (it, ja, ko, pt)
