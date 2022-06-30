@@ -14,10 +14,10 @@ package ai.picovoice.porcupine;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -25,6 +25,10 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Stream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -97,19 +101,7 @@ public class PorcupineTest {
     }
 
     @Test
-    void testSingleKeyword() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        porcupine = new Porcupine.Builder()
-                .setAccessKey(accessKey)
-                .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
-                .build();
-
-        runTestCase(
-                "porcupine.wav",
-                new ArrayList<>(Collections.singletonList(0)));
-    }
-
-    @Test
-    void testMultipleKeywords() throws IOException, UnsupportedAudioFileException, PorcupineException {
+    void testBuiltinKeywords() throws IOException, UnsupportedAudioFileException, PorcupineException {
         final Porcupine.BuiltInKeyword[] keywords = new Porcupine.BuiltInKeyword[]{
                 Porcupine.BuiltInKeyword.ALEXA,
                 Porcupine.BuiltInKeyword.AMERICANO,
@@ -132,93 +124,78 @@ public class PorcupineTest {
                 new ArrayList<>(Arrays.asList(7, 0, 1, 2, 3, 4, 5, 6, 7, 8)));
     }
 
-    @Test
-    void testSingleKeywordDe() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String language = "de";
-        final String[] keywords = {"heuschrecke"};
+    @ParameterizedTest(name = "testSingleKeyword for ''{0}''")
+    @MethodSource("singleKeywordProvider")
+    void testSingleKeyword(String language, String keyword, String audioFileName) throws IOException, UnsupportedAudioFileException, PorcupineException {
+        final String[] keywords = {keyword};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(PorcupineTestUtils.getTestModelPath(language))
                 .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
                 .build();
         runTestCase(
-                "heuschrecke.wav",
+                audioFileName,
                 new ArrayList<>(Collections.singletonList(0)));
     }
 
-    @Test
-    void testMultipleKeywordsDe() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String language = "de";
-        final String[] keywords = {"ananas", "heuschrecke", "leguan", "stachelschwein"};
-        porcupine = new Porcupine.Builder()
-                .setAccessKey(accessKey)
-                .setModelPath(PorcupineTestUtils.getTestModelPath(language))
-                .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
-                .build();
-
-        runTestCase(
-                "multiple_keywords_de.wav",
-                new ArrayList<>(Arrays.asList(0, 1, 2, 3)));
+    private static Stream<Arguments> singleKeywordProvider() {
+        return Stream.of(
+                Arguments.of("en", "porcupine", "porcupine.wav"),
+                Arguments.of("de", "heuschrecke", "heuschrecke.wav"),
+                Arguments.of("es", "manzana", "manzana.wav"),
+                Arguments.of("fr", "mon chouchou", "mon_chouchou.wav")
+        );
     }
 
-    @Test
-    void testSingleKeywordEs() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String language = "es";
-        final String[] keywords = {"manzana"};
+    @ParameterizedTest(name = "testMultipleKeywords for ''{0}''")
+    @MethodSource("multipleKeywordsProvider")
+    void testSingleKeyword(String language, String[] keywords, String audioFileName, ArrayList results) throws IOException, UnsupportedAudioFileException, PorcupineException {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(PorcupineTestUtils.getTestModelPath(language))
                 .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
                 .build();
-
-        runTestCase(
-                "manzana.wav",
-                new ArrayList<>(Collections.singletonList(0)));
+        runTestCase(audioFileName, results);
     }
 
-    @Test
-    void testMultipleKeywordsEs() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String language = "es";
-        final String[] keywords = {"emparedado", "leopardo", "manzana"};
-        porcupine = new Porcupine.Builder()
-                .setAccessKey(accessKey)
-                .setModelPath(PorcupineTestUtils.getTestModelPath(language))
-                .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
-                .build();
-
-        runTestCase(
-                "multiple_keywords_es.wav",
-                new ArrayList<>(Arrays.asList(0, 1, 2)));
-    }
-
-    @Test
-    void testSingleKeywordFr() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String language = "fr";
-        final String[] keywords = {"mon chouchou"};
-        porcupine = new Porcupine.Builder()
-                .setAccessKey(accessKey)
-                .setModelPath(PorcupineTestUtils.getTestModelPath(language))
-                .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
-                .build();
-
-        runTestCase(
-                "mon_chouchou.wav",
-                new ArrayList<>(Collections.singletonList(0)));
-    }
-
-    @Test
-    void testMultipleKeywordsFr() throws IOException, UnsupportedAudioFileException, PorcupineException {
-        final String language = "fr";
-        final String[] keywords = {"framboise", "mon chouchou", "parapluie"};
-        porcupine = new Porcupine.Builder()
-                .setAccessKey(accessKey)
-                .setModelPath(PorcupineTestUtils.getTestModelPath(language))
-                .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
-                .build();
-
-        runTestCase(
-                "multiple_keywords_fr.wav",
-                new ArrayList<>(Arrays.asList(0, 1, 0, 2)));
+    private static Stream<Arguments> multipleKeywordsProvider() {
+        return Stream.of(
+                Arguments.of(
+                        "de",
+                        new String[] {"ananas", "heuschrecke", "leguan", "stachelschwein"},
+                        "multiple_keywords_de.wav", new ArrayList<>(Arrays.asList(0, 1, 2, 3))
+                ),
+                Arguments.of(
+                        "es",
+                        new String[] {"emparedado", "leopardo", "manzana"},
+                        "multiple_keywords_es.wav", new ArrayList<>(Arrays.asList(0, 1, 2))
+                ),
+                Arguments.of(
+                        "fr",
+                        new String[] {"framboise", "mon chouchou", "parapluie"},
+                        "multiple_keywords_fr.wav", new ArrayList<>(Arrays.asList(0, 1, 0, 2))
+                ),
+                Arguments.of(
+                        "it",
+                        new String[] {"espresso", "cameriere", "porcospino"},
+                        "multiple_keywords_it.wav", new ArrayList<>(Arrays.asList(2, 0, 1))
+                ),
+                Arguments.of(
+                        "ja",
+                        new String[] {"ninja", "bushi", "ringo"},
+                        "multiple_keywords_ja.wav", new ArrayList<>(Arrays.asList(2, 1, 0))
+                ),
+                Arguments.of(
+                        "ko",
+                        new String[] {"aiseukeulim", "bigseubi", "koppulso"},
+                        "multiple_keywords_ko.wav", new ArrayList<>(Arrays.asList(1, 2, 0))
+                ),
+                Arguments.of(
+                        "pt",
+                        new String[] {"abacaxi", "fenomeno", "formiga"},
+                        "multiple_keywords_pt.wav", new ArrayList<>(Arrays.asList(0, 2, 1))
+                )
+        );
     }
 
     @Test
