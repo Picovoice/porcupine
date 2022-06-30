@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2021 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -32,7 +32,7 @@ HEADER = """
 """
 
 FOOTER = """
-#endif // PV_PARAMS
+#endif // PV_PARAMS_H
 
 """
 
@@ -41,6 +41,10 @@ LANGUAGE_CODE_TO_NAME = {
     'de': 'german',
     'es': 'spanish',
     'fr': 'french',
+    'it': 'italian',
+    'ja': 'japanese',
+    'ko': 'korean',
+    'pt': 'portuguese',
 }
 
 
@@ -48,12 +52,14 @@ def generate_pv_params(ppn_files, header_file_folders):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     repo_dir = os.path.join(script_dir, '../..')
 
-    for header_file_path in header_file_folders:
+    for header_file_path, languages in header_file_folders.items():
         header_file = os.path.join(header_file_path, 'pv_params.h')
         with open(os.path.join(script_dir, header_file), 'w') as f_out:
             f_out.write(HEADER)
 
-            for language, keywords in ppn_files.items():
+            for language in languages:
+                keywords = ppn_files[language]
+
                 if language == 'en':
                     ppn_dir = os.path.join(repo_dir, 'resources/keyword_files/cortexm')
                 else:
@@ -108,17 +114,21 @@ if __name__ == '__main__':
         'en': ('porcupine', 'picovoice', 'bumblebee', 'alexa',),
         'de': ('hey computer',),
         'es': ('hola computadora',),
-        'fr': ('salut ordinateur',)
+        'fr': ('salut ordinateur',),
+        'it': ('ciao computer',),
+        'ja': ('konnichiwa konpyūtā',),
+        'ko': ('annyeong keompyuteo',),
+        'pt': ('olá computador',),
     }
-    include_folders = (
-        'stm32h747/stm32h747i-disco/CM7/Inc/',
-        'stm32f469/stm32f469i-disco/Inc/',
-        'stm32f769/stm32f769i-disco/Inc/',
-        'stm32f411/stm32f411e-disco/Inc/',
-        'stm32f407/stm32f407g-disc1/Inc/',
-        'stm32h735/stm32h735g-dk/Inc/',
-        'imxrt1050/imxrt1050-evkb/inc',
-        'psoc062s2/include'
-    )
+    include_folders = {
+        'imxrt1050/imxrt1050-evkb/inc': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],
+        'psoc062s2/include': ['en', 'de', 'es', 'fr'],
+        'stm32f407/stm32f407g-disc1/Inc/': ['en', 'de', 'es', 'fr'],
+        'stm32f411/stm32f411e-disco/Inc/': ['en', 'de', 'es', 'fr'],
+        'stm32f469/stm32f469i-disco/Inc/': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],
+        'stm32f769/stm32f769i-disco/Inc/': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],
+        'stm32h735/stm32h735g-dk/Inc/': ['en', 'de', 'es', 'fr'],
+        'stm32h747/stm32h747i-disco/CM7/Inc/': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],
+    }
 
     generate_pv_params(wake_words, include_folders)
