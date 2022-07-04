@@ -2,13 +2,13 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
 target 'PorcupineAppTest' do
-    pod 'Porcupine-iOS', '~> 2.1.1'
+  pod 'Porcupine-iOS', '~> 2.1.2'
 end
 
 target 'PorcupineAppTestUITests' do
-    pod 'Porcupine-iOS', '~> 2.1.1'
+  pod 'Porcupine-iOS', '~> 2.1.2'
 end
 
 target 'PerformanceTest' do
-    pod 'Porcupine-iOS', '~> 2.1.1'
+  pod 'Porcupine-iOS', '~> 2.1.2'
 end

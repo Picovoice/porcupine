@@ -21,16 +21,66 @@
 		1E7744F427CDA33B00491D0B /* porcupine_params_es.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E7744F027CDA33B00491D0B /* porcupine_params_es.pv */; };
 		1E7744F727CDA36500491D0B /* multiple_keywords.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E7744F527CDA36500491D0B /* multiple_keywords.wav */; };
 		1E7744F827CDA36500491D0B /* porcupine.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E7744F627CDA36500491D0B /* porcupine.wav */; };
-		1E77450127CDA3EC00491D0B /* hey barista_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E7744FE27CDA3EC00491D0B /* hey barista_ios.ppn */; };
-		1E77450227CDA3EC00491D0B /* pico clock_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E7744FF27CDA3EC00491D0B /* pico clock_ios.ppn */; };
-		1E77450427CDA40B00491D0B /* emparedado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450327CDA40B00491D0B /* emparedado_ios.ppn */; };
-		1E77450627CDA41900491D0B /* framboise_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450527CDA41900491D0B /* framboise_ios.ppn */; };
-		1E77450827CDA42700491D0B /* ananas_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450727CDA42700491D0B /* ananas_ios.ppn */; };
-		1E77450A27CDA4B200491D0B /* alexa_linux.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450927CDA4B200491D0B /* alexa_linux.ppn */; };
-		1E77450C27CDA51200491D0B /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E77450B27CDA51200491D0B /* murciélago_ios.ppn */; };
 		3F4E730C6560BFF8341FBC2B /* libPods-PerformanceTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2462DC7A128733C7CD7686B0 /* libPods-PerformanceTest.a */; };
 		6F1FBE676D2C52FF23098433 /* libPods-PorcupineAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 011FA47DB36286585DA78022 /* libPods-PorcupineAppTestUITests.a */; };
-		9F5D87E08F802DCCB9EB668E /* libPods-PorcupineAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 052EB1F80B8EF1B58821A1D8 /* libPods-PorcupineAppTestUITests.a */; };
+		A52A7005A95B61A65BB75452 /* multiple_keywords_fr.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A7A750FD60B8401851EB6 /* multiple_keywords_fr.wav */; };
+		A52A704A44FD6046BD9BDF01 /* ninja_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7647779B85DC72A92EAD /* ninja_ios.ppn */; };
+		A52A70630421EBE719D27B0A /* stachelschwein_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A72EF3A9D0B47A8FD48E1 /* stachelschwein_ios.ppn */; };
+		A52A70A98E247E28185F9BB2 /* abacaxi_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A77CB0981ACFCE4A5B20F /* abacaxi_ios.ppn */; };
+		A52A7145B9F25CD435A4AE1A /* perroquet_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A72C2EFE6F7B0F6360C2C /* perroquet_ios.ppn */; };
+		A52A7176890CE2A4D4D82D2E /* terminator_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7BCDE2207E42A1118898 /* terminator_ios.ppn */; };
+		A52A71AE0CB6B110C91DBACE /* americano_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7FBC12AAE30D49247E6D /* americano_ios.ppn */; };
+		A52A71D2501C6C88B5868D33 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A712CD43E0D1642EF3F0C /* porcupine_ios.ppn */; };
+		A52A71EC04F6238D1B9897B6 /* porcospino_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7ABDF7C75F998E61511D /* porcospino_ios.ppn */; };
+		A52A721F873C7589162A2F1D /* multiple_keywords_it.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A7E16A6CFDF5393874A85 /* multiple_keywords_it.wav */; };
+		A52A7249446D46CB3C859B82 /* espresso_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7E966206C6FD38B5F0B9 /* espresso_ios.ppn */; };
+		A52A727BE6CA15B48631EC3F /* ringo_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A717155CF0B71BA5E7017 /* ringo_ios.ppn */; };
+		A52A72BA1F74E429EE910D0C /* emparedado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7AD6184A18A0D49B386C /* emparedado_ios.ppn */; };
+		A52A732F1159FD3E2900CFAA /* silenzio_bruno_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A72D5432C74E9920758F8 /* silenzio_bruno_ios.ppn */; };
+		A52A743CBF27C85028BF1669 /* formiga_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7262F9DF75309BED0437 /* formiga_ios.ppn */; };
+		A52A74ECEB335BDE1A41A369 /* hey google_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7A2976134B0609D14BDE /* hey google_ios.ppn */; };
+		A52A74F0893C066A84B00B7F /* koppulso_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A787934292071A0432EB8 /* koppulso_ios.ppn */; };
+		A52A75120AE42FFB44A63DC1 /* porcupine_params_it.pv in Resources */ = {isa = PBXBuildFile; fileRef = A52A7878EF131D47400DFEE6 /* porcupine_params_it.pv */; };
+		A52A751425D956A94947A6AF /* PorcupineLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A78D82E189D1EA9423736 /* PorcupineLanguageTests.swift */; };
+		A52A7515ECBF94CDB57E3C6E /* blueberry_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7525B6CA80604181AFC3 /* blueberry_ios.ppn */; };
+		A52A753EA560E5302D69D342 /* framboise_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7510A18E4FF2FB72A0F2 /* framboise_ios.ppn */; };
+		A52A755361F14C487152B240 /* alexa_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A714D484D75C835D0F034 /* alexa_ios.ppn */; };
+		A52A7587A545CFAE6ACF1237 /* grapefruit_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A72A89E024AA7A11DB575 /* grapefruit_ios.ppn */; };
+		A52A75B71B3E079027A7990A /* grasshopper_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7104D8786F628F4903EA /* grasshopper_ios.ppn */; };
+		A52A75E2308DFB5640E56D73 /* himbeere_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A79DD13E0BABDEFCE76F9 /* himbeere_ios.ppn */; };
+		A52A762CD994AE8F5894DC8D /* multiple_keywords_ko.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A7D31E54D5A911A29B00B /* multiple_keywords_ko.wav */; };
+		A52A764B2A5684105561694E /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */; };
+		A52A765BE9FCAE72901AA16D /* ok google_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A79A10B72D8AED847D338 /* ok google_ios.ppn */; };
+		A52A76B68CEE31EFE1B632B6 /* jarvis_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7C484EFB1573F4F00327 /* jarvis_ios.ppn */; };
+		A52A776223C3313AAF932096 /* leopardo_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7E4441D6DB8203A32CC5 /* leopardo_ios.ppn */; };
+		A52A7763E1BD8B1F3A4BAC86 /* hey barista_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A71A4FB158BF401F13227 /* hey barista_ios.ppn */; };
+		A52A77A4914991874D74E5EA /* fenomeno_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A79BCCD78C97B06675DFE /* fenomeno_ios.ppn */; };
+		A52A78072A3E568B1E038001 /* parapluie_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7388D9E6289479EF086A /* parapluie_ios.ppn */; };
+		A52A7825F1F6FD053FCC3774 /* bushi_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A723C67510DC827D764CD /* bushi_ios.ppn */; };
+		A52A78ED18AA4EDB33D95C4D /* BaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A7583A49E7ACAA9C7A0C5 /* BaseTest.swift */; };
+		A52A79A7FDBCE50609F59531 /* bigseubi_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A79400D00D7060D9A45D3 /* bigseubi_ios.ppn */; };
+		A52A79BA4E18C4F88EC31DDD /* tournesol_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A77A12A6D99D17AA566DD /* tournesol_ios.ppn */; };
+		A52A7A18CC493B514DC73A73 /* pico clock_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7236D2728239593B7499 /* pico clock_ios.ppn */; };
+		A52A7A43F4FC6C761C9FE203 /* multiple_keywords_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A79FE5510CD58028F59FC /* multiple_keywords_ja.wav */; };
+		A52A7AC6891A490823CC0FFD /* cameriere_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7229D7DEE4F4066D3765 /* cameriere_ios.ppn */; };
+		A52A7B7315039B42A6FD81DF /* manzana_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A790B3B21CCA868FDBF6C /* manzana_ios.ppn */; };
+		A52A7B81470D80AFDDF5FBCB /* computer_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A781058A8D334EB43AFE5 /* computer_ios.ppn */; };
+		A52A7BB9A8F9A3655379498D /* porco_espinho_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7627EA5B6DF623C04C6A /* porco_espinho_ios.ppn */; };
+		A52A7BE85C8733EE6835F8D7 /* alexa_linux.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7AEB4D49557C0B1DA45D /* alexa_linux.ppn */; };
+		A52A7BEEADB107AB3E25C8D3 /* mon chouchou_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7D27AB8D4326C0776969 /* mon chouchou_ios.ppn */; };
+		A52A7BF3134FF1ECB7AEC6BD /* bumblebee_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A799F8237980EFA0175EB /* bumblebee_ios.ppn */; };
+		A52A7C3628B563D5F65E8949 /* porcupine_params_ko.pv in Resources */ = {isa = PBXBuildFile; fileRef = A52A70726ABB3A19B2892712 /* porcupine_params_ko.pv */; };
+		A52A7C7AB9544EF040690061 /* heuschrecke_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7EC508E7EA78AA42B1CC /* heuschrecke_ios.ppn */; };
+		A52A7C9C947DCEFFB71064FB /* multiple_keywords_pt.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A73ED592123D5F69AAB7D /* multiple_keywords_pt.wav */; };
+		A52A7D0C6C2B84A5E1C3BEA0 /* multiple_keywords_es.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A762D1BC566D0221030AF /* multiple_keywords_es.wav */; };
+		A52A7D668B45DF7404D2C066 /* multiple_keywords_de.wav in Resources */ = {isa = PBXBuildFile; fileRef = A52A7DEF23F5A91CF3AA10B2 /* multiple_keywords_de.wav */; };
+		A52A7E27270F9D46864955BE /* leguan_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7E26C9E02DC665FB6AD0 /* leguan_ios.ppn */; };
+		A52A7ED838A4A5442E1BD6D5 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7F0815FE01D67518DD41 /* picovoice_ios.ppn */; };
+		A52A7F11B544E64173E7D4F5 /* aiseukeulim_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7E144CD10FD32840019A /* aiseukeulim_ios.ppn */; };
+		A52A7FE7A434121E98F4DD72 /* hey siri_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7A4BAA269D3AF6791B01 /* hey siri_ios.ppn */; };
+		A52A7FED8D0E3BF5F020BF0D /* porcupine_params_ja.pv in Resources */ = {isa = PBXBuildFile; fileRef = A52A7699731E60C85912CA18 /* porcupine_params_ja.pv */; };
+		A52A7FF9D9734910A160215F /* porcupine_params_pt.pv in Resources */ = {isa = PBXBuildFile; fileRef = A52A75986711A251605632AF /* porcupine_params_pt.pv */; };
+		A52A7FFE9DA7F8C1F6A2E69E /* ananas_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = A52A7D8E51DCEAFA0D753752 /* ananas_ios.ppn */; };
 		D6D823302608F81422F3B98A /* libPods-PorcupineAppTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE86B9731F9D981EE76C21A /* libPods-PorcupineAppTest.a */; };
 /* End PBXBuildFile section */
 
@@ -73,13 +123,6 @@
 		1E7744F027CDA33B00491D0B /* porcupine_params_es.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_es.pv; path = ../../../../lib/common/porcupine_params_es.pv; sourceTree = "<group>"; };
 		1E7744F527CDA36500491D0B /* multiple_keywords.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords.wav; path = ../../../../resources/audio_samples/multiple_keywords.wav; sourceTree = "<group>"; };
 		1E7744F627CDA36500491D0B /* porcupine.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = porcupine.wav; path = ../../../../resources/audio_samples/porcupine.wav; sourceTree = "<group>"; };
-		1E7744FE27CDA3EC00491D0B /* hey barista_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "hey barista_ios.ppn"; path = "../../../../resources/keyword_files/ios/hey barista_ios.ppn"; sourceTree = "<group>"; };
-		1E7744FF27CDA3EC00491D0B /* pico clock_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "pico clock_ios.ppn"; path = "../../../../resources/keyword_files/ios/pico clock_ios.ppn"; sourceTree = "<group>"; };
-		1E77450327CDA40B00491D0B /* emparedado_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = emparedado_ios.ppn; path = ../../../../resources/keyword_files_es/ios/emparedado_ios.ppn; sourceTree = "<group>"; };
-		1E77450527CDA41900491D0B /* framboise_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = framboise_ios.ppn; path = ../../../../resources/keyword_files_fr/ios/framboise_ios.ppn; sourceTree = "<group>"; };
-		1E77450727CDA42700491D0B /* ananas_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = ananas_ios.ppn; path = ../../../../resources/keyword_files_de/ios/ananas_ios.ppn; sourceTree = "<group>"; };
-		1E77450927CDA4B200491D0B /* alexa_linux.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = alexa_linux.ppn; path = ../../../../resources/keyword_files/linux/alexa_linux.ppn; sourceTree = "<group>"; };
-		1E77450B27CDA51200491D0B /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "murciélago_ios.ppn"; path = "../../../../resources/keyword_files_es/ios/murciélago_ios.ppn"; sourceTree = "<group>"; };
 		2462DC7A128733C7CD7686B0 /* libPods-PerformanceTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PerformanceTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D198D7EAF41809AAC56B915 /* Pods-PorcupineAppTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTest.release.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTest/Pods-PorcupineAppTest.release.xcconfig"; sourceTree = "<group>"; };
 		32769C288BB32DEA6645EC92 /* PerformanceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceTest.swift; sourceTree = "<group>"; };
@@ -87,6 +130,64 @@
 		5F1DBC0ABD84F719FC65D140 /* Pods-PorcupineAppTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTest.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTest/Pods-PorcupineAppTest.debug.xcconfig"; sourceTree = "<group>"; };
 		6CED4EA1CCD169B32C0E34EB /* Pods-PerformanceTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceTest.release.xcconfig"; path = "Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest.release.xcconfig"; sourceTree = "<group>"; };
 		9BBD91828D5A85912D7932D4 /* Pods-PerformanceTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PerformanceTest.debug.xcconfig"; path = "Target Support Files/Pods-PerformanceTest/Pods-PerformanceTest.debug.xcconfig"; sourceTree = "<group>"; };
+		A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "murciélago_ios.ppn"; path = "../../../../resources/keyword_files_es/ios/murciélago_ios.ppn"; sourceTree = "<group>"; };
+		A52A70726ABB3A19B2892712 /* porcupine_params_ko.pv */ = {isa = PBXFileReference; lastKnownFileType = file.pv; name = porcupine_params_ko.pv; path = ../../../../lib/common/porcupine_params_ko.pv; sourceTree = "<group>"; };
+		A52A7104D8786F628F4903EA /* grasshopper_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = grasshopper_ios.ppn; path = ../../../../resources/keyword_files/ios/grasshopper_ios.ppn; sourceTree = "<group>"; };
+		A52A712CD43E0D1642EF3F0C /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = porcupine_ios.ppn; path = ../../../../resources/keyword_files/ios/porcupine_ios.ppn; sourceTree = "<group>"; };
+		A52A714D484D75C835D0F034 /* alexa_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = alexa_ios.ppn; path = ../../../../resources/keyword_files/ios/alexa_ios.ppn; sourceTree = "<group>"; };
+		A52A717155CF0B71BA5E7017 /* ringo_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = ringo_ios.ppn; path = ../../../../resources/keyword_files_ja/ios/ringo_ios.ppn; sourceTree = "<group>"; };
+		A52A71A4FB158BF401F13227 /* hey barista_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "hey barista_ios.ppn"; path = "../../../../resources/keyword_files/ios/hey barista_ios.ppn"; sourceTree = "<group>"; };
+		A52A7229D7DEE4F4066D3765 /* cameriere_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = cameriere_ios.ppn; path = ../../../../resources/keyword_files_it/ios/cameriere_ios.ppn; sourceTree = "<group>"; };
+		A52A7236D2728239593B7499 /* pico clock_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "pico clock_ios.ppn"; path = "../../../../resources/keyword_files/ios/pico clock_ios.ppn"; sourceTree = "<group>"; };
+		A52A723C67510DC827D764CD /* bushi_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = bushi_ios.ppn; path = ../../../../resources/keyword_files_ja/ios/bushi_ios.ppn; sourceTree = "<group>"; };
+		A52A7262F9DF75309BED0437 /* formiga_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = formiga_ios.ppn; path = ../../../../resources/keyword_files_pt/ios/formiga_ios.ppn; sourceTree = "<group>"; };
+		A52A72A89E024AA7A11DB575 /* grapefruit_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = grapefruit_ios.ppn; path = ../../../../resources/keyword_files/ios/grapefruit_ios.ppn; sourceTree = "<group>"; };
+		A52A72C2EFE6F7B0F6360C2C /* perroquet_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = perroquet_ios.ppn; path = ../../../../resources/keyword_files_fr/ios/perroquet_ios.ppn; sourceTree = "<group>"; };
+		A52A72D5432C74E9920758F8 /* silenzio_bruno_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = silenzio_bruno_ios.ppn; path = ../../../../resources/keyword_files_it/ios/silenzio_bruno_ios.ppn; sourceTree = "<group>"; };
+		A52A72EF3A9D0B47A8FD48E1 /* stachelschwein_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = stachelschwein_ios.ppn; path = ../../../../resources/keyword_files_de/ios/stachelschwein_ios.ppn; sourceTree = "<group>"; };
+		A52A7388D9E6289479EF086A /* parapluie_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = parapluie_ios.ppn; path = ../../../../resources/keyword_files_fr/ios/parapluie_ios.ppn; sourceTree = "<group>"; };
+		A52A73ED592123D5F69AAB7D /* multiple_keywords_pt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords_pt.wav; path = ../../../../resources/audio_samples/multiple_keywords_pt.wav; sourceTree = "<group>"; };
+		A52A7510A18E4FF2FB72A0F2 /* framboise_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = framboise_ios.ppn; path = ../../../../resources/keyword_files_fr/ios/framboise_ios.ppn; sourceTree = "<group>"; };
+		A52A7525B6CA80604181AFC3 /* blueberry_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = blueberry_ios.ppn; path = ../../../../resources/keyword_files/ios/blueberry_ios.ppn; sourceTree = "<group>"; };
+		A52A7583A49E7ACAA9C7A0C5 /* BaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTest.swift; sourceTree = "<group>"; };
+		A52A75986711A251605632AF /* porcupine_params_pt.pv */ = {isa = PBXFileReference; lastKnownFileType = file.pv; name = porcupine_params_pt.pv; path = ../../../../lib/common/porcupine_params_pt.pv; sourceTree = "<group>"; };
+		A52A7627EA5B6DF623C04C6A /* porco_espinho_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = porco_espinho_ios.ppn; path = ../../../../resources/keyword_files_pt/ios/porco_espinho_ios.ppn; sourceTree = "<group>"; };
+		A52A762D1BC566D0221030AF /* multiple_keywords_es.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords_es.wav; path = ../../../../resources/audio_samples/multiple_keywords_es.wav; sourceTree = "<group>"; };
+		A52A7647779B85DC72A92EAD /* ninja_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = ninja_ios.ppn; path = ../../../../resources/keyword_files_ja/ios/ninja_ios.ppn; sourceTree = "<group>"; };
+		A52A7699731E60C85912CA18 /* porcupine_params_ja.pv */ = {isa = PBXFileReference; lastKnownFileType = file.pv; name = porcupine_params_ja.pv; path = ../../../../lib/common/porcupine_params_ja.pv; sourceTree = "<group>"; };
+		A52A77A12A6D99D17AA566DD /* tournesol_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = tournesol_ios.ppn; path = ../../../../resources/keyword_files_fr/ios/tournesol_ios.ppn; sourceTree = "<group>"; };
+		A52A77CB0981ACFCE4A5B20F /* abacaxi_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = abacaxi_ios.ppn; path = ../../../../resources/keyword_files_pt/ios/abacaxi_ios.ppn; sourceTree = "<group>"; };
+		A52A781058A8D334EB43AFE5 /* computer_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = computer_ios.ppn; path = ../../../../resources/keyword_files/ios/computer_ios.ppn; sourceTree = "<group>"; };
+		A52A7878EF131D47400DFEE6 /* porcupine_params_it.pv */ = {isa = PBXFileReference; lastKnownFileType = file.pv; name = porcupine_params_it.pv; path = ../../../../lib/common/porcupine_params_it.pv; sourceTree = "<group>"; };
+		A52A787934292071A0432EB8 /* koppulso_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = koppulso_ios.ppn; path = ../../../../resources/keyword_files_ko/ios/koppulso_ios.ppn; sourceTree = "<group>"; };
+		A52A78D82E189D1EA9423736 /* PorcupineLanguageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PorcupineLanguageTests.swift; sourceTree = "<group>"; };
+		A52A790B3B21CCA868FDBF6C /* manzana_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = manzana_ios.ppn; path = ../../../../resources/keyword_files_es/ios/manzana_ios.ppn; sourceTree = "<group>"; };
+		A52A79400D00D7060D9A45D3 /* bigseubi_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = bigseubi_ios.ppn; path = ../../../../resources/keyword_files_ko/ios/bigseubi_ios.ppn; sourceTree = "<group>"; };
+		A52A799F8237980EFA0175EB /* bumblebee_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = bumblebee_ios.ppn; path = ../../../../resources/keyword_files/ios/bumblebee_ios.ppn; sourceTree = "<group>"; };
+		A52A79A10B72D8AED847D338 /* ok google_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "ok google_ios.ppn"; path = "../../../../resources/keyword_files/ios/ok google_ios.ppn"; sourceTree = "<group>"; };
+		A52A79BCCD78C97B06675DFE /* fenomeno_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = fenomeno_ios.ppn; path = ../../../../resources/keyword_files_pt/ios/fenomeno_ios.ppn; sourceTree = "<group>"; };
+		A52A79DD13E0BABDEFCE76F9 /* himbeere_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = himbeere_ios.ppn; path = ../../../../resources/keyword_files_de/ios/himbeere_ios.ppn; sourceTree = "<group>"; };
+		A52A79FE5510CD58028F59FC /* multiple_keywords_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords_ja.wav; path = ../../../../resources/audio_samples/multiple_keywords_ja.wav; sourceTree = "<group>"; };
+		A52A7A2976134B0609D14BDE /* hey google_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "hey google_ios.ppn"; path = "../../../../resources/keyword_files/ios/hey google_ios.ppn"; sourceTree = "<group>"; };
+		A52A7A4BAA269D3AF6791B01 /* hey siri_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "hey siri_ios.ppn"; path = "../../../../resources/keyword_files/ios/hey siri_ios.ppn"; sourceTree = "<group>"; };
+		A52A7A750FD60B8401851EB6 /* multiple_keywords_fr.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords_fr.wav; path = ../../../../resources/audio_samples/multiple_keywords_fr.wav; sourceTree = "<group>"; };
+		A52A7ABDF7C75F998E61511D /* porcospino_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = porcospino_ios.ppn; path = ../../../../resources/keyword_files_it/ios/porcospino_ios.ppn; sourceTree = "<group>"; };
+		A52A7AD6184A18A0D49B386C /* emparedado_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = emparedado_ios.ppn; path = ../../../../resources/keyword_files_es/ios/emparedado_ios.ppn; sourceTree = "<group>"; };
+		A52A7AEB4D49557C0B1DA45D /* alexa_linux.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = alexa_linux.ppn; path = ../../../../resources/keyword_files/linux/alexa_linux.ppn; sourceTree = "<group>"; };
+		A52A7BCDE2207E42A1118898 /* terminator_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = terminator_ios.ppn; path = ../../../../resources/keyword_files/ios/terminator_ios.ppn; sourceTree = "<group>"; };
+		A52A7C484EFB1573F4F00327 /* jarvis_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = jarvis_ios.ppn; path = ../../../../resources/keyword_files/ios/jarvis_ios.ppn; sourceTree = "<group>"; };
+		A52A7D27AB8D4326C0776969 /* mon chouchou_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = "mon chouchou_ios.ppn"; path = "../../../../resources/keyword_files_fr/ios/mon chouchou_ios.ppn"; sourceTree = "<group>"; };
+		A52A7D31E54D5A911A29B00B /* multiple_keywords_ko.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords_ko.wav; path = ../../../../resources/audio_samples/multiple_keywords_ko.wav; sourceTree = "<group>"; };
+		A52A7D8E51DCEAFA0D753752 /* ananas_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = ananas_ios.ppn; path = ../../../../resources/keyword_files_de/ios/ananas_ios.ppn; sourceTree = "<group>"; };
+		A52A7DEF23F5A91CF3AA10B2 /* multiple_keywords_de.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords_de.wav; path = ../../../../resources/audio_samples/multiple_keywords_de.wav; sourceTree = "<group>"; };
+		A52A7E144CD10FD32840019A /* aiseukeulim_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = aiseukeulim_ios.ppn; path = ../../../../resources/keyword_files_ko/ios/aiseukeulim_ios.ppn; sourceTree = "<group>"; };
+		A52A7E16A6CFDF5393874A85 /* multiple_keywords_it.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = multiple_keywords_it.wav; path = ../../../../resources/audio_samples/multiple_keywords_it.wav; sourceTree = "<group>"; };
+		A52A7E26C9E02DC665FB6AD0 /* leguan_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = leguan_ios.ppn; path = ../../../../resources/keyword_files_de/ios/leguan_ios.ppn; sourceTree = "<group>"; };
+		A52A7E4441D6DB8203A32CC5 /* leopardo_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = leopardo_ios.ppn; path = ../../../../resources/keyword_files_es/ios/leopardo_ios.ppn; sourceTree = "<group>"; };
+		A52A7E966206C6FD38B5F0B9 /* espresso_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = espresso_ios.ppn; path = ../../../../resources/keyword_files_it/ios/espresso_ios.ppn; sourceTree = "<group>"; };
+		A52A7EC508E7EA78AA42B1CC /* heuschrecke_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = heuschrecke_ios.ppn; path = ../../../../resources/keyword_files_de/ios/heuschrecke_ios.ppn; sourceTree = "<group>"; };
+		A52A7F0815FE01D67518DD41 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = picovoice_ios.ppn; path = ../../../../resources/keyword_files/ios/picovoice_ios.ppn; sourceTree = "<group>"; };
+		A52A7FBC12AAE30D49247E6D /* americano_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file.ppn; name = americano_ios.ppn; path = ../../../../resources/keyword_files/ios/americano_ios.ppn; sourceTree = "<group>"; };
 		E5391C493E5CF88A08DBDADF /* Pods-PorcupineAppTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineAppTestUITests.release.xcconfig"; path = "Target Support Files/Pods-PorcupineAppTestUITests/Pods-PorcupineAppTestUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,7 +212,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F5D87E08F802DCCB9EB668E /* libPods-PorcupineAppTestUITests.a in Frameworks */,
 				6F1FBE676D2C52FF23098433 /* libPods-PorcupineAppTestUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -183,6 +283,8 @@
 				1E7744E927CDA2E700491D0B /* test_resources */,
 				1E7744D427CD9D7F00491D0B /* PorcupineAppTestUITests.swift */,
 				1E7744E327CDA13600491D0B /* info.plist */,
+				A52A78D82E189D1EA9423736 /* PorcupineLanguageTests.swift */,
+				A52A7583A49E7ACAA9C7A0C5 /* BaseTest.swift */,
 			);
 			path = PorcupineAppTestUITests;
 			sourceTree = "<group>";
@@ -191,21 +293,10 @@
 			isa = PBXGroup;
 			children = (
 				1E7744EB27CDA30E00491D0B /* audio_samples */,
-				1E7744EA27CDA2F000491D0B /* keyword_files */,
 				1E7744EC27CDA31600491D0B /* model_files */,
+				A52A7575A5A3AB585C498F09 /* keyword_files */,
 			);
 			name = test_resources;
-			sourceTree = "<group>";
-		};
-		1E7744EA27CDA2F000491D0B /* keyword_files */ = {
-			isa = PBXGroup;
-			children = (
-				1E7744F927CDA36C00491D0B /* en */,
-				1E7744FA27CDA37300491D0B /* es */,
-				1E7744FB27CDA37700491D0B /* fr */,
-				1E7744FC27CDA37C00491D0B /* de */,
-			);
-			name = keyword_files;
 			sourceTree = "<group>";
 		};
 		1E7744EB27CDA30E00491D0B /* audio_samples */ = {
@@ -213,6 +304,13 @@
 			children = (
 				1E7744F527CDA36500491D0B /* multiple_keywords.wav */,
 				1E7744F627CDA36500491D0B /* porcupine.wav */,
+				A52A7DEF23F5A91CF3AA10B2 /* multiple_keywords_de.wav */,
+				A52A762D1BC566D0221030AF /* multiple_keywords_es.wav */,
+				A52A7A750FD60B8401851EB6 /* multiple_keywords_fr.wav */,
+				A52A7E16A6CFDF5393874A85 /* multiple_keywords_it.wav */,
+				A52A79FE5510CD58028F59FC /* multiple_keywords_ja.wav */,
+				A52A7D31E54D5A911A29B00B /* multiple_keywords_ko.wav */,
+				A52A73ED592123D5F69AAB7D /* multiple_keywords_pt.wav */,
 			);
 			name = audio_samples;
 			sourceTree = "<group>";
@@ -224,43 +322,128 @@
 				1E7744F027CDA33B00491D0B /* porcupine_params_es.pv */,
 				1E7744ED27CDA33B00491D0B /* porcupine_params_fr.pv */,
 				1E7744EF27CDA33B00491D0B /* porcupine_params.pv */,
+				A52A7878EF131D47400DFEE6 /* porcupine_params_it.pv */,
+				A52A7699731E60C85912CA18 /* porcupine_params_ja.pv */,
+				A52A70726ABB3A19B2892712 /* porcupine_params_ko.pv */,
+				A52A75986711A251605632AF /* porcupine_params_pt.pv */,
 			);
 			name = model_files;
 			sourceTree = "<group>";
 		};
-		1E7744F927CDA36C00491D0B /* en */ = {
+		A52A701C559D1F462137C280 /* ja */ = {
 			isa = PBXGroup;
 			children = (
-				1E77450927CDA4B200491D0B /* alexa_linux.ppn */,
-				1E7744FE27CDA3EC00491D0B /* hey barista_ios.ppn */,
-				1E7744FF27CDA3EC00491D0B /* pico clock_ios.ppn */,
+				A52A723C67510DC827D764CD /* bushi_ios.ppn */,
+				A52A7647779B85DC72A92EAD /* ninja_ios.ppn */,
+				A52A717155CF0B71BA5E7017 /* ringo_ios.ppn */,
 			);
-			name = en;
+			name = ja;
 			sourceTree = "<group>";
 		};
-		1E7744FA27CDA37300491D0B /* es */ = {
+		A52A746A9E3A1E647924CD6D /* de */ = {
 			isa = PBXGroup;
 			children = (
-				1E77450327CDA40B00491D0B /* emparedado_ios.ppn */,
-				1E77450B27CDA51200491D0B /* murciélago_ios.ppn */,
+				A52A7D8E51DCEAFA0D753752 /* ananas_ios.ppn */,
+				A52A7EC508E7EA78AA42B1CC /* heuschrecke_ios.ppn */,
+				A52A79DD13E0BABDEFCE76F9 /* himbeere_ios.ppn */,
+				A52A7E26C9E02DC665FB6AD0 /* leguan_ios.ppn */,
+				A52A72EF3A9D0B47A8FD48E1 /* stachelschwein_ios.ppn */,
+			);
+			name = de;
+			sourceTree = "<group>";
+		};
+		A52A7575A5A3AB585C498F09 /* keyword_files */ = {
+			isa = PBXGroup;
+			children = (
+				A52A7C6925C447F8675BC700 /* en */,
+				A52A746A9E3A1E647924CD6D /* de */,
+				A52A75DA12440946CC862EE1 /* es */,
+				A52A7956502F4BB1854833AE /* fr */,
+				A52A7F77130BED4E3EFD6D43 /* it */,
+				A52A7BB5369DEE23EC9159AE /* ko */,
+				A52A701C559D1F462137C280 /* ja */,
+				A52A763DFC580CF85B455F17 /* pt */,
+			);
+			name = keyword_files;
+			sourceTree = "<group>";
+		};
+		A52A75DA12440946CC862EE1 /* es */ = {
+			isa = PBXGroup;
+			children = (
+				A52A7AD6184A18A0D49B386C /* emparedado_ios.ppn */,
+				A52A7E4441D6DB8203A32CC5 /* leopardo_ios.ppn */,
+				A52A790B3B21CCA868FDBF6C /* manzana_ios.ppn */,
+				A52A7044EA03D6EA33EF8812 /* murciélago_ios.ppn */,
 			);
 			name = es;
 			sourceTree = "<group>";
 		};
-		1E7744FB27CDA37700491D0B /* fr */ = {
+		A52A763DFC580CF85B455F17 /* pt */ = {
 			isa = PBXGroup;
 			children = (
-				1E77450527CDA41900491D0B /* framboise_ios.ppn */,
+				A52A77CB0981ACFCE4A5B20F /* abacaxi_ios.ppn */,
+				A52A79BCCD78C97B06675DFE /* fenomeno_ios.ppn */,
+				A52A7262F9DF75309BED0437 /* formiga_ios.ppn */,
+				A52A7627EA5B6DF623C04C6A /* porco_espinho_ios.ppn */,
+			);
+			name = pt;
+			sourceTree = "<group>";
+		};
+		A52A7956502F4BB1854833AE /* fr */ = {
+			isa = PBXGroup;
+			children = (
+				A52A7510A18E4FF2FB72A0F2 /* framboise_ios.ppn */,
+				A52A7D27AB8D4326C0776969 /* mon chouchou_ios.ppn */,
+				A52A7388D9E6289479EF086A /* parapluie_ios.ppn */,
+				A52A72C2EFE6F7B0F6360C2C /* perroquet_ios.ppn */,
+				A52A77A12A6D99D17AA566DD /* tournesol_ios.ppn */,
 			);
 			name = fr;
 			sourceTree = "<group>";
 		};
-		1E7744FC27CDA37C00491D0B /* de */ = {
+		A52A7BB5369DEE23EC9159AE /* ko */ = {
 			isa = PBXGroup;
 			children = (
-				1E77450727CDA42700491D0B /* ananas_ios.ppn */,
+				A52A7E144CD10FD32840019A /* aiseukeulim_ios.ppn */,
+				A52A79400D00D7060D9A45D3 /* bigseubi_ios.ppn */,
+				A52A787934292071A0432EB8 /* koppulso_ios.ppn */,
 			);
-			name = de;
+			name = ko;
+			sourceTree = "<group>";
+		};
+		A52A7C6925C447F8675BC700 /* en */ = {
+			isa = PBXGroup;
+			children = (
+				A52A71A4FB158BF401F13227 /* hey barista_ios.ppn */,
+				A52A7236D2728239593B7499 /* pico clock_ios.ppn */,
+				A52A7AEB4D49557C0B1DA45D /* alexa_linux.ppn */,
+				A52A714D484D75C835D0F034 /* alexa_ios.ppn */,
+				A52A7FBC12AAE30D49247E6D /* americano_ios.ppn */,
+				A52A7525B6CA80604181AFC3 /* blueberry_ios.ppn */,
+				A52A799F8237980EFA0175EB /* bumblebee_ios.ppn */,
+				A52A781058A8D334EB43AFE5 /* computer_ios.ppn */,
+				A52A72A89E024AA7A11DB575 /* grapefruit_ios.ppn */,
+				A52A7104D8786F628F4903EA /* grasshopper_ios.ppn */,
+				A52A7A2976134B0609D14BDE /* hey google_ios.ppn */,
+				A52A7A4BAA269D3AF6791B01 /* hey siri_ios.ppn */,
+				A52A7C484EFB1573F4F00327 /* jarvis_ios.ppn */,
+				A52A79A10B72D8AED847D338 /* ok google_ios.ppn */,
+				A52A7F0815FE01D67518DD41 /* picovoice_ios.ppn */,
+				A52A712CD43E0D1642EF3F0C /* porcupine_ios.ppn */,
+				A52A7BCDE2207E42A1118898 /* terminator_ios.ppn */,
+			);
+			name = en;
+			sourceTree = "<group>";
+		};
+		A52A7F77130BED4E3EFD6D43 /* it */ = {
+			isa = PBXGroup;
+			children = (
+				A52A7229D7DEE4F4066D3765 /* cameriere_ios.ppn */,
+				A52A7E966206C6FD38B5F0B9 /* espresso_ios.ppn */,
+				A52A7ABDF7C75F998E61511D /* porcospino_ios.ppn */,
+				A52A72D5432C74E9920758F8 /* silenzio_bruno_ios.ppn */,
+			);
+			name = it;
 			sourceTree = "<group>";
 		};
 		CF8A3E0166575C420DB0878C /* Frameworks */ = {
@@ -404,18 +587,67 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E7744F827CDA36500491D0B /* porcupine.wav in Resources */,
-				1E77450A27CDA4B200491D0B /* alexa_linux.ppn in Resources */,
 				1E7744F227CDA33B00491D0B /* porcupine_params_de.pv in Resources */,
-				1E77450827CDA42700491D0B /* ananas_ios.ppn in Resources */,
-				1E77450427CDA40B00491D0B /* emparedado_ios.ppn in Resources */,
 				1E7744F727CDA36500491D0B /* multiple_keywords.wav in Resources */,
 				1E7744F427CDA33B00491D0B /* porcupine_params_es.pv in Resources */,
-				1E77450227CDA3EC00491D0B /* pico clock_ios.ppn in Resources */,
 				1E7744F327CDA33B00491D0B /* porcupine_params.pv in Resources */,
-				1E77450C27CDA51200491D0B /* murciélago_ios.ppn in Resources */,
-				1E77450127CDA3EC00491D0B /* hey barista_ios.ppn in Resources */,
 				1E7744F127CDA33B00491D0B /* porcupine_params_fr.pv in Resources */,
-				1E77450627CDA41900491D0B /* framboise_ios.ppn in Resources */,
+				A52A7D668B45DF7404D2C066 /* multiple_keywords_de.wav in Resources */,
+				A52A7D0C6C2B84A5E1C3BEA0 /* multiple_keywords_es.wav in Resources */,
+				A52A7005A95B61A65BB75452 /* multiple_keywords_fr.wav in Resources */,
+				A52A721F873C7589162A2F1D /* multiple_keywords_it.wav in Resources */,
+				A52A7A43F4FC6C761C9FE203 /* multiple_keywords_ja.wav in Resources */,
+				A52A762CD994AE8F5894DC8D /* multiple_keywords_ko.wav in Resources */,
+				A52A7C9C947DCEFFB71064FB /* multiple_keywords_pt.wav in Resources */,
+				A52A7763E1BD8B1F3A4BAC86 /* hey barista_ios.ppn in Resources */,
+				A52A7A18CC493B514DC73A73 /* pico clock_ios.ppn in Resources */,
+				A52A7FFE9DA7F8C1F6A2E69E /* ananas_ios.ppn in Resources */,
+				A52A7C7AB9544EF040690061 /* heuschrecke_ios.ppn in Resources */,
+				A52A75E2308DFB5640E56D73 /* himbeere_ios.ppn in Resources */,
+				A52A7E27270F9D46864955BE /* leguan_ios.ppn in Resources */,
+				A52A70630421EBE719D27B0A /* stachelschwein_ios.ppn in Resources */,
+				A52A72BA1F74E429EE910D0C /* emparedado_ios.ppn in Resources */,
+				A52A776223C3313AAF932096 /* leopardo_ios.ppn in Resources */,
+				A52A7B7315039B42A6FD81DF /* manzana_ios.ppn in Resources */,
+				A52A753EA560E5302D69D342 /* framboise_ios.ppn in Resources */,
+				A52A7BEEADB107AB3E25C8D3 /* mon chouchou_ios.ppn in Resources */,
+				A52A78072A3E568B1E038001 /* parapluie_ios.ppn in Resources */,
+				A52A7145B9F25CD435A4AE1A /* perroquet_ios.ppn in Resources */,
+				A52A79BA4E18C4F88EC31DDD /* tournesol_ios.ppn in Resources */,
+				A52A7AC6891A490823CC0FFD /* cameriere_ios.ppn in Resources */,
+				A52A7249446D46CB3C859B82 /* espresso_ios.ppn in Resources */,
+				A52A71EC04F6238D1B9897B6 /* porcospino_ios.ppn in Resources */,
+				A52A732F1159FD3E2900CFAA /* silenzio_bruno_ios.ppn in Resources */,
+				A52A7825F1F6FD053FCC3774 /* bushi_ios.ppn in Resources */,
+				A52A704A44FD6046BD9BDF01 /* ninja_ios.ppn in Resources */,
+				A52A727BE6CA15B48631EC3F /* ringo_ios.ppn in Resources */,
+				A52A7F11B544E64173E7D4F5 /* aiseukeulim_ios.ppn in Resources */,
+				A52A79A7FDBCE50609F59531 /* bigseubi_ios.ppn in Resources */,
+				A52A74F0893C066A84B00B7F /* koppulso_ios.ppn in Resources */,
+				A52A70A98E247E28185F9BB2 /* abacaxi_ios.ppn in Resources */,
+				A52A77A4914991874D74E5EA /* fenomeno_ios.ppn in Resources */,
+				A52A743CBF27C85028BF1669 /* formiga_ios.ppn in Resources */,
+				A52A7BB9A8F9A3655379498D /* porco_espinho_ios.ppn in Resources */,
+				A52A7BE85C8733EE6835F8D7 /* alexa_linux.ppn in Resources */,
+				A52A764B2A5684105561694E /* murciélago_ios.ppn in Resources */,
+				A52A755361F14C487152B240 /* alexa_ios.ppn in Resources */,
+				A52A71AE0CB6B110C91DBACE /* americano_ios.ppn in Resources */,
+				A52A7515ECBF94CDB57E3C6E /* blueberry_ios.ppn in Resources */,
+				A52A7BF3134FF1ECB7AEC6BD /* bumblebee_ios.ppn in Resources */,
+				A52A7B81470D80AFDDF5FBCB /* computer_ios.ppn in Resources */,
+				A52A7587A545CFAE6ACF1237 /* grapefruit_ios.ppn in Resources */,
+				A52A75B71B3E079027A7990A /* grasshopper_ios.ppn in Resources */,
+				A52A74ECEB335BDE1A41A369 /* hey google_ios.ppn in Resources */,
+				A52A7FE7A434121E98F4DD72 /* hey siri_ios.ppn in Resources */,
+				A52A76B68CEE31EFE1B632B6 /* jarvis_ios.ppn in Resources */,
+				A52A765BE9FCAE72901AA16D /* ok google_ios.ppn in Resources */,
+				A52A7ED838A4A5442E1BD6D5 /* picovoice_ios.ppn in Resources */,
+				A52A71D2501C6C88B5868D33 /* porcupine_ios.ppn in Resources */,
+				A52A7176890CE2A4D4D82D2E /* terminator_ios.ppn in Resources */,
+				A52A75120AE42FFB44A63DC1 /* porcupine_params_it.pv in Resources */,
+				A52A7FED8D0E3BF5F020BF0D /* porcupine_params_ja.pv in Resources */,
+				A52A7C3628B563D5F65E8949 /* porcupine_params_ko.pv in Resources */,
+				A52A7FF9D9734910A160215F /* porcupine_params_pt.pv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +847,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E7744D527CD9D7F00491D0B /* PorcupineAppTestUITests.swift in Sources */,
+				A52A751425D956A94947A6AF /* PorcupineLanguageTests.swift in Sources */,
+				A52A78ED18AA4EDB33D95C4D /* BaseTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

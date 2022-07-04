@@ -43,7 +43,7 @@ jobs:
 
       - name: Inject AppID
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
-          PorcupineAppTestUITests/PorcupineAppTestUITests.swift
+          PorcupineAppTestUITests/BaseTest.swift
 
       - name: XCode Build
         run: xcrun xcodebuild build-for-testing 
