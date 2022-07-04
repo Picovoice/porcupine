@@ -139,9 +139,9 @@ func runTestCase(
 		t.Fatalf("%v", err)
 	}
 
-	t.Logf("Porcupine Version: %s", Version)
-	t.Logf("Frame Length: %d", FrameLength)
-	t.Logf("Sample Rate: %d", SampleRate)
+	fmt.Printf("Porcupine Version: %s\n", Version)
+	fmt.Printf("Frame Length: %d\n", FrameLength)
+	fmt.Printf("Sample Rate: %d\n", SampleRate)
 
 	testAudioPath, _ := filepath.Abs(filepath.Join("../../resources/audio_samples", audioFileName))
 	data, err := ioutil.ReadFile(testAudioPath)
@@ -167,7 +167,7 @@ func runTestCase(
 			t.Fatalf("Could not read test file: %v", err)
 		}
 		if result >= 0 {
-			t.Logf("Keyword %d triggered at %f", result, float64((i+1)*FrameLength)/float64(SampleRate))
+			fmt.Printf("Keyword %d triggered at %f\n", result, float64((i+1)*FrameLength)/float64(SampleRate))
 			results = append(results, result)
 		}
 	}
