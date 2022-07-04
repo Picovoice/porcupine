@@ -139,6 +139,9 @@ type Porcupine struct {
 	// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
 	AccessKey string
 
+	// Absolute path to Porcupine's dynamic library.
+	LibraryPath string
+
 	// Absolute path to the file containing model parameters.
 	ModelPath string
 
@@ -153,16 +156,6 @@ type Porcupine struct {
 	KeywordPaths []string
 }
 
-type nativePorcupineInterface interface {
-	nativeInit(*Porcupine)
-	nativeProcess(*Porcupine, []int)
-	nativeDelete(*Porcupine)
-	nativeSampleRate()
-	nativeFrameLength()
-	nativeVersion()
-}
-type nativePorcupineType struct{}
-
 // private vars
 var (
 	osName, cpu   = getOS()
@@ -170,19 +163,19 @@ var (
 
 	defaultModelFile = extractDefaultModel()
 	builtinKeywords  = extractKeywordFiles()
-	libName          = extractLib()
+	defaultLibPath   = extractLib()
 	nativePorcupine  = nativePorcupineType{}
 )
 
 var (
 	// Number of audio samples per frame.
-	FrameLength = nativePorcupine.nativeFrameLength()
+	FrameLength int
 
 	// Audio sample rate accepted by Picovoice.
-	SampleRate = nativePorcupine.nativeSampleRate()
+	SampleRate int
 
 	// Porcupine version
-	Version = nativePorcupine.nativeVersion()
+	Version string
 )
 
 // Init function for Porcupine. Must be called before attempting process
@@ -193,8 +186,18 @@ func (porcupine *Porcupine) Init() error {
 			"No AccessKey provided to Porcupine"}
 	}
 
+	if porcupine.LibraryPath == "" {
+		porcupine.LibraryPath = defaultLibPath
+	}
+
 	if porcupine.ModelPath == "" {
 		porcupine.ModelPath = defaultModelFile
+	}
+
+	if _, err := os.Stat(porcupine.LibraryPath); os.IsNotExist(err) {
+		return &PorcupineError{
+			INVALID_ARGUMENT,
+			fmt.Sprintf("Specified library file could not be found at %s", porcupine.LibraryPath)}
 	}
 
 	if _, err := os.Stat(porcupine.ModelPath); os.IsNotExist(err) {
@@ -258,6 +261,15 @@ func (porcupine *Porcupine) Init() error {
 			PvStatus(ret),
 			"Porcupine init failed."}
 	}
+
+	// Number of audio samples per frame.
+	FrameLength = nativePorcupine.nativeFrameLength()
+
+	// Audio sample rate accepted by Picovoice.
+	SampleRate = nativePorcupine.nativeSampleRate()
+
+	// Porcupine version
+	Version = nativePorcupine.nativeVersion()
 
 	return nil
 }
@@ -418,11 +430,11 @@ func extractFile(srcFile string, dstDir string) string {
 		log.Fatalf("%v", readErr)
 	}
 
-    srcHash := sha256sumBytes(bytes)
-    hashedDstDir := filepath.Join(dstDir, srcHash)
+	srcHash := sha256sumBytes(bytes)
+	hashedDstDir := filepath.Join(dstDir, srcHash)
 	extractedFilepath := filepath.Join(hashedDstDir, srcFile)
 
-    if _, err := os.Stat(extractedFilepath); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(extractedFilepath); errors.Is(err, os.ErrNotExist) {
 		mkErr := os.MkdirAll(filepath.Dir(extractedFilepath), 0764)
 		if mkErr != nil {
 			log.Fatalf("%v", mkErr)
@@ -438,6 +450,6 @@ func extractFile(srcFile string, dstDir string) string {
 }
 
 func sha256sumBytes(bytes []byte) string {
-    sum := sha256.Sum256(bytes)
-    return hex.EncodeToString(sum[:])
+	sum := sha256.Sum256(bytes)
+	return hex.EncodeToString(sum[:])
 }
