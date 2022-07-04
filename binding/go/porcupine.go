@@ -262,13 +262,8 @@ func (porcupine *Porcupine) Init() error {
 			"Porcupine init failed."}
 	}
 
-	// Number of audio samples per frame.
 	FrameLength = nativePorcupine.nativeFrameLength()
-
-	// Audio sample rate accepted by Picovoice.
 	SampleRate = nativePorcupine.nativeSampleRate()
-
-	// Porcupine version
 	Version = nativePorcupine.nativeVersion()
 
 	return nil
