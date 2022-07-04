@@ -10,7 +10,7 @@ applications. It is
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient. It is perfect for IoT.
 - cross-platform:
-  - Arm Cortex-M, STM32, PSoC, Arduino, and i.MX RT 
+  - Arm Cortex-M, STM32, PSoC, Arduino, and i.MX RT
   - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
@@ -70,7 +70,7 @@ err := porcupine.Init()
 
 In addition to custom keywords, you can override the default Porcupine english model file and/or keyword sensitivities.
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within `[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, you'll pass in a different model file.
 
@@ -85,7 +85,7 @@ err := porcupine.Init()
 
 When initialized, the valid sample rate is given by `SampleRate`. Expected frame length (number of audio samples in an input array) is given by `FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
-To feed audio into Porcupine, use the `Process` function in your capture loop. You must call `Init()` before calling `Process`. 
+To feed audio into Porcupine, use the `Process` function in your capture loop. You must call `Init()` before calling `Process`.
 ```go
 func getNextFrameAudio() []int16{
     // get audio frame
@@ -109,8 +109,8 @@ Using a `defer` call to `Delete()` after `Init()` is also a good way to ensure c
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common).
 
 ## Demos
 
-Check out the Porcupine Go demos [here](/demo/go)
+Check out the Porcupine Go demos [here](https://github.com/Picovoice/porcupine/tree/master/demo/go)
