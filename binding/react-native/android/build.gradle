@@ -120,5 +120,5 @@ repositories {
 dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
-  implementation 'ai.picovoice:porcupine-android:2.1.1'
+  implementation 'ai.picovoice:porcupine-android:2.1.2'
 }
