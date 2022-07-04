@@ -162,6 +162,10 @@ func (np *nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus
 		ptrC         = make([]unsafe.Pointer, 1)
 	)
 
+	defer C.free(unsafe.Pointer(accessKeyC))
+	defer C.free(unsafe.Pointer(libraryPathC))
+	defer C.free(unsafe.Pointer(modelPathC))
+
 	np.libraryHandle = C.open_dl(libraryPathC)
 	np.pv_porcupine_init_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_init"))
 	np.pv_porcupine_process_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_process"))
@@ -169,10 +173,6 @@ func (np *nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus
 	np.pv_porcupine_version_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_version"))
 	np.pv_porcupine_frame_length_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_frame_length"))
 	np.pv_porcupine_delete_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_delete"))
-
-	defer C.free(unsafe.Pointer(accessKeyC))
-	defer C.free(unsafe.Pointer(libraryPathC))
-	defer C.free(unsafe.Pointer(modelPathC))
 
 	for i, s := range porcupine.KeywordPaths {
 		keywordsC[i] = C.CString(s)

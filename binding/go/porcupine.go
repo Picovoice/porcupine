@@ -190,14 +190,14 @@ func (porcupine *Porcupine) Init() error {
 		porcupine.LibraryPath = defaultLibPath
 	}
 
-	if porcupine.ModelPath == "" {
-		porcupine.ModelPath = defaultModelFile
-	}
-
 	if _, err := os.Stat(porcupine.LibraryPath); os.IsNotExist(err) {
 		return &PorcupineError{
 			INVALID_ARGUMENT,
 			fmt.Sprintf("Specified library file could not be found at %s", porcupine.LibraryPath)}
+	}
+
+	if porcupine.ModelPath == "" {
+		porcupine.ModelPath = defaultModelFile
 	}
 
 	if _, err := os.Stat(porcupine.ModelPath); os.IsNotExist(err) {
