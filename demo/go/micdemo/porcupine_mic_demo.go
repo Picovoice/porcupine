@@ -70,7 +70,7 @@ func main() {
 	if *libraryPathArg != "" {
 		libraryPath, _ := filepath.Abs(*libraryPathArg)
 		if _, err := os.Stat(libraryPath); os.IsNotExist(err) {
-			log.Fatalf("Could not find model file at %s", libraryPath)
+			log.Fatalf("Could not find library file at %s", libraryPath)
 		}
 
 		p.LibraryPath = libraryPath
