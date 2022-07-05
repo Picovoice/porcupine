@@ -31,6 +31,7 @@ import (
 	"runtime"
 	"strings"
 )
+import "unsafe"
 
 //go:embed embedded
 var embeddedFS embed.FS
@@ -134,10 +135,13 @@ func (k BuiltInKeyword) IsValid() bool {
 // Porcupine struct
 type Porcupine struct {
 	// handle for porcupine instance in C
-	handle uintptr
+	handle unsafe.Pointer
 
 	// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
 	AccessKey string
+
+	// Absolute path to Porcupine's dynamic library.
+	LibraryPath string
 
 	// Absolute path to the file containing model parameters.
 	ModelPath string
@@ -153,16 +157,6 @@ type Porcupine struct {
 	KeywordPaths []string
 }
 
-type nativePorcupineInterface interface {
-	nativeInit(*Porcupine)
-	nativeProcess(*Porcupine, []int)
-	nativeDelete(*Porcupine)
-	nativeSampleRate()
-	nativeFrameLength()
-	nativeVersion()
-}
-type nativePorcupineType struct{}
-
 // private vars
 var (
 	osName, cpu   = getOS()
@@ -170,19 +164,19 @@ var (
 
 	defaultModelFile = extractDefaultModel()
 	builtinKeywords  = extractKeywordFiles()
-	libName          = extractLib()
+	defaultLibPath   = extractLib()
 	nativePorcupine  = nativePorcupineType{}
 )
 
 var (
 	// Number of audio samples per frame.
-	FrameLength = nativePorcupine.nativeFrameLength()
+	FrameLength int
 
 	// Audio sample rate accepted by Picovoice.
-	SampleRate = nativePorcupine.nativeSampleRate()
+	SampleRate int
 
 	// Porcupine version
-	Version = nativePorcupine.nativeVersion()
+	Version string
 )
 
 // Init function for Porcupine. Must be called before attempting process
@@ -191,6 +185,16 @@ func (porcupine *Porcupine) Init() error {
 		return &PorcupineError{
 			INVALID_ARGUMENT,
 			"No AccessKey provided to Porcupine"}
+	}
+
+	if porcupine.LibraryPath == "" {
+		porcupine.LibraryPath = defaultLibPath
+	}
+
+	if _, err := os.Stat(porcupine.LibraryPath); os.IsNotExist(err) {
+		return &PorcupineError{
+			INVALID_ARGUMENT,
+			fmt.Sprintf("Specified library file could not be found at %s", porcupine.LibraryPath)}
 	}
 
 	if porcupine.ModelPath == "" {
@@ -259,12 +263,16 @@ func (porcupine *Porcupine) Init() error {
 			"Porcupine init failed."}
 	}
 
+	FrameLength = nativePorcupine.nativeFrameLength()
+	SampleRate = nativePorcupine.nativeSampleRate()
+	Version = nativePorcupine.nativeVersion()
+
 	return nil
 }
 
 // Releases resources acquired by Porcupine.
 func (porcupine *Porcupine) Delete() error {
-	if porcupine.handle == 0 {
+	if porcupine.handle == nil {
 		return &PorcupineError{
 			INVALID_STATE,
 			"Porcupine has not been initialized or has already been deleted."}
@@ -281,7 +289,7 @@ func (porcupine *Porcupine) Delete() error {
 // Returns a 0 based index if keyword was detected in frame. Returns -1 if no detection was made.
 func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 
-	if porcupine.handle == 0 {
+	if porcupine.handle == nil {
 		return -1, &PorcupineError{
 			INVALID_STATE,
 			"Porcupine has not been initialized or has already been deleted."}
@@ -418,11 +426,11 @@ func extractFile(srcFile string, dstDir string) string {
 		log.Fatalf("%v", readErr)
 	}
 
-    srcHash := sha256sumBytes(bytes)
-    hashedDstDir := filepath.Join(dstDir, srcHash)
+	srcHash := sha256sumBytes(bytes)
+	hashedDstDir := filepath.Join(dstDir, srcHash)
 	extractedFilepath := filepath.Join(hashedDstDir, srcFile)
 
-    if _, err := os.Stat(extractedFilepath); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(extractedFilepath); errors.Is(err, os.ErrNotExist) {
 		mkErr := os.MkdirAll(filepath.Dir(extractedFilepath), 0764)
 		if mkErr != nil {
 			log.Fatalf("%v", mkErr)
@@ -438,6 +446,6 @@ func extractFile(srcFile string, dstDir string) string {
 }
 
 func sha256sumBytes(bytes []byte) string {
-    sum := sha256.Sum256(bytes)
-    return hex.EncodeToString(sum[:])
+	sum := sha256.Sum256(bytes)
+	return hex.EncodeToString(sum[:])
 }

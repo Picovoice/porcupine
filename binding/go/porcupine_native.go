@@ -1,4 +1,4 @@
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -133,27 +133,45 @@ import (
 )
 
 // private vars
-var (
-	lib = C.open_dl(C.CString(libName))
+type nativePorcupineInterface interface {
+	nativeInit(*Porcupine)
+	nativeProcess(*Porcupine, []int)
+	nativeDelete(*Porcupine)
+	nativeSampleRate()
+	nativeFrameLength()
+	nativeVersion()
+}
 
-	pv_porcupine_init_ptr         = C.load_symbol(lib, C.CString("pv_porcupine_init"))
-	pv_porcupine_process_ptr      = C.load_symbol(lib, C.CString("pv_porcupine_process"))
-	pv_sample_rate_ptr            = C.load_symbol(lib, C.CString("pv_sample_rate"))
-	pv_porcupine_version_ptr      = C.load_symbol(lib, C.CString("pv_porcupine_version"))
-	pv_porcupine_frame_length_ptr = C.load_symbol(lib, C.CString("pv_porcupine_frame_length"))
-	pv_porcupine_delete_ptr       = C.load_symbol(lib, C.CString("pv_porcupine_delete"))
-)
+type nativePorcupineType struct {
+	libraryHandle                 unsafe.Pointer
+	pv_porcupine_init_ptr         unsafe.Pointer
+	pv_porcupine_process_ptr      unsafe.Pointer
+	pv_sample_rate_ptr            unsafe.Pointer
+	pv_porcupine_version_ptr      unsafe.Pointer
+	pv_porcupine_frame_length_ptr unsafe.Pointer
+	pv_porcupine_delete_ptr       unsafe.Pointer
+}
 
-func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus) {
+func (np *nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus) {
 	var (
-		accessKeyC  = C.CString(porcupine.AccessKey)
-		modelPathC  = C.CString(porcupine.ModelPath)
-		numKeywords = len(porcupine.KeywordPaths)
-		keywordsC   = make([]*C.char, numKeywords)
-		ptrC        = make([]unsafe.Pointer, 1)
+		accessKeyC   = C.CString(porcupine.AccessKey)
+		libraryPathC = C.CString(porcupine.LibraryPath)
+		modelPathC   = C.CString(porcupine.ModelPath)
+		numKeywords  = len(porcupine.KeywordPaths)
+		keywordsC    = make([]*C.char, numKeywords)
 	)
+
 	defer C.free(unsafe.Pointer(accessKeyC))
+	defer C.free(unsafe.Pointer(libraryPathC))
 	defer C.free(unsafe.Pointer(modelPathC))
+
+	np.libraryHandle = C.open_dl(libraryPathC)
+	np.pv_porcupine_init_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_init"))
+	np.pv_porcupine_process_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_process"))
+	np.pv_sample_rate_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_sample_rate"))
+	np.pv_porcupine_version_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_version"))
+	np.pv_porcupine_frame_length_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_frame_length"))
+	np.pv_porcupine_delete_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_delete"))
 
 	for i, s := range porcupine.KeywordPaths {
 		keywordsC[i] = C.CString(s)
@@ -161,41 +179,40 @@ func (np nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus)
 	}
 
 	var ret = C.pv_porcupine_init_wrapper(
-		pv_porcupine_init_ptr,
+		np.pv_porcupine_init_ptr,
 		accessKeyC,
 		modelPathC,
 		(C.int32_t)(numKeywords),
 		(**C.char)(unsafe.Pointer(&keywordsC[0])),
 		(*C.float)(unsafe.Pointer(&porcupine.Sensitivities[0])),
-		&ptrC[0])
+		&porcupine.handle)
 
-	porcupine.handle = uintptr(ptrC[0])
 	return PvStatus(ret)
 }
 
-func (np nativePorcupineType) nativeDelete(porcupine *Porcupine) {
-	C.pv_porcupine_delete_wrapper(pv_porcupine_delete_ptr,
-		unsafe.Pointer(porcupine.handle))
+func (np *nativePorcupineType) nativeDelete(porcupine *Porcupine) {
+	C.pv_porcupine_delete_wrapper(np.pv_porcupine_delete_ptr,
+		porcupine.handle)
 }
 
-func (np nativePorcupineType) nativeProcess(porcupine *Porcupine, pcm []int16) (status PvStatus, keywordIndex int) {
+func (np *nativePorcupineType) nativeProcess(porcupine *Porcupine, pcm []int16) (status PvStatus, keywordIndex int) {
 
 	var index int32
-	var ret = C.pv_porcupine_process_wrapper(pv_porcupine_process_ptr,
-		unsafe.Pointer(porcupine.handle),
+	var ret = C.pv_porcupine_process_wrapper(np.pv_porcupine_process_ptr,
+		porcupine.handle,
 		(*C.int16_t)(unsafe.Pointer(&pcm[0])),
 		(*C.int32_t)(unsafe.Pointer(&index)))
 	return PvStatus(ret), int(index)
 }
 
-func (np nativePorcupineType) nativeSampleRate() (sampleRate int) {
-	return int(C.pv_porcupine_sample_rate_wrapper(pv_sample_rate_ptr))
+func (np *nativePorcupineType) nativeSampleRate() (sampleRate int) {
+	return int(C.pv_porcupine_sample_rate_wrapper(np.pv_sample_rate_ptr))
 }
 
-func (np nativePorcupineType) nativeFrameLength() (frameLength int) {
-	return int(C.pv_porcupine_frame_length_wrapper(pv_porcupine_frame_length_ptr))
+func (np *nativePorcupineType) nativeFrameLength() (frameLength int) {
+	return int(C.pv_porcupine_frame_length_wrapper(np.pv_porcupine_frame_length_ptr))
 }
 
-func (np nativePorcupineType) nativeVersion() (version string) {
-	return C.GoString(C.pv_porcupine_version_wrapper(pv_porcupine_version_ptr))
+func (np *nativePorcupineType) nativeVersion() (version string) {
+	return C.GoString(C.pv_porcupine_version_wrapper(np.pv_porcupine_version_ptr))
 }

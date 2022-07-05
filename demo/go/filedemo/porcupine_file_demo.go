@@ -31,6 +31,7 @@ func main() {
 	keywordsArg := flag.String("keywords", "", fmt.Sprintf("Comma-separated list of built-in keywords. Available options are: %+q", porcupine.BuiltInKeywords))
 	keywordPathsArg := flag.String("keyword_paths", "", "Comma-separated list of paths to keyword model files. "+
 		"If not set it will be populated from -keywords argument")
+	libraryPathArg := flag.String("library_path", "", "Path to Porcupine dynamic library file")
 	modelPathArg := flag.String("model_path", "", "Path to Porcupine model file")
 	sensitivitiesArg := flag.String("sensitivities", "", "Comma-separated list of sensitivity values for detecting keywords."+
 		"Each value should be a number within [0, 1]. A higher "+
@@ -61,6 +62,16 @@ func main() {
 		log.Fatalf("AccessKey is required.")
 	}
 	p.AccessKey = *accessKeyArg
+
+	// validate library path
+	if *libraryPathArg != "" {
+		libraryPath, _ := filepath.Abs(*libraryPathArg)
+		if _, err := os.Stat(libraryPath); os.IsNotExist(err) {
+			log.Fatalf("Could not find model file at %s", libraryPath)
+		}
+
+		p.LibraryPath = libraryPath
+	}
 
 	// validate model
 	if *modelPathArg != "" {
