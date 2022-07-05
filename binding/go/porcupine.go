@@ -31,6 +31,7 @@ import (
 	"runtime"
 	"strings"
 )
+import "unsafe"
 
 //go:embed embedded
 var embeddedFS embed.FS
@@ -134,7 +135,7 @@ func (k BuiltInKeyword) IsValid() bool {
 // Porcupine struct
 type Porcupine struct {
 	// handle for porcupine instance in C
-	handle uintptr
+	handle unsafe.Pointer
 
 	// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
 	AccessKey string
@@ -271,7 +272,7 @@ func (porcupine *Porcupine) Init() error {
 
 // Releases resources acquired by Porcupine.
 func (porcupine *Porcupine) Delete() error {
-	if porcupine.handle == 0 {
+	if porcupine.handle == nil {
 		return &PorcupineError{
 			INVALID_STATE,
 			"Porcupine has not been initialized or has already been deleted."}
@@ -288,7 +289,7 @@ func (porcupine *Porcupine) Delete() error {
 // Returns a 0 based index if keyword was detected in frame. Returns -1 if no detection was made.
 func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 
-	if porcupine.handle == 0 {
+	if porcupine.handle == nil {
 		return -1, &PorcupineError{
 			INVALID_STATE,
 			"Porcupine has not been initialized or has already been deleted."}

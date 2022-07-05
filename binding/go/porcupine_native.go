@@ -159,7 +159,6 @@ func (np *nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus
 		modelPathC   = C.CString(porcupine.ModelPath)
 		numKeywords  = len(porcupine.KeywordPaths)
 		keywordsC    = make([]*C.char, numKeywords)
-		ptrC         = make([]unsafe.Pointer, 1)
 	)
 
 	defer C.free(unsafe.Pointer(accessKeyC))
@@ -186,22 +185,21 @@ func (np *nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus
 		(C.int32_t)(numKeywords),
 		(**C.char)(unsafe.Pointer(&keywordsC[0])),
 		(*C.float)(unsafe.Pointer(&porcupine.Sensitivities[0])),
-		&ptrC[0])
+		&porcupine.handle)
 
-	porcupine.handle = uintptr(ptrC[0])
 	return PvStatus(ret)
 }
 
 func (np *nativePorcupineType) nativeDelete(porcupine *Porcupine) {
 	C.pv_porcupine_delete_wrapper(np.pv_porcupine_delete_ptr,
-		unsafe.Pointer(porcupine.handle))
+		porcupine.handle)
 }
 
 func (np *nativePorcupineType) nativeProcess(porcupine *Porcupine, pcm []int16) (status PvStatus, keywordIndex int) {
 
 	var index int32
 	var ret = C.pv_porcupine_process_wrapper(np.pv_porcupine_process_ptr,
-		unsafe.Pointer(porcupine.handle),
+		porcupine.handle,
 		(*C.int16_t)(unsafe.Pointer(&pcm[0])),
 		(*C.int32_t)(unsafe.Pointer(&index)))
 	return PvStatus(ret), int(index)
