@@ -34,14 +34,16 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Install Flutter ${{ matrix.python-version }}
+    - name: Install Flutter ${{ matrix.flutter-version }}
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: ${{ matrix.flutter-version }}
 
-    - run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
 
-    - run: flutter build apk
+    - name: Build
+      run: flutter build apk
 
   build-ios:
     name: Build iOS demo
@@ -54,11 +56,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install Flutter ${{ matrix.python-version }}
+    - name: Install Flutter ${{ matrix.flutter-version }}
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: ${{ matrix.flutter-version }}
 
-    - run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
 
-    - run: flutter build ios --release --no-codesign
+    - name: Build
+      run: flutter build ios --release --no-codesign
