@@ -50,13 +50,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       isButtonDisabled = true;
       backgroundColour = defaultColour;
     });
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding?.instance.addObserver(this);
     _initializeKeywordMap();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding?.instance.removeObserver(this);
     super.dispose();
   }
 
