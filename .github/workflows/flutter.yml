@@ -5,12 +5,12 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'demo/flutter/pubspec.yaml
+      - 'demo/flutter/pubspec.yaml'
       - '.github/workflows/flutter.yml'
   pull_request:
     branches: [ master ]
     paths:
-      - 'demo/flutter/pubspec.yaml
+      - 'demo/flutter/pubspec.yaml'
       - '.github/workflows/flutter.yml'
 
 defaults:
