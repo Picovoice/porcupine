@@ -97,23 +97,23 @@ def main():
             keyword_paths=keyword_paths,
             sensitivities=args.sensitivities)
     except pvporcupine.PorcupineInvalidArgumentError as e:
-        print(f"One or more arguments provided to Porcupine is invalid: {args}")
-        print(f"If all other arguments seem valid, ensure that '{args.access_key}' is a valid AccessKey")
+        print("One or more arguments provided to Porcupine is invalid: ", args)
+        print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % args.access_key)
         raise e
     except pvporcupine.PorcupineActivationError as e:
         print("AccessKey activation error")
         raise e
     except pvporcupine.PorcupineActivationLimitError as e:
-        print(f"AccessKey '{args.access_key}' has reached it's temporary device limit")
+        print("AccessKey '%s' has reached it's temporary device limit" % args.access_key)
         raise e
     except pvporcupine.PorcupineActivationRefusedError as e:
-        print(f"AccessKey '{args.access_key}' refused")
+        print("AccessKey '%s' refused" % args.access_key)
         raise e
     except pvporcupine.PorcupineActivationThrottledError as e:
-        print(f"AccessKey '{args.access_key}' has been throttled")
+        print("AccessKey '%s' has been throttled" % args.access_key)
         raise e
     except pvporcupine.PorcupineError as e:
-        print(f"Failed to initialize Porcupine")
+        print("Failed to initialize Porcupine")
         raise e
 
     audio = read_file(args.input_audio_path, porcupine.sample_rate)

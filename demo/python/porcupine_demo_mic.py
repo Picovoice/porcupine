@@ -94,7 +94,7 @@ class PorcupineDemo(Thread):
                 wav_file = wave.open(self._output_path, "w")
                 wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
 
-            print(f'Using device: {recorder.selected_device}')
+            print('Using device: %s', recorder.selected_device)
 
             print('Listening {')
             for keyword, sensitivity in zip(keywords, self._sensitivities):
@@ -111,29 +111,30 @@ class PorcupineDemo(Thread):
                 if result >= 0:
                     print('[%s] Detected %s' % (str(datetime.now()), keywords[result]))
         except pvporcupine.PorcupineInvalidArgumentError as e:
-            print("One or more arguments provided to Porcupine is invalid: {\n" +
-                  f"\t{self._access_key=}\n" +
-                  f"\t{self._library_path=}\n" +
-                  f"\t{self._model_path=}\n" +
-                  f"\t{self._keyword_paths=}\n" +
-                  f"\t{self._sensitivities=}\n" +
-                  "}")
-            print(f"If all other arguments seem valid, ensure that '{self._access_key}' is a valid AccessKey")
+            args = (
+                self._access_key,
+                self._library_path,
+                self._model_path,
+                self._keyword_paths,
+                self._sensitivities,
+            )
+            print("One or more arguments provided to Porcupine is invalid: ", args)
+            print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % self._access_key)
             raise e
         except pvporcupine.PorcupineActivationError as e:
             print("AccessKey activation error")
             raise e
         except pvporcupine.PorcupineActivationLimitError as e:
-            print(f"AccessKey '{self._access_key}' has reached it's temporary device limit")
+            print("AccessKey '%s' has reached it's temporary device limit" % self._access_key)
             raise e
         except pvporcupine.PorcupineActivationRefusedError as e:
-            print(f"AccessKey '{self._access_key}' refused")
+            print("AccessKey '%s' refused" % self._access_key)
             raise e
         except pvporcupine.PorcupineActivationThrottledError as e:
-            print(f"AccessKey '{self._access_key}' has been throttled")
+            print("AccessKey '%s' has been throttled" % self._access_key)
             raise e
         except pvporcupine.PorcupineError as e:
-            print(f"Failed to initialize Porcupine")
+            print("Failed to initialize Porcupine")
             raise e
         except KeyboardInterrupt:
             print('Stopping ...')
@@ -152,7 +153,7 @@ class PorcupineDemo(Thread):
         devices = PvRecorder.get_audio_devices()
 
         for i in range(len(devices)):
-            print(f'index: {i}, device name: {devices[i]}')
+            print('index: %d, device name: %s' % (i, devices[i]))
 
 
 def main():
