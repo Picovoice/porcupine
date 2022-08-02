@@ -34,3 +34,6 @@
 
 ## [2.1.4] - 2022-08-02
 * Improve documentation
+
+## [2.1.5] - 2022-08-02
+* Add documentation and repository links
