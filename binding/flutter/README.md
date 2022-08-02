@@ -75,7 +75,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 ### High-Level API
 
-[PorcupineManager](https://github.com/Picovoice/porcupine/tree/master/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
+[PorcupineManager](https://picovoice.ai/docs/api/porcupine-flutter/#porcupinemanager) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
 Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the PorcupineManager using one or more of the built-in keywords.
 ```dart
@@ -173,7 +173,7 @@ Flutter plugin to capture frames of audio and automatically pass it to the wake 
 
 ### Low-Level API
 
-[Porcupine](https://github.com/Picovoice/porcupine/tree/master/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
+[Porcupine](https://picovoice.ai/docs/api/porcupine-flutter/#porcupine) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 `Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
