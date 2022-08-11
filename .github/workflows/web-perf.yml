@@ -1,23 +1,19 @@
-name: Web
+name: Web Performance
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - 'binding/web/**'
-      - '!binding/web/README.md'
-      - 'lib/**'
-      - 'resources/**'
-      - '.github/workflows/web.yml'
+      - 'lib/wasm/**'
+      - 'lib/common/**'
+      - '.github/workflows/web-perf.yml'
   pull_request:
     branches: [ master ]
     paths:
-      - 'binding/web/**'
-      - '!binding/web/README.md'
-      - 'lib/**'
-      - 'resources/**'
-      - '.github/workflows/web.yml'
+      - 'lib/wasm/**'
+      - 'lib/common/**'
+      - '.github/workflows/web-perf.yml'
 
 defaults:
   run:
@@ -31,6 +27,10 @@ jobs:
       matrix:
         python-version: [3.8]
         node-version: [lts/*]
+        include:
+        - python-version: 3.8
+          initPerformanceThresholdSec: 0.4
+          procPerformanceThresholdSec: 1.2
 
     steps:
     - uses: actions/checkout@v2
@@ -49,7 +49,6 @@ jobs:
       run: |
         pip install selenium
         pip install webdriver-manager
-
     - name: Pre-build dependencies
       run: npm install yarn
 
@@ -63,4 +62,5 @@ jobs:
       run: yarn setup-test
 
     - name: Test
-      run: python test/selenium_test.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --audio_file ../../resources/audio_samples/multiple_keywords.wav
+      run: python test/perf_test.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --audio_file ../../resources/audio_samples/multiple_keywords.wav
+        --init_performance_threshold_sec ${{ matrix.initPerformanceThresholdSec }} --proc_performance_threshold_sec ${{ matrix.procPerformanceThresholdSec }}

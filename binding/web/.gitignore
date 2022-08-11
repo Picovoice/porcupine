@@ -1,7 +1,6 @@
 node_modules
-.rts2_cache/
-.idea/
-*.log
-.DS_Store
-porcupine-web-*
-**/porcupine_b64.ts
+dist
+lib/pv_porcupine*.wasm
+test/porcupine_params.js
+test/porcupine_params.pv
+src/built_in_keywords_64.ts
