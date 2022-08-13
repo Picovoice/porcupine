@@ -89,7 +89,6 @@ export class Porcupine {
   private readonly _inputBufferAddress: number;
   private readonly _alignedAlloc: aligned_alloc_type;
   private readonly _keywordIndexAddress: number;
-  private readonly _keywordLabels: Map<number, string>;
 
   private static _frameLength: number;
   private static _sampleRate: number;
@@ -99,7 +98,7 @@ export class Porcupine {
 
   private static _porcupineMutex = new Mutex();
 
-  private constructor(handleWasm: PorcupineWasmOutput, keywordLabels: ArrayLike<string>) {
+  private constructor(handleWasm: PorcupineWasmOutput) {
     Porcupine._frameLength = handleWasm.frameLength;
     Porcupine._sampleRate = handleWasm.sampleRate;
     Porcupine._version = handleWasm.version;
@@ -119,11 +118,6 @@ export class Porcupine {
     this._memoryBufferUint8 = new Uint8Array(handleWasm.memory.buffer);
     this._memoryBufferView = new DataView(handleWasm.memory.buffer);
     this._processMutex = new Mutex();
-
-    this._keywordLabels = new Map();
-    for (let i = 0; i < keywordLabels.length; i++) {
-      this._keywordLabels.set(i, keywordLabels[i]);
-    }
   }
 
   /**
@@ -145,14 +139,6 @@ export class Porcupine {
    */
   get sampleRate(): number {
     return Porcupine._sampleRate;
-  }
-
-  /**
-   * Get keyword labels.
-   */
-
-  get keywordLabels(): Map<number, string> {
-    return this._keywordLabels;
   }
 
   /**
@@ -180,8 +166,8 @@ export class Porcupine {
   ): Promise<Porcupine> {
     const {customWritePath = 'porcupine_model', forceWrite = false, version = 1} = options;
     await fromBase64(customWritePath, modelBase64, forceWrite, version);
-    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
-    return this.create(accessKey, keywordLabels, sensitivities, customWritePath);
+    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
+    return this.create(accessKey, keywordPaths, sensitivities, customWritePath);
   }
 
   /**
@@ -210,8 +196,8 @@ export class Porcupine {
   ): Promise<Porcupine> {
     const {customWritePath = 'porcupine_model', forceWrite = false, version = 1} = options;
     await fromPublicDirectory(customWritePath, publicPath, forceWrite, version);
-    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
-    return this.create(accessKey, keywordLabels, sensitivities, customWritePath);
+    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
+    return this.create(accessKey, keywordPaths, sensitivities, customWritePath);
   }
 
   /**
@@ -265,7 +251,7 @@ export class Porcupine {
             modelPath,
             keywordPaths,
             sensitivities);
-          return new Porcupine(wasmOutput, keywordPaths);
+          return new Porcupine(wasmOutput);
         })
         .then((result: Porcupine) => {
           resolve(result);

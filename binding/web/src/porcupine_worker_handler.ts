@@ -65,7 +65,7 @@ self.onmessage = async function(
         if (keywordIndex !== -1) {
           self.postMessage({
             command: 'ok',
-            keywordLabel: porcupine.keywordLabels.get(keywordIndex),
+            keywordIndex: keywordIndex,
           });
         }
       } catch (e: any) {

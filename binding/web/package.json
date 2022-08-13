@@ -25,15 +25,14 @@
     "build:all": "rollup --config",
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --outDir ./dist/types",
     "build": "npm-run-all --parallel build:**",
-    "prepare": "yarn base64",
     "lint": "eslint . --ext .js,.ts",
     "prepack": "npm-run-all build",
     "start": "cross-env TARGET='debug' rollup --config --watch",
     "watch": "rollup --config --watch",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
-    "postinstall": "yarn copywasm",
+    "postinstall": "yarn copywasm && yarn copyppn",
     "copywasm": "node scripts/copy_wasm.js",
-    "base64": "node scripts/base64.mjs",
+    "copyppn": "node scripts/copy_ppn.js",
     "setup-test": "node scripts/setup_test.js && npx pvbase64 -i ./test/porcupine_params.pv -o ./test/porcupine_params.js"
   },
   "dependencies": {

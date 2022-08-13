@@ -26,10 +26,12 @@ export type PorcupineKeywordCustom = {
   base64?: string;
   /** The Porcupine keyword (`.ppn` file) path relative to the public directory */
   ppnPath?: string;
-  /** An arbitrary label that you want Picovoice to report when the detection occurs */
+  /** An arbitrary label used for caching purposes */
   label: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
   sensitivity?: number;
+  /** A flag that indicates whether the cached keyword should be used */
+  usedCachedModel?: boolean;
 };
 
 export type PorcupineKeywordBuiltin = {
@@ -37,6 +39,8 @@ export type PorcupineKeywordBuiltin = {
   builtin: BuiltInKeyword;
   /** Value in range [0,1] that trades off miss rate for false alarm */
   sensitivity?: number;
+  /** A flag that indicates whether the cached keyword should be used */
+  usedCachedModel?: boolean;
 };
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
@@ -80,7 +84,7 @@ export type PorcupineWorkerInitResponse = PorcupineWorkerFailureResponse | {
 
 export type PorcupineWorkerProcessResponse = PorcupineWorkerFailureResponse | {
   command: 'ok';
-  keywordLabel: string;
+  keywordIndex: number;
 };
 
 export type PorcupineWorkerReleaseResponse = PorcupineWorkerFailureResponse | {

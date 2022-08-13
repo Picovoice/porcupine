@@ -150,8 +150,8 @@ Create a `keywordDetectionCallback` function to get the streaming results
 from the worker:
 
 ```typescript
-function keywordDetectionCallback(keyword) {
-  console.log(`Porcupine detected ${keyword}`);
+function keywordDetectionCallback(keywordIndex) {
+  console.log(`Porcupine detected keyword index: ${keyword}`);
 }
 ```
 

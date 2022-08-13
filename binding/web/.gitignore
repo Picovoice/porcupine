@@ -1,6 +1,7 @@
 node_modules
 dist
 lib/pv_porcupine*.wasm
+builtins/*.ppn
 test/porcupine_params.js
 test/porcupine_params.pv
 src/built_in_keywords_64.ts

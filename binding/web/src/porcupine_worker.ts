@@ -81,7 +81,7 @@ export class PorcupineWorker {
    * representations of keywords and their sensitivities.
    * Can be provided as an array or a single keyword.
    * @param keywordDetectionCallback - User-defined callback invoked upon detection of the wake phrase.
-   * The only input argument is the keyword label defined at initialization.
+   * The only input argument is the index of detected keyword (phrase).
    * @param modelBase64 The model in base64 string to initialize Porcupine.
    * @param options Optional configuration arguments.
    * @param options.customWritePath Custom path to save the model in storage.
@@ -94,7 +94,7 @@ export class PorcupineWorker {
   public static async fromBase64(
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
-    keywordDetectionCallback: (label: string) => void,
+    keywordDetectionCallback: (keywordIndex: number) => void,
     modelBase64: string,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
@@ -105,10 +105,10 @@ export class PorcupineWorker {
       ...rest
     } = options;
     await fromBase64(customWritePath, modelBase64, forceWrite, version);
-    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
+    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
     return this.create(
       accessKey,
-      keywordLabels,
+      keywordPaths,
       sensitivities,
       keywordDetectionCallback,
       customWritePath,
@@ -125,7 +125,7 @@ export class PorcupineWorker {
    * representations of keywords and their sensitivities.
    * Can be provided as an array or a single keyword.
    * @param keywordDetectionCallback - User-defined callback invoked upon detection of the wake phrase.
-   * The only input argument is the keyword label defined at initialization.
+   * The only input argument is the index of detected keyword (phrase).
    * @param publicPath The model path relative to the public directory.
    * @param options Optional configuration arguments.
    * @param options.processErrorCallback User-defined callback invoked if any error happens
@@ -140,7 +140,7 @@ export class PorcupineWorker {
   public static async fromPublicDirectory(
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
-    keywordDetectionCallback: (label: string) => void,
+    keywordDetectionCallback: (keywordIndex: number) => void,
     publicPath: string,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
@@ -151,10 +151,10 @@ export class PorcupineWorker {
       ...rest
     } = options;
     await fromPublicDirectory(customWritePath, publicPath, forceWrite, version);
-    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
+    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
     return this.create(
       accessKey,
-      keywordLabels,
+      keywordPaths,
       sensitivities,
       keywordDetectionCallback,
       customWritePath,
@@ -190,7 +190,7 @@ export class PorcupineWorker {
    * @param keywordPaths - The path to the keyword file saved in indexedDB.
    * @param sensitivities - Sensitivity of the keywords.
    * @param keywordDetectionCallback - User-defined callback invoked upon detection of the wake phrase.
-   * The only input argument is the keyword label defined at initialization.
+   * The only input argument is the index of detected keyword (phrase).
    * @param modelPath Path to the model saved in indexedDB.
    * Can be provided as an array or a single keyword.
    * @param options Optional configuration arguments.
@@ -202,7 +202,7 @@ export class PorcupineWorker {
     accessKey: string,
     keywordPaths: Array<string>,
     sensitivities: Float32Array,
-    keywordDetectionCallback: (label: string) => void,
+    keywordDetectionCallback: (keywordIndex: number) => void,
     modelPath: string,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
@@ -218,7 +218,7 @@ export class PorcupineWorker {
             worker.onmessage = (ev: MessageEvent<PorcupineWorkerProcessResponse>): void => {
               switch (ev.data.command) {
                 case 'ok':
-                  keywordDetectionCallback(ev.data.keywordLabel);
+                  keywordDetectionCallback(ev.data.keywordIndex);
                   break;
                 case 'failed':
                 case 'error':

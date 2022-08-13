@@ -9,22 +9,20 @@
     specific language governing permissions and limitations under the License.
 */
 
-import {
-  ALEXA_64,
-  AMERICANO_64,
-  BLUEBERRY_64,
-  BUMBLEBEE_64,
-  COMPUTER_64,
-  JARVIS_64,
-  GRAPEFRUIT_64,
-  GRASSHOPPER_64,
-  HEY_GOOGLE_64,
-  HEY_SIRI_64,
-  OK_GOOGLE_64,
-  PICOVOICE_64,
-  PORCUPINE_64,
-  TERMINATOR_64,
-} from './built_in_keywords_64';
+import ALEXA_64 from '../keywords/alexa_wasm.ppn';
+import AMERICANO_64 from '../keywords/americano_wasm.ppn';
+import BLUEBERRY_64 from '../keywords/blueberry_wasm.ppn';
+import BUMBLEBEE_64 from '../keywords/bumblebee_wasm.ppn';
+import COMPUTER_64 from '../keywords/computer_wasm.ppn';
+import GRAPEFRUIT_64 from '../keywords/grapefruit_wasm.ppn';
+import GRASSHOPPER_64 from '../keywords/grasshopper_wasm.ppn';
+import HEY_GOOGLE_64 from '../keywords/hey google_wasm.ppn';
+import HEY_SIRI_64 from '../keywords/hey siri_wasm.ppn';
+import JARVIS_64 from '../keywords/jarvis_wasm.ppn';
+import OK_GOOGLE_64 from '../keywords/ok google_wasm.ppn';
+import PICOVOICE_64 from '../keywords/picovoice_wasm.ppn';
+import PORCUPINE_64 from '../keywords/porcupine_wasm.ppn';
+import TERMINATOR_64 from '../keywords/terminator_wasm.ppn';
 
 export enum BuiltInKeyword {
   Alexa = 'Alexa',
@@ -58,3 +56,4 @@ BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.OkayGoogle, OK_GOOGLE_64);
 BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Picovoice, PICOVOICE_64);
 BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Porcupine, PORCUPINE_64);
 BUILT_IN_KEYWORD_BYTES.set(BuiltInKeyword.Terminator, TERMINATOR_64);
+
