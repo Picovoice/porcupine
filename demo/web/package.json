@@ -5,6 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./porcupine_params.js && cp ../../resources/keyword_files/wasm/porcupine_wasm.ppn ./",
     "start": "yarn run http-server -a localhost -p 5000"
   },
   "keywords": [
@@ -17,15 +18,8 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web-de-worker": "^2.1.7",
-    "@picovoice/porcupine-web-en-worker": "^2.1.7",
-    "@picovoice/porcupine-web-es-worker": "^2.1.7",
-    "@picovoice/porcupine-web-fr-worker": "^2.1.7",
-    "@picovoice/porcupine-web-it-worker": "^2.1.7",
-    "@picovoice/porcupine-web-ja-worker": "^2.1.7",
-    "@picovoice/porcupine-web-ko-worker": "^2.1.7",
-    "@picovoice/porcupine-web-pt-worker": "^2.1.7",
-    "@picovoice/web-voice-processor": "^2.2.2"
+    "@picovoice/porcupine-web": "^2.1.0",
+    "@picovoice/web-voice-processor": "^2.2.3"
   },
   "devDependencies": {
     "http-server": "^14.0.0"

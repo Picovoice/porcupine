@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>unit test - PorcupineWeb</title>
+  <script src="../dist/iife/index.js"></script>
+  <script src="./porcupine_params.js"></script>
+  <script type="application/javascript">
+
+    let pcm = null;
+    let workerCbCount = 0;
+
+    window.onload = function () {
+      const audioContext = new (window.AudioContext || window.webKitAudioContext)(
+              {sampleRate: 16000}
+      );
+
+      function readAudioFile(selectedFile, callback) {
+        let reader = new FileReader();
+        reader.onload = function (ev) {
+          let wavBytes = reader.result;
+          audioContext.decodeAudioData(wavBytes, callback);
+        };
+        reader.readAsArrayBuffer(selectedFile);
+      }
+
+      const fileSelector = document.getElementById("audioFile");
+      fileSelector.addEventListener("change", (event) => {
+        document.getElementById("audioLoaded").style.display = "none";
+
+        writeMessage("Loading audio file...");
+        const fileList = event.target.files;
+        readAudioFile(fileList[0], (audioBuffer) => {
+          const f32PCM = audioBuffer.getChannelData(0);
+          const i16PCM = new Int16Array(f32PCM.length);
+
+          const INT16_MAX = 32767;
+          const INT16_MIN = -32768;
+          i16PCM.set(
+                  f32PCM.map((f) => {
+                    let i = Math.trunc(f * INT16_MAX);
+                    if (f > INT16_MAX) i = INT16_MAX;
+                    if (f < INT16_MIN) i = INT16_MIN;
+                    return i;
+                  })
+          );
+          pcm = i16PCM;
+          document.getElementById("audioLoaded").style.display = "block";
+          writeMessage("Loading audio file... done!");
+        });
+      });
+    }
+
+    function writeMessage(message) {
+      console.log(message);
+      let p = document.createElement("p");
+      let text = document.createTextNode(message);
+      p.appendChild(text);
+      document.body.appendChild(p);
+    }
+
+    function assertEquals(expected, actual, failureMessage) {
+      if (expected !== actual) {
+        throw new Error(failureMessage);
+      }
+    }
+
+    async function porcupineDetectionCounts(engineInstance, pcm) {
+
+      let detections = new Map();
+      let frameLength = engineInstance.frameLength;
+      for (let i = 0; i < (pcm.byteLength / pcm.BYTES_PER_ELEMENT); i += frameLength) {
+        const keywordIndex = await engineInstance.process(pcm.slice(i, i + frameLength));
+        if (keywordIndex !== -1) {
+          let currentCount = detections.get(keywordIndex);
+
+          if (currentCount === undefined) {
+            detections.set(keywordIndex, 1);
+          } else {
+            detections.set(keywordIndex, currentCount + 1);
+          }
+        }
+      }
+      return detections;
+    }
+
+    function porcupineKeywordCallback(keyword) {
+      workerCbCount++;
+    }
+
+    async function ppnWorker(engineInstance, pcm) {
+      workerCbCount = 0;
+
+      let totalCount = 1;
+      let frameLength = engineInstance.frameLength;
+      for (let i = 0; i < (pcm.byteLength / pcm.BYTES_PER_ELEMENT); i += frameLength) {
+        engineInstance.process(pcm.slice(i, i + frameLength));
+        totalCount += 1;
+      }
+
+
+      return new Promise(resolve => {
+        const interval = setInterval(() => {
+          resolve(workerCbCount);
+        }, 1000);
+      });
+    }
+
+    async function startTest() {
+      document.getElementById("testComplete").style.display = "none";
+      let is_failed = undefined
+
+      writeMessage("Starting test...");
+
+      const accessKey = document.getElementById("accessKey").value;
+
+      if (!pcm) {
+        writeMessage("Audio file not provided...");
+        return
+      }
+
+      try {
+        writeMessage("Checking Porcupine 'fromPublicDirectory'");
+        let handle = await PorcupineWeb.Porcupine.fromPublicDirectory(
+          accessKey,
+          PorcupineWeb.BuiltInKeyword.Porcupine,
+          "porcupine_params.pv",
+          { forceWrite: true});
+        let counts = await porcupineDetectionCounts(handle, pcm);
+        assertEquals(2, counts.get(0), 'Failed to detect the keyword');
+        handle.release()
+        writeMessage("Checking Porcupine 'fromPublicDirectory'... done!");
+
+        writeMessage("Checking Porcupine 'fromBase64'");
+        handle = await PorcupineWeb.Porcupine.fromBase64(
+          accessKey,
+          PorcupineWeb.BuiltInKeyword.Porcupine,
+          modelParams,
+          { forceWrite: true });
+        counts = await porcupineDetectionCounts(handle, pcm);
+        assertEquals(2, counts.get(0), 'Failed to detect the keyword');
+        handle.release()
+        writeMessage("Checking Porcupine 'fromBase64'... done!");
+
+        writeMessage("Checking PorcupineWorker 'fromPublicDirectory'");
+        handle = await PorcupineWeb.PorcupineWorker.fromPublicDirectory(
+          accessKey,
+          PorcupineWeb.BuiltInKeyword.Porcupine,
+          porcupineKeywordCallback,
+          "porcupine_params.pv",
+          { forceWrite: true });
+        counts = await ppnWorker(handle, pcm);
+        assertEquals(2, counts, 'Failed to detect the keyword');
+        handle.release()
+        writeMessage("Checking PorcupineWorker 'fromPublicDirectory'... done!");
+
+        writeMessage("Checking PorcupineWorker 'fromBase64'");
+        handle = await PorcupineWeb.PorcupineWorker.fromBase64(
+          accessKey,
+          PorcupineWeb.BuiltInKeyword.Porcupine,
+          porcupineKeywordCallback,
+          modelParams,
+          { forceWrite: true });
+        counts = await ppnWorker(handle, pcm);
+        assertEquals(2, counts, 'Failed to detect the keyword');
+        handle.release()
+        writeMessage("Checking PorcupineWorker 'fromBase64'... done!");
+
+        writeMessage("Checking invalid public path");
+        is_failed = false
+        try {
+          await PorcupineWeb.Porcupine.fromPublicDirectory(
+            accessKey,
+            PorcupineWeb.BuiltInKeyword.Porcupine,
+            "invalid",
+            { forceWrite: true });
+        } catch (e) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid path');
+        is_failed = false
+        try {
+          await PorcupineWeb.Porcupine.fromPublicDirectory(
+            accessKey,
+            PorcupineWeb.BuiltInKeyword.Porcupine,
+            "invalid",
+            { forceWrite: true });
+        } catch (e) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid path');
+        writeMessage("Checking invalid public path... done!");
+
+        writeMessage("Checking invalid base64 string");
+        is_failed = false
+        try {
+          await PorcupineWeb.Porcupine.fromBase64(
+            accessKey,
+            PorcupineWeb.BuiltInKeyword.Porcupine,
+            "invalid",
+            { forceWrite: true });
+        } catch (e) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid base64 string');
+
+        is_failed = false
+        try {
+          await PorcupineWeb.PorcupineWorker.fromBase64(
+            accessKey,
+            porcupineKeywordCallback,
+            "invalid",
+            { forceWrite: true });
+        } catch (e) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid base64 string');
+        writeMessage("Checking invalid base64 string... done!");
+
+        writeMessage("Checking invalid access key");
+        is_failed = false
+        try {
+          await PorcupineWeb.Porcupine.fromPublicDirectory(
+            "invalid",
+            PorcupineWeb.BuiltInKeyword.Porcupine,
+            "porcupine_params.pv");
+        } catch (e) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid access key');
+
+        is_failed = false
+        try {
+          await PorcupineWeb.PorcupineWorker.fromPublicDirectory(
+            "invalid",
+            PorcupineWeb.BuiltInKeyword.Porcupine,
+            porcupineKeywordCallback,
+            "porcupine_params.pv");
+        } catch (e) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid access key');
+        writeMessage("Checking invalid access key... done!");
+
+        writeMessage("Checking builtin keyword 'Grasshopper'...");
+        handle = await PorcupineWeb.Porcupine.fromBase64(
+          accessKey,
+          PorcupineWeb.BuiltInKeyword.Grasshopper,
+          modelParams,
+          { forceWrite: true });
+        counts = await porcupineDetectionCounts(handle, pcm);
+        let grasshopperCount = counts.get(0);
+        assertEquals(1, grasshopperCount, 'Failed to create an instance with a buildin keyword');
+        handle.release()
+        writeMessage("Checking builtin keyword 'Grasshopper'... done!");
+
+        writeMessage("Checking single keyword multiple detection...");
+        handle = await PorcupineWeb.Porcupine.fromBase64(
+          accessKey,
+          PorcupineWeb.BuiltInKeyword.Porcupine,
+          modelParams,
+          { forceWrite: true });
+        counts = await porcupineDetectionCounts(handle, pcm);
+        let porcupineCount = counts.get(0);
+        assertEquals(2, porcupineCount, 'Failed to detect a single keyword multiple times')
+        handle.release()
+        writeMessage("Checking single keyword multiple detection... done!");
+
+        writeMessage("Checking multiple keyword multiple detection...");
+        handle = await PorcupineWeb.Porcupine.fromBase64(
+          accessKey,
+          [PorcupineWeb.BuiltInKeyword.Americano, PorcupineWeb.BuiltInKeyword.Bumblebee],
+          modelParams,
+          { forceWrite: true });
+        counts = await porcupineDetectionCounts(handle, pcm);
+        let americanoCount = counts.get(0);
+        let bumblebeeCount = counts.get(1);
+        assertEquals(1, americanoCount, 'Failed to detect multiple keywords')
+        assertEquals(1, bumblebeeCount, 'Failed to detect multiple keywords')
+        handle.release()
+        writeMessage("Checking multiple keyword multiple detection... done!");
+
+        writeMessage("Checking invalid builtin keyword type...");
+        is_failed = false;
+        try {
+          handle = await PorcupineWeb.Porcupine.fromBase64(
+            accessKey,
+            'octopus',
+            modelParams,
+            { forceWrite: true });
+        } catch (error) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid built-in keyword')
+        writeMessage("Checking invalid builtin keyword type... done!");
+
+        writeMessage("Checking basic parameter validation...");
+        is_failed = false;
+        try {
+          handle = await PorcupineWeb.Porcupine.fromBase64(
+            accessKey,
+            {
+              builtin: PorcupineWeb.BuiltInKeyword.Picovoice,
+              sensitivity: 4.2
+            },
+            modelParams,
+            { forceWrite: true });
+        } catch (error) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle invalid sensitivity value')
+
+        is_failed = false;
+        try {
+          handle = await PorcupineWeb.Porcupine.fromBase64(
+            accessKey,
+            {
+              builtin: PorcupineWeb.BuiltInKeyword.Picovoice,
+              sensitivity: 'high'
+            },
+            modelParams,
+            { forceWrite: true });
+        } catch (error) {
+          is_failed = true;
+        }
+        assertEquals(true, is_failed, 'Failed to handle incorrect sensitivity type')
+        writeMessage("Checking basic parameter validation... done!");
+
+        writeMessage("Test passed!")
+
+      } catch (error) {
+        writeMessage(error);
+        writeMessage("Test failed!")
+      } finally {
+        document.getElementById("testComplete").style.display = "block";
+      }
+    }
+
+    const numIterations = 15;
+    async function performanceTest() {
+      document.getElementById("testComplete").style.display = "none";
+
+      const accessKey = document.getElementById("accessKey").value;
+      let handle = null;
+
+      try {
+        writeMessage("Starting init performance test!");
+        let start = Date.now();
+        for (let i = 0; i < numIterations; i++) {
+          handle = await PorcupineWeb.PorcupineWorker.fromBase64(
+            accessKey,
+            PorcupineWeb.BuiltInKeyword.Porcupine,
+            porcupineKeywordCallback,
+            modelParams,
+            {forceWrite: true});
+          handle.terminate();
+        }
+        let end = Date.now();
+        writeMessage(`Init Performance: ${((end - start) / 1000) / numIterations}`);
+
+        handle = await PorcupineWeb.PorcupineWorker.fromBase64(
+          accessKey,
+          PorcupineWeb.BuiltInKeyword.Porcupine,
+          porcupineKeywordCallback,
+          modelParams,
+          {forceWrite: true});
+        writeMessage("Starting process performance test!");
+        start = Date.now();
+        for (let i = 0; i < numIterations; i++) {
+          await ppnWorker(handle, pcm);
+        }
+        end = Date.now();
+        writeMessage(`Process Performance: ${((end - start) / 1000) / numIterations}`);
+        handle.release();
+      } catch (e) {
+        console.log(e)
+        writeMessage("Test failed!")
+      } finally {
+        document.getElementById("testComplete").style.display = "block";
+      }
+    }
+  </script>
+</head>
+
+<body>
+<h1>Porcupine web binding test</h1>
+<p>After entering the AccessKey and audio file, click the "Test Porcupine" button. For the result, refer to the
+  browser console.</p>
+
+<p>
+  <label for="accessKey">AccessKey string obtained from
+    <a href="https://picovoice.ai/console/">Picovoice Console</a>:</label>
+  <input type="text" id="accessKey" name="accessKey"/>
+</p>
+
+<p>
+  <label for="audioFile">Select audio file located on
+    {PROJECT_ROOT}/resources/audio_samples/multiple_keywords.wav:</label>
+  <input type="file" id="audioFile" name="audioFile" accept="audio/*"/>
+</p>
+
+<input type="button" id="sumbit" value="Test Porcupine" onclick="startTest()"/>
+<input type="button" id="perfTest" value="Test Porcupine Performance" onclick="performanceTest()"/>
+
+<br>
+
+<h4 id="audioLoaded" style="display: none;">Audio file loaded!</h4>
+<h4 id="testComplete" style="display: none;">Test Complete!</h4>
+<hr/>
+</body>
+
+</html>

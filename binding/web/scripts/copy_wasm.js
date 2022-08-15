@@ -1,40 +1,28 @@
-import fs, { readFileSync, writeFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+const fs = require("fs");
+const { join } = require("path");
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const wasmFiles = ["pv_porcupine.wasm", "pv_porcupine_simd.wasm"]
 
-const LANGUAGES = ["en", "de", "es", "fr", "it", "ja", "ko", "pt"];
+console.log("Copying the WASM model...");
 
-console.log("Updating the WASM models...");
+const sourceDirectory = join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "lib",
+  "wasm"
+);
 
-for (const language of LANGUAGES) {
-  console.log(`--- Language: '${language}' ---`);
-  const sourceDirectory = join(
-    __dirname,
-    "..",
-    "..",
-    "..",
-    "lib",
-    "wasm",
-    language
-  );
+const outputDirectory = join(__dirname, "..", "lib");
 
-  const outputDirectory = join(__dirname, "..", language);
-
-  try {
-    fs.mkdirSync(outputDirectory, { recursive: true });
-
-    const wasmFile = readFileSync(
-      join(sourceDirectory, "pv_porcupine.wasm")
-    );
-    const strBase64 = Buffer.from(wasmFile).toString("base64");
-    const jsSourceFileOutput = `export const PORCUPINE_WASM_BASE64 = '${strBase64}';\n`;
-  
-    writeFileSync(join(outputDirectory, "porcupine_b64.ts"), jsSourceFileOutput);
-  } catch (error) {
-    console.error(error);
-  }
+try {
+  fs.mkdirSync(outputDirectory, { recursive: true });
+  wasmFiles.forEach(file => {
+    fs.copyFileSync(join(sourceDirectory, file), join(outputDirectory, file))
+  })
+} catch (error) {
+  console.error(error);
 }
 
 console.log("... Done!");

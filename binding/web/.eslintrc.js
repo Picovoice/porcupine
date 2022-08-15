@@ -12,9 +12,10 @@ module.exports = {
     ecmaVersion: 2018
   },
 
+  ignorePatterns: ['**/*.js', 'node_modules', 'dist'],
   overrides: [
     {
-      files: ['**/*.ts', '**/*.tsx'],
+      files: ['src/**/*.ts'],
       extends: ['plugin:@typescript-eslint/recommended'],
       rules: {
         '@typescript-eslint/no-parameter-properties': 2,
@@ -25,8 +26,8 @@ module.exports = {
         '@typescript-eslint/camelcase': 0,
         '@typescript-eslint/no-empty-interface': 2,
         '@typescript-eslint/explicit-function-return-type': 2,
-        '@typescript-eslint/ban-ts-ignore': 0,
-        '@typescript-eslint/no-empty-function' : [2, { "allow": ["constructors"] }],
+        '@typescript-eslint/ban-ts-comment': 0,
+        '@typescript-eslint/no-empty-function': [2, { "allow": ["constructors"] }],
         '@typescript-eslint/no-inferrable-types': [
           2,
           {
@@ -97,7 +98,7 @@ module.exports = {
     'use-isnan': 2,
     // ensure JSDoc comments are valid
     'valid-jsdoc': [
-      2,
+      0,
       {
         requireReturn: false,
         requireReturnDescription: false
@@ -384,7 +385,7 @@ module.exports = {
     // require quotes around object literal property names
     'quote-props': 0,
     // specify whether double or single quotes should be used
-    quotes: [1, 'single', 'avoid-escape'],
+    quotes: 0,
     // Require JSDoc comment
     'require-jsdoc': 0,
     // enforce spacing before and after semicolons
