@@ -29,17 +29,21 @@ export type PorcupineKeywordCustom = {
   /** An arbitrary label used for caching purposes */
   label: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
+  /** @defaultValue 0.5 */
   sensitivity?: number;
   /** A flag that indicates whether the cached keyword should be used */
+  /** @defaultValue false */
   usedCachedModel?: boolean;
 };
 
 export type PorcupineKeywordBuiltin = {
-  /** Name of a builtin keyword for the specific language (e.g. "Grasshopper" for English, or "Ananas" for German) */
+  /** Name of a builtin keyword */
   builtin: BuiltInKeyword;
   /** Value in range [0,1] that trades off miss rate for false alarm */
+  /** @defaultValue 0.5 */
   sensitivity?: number;
   /** A flag that indicates whether the cached keyword should be used */
+  /** @defaultValue false */
   usedCachedModel?: boolean;
 };
 

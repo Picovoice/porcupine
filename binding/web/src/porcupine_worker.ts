@@ -16,7 +16,7 @@ import {
 
 import PvWorker from 'web-worker:./porcupine_worker_handler.ts';
 
-import { keywordsProcess } from './utils';
+import {keywordsProcess} from './utils';
 
 import {
   PorcupineOptions,
@@ -206,7 +206,7 @@ export class PorcupineWorker {
     modelPath: string,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
-    const { processErrorCallback } = options;
+    const {processErrorCallback} = options;
 
     const worker = new PvWorker();
     const returnPromise: Promise<PorcupineWorker> = new Promise((resolve, reject) => {
