@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {BuiltInKeyword} from "./built_in_keywords";
+import { BuiltInKeyword } from './built_in_keywords';
 
 export type PorcupineOptions = {
   processErrorCallback?: (error: string) => void

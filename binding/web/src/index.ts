@@ -1,5 +1,5 @@
-import {Porcupine} from './porcupine';
-import {PorcupineWorker} from './porcupine_worker';
+import { Porcupine } from './porcupine';
+import { PorcupineWorker } from './porcupine_worker';
 
 import {
   PorcupineOptions,
@@ -18,7 +18,7 @@ import {
 import porcupineWasm from '../lib/pv_porcupine.wasm';
 import porcupineWasmSimd from '../lib/pv_porcupine_simd.wasm';
 
-import {BuiltInKeyword} from './built_in_keywords';
+import { BuiltInKeyword } from './built_in_keywords';
 
 Porcupine.setWasm(porcupineWasm);
 Porcupine.setWasmSimd(porcupineWasmSimd);

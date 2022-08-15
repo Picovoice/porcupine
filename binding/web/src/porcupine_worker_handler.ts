@@ -12,14 +12,14 @@
 /// <reference no-default-lib="false"/>
 /// <reference lib="webworker" />
 
-import {Porcupine} from './porcupine';
-import {PorcupineWorkerRequest} from './types';
+import { Porcupine } from './porcupine';
+import { PorcupineWorkerRequest } from './types';
 
 /**
  * Porcupine worker handler.
  */
 let porcupine: Porcupine | null = null;
-self.onmessage = async function (
+self.onmessage = async function(
   event: MessageEvent<PorcupineWorkerRequest>,
 ): Promise<void> {
   switch (event.data.command) {
@@ -38,7 +38,7 @@ self.onmessage = async function (
           event.data.accessKey,
           event.data.keywords,
           event.data.sensitivities,
-          event.data.modelPath,);
+          event.data.modelPath);
         self.postMessage({
           command: 'ok',
           version: porcupine.version,

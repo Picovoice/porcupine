@@ -11,7 +11,7 @@
 
 /* eslint camelcase: 0 */
 
-import {Mutex} from 'async-mutex';
+import { Mutex } from 'async-mutex';
 
 import {
   aligned_alloc_type,
@@ -23,12 +23,12 @@ import {
   fromPublicDirectory,
 } from '@picovoice/web-utils';
 
-import {simd} from 'wasm-feature-detect';
+import { simd } from 'wasm-feature-detect';
 
-import {PorcupineOptions, PorcupineKeyword} from './types';
+import { PorcupineOptions, PorcupineKeyword } from './types';
 
-import {keywordsProcess} from './utils';
-import {BuiltInKeyword} from "./built_in_keywords";
+import { keywordsProcess } from './utils';
+import { BuiltInKeyword } from './built_in_keywords';
 
 /**
  * WebAssembly function types
@@ -40,7 +40,7 @@ type pv_porcupine_init_type = (
   numKeywords: number,
   keywordPaths: number,
   sensitivities: number,
-  object: number
+  object: number,
 ) => Promise<number>;
 type pv_porcupine_process_type = (object: number, pcm: number, keywordIndex: number) => Promise<number>;
 type pv_porcupine_delete_type = (object: number) => Promise<void>;
@@ -164,7 +164,7 @@ export class Porcupine {
     modelBase64: string,
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
-    const {customWritePath = 'porcupine_model', forceWrite = false, version = 1} = options;
+    const { customWritePath = 'porcupine_model', forceWrite = false, version = 1 } = options;
     await fromBase64(customWritePath, modelBase64, forceWrite, version);
     const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
     return this.create(accessKey, keywordPaths, sensitivities, customWritePath);
@@ -194,7 +194,7 @@ export class Porcupine {
     publicPath: string,
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
-    const {customWritePath = 'porcupine_model', forceWrite = false, version = 1} = options;
+    const { customWritePath = 'porcupine_model', forceWrite = false, version = 1 } = options;
     await fromPublicDirectory(customWritePath, publicPath, forceWrite, version);
     const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
     return this.create(accessKey, keywordPaths, sensitivities, customWritePath);
@@ -304,7 +304,7 @@ export class Porcupine {
 
           return this._memoryBufferView.getInt32(
             this._keywordIndexAddress,
-            true
+            true,
           );
         })
         .then((result: number) => {
@@ -337,7 +337,7 @@ export class Porcupine {
     sensitivities: Float32Array): Promise<any> {
     // A WebAssembly page has a constant size of 64KiB. -> 1MiB ~= 16 pages
     // minimum memory requirements for init: 17 pages
-    const memory = new WebAssembly.Memory({initial: 128});
+    const memory = new WebAssembly.Memory({ initial: 128 });
 
     const memoryBufferUint8 = new Uint8Array(memory.buffer);
     const memoryBufferInt32 = new Int32Array(memory.buffer);
@@ -416,24 +416,24 @@ export class Porcupine {
     }
     memoryBufferInt32.set(
       new Int32Array(keywordPathsAddressList),
-      keywordPathsAddressAddress / Int32Array.BYTES_PER_ELEMENT
+      keywordPathsAddressAddress / Int32Array.BYTES_PER_ELEMENT,
     );
 
     const sensitivityAddress = await aligned_alloc(
       Float32Array.BYTES_PER_ELEMENT,
-      keywordPaths.length * Float32Array.BYTES_PER_ELEMENT
+      keywordPaths.length * Float32Array.BYTES_PER_ELEMENT,
     );
     if (sensitivityAddress === 0) {
-      throw new Error("malloc failed: Cannot allocate memory");
+      throw new Error('malloc failed: Cannot allocate memory');
     }
     memoryBufferFloat32.set(
       sensitivities,
-      sensitivityAddress / Float32Array.BYTES_PER_ELEMENT
+      sensitivityAddress / Float32Array.BYTES_PER_ELEMENT,
     );
 
     const keywordIndexAddress = await aligned_alloc(
       Int32Array.BYTES_PER_ELEMENT,
-      Int32Array.BYTES_PER_ELEMENT
+      Int32Array.BYTES_PER_ELEMENT,
     );
     if (keywordIndexAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
@@ -469,7 +469,7 @@ export class Porcupine {
     const versionAddress = await pv_porcupine_version();
     const version = arrayBufferToStringAtIndex(
       memoryBufferUint8,
-      versionAddress
+      versionAddress,
     );
 
     const inputBufferAddress = await aligned_alloc(

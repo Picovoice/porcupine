@@ -9,8 +9,8 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {PorcupineKeyword} from "./types";
-import {BUILT_IN_KEYWORD_BYTES, BuiltInKeyword} from "./built_in_keywords";
+import { PorcupineKeyword } from './types';
+import { BUILT_IN_KEYWORD_BYTES, BuiltInKeyword } from './built_in_keywords';
 
 import {
   fromBase64,
@@ -23,7 +23,7 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
 
   if (keywords === undefined || keywords === null) {
     throw new Error(
-      'The keywords argument is undefined / empty; What would you like Porcupine to listen for?'
+      'The keywords argument is undefined / empty',
     );
   }
 
@@ -49,7 +49,7 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
         'Invalid keyword argument type: ' +
         keyword +
         ' : ' +
-        typeof keyword
+        typeof keyword,
       );
     } else {
       keywordArgNormalized = keyword;
@@ -78,7 +78,7 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
       const keywordEnum = BuiltInKeyword[builtInName.replace(' ', '')];
       if (!validEnums.includes(keywordEnum)) {
         throw new Error(
-          `Keyword ${builtInName} does not map to list of built-in keywords (${validEnums})`
+          `Keyword ${builtInName} does not map to list of built-in keywords (${validEnums})`,
         );
       }
       keywordLabels.push(keywordArgNormalized.builtin);
@@ -90,26 +90,26 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
         1);
     } else {
       throw new Error(
-        'Unknown keyword argument: ' + JSON.stringify(keyword)
+        'Unknown keyword argument: ' + JSON.stringify(keyword),
       );
     }
 
     keywordSensitivities.push(
-      keywordArgNormalized.sensitivity ?? DEFAULT_SENSITIVITY
+      keywordArgNormalized.sensitivity ?? DEFAULT_SENSITIVITY,
     );
   }
 
   for (const sensitivity of keywordSensitivities) {
-    if (typeof sensitivity !== "number") {
-      throw new Error('Sensitivity is not a number (in range [0,1]): ' + sensitivity)
+    if (typeof sensitivity !== 'number') {
+      throw new Error('Sensitivity is not a number (in range [0,1]): ' + sensitivity);
     }
     if (sensitivity < 0 || sensitivity > 1) {
-      throw new Error('Sensitivity is outside of range [0, 1]: ' + sensitivity)
+      throw new Error('Sensitivity is outside of range [0, 1]: ' + sensitivity);
     }
   }
 
   if (keywordSensitivities.length !== keywordLabels.length) {
-    throw new Error(`keywordSensitivities (${keywordSensitivities.length}) and keywordLabels (${keywordLabels.length}) length differs`)
+    throw new Error(`keywordSensitivities (${keywordSensitivities.length}) and keywordLabels (${keywordLabels.length}) length differs`);
   }
   const sensitivities = new Float32Array(keywordSensitivities);
 
