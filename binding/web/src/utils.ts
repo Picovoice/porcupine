@@ -30,9 +30,7 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
   if (!Array.isArray(keywords)) {
     keywords = [keywords];
   } else if (keywords.length === 0) {
-    throw new Error(
-      'The keywords argument array is empty; What would you like Porcupine to listen for?'
-    );
+    throw new Error('The keywords argument array is empty');
   }
 
   const keywordSensitivities = [];

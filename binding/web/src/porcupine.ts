@@ -337,7 +337,7 @@ export class Porcupine {
     sensitivities: Float32Array): Promise<any> {
     // A WebAssembly page has a constant size of 64KiB. -> 1MiB ~= 16 pages
     // minimum memory requirements for init: 17 pages
-    const memory = new WebAssembly.Memory({initial: 128, maximum: 512});
+    const memory = new WebAssembly.Memory({initial: 128});
 
     const memoryBufferUint8 = new Uint8Array(memory.buffer);
     const memoryBufferInt32 = new Int32Array(memory.buffer);

@@ -248,8 +248,8 @@ keyword model file.
 const customWakeWord = {
     ppnPath: ${PPN_MODEL_RELATIVE_PATH},
     label: ${CUSTOME_KEYWORD_LABEL}
-  },
-  }
+  }, 
+}
 
 const handle = await Porcupine.fromPublicDirectory(
   ${ACCESS_KEY},
