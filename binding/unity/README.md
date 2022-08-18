@@ -23,7 +23,7 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 ## Compatibility
 
-[Porcupine unity package](./porcupine-2.1.0.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
+[Porcupine unity package](./porcupine-2.1.3.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
 
 - Android 4.4+ (API 19+) (ARM only)
 - iOS 9.0+
@@ -31,11 +31,11 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 - macOS (x86_64)
 - Linux (x86_64)
 
-For running Porcupine on **macOS M1 (arm64)**, use the [Apple silicon](./porcupine-2.1.0-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
+For running Porcupine on **macOS M1 (arm64)**, use the [Apple Silicon](./porcupine-2.1.3-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
 
 ## Installation
 
-The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.0.0.unitypackage](/binding/unity/porcupine-2.0.0.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.0.0.unitypackage](./porcupine-2.1.3.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 **NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from GitHub. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
 
@@ -123,7 +123,7 @@ List<string> keywordPaths = new List<string>()
     "/path/to/keyword/file/two.ppn"
 };
 string modelPath = "path/to/model/file.pv";
-List<float> sensitivites = new List<float>(){ 0.25f, 0.6f };
+List<float> sensitivities = new List<float>(){ 0.25f, 0.6f };
 
 PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths(
                                         accessKey,

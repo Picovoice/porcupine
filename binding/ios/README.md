@@ -23,7 +23,7 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 ## Installation
 
-The Porcupine iOS binding is available via [Cocoapods](https://cocoapods.org/pods/Porcupine-iOS). To import it into your iOS project, add the following line to your Podfile: 
+The Porcupine iOS binding is available via [CocoaPods](https://cocoapods.org/pods/Porcupine-iOS). To import it into your iOS project, add the following line to your Podfile: 
 
 ```ruby
 pod 'Porcupine-iOS'

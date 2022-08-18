@@ -78,7 +78,7 @@ class PorcupineManager {
   /// [errorCallback] is an optional callback that triggers if Porcupine
   /// experiences a problem while processing audio
   ///
-  /// Thows a `PvError` if not initialized correctly
+  /// Throws a `PvError` if not initialized correctly
   ///
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywordPaths(String accessKey,

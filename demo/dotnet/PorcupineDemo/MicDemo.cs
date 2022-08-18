@@ -29,7 +29,7 @@ namespace PorcupineDemo
     {
         /// <summary>
         /// Creates an input audio stream, instantiates an instance of Porcupine object, and monitors the audio stream for
-        /// occurrencec of the wake word(s). It prints the time of detection for each occurrence and the wake word.
+        /// occurrences of the wake word(s). It prints the time of detection for each occurrence and the wake word.
         /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>

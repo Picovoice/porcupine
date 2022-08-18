@@ -250,7 +250,7 @@
           { forceWrite: true });
         counts = await porcupineDetectionCounts(handle, pcm);
         let grasshopperCount = counts.get(0);
-        assertEquals(1, grasshopperCount, 'Failed to create an instance with a buildin keyword');
+        assertEquals(1, grasshopperCount, 'Failed to create an instance with a builtin keyword');
         handle.release()
         writeMessage("Checking builtin keyword 'Grasshopper'... done!");
 
@@ -399,7 +399,7 @@
   <input type="file" id="audioFile" name="audioFile" accept="audio/*"/>
 </p>
 
-<input type="button" id="sumbit" value="Test Porcupine" onclick="startTest()"/>
+<input type="button" id="submit" value="Test Porcupine" onclick="startTest()"/>
 <input type="button" id="perfTest" value="Test Porcupine Performance" onclick="performanceTest()"/>
 
 <br>

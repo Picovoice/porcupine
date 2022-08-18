@@ -64,7 +64,7 @@ const handle = new Porcupine(
     [0.5, 0.65]);
 
 // process a single frame of audio
-// the keywordIndex provies the index of the keyword detected, or -1 if no keyword was detected
+// the keywordIndex provides the index of the keyword detected, or -1 if no keyword was detected
 const keywordIndex = handle.process(frame);
 ```
 

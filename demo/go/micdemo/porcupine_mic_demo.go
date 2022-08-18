@@ -109,7 +109,7 @@ func main() {
 		for _, sensitivityStr := range sensitivitiesSplit {
 			sensitivityFloat, err := strconv.ParseFloat(sensitivityStr, 32)
 			if err != nil || sensitivityFloat < 0 || sensitivityFloat > 1 {
-				log.Fatalf("Senstivity value of '%s' is invalid. Must be a float32 between [0, 1].", sensitivityStr)
+				log.Fatalf("Sensitivity value of '%s' is invalid. Must be a float32 between [0, 1].", sensitivityStr)
 			}
 			p.Sensitivities = append(p.Sensitivities, float32(sensitivityFloat))
 		}

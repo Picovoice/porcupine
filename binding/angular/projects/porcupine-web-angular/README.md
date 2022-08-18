@@ -20,7 +20,7 @@ The Picovoice SDKs for Web are powered by WebAssembly (WASM), the Web Audio API,
 
 All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, including on mobile. Internet Explorer is _not_ supported.
 
-Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
+Using the Web Audio API requires a secure context (HTTPS connection), except `localhost`, for local development.
 
 ## Installation
 
@@ -98,7 +98,7 @@ Each language includes a set of built-in keywords. The quickest way to get start
 
 Custom wake words are generated using [Picovoice Console](https://console.picovoice.ai/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension. The target platform is WebAssembly (WASM), as that is what backs the Angular library.
 
-The `.zip` file containes a `.ppn` file and a `_b64.txt` file which containes the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that the `PorcupineService` can tell you which keyword occurred ("Deep Sky Blue", in this case):
+The `.zip` file contains a `.ppn` file and a `_b64.txt` file which contains the binary model encoded with Base64. Copy the base64 and provide it as an argument to Porcupine as below. You will need to also provide a label so that the `PorcupineService` can tell you which keyword occurred ("Deep Sky Blue", in this case):
 
 ```typescript
 const DEEP_SKY_BLUE_PPN_64 = /* Base64 representation of deep_sky_blue.ppn */

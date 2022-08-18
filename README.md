@@ -206,7 +206,7 @@ For more information about Go demos go to [demo/go](/demo/go).
 
 ### Unity Demos
 
-To run the Porcupine Unity demo, import the [Porcupine Unity package](/binding/unity/porcupine-2.1.2.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+To run the Porcupine Unity demo, import the [Porcupine Unity package](/binding/unity/porcupine-2.1.3.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 To browse the demo source go to [demo/unity](/demo/unity).
 
@@ -745,7 +745,7 @@ porcupine.Delete()
 
 ### Unity
 
-Import the [Porcupine Unity Package](/binding/unity/porcupine-2.1.2.unitypackage) into your Unity project.
+Import the [Porcupine Unity Package](/binding/unity/porcupine-2.1.3.unitypackage) into your Unity project.
 
 The SDK provides two APIs:
 
@@ -1572,7 +1572,7 @@ let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(
 In the above example, we've initialized the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
-To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
+To detect custom keywords, use `PorcupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
 ```rust
 let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(
         &["/absolute/path/to/keyword/one.ppn",

@@ -2,10 +2,10 @@ name: SpellCheck
 
 on:
   workflow_dispatch:
-    push:
-      branches: [ master ]
-    pull_requests:
-      branches: [master]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [master]
 
 jobs:
   markdown:
@@ -22,4 +22,4 @@ jobs:
         run: npm install -g cspell
 
       - name: Run CSpell
-        run: cspell "**/*.md"
+        run: cspell --config resources/spell-check/.cspell.json "**/*"

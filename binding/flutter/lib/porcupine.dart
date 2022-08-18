@@ -79,7 +79,7 @@ class Porcupine {
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
   ///
-  /// Thows a `PorcupineException` if not initialized correctly
+  /// Throws a `PorcupineException` if not initialized correctly
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromBuiltInKeywords(
@@ -130,7 +130,7 @@ class Porcupine {
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
   ///
-  /// Thows a `PorcupineException` if not initialized correctly
+  /// Throws a `PorcupineException` if not initialized correctly
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromKeywordPaths(
