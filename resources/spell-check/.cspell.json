@@ -1,12 +1,12 @@
 {
   "language": "en",
   "dictionaries": [
-    "md-dict.txt"
+    "dict"
   ],
   "dictionaryDefinitions": [
     {
-      "name": "md-dict.txt",
-      "path": "./md-dict.txt",
+      "name": "dict",
+      "path": "./dict.txt",
       "addWords": true
     }
   ],
