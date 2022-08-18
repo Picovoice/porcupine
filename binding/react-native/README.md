@@ -30,7 +30,7 @@ This binding is for running Porcupine on **React Native 0.62.2+** on the followi
 
 ## Installation
 
-To start install be sure you have installed yarn and cocoaPods. Then add these two native modules to your react-native project.
+To start install be sure you have installed yarn and CocoaPods. Then add these two native modules to your react-native project.
 
 ```console
 yarn add @picovoice/react-native-voice-processor
