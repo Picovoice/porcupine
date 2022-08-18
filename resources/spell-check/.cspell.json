@@ -1,0 +1,19 @@
+{
+  "language": "en",
+  "caseSensitive": true,
+  "dictionaries": [
+    "md-dict.txt"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "md-dict.txt",
+      "path": "./md-dict.txt",
+      "addWords": true
+    }
+  ],
+  "ignorePaths": [
+    "demo/c/pvrecorder/**/*",
+    "demo/c/dr_libs/**/*",
+    "demo/mcu/psoc062s2/**/*"
+  ]
+}

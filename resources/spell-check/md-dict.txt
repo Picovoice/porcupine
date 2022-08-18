@@ -1,0 +1,7 @@
+Alexa
+Jetson
+microcontrollers
+Picovoice
+picovoice
+Siri
+dotnet

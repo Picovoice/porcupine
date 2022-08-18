@@ -2,7 +2,7 @@
 
 ## Porcupine
 
-Porcupine is is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
+Porcupine is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
 
 Porcupine is:
 
@@ -158,7 +158,7 @@ porcupineManager.delete();
 
 ### Low-Level API
 
-[Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
+[Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 `Porcupine` uses a Builder pattern to construct instances. 
 
