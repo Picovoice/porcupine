@@ -247,7 +247,7 @@ keyword model file.
 ```typescript
 const customWakeWord = {
     ppnPath: ${PPN_MODEL_RELATIVE_PATH},
-    label: ${CUSTOME_KEYWORD_LABEL}
+    label: ${CUSTOM_KEYWORD_LABEL}
   }, 
 }
 
@@ -268,7 +268,7 @@ The `label` property indicates the name of the keyword.
 
 const customWakeWord = {
   base64: ${CUSTOM_KEYWORD_BASE64_STRING},
-  label: ${CUSTOME_KEYWORD_LABEL},
+  label: ${CUSTOM_KEYWORD_LABEL},
 }
 
 const handle = await Porcupine.fromPublicDirectory(
