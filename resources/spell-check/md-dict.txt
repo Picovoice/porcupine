@@ -65,3 +65,5 @@ CKIT
 lasound
 IIFE
 downsample
+micvoicec
+Cocoapods

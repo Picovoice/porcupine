@@ -17,6 +17,7 @@
     "../../demo/mcu/psoc062s2/**/*.md",
     "../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*.md",
     "../../demo/mcu/stm32h747/stm32h747i-disco/CM7/Drivers/CMSIS/README.md",
-    "../../demo/unity/images/image_attribution.md"
+    "../../demo/unity/images/image_attribution.md",
+    "**/*_HAL_Driver/README.md",
   ]
 }

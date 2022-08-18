@@ -1572,7 +1572,7 @@ let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(
 In the above example, we've initialized the engine to detect the built-in wake word "Porcupine".
 Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
 
-To detect custom keywords, use `PorupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
+To detect custom keywords, use `PorcupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
 ```rust
 let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(
         &["/absolute/path/to/keyword/one.ppn",
