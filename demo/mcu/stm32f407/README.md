@@ -13,7 +13,7 @@ This package contains a demo project for the STM32F407 Discovery kit using Porcu
 
 For this demo, you need to: 
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-1. Download [STM32Cube middleware for audio PDM to PCM conversion](https://www.st.com/en/licensed-software/audiopdm-mw.html) and copy it to the project folder. A more detailed guide can be found in the [readme](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) file.
+1. Download `STM32Cube middleware for audio PDM to PCM conversion` and copy it to the project folder. A more detailed guide can be found in the [readme](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) file.
 
 ## AccessKey
 
@@ -49,12 +49,12 @@ For the single wake word demos, the default wake words are:
 - `hola computadora` for Spanish language,
 
 Below are the LED colors associated with supported wake words for the multiple wake words demo:
-
+<!-- markdown-link-check-disable -->
 - ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Porcupine`
 - ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Picovoice`
 - ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `Bumblebee`
 - ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Alexa`
-
+<!-- markdown-link-check-enable-->
 ## Create Custom Wake Word
 
 1. Copy the UUID of the board printed at the beginning of the session to the serial port monitor.
