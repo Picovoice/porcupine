@@ -23,7 +23,7 @@ gcc -std=c99 -O3 -o demo/respeaker-rpi0/porcupine_demo_mic \
 ## Run
 
 Below are the colors associated with supported wake words for this demo:
-
+<!-- markdown-link-check-disable -->
 - ![#ffff33](https://via.placeholder.com/15/ffff33/000000?text=+) `Alexa`
 - ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Bumblebee`
 - ![#ffffff](https://via.placeholder.com/15/ffffff/000000?text=+) `Computer`
@@ -33,7 +33,7 @@ Below are the colors associated with supported wake words for this demo:
 - ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Picovoice`
 - ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Porcupine`
 - ![#000000](https://via.placeholder.com/15/000000/000000?text=+) `Terminator`
-
+<!-- markdown-link-check-enable-->
 From the root of the repository run:
 
 ```console
