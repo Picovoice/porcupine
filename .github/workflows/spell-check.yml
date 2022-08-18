@@ -1,0 +1,25 @@
+name: SpellCheck
+
+on:
+  workflow_dispatch:
+    push:
+      branches: [ master ]
+    pull_requests:
+      branches: [master]
+
+jobs:
+  markdown:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install CSpell
+        run: npm install -g cspell
+
+      - name: Run CSpell
+        run: cspell "**/*.md"
