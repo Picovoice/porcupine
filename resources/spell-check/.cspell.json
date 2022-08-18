@@ -92,6 +92,7 @@
     "**/*.xcconfig",
     "**/*.podspec",
     "**/Podfile",
-    "**/activity_main.xml"
+    "**/activity_main.xml",
+    "**/AppFrameworkInfo.plist"
   ]
 }

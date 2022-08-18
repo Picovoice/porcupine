@@ -159,7 +159,7 @@ fn main() {
             .long("keywords")
             .value_name("KEYWORDS")
             .use_delimiter(true)
-            .help("Comma-seperated list of default keywords for detection.")
+            .help("Comma-separated list of default keywords for detection.")
             .takes_value(true)
             .possible_values(&BuiltinKeywords::options())
         )
@@ -168,7 +168,7 @@ fn main() {
             .long("keyword_paths")
             .value_name("PATHS")
             .use_delimiter(true)
-            .help("Comma-seperated list of paths to keyword model files. If not set it will be populated from `--keywords` argument.")
+            .help("Comma-separated list of paths to keyword model files. If not set it will be populated from `--keywords` argument.")
             .takes_value(true)
         )
         .arg(
@@ -183,7 +183,7 @@ fn main() {
             .long("sensitivities")
             .value_name("SENSITIVITIES")
             .use_delimiter(true)
-            .help("Comma-seperated list of sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.")
+            .help("Comma-separated list of sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.")
             .takes_value(true)
         )
         .arg(
