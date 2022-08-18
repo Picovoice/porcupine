@@ -2,10 +2,10 @@ name: SpellCheck
 
 on:
   workflow_dispatch:
-    push:
-      branches: [ master ]
-    pull_requests:
-      branches: [master]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [master]
 
 jobs:
   markdown:
