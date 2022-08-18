@@ -113,7 +113,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PorcupineManager](/binding/react-native/src/porcupine_manager.tsx) provides a high-level API that takes care of
+[PorcupineManager](src/porcupine_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the PorcupineManager
@@ -211,7 +211,7 @@ module to capture frames of audio and automatically pass it to the wake word eng
 
 #### Low-Level API
 
-[Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
+[Porcupine](src/porcupine.tsx) provides low-level access to the wake word engine for those
 who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 `Porcupine` also has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
@@ -298,8 +298,8 @@ try {
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
 
 ## Demo App
 
-Check out the [Porcupine React Native demo](/demo/react-native) to see what it looks like to use Porcupine in a cross-platform app!
+Check out the [Porcupine React Native demo](../../demo/react-native) to see what it looks like to use Porcupine in a cross-platform app!
