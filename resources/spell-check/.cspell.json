@@ -12,11 +12,11 @@
   ],
   "ignorePaths": [
     // submodules
+    "../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*",
     "../../demo/c/pvrecorder/**/*",
     "../../demo/c/dr_libs/**/*",
-    "../../lib/mcu/psoc062s2/**/*",
     "../../demo/mcu/psoc062s2/**/*",
-    "../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*",
+    "../../lib/mcu/psoc062s2/**/*",
 
     // binaries
     "**/*.pv",
@@ -65,30 +65,16 @@
     "**/*.m",
 
     // mcu
+    "../../demo/mcu/**/*.ld",
+    "../../demo/mcu/**/*.s",
+    "../../demo/mcu/**/Drivers/BSP/**/*",
     "../../demo/mcu/**/Drivers/CMSIS/**/*",
-    "**/*_HAL_Driver/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/drivers/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/CMSIS/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/device/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/codec/**/*",
-    "**/Drivers/BSP/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/board/**/*",
-    "../../demo/mcu/stm32h747/stm32h747i-disco/CM7/Src/system_stm32h7xx.c",
-    "../../demo/mcu/stm32h747/stm32h747i-disco/CM7/Src/sysmem.c",
-    "../../demo/mcu/stm32h747/stm32h747i-disco/CM7/Inc/stm32h7xx_hal_conf.h",
-    "**/syscalls.c",
-    "**/sysmem.c",
-    "**/demo/mcu/stm32h735/stm32h735g-dk/Src/system_stm32h7xx.c",
-    "../../demo/mcu/stm32h735/stm32h735g-dk/Src/stm32h7xx_hal_msp.c",
-    "../../demo/mcu/stm32h735/stm32h735g-dk/Src/pv_st_h735.c",
-    "**/stm32*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/utilities/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/xip/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/startup/**/*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/component/**/*",
+    "../../demo/mcu/**/*_HAL_Driver/**/*",
+    "../../demo/mcu/**/stm32*",
+    "../../demo/mcu/**/system*",
+    "../../demo/mcu/**/syscalls.c",
+    "../../demo/mcu/imxrt1050/imxrt1050-evkb/{board,CMSIS,codec,component,device,drivers,startup,utilities,xip}/**/*",
     "../../demo/mcu/imxrt1050/imxrt1050-evkb/source/semihost_hardfault.c",
-    "**/*.ld",
-    "**/*.s",
 
     // react
     "**/package.json",
