@@ -111,9 +111,9 @@ loop {
 ## Non-English Wake Words
 
 In order to detect non-English wake words you need to use the corresponding model file.
-The model files for all supported languages are available [here](/lib/common).
+The model files for all supported languages are available [here](../../lib/common).
 
 ## Demos
 
-Check out the Porcupine Rust demos [here](/demo/rust)
+Check out the Porcupine Rust demos [here](../../demo/rust)
 
