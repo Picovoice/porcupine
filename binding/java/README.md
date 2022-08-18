@@ -164,9 +164,9 @@ handle.delete();
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
 
 ## Demos
 
-The [Porcupine Java demo](/demo/java) is a Java command-line application that allows for  processing real-time audio
+The [Porcupine Java demo](../../demo/java) is a Java command-line application that allows for  processing real-time audio
 (i.e. microphone) and files using Porcupine.

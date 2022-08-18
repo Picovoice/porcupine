@@ -6,7 +6,7 @@ You need a C99-compatible compiler to build these demos.
 
 ## Requirements
 - The demo requires [CMake](https://cmake.org/) version 3.13 or higher.
-- **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
+- **For Windows Only**: [MinGW](http://mingw-w64.org/) is required to build the demo.
 
 ## AccessKey
 

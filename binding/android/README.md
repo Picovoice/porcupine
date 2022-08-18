@@ -52,7 +52,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 ### High-Level API
 
-[PorcupineManager](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java) provides a high-level API that takes care of audio recording and wake word detection. This class is the quickest way to get started.
+[PorcupineManager](Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java) provides a high-level API that takes care of audio recording and wake word detection. This class is the quickest way to get started.
 
 To create an instance of PorcupineManager, use the PorcupineManager Builder:
 ```java
@@ -158,7 +158,7 @@ porcupineManager.delete();
 
 ### Low-Level API
 
-[Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
+[Porcupine](Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides low-level access to the wake word engine for those who want to incorporate wake word detection into a already existing audio processing pipeline.
 
 `Porcupine` uses a Builder pattern to construct instances. 
 
@@ -221,18 +221,18 @@ try {
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
 
 ## Demo Apps
 
 For example usage refer to the
-[Activity demo](/demo/android/Activity), [Service demo](/demo/android/Service) or [STT demo](/demo/android/STT).
+[Activity demo](../../demo/android/Activity), [Service demo](../../demo/android/Service) or [STT demo](../../demo/android/STT).
 
 ## Resource Usage 
 
-The following profile graph was captured running the [Porcupine Activity demo](/demo/android/Activity) on a Google Pixel 3:
+The following profile graph was captured running the [Porcupine Activity demo](../../demo/android/Activity) on a Google Pixel 3:
 
-![](/binding/android/android_profiling.gif)
+![](android_profiling.gif)
 
 - CPU <= 1%
 - Battery Usage <= LOW

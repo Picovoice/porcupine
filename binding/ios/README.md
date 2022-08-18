@@ -49,7 +49,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 ### High-Level API
 
-[PorcupineManager](/binding/ios/PorcupineManager.swift) provides a high-level API that takes care of audio recording and wake word detection. This class is the quickest way to get started.
+[PorcupineManager](PorcupineManager.swift) provides a high-level API that takes care of audio recording and wake word detection. This class is the quickest way to get started.
 
 To create an instance of PorcupineManager pass the desired keyword to the constructor:
 ```swift
@@ -132,7 +132,7 @@ porcupineManager.delete()
 
 ### Low-Level API
 
-[Porcupine](/binding/ios/Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
+[Porcupine](Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 To construct an instance of Porcupine, pass it a keyword. 
 
@@ -182,7 +182,7 @@ let keywordPath = Bundle.main.path(forResource: "keyword_ios", ofType: "ppn")
 
 ## Non-English Contexts
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
 
 ## Running Unit Tests
 
@@ -190,4 +190,4 @@ Open [`PorcupineAppTest.xcworkspace`](PorcupineAppTest/PorcupineAppTest.xcworksp
 
 ## Demo App
 
-For example usage refer to our [iOS demo application](/demo/ios).
+For example usage refer to our [iOS demo application](../../demo/ios).
