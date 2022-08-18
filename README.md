@@ -16,8 +16,9 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
+<!-- markdown-link-check-disable -->
 [![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)
-
+<!-- markdown-link-check-enable-->
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 [![Twitter URL](https://img.shields.io/twitter/url?label=%40AiPicovoice&style=social&url=https%3A%2F%2Ftwitter.com%2FAiPicovoice)](https://twitter.com/AiPicovoice)
@@ -148,18 +149,18 @@ porcupine_demo_mic --access_key ${ACCESS_KEY} --keywords porcupine
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
 utterances of `Porcupine`.
 
-For more information about Python demos go to [demo/python](/demo/python).
+For more information about Python demos go to [demo/python](demo/python).
 
 ### .NET Demos
 
-From [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
+From [demo/dotnet/PorcupineDemo](demo/dotnet/PorcupineDemo) run the
 following in the terminal to build the demo:
 
 ```console
 dotnet build -c MicDemo.Release
 ```
 
-Make sure there is a working microphone connected to your device. From [demo/dotnet/PorcupineDemo](/demo/dotnet/PorcupineDemo) run the
+Make sure there is a working microphone connected to your device. From [demo/dotnet/PorcupineDemo](demo/dotnet/PorcupineDemo) run the
 following in the terminal:
 
 ```console
@@ -171,7 +172,7 @@ dotnet run -c MicDemo.Release -- \
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
 utterances of `Porcupine`.
 
-For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
+For more information about .NET demos go to [demo/dotnet](demo/dotnet).
 
 ### Java Demos
 
@@ -187,13 +188,13 @@ java -jar porcupine-mic-demo.jar -a ${ACCESS_KEY} -k porcupine
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
 utterances of `Porcupine`.
 
-For more information about Java demos go to [demo/java](/demo/java).
+For more information about Java demos go to [demo/java](demo/java).
 
 ### Go Demos
 
 The demo requires `cgo`, which on Windows may mean that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) to build it properly.
 
-From [demo/go](/demo/go) run the following command from the terminal to build and run the mic demo:
+From [demo/go](demo/go) run the following command from the terminal to build and run the mic demo:
 ```console
 go run micdemo/porcupine_mic_demo.go \
 -access_key "${ACCESS_KEY}" \
@@ -202,19 +203,19 @@ go run micdemo/porcupine_mic_demo.go \
 
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects utterances of the word `Porcupine`.
 
-For more information about Go demos go to [demo/go](/demo/go).
+For more information about Go demos go to [demo/go](demo/go).
 
 ### Unity Demos
 
-To run the Porcupine Unity demo, import the [Porcupine Unity package](/binding/unity/porcupine-2.1.3.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+To run the Porcupine Unity demo, import the [Porcupine Unity package](binding/unity/porcupine-2.1.3.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
-To browse the demo source go to [demo/unity](/demo/unity).
+To browse the demo source go to [demo/unity](demo/unity).
 
 ### Flutter Demos
 
 To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device.
 
-Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
+Run the following command from [demo/flutter](demo/flutter) to build and deploy the demo to your device:
 
 ```console
 flutter run
@@ -224,7 +225,7 @@ flutter run
 
 To run the React Native Porcupine demo app you will first need to set up your React Native environment. For this,
 please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has
-been set up, navigate to [demo/react-native](/demo/react-native) to run the following commands:
+been set up, navigate to [demo/react-native](demo/react-native) to run the following commands:
 
 For Android:
 
@@ -243,11 +244,11 @@ yarn ios-run            # builds and deploys to iOS
 ### Android Demos
 
 Using [Android Studio](https://developer.android.com/studio/index.html), open
-[demo/android/Activity](/demo/android/Activity) as an Android project, copy your AccessKey into `MainActivity.java` and then run the application.
+[demo/android/Activity](demo/android/Activity) as an Android project, copy your AccessKey into `MainActivity.java` and then run the application.
 
-To learn about how to use Porcupine in long-running services go to [demo/android/Service](/demo/android/Service).
+To learn about how to use Porcupine in long-running services go to [demo/android/Service](demo/android/Service).
 
-To learn about how to use Porcupine with Android Speech to Text recognition go to [demo/android/STT](/demo/android/STT).
+To learn about how to use Porcupine with Android Speech to Text recognition go to [demo/android/STT](demo/android/STT).
 
 ### iOS Demos
 
@@ -256,25 +257,25 @@ The ForegroundApp demo runs wake word detection **only** when the application is
 
 #### BackgroundService Demo
 
-To run the demo, go to [demo/ios/BackgroundService](/demo/ios/BackgroundService) and run:
+To run the demo, go to [demo/ios/BackgroundService](demo/ios/BackgroundService) and run:
 
 ```console
 pod install
 ```
 
-Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](/demo/ios/BackgroundService/PorcupineBackgroundServiceDemo/ViewController.swift) with your `AccessKey`.
+Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](demo/ios/BackgroundService/PorcupineBackgroundServiceDemo/ViewController.swift) with your `AccessKey`.
 
 Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineBackgroundServiceDemo.xcworkspace` and run the application.
 
 #### ForegroundApp Demo
 
-To run the demo, go to [demo/ios/ForegroundApp](/demo/ios/ForegroundApp) and run:
+To run the demo, go to [demo/ios/ForegroundApp](demo/ios/ForegroundApp) and run:
 
 ```console
 pod install
 ```
 
-Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](/demo/ios/ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
+Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](demo/ios/ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
 
 Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineForegroundAppDemo.xcworkspace` and run the application.
 
@@ -282,7 +283,7 @@ Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `Por
 
 #### Vanilla JavaScript and HTML
 
-From [demo/web](/demo/web) run the following in the terminal:
+From [demo/web](demo/web) run the following in the terminal:
 
 ```console
 yarn
@@ -300,7 +301,7 @@ Open http://localhost:5000 in your browser to try the demo.
 
 #### Angular Demos
 
-From [demo/angular](/demo/angular) run the following in the terminal:
+From [demo/angular](demo/angular) run the following in the terminal:
 
 ```console
 yarn
@@ -318,7 +319,7 @@ Open http://localhost:4200 in your browser to try the demo.
 
 #### React Demos
 
-From [demo/react](/demo/react) run the following in the terminal:
+From [demo/react](demo/react) run the following in the terminal:
 
 ```console
 yarn
@@ -336,7 +337,7 @@ Open http://localhost:3000 in your browser to try the demo.
 
 #### Vue Demos
 
-From [demo/vue](/demo/vue) run the following in the terminal:
+From [demo/vue](demo/vue) run the following in the terminal:
 
 ```console
 yarn
@@ -369,24 +370,24 @@ ppn-mic-demo --access_key ${ACCESS_KEY} --keywords porcupine
 The engine starts processing the audio input from the microphone in realtime and outputs to the terminal when it detects
 utterances of `Porcupine`.
 
-For more information about NodeJS demos go to [demo/nodejs](/demo/nodejs).
+For more information about NodeJS demos go to [demo/nodejs](demo/nodejs).
 
 ### Rust Demos
 
 This demo opens an audio stream from a microphone and detects utterances of a given wake word.
-From [demo/rust/micdemo](/demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
+From [demo/rust/micdemo](demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
 
 ```console
 cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice
 ```
 
-For more information about Rust demos go to [demo/rust](/demo/rust).
+For more information about Rust demos go to [demo/rust](demo/rust).
 
 ### C Demos
 
 The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
-The [Microphone demo](/demo/c/porcupine_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+The [Microphone demo](demo/c/porcupine_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 **Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build the demo.**
 
@@ -414,7 +415,7 @@ Run the demo using:
 -d ${AUDIO_DEVICE_INDEX} -a ${ACCESS_KEY}
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](lib), `${PLATFORM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`), `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device and `${ACCESS_KEY}` with your `AccessKey`.
 
@@ -460,7 +461,7 @@ Run the demo using:
 -w resources/audio_samples/multiple_keywords.wav -a ${ACCESS_KEY}
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](lib), `${PLATFORM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`) and `${ACCESS_KEY}` with your `AccessKey`.
 
 #### Windows
@@ -481,11 +482,11 @@ Replace `${ACCESS_KEY}` with your `AccessKey`.
 
 The demo opens up the file and detects utterances of `Porcupine`.
 
-For more information about C demos go to [demo/c](/demo/c).
+For more information about C demos go to [demo/c](demo/c).
 
 ### Microcontroller Demos
 
-There are several projects for various development boards inside the [mcu demo](./demo/mcu) folder.
+There are several projects for various development boards inside the [mcu demo](demo/mcu) folder.
 
 ## SDKs
 
@@ -745,13 +746,13 @@ porcupine.Delete()
 
 ### Unity
 
-Import the [Porcupine Unity Package](/binding/unity/porcupine-2.1.3.unitypackage) into your Unity project.
+Import the [Porcupine Unity Package](binding/unity/porcupine-2.1.3.unitypackage) into your Unity project.
 
 The SDK provides two APIs:
 
 #### High-Level API
 
-[PorcupineManager](/binding/unity/Assets/Porcupine/PorcupineManager.cs) provides a high-level API that takes care of audio recording. This is the quickest way to get started.
+[PorcupineManager](binding/unity/Assets/Porcupine/PorcupineManager.cs) provides a high-level API that takes care of audio recording. This is the quickest way to get started.
 
 The static constructor `PorcupineManager.FromBuiltInKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
 
@@ -812,7 +813,7 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 #### Low-Level API
 
-[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline. To create an instance of `Porcupine`, use the `.FromBuiltInKeywords` static constructor.
+[Porcupine](binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline. To create an instance of `Porcupine`, use the `.FromBuiltInKeywords` static constructor.
 
 ```csharp
 using Pv.Unity;
@@ -876,7 +877,7 @@ The SDK provides two APIs:
 
 #### High-Level API
 
-[PorcupineManager](/binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
+[PorcupineManager](binding/flutter/lib/porcupine_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
 The static constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
 
@@ -934,7 +935,7 @@ This is because it uses [flutter_voice_processor](https://github.com/Picovoice/f
 
 #### Low-Level API
 
-[Porcupine](/binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.`Porcupine` has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
+[Porcupine](binding/flutter/lib/porcupine.dart) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.`Porcupine` has `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
 ```dart
 import 'package:porcupine_flutter/porcupine_manager.dart';
@@ -985,7 +986,7 @@ provides two APIs:
 
 #### High-Level API
 
-[PorcupineManager](/binding/react-native/src/porcupine_manager.tsx) provides a high-level API that takes care of
+[PorcupineManager](binding/react-native/src/porcupine_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 Using the constructor `PorcupineManager.fromBuiltInKeywords` will create an instance of the `PorcupineManager`
@@ -1043,7 +1044,7 @@ module to capture frames of audio and automatically pass it to the wake word eng
 
 #### Low-Level API
 
-[Porcupine](/binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
+[Porcupine](binding/react-native/src/porcupine.tsx) provides low-level access to the wake word engine for those
 who want to incorporate wake word detection into an already existing audio processing pipeline. `Porcupine` also has
 `fromBuiltInKeywords` and `fromKeywordPaths` static constructors.
 
@@ -1131,7 +1132,7 @@ When initialized, input audio can be monitored using `manager.start()`. Stop the
 
 #### Low-Level API
 
-[Porcupine](/binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a
+[Porcupine](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a
 binding for Android. It can be initialized using.
 
 ```java
@@ -1172,7 +1173,7 @@ There are two approaches for integrating Porcupine into an iOS application.
 
 #### High-Level API
 
-[PorcupineManager](/binding/ios/PorcupineManager.swift) manages audio recording, passing it into Porcupine, and invoking
+[PorcupineManager](binding/ios/PorcupineManager.swift) manages audio recording, passing it into Porcupine, and invoking
 the user-provided detection callback.
 
 ```swift
@@ -1197,7 +1198,7 @@ When initialized, input audio can be monitored using `manager.start()`. When don
 
 #### Low-Level API
 
-[Porcupine.swift](/binding/ios/Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
+[Porcupine.swift](binding/ios/Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 To construct an instance of Porcupine, pass it a keyword.
 
@@ -1604,7 +1605,7 @@ loop {
 ### C
 
 Porcupine is implemented in ANSI C and therefore can be directly linked to C applications.
-[include/pv_porcupine.h](/include/pv_porcupine.h) header file contains relevant information. An instance of Porcupine
+[include/pv_porcupine.h](include/pv_porcupine.h) header file contains relevant information. An instance of Porcupine
 object can be constructed as follows.
 
 ```c

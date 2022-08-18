@@ -46,10 +46,10 @@ For the single wake word demos, the default wake words are:
 - `hola computadora` for Spanish language,
 
 Below are the LED colors associated with supported wake words for the multiple wake words demo:
-
+<!-- markdown-link-check-disable -->
 - ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Porcupine`
 - ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Picovoice`
-
+<!-- markdown-link-check-enable-->
 ## Create Custom Wake Word
 
 1. Copy the UUID of the board printed at the beginning of the session to the serial port monitor.

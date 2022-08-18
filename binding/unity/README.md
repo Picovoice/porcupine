@@ -23,7 +23,7 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 ## Compatibility
 
-[Porcupine unity package](./porcupine-2.1.3.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
+[Porcupine unity package](porcupine-2.1.3.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
 
 - Android 4.4+ (API 19+) (ARM only)
 - iOS 9.0+
@@ -31,11 +31,11 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 - macOS (x86_64)
 - Linux (x86_64)
 
-For running Porcupine on **macOS M1 (arm64)**, use the [Apple Silicon](./porcupine-2.1.3-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
+For running Porcupine on **macOS M1 (arm64)**, use the [Apple Silicon](porcupine-2.1.3-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
 
 ## Installation
 
-The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.0.0.unitypackage](./porcupine-2.1.3.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.0.0.unitypackage](porcupine-2.1.3.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 **NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from GitHub. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
 
@@ -53,7 +53,7 @@ git clone --recurse-submodules git@github.com:Picovoice/porcupine.git
 git clone --recurse-submodules https://github.com/Picovoice/porcupine.git
 ```
 
-You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/binding/unity](/binding/unity) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right-click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
+You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/binding/unity](.) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right-click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
 
 ## Usage
 
@@ -61,7 +61,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PorcupineManager](/binding/unity/Assets/Porcupine/PorcupineManager.cs) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
+[PorcupineManager](Assets/Porcupine/PorcupineManager.cs) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
 >**NOTE:** If running on iOS, you must fill in the Microphone Usage Description under Project Settings>Other Settings in order to enable audio recording.
 
@@ -162,7 +162,7 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 #### Low-Level API
 
-[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
+[Porcupine](Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 To create an instance of `Porcupine`, use the `.Create` static constructor. You can pass a list of built-in keywords as its `keywords` argument or a list or paths to custom keywords using its `keywordPaths` argument. 
 
@@ -219,8 +219,8 @@ string keywordPath = Path.Combine(Application.streamingAssetsPath, "keyword.ppn"
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
 
 ## Demo
 
-The Porcupine Unity demo can be imported along with the SDK when you import the Porcupine Unity package. Browse the source of the demo [here](/demo/unity).
+The Porcupine Unity demo can be imported along with the SDK when you import the Porcupine Unity package. Browse the source of the demo [here](../../demo/unity).
