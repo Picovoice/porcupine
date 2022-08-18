@@ -135,7 +135,7 @@ export default {
     this.$porcupine.delete();
   },
   // Vue 2 method to clean resources.
-  beforeDestory(this: any) {
+  beforeDestroy(this: any) {
     this.$porcupine.delete();
   }
 };

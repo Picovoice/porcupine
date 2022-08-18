@@ -27,7 +27,7 @@ import TERMINATOR_64 from '../keywords/terminator_wasm.ppn';
 export enum BuiltInKeyword {
   Alexa = 'Alexa',
   Americano = 'Americano',
-  Blueberry = 'Bluebery',
+  Blueberry = 'Blueberry',
   Bumblebee = 'Bumblebee',
   Computer = 'Computer',
   Grapefruit = 'Grapefruit',

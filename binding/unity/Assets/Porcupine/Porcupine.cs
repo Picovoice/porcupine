@@ -301,12 +301,12 @@ namespace Pv.Unity
         /// <summary>
         /// Gets the version number of the Porcupine library.
         /// </summary>
-        /// <returns>Version of Pocupine</returns>
+        /// <returns>Version of Porcupine</returns>
         public string Version { get; private set; }
 
 
         /// <summary>
-        /// Coverts status codes to relavent .NET exceptions
+        /// Coverts status codes to relevant .NET exceptions
         /// </summary>
         /// <param name="status">Picovoice library status code.</param>
         /// <returns>.NET exception</returns>

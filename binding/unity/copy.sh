@@ -1,4 +1,4 @@
-echo "Copying Android resouces..."
+echo "Copying Android resources..."
 cp ../../lib/android/arm64-v8a/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/arm64-v8a/libpv_porcupine.so
 cp ../../lib/android/armeabi-v7a/libpv_porcupine.so ./Assets/Porcupine/Plugins/android/armeabi-v7a/libpv_porcupine.so
 

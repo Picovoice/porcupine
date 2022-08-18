@@ -168,3 +168,16 @@ DKGRAY
 rmsd
 porco
 Prefs
+camelcase
+rodio
+pathstr
+pathbuf
+cstring
+cporcupine
+repr
+framecount
+vtable
+ptrs
+libloading
+uppercased
+NETCOREAPP

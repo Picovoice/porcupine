@@ -163,7 +163,7 @@ class Porcupine {
 
   /**
    * Gets the version number of the Porcupine library.
-   * @returns Version of Pocupine
+   * @returns Version of Porcupine
    */
   get version() {
     return this._version;
