@@ -12,8 +12,9 @@
     }
   ],
   "ignorePaths": [
-    "demo/c/pvrecorder/**/*",
-    "demo/c/dr_libs/**/*",
-    "demo/mcu/psoc062s2/**/*"
+    "../../demo/c/pvrecorder/**/*.md",
+    "../../demo/c/dr_libs/**/*.md",
+    "../../demo/mcu/psoc062s2/**/*.md",
+    "../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*.md"
   ]
 }

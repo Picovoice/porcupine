@@ -129,7 +129,7 @@ try {
                         .setSensitivities(new float[] { 0.6f, 0.35f })
                         .setErrorCallback(new PorcupineManagerErrorCallback() {
                             @Override
-                            public void invoke(PorcupineExcpetion e) {
+                            public void invoke(PorcupineException e) {
                                 // process error
                             }
                         })
