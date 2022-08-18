@@ -16,7 +16,7 @@ Replace your `AccessKey` in [lib/main.dart](lib/main.dart) file:
 final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```
 
-Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
+Run the following command from [demo/flutter](.) to build and deploy the demo to your device:
 ```console
 flutter run
 ```

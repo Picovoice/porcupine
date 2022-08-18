@@ -43,4 +43,4 @@ try {
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file (file with `.pv` extension). The model files for all supported languages are available in [lib/common](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file (file with `.pv` extension). The model files for all supported languages are available in [lib/common](../../lib/common).

@@ -162,7 +162,7 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 #### Low-Level API
 
-[Porcupine](/binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
+[Porcupine](Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
 To create an instance of `Porcupine`, use the `.Create` static constructor. You can pass a list of built-in keywords as its `keywords` argument or a list or paths to custom keywords using its `keywordPaths` argument. 
 
@@ -219,8 +219,8 @@ string keywordPath = Path.Combine(Application.streamingAssetsPath, "keyword.ppn"
 
 ## Non-English Wake Words
 
-In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](/lib/common).
+In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
 
 ## Demo
 
-The Porcupine Unity demo can be imported along with the SDK when you import the Porcupine Unity package. Browse the source of the demo [here](/demo/unity).
+The Porcupine Unity demo can be imported along with the SDK when you import the Porcupine Unity package. Browse the source of the demo [here](../../demo/unity).
