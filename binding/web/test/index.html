@@ -11,7 +11,7 @@
 
     window.onload = function () {
       const audioContext = new (window.AudioContext || window.webKitAudioContext)(
-              {sampleRate: 16000}
+        {sampleRate: 16000}
       );
 
       function readAudioFile(selectedFile, callback) {
@@ -36,12 +36,12 @@
           const INT16_MAX = 32767;
           const INT16_MIN = -32768;
           i16PCM.set(
-                  f32PCM.map((f) => {
-                    let i = Math.trunc(f * INT16_MAX);
-                    if (f > INT16_MAX) i = INT16_MAX;
-                    if (f < INT16_MIN) i = INT16_MIN;
-                    return i;
-                  })
+            f32PCM.map((f) => {
+              let i = Math.trunc(f * INT16_MAX);
+              if (f > INT16_MAX) i = INT16_MAX;
+              if (f < INT16_MIN) i = INT16_MIN;
+              return i;
+            })
           );
           pcm = i16PCM;
           document.getElementById("audioLoaded").style.display = "block";
@@ -64,27 +64,9 @@
       }
     }
 
-    // async function porcupineDetectionCounts(engineInstance, pcm) {
-    //
-    //   let detections = new Map();
-    //   let frameLength = engineInstance.frameLength;
-    //   for (let i = 0; i < (pcm.byteLength / pcm.BYTES_PER_ELEMENT); i += frameLength) {
-    //     const keywordIndex = await engineInstance.process(pcm.slice(i, i + frameLength));
-    //     if (keywordIndex !== -1) {
-    //       let currentCount = detections.get(keywordIndex);
-    //
-    //       if (currentCount === undefined) {
-    //         detections.set(keywordIndex, 1);
-    //       } else {
-    //         detections.set(keywordIndex, currentCount + 1);
-    //       }
-    //     }
-    //   }
-    //   return detections;
-    // }
-
     let workerCbCount = 0;
     let detections = new Map();
+
     function porcupineKeywordCallback(keyword) {
       workerCbCount++;
       detections.set(keyword.index, (detections.get(keyword.index) ?? 0) + 1);
@@ -128,7 +110,7 @@
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
           "porcupine_params.pv",
-          { forceWrite: true});
+          {forceWrite: true});
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
@@ -140,7 +122,7 @@
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
           modelParams,
-          { forceWrite: true });
+          {forceWrite: true});
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
@@ -152,7 +134,7 @@
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
           "porcupine_params.pv",
-          { forceWrite: true });
+          {forceWrite: true});
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
@@ -164,7 +146,7 @@
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
           modelParams,
-          { forceWrite: true });
+          {forceWrite: true});
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
@@ -178,7 +160,7 @@
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
             "invalid",
-            { forceWrite: true });
+            {forceWrite: true});
         } catch (e) {
           is_failed = true;
         }
@@ -190,7 +172,7 @@
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
             "invalid",
-            { forceWrite: true });
+            {forceWrite: true});
         } catch (e) {
           is_failed = true;
         }
@@ -205,7 +187,7 @@
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
             "invalid",
-            { forceWrite: true });
+            {forceWrite: true});
         } catch (e) {
           is_failed = true;
         }
@@ -217,7 +199,7 @@
             accessKey,
             porcupineKeywordCallback,
             "invalid",
-            { forceWrite: true });
+            {forceWrite: true});
         } catch (e) {
           is_failed = true;
         }
@@ -255,7 +237,7 @@
           PorcupineWeb.BuiltInKeyword.Grasshopper,
           porcupineKeywordCallback,
           modelParams,
-          { forceWrite: true });
+          {forceWrite: true});
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(1, detections.get(0), 'Failed to create an instance with a builtin keyword');
         handle.release()
@@ -267,7 +249,7 @@
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
           modelParams,
-          { forceWrite: true });
+          {forceWrite: true});
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect a single keyword multiple times');
         handle.release()
@@ -279,7 +261,7 @@
           [PorcupineWeb.BuiltInKeyword.Americano, PorcupineWeb.BuiltInKeyword.Bumblebee],
           porcupineKeywordCallback,
           modelParams,
-          { forceWrite: true });
+          {forceWrite: true});
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(1, detections.get(0), 'Failed to detect multiple keywords');
         assertEquals(1, detections.get(1), 'Failed to detect multiple keywords');
@@ -294,7 +276,7 @@
             'octopus',
             porcupineKeywordCallback,
             modelParams,
-            { forceWrite: true });
+            {forceWrite: true});
         } catch (error) {
           is_failed = true;
         }
@@ -312,7 +294,7 @@
             },
             porcupineKeywordCallback,
             modelParams,
-            { forceWrite: true });
+            {forceWrite: true});
         } catch (error) {
           is_failed = true;
         }
@@ -328,7 +310,7 @@
             },
             porcupineKeywordCallback,
             modelParams,
-            { forceWrite: true });
+            {forceWrite: true});
         } catch (error) {
           is_failed = true;
         }
@@ -346,6 +328,7 @@
     }
 
     const numIterations = 15;
+
     async function performanceTest() {
       document.getElementById("testComplete").style.display = "none";
 
