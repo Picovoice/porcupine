@@ -13,12 +13,31 @@
 /// <reference lib="webworker" />
 
 import { Porcupine } from './porcupine';
-import { PorcupineWorkerRequest } from './types';
+import {
+  PorcupineWorkerRequest,
+  PorcupineDetection,
+} from './types';
+
+let porcupine: Porcupine | null = null;
+
+const keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void =>{
+  self.postMessage({
+    command: 'ok',
+    porcupineDetection: porcupineDetection,
+  });
+};
+
+const processErrorCallback = (error: string): void => {
+  self.postMessage({
+    command: 'error',
+    message: error,
+  });
+};
 
 /**
  * Porcupine worker handler.
  */
-let porcupine: Porcupine | null = null;
+
 self.onmessage = async function(
   event: MessageEvent<PorcupineWorkerRequest>,
 ): Promise<void> {
@@ -32,11 +51,14 @@ self.onmessage = async function(
         return;
       }
       try {
+        event.data.options.processErrorCallback = processErrorCallback;
+
         Porcupine.setWasm(event.data.wasm);
         Porcupine.setWasmSimd(event.data.wasmSimd);
         porcupine = await Porcupine.create(
           event.data.accessKey,
           event.data.keywords,
+          keywordDetectionCallback,
           event.data.sensitivities,
           event.data.modelPath);
         self.postMessage({
@@ -60,20 +82,7 @@ self.onmessage = async function(
         });
         return;
       }
-      try {
-        const keywordIndex = await porcupine.process(event.data.inputFrame);
-        if (keywordIndex !== -1) {
-          self.postMessage({
-            command: 'ok',
-            keywordIndex: keywordIndex,
-          });
-        }
-      } catch (e: any) {
-        self.postMessage({
-          command: 'error',
-          message: e.message,
-        });
-      }
+      await porcupine.process(event.data.inputFrame);
       break;
     case 'release':
       if (porcupine !== null) {

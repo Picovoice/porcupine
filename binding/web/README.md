@@ -103,6 +103,23 @@ const options = {
 
 ### Initialize in Main Thread
 
+Create a `keywordDetectionCallback` function to get the results from the engine:
+
+```typescript
+function keywordDetectionCallback(keyword) {
+  console.log(`Porcupine detected keyword: ${keyword.label}`);
+}
+```
+
+Add to the `options` object an `processErrorCallback` function if you would like to catch errors:
+
+```typescript
+function processErrorCallback(error: string) {
+...
+}
+options.processErrorCallback = processErrorCallback;
+```
+
 Use `Porcupine` to initialize from public directory:
 
 ```typescript
@@ -129,6 +146,8 @@ const handle = await Porcupine.fromBase64(
 
 ### Process Audio Frames in Main Thread
 
+The result is received from `keywordDetectionCallback` as mentioned above.
+
 ```typescript
 function getAudioData(): Int16Array {
 ... // function to get audio data
@@ -136,10 +155,7 @@ function getAudioData(): Int16Array {
 }
 
 for (; ;) {
-  const keywordIndex = await handle.process(getAudioData());
-  if (keywordIndex >= 0) {
-    // Insert detection event callback here
-  }
+  await handle.process(getAudioData());
   // break on some condition
 }
 ```
@@ -195,6 +211,7 @@ const handle = await Porcupine.fromBase64(
 ### Process Audio Frames in Worker Thread
 
 In a worker thread, the `process` function will send the input frames to the worker.
+
 The result is received from `keywordDetectionCallback` as mentioned above.
 
 ```typescript
@@ -241,12 +258,12 @@ Similar to the model file (`.pv`), there are two ways to use a custom keyword mo
 
 This method fetches the keyword model file from the public directory and feeds it to Porcupine.
 Copy the binary keyword model file (`.ppn`) into the public directory and then define a `customWakeword` object,
-in which the `label` property is set to the name of the keyword and the `ppnPath` property is set to the path to the
+in which the `label` property is set to the name of the keyword and the `publicPath` property is set to the path to the
 keyword model file.
 
 ```typescript
 const customWakeWord = {
-    ppnPath: ${PPN_MODEL_RELATIVE_PATH},
+    publicPath: ${PPN_MODEL_RELATIVE_PATH},
     label: ${CUSTOM_KEYWORD_LABEL}
   }, 
 }

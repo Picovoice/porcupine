@@ -61,12 +61,12 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
         await fromBase64(
           keywordArgNormalized.label,
           keywordArgNormalized.base64,
-          keywordArgNormalized.usedCachedKeyword ?? false,
+          keywordArgNormalized.forceWrite ?? false,
           1);
-      } else if (keywordArgNormalized.ppnPath !== undefined) {
+      } else if (keywordArgNormalized.publicPath !== undefined) {
         await fromPublicDirectory(
           keywordArgNormalized.label,
-          keywordArgNormalized.ppnPath,
+          keywordArgNormalized.publicPath,
           true,
           1);
       }
@@ -86,7 +86,7 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
         keywordArgNormalized.builtin,
         // @ts-ignore
         BUILT_IN_KEYWORD_BYTES.get(keywordEnum),
-        keywordArgNormalized.usedCachedKeyword ?? false,
+        keywordArgNormalized.forceWrite ?? false,
         1);
     } else {
       throw new Error(

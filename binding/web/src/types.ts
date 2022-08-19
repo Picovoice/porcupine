@@ -25,15 +25,15 @@ export type PorcupineKeywordCustom = {
   /** Base64 representation of a trained Porcupine keyword (`.ppn` file) */
   base64?: string;
   /** The Porcupine keyword (`.ppn` file) path relative to the public directory */
-  ppnPath?: string;
+  publicPath?: string;
   /** An arbitrary label used for caching purposes */
   label: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
   /** @defaultValue 0.5 */
   sensitivity?: number;
-  /** A flag that indicates whether the cached keyword should be used */
+  /** A flag to indicate whether to overwrite the model in storage even if it exists */
   /** @defaultValue false */
-  usedCachedKeyword?: boolean;
+  forceWrite?: boolean;
 };
 
 export type PorcupineKeywordBuiltin = {
@@ -42,10 +42,17 @@ export type PorcupineKeywordBuiltin = {
   /** Value in range [0,1] that trades off miss rate for false alarm */
   /** @defaultValue 0.5 */
   sensitivity?: number;
-  /** A flag that indicates whether the cached keyword should be used */
+  /** A flag to indicate whether to overwrite the model in storage even if it exists */
   /** @defaultValue false */
-  usedCachedKeyword?: boolean;
+  forceWrite?: boolean;
 };
+
+export type PorcupineDetection = {
+  /** The index of the detected keyword */
+  index: number;
+  /** The label of the detected keyword */
+  label: string;
+}
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
@@ -88,7 +95,7 @@ export type PorcupineWorkerInitResponse = PorcupineWorkerFailureResponse | {
 
 export type PorcupineWorkerProcessResponse = PorcupineWorkerFailureResponse | {
   command: 'ok';
-  keywordIndex: number;
+  porcupineDetection: PorcupineDetection;
 };
 
 export type PorcupineWorkerReleaseResponse = PorcupineWorkerFailureResponse | {

@@ -25,7 +25,11 @@ import {
 
 import { simd } from 'wasm-feature-detect';
 
-import { PorcupineOptions, PorcupineKeyword } from './types';
+import {
+  PorcupineDetection,
+  PorcupineKeyword,
+  PorcupineOptions,
+} from './types';
 
 import { keywordsProcess } from './utils';
 import { BuiltInKeyword } from './built_in_keywords';
@@ -89,6 +93,7 @@ export class Porcupine {
   private readonly _inputBufferAddress: number;
   private readonly _alignedAlloc: aligned_alloc_type;
   private readonly _keywordIndexAddress: number;
+  private readonly _keywordLabels: Map<number, string>;
 
   private static _frameLength: number;
   private static _sampleRate: number;
@@ -98,7 +103,15 @@ export class Porcupine {
 
   private static _porcupineMutex = new Mutex();
 
-  private constructor(handleWasm: PorcupineWasmOutput) {
+  private readonly _keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void;
+  private readonly _processErrorCallback?: (error: string) => void;
+
+  private constructor(
+    handleWasm: PorcupineWasmOutput,
+    keywordLabels: ArrayLike<string>,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
+    processErrorCallback?: (error: string) => void,
+  ) {
     Porcupine._frameLength = handleWasm.frameLength;
     Porcupine._sampleRate = handleWasm.sampleRate;
     Porcupine._version = handleWasm.version;
@@ -117,7 +130,16 @@ export class Porcupine {
     this._memoryBuffer = new Int16Array(handleWasm.memory.buffer);
     this._memoryBufferUint8 = new Uint8Array(handleWasm.memory.buffer);
     this._memoryBufferView = new DataView(handleWasm.memory.buffer);
+
+    this._keywordLabels = new Map();
+    for (let i = 0; i < keywordLabels.length; i++) {
+      this._keywordLabels.set(i, keywordLabels[i]);
+    }
+
     this._processMutex = new Mutex();
+
+    this._keywordDetectionCallback = keywordDetectionCallback;
+    this._processErrorCallback = processErrorCallback;
   }
 
   /**
@@ -142,6 +164,13 @@ export class Porcupine {
   }
 
   /**
+   * Get keyword labels.
+   */
+  get keywordLabels(): Map<number, string> {
+    return this._keywordLabels;
+  }
+
+  /**
    * Creates an instance of the Porcupine wake word engine using a base64'd string
    * of the model file. The model size is large, hence it will try to use the
    * existing one if it exists, otherwise saves the model in storage.
@@ -150,8 +179,11 @@ export class Porcupine {
    * @param keywords - Built-in or Base64
    * representations of keywords and their sensitivities.
    * Can be provided as an array or a single keyword.
+   * @param keywordDetectionCallback User-defined callback to run after a keyword is detected.
    * @param modelBase64 The model in base64 string to initialize Porcupine.
    * @param options Optional configuration arguments.
+   * @param options.processErrorCallback User-defined callback invoked if any error happens
+   * while processing the audio stream. Its only input argument is the error message.
    * @param options.customWritePath Custom path to save the model in storage.
    * Set to a different name to use multiple models across `porcupine` instances.
    * @param options.forceWrite Flag to overwrite the model in storage even if it exists.
@@ -161,13 +193,19 @@ export class Porcupine {
   public static async fromBase64(
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     modelBase64: string,
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
     const { customWritePath = 'porcupine_model', forceWrite = false, version = 1 } = options;
     await fromBase64(customWritePath, modelBase64, forceWrite, version);
-    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
-    return this.create(accessKey, keywordPaths, sensitivities, customWritePath);
+    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
+    return this.create(
+      accessKey,
+      keywordLabels,
+      keywordDetectionCallback,
+      sensitivities,
+      customWritePath);
   }
 
   /**
@@ -179,8 +217,11 @@ export class Porcupine {
    * @param keywords - Built-in or Base64
    * representations of keywords and their sensitivities.
    * Can be provided as an array or a single keyword.
+   * @param keywordDetectionCallback User-defined callback to run after a keyword is detected.
    * @param publicPath The model path relative to the public directory.
    * @param options Optional configuration arguments.
+   * @param options.processErrorCallback User-defined callback invoked if any error happens
+   * while processing the audio stream. Its only input argument is the error message.
    * @param options.customWritePath Custom path to save the model in storage.
    * Set to a different name to use multiple models across `porcupine` instances.
    * @param options.forceWrite Flag to overwrite the model in storage even if it exists.
@@ -191,13 +232,19 @@ export class Porcupine {
   public static async fromPublicDirectory(
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     publicPath: string,
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
     const { customWritePath = 'porcupine_model', forceWrite = false, version = 1 } = options;
     await fromPublicDirectory(customWritePath, publicPath, forceWrite, version);
-    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
-    return this.create(accessKey, keywordPaths, sensitivities, customWritePath);
+    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
+    return this.create(
+      accessKey,
+      keywordLabels,
+      keywordDetectionCallback,
+      sensitivities,
+      customWritePath);
   }
 
   /**
@@ -226,7 +273,8 @@ export class Porcupine {
    * it can create an instance.
    *
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-   * @param keywordPaths - The path to the keyword file saved in indexedDB.
+   * @param keywordLabels - Array of keyword labels. It's also the paths to the stored keyword models inside indexedDB.
+   * @param keywordDetectionCallback User-defined callback to run after a keyword is detected.
    * @param sensitivities - Sensitivity of the keywords.
    * @param modelPath Path to the model saved in indexedDB.
    *
@@ -234,12 +282,18 @@ export class Porcupine {
    */
   public static async create(
     accessKey: string,
-    keywordPaths: Array<string>,
+    keywordLabels: Array<string>,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     sensitivities: Float32Array,
-    modelPath: string): Promise<Porcupine> {
+    modelPath: string,
+    options: PorcupineOptions = {},
+  ): Promise<Porcupine> {
+
     if (!isAccessKeyValid(accessKey)) {
       throw new Error('Invalid AccessKey');
     }
+
+    const { processErrorCallback } = options;
 
     return new Promise<Porcupine>((resolve, reject) => {
       Porcupine._porcupineMutex
@@ -249,9 +303,13 @@ export class Porcupine {
             accessKey.trim(),
             (isSimd) ? this._wasmSimd : this._wasm,
             modelPath,
-            keywordPaths,
+            keywordLabels,
             sensitivities);
-          return new Porcupine(wasmOutput);
+          return new Porcupine(
+            wasmOutput,
+            keywordLabels,
+            keywordDetectionCallback,
+            processErrorCallback);
         })
         .then((result: Porcupine) => {
           resolve(result);
@@ -268,55 +326,66 @@ export class Porcupine {
    * 16-bit linearly-encoded. Furthermore, the engine operates on single-channel audio.
    *
    * @param pcm A frame of audio with properties described above.
-   * @return Index of detected keyword (phrase). When no keyword is detected, it returns -1.
    */
-  public async process(pcm: Int16Array): Promise<number> {
+  public async process(pcm: Int16Array): Promise<void> {
     if (!(pcm instanceof Int16Array)) {
-      throw new Error('The argument \'pcm\' must be provided as an Int16Array');
+      const error = new Error('The argument \'pcm\' must be provided as an Int16Array');
+      if (this._processErrorCallback) {
+        this._processErrorCallback(error.toString());
+      } else {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
     }
 
-    const returnPromise = new Promise<number>((resolve, reject) => {
-      this._processMutex
-        .runExclusive(async () => {
-          if (this._wasmMemory === undefined) {
-            throw new Error('Attempted to call Porcupine process after release.');
-          }
+    this._processMutex
+      .runExclusive(async () => {
+        if (this._wasmMemory === undefined) {
+          throw new Error('Attempted to call Porcupine process after release.');
+        }
 
-          this._memoryBuffer.set(
-            pcm,
-            this._inputBufferAddress / Int16Array.BYTES_PER_ELEMENT,
+        this._memoryBuffer.set(
+          pcm,
+          this._inputBufferAddress / Int16Array.BYTES_PER_ELEMENT,
+        );
+
+        const status = await this._pvPorcupineProcess(
+          this._objectAddress,
+          this._inputBufferAddress,
+          this._keywordIndexAddress,
+        );
+        if (status !== PV_STATUS_SUCCESS) {
+          const memoryBuffer = new Uint8Array(this._wasmMemory.buffer);
+          throw new Error(
+            `process failed with status ${arrayBufferToStringAtIndex(
+              memoryBuffer,
+              await this._pvStatusToString(status),
+            )}`,
           );
+        }
 
-          const status = await this._pvPorcupineProcess(
-            this._objectAddress,
-            this._inputBufferAddress,
-            this._keywordIndexAddress,
-          );
-          if (status !== PV_STATUS_SUCCESS) {
-            const memoryBuffer = new Uint8Array(this._wasmMemory.buffer);
-            throw new Error(
-              `process failed with status ${arrayBufferToStringAtIndex(
-                memoryBuffer,
-                await this._pvStatusToString(status),
-              )}`,
-            );
-          }
+        const keywordIndex =  this._memoryBufferView.getInt32(
+          this._keywordIndexAddress,
+          true,
+        );
 
-          return this._memoryBufferView.getInt32(
-            this._keywordIndexAddress,
-            true,
-          );
-        })
-        .then((result: number) => {
-          resolve(result);
-        })
-        .catch((error: any) => {
-          reject(error);
-        });
-    });
+        if (keywordIndex !== -1) {
+          this._keywordDetectionCallback({
+            label: this._keywordLabels.get(keywordIndex) ?? '',
+            index: keywordIndex,
+          });
+        }
 
-    return returnPromise;
-  }
+      })
+      .catch((error: any) => {
+        if (this._processErrorCallback) {
+          this._processErrorCallback(error.toString());
+        } else {
+          // eslint-disable-next-line no-console
+          console.error(error);
+        }
+  });
+}
 
   /**
    * Releases resources acquired by WebAssembly module.
@@ -327,6 +396,17 @@ export class Porcupine {
     await this._pvFree(this._keywordIndexAddress);
     delete this._wasmMemory;
     this._wasmMemory = undefined;
+  }
+
+  async onmessage(e: MessageEvent): Promise<void> {
+    switch (e.data.command) {
+      case 'process':
+        await this.process(e.data.inputFrame);
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.warn(`Unrecognized command: ${e.data.command}`);
+    }
   }
 
   private static async initWasm(
@@ -485,7 +565,6 @@ export class Porcupine {
       frameLength: frameLength,
       inputBufferAddress: inputBufferAddress,
       keywordIndexAddress: keywordIndexAddress,
-      malloc: exports.malloc,
       memory: memory,
       objectAddress: objectAddress,
       pvFree: pv_free,

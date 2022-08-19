@@ -1251,10 +1251,12 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
 <head>
   <script src="https://unpkg.com/@picovoice/porcupine-web/dist/iife/index.js"></script>
   <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
-  <script src="porcupine_params.js"></script>
   <script type="application/javascript">
-    function keywordDetectionCallback(keyword) {
-      console.log(`Porcupine detected ${keyword}`);
+
+    const PORCUPINE_MODEL_BASE64 = /* Base64 representation of the `.pv` model file*/;
+
+    function keywordDetectionCallback(detection) {
+      console.log(`Porcupine detected ${detection.label}`);
     }
 
     function processErrorCallback(error) {
@@ -1268,26 +1270,20 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
               accessKey,
               [PorcupineWeb.BuiltInKeyword.Picovoice],
               porcupineKeywordCallback,
-              modelParams,
+              PORCUPINE_MODEL_BASE64,
       );
 
       console.log("Porcupine worker ready!");
 
       console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
+      window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
+      window.webVp.subscribe(porcupine);
+      window.start();
+      console.log("WebVoiceProcessor ready and listening!");
 
-      try {
-        let webVp = await window.WebVoiceProcessor.WebVoiceProcessor.init({
-          engines: [porcupine],
-        });
-        console.log("WebVoiceProcessor ready and listening!");
-      } catch (e) {
-        console.log("WebVoiceProcessor failed to initialize: " + e);
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      startPorcupine();
-    });
+      document.addEventListener("DOMContentLoaded", function () {
+        startPorcupine();
+      });
   </script>
 </head>
 <body></body>
@@ -1299,38 +1295,45 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
 Install the web SDK using yarn:
 
 ```console
-yarn add @picovoice/porcupine-web
+yarn add @picovoice/porcupine-web @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install --save @picovoice/porcupine-web
+npm install --save @picovoice/porcupine-web @picovoice/web-voice-processor
 ```
 
 ```javascript
-import {PorcupineWorker} from "@picovoice/porcupine-web";
-import PorcupineParams from "${PATH_TO_BASE64_PORCUPINE_PARAMS}";
+import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
+import { PorcupineWorker } from "@picovoice/porcupine-web";
 
-function keywordDetectionCallback(keywordIndex) {
-  console.log(`Porcupine detected ${keywordIndex}`);
-}
+const PORCUPINE_MODEL_BASE64 = /* Base64 representation of the `.pv` model file*/;
 
-function getAudioData(): Int16Array {
-... // function to get audio data
-  return new Int16Array();
+function keywordDetectionCallback(detection) {
+  console.log(`Porcupine detected ${detection.label}`);
 }
 
 const porcupine = await PorcupineWorker.fromBase64(
   "${ACCESS_KEY}",
   PorcupineWeb.BuiltInKeyword.Porcupine,
   keywordDetectionCallback,
-  PorcupineParams
+  PORCUPINE_MODEL_BASE64
 );
 
-for (; ;) {
-  porcupine.process(getAudioData());
-  // break on some condition
+console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
+window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
+window.webVp.subscribe(porcupine);
+window.start();
+console.log("WebVoiceProcessor ready and listening!");
+
+...
+
+// Finished with Porcupine? Release the WebVoiceProcessor and the worker.
+if (done) {
+  webVp.release()
+  porcupine.release()
+  porcupine.terminate()
 }
 ```
 
