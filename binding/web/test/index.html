@@ -8,7 +8,6 @@
   <script type="application/javascript">
 
     let pcm = null;
-    let workerCbCount = 0;
 
     window.onload = function () {
       const audioContext = new (window.AudioContext || window.webKitAudioContext)(
@@ -65,31 +64,35 @@
       }
     }
 
-    async function porcupineDetectionCounts(engineInstance, pcm) {
+    // async function porcupineDetectionCounts(engineInstance, pcm) {
+    //
+    //   let detections = new Map();
+    //   let frameLength = engineInstance.frameLength;
+    //   for (let i = 0; i < (pcm.byteLength / pcm.BYTES_PER_ELEMENT); i += frameLength) {
+    //     const keywordIndex = await engineInstance.process(pcm.slice(i, i + frameLength));
+    //     if (keywordIndex !== -1) {
+    //       let currentCount = detections.get(keywordIndex);
+    //
+    //       if (currentCount === undefined) {
+    //         detections.set(keywordIndex, 1);
+    //       } else {
+    //         detections.set(keywordIndex, currentCount + 1);
+    //       }
+    //     }
+    //   }
+    //   return detections;
+    // }
 
-      let detections = new Map();
-      let frameLength = engineInstance.frameLength;
-      for (let i = 0; i < (pcm.byteLength / pcm.BYTES_PER_ELEMENT); i += frameLength) {
-        const keywordIndex = await engineInstance.process(pcm.slice(i, i + frameLength));
-        if (keywordIndex !== -1) {
-          let currentCount = detections.get(keywordIndex);
-
-          if (currentCount === undefined) {
-            detections.set(keywordIndex, 1);
-          } else {
-            detections.set(keywordIndex, currentCount + 1);
-          }
-        }
-      }
-      return detections;
-    }
-
+    let workerCbCount = 0;
+    let detections = new Map();
     function porcupineKeywordCallback(keyword) {
       workerCbCount++;
+      detections.set(keyword.index, (detections.get(keyword.index) ?? 0) + 1);
     }
 
-    async function ppnWorker(engineInstance, pcm) {
+    async function porcupineDetectionCounts(engineInstance, pcm) {
       workerCbCount = 0;
+      detections = new Map();
 
       let totalCount = 1;
       let frameLength = engineInstance.frameLength;
@@ -97,7 +100,6 @@
         engineInstance.process(pcm.slice(i, i + frameLength));
         totalCount += 1;
       }
-
 
       return new Promise(resolve => {
         const interval = setInterval(() => {
@@ -124,10 +126,11 @@
         let handle = await PorcupineWeb.Porcupine.fromPublicDirectory(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
+          porcupineKeywordCallback,
           "porcupine_params.pv",
           { forceWrite: true});
-        let counts = await porcupineDetectionCounts(handle, pcm);
-        assertEquals(2, counts.get(0), 'Failed to detect the keyword');
+        await porcupineDetectionCounts(handle, pcm);
+        assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking Porcupine 'fromPublicDirectory'... done!");
 
@@ -135,10 +138,11 @@
         handle = await PorcupineWeb.Porcupine.fromBase64(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
+          porcupineKeywordCallback,
           modelParams,
           { forceWrite: true });
-        counts = await porcupineDetectionCounts(handle, pcm);
-        assertEquals(2, counts.get(0), 'Failed to detect the keyword');
+        await porcupineDetectionCounts(handle, pcm);
+        assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking Porcupine 'fromBase64'... done!");
 
@@ -149,8 +153,8 @@
           porcupineKeywordCallback,
           "porcupine_params.pv",
           { forceWrite: true });
-        counts = await ppnWorker(handle, pcm);
-        assertEquals(2, counts, 'Failed to detect the keyword');
+        await porcupineDetectionCounts(handle, pcm);
+        assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking PorcupineWorker 'fromPublicDirectory'... done!");
 
@@ -161,8 +165,8 @@
           porcupineKeywordCallback,
           modelParams,
           { forceWrite: true });
-        counts = await ppnWorker(handle, pcm);
-        assertEquals(2, counts, 'Failed to detect the keyword');
+        await porcupineDetectionCounts(handle, pcm);
+        assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking PorcupineWorker 'fromBase64'... done!");
 
@@ -172,6 +176,7 @@
           await PorcupineWeb.Porcupine.fromPublicDirectory(
             accessKey,
             PorcupineWeb.BuiltInKeyword.Porcupine,
+            porcupineKeywordCallback,
             "invalid",
             { forceWrite: true });
         } catch (e) {
@@ -183,6 +188,7 @@
           await PorcupineWeb.Porcupine.fromPublicDirectory(
             accessKey,
             PorcupineWeb.BuiltInKeyword.Porcupine,
+            porcupineKeywordCallback,
             "invalid",
             { forceWrite: true });
         } catch (e) {
@@ -197,6 +203,7 @@
           await PorcupineWeb.Porcupine.fromBase64(
             accessKey,
             PorcupineWeb.BuiltInKeyword.Porcupine,
+            porcupineKeywordCallback,
             "invalid",
             { forceWrite: true });
         } catch (e) {
@@ -246,11 +253,11 @@
         handle = await PorcupineWeb.Porcupine.fromBase64(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Grasshopper,
+          porcupineKeywordCallback,
           modelParams,
           { forceWrite: true });
-        counts = await porcupineDetectionCounts(handle, pcm);
-        let grasshopperCount = counts.get(0);
-        assertEquals(1, grasshopperCount, 'Failed to create an instance with a builtin keyword');
+        await porcupineDetectionCounts(handle, pcm);
+        assertEquals(1, detections.get(0), 'Failed to create an instance with a builtin keyword');
         handle.release()
         writeMessage("Checking builtin keyword 'Grasshopper'... done!");
 
@@ -258,11 +265,11 @@
         handle = await PorcupineWeb.Porcupine.fromBase64(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
+          porcupineKeywordCallback,
           modelParams,
           { forceWrite: true });
-        counts = await porcupineDetectionCounts(handle, pcm);
-        let porcupineCount = counts.get(0);
-        assertEquals(2, porcupineCount, 'Failed to detect a single keyword multiple times')
+        await porcupineDetectionCounts(handle, pcm);
+        assertEquals(2, detections.get(0), 'Failed to detect a single keyword multiple times');
         handle.release()
         writeMessage("Checking single keyword multiple detection... done!");
 
@@ -270,13 +277,12 @@
         handle = await PorcupineWeb.Porcupine.fromBase64(
           accessKey,
           [PorcupineWeb.BuiltInKeyword.Americano, PorcupineWeb.BuiltInKeyword.Bumblebee],
+          porcupineKeywordCallback,
           modelParams,
           { forceWrite: true });
-        counts = await porcupineDetectionCounts(handle, pcm);
-        let americanoCount = counts.get(0);
-        let bumblebeeCount = counts.get(1);
-        assertEquals(1, americanoCount, 'Failed to detect multiple keywords')
-        assertEquals(1, bumblebeeCount, 'Failed to detect multiple keywords')
+        await porcupineDetectionCounts(handle, pcm);
+        assertEquals(1, detections.get(0), 'Failed to detect multiple keywords');
+        assertEquals(1, detections.get(1), 'Failed to detect multiple keywords');
         handle.release()
         writeMessage("Checking multiple keyword multiple detection... done!");
 
@@ -286,6 +292,7 @@
           handle = await PorcupineWeb.Porcupine.fromBase64(
             accessKey,
             'octopus',
+            porcupineKeywordCallback,
             modelParams,
             { forceWrite: true });
         } catch (error) {
@@ -303,6 +310,7 @@
               builtin: PorcupineWeb.BuiltInKeyword.Picovoice,
               sensitivity: 4.2
             },
+            porcupineKeywordCallback,
             modelParams,
             { forceWrite: true });
         } catch (error) {
@@ -318,6 +326,7 @@
               builtin: PorcupineWeb.BuiltInKeyword.Picovoice,
               sensitivity: 'high'
             },
+            porcupineKeywordCallback,
             modelParams,
             { forceWrite: true });
         } catch (error) {

@@ -48,9 +48,9 @@ export type PorcupineKeywordBuiltin = {
 };
 
 export type PorcupineDetection = {
-  /** The index of the keyword that was detected */
+  /** The index of the detected keyword */
   index: number;
-  /** The label of the keyword that was detected */
+  /** The label of the detected keyword */
   label: string;
 }
 

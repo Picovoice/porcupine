@@ -26,9 +26,9 @@ import {
 import { simd } from 'wasm-feature-detect';
 
 import {
-  PorcupineOptions,
-  PorcupineKeyword,
   PorcupineDetection,
+  PorcupineKeyword,
+  PorcupineOptions,
 } from './types';
 
 import { keywordsProcess } from './utils';
@@ -199,10 +199,10 @@ export class Porcupine {
   ): Promise<Porcupine> {
     const { customWritePath = 'porcupine_model', forceWrite = false, version = 1 } = options;
     await fromBase64(customWritePath, modelBase64, forceWrite, version);
-    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
+    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
     return this.create(
       accessKey,
-      keywordPaths,
+      keywordLabels,
       keywordDetectionCallback,
       sensitivities,
       customWritePath);
@@ -238,10 +238,10 @@ export class Porcupine {
   ): Promise<Porcupine> {
     const { customWritePath = 'porcupine_model', forceWrite = false, version = 1 } = options;
     await fromPublicDirectory(customWritePath, publicPath, forceWrite, version);
-    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
+    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
     return this.create(
       accessKey,
-      keywordPaths,
+      keywordLabels,
       keywordDetectionCallback,
       sensitivities,
       customWritePath);
@@ -273,7 +273,7 @@ export class Porcupine {
    * it can create an instance.
    *
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-   * @param keywordLabels - The path to the keyword file saved in indexedDB.
+   * @param keywordLabels - Array of keyword labels. It's also the paths to the stored keyword models inside indexedDB.
    * @param keywordDetectionCallback User-defined callback to run after a keyword is detected.
    * @param sensitivities - Sensitivity of the keywords.
    * @param modelPath Path to the model saved in indexedDB.
@@ -364,7 +364,7 @@ export class Porcupine {
           );
         }
 
-        let keywordIndex =  this._memoryBufferView.getInt32(
+        const keywordIndex =  this._memoryBufferView.getInt32(
           this._keywordIndexAddress,
           true,
         );

@@ -19,11 +19,12 @@ import PvWorker from 'web-worker:./porcupine_worker_handler.ts';
 import { keywordsProcess } from './utils';
 
 import {
-  PorcupineOptions,
+  PorcupineDetection,
   PorcupineKeyword,
+  PorcupineOptions,
   PorcupineWorkerInitResponse,
   PorcupineWorkerProcessResponse,
-  PorcupineWorkerReleaseResponse, PorcupineDetection,
+  PorcupineWorkerReleaseResponse,
 } from './types';
 import { BuiltInKeyword } from './built_in_keywords';
 
