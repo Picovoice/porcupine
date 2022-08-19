@@ -23,7 +23,7 @@ import {
   PorcupineKeyword,
   PorcupineWorkerInitResponse,
   PorcupineWorkerProcessResponse,
-  PorcupineWorkerReleaseResponse,
+  PorcupineWorkerReleaseResponse, PorcupineDetection,
 } from './types';
 import { BuiltInKeyword } from './built_in_keywords';
 
@@ -84,6 +84,8 @@ export class PorcupineWorker {
    * The only input argument is the index of detected keyword (phrase).
    * @param modelBase64 The model in base64 string to initialize Porcupine.
    * @param options Optional configuration arguments.
+   * @param options.processErrorCallback User-defined callback invoked if any error happens
+   * while processing the audio stream. Its only input argument is the error message.
    * @param options.customWritePath Custom path to save the model in storage.
    * Set to a different name to use multiple models across `porcupine` instances.
    * @param options.forceWrite Flag to overwrite the model in storage even if it exists.
@@ -94,7 +96,7 @@ export class PorcupineWorker {
   public static async fromBase64(
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
-    keywordDetectionCallback: (keywordIndex: number) => void,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     modelBase64: string,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
@@ -140,7 +142,7 @@ export class PorcupineWorker {
   public static async fromPublicDirectory(
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
-    keywordDetectionCallback: (keywordIndex: number) => void,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     publicPath: string,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
@@ -202,7 +204,7 @@ export class PorcupineWorker {
     accessKey: string,
     keywordPaths: Array<string>,
     sensitivities: Float32Array,
-    keywordDetectionCallback: (keywordIndex: number) => void,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     modelPath: string,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
@@ -218,7 +220,7 @@ export class PorcupineWorker {
             worker.onmessage = (ev: MessageEvent<PorcupineWorkerProcessResponse>): void => {
               switch (ev.data.command) {
                 case 'ok':
-                  keywordDetectionCallback(ev.data.keywordIndex);
+                  keywordDetectionCallback(ev.data.porcupineDetection);
                   break;
                 case 'failed':
                 case 'error':

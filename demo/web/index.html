@@ -14,15 +14,9 @@
       writeMessage(error);
     }
 
-    const keywords = new Map([
-      [0, "Picovoice"],
-      [1, "Papaya whip"],
-      [2, "Porcupine"]
-    ]);
-
-    function porcupineKeywordCallback(keywordIndex) {
+    function porcupineKeywordCallback(detection) {
       const time = new Date();
-      const message = `keyword detected at ${time.toLocaleTimeString()}: ${keywords.get(keywordIndex)}`
+      const message = `keyword detected at ${time.toLocaleTimeString()}: ${detection.label} (index = ${detection.index})`
       console.log(message);
       document.getElementById("result").innerHTML = message;
     }
@@ -30,7 +24,7 @@
     async function startPorcupine(accessKey) {
       writeMessage("Porcupine is loading. Please wait...");
       try {
-        let porcupine = await PorcupineWeb.PorcupineWorker.fromBase64(
+        let porcupine = await PorcupineWeb.Porcupine.fromBase64(
           accessKey,
           [
             PorcupineWeb.BuiltInKeyword.Picovoice, // built-in keyword
@@ -55,10 +49,9 @@
         writeMessage(
           "WebVoiceProcessor initializing. Microphone permissions requested ..."
         );
-        let webVp = await window.WebVoiceProcessor.WebVoiceProcessor.init({
-          engines: [porcupine.worker],
-          start: true
-        });
+        window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
+        window.webVp.subscribe(porcupine);
+        window.webVp.start()
         writeMessage("WebVoiceProcessor ready and listening!");
       } catch (err) {
         porcupineErrorCallback(err);
@@ -86,7 +79,7 @@
   </li>
   <li>
     Acquire microphone (& ask permission) data stream and convert to voice
-    processing format (16kHz 16-bit linear PCM). The downsampled audio is
+    processing format (16kHz 16-bit linear PCM). The down-sampled audio is
     forwarded to the Porcupine engine. The audio <i>does not</i> leave the
     browser: all processing is occurring via the Porcupine WebAssembly code.
   </li>
