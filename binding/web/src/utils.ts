@@ -13,8 +13,7 @@ import { PorcupineKeyword } from './types';
 import { BUILT_IN_KEYWORD_BYTES, BuiltInKeyword } from './built_in_keywords';
 
 import {
-  fromBase64,
-  fromPublicDirectory,
+  loadModel,
 } from '@picovoice/web-utils';
 
 const DEFAULT_SENSITIVITY = 0.5;
@@ -57,21 +56,9 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
 
     if ('label' in keywordArgNormalized) {
       keywordLabels.push(keywordArgNormalized.label);
-      if (keywordArgNormalized.base64 !== undefined) {
-        await fromBase64(
-          keywordArgNormalized.label,
-          keywordArgNormalized.base64,
-          keywordArgNormalized.forceWrite ?? false,
-          1);
-      } else if (keywordArgNormalized.publicPath !== undefined) {
-        await fromPublicDirectory(
-          keywordArgNormalized.label,
-          keywordArgNormalized.publicPath,
-          true,
-          1);
-      }
+      const customWritePath = (keywordArgNormalized.customWritePath) ? keywordArgNormalized.customWritePath : keywordArgNormalized.label;
+      await loadModel({ ...keywordArgNormalized, customWritePath});
     } else if ('builtin' in keywordArgNormalized) {
-
       const validEnums = Object.values(BuiltInKeyword);
       const builtInName = keywordArgNormalized.builtin;
       // @ts-ignore
@@ -82,12 +69,11 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
         );
       }
       keywordLabels.push(keywordArgNormalized.builtin);
-      await fromBase64(
-        keywordArgNormalized.builtin,
-        // @ts-ignore
-        BUILT_IN_KEYWORD_BYTES.get(keywordEnum),
-        keywordArgNormalized.forceWrite ?? false,
-        1);
+      await loadModel({
+        base64: BUILT_IN_KEYWORD_BYTES.get(keywordEnum),
+        customWritePath: keywordArgNormalized.builtin,
+        forceWrite: true
+      });
     } else {
       throw new Error(
         'Unknown keyword argument: ' + JSON.stringify(keyword),

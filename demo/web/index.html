@@ -24,7 +24,7 @@
     async function startPorcupine(accessKey) {
       writeMessage("Porcupine is loading. Please wait...");
       try {
-        let porcupine = await PorcupineWeb.Porcupine.fromBase64(
+        let porcupine = await PorcupineWeb.Porcupine.create(
           accessKey,
           [
             PorcupineWeb.BuiltInKeyword.Picovoice, // built-in keyword
@@ -41,7 +41,9 @@
             }
           ],
           porcupineKeywordCallback,
-          modelParams,
+          {
+            base64: modelParams
+          },
         );
 
         writeMessage("Porcupine worker ready!");

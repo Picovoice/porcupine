@@ -14,6 +14,7 @@
 
 import { Porcupine } from './porcupine';
 import {
+  DetectionCallback,
   PorcupineWorkerRequest,
   PorcupineDetection,
 } from './types';
@@ -55,7 +56,7 @@ self.onmessage = async function(
 
         Porcupine.setWasm(event.data.wasm);
         Porcupine.setWasmSimd(event.data.wasmSimd);
-        porcupine = await Porcupine.create(
+        porcupine = await Porcupine._init(
           event.data.accessKey,
           event.data.keywords,
           keywordDetectionCallback,

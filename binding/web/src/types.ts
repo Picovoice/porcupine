@@ -10,30 +10,19 @@
 */
 
 import { BuiltInKeyword } from './built_in_keywords';
+import { PvModel } from "@picovoice/web-utils";
 
 export type PorcupineOptions = {
+  /** @defaultValue '(error) => {}' */
   processErrorCallback?: (error: string) => void
-  /** @defaultValue 'porcupine_model' */
-  customWritePath?: string;
-  /** @defaultValue false */
-  forceWrite?: boolean;
-  /** @defaultValue 1 */
-  version?: number;
 };
 
-export type PorcupineKeywordCustom = {
-  /** Base64 representation of a trained Porcupine keyword (`.ppn` file) */
-  base64?: string;
-  /** The Porcupine keyword (`.ppn` file) path relative to the public directory */
-  publicPath?: string;
-  /** An arbitrary label used for caching purposes */
+export type PorcupineKeywordCustom = PvModel & {
+  /** An arbitrary label that you want Porcupine to report when the detection occurs */
   label: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
   /** @defaultValue 0.5 */
   sensitivity?: number;
-  /** A flag to indicate whether to overwrite the model in storage even if it exists */
-  /** @defaultValue false */
-  forceWrite?: boolean;
 };
 
 export type PorcupineKeywordBuiltin = {
@@ -42,10 +31,11 @@ export type PorcupineKeywordBuiltin = {
   /** Value in range [0,1] that trades off miss rate for false alarm */
   /** @defaultValue 0.5 */
   sensitivity?: number;
-  /** A flag to indicate whether to overwrite the model in storage even if it exists */
-  /** @defaultValue false */
-  forceWrite?: boolean;
 };
+
+export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
+
+export type PorcupineModel = PvModel;
 
 export type PorcupineDetection = {
   /** The index of the detected keyword */
@@ -54,7 +44,7 @@ export type PorcupineDetection = {
   label: string;
 }
 
-export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
+export type DetectionCallback = (detection: PorcupineDetection) => void;
 
 export type PorcupineWorkerInitRequest = {
   command: 'init';

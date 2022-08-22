@@ -105,48 +105,56 @@
 
       try {
         writeMessage("Checking Porcupine 'fromPublicDirectory'");
-        let handle = await PorcupineWeb.Porcupine.fromPublicDirectory(
+        let handle = await PorcupineWeb.Porcupine.create(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
-          "porcupine_params.pv",
-          {forceWrite: true});
+          {
+            publicPath: "porcupine_params.pv",
+            forceWrite: true,
+          });
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking Porcupine 'fromPublicDirectory'... done!");
 
         writeMessage("Checking Porcupine 'fromBase64'");
-        handle = await PorcupineWeb.Porcupine.fromBase64(
+        handle = await PorcupineWeb.Porcupine.create(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
-          modelParams,
-          {forceWrite: true});
+          {
+            base64: modelParams,
+            forceWrite: true,
+          });
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking Porcupine 'fromBase64'... done!");
 
         writeMessage("Checking PorcupineWorker 'fromPublicDirectory'");
-        handle = await PorcupineWeb.PorcupineWorker.fromPublicDirectory(
+        handle = await PorcupineWeb.PorcupineWorker.create(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
-          "porcupine_params.pv",
-          {forceWrite: true});
+          {
+            publicPath: "porcupine_params.pv",
+            forceWrite: true,
+          });
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking PorcupineWorker 'fromPublicDirectory'... done!");
 
         writeMessage("Checking PorcupineWorker 'fromBase64'");
-        handle = await PorcupineWeb.PorcupineWorker.fromBase64(
+        handle = await PorcupineWeb.PorcupineWorker.create(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
-          modelParams,
-          {forceWrite: true});
+          {
+            base64: modelParams,
+            forceWrite: true,
+          });
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
@@ -155,24 +163,28 @@
         writeMessage("Checking invalid public path");
         is_failed = false
         try {
-          await PorcupineWeb.Porcupine.fromPublicDirectory(
+          await PorcupineWeb.Porcupine.create(
             accessKey,
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
-            "invalid",
-            {forceWrite: true});
+            {
+              publicPath: "invalid",
+              forceWrite: true,
+            });
         } catch (e) {
           is_failed = true;
         }
         assertEquals(true, is_failed, 'Failed to handle invalid path');
         is_failed = false
         try {
-          await PorcupineWeb.Porcupine.fromPublicDirectory(
+          await PorcupineWeb.Porcupine.create(
             accessKey,
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
-            "invalid",
-            {forceWrite: true});
+            {
+              publicPath: "invalid",
+              forceWrite: true,
+            });
         } catch (e) {
           is_failed = true;
         }
@@ -182,12 +194,14 @@
         writeMessage("Checking invalid base64 string");
         is_failed = false
         try {
-          await PorcupineWeb.Porcupine.fromBase64(
+          await PorcupineWeb.Porcupine.create(
             accessKey,
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
-            "invalid",
-            {forceWrite: true});
+            {
+              base64: "invalid",
+              forceWrite: true,
+            });
         } catch (e) {
           is_failed = true;
         }
@@ -195,11 +209,13 @@
 
         is_failed = false
         try {
-          await PorcupineWeb.PorcupineWorker.fromBase64(
+          await PorcupineWeb.PorcupineWorker.create(
             accessKey,
             porcupineKeywordCallback,
-            "invalid",
-            {forceWrite: true});
+            {
+              base64: "invalid",
+              forceWrite: true,
+            });
         } catch (e) {
           is_failed = true;
         }
@@ -209,10 +225,13 @@
         writeMessage("Checking invalid access key");
         is_failed = false
         try {
-          await PorcupineWeb.Porcupine.fromPublicDirectory(
+          await PorcupineWeb.Porcupine.create(
             "invalid",
             PorcupineWeb.BuiltInKeyword.Porcupine,
-            "porcupine_params.pv");
+            {
+              publicPath: "porcupine_params.pv",
+              forceWrite: true,
+            });
         } catch (e) {
           is_failed = true;
         }
@@ -220,11 +239,14 @@
 
         is_failed = false
         try {
-          await PorcupineWeb.PorcupineWorker.fromPublicDirectory(
+          await PorcupineWeb.PorcupineWorker.create(
             "invalid",
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
-            "porcupine_params.pv");
+            {
+              publicPath: "porcupine_params.pv",
+              forceWrite: true,
+            });
         } catch (e) {
           is_failed = true;
         }
@@ -232,36 +254,42 @@
         writeMessage("Checking invalid access key... done!");
 
         writeMessage("Checking builtin keyword 'Grasshopper'...");
-        handle = await PorcupineWeb.Porcupine.fromBase64(
+        handle = await PorcupineWeb.Porcupine.create(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Grasshopper,
           porcupineKeywordCallback,
-          modelParams,
-          {forceWrite: true});
+          {
+            publicPath: "porcupine_params.pv",
+            forceWrite: true,
+          });
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(1, detections.get(0), 'Failed to create an instance with a builtin keyword');
         handle.release()
         writeMessage("Checking builtin keyword 'Grasshopper'... done!");
 
         writeMessage("Checking single keyword multiple detection...");
-        handle = await PorcupineWeb.Porcupine.fromBase64(
+        handle = await PorcupineWeb.Porcupine.create(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
-          modelParams,
-          {forceWrite: true});
+          {
+            publicPath: "porcupine_params.pv",
+            forceWrite: true,
+          });
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(2, detections.get(0), 'Failed to detect a single keyword multiple times');
         handle.release()
         writeMessage("Checking single keyword multiple detection... done!");
 
         writeMessage("Checking multiple keyword multiple detection...");
-        handle = await PorcupineWeb.Porcupine.fromBase64(
+        handle = await PorcupineWeb.Porcupine.create(
           accessKey,
           [PorcupineWeb.BuiltInKeyword.Americano, PorcupineWeb.BuiltInKeyword.Bumblebee],
           porcupineKeywordCallback,
-          modelParams,
-          {forceWrite: true});
+          {
+            publicPath: "porcupine_params.pv",
+            forceWrite: true,
+          });
         await porcupineDetectionCounts(handle, pcm);
         assertEquals(1, detections.get(0), 'Failed to detect multiple keywords');
         assertEquals(1, detections.get(1), 'Failed to detect multiple keywords');
@@ -271,12 +299,14 @@
         writeMessage("Checking invalid builtin keyword type...");
         is_failed = false;
         try {
-          handle = await PorcupineWeb.Porcupine.fromBase64(
+          handle = await PorcupineWeb.Porcupine.create(
             accessKey,
             'octopus',
             porcupineKeywordCallback,
-            modelParams,
-            {forceWrite: true});
+            {
+              publicPath: "porcupine_params.pv",
+              forceWrite: true,
+            });
         } catch (error) {
           is_failed = true;
         }
@@ -286,15 +316,17 @@
         writeMessage("Checking basic parameter validation...");
         is_failed = false;
         try {
-          handle = await PorcupineWeb.Porcupine.fromBase64(
+          handle = await PorcupineWeb.Porcupine.create(
             accessKey,
             {
               builtin: PorcupineWeb.BuiltInKeyword.Picovoice,
               sensitivity: 4.2
             },
             porcupineKeywordCallback,
-            modelParams,
-            {forceWrite: true});
+            {
+              publicPath: "porcupine_params.pv",
+              forceWrite: true,
+            });
         } catch (error) {
           is_failed = true;
         }
@@ -302,15 +334,17 @@
 
         is_failed = false;
         try {
-          handle = await PorcupineWeb.Porcupine.fromBase64(
+          handle = await PorcupineWeb.Porcupine.create(
             accessKey,
             {
               builtin: PorcupineWeb.BuiltInKeyword.Picovoice,
               sensitivity: 'high'
             },
             porcupineKeywordCallback,
-            modelParams,
-            {forceWrite: true});
+            {
+              publicPath: "porcupine_params.pv",
+              forceWrite: true,
+            });
         } catch (error) {
           is_failed = true;
         }
@@ -339,23 +373,27 @@
         writeMessage("Starting init performance test!");
         let start = Date.now();
         for (let i = 0; i < numIterations; i++) {
-          handle = await PorcupineWeb.PorcupineWorker.fromBase64(
+          handle = await PorcupineWeb.PorcupineWorker.create(
             accessKey,
             PorcupineWeb.BuiltInKeyword.Porcupine,
             porcupineKeywordCallback,
-            modelParams,
-            {forceWrite: true});
+            {
+              publicPath: "porcupine_params.pv",
+              forceWrite: true,
+            });
           handle.terminate();
         }
         let end = Date.now();
         writeMessage(`Init Performance: ${((end - start) / 1000) / numIterations}`);
 
-        handle = await PorcupineWeb.PorcupineWorker.fromBase64(
+        handle = await PorcupineWeb.PorcupineWorker.create(
           accessKey,
           PorcupineWeb.BuiltInKeyword.Porcupine,
           porcupineKeywordCallback,
-          modelParams,
-          {forceWrite: true});
+          {
+            publicPath: "porcupine_params.pv",
+            forceWrite: true,
+          });
         writeMessage("Starting process performance test!");
         start = Date.now();
         for (let i = 0; i < numIterations; i++) {

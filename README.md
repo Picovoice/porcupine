@@ -1266,11 +1266,11 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
     async function startPorcupine() {
       console.log("Porcupine is loading. Please wait...");
       const accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (picovoice.ai/console/)
-      let porcupine = await PorcupineWeb.PorcupineWorker.fromBase64(
+      let porcupine = await PorcupineWeb.PorcupineWorker.create(
               accessKey,
               [PorcupineWeb.BuiltInKeyword.Picovoice],
               porcupineKeywordCallback,
-              PORCUPINE_MODEL_BASE64,
+              { base64: PORCUPINE_MODEL_BASE64 },
       );
 
       console.log("Porcupine worker ready!");
@@ -1314,11 +1314,11 @@ function keywordDetectionCallback(detection) {
   console.log(`Porcupine detected ${detection.label}`);
 }
 
-const porcupine = await PorcupineWorker.fromBase64(
+const porcupine = await PorcupineWorker.create(
   "${ACCESS_KEY}",
   PorcupineWeb.BuiltInKeyword.Porcupine,
   keywordDetectionCallback,
-  PORCUPINE_MODEL_BASE64
+  { base64: PORCUPINE_MODEL_BASE64 },
 );
 
 console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
