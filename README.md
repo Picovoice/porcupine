@@ -1380,40 +1380,37 @@ async ngOnInit() {
 #### React
 
 ```console
-yarn add @picovoice/porcupine-web-react
+yarn add @picovoice/porcupine-web-react @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-react
+npm install @picovoice/porcupine-web-react @picovoice/web-voice-processor
 ```
 
 ```javascript
 import React, { useState } from "react";
-import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
+import { BuiltInKeyword } from "@picovoice/porcupine-web";
 import { usePorcupine } from "@picovoice/porcupine-web-react";
 
-const accessKey = // AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
-const keywords = [{ builtin: "Picovoice", sensitivity: 0.65 }];
-
-function VoiceWidget(props) {
-  const keywordEventHandler = (keywordLabel) => {
-    console.log(`Porcupine detected ${keywordLabel}`);
+function App(props) {
+  const keywordDetectionCallback = (keyword) => {
+    console.log(`Porcupine detected keyword: ${keyword.label}`);
   };
 
   const {
-    isLoaded,
     isListening,
-    isError,
-    errorMessage,
+    error,
     start,
-    pause,
-    setDetectionCallback
+    stop,
+    pause
   } = usePorcupine(
-    PorcupineWorkerFactory,
-    { accessKey, keywords, start: true },
-    keywordEventHandler
+    ${ACCESS_KEY},
+    BuiltInKeyword.Porcupine,
+    keywordDetectionCallback,
+    ${MODEL_RELATIVE_PATH},
+    options // optional options
   );
 }
 ```
