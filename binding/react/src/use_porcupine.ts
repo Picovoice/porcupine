@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -30,7 +30,7 @@ export const usePorcupine = (
   options: PorcupineOptions = {},
 ) => {
   const webVpRef = useRef(WebVoiceProcessor.instance());
-  const [porcupine, setPorcupine] = useState<PorcupineWorker | null>(null);
+  const ppnRef = useRef<PorcupineWorker | null>(null);
 
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +39,7 @@ export const usePorcupine = (
 
   const start = async (): Promise<void> => {
     try {
-      if (!porcupine) {
+      if (!ppnRef.current) {
         const handle: PorcupineWorker = await PorcupineWorker.create(
           accessKey,
           keywords,
@@ -48,8 +48,8 @@ export const usePorcupine = (
           options
         );
 
-        setPorcupine(handle);
         webVpRef.current.subscribe(handle);
+        ppnRef.current = handle;
       }
 
       await webVpRef.current.start();
@@ -62,10 +62,10 @@ export const usePorcupine = (
 
   const stop = async (): Promise<void> => {
     try {
-      if (porcupine) {
-        webVpRef.current.unsubscribe(porcupine);
-        porcupine.terminate();
-        setPorcupine(null);
+      if (ppnRef.current) {
+        webVpRef.current.unsubscribe(ppnRef.current);
+        ppnRef.current.terminate();
+        ppnRef.current = null;
       }
 
       await webVpRef.current.stop();
@@ -80,6 +80,12 @@ export const usePorcupine = (
     await webVpRef.current.pause();
     setIsListening(false);
   };
+
+  useEffect(() => {
+    return () => {
+      stop();
+    };
+  }, []);
 
   return {
     isListening,
