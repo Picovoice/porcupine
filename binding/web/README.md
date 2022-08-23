@@ -48,7 +48,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Usage
 
-There are two methods to initialize Porcupine:
+There are two methods to pass model files and initialize Porcupine:
 
 ### Public Directory
 
@@ -63,6 +63,8 @@ Copy the model file into the public directory:
 cp ${PORCUPINE_MODEL_FILE} ${PATH_TO_PUBLIC_DIRECTORY}
 ```
 
+The same procedure can be used for the [custom keyword files](#custom-keywords) (`.ppn`) files.
+
 ### Base64
 
 **NOTE**: This method works without hosting a server, but increases the size of the model file roughly by 33%.
@@ -71,7 +73,7 @@ This method uses a base64 string of the model file and feeds it to Porcupine. Us
 base64 your model file:
 
 ```console
-npx pvbase64 -i ${PORCUPINE_MODEL_FILE} -o ${OUTPUT_DIRECTORY}/${MODEL_NAME}.js
+npx pvbase64 -i ${MODEL_FILE} -o ${OUTPUT_DIRECTORY}/${MODEL_NAME}.js
 ```
 
 The output will be a js file which you can import into any file of your project. For detailed information
@@ -82,26 +84,32 @@ run:
 npx pvbase64 -h
 ```
 
-### Init options
+The same procedure can be used for the [custom keyword files](#custom-keywords) (`.ppn`) files.
 
-Porcupine saves and caches your model file in IndexedDB to be used by Web Assembly. Use a different `customWritePath`
-variable
-to hold multiple model values and set the `forceWrite` value to true to force re-save the model file.
-Set `processErrorCallback` to handle errors if an error occurs while transcribing.
-If the model file (`.pv`) changes, `version` should be incremented to force the cached model to be updated.
+### Porcupine Model
+
+Porcupine saves and caches your parameter model file (`.pv`) in IndexedDB to be used by Web Assembly.
+Use a different `customWritePath` variable to hold multiple model values and set the `forceWrite` value to true to force
+re-save the model file.
+If the model file changes, `version` should be incremented to force the cached models to be updated.
+Either `base64` or `publicPath` must be set to instantiate Porcupine. If both are set, Porcupine will use the `base64`
+model.
 
 ```typescript
-// these are default
-const options = {
-  processErrorCallback: (error) => {
-  },
-  customWritePath: "porcupine_model",
-  forceWrite: false,
-  version: 1
+// Model (.pv)
+const porcupineModel = {
+  publicPath: ${MODEL_RELATIVE_PATH},
+  // or
+  base64: ${MODEL_BASE64_STRING},
+
+  // Optional
+  customWritePath: 'custom_model',
+  forceWrite: true,
+  version: 1,
 }
 ```
 
-### Initialize in Main Thread
+### Initialize Porcupine
 
 Create a `keywordDetectionCallback` function to get the results from the engine:
 
@@ -111,42 +119,43 @@ function keywordDetectionCallback(keyword) {
 }
 ```
 
-Add to the `options` object an `processErrorCallback` function if you would like to catch errors:
+create an `options` object and add a `processErrorCallback` function if you would like to catch errors:
 
 ```typescript
 function processErrorCallback(error: string) {
 ...
 }
+
 options.processErrorCallback = processErrorCallback;
 ```
 
-Use `Porcupine` to initialize from public directory:
+Initialize an instance of `Porcupine` in the main thread:
 
 ```typescript
-const handle = await Porcupine.fromPublicDirectory(
+const handle = await Porcupine.create(
   ${ACCESS_KEY},
   PorcupineWeb.BuiltInKeyword.Porcupine,
-  ${MODEL_RELATIVE_PATH},
+  keywordDetectionCallback,
+  porcupineModel,
   options // optional options
 );
 ```
 
-or initialize using a base64 string:
+or initialize an instance of `Porcupine` in a worker thread:
 
 ```typescript
-import porcupineParams from "${PATH_TO_BASE64_PORCUPINE_PARAMS}";
-
-const handle = await Porcupine.fromBase64(
+const handle = await PorcupineWorker.create(
   ${ACCESS_KEY},
   PorcupineWeb.BuiltInKeyword.Porcupine,
-  porcupineParams,
+  keywordDetectionCallback,
+  porcupineModel,
   options // optional options
-)
+);
 ```
 
-### Process Audio Frames in Main Thread
+### Process Audio Frames
 
-The result is received from `keywordDetectionCallback` as mentioned above.
+The result is received from `keywordDetectionCallback` as defined above.
 
 ```typescript
 function getAudioData(): Int16Array {
@@ -158,73 +167,6 @@ for (; ;) {
   await handle.process(getAudioData());
   // break on some condition
 }
-```
-
-### Initialize in Worker Thread
-
-Create a `keywordDetectionCallback` function to get the streaming results
-from the worker:
-
-```typescript
-function keywordDetectionCallback(keywordIndex) {
-  console.log(`Porcupine detected keyword index: ${keyword}`);
-}
-```
-
-Add to the `options` object an `processErrorCallback` function if you would like
-to catch errors:
-
-```typescript
-function processErrorCallback(error: string) {
-...
-}
-
-options.processErrorCallback = processErrorCallback;
-```
-
-Use `PorcupineWorker` to initialize from public directory:
-
-```typescript
-const handle = await PorcupineWorker.fromPublicDirectory(
-  ${ACCESS_KEY},
-  PorcupineWeb.BuiltInKeyword.Porcupine,
-  keywordDetectionCallback,
-  ${MODEL_RELATIVE_PATH},
-  options // optional options
-);
-```
-
-or initialize using a base64 string:
-
-```typescript
-import porcupineParams from "${PATH_TO_BASE64_PORCUPINE_PARAMS}";
-
-const handle = await Porcupine.fromBase64(
-  ${ACCESS_KEY},
-  PorcupineWeb.BuiltInKeyword.Porcupine,
-  keywordDetectionCallback,
-  porcupineParams,
-  options // optional options
-)
-```
-
-### Process Audio Frames in Worker Thread
-
-In a worker thread, the `process` function will send the input frames to the worker.
-
-The result is received from `keywordDetectionCallback` as mentioned above.
-
-```typescript
-function getAudioData(): Int16Array {
-... // function to get audio data
-  return new Int16Array();
-}
-
-for (; ;) {
-  handle.process(getAudioData());
-  // break on some condition
-}
-handle.flush(); // runs transcriptCallback on remaining data.
 ```
 
 ### Clean Up
@@ -252,47 +194,34 @@ Inside the downloaded `.zip` file, there are two files:
 - `.ppn` file which is the keyword model file in binary format
 - `_b64.txt` file which contains the same binary model encoded with Base64
 
-Similar to the model file (`.pv`), there are two ways to use a custom keyword model:
-
-### Public Directory
-
-This method fetches the keyword model file from the public directory and feeds it to Porcupine.
-Copy the binary keyword model file (`.ppn`) into the public directory and then define a `customWakeword` object,
-in which the `label` property is set to the name of the keyword and the `publicPath` property is set to the path to the
-keyword model file.
+Similar to the model file (`.pv`), keyword files (`.ppn`) are saved in IndexedDB to be used by Web Assembly.
+Either `base64` or `publicPath` must be set to instantiate Porcupine. If both are set, Porcupine will use
+the `base64` model.
+An arbitrary `label` is required to identify the keyword once the detection occurs.
 
 ```typescript
-const customWakeWord = {
-    publicPath: ${PPN_MODEL_RELATIVE_PATH},
-    label: ${CUSTOM_KEYWORD_LABEL}
-  }, 
+// custom keyword (.ppn)
+const keywordModel = {
+  publicPath: ${KEYWORD_RELATIVE_PATH},
+  // or
+  base64: ${KEYWORD_BASE64_STRING},
+  label: ${KEYWORD_LABEL},
+  // Optional
+  customWritePath: 'custom_keyword',
+  forceWrite: true,
+  version: 1,
 }
-
-const handle = await Porcupine.fromPublicDirectory(
-  ${ACCESS_KEY},
-  [customWakeWord],
-  ${MODEL_RELATIVE_PATH},
-  options // optional options
-);
 ```
 
-### Base64
-
-Copy the base64 string and pass it as the `base64` property of a `customWakeword` object.
-The `label` property indicates the name of the keyword.
+Then, initialize an instance of `Porcupine`:
 
 ```typescript
-
-const customWakeWord = {
-  base64: ${CUSTOM_KEYWORD_BASE64_STRING},
-  label: ${CUSTOM_KEYWORD_LABEL},
-}
-
-const handle = await Porcupine.fromPublicDirectory(
+const handle = await Porcupine.create(
   ${ACCESS_KEY},
-  [customWakeWord],
-  ${MODEL_RELATIVE_PATH},
-  options // optional options
+  [keywordModel],
+  keywordDetectionCallback,
+  porcupineModel,
+  options
 );
 ```
 

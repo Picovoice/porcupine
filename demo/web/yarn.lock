@@ -2,24 +2,24 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-web@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.1.tgz#05a295134bd70047b0dcd7c1b0e2f7b3907c1a7b"
-  integrity sha512-3zBD2Jz4jExtwulervimN7TmV6Gw2XnXAlsYBgloGtnIj5Vm2WmC6qArqRYluJCuisKzXRd7AxwBH/n/Elup9g==
+"@picovoice/porcupine-web@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.3.tgz#8d380d9271ad5ea78a739f489b4b01bc29597366"
+  integrity sha512-tyUXPlkBgFTfIy1cpA+V9QJOCkEuMbuEseFTRuO1ti+vg3AfPa8HjxhWBXDX7iCnbR+eMP3bS+ZEJsemN8/YTg==
   dependencies:
-    "@picovoice/web-utils" "=1.2.2"
+    "@picovoice/web-utils" "=1.2.5"
 
-"@picovoice/web-utils@=1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.2.tgz#0437d40a89b520a02409ef12c10e0c5215f6a051"
-  integrity sha512-ZFoqz2FY0a+7E88kgowFTCl627h8HZQrnJf+dHbETsnybZ9ZrC+1u8ZpQQsG6Gpa7ru7rfYFynPGhTMfyMIxQQ==
+"@picovoice/web-utils@=1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.5.tgz#55461fb78ddfe8b8b755cba2caf863e262988dd0"
+  integrity sha512-3eoGSewOO2vllsYs/Q9FVHMzFQqy2Mg1mBJTbRChuZMpDG2wCv+AB3vD34w4bb++wwGpo/iS7PB1SwP0vBzYig==
   dependencies:
     commander "^9.2.0"
 
 "@picovoice/web-voice-processor@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-3.0.0.tgz#0dbdbcfa79022fc54f6b51ee4294efb847fd736f"
-  integrity sha512-EtkCvUOklmWESabT2rVfrHsUGugg6zj1JBV9Jl9h7nzaGVXPMhDVuiwtZpT8TFVSLKXNOV31QsoSHnzN2CYjvQ==
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-3.0.2.tgz#92b5c007871503c9edfbfa3bf7e93804a229d380"
+  integrity sha512-IwjPz7qatc0Rj57gV0mpD8yUzOpEkrN/MpUIhvVx3QovxSNA2fBrDAnG9eVySRkklJMp/2dGNIz+XhWWGXXJFA==
 
 ansi-styles@^4.1.0:
   version "4.3.0"

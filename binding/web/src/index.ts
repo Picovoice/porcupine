@@ -2,8 +2,10 @@ import { Porcupine } from './porcupine';
 import { PorcupineWorker } from './porcupine_worker';
 
 import {
+  DetectionCallback,
   PorcupineDetection,
   PorcupineKeyword,
+  PorcupineModel,
   PorcupineOptions,
   PorcupineWorkerFailureResponse,
   PorcupineWorkerInitRequest,
@@ -28,18 +30,20 @@ PorcupineWorker.setWasmSimd(porcupineWasmSimd);
 
 export {
   BuiltInKeyword,
+  DetectionCallback,
   Porcupine,
   PorcupineDetection,
-  PorcupineOptions,
   PorcupineKeyword,
+  PorcupineModel,
+  PorcupineOptions,
   PorcupineWorker,
-  PorcupineWorkerInitRequest,
-  PorcupineWorkerProcessRequest,
-  PorcupineWorkerReleaseRequest,
-  PorcupineWorkerRequest,
-  PorcupineWorkerInitResponse,
-  PorcupineWorkerProcessResponse,
-  PorcupineWorkerReleaseResponse,
   PorcupineWorkerFailureResponse,
+  PorcupineWorkerInitRequest,
+  PorcupineWorkerInitResponse,
+  PorcupineWorkerProcessRequest,
+  PorcupineWorkerProcessResponse,
+  PorcupineWorkerReleaseRequest,
+  PorcupineWorkerReleaseResponse,
+  PorcupineWorkerRequest,
   PorcupineWorkerResponse,
 };
