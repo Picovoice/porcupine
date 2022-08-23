@@ -207,7 +207,7 @@ const keywordModel = {
   base64: ${KEYWORD_BASE64_STRING},
   label: ${KEYWORD_LABEL},
   // Optional
-  customWritePath: 'custom_context',
+  customWritePath: 'custom_keyword',
   forceWrite: true,
   version: 1,
 }
