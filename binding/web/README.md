@@ -91,7 +91,7 @@ The same procedure can be used for the [custom keyword files](#custom-keywords) 
 Porcupine saves and caches your parameter model file (`.pv`) in IndexedDB to be used by Web Assembly.
 Use a different `customWritePath` variable to hold multiple model values and set the `forceWrite` value to true to force
 re-save the model file.
-If the model files (`.pv` or `.ppn`) change, `version` should be incremented to force the cached models to be updated.
+If the model file changes, `version` should be incremented to force the cached models to be updated.
 Either `base64` or `publicPath` must be set to instantiate Porcupine. If both are set, Porcupine will use the `base64`
 model.
 
@@ -105,22 +105,11 @@ const porcupineModel = {
   // Optional
   customWritePath: 'custom_model',
   forceWrite: true,
-  version: '1.0',
+  version: 1,
 }
 ```
 
-### Init options
-
-Set `processErrorCallback` to handle errors if an error occurs while transcribing.
-
-```typescript
-const options = {
-  processErrorCallback: (error) => {
-  }
-}
-```
-
-### Initialize in Main Thread
+### Initialize Porcupine
 
 Create a `keywordDetectionCallback` function to get the results from the engine:
 
@@ -130,7 +119,7 @@ function keywordDetectionCallback(keyword) {
 }
 ```
 
-Add to the `options` object an `processErrorCallback` function if you would like to catch errors:
+create an `options` object and add a `processErrorCallback` function if you would like to catch errors:
 
 ```typescript
 function processErrorCallback(error: string) {
@@ -140,18 +129,31 @@ function processErrorCallback(error: string) {
 options.processErrorCallback = processErrorCallback;
 ```
 
-Initialize an instance of `Porcupine`:
+Initialize an instance of `Porcupine` in the main thread:
 
 ```typescript
 const handle = await Porcupine.create(
   ${ACCESS_KEY},
   PorcupineWeb.BuiltInKeyword.Porcupine,
+  keywordDetectionCallback,
   porcupineModel,
   options // optional options
 );
 ```
 
-### Process Audio Frames in Main Thread
+or initialize an instance of `Porcupine` in a worker thread:
+
+```typescript
+const handle = await PorcupineWorker.create(
+  ${ACCESS_KEY},
+  PorcupineWeb.BuiltInKeyword.Porcupine,
+  keywordDetectionCallback,
+  porcupineModel,
+  options // optional options
+);
+```
+
+### Process Audio Frames
 
 The result is received from `keywordDetectionCallback` as defined above.
 
@@ -165,59 +167,6 @@ for (; ;) {
   await handle.process(getAudioData());
   // break on some condition
 }
-```
-
-### Initialize in Worker Thread
-
-Create a `keywordDetectionCallback` function to get the streaming results
-from the worker:
-
-```typescript
-function keywordDetectionCallback(keywordIndex) {
-  console.log(`Porcupine detected keyword index: ${keyword}`);
-}
-```
-
-Add to the `options` object an `processErrorCallback` function if you would like
-to catch errors:
-
-```typescript
-function processErrorCallback(error: string) {
-...
-}
-
-options.processErrorCallback = processErrorCallback;
-```
-
-Initialize an instance of `PorcupineWorker`:
-
-```typescript
-const handle = await PorcupineWorker.create(
-  ${ACCESS_KEY},
-  PorcupineWeb.BuiltInKeyword.Porcupine,
-  keywordDetectionCallback,
-  porcupineModel,
-  options // optional options
-);
-```
-
-### Process Audio Frames in Worker Thread
-
-In a worker thread, the `process` function will send the input frames to the worker.
-
-The result is received from `keywordDetectionCallback` as mentioned above.
-
-```typescript
-function getAudioData(): Int16Array {
-... // function to get audio data
-  return new Int16Array();
-}
-
-for (; ;) {
-  handle.process(getAudioData());
-  // break on some condition
-}
-handle.flush(); // runs transcriptCallback on remaining data.
 ```
 
 ### Clean Up
@@ -252,7 +201,7 @@ An arbitrary `label` is required to identify the keyword once the detection occu
 
 ```typescript
 // custom keyword (.ppn)
-const keyword = {
+const keywordModel = {
   publicPath: ${KEYWORD_RELATIVE_PATH},
   // or
   base64: ${KEYWORD_BASE64_STRING},
@@ -260,7 +209,7 @@ const keyword = {
   // Optional
   customWritePath: 'custom_context',
   forceWrite: true,
-  version: '1.0',
+  version: 1,
 }
 ```
 
@@ -269,7 +218,8 @@ Then, initialize an instance of `Porcupine`:
 ```typescript
 const handle = await Porcupine.create(
   ${ACCESS_KEY},
-  [keyword],
+  [keywordModel],
+  keywordDetectionCallback,
   porcupineModel,
   options
 );
