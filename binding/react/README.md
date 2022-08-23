@@ -150,7 +150,7 @@ const {
 
 ### Process Audio Frames in Worker Thread
 
-Porcupine React binding uses [WebVoiceProcessor](#https://github.com/Picovoice/web-voice-processor) to record audio.
+Porcupine React binding uses [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
 To start detecting wake word, run the `start` function:
 
 ```typescript
@@ -230,4 +230,4 @@ supported languages are available [here](https://github.com/Picovoice/porcupine/
 
 ## Demo
 
-For example usage refer to our [Web demo application](https://github.com/Picovoice/porcupine/tree/master/demo/web).
+For example usage refer to our [Web react application](https://github.com/Picovoice/porcupine/tree/master/demo/react).
