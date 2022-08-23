@@ -25,15 +25,15 @@ gcc -std=c99 -O3 -o demo/respeaker-rpi0/porcupine_demo_mic \
 Below are the colors associated with supported wake words for this demo:
 
 <!-- markdown-link-check-disable -->
-- ![#ffff33](https://via.placeholder.com/15/ffff33/000000?text=+) `Alexa`
-- ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Bumblebee`
-- ![#ffffff](https://via.placeholder.com/15/ffffff/000000?text=+) `Computer`
-- ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `Hey Google`
-- ![#800080](https://via.placeholder.com/15/800080/000000?text=+) `Hey Siri`
-- ![#ff3399](https://via.placeholder.com/15/ff3399/000000?text=+) `Jarvis`
-- ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Picovoice`
-- ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Porcupine`
-- ![#000000](https://via.placeholder.com/15/000000/000000?text=+) `Terminator`
+- ![#ffff33](../../resources/images/ffff33.png) `Alexa`
+- ![#ff8000](../../resources/images/ff8000.png) `Bumblebee`
+- ![#ffffff](../../resources/images/ffffff.png) `Computer`
+- ![#ff0000](../../resources/images/ff0000.png) `Hey Google`
+- ![#800080](../../resources/images/800080.png) `Hey Siri`
+- ![#ff3399](../../resources/images/ff3399.png) `Jarvis`
+- ![#00ff00](../../resources/images/00ff00.png) `Picovoice`
+- ![#0000ff](../../resources/images/0000ff.png) `Porcupine`
+- ![#000000](../../resources/images/000000.png) `Terminator`
 <!-- markdown-link-check-enable-->
 
 From the root of the repository run:

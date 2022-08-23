@@ -49,10 +49,10 @@ For the single wake word demos, the default wake words are:
 
 Below are the LED colors associated with supported wake words for the multiple wake words demo:
 <!-- markdown-link-check-disable -->
-- ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Porcupine`
-- ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Picovoice`
-- ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `Bumblebee`
-- ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `Alexa`
+- ![#00ff00](../../../resources/images/00ff00.png) `Porcupine`
+- ![#ff8000](../../../resources/images/ff8000.png) `Picovoice`
+- ![#ff0000](../../../resources/images/ff0000.png) `Bumblebee`
+- ![#0000ff](../../../resources/images/0000ff.png) `Alexa`
 <!-- markdown-link-check-enable-->
 > :warning: **This project exclusively utilizes the Cortex-M7 core of the STM32H747XIH6 microcontroller. If you would like to use the Cortex-M4 core along with the Cortex-M7 core, set the BOOT_CM4_ADD0 option byte in STM32CubeProgrammer to 0x818**
 

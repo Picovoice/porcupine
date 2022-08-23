@@ -47,8 +47,8 @@ For the single wake word demos, the default wake words are:
 
 Below are the LED colors associated with supported wake words for the multiple wake words demo:
 <!-- markdown-link-check-disable -->
-- ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `Porcupine`
-- ![#ff8000](https://via.placeholder.com/15/ff8000/000000?text=+) `Picovoice`
+- ![#00ff00](../../../resources/images/00ff00.png) `Porcupine`
+- ![#ff8000](../../../resources/images/ff8000.png) `Picovoice`
 <!-- markdown-link-check-enable-->
 ## Create Custom Wake Word
 
