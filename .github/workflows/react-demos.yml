@@ -34,9 +34,12 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-
     - name: Pre-build dependencies
       run: npm install yarn
+
+    - name: Build binding
+      run: yarn install
+      working-directory: binding/react
 
     - name: Install dependencies
       run: yarn install
