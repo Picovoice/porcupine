@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import {BuiltInKeyword, PorcupineDetection} from "@picovoice/porcupine-web";
 import {usePorcupine} from "@picovoice/porcupine-web-react";
@@ -22,7 +22,13 @@ export default function VoiceWidget() {
     keywords,
     keywordEventHandler,
     {base64: porcupineParams}
-  )
+  );
+
+  useEffect(() => {
+    return () => {
+      stop();
+    }
+  }, [stop]);
 
   return (
     <div className="voice-widget">

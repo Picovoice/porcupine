@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -80,12 +80,6 @@ export const usePorcupine = (
     await webVpRef.current.pause();
     setIsListening(false);
   };
-
-  useEffect(() => {
-    return () => {
-      stop();
-    };
-  }, []);
 
   return {
     isListening,
