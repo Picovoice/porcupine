@@ -18,29 +18,30 @@
     "watch": "rollup --config --watch"
   },
   "dependencies": {
-    "@picovoice/porcupine-web-core": "^2.1.0"
+    "@picovoice/porcupine-web": "^2.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/plugin-transform-runtime": "^7.12.15",
-    "@babel/preset-env": "^7.12.13",
-    "@babel/runtime": "^7.12.13",
-    "@picovoice/web-voice-processor": "^2.2.2",
-    "@rollup/plugin-babel": "^5.2.3",
-    "@rollup/plugin-commonjs": "^17.1.0",
-    "@rollup/plugin-node-resolve": "^11.1.1",
+    "@babel/core": "^7.18.2",
+    "@babel/plugin-transform-runtime": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/runtime": "^7.18.3",
+    "@picovoice/web-voice-processor": "^3.0.2",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^18.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
     "cross-env": "^7.0.3",
-    "eslint": "^7.19.0",
+    "eslint": "^8.13.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.2.1",
-    "rollup": "^2.38.5",
+    "prettier": "^2.6.2",
+    "rollup": "^2.70.1",
     "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.29.0",
-    "rollup-plugin-web-worker-loader": "^1.6.0",
-    "typescript": "~4.1.5"
+    "rollup-plugin-typescript2": "^0.31.2",
+    "rollup-plugin-web-worker-loader": "^1.6.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.6.3"
   },
   "peerDependencies": {
-    "@picovoice/web-voice-processor": "^2.2.2",
+    "@picovoice/web-voice-processor": ">=3.0.2",
     "vue": "^2.6.11 || ^3.0.0"
   },
   "keywords": [
