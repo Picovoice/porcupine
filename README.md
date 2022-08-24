@@ -1276,9 +1276,7 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
       console.log("Porcupine worker ready!");
 
       console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
-      window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
-      window.webVp.subscribe(porcupine);
-      window.start();
+      await window.WebVoiceProcessor.WebVoiceProcessor.subscribe(porcupine);
       console.log("WebVoiceProcessor ready and listening!");
 
       document.addEventListener("DOMContentLoaded", function () {
@@ -1322,16 +1320,14 @@ const porcupine = await PorcupineWorker.create(
 );
 
 console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
-window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
-window.webVp.subscribe(porcupine);
-window.start();
+await WebVoiceProcessor.subscribe(porcupine);
 console.log("WebVoiceProcessor ready and listening!");
 
 ...
 
 // Finished with Porcupine? Release the WebVoiceProcessor and the worker.
 if (done) {
-  webVp.release()
+  await WebVoiceProcessor.reset();
   porcupine.release()
   porcupine.terminate()
 }
