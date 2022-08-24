@@ -1327,7 +1327,7 @@ console.log("WebVoiceProcessor ready and listening!");
 
 // Finished with Porcupine? Release the WebVoiceProcessor and the worker.
 if (done) {
-  await WebVoiceProcessor.reset();
+  await WebVoiceProcessor.unsubscribe(porcupine);
   porcupine.release()
   porcupine.terminate()
 }
