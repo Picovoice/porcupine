@@ -51,9 +51,8 @@
         writeMessage(
           "WebVoiceProcessor initializing. Microphone permissions requested ..."
         );
-        window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
-        window.webVp.subscribe(porcupine);
-        window.webVp.start()
+        await window.WebVoiceProcessor.WebVoiceProcessor.subscribe(porcupine);
+
         writeMessage("WebVoiceProcessor ready and listening!");
       } catch (err) {
         porcupineErrorCallback(err);
