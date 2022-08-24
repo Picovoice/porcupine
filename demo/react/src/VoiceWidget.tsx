@@ -46,7 +46,7 @@ export default function VoiceWidget() {
       </h3>
       <h3>Listening: {JSON.stringify(isListening)}</h3>
       <h3>Error: {JSON.stringify(error)}</h3>
-      {error && accessKey && (
+      {error && (
         <p className="error-message">{JSON.stringify(error)}</p>
       )}
       <h3>Keywords: {JSON.stringify(keywords)}</h3>
