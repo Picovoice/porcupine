@@ -5,7 +5,7 @@
   "description": "Porcupine React demo (made with Create React App)",
   "dependencies": {
     "@picovoice/porcupine-web-react": "../../binding/react",
-    "@picovoice/web-voice-processor": "^3.0.2",
+    "@picovoice/web-voice-processor": "^4.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

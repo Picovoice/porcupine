@@ -17,7 +17,7 @@ export default function VoiceWidget() {
     setKeywordDetections((x) => [...x, porcupineDetection.label]);
   };
 
-  const { isListening, error, start, pause, stop } = usePorcupine(
+  const { isListening, error, start, stop } = usePorcupine(
     accessKey,
     keywords,
     keywordEventHandler,
@@ -56,12 +56,6 @@ export default function VoiceWidget() {
         disabled={error !== null || isListening}
       >
         Start
-      </button>
-      <button
-        onClick={() => pause()}
-        disabled={error !== null || !isListening}
-      >
-        Pause
       </button>
       <button
         onClick={() => stop()}

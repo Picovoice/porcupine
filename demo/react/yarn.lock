@@ -1430,10 +1430,10 @@
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-3.0.2.tgz#92b5c007871503c9edfbfa3bf7e93804a229d380"
-  integrity sha512-IwjPz7qatc0Rj57gV0mpD8yUzOpEkrN/MpUIhvVx3QovxSNA2fBrDAnG9eVySRkklJMp/2dGNIz+XhWWGXXJFA==
+"@picovoice/web-voice-processor@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.0.tgz#fd1f9b60f8daf050d764d5549ad19ca64a0d1184"
+  integrity sha512-EMZrl/dbZou6vVxfElS9N+IQDMCRfYNYYh2CCFQjrPGwXLez9CaKGdF07N5GoIaf5wyM4l8pZzVTcGxoZCKY4Q==
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   version "0.4.3"

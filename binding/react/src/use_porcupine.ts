@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -29,64 +29,63 @@ export const usePorcupine = (
   model: PorcupineModel,
   options: PorcupineOptions = {},
 ) => {
-  const webVpRef = useRef(WebVoiceProcessor.instance());
   const ppnRef = useRef<PorcupineWorker | null>(null);
 
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const keywordCallbackInner = useRef(keywordDetectionCallback);
+  const keywordDetectionInner = useRef(keywordDetectionCallback);
 
-  const start = async (): Promise<void> => {
+  const keywordDetectionWrapper = useRef((porcupineDetection: PorcupineDetection) => {
+    keywordDetectionInner.current(porcupineDetection);
+  });
+
+  useEffect(() => {
+    keywordDetectionInner.current = keywordDetectionCallback;
+  }, [keywordDetectionCallback]);
+
+  const start = useCallback(async (): Promise<void> => {
     try {
       if (!ppnRef.current) {
         const handle: PorcupineWorker = await PorcupineWorker.create(
           accessKey,
           keywords,
-          keywordCallbackInner.current,
+          keywordDetectionWrapper.current,
           model,
           options
         );
 
-        webVpRef.current.subscribe(handle);
+        await WebVoiceProcessor.subscribe(handle);
         ppnRef.current = handle;
       }
 
-      await webVpRef.current.start();
       setIsListening(true);
     } catch (e: any) {
       setError(e.toString());
       setIsListening(false);
     }
-  };
+  }, [accessKey, keywords, model, options]);
 
-  const stop = async (): Promise<void> => {
+  const stop = useCallback(async (): Promise<void> => {
     try {
       if (ppnRef.current) {
-        webVpRef.current.unsubscribe(ppnRef.current);
+        await WebVoiceProcessor.unsubscribe(ppnRef.current);
         ppnRef.current.terminate();
         ppnRef.current = null;
       }
 
-      await webVpRef.current.stop();
       setIsListening(false);
     } catch (e: any) {
       setError(e.toString());
       setIsListening(false);
     }
-  };
-
-  const pause = async (): Promise<void> => {
-    await webVpRef.current.pause();
-    setIsListening(false);
-  };
+  }, []);
 
   return {
     isListening,
     error,
     start,
     stop,
-    pause,
   };
 };
 
