@@ -53,7 +53,7 @@ export default function VoiceWidget() {
       <br />
       <button
         onClick={() => start()}
-        disabled={error !== null || isListening}
+        disabled={isListening}
       >
         Start
       </button>
