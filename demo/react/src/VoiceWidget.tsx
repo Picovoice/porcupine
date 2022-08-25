@@ -17,12 +17,18 @@ export default function VoiceWidget() {
     setKeywordDetections((x) => [...x, porcupineDetection.label]);
   };
 
-  const { isListening, error, start, stop } = usePorcupine(
-    accessKey,
-    keywords,
-    keywordEventHandler,
-    {base64: porcupineParams}
-  );
+  const { isLoaded, isListening, error, init, start, stop, release } = usePorcupine();
+
+  useEffect(() => {
+    if (accessKey.length > 0) {
+      init(
+        accessKey,
+        keywords,
+        keywordEventHandler,
+        {base64: porcupineParams}
+      );
+    }
+  }, [init, accessKey, keywords])
 
   useEffect(() => {
     return () => {
@@ -44,8 +50,9 @@ export default function VoiceWidget() {
           />
         </label>
       </h3>
+      <h3>Loaded: {JSON.stringify(isLoaded)}</h3>
       <h3>Listening: {JSON.stringify(isListening)}</h3>
-      <h3>Error: {JSON.stringify(error)}</h3>
+      <h3>Error: {JSON.stringify(error !== null)}</h3>
       {error && (
         <p className="error-message">{JSON.stringify(error)}</p>
       )}
@@ -53,13 +60,13 @@ export default function VoiceWidget() {
       <br />
       <button
         onClick={() => start()}
-        disabled={isListening}
+        disabled={!isLoaded || isListening}
       >
         Start
       </button>
       <button
         onClick={() => stop()}
-        disabled={error !== null || !isListening}
+        disabled={!isLoaded || !isListening}
       >
         Stop
       </button>

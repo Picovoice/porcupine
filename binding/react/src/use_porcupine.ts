@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -22,66 +22,50 @@ import {
   PorcupineWorker,
 } from '@picovoice/porcupine-web';
 
-export const usePorcupine = (
-  accessKey: string,
-  keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
-  keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
-  model: PorcupineModel,
-  options: PorcupineOptions = {},
-) => {
-  const ppnRef = useRef<PorcupineWorker | null>(null);
-
+export const usePorcupine = () => {
+  const [porcupine, setPorcupine] = useState<PorcupineWorker | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const keywordDetectionInner = useRef(keywordDetectionCallback);
+  const init = useCallback(async (
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
+    model: PorcupineModel,
+    options: PorcupineOptions = {},
+  ): Promise<void> => {
 
-  const keywordDetectionWrapper = useRef((porcupineDetection: PorcupineDetection) => {
-    keywordDetectionInner.current(porcupineDetection);
-  });
-
-  useEffect(() => {
-    keywordDetectionInner.current = keywordDetectionCallback;
-  }, [keywordDetectionCallback]);
+  }, []);
 
   const start = useCallback(async (): Promise<void> => {
     try {
-      if (!ppnRef.current) {
-        const handle: PorcupineWorker = await PorcupineWorker.create(
-          accessKey,
-          keywords,
-          keywordDetectionWrapper.current,
-          model,
-          options
-        );
-
-        await WebVoiceProcessor.subscribe(handle);
-        ppnRef.current = handle;
+      if (!porcupine) {
       }
 
+      await WebVoiceProcessor.subscribe(porcupine);
       setIsListening(true);
     } catch (e: any) {
       setError(e.toString());
       setIsListening(false);
     }
-  }, [accessKey, keywords, model, options]);
+  }, [porcupine]);
 
   const stop = useCallback(async (): Promise<void> => {
     try {
-      if (ppnRef.current) {
-        await WebVoiceProcessor.unsubscribe(ppnRef.current);
-        ppnRef.current.terminate();
-        ppnRef.current = null;
-      }
-
+      await WebVoiceProcessor.unsubscribe(porcupine);
       setIsListening(false);
     } catch (e: any) {
       setError(e.toString());
       setIsListening(false);
     }
-  }, []);
+  }, [porcupine]);
+
+  const release = useCallback(async (): Promise<void> => {
+  }, [porcupine]);
 
   return {
+    isLoaded,
     isListening,
     error,
     start,
