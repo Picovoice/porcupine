@@ -32,24 +32,14 @@ export type PorcupineServiceArgs = {
   providedIn: 'root',
 })
 export class PorcupineService implements OnDestroy {
-  public webVoiceProcessor: WebVoiceProcessor | null = null;
-  public keyword$: Subject<string> = new Subject<string>();
-  public listening$: Subject<boolean> = new Subject<boolean>();
-  public isError$: Subject<boolean> = new Subject<boolean>();
+  public keyword$: Subject<PorcupineDetection> = new Subject<PorcupineDetection>();
+
+  public isLoaded$: Subject<string> = new Subject<string>();
+  public isListening$: Subject<boolean> = new Subject<boolean>();
   public error$: Subject<Error | string> = new Subject<Error | string>();
-  private porcupineWorker: PorcupineWorker | null = null;
-  private isInit = false;
+  private porcupine: PorcupineWorker | null = null;
 
   constructor() {}
-
-  public pause(): boolean {
-    if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.pause();
-      this.listening$.next(false);
-      return true;
-    }
-    return false;
-  }
 
   public async stop(): Promise<boolean> {
     if (this.webVoiceProcessor !== null) {
@@ -83,8 +73,10 @@ export class PorcupineService implements OnDestroy {
   }
 
   public async init(
-    porcupineWorkerFactory: PorcupineWorkerFactory,
-    porcupineServiceArgs: PorcupineServiceArgs
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    model: PorcupineModel,
+    options?: PorcupineOptions,
   ): Promise<void> {
     if (this.isInit) {
       throw new Error('Porcupine is already initialized');
@@ -129,12 +121,7 @@ export class PorcupineService implements OnDestroy {
     this.release();
   }
 
-  private keywordCallback = (label: string): void => {
-    this.keyword$.next(label);
-  };
-
-  private errorCallback = (error: string | Error): void => {
-    this.error$.next(error);
-    this.isError$.next(true);
+  private keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void => {
+    this.keyword$.next(porcupineDetection);
   };
 }
