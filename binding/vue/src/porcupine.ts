@@ -12,37 +12,34 @@
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
+  BuiltInKeyword,
+  PorcupineDetection,
   PorcupineKeyword,
+  PorcupineModel,
+  PorcupineOptions,
   PorcupineWorker,
-  PorcupineWorkerFactory
-} from "@picovoice/porcupine-web-core";
-
-/**
-* Type alias for PorcupineWorkerFactory arguments.
-*/
-export type PorcupineWorkerFactoryArgs = {
-  accessKey: string;
-  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
-  start?: boolean;
-};
+} from '@picovoice/porcupine-web';
 
 /**
  * Type alias for Porcupine Vue Mixin.
  * Use with `Vue as VueConstructor extends {$porcupine: PorcupineVue}` to get types in typescript.
  */
 export interface PorcupineVue {
-  $_ppnWorker_: Worker | null;
-  $_webVp_: WebVoiceProcessor | null;
+  $_porcupine_: PorcupineWorker | null,
   init: (
-    porcupineFactoryArgs: PorcupineWorkerFactoryArgs,
-    porcupineFactory: PorcupineWorkerFactory,
-    keywordCallback: (label: string) => void,
-    readyCallback: () => void,
-    errorCallback: (error: string | Error) => void) => void;
-  start: () => Promise<boolean>;
-  stop: () => Promise<boolean>;
-  pause: () => boolean;
-  delete: () => void;
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
+    model: PorcupineModel,
+    options?: PorcupineOptions,
+  ) => Promise<void>,
+  start: () => Promise<void>,
+  pause: () => Promise<void>,
+  stop: () => Promise<void>,
+  $_keywordDetectionCallback_: (porcupineDetection: PorcupineDetection) => void,
+  isLoaded: boolean,
+  isListening: boolean,
+  error: Error | string | null,
 }
 
 export default {
@@ -52,24 +49,17 @@ export default {
      */
     $porcupine(): PorcupineVue {
       return {
-        $_ppnWorker_: null as PorcupineWorker | null,
-        $_webVp_: null as WebVoiceProcessor | null,
-        /**
-         * Init function for Porcupine.
-         * 
-         * @param porcupineFactoryArgs Arguments for PorcupineWorkerFactory.
-         * @param porcupineFactory The language-specific worker factory
-         * @param keywordCallback A method invoked upon detection of the keywords.
-         * @param readyCallback A method invoked after component has initialized.
-         * @param errorCallback A method invoked if an error occurs within `PorcupineWorkerFactory`.
-         */
+        $_porcupine_: null as PorcupineWorker | null,
+        isLoaded: false,
+        isListening: false,
+        error: null,
         async init(
-          porcupineFactoryArgs,
-          porcupineFactory,
-          keywordCallback = (_: string) => {},
-          readyCallback = () => {},
-          errorCallback = (error: string | Error) => {console.error(error)}
-        ) {
+          accessKey: string,
+          keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+          keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
+          model: PorcupineModel,
+          options: PorcupineOptions = {},
+        ): Promise<void> {
           try {
             const { accessKey, keywords } = porcupineFactoryArgs;
             this.$_ppnWorker_ = await porcupineFactory.create(
@@ -118,14 +108,6 @@ export default {
           } else {
             return false;
           }
-        },
-        /**
-         * Delete used resources.
-         */
-        delete() {
-          this.$_webVp_?.release();
-          this.$_ppnWorker_?.postMessage({ command: 'release' });
-          this.$_ppnWorker_?.terminate();
         }
       }
     }

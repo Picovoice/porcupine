@@ -9,26 +9,26 @@
           type="text"
           name="accessKey"
           v-on:change="updateInputValue"
-          :disabled="isLoaded"
+          :disabled="!$porcupine.isLoaded"
         />
       </label>
-      <button class="start-button" v-on:click="initEngine" :disabled="isLoaded">
+      <button class="start-button" v-on:click="initEngine" :disabled="!$porcupine.isLoaded">
           Start Porcupine
       </button>
     </h3>
-    <h3>Loaded: {{ isLoaded }}</h3>
-    <h3>Listening: {{ isListening }}</h3>
-    <h3>Error: {{ isError }}</h3>
-    <p class="error-message" v-if="isError">
-      {{ JSON.stringify(errorMessage) }}
+    <h3>Loaded: {{ $porcupine.isLoaded }}</h3>
+    <h3>Listening: {{ $porcupine.isListening }}</h3>
+    <h3>Error: {{ $porcupine.error !== null }}</h3>
+    <p class="error-message" v-if="$porcupine.error !== null">
+      {{ $porcupine.error.toString() }}
     </p>
-    <button v-on:click="start" :disabled="!isLoaded || isError || isListening">
+    <button v-on:click="start" :disabled="!$porcupine.isLoaded || $porcupine.error || $porcupine.isListening">
       Start
     </button>
-    <button v-on:click="pause" :disabled="!isLoaded || isError || !isListening">
+    <button v-on:click="pause" :disabled="!$porcupine.isLoaded || $porcupine.error || !$porcupine.isListening">
       Pause
     </button>
-    <button v-on:click="stop" :disabled="!isLoaded || isError || !isListening">
+    <button v-on:click="stop" :disabled="!$porcupine.isLoaded || $porcupine.error || !$porcupine.isListening">
       Stop
     </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
@@ -43,74 +43,44 @@
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 
-import { PorcupineWorkerFactory as PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
 import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-web-vue";
 
-const VoiceWidget = (Vue as VueConstructor<Vue & {$porcupine: PorcupineVue}>).extend({
+const VoiceWidget = (
+  Vue as VueConstructor<Vue & { $porcupine: PorcupineVue }>
+).extend({
   name: "VoiceWidget",
   mixins: [porcupineMixin],
   data() {
     return {
       inputValue: "",
       detections: [] as string[],
-      isError: false,
-      errorMessage: null as string | null,
-      isLoaded: false,
-      isListening: false,
-      factory: PorcupineWorkerFactoryEn,
-      factoryArgs: {
-        accessKey: "",
-        keywords: [
-          { builtin: "Grasshopper", sensitivity: 0.5 },
-          { builtin: "Grapefruit", sensitivity: 0.6 },
-        ],
-      },
+      $porcupine: this.$porcupine,
     };
   },
   methods: {
     start: function () {
-      if (this.$porcupine.start()) {
-        this.isListening = !this.isListening;
-      }
+      this.$porcupine.start();
     },
     stop: function () {
-      if (this.$porcupine.stop()) {
-        this.isListening = !this.isListening;
-      }
+      this.$porcupine.stop();
     },
     pause: function () {
-      if (this.$porcupine.pause()) {
-        this.isListening = !this.isListening;
-      }
+      this.$porcupine.pause();
     },
     initEngine: function (event: any) {
-      this.factoryArgs.accessKey = this.inputValue;
-      this.isError = false;
-      this.isLoaded = false;
-      this.isListening = false;
       this.$porcupine.init(
-        this.factoryArgs,
-        this.factory,
-        this.ppnKeywordFn,
-        this.ppnReadyFn,
-        this.ppnErrorFn
+        this.inputValue,
+        [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
+        this.keywordDetectionCallback,
+        {base64: porcupineParams}
       );
-    }, 
+    },
     updateInputValue: function (event: any) {
       this.inputValue = event.target.value;
     },
-    ppnReadyFn: function () {
-      this.isLoaded = true;
-      this.isListening = true;
-    },
-    ppnKeywordFn: function (keywordLabel: string) {
-      console.log(keywordLabel);
+    keywordDetectionCallback: function (keywordLabel: string) {
       this.detections = [...this.detections, keywordLabel];
-    },
-    ppnErrorFn: function (error: string | Error) {
-      this.isError = true;
-      this.errorMessage = error.toString();
-    },
+    }
   },
 });
 
