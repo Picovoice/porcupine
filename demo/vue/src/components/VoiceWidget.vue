@@ -25,9 +25,6 @@
     <button v-on:click="start" :disabled="!$porcupine.isLoaded || $porcupine.error || $porcupine.isListening">
       Start
     </button>
-    <button v-on:click="pause" :disabled="!$porcupine.isLoaded || $porcupine.error || !$porcupine.isListening">
-      Pause
-    </button>
     <button v-on:click="stop" :disabled="!$porcupine.isLoaded || $porcupine.error || !$porcupine.isListening">
       Stop
     </button>

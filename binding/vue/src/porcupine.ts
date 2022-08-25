@@ -26,6 +26,9 @@ import {
  */
 export interface PorcupineVue {
   $_porcupine_: PorcupineWorker | null,
+  isLoaded: boolean,
+  isListening: boolean,
+  error: Error | string | null,
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -34,12 +37,8 @@ export interface PorcupineVue {
     options?: PorcupineOptions,
   ) => Promise<void>,
   start: () => Promise<void>,
-  pause: () => Promise<void>,
   stop: () => Promise<void>,
-  $_keywordDetectionCallback_: (porcupineDetection: PorcupineDetection) => void,
-  isLoaded: boolean,
-  isListening: boolean,
-  error: Error | string | null,
+  release: () => Promise<void>,
 }
 
 export default {
@@ -88,17 +87,6 @@ export default {
           }
         },
         /**
-         * Pause processing audio.
-         */
-        pause() {
-          if (this.$_webVp_ !== null) {
-            this.$_webVp_.pause();
-            return true;
-          } else {
-            return false;
-          }
-        },
-        /**
          * Stop processing audio.
          */
         async stop() {
@@ -108,8 +96,11 @@ export default {
           } else {
             return false;
           }
+        },
+        async release() {
+
         }
-      }
+      };
     }
   },
   // Vue 3 method to clean resources.
