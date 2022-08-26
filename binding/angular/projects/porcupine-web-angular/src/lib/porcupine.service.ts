@@ -30,7 +30,7 @@ export class PorcupineService implements OnDestroy {
 
   public isLoaded$: Subject<boolean> = new Subject<boolean>();
   public isListening$: Subject<boolean> = new Subject<boolean>();
-  public error$: Subject<Error | string | null> = new Subject<Error | string | null>();
+  public error$: Subject<string | null> = new Subject<string | null>();
 
   private porcupine: PorcupineWorker | null = null;
 
@@ -58,7 +58,7 @@ export class PorcupineService implements OnDestroy {
         this.isLoaded$.next(true);
       }
     } catch (error) {
-      this.error$.next(error as Error);
+      this.error$.next(error.toString());
     }
   }
 
@@ -72,7 +72,7 @@ export class PorcupineService implements OnDestroy {
       await WebVoiceProcessor.subscribe(this.porcupine);
       this.isListening$.next(true);
     } catch (error: any) {
-      this.error$.next(error);
+      this.error$.next(error.toString());
       this.isListening$.next(false);
     }
   }
@@ -87,7 +87,7 @@ export class PorcupineService implements OnDestroy {
       await WebVoiceProcessor.unsubscribe(this.porcupine);
       this.isListening$.next(false);
     } catch (error: any) {
-      this.error$.next(error);
+      this.error$.next(error.toString());
       this.isListening$.next(true);
     }
   }
@@ -112,7 +112,7 @@ export class PorcupineService implements OnDestroy {
     this.wakeWordDetection$.next(porcupineDetection);
   };
 
-  private errorCallback = (error: any) => {
+  private errorCallback = (error: string) => {
     this.error$.next(error);
   };
 }
