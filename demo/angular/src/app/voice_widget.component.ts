@@ -13,7 +13,7 @@ import porcupineParams from '../lib/porcupine_params';
   styleUrls: ['./voice_widget.component.scss']
 })
 export class VoiceWidget implements OnDestroy {
-  private keywordDetection: Subscription;
+  private wakeWordDetection: Subscription;
   private isLoadedDetection: Subscription;
   private isListeningDetection: Subscription;
   private errorDetection: Subscription;
@@ -27,7 +27,7 @@ export class VoiceWidget implements OnDestroy {
   constructor(private porcupineService: PorcupineService) {
     // Subscribe to Porcupine Keyword detections
     // Store each detection, so we can display it in an HTML list
-    this.keywordDetection = porcupineService.keyword$.subscribe(
+    this.wakeWordDetection = porcupineService.wakeWordDetection$.subscribe(
       porcupineDetection => {
         this.detections = [...this.detections, porcupineDetection.label];
       });
@@ -48,7 +48,7 @@ export class VoiceWidget implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.keywordDetection.unsubscribe();
+    this.wakeWordDetection.unsubscribe();
     this.isLoadedDetection.unsubscribe();
     this.isListeningDetection.unsubscribe();
     this.errorDetection.unsubscribe();

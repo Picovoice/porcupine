@@ -114,7 +114,7 @@ const porcupineModel = {
 First subscribe to the events from `PorcupineService`. There are four
 subscription events:
 
-- `keyword$`: Returns the detected wake word.
+- `wakeWordDetection$`: Returns the detected wake word.
 - `isLoaded$`: Returns true if `Porcupine` has loaded successfully.
 - `isListening$`: Returns true if `WebVoiceProcessor` has started successfully.
 - `error$`:  Returns any errors occurred.
@@ -126,7 +126,7 @@ import { PorcupineService } from "@picovoice/porcupine-web-angular"
 ...
 
   constructor(private porcupineService: PorcupineService) {
-    this.keywordDetection = porcupineService.keyword$.subscribe(
+    this.wakeWordDetection = porcupineService.wakeWordDetection$.subscribe(
       porcupineDetection => {
         console.log(`Porcupine Detected "${porcupineDetection.label}"`)
       });
@@ -167,7 +167,7 @@ Run the following to start wake word detection:
 await this.porcupineService.start();
 ```
 
-The results are available on `porcupineService.keyword$` as mentioned above.
+The results are available on `porcupineService.wakeWordDetection$` as mentioned above.
 
 ### Stop
 
@@ -183,7 +183,7 @@ Clean up used resources with:
 
 ```typescript
 ngOnDestroy(): void {
-  this.keywordDetection.unsubscribe();
+  this.wakeWordDetection.unsubscribe();
   this.isLoadedDetection.unsubscribe();
   this.isListeningDetection.unsubscribe();
   this.errorDetection.unsubscribe();

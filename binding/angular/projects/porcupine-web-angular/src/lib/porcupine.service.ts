@@ -26,7 +26,7 @@ import {
   providedIn: 'root',
 })
 export class PorcupineService implements OnDestroy {
-  public keyword$: Subject<PorcupineDetection> = new Subject<PorcupineDetection>();
+  public wakeWordDetection$: Subject<PorcupineDetection> = new Subject<PorcupineDetection>();
 
   public isLoaded$: Subject<boolean> = new Subject<boolean>();
   public isListening$: Subject<boolean> = new Subject<boolean>();
@@ -113,7 +113,7 @@ export class PorcupineService implements OnDestroy {
   }
 
   private keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void => {
-    this.keyword$.next(porcupineDetection);
+    this.wakeWordDetection$.next(porcupineDetection);
   };
 
   private errorCallback = (error: any) => {
