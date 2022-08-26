@@ -51,6 +51,7 @@ const VoiceWidget = defineComponent({
       isLoaded: false,
       isListening: false,
       error: null,
+      $porcupine: {} as PorcupineVue,
     };
   },
   methods: {
