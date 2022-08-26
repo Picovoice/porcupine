@@ -110,9 +110,9 @@ export class PorcupineService implements OnDestroy {
 
   private keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void => {
     this.keyword$.next(porcupineDetection);
-  }
+  };
 
   private errorCallback = (error: any) => {
     this.error$.next(error);
-  }
+  };
 }
