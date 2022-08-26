@@ -56,6 +56,7 @@ export class PorcupineService implements OnDestroy {
           { processErrorCallback: this.errorCallback }
         );
         this.isLoaded$.next(true);
+        this.error$.next(null);
       }
     } catch (error) {
       this.error$.next(error.toString());
@@ -71,6 +72,7 @@ export class PorcupineService implements OnDestroy {
     try {
       await WebVoiceProcessor.subscribe(this.porcupine);
       this.isListening$.next(true);
+      this.error$.next(null);
     } catch (error: any) {
       this.error$.next(error.toString());
       this.isListening$.next(false);
@@ -86,6 +88,7 @@ export class PorcupineService implements OnDestroy {
     try {
       await WebVoiceProcessor.unsubscribe(this.porcupine);
       this.isListening$.next(false);
+      this.error$.next(null);
     } catch (error: any) {
       this.error$.next(error.toString());
       this.isListening$.next(true);
@@ -99,8 +102,6 @@ export class PorcupineService implements OnDestroy {
       this.porcupine = null;
 
       this.isLoaded$.next(false);
-      this.isListening$.next(false);
-      this.error$.next(null);
     }
   }
 
