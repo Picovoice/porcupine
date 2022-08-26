@@ -1421,70 +1421,52 @@ function VoiceWidget(props) {
 #### Vue
 
 ```console
-yarn add @picovoice/porcupine-web-vue
+yarn add @picovoice/porcupine-web-vue @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-vue
+npm install @picovoice/porcupine-web-vue @picovoice/web-voice-processor
 ```
 
 ```html
 <script lang="ts">
-import porcupineMixin from "@picovoice/porcupine-web-vue";
-import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+  import {BuiltInKeyword} from "@picovoice/porcupine-web";
+  import porcupineMixin from "@picovoice/porcupine-web-vue";
 
-export default {
-  name: "App",
-  mixins: [porcupineMixin],
-  data: function() {
-    return {
-      detections: [] as string[],
-      isError: false,
-      isLoaded: false,
-      factory: PorcupineWorkerFactoryEn,
-      factoryArgs: {
-        accessKey: '${ACCESS_KEY}', // from Picovoice Console (https://console.picovoice.ai/)
-        keywords: [
-          { builtin: 'Grasshopper', sensitivity: 0.5 },
-          { builtin: 'Grapefruit', sensitivity: 0.6 },
-        ],
-      }
-    };
-  },
-  async created() {
-    await this.$porcupine.init(
-      this.factoryArgs,     // Porcupine factory arguments
-      this.factory,         // Porcupine Web Worker component
-      this.ppnKeywordFn,    // Callback invoked after detection of keyword
-      this.ppnReadyFn,      // Callback invoked after loading Porcupine
-      this.ppnErrorFn       // Callback invoked in an error occurs while initializing Porcupine
-    );
-  },
-  methods: {
-    start: function () {
-      if (this.$porcupine.start()) {
-        this.isListening = !this.isListening;
+  import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
+
+  export default {
+    mixins: [porcupineMixin],
+    mounted() {
+      this.$porcupine.init(
+              ${ACCESS_KEY},
+              [BuiltInKeyword.Porcupine],
+              this.keywordDetectionCallback,
+              { base64: porcupineParams }, // porcupine model
+              this.isLoadedCallback,
+              this.isListeningCallback,
+      ).then(() => {
+        this.$porcupine.start();
+      });
+    },
+    methods: {
+      keywordDetectionCallback: function(keyword) {
+        console.log(`Porcupine detected keyword: ${keyword.label}`);
+      },
+      isLoadedCallback: function(isLoaded) {
+        console.log(isLoaded);
+      },
+      isListeningCallback: function(isListening) {
+        console.log(isListening);
       }
     },
-    pause: function () {
-      if (this.$porcupine.pause()) {
-        this.isListening = !this.isListening;
-      }
-    },
-    ppnReadyFn: function() {
-      this.isLoaded = true;
-    },
-    ppnKeywordFn: function(data: string) {
-      this.detections = [...this.detections, data.keywordLabel];
-    },
-    ppnErrorFn: function(error: Error) {
-      this.isError = true;
-      this.errorMessage = error.toString();
-    },
-  },
-};
+    // beforeDestroy for Vue 2.
+    beforeUnmount() {
+      this.$porcupine.release();
+    }
+  }
 </script>
 ```
 

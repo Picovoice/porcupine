@@ -26,19 +26,22 @@ import {
  */
 export interface PorcupineVue {
   $_porcupine_: PorcupineWorker | null,
-  isLoaded: boolean,
-  isListening: boolean,
-  error: Error | string | null,
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
     keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     model: PorcupineModel,
+    isLoadedCallback: (isLoaded: boolean) => void,
+    isListeningCallback: (isListening: boolean) => void,
     options?: PorcupineOptions,
   ) => Promise<void>,
   start: () => Promise<void>,
   stop: () => Promise<void>,
   release: () => Promise<void>,
+  keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
+  isLoadedCallback: (isLoaded: boolean) => void,
+  isListeningCallback: (isListening: boolean) => void,
+  errorCallback: (error: string) => void,
 }
 
 export default {
@@ -49,66 +52,87 @@ export default {
     $porcupine(): PorcupineVue {
       return {
         $_porcupine_: null as PorcupineWorker | null,
-        isLoaded: false,
-        isListening: false,
-        error: null,
+        keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => { return; },
+        isLoadedCallback: (isLoaded: boolean) => { return; },
+        isListeningCallback: (isListening: boolean) => { return; },
+        errorCallback: (error: string) => { console.error(error); },
         async init(
           accessKey: string,
           keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
           keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
           model: PorcupineModel,
+          isLoadedCallback: (isLoaded: boolean) => void,
+          isListeningCallback: (isListening: boolean) => void,
           options: PorcupineOptions = {},
         ): Promise<void> {
           try {
-            const { accessKey, keywords } = porcupineFactoryArgs;
-            this.$_ppnWorker_ = await porcupineFactory.create(
+            if (options.processErrorCallback) {
+              this.errorCallback = options.processErrorCallback;
+            }
+
+            this.$_porcupine_ = await PorcupineWorker.create(
               accessKey,
-              JSON.parse(JSON.stringify(keywords)),
-              keywordCallback,
-              errorCallback
+              keywords,
+              keywordDetectionCallback,
+              model,
+              options
             );
-            this.$_webVp_ = await WebVoiceProcessor.init({
-              engines: [this.$_ppnWorker_!],
-            });
-            readyCallback();
-          } catch (error) {
-            errorCallback(error as Error);
+
+            this.isListeningCallback = isListeningCallback;
+            this.isLoadedCallback = isLoadedCallback;
+            isLoadedCallback(true);
+          } catch (error: any) {
+            this.errorCallback(error);
           }
         },
         /**
          * Start processing audio.
          */
-        async start() {
-          if (this.$_webVp_ !== null) {
-            await this.$_webVp_.start();
-            return true;
-          } else {
-            return false;
+        async start(): Promise<void> {
+          try {
+            if (!this.$_porcupine_) {
+              this.errorCallback('Porcupine not initialized');
+              return;
+            }
+            await WebVoiceProcessor.subscribe(this.$_porcupine_);
+            this.isListeningCallback(true);
+          } catch (error: any) {
+            this.errorCallback(error);
           }
         },
         /**
          * Stop processing audio.
          */
-        async stop() {
-          if (this.$_webVp_ !== null) {
-            await this.$_webVp_.stop();
-            return true;
-          } else {
-            return false;
+        async stop(): Promise<void> {
+          try {
+            if (!this.$_porcupine_) {
+              this.errorCallback('Porcupine not initialized');
+              return;
+            }
+            await WebVoiceProcessor.unsubscribe(this.$_porcupine_);
+            this.isListeningCallback(false);
+          } catch (error: any) {
+            this.errorCallback(error);
           }
         },
-        async release() {
+        async release(): Promise<void> {
+          if (this.$_porcupine_) {
+            await WebVoiceProcessor.unsubscribe(this.$_porcupine_);
+            this.$_porcupine_.terminate();
+            this.$_porcupine_ = null;
 
+            this.isLoadedCallback(false);
+          }
         }
       };
     }
   },
   // Vue 3 method to clean resources.
-  beforeUnmount(this: any) {
-    this.$porcupine.delete();
+  beforeUnmount(this: any): void {
+    this.$porcupine.release();
   },
   // Vue 2 method to clean resources.
-  beforeDestroy(this: any) {
-    this.$porcupine.delete();
+  beforeDestroy(this: any): void {
+    this.$porcupine.release();
   }
 };

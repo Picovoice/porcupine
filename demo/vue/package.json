@@ -5,17 +5,17 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
+    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./src/lib/porcupine_params.js",
     "start": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@picovoice/porcupine-web-en-worker": "^2.1.7",
-    "@picovoice/porcupine-web-vue": "^2.1.2",
-    "@picovoice/web-voice-processor": "^2.2.2",
+    "@picovoice/porcupine-web-vue": "../../binding/vue",
+    "@picovoice/web-voice-processor": "~4.0.0",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11",
+    "vue": "^3.2.37",
     "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {

@@ -5,27 +5,22 @@
       <label>
         AccessKey obtained from
         <a href="https://console.picovoice.ai/">Picovoice Console</a>:
-        <input
-          type="text"
-          name="accessKey"
-          v-on:change="updateInputValue"
-          :disabled="!$porcupine.isLoaded"
-        />
+        <input type="text" name="accessKey" v-on:change="updateInputValue" />
       </label>
-      <button class="start-button" v-on:click="initEngine" :disabled="!$porcupine.isLoaded">
-          Start Porcupine
+      <button class="start-button" v-on:click="initEngine">
+        Start Porcupine
       </button>
     </h3>
-    <h3>Loaded: {{ $porcupine.isLoaded }}</h3>
-    <h3>Listening: {{ $porcupine.isListening }}</h3>
-    <h3>Error: {{ $porcupine.error !== null }}</h3>
-    <p class="error-message" v-if="$porcupine.error !== null">
-      {{ $porcupine.error.toString() }}
+    <h3>Loaded: {{ isLoaded }}</h3>
+    <h3>Listening: {{ isListening }}</h3>
+    <h3>Error: {{ error !== null }}</h3>
+    <p class="error-message" v-if="error !== null">
+      {{ error.toString() }}
     </p>
-    <button v-on:click="start" :disabled="!$porcupine.isLoaded || $porcupine.error || $porcupine.isListening">
+    <button v-on:click="start" :disabled="!isLoaded || error || isListening">
       Start
     </button>
-    <button v-on:click="stop" :disabled="!$porcupine.isLoaded || $porcupine.error || !$porcupine.isListening">
+    <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">
       Stop
     </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
@@ -38,20 +33,24 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import { defineComponent } from "vue";
 
+import { BuiltInKeyword, PorcupineDetection } from "@picovoice/porcupine-web";
 import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-web-vue";
 
-const VoiceWidget = (
-  Vue as VueConstructor<Vue & { $porcupine: PorcupineVue }>
-).extend({
+// @ts-ignore
+import porcupineParams from "@/lib/porcupine_params";
+
+const VoiceWidget = defineComponent({
   name: "VoiceWidget",
   mixins: [porcupineMixin],
   data() {
     return {
       inputValue: "",
       detections: [] as string[],
-      $porcupine: this.$porcupine,
+      isLoaded: false,
+      isListening: false,
+      error: null,
     };
   },
   methods: {
@@ -61,23 +60,34 @@ const VoiceWidget = (
     stop: function () {
       this.$porcupine.stop();
     },
-    pause: function () {
-      this.$porcupine.pause();
-    },
-    initEngine: function (event: any) {
+    initEngine: function () {
       this.$porcupine.init(
         this.inputValue,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
         this.keywordDetectionCallback,
-        {base64: porcupineParams}
+        { base64: porcupineParams },
+        this.isLoadedCallback,
+        this.isListeningCallback,
+        { processErrorCallback: this.errorCallback }
       );
     },
     updateInputValue: function (event: any) {
       this.inputValue = event.target.value;
     },
-    keywordDetectionCallback: function (keywordLabel: string) {
-      this.detections = [...this.detections, keywordLabel];
-    }
+    keywordDetectionCallback: function (
+      porcupineDetection: PorcupineDetection
+    ) {
+      this.detections = [...this.detections, porcupineDetection.label];
+    },
+    isLoadedCallback: function (isLoaded: boolean) {
+      this.isLoaded = isLoaded;
+    },
+    isListeningCallback: function (isListening: boolean) {
+      this.isListening = isListening;
+    },
+    errorCallback: function (error: any) {
+      this.error = error;
+    },
   },
 });
 
