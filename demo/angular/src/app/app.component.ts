@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'porcupine-web-angular-demo-porcupine';
-  show = true
+  show = true;
 
-  toggle() {
-    this.show = !this.show
+  toggle(): void {
+    this.show = !this.show;
   }
 }

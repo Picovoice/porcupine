@@ -21,11 +21,11 @@
 
   <p class="error-message" *ngIf="error !== null">{{ error.toString() }}</p>
 
-  <h3>Keyword: {{ keywords['custom'] | json }}</h3>
+  <h3>Keywords: Alexa, Porcupine</h3>
   <br />
-  <button (click)="start()" [disabled]="error || isListening">Start</button>
-  <button (click)="stop()" [disabled]="error || !isListening">Stop</button>
-  <h3>Keyword Detections (listening for "Deep Sky Blue"):</h3>
+  <button (click)="start()" [disabled]="error || !isLoaded || isListening">Start</button>
+  <button (click)="stop()" [disabled]="error || !isLoaded || !isListening">Stop</button>
+  <h3>Keyword Detections (listening for "Alexa, Porcupine"):</h3>
   <ul>
     <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>
   </ul>

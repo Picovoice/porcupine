@@ -5,7 +5,7 @@
   "peerDependencies": {
     "@angular/common": "^11.0.9",
     "@angular/core": "^11.0.9",
-    "@picovoice/web-voice-processor": ">=4.0.0",
+    "@picovoice/web-voice-processor": "~4.0.0",
     "rxjs": "~6.6.0"
   },
   "keywords": [
@@ -21,7 +21,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.2",
+    "@picovoice/porcupine-web": "=2.1.5",
     "tslib": "^2.0.0"
   }
 }

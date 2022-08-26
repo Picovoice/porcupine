@@ -1336,41 +1336,58 @@ if (done) {
 #### Angular
 
 ```console
-yarn add @picovoice/porcupine-web-angular
+yarn add @picovoice/porcupine-web-angular @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-angular
+npm install @picovoice/porcupine-web-angular @picovoice/web-voice-processor
 ```
 
 ```typescript
-async ngOnInit() {
-    // Load Porcupine worker chunk with specific language model
-    const porcupineFactoryEn = 
-      await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
-    const accessKey = // Obtained from Picovoice Console (https://console.picovoice.ai/)
-    // Initialize Porcupine Service
-    try {
-      await this.porcupineService.init(
-        porcupineFactoryEn,
-        {
-          accessKey: accessKey,
-          keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]
-        }
-      )
-      console.log("Porcupine is now loaded and listening")
-    }
-    catch (error) {
-      console.error(error)
-    }
-  }
+import { Subscription } from "rxjs";
+import { PorcupineService } from "@picovoice/porcupine-web-angular";
+import {BuiltInKeyword} from '@picovoice/porcupine-web';
+import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}";
 
-  ngOnDestroy() {
-    this.porcupineDetection.unsubscribe()
-    this.porcupineService.release()
-  }
+constructor(private porcupineService: PorcupineService) {
+  this.keywordDetection = porcupineService.keyword$.subscribe(
+    porcupineDetection => {
+      console.log(`Porcupine Detected "${porcupineDetection.label}"`)
+    });
+  this.isLoadedDetection = porcupineService.isLoaded$.subscribe(
+    isLoaded => {
+      console.log(isLoaded);
+    });
+  this.isListeningDetection = porcupineService.isListening$.subscribe(
+    isListening => {
+      console.log(isListening);
+    });
+  this.errorDetection = porcupineService.error$.subscribe(
+    error => {
+      console.error(error);
+    });
+}
+
+async ngOnInit() {
+  await this.porcupineService.init(
+    ${ACCESS_KEY},
+    [BuiltInKeyword.Porcupine],
+    porcupineModel,
+    options
+  ).then(() => {
+    this.porcupineService.start();
+  });
+}
+
+ngOnDestroy() {
+  this.keywordDetection.unsubscribe();
+  this.isLoadedDetection.unsubscribe();
+  this.isListeningDetection.unsubscribe();
+  this.errorDetection.unsubscribe();
+  this.porcupineService.release();
+}
 ```
 
 #### React

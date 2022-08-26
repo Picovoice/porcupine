@@ -30,8 +30,8 @@ Open `http://localhost:4200/` to view it in the browser.
 
 ## Try Porcupine
 
-The demo is listening for the wake word "Deep Sky Blue". Say the wake word:
+The demo is listening for the wake word "Alexa or Porcupine". Say the wake word:
 
-> "Deep Sky Blue"
+> "Porcupine"
 
 Detections will appear on the page.
