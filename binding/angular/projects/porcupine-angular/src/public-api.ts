@@ -1,5 +1,5 @@
 /*
- * Public API Surface of porcupine-web-angular
+ * Public API Surface of porcupine-angular
  */
 
 export * from './lib/porcupine.service';

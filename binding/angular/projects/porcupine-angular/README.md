@@ -30,13 +30,13 @@ Porcupine is:
 Using `Yarn`:
 
 ```console
-yarn add @picovoice/porcupine-web-angular @picovoice/web-voice-processor
+yarn add @picovoice/porcupine-angular @picovoice/web-voice-processor
 ```
 
 or using `npm`:
 
 ```console
-npm install --save @picovoice/porcupine-web @picovoice/web-voice-processor
+npm install --save @picovoice/porcupine-angular @picovoice/web-voice-processor
 ```
 
 ### AccessKey
@@ -121,7 +121,7 @@ subscription events:
 
 ```typescript
 import { Subscription } from "rxjs"
-import { PorcupineService } from "@picovoice/porcupine-web-angular"
+import { PorcupineService } from "@picovoice/porcupine-angular"
 
 ...
 

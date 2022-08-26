@@ -1165,7 +1165,7 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-web-angular@../../binding/angular/dist/porcupine-web-angular":
+"@picovoice/porcupine-angular@../../binding/angular/dist/porcupine-angular":
   version "2.1.4"
   dependencies:
     "@picovoice/porcupine-web" "=2.1.5"

@@ -1336,13 +1336,13 @@ if (done) {
 #### Angular
 
 ```console
-yarn add @picovoice/porcupine-web-angular @picovoice/web-voice-processor
+yarn add @picovoice/porcupine-angular @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-angular @picovoice/web-voice-processor
+npm install @picovoice/porcupine-angular @picovoice/web-voice-processor
 ```
 
 ```typescript

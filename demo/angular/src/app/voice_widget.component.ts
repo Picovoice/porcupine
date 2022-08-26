@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { PorcupineService } from '@picovoice/porcupine-web-angular';
+import { PorcupineService } from '@picovoice/porcupine-angular';
 
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
 

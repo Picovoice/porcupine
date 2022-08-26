@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', async () => {
     await page.navigateTo();
-    expect(await page.getTitleText()).toEqual('porcupine-web-angular-demo app is running!');
+    expect(await page.getTitleText()).toEqual('porcupine-angular-demo app is running!');
   });
 
   afterEach(async () => {
