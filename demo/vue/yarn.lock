@@ -1229,12 +1229,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-web-vue@../../binding/vue":
-  version "2.1.3"
+"@picovoice/porcupine-vue@../../binding/vue":
+  version "2.1.0"
   dependencies:
-    "@picovoice/porcupine-web" "^2.1.5"
+    "@picovoice/porcupine-web" "=2.1.5"
 
-"@picovoice/porcupine-web@^2.1.5":
+"@picovoice/porcupine-web@=2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.5.tgz#72782c19c873b68d2c3f33e06ac0d7bc9389c95a"
   integrity sha512-wCXqFhe0/edAwiMaDJ/4w++t4DK+zM/gkKkUXNz3/ybLw5b83/QBE2EUtk3IW4zoe9qGDebPHz8apoKpY8h2eA==

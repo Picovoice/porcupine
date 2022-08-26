@@ -1421,19 +1421,19 @@ function VoiceWidget(props) {
 #### Vue
 
 ```console
-yarn add @picovoice/porcupine-web-vue @picovoice/web-voice-processor
+yarn add @picovoice/porcupine-vue @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-vue @picovoice/web-voice-processor
+npm install @picovoice/porcupine-vue @picovoice/web-voice-processor
 ```
 
 ```html
 <script lang="ts">
   import {BuiltInKeyword} from "@picovoice/porcupine-web";
-  import porcupineMixin from "@picovoice/porcupine-web-vue";
+  import porcupineMixin from "@picovoice/porcupine-vue";
 
   import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
 
@@ -1447,6 +1447,7 @@ npm install @picovoice/porcupine-web-vue @picovoice/web-voice-processor
               { base64: porcupineParams }, // porcupine model
               this.isLoadedCallback,
               this.isListeningCallback,
+              this.errorCallback
       ).then(() => {
         this.$porcupine.start();
       });
@@ -1460,6 +1461,9 @@ npm install @picovoice/porcupine-web-vue @picovoice/web-voice-processor
       },
       isListeningCallback: function(isListening) {
         console.log(isListening);
+      },
+      errorCallback: function(error) {
+        console.error(error);
       }
     },
     // beforeDestroy for Vue 2.

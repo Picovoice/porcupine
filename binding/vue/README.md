@@ -30,13 +30,13 @@ Porcupine is:
 Using `Yarn`:
 
 ```console
-yarn add @picovoice/porcupine-web-vue
+yarn add @picovoice/porcupine-vue
 ```
 
 or using `npm`:
 
 ```console
-npm install --save @picovoice/porcupine-web-vue
+npm install --save @picovoice/porcupine-vue
 ```
 
 ### AccessKey
@@ -140,7 +140,7 @@ Import `Porcupine` mixin, add it to your component and initialize Porcupine:
 ```html
 <script lang="ts">
   import {BuiltInKeyword} from "@picovoice/porcupine-web";
-  import porcupineMixin from "@picovoice/porcupine-web-vue";
+  import porcupineMixin from "@picovoice/porcupine-vue";
   
   import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
 

@@ -39,7 +39,7 @@
 import { defineComponent } from "vue";
 
 import { BuiltInKeyword, PorcupineDetection } from "@picovoice/porcupine-web";
-import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-web-vue";
+import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-vue";
 
 // @ts-ignore
 import porcupineParams from "@/lib/porcupine_params";
