@@ -62,16 +62,20 @@ export const usePorcupine = (): {
       console.warn(`'processErrorCallback' options is not supported, use 'error' state to handle errors.`);
     }
 
-    if (porcupineRef.current !== null) {
-      porcupineRef.current = await PorcupineWorker.create(
-        accessKey,
-        keywords,
-        keywordDetectionCallback,
-        model,
-        { ...options, processErrorCallback: errorCallback }
-      );
-      setIsLoaded(true);
-      setError(null);
+    try {
+      if (porcupineRef.current !== null) {
+        porcupineRef.current = await PorcupineWorker.create(
+          accessKey,
+          keywords,
+          keywordDetectionCallback,
+          model,
+          { ...options, processErrorCallback: errorCallback }
+        );
+        setIsLoaded(true);
+        setError(null);
+      }
+    } catch (e: any) {
+      setError(e.toString);
     }
   }, [keywordDetectionCallback, errorCallback]);
 
@@ -84,6 +88,7 @@ export const usePorcupine = (): {
 
       await WebVoiceProcessor.subscribe(porcupineRef.current);
       setIsListening(true);
+      setError(null);
     } catch (e: any) {
       setError(e.toString());
       setIsListening(false);
@@ -99,6 +104,7 @@ export const usePorcupine = (): {
 
       await WebVoiceProcessor.unsubscribe(porcupineRef.current);
       setIsListening(false);
+      setError(null);
     } catch (e: any) {
       setError(e.toString());
       setIsListening(false);
