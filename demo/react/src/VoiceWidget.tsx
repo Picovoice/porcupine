@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 
-import {BuiltInKeyword, PorcupineDetection} from "@picovoice/porcupine-web";
-import {usePorcupine} from "@picovoice/porcupine-web-react";
+import {BuiltInKeyword} from "@picovoice/porcupine-web";
+import {usePorcupine} from "@picovoice/porcupine-react";
 
 import porcupineParams from "./lib/porcupine_params";
 
@@ -13,28 +13,30 @@ export default function VoiceWidget() {
     BuiltInKeyword.Picovoice
   ]);
 
-  const keywordEventHandler = (porcupineDetection: PorcupineDetection) => {
-    setKeywordDetections((x) => [...x, porcupineDetection.label]);
-  };
+  const {
+    wakeWordDetection,
+    isLoaded,
+    isListening,
+    error,
+    init,
+    start,
+    stop,
+    release
+  } = usePorcupine();
 
-  const { isLoaded, isListening, error, init, start, stop, release } = usePorcupine();
+  const initEngine = async () => {
+    await init(
+      accessKey,
+      keywords,
+      {base64: porcupineParams}
+    );
+  }
 
   useEffect(() => {
-    if (accessKey.length > 0) {
-      init(
-        accessKey,
-        keywords,
-        keywordEventHandler,
-        {base64: porcupineParams}
-      );
+    if (wakeWordDetection !== null) {
+      setKeywordDetections((oldVal) => [...oldVal, wakeWordDetection.label])
     }
-  }, [init, accessKey, keywords])
-
-  useEffect(() => {
-    return () => {
-      stop();
-    }
-  }, [stop]);
+  }, [wakeWordDetection])
 
   return (
     <div className="voice-widget">
@@ -48,6 +50,12 @@ export default function VoiceWidget() {
             name="accessKey"
             onChange={(value) => setAccessKey(value.target.value)}
           />
+          <button
+            className="init-button"
+            onClick={() => initEngine()}
+          >
+            Init Porcupine
+          </button>
         </label>
       </h3>
       <h3>Loaded: {JSON.stringify(isLoaded)}</h3>
@@ -57,18 +65,24 @@ export default function VoiceWidget() {
         <p className="error-message">{JSON.stringify(error)}</p>
       )}
       <h3>Keywords: {JSON.stringify(keywords)}</h3>
-      <br />
+      <br/>
       <button
         onClick={() => start()}
-        disabled={!isLoaded || isListening}
+        disabled={error !== null || !isLoaded || isListening}
       >
         Start
       </button>
       <button
         onClick={() => stop()}
-        disabled={!isLoaded || !isListening}
+        disabled={error !== null ||!isLoaded || !isListening}
       >
         Stop
+      </button>
+      <button
+        onClick={() => release()}
+        disabled={error !== null || !isLoaded}
+      >
+        Release
       </button>
       <h3>Keyword Detections (listening for "Picovoice" and "Alexa"):</h3>
       {keywordDetections.length > 0 && (

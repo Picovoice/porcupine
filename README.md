@@ -1380,38 +1380,45 @@ async ngOnInit() {
 #### React
 
 ```console
-yarn add @picovoice/porcupine-web-react @picovoice/web-voice-processor
+yarn add @picovoice/porcupine-react @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-react @picovoice/web-voice-processor
+npm install @picovoice/porcupine-react @picovoice/web-voice-processor
 ```
 
 ```javascript
-import React, { useState } from "react";
-import { BuiltInKeyword } from "@picovoice/porcupine-web";
-import { usePorcupine } from "@picovoice/porcupine-web-react";
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { usePorcupine } from '@picovoice/porcupine-react';
 
 function App(props) {
-  const keywordDetectionCallback = (keyword) => {
-    console.log(`Porcupine detected keyword: ${keyword.label}`);
-  };
-
   const {
+    wakeWordDetection,
+    isLoaded,
     isListening,
     error,
+    init,
     start,
     stop,
-    pause
-  } = usePorcupine(
-    ${ACCESS_KEY},
-    BuiltInKeyword.Porcupine,
-    keywordDetectionCallback,
-    ${MODEL_RELATIVE_PATH},
-    options // optional options
-  );
+    release,
+  } = usePorcupine();
+
+  const initEngine = async () => {
+    await init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      porcupineModel
+    );
+    await start();
+  }
+  
+  useEffect(() => {
+    if (wakeWordDetection !== null) {
+      console.log(wakeWordDetection.label);
+    }
+  }, [wakeWordDetection])
 }
 ```
 

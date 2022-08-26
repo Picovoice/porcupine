@@ -107,48 +107,34 @@ const porcupineModel = {
 
 ### Initialize Porcupine
 
-Create a `keywordDetectionCallback` function to get the streaming results
-from the worker:
-
-```typescript
-function keywordDetectionCallback(keyword) {
-  console.log(`Porcupine detected keyword: ${keyword.label}`);
-}
-```
-
-Add to the `options` object an `processErrorCallback` function if you would like
-to catch errors:
-
-```typescript
-function processErrorCallback(error: string) {
-...
-}
-
-options.processErrorCallback = processErrorCallback;
-```
-
-Use `usePorcupine` to initialize `Porcupine`:
+Use `usePorcupine` and `init` to initialize `Porcupine`:
 
 ```typescript
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
-import { usePorcupine } from '@picovoice/porcupine-web-react';
+import { usePorcupine } from '@picovoice/porcupine-react';
 
 const {
+  wakeWordDetection,
+  isLoaded,
   isListening,
   error,
+  init,
   start,
   stop,
-  pause
-} = usePorcupine(
+  release,
+} = usePorcupine();
+
+await init(
   ${ACCESS_KEY},
-  BuiltInKeyword.Porcupine,
-  keywordDetectionCallback,
-  ${MODEL_RELATIVE_PATH},
-  options // optional options
+  [BuiltInKeyword.Porcupine],
+  porcupineModel
 );
 ```
 
-### Process Audio Frames in Worker Thread
+In case of any errors, use `error` state to check the error message, else
+use the `isLoaded` variable to check if `Porcupine` has loaded.
+
+### Process Audio Frames
 
 Porcupine React binding uses [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
 To start detecting wake word, run the `start` function:
@@ -157,27 +143,36 @@ To start detecting wake word, run the `start` function:
 await start();
 ```
 
-The `start` function initializes Porcupine and WebVoiceProcessor, then starts keyword detection.
-Note: Only `keywordDetectionCallback` will be affected by state changes once Porcupine binding has started.
-
-### Pause
-
-Run `pause` to pause keyword detection. This will **not** clear any resources used.
+If `WebVoiceProcessor` has started correctly, `isListening` will be set to true.
+Use the `wakeWordDetection` state to get wake word detection results:
 
 ```typescript
-await pause();
+useEffect(() => {
+  if (wakeWordDetection !== null) {
+    console.log(wakeWordDetection.label);
+  }
+}, [wakeWordDetection])
 ```
 
 ### Stop
 
-Run `stop` to stop keyword detection. This cleans up all resources used by Porcupine and WebVoiceProcessor.
+Run `stop` to stop keyword detection:
 
 ```typescript
 await stop();
 ```
 
-If any arguments **except** for `keywordDetectionCallback` require changes, call `stop` then `start` to initialize
-Porcupine with the new settings.
+If `WebVoiceProcessor` has stopped correctly, `isListening` will be set to false.
+
+### Release
+
+Run `release` to clean up all resources used by Porcupine and WebVoiceProcessor:
+
+```typescript
+await release();
+```
+
+This will set `isLoaded` and `isListening` to false.
 
 ## Custom Keywords
 
@@ -209,17 +204,20 @@ Then, initialize an instance of `Porcupine`:
 
 ```typescript
 const {
+  wakeWordDetection,
+  isLoaded,
   isListening,
   error,
+  init,
   start,
   stop,
-  pause
-} = usePorcupine(
-  ${ACCESS_KEY},
-  [keywordModel],
-  keywordDetectionCallback,
-  porcupineModel,
-  options,
+  release,
+} = usePorcupine();
+
+await init(
+        ${ACCESS_KEY},
+        keywordModel,
+        porcupineModel
 );
 ```
 
