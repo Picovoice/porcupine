@@ -22,21 +22,40 @@ import {
   PorcupineWorker,
 } from '@picovoice/porcupine-web';
 
-export const usePorcupine = () => {
+export const usePorcupine = (): {
+  wakeWordDetection: PorcupineDetection | null,
+  isLoaded: boolean,
+  isListening: boolean,
+  error: any,
+  init: (
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    model: PorcupineModel,
+    options?: PorcupineOptions,
+  ) => Promise<void>,
+  start: () => Promise<void>,
+  stop: () => Promise<void>,
+  release: () => Promise<void>,
+} => {
   const [porcupine, setPorcupine] = useState<PorcupineWorker | null>(null);
+  const [wakeWordDetection, setWakeWordDetection] = useState<PorcupineDetection | null>(null);
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const keywordDetectionCallback = useCallback((keyword: PorcupineDetection) => {
+      setWakeWordDetection(keyword);
+  }, []);
+
   const init = useCallback(async (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
-    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
     model: PorcupineModel,
     options: PorcupineOptions = {},
   ): Promise<void> => {
 
-  }, []);
+  }, [keywordDetectionCallback]);
 
   const start = useCallback(async (): Promise<void> => {
     try {
@@ -65,11 +84,14 @@ export const usePorcupine = () => {
   }, [porcupine]);
 
   return {
+    wakeWordDetection,
     isLoaded,
     isListening,
     error,
+    init,
     start,
     stop,
+    release,
   };
 };
 
