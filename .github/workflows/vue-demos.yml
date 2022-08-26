@@ -37,6 +37,10 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
+    - name: Build Vue binding
+      run: yarn install && yarn build
+      working-directory: binding/vue
+
     - name: Install dependencies
       run: yarn install
 
