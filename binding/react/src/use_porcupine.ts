@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -37,7 +37,7 @@ export const usePorcupine = (): {
   stop: () => Promise<void>,
   release: () => Promise<void>,
 } => {
-  const [porcupine, setPorcupine] = useState<PorcupineWorker | null>(null);
+  const porcupineRef = useRef<PorcupineWorker | null>(null);
   const [wakeWordDetection, setWakeWordDetection] = useState<PorcupineDetection | null>(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -68,7 +68,7 @@ export const usePorcupine = (): {
       setError(e.toString());
       setIsListening(false);
     }
-  }, [porcupine]);
+  }, []);
 
   const stop = useCallback(async (): Promise<void> => {
     try {
@@ -78,10 +78,10 @@ export const usePorcupine = (): {
       setError(e.toString());
       setIsListening(false);
     }
-  }, [porcupine]);
+  }, []);
 
   const release = useCallback(async (): Promise<void> => {
-  }, [porcupine]);
+  }, []);
 
   return {
     wakeWordDetection,
