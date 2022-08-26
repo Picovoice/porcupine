@@ -52,13 +52,13 @@ export default {
     $porcupine(): PorcupineVue {
       return {
         $_porcupine_: null as PorcupineWorker | null,
-        isLoadedCallback: function(): void {
+        isLoadedCallback: function (): void {
           return;
         },
-        isListeningCallback: function(): void {
+        isListeningCallback: function (): void {
           return;
         },
-        errorCallback: function(): void {
+        errorCallback: function (): void {
           return;
         },
         async init(
@@ -71,28 +71,25 @@ export default {
           errorCallback: (error: any) => void,
           options: PorcupineOptions = {},
         ): Promise<void> {
+          if (options.processErrorCallback) {
+            console.warn("'processErrorCallback' options is not supported, use 'errorCallback' instead.");
+          }
+
           try {
-            if (this.$_porcupine_ !== null) {
-              errorCallback(new Error("Porcupine is already initialized"));
-              return;
+            if (!this.$_porcupine_) {
+              this.$_porcupine_ = await PorcupineWorker.create(
+                accessKey,
+                keywords,
+                keywordDetectionCallback,
+                model,
+                {...options, processErrorCallback: errorCallback}
+              );
+
+              this.isListeningCallback = isListeningCallback;
+              this.isLoadedCallback = isLoadedCallback;
+              this.errorCallback = errorCallback;
+              isLoadedCallback(true);
             }
-
-            if (options.processErrorCallback) {
-              console.warn("'processErrorCallback' options is not supported, use 'errorCallback' instead.");
-            }
-
-            this.$_porcupine_ = await PorcupineWorker.create(
-              accessKey,
-              keywords,
-              keywordDetectionCallback,
-              model,
-              {...options, processErrorCallback: errorCallback }
-            );
-
-            this.isListeningCallback = isListeningCallback;
-            this.isLoadedCallback = isLoadedCallback;
-            this.errorCallback = errorCallback;
-            isLoadedCallback(true);
           } catch (error: any) {
             errorCallback(error);
           }
