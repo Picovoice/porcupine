@@ -42,27 +42,23 @@ export class PorcupineService implements OnDestroy {
     model: PorcupineModel,
     options: PorcupineOptions = {},
   ): Promise<void> {
-    if (this.porcupine !== null) {
-      this.error$.next(Error('Porcupine is already initialized'));
-      return;
-    }
-
     if (options.processErrorCallback) {
       console.warn(`'processErrorCallback' options is not supported, subscribe to 'error$' instead.`);
     }
 
     try {
-      this.porcupine = await PorcupineWorker.create(
-        accessKey,
-        keywords,
-        this.keywordDetectionCallback,
-        model,
-        { processErrorCallback: this.errorCallback }
-      );
-      this.isLoaded$.next(true);
+      if (!this.porcupine) {
+        this.porcupine = await PorcupineWorker.create(
+          accessKey,
+          keywords,
+          this.keywordDetectionCallback,
+          model,
+          { processErrorCallback: this.errorCallback }
+        );
+        this.isLoaded$.next(true);
+      }
     } catch (error) {
       this.error$.next(error as Error);
-      this.isLoaded$.next(false);
     }
   }
 
