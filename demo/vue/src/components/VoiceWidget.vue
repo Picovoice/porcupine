@@ -23,6 +23,9 @@
     <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">
       Stop
     </button>
+    <button v-on:click="release" :disabled="!isLoaded || error">
+      Release
+    </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
@@ -61,6 +64,9 @@ const VoiceWidget = defineComponent({
     stop: function () {
       this.$porcupine.stop();
     },
+    release: function () {
+      this.$porcupine.release();
+    },
     initEngine: function () {
       this.$porcupine.init(
         this.inputValue,
@@ -69,7 +75,7 @@ const VoiceWidget = defineComponent({
         { base64: porcupineParams },
         this.isLoadedCallback,
         this.isListeningCallback,
-        { processErrorCallback: this.errorCallback }
+        this.errorCallback
       );
     },
     updateInputValue: function (event: any) {

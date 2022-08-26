@@ -111,9 +111,10 @@ const porcupineModel = {
 instance of Porcupine instead, check out [Porcupine Web binding](https://www.npmjs.com/package/@picovoice/porcupine-web).
 
 Create the following functions:
- - `keywordDetectionCallback` function to get the streaming results from the worker:
- - `isLoadedCallback` function to check if Porcupine has loaded:
- - `isListeningCallback` function to check if Porcupine started/stopped listening for wake word detection:
+ - `keywordDetectionCallback` function to get the streaming results from the worker
+ - `isLoadedCallback` function to check if Porcupine has loaded
+ - `isListeningCallback` function to check if Porcupine started/stopped listening for wake word detection
+ - `errorCallback` function to catch any error occurred
 
 ```typescript
 ...
@@ -126,22 +127,12 @@ methods: {
   },
   isListeningCallback: function(isListening) {
     console.log(isListening);
+  },
+  errorCallback: function(error) {
+    console.error(error);
   }
 };
 ...
-```
-
-Add to the `options` object an `processErrorCallback` function if you would like
-to catch errors:
-
-```typescript
-methods: {
-  processErrorCallback: function (error: string) {
-  ...
-  }
-}
-
-options.processErrorCallback = this.processErrorCallback;
 ```
 
 Import `Porcupine` mixin, add it to your component and initialize Porcupine:
@@ -163,7 +154,7 @@ Import `Porcupine` mixin, add it to your component and initialize Porcupine:
               { base64: porcupineParams }, // porcupine model
               this.isLoadedCallback,
               this.isListeningCallback,
-              options // options
+              this.errorCallback,
       );
     }
   }
@@ -191,7 +182,7 @@ await this.$porcupine.stop();
 
 ### Release
 
-After done with Porcupine, either call `release` or destroy the mounted component:
+When done with Porcupine, either call `release` or destroy the mounted component:
 
 ```typescript
 await this.$porcupine.release();

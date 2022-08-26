@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
+import {WebVoiceProcessor} from '@picovoice/web-voice-processor';
 
 import {
   BuiltInKeyword,
@@ -33,15 +33,15 @@ export interface PorcupineVue {
     model: PorcupineModel,
     isLoadedCallback: (isLoaded: boolean) => void,
     isListeningCallback: (isListening: boolean) => void,
+    errorCallback: (error: any) => void,
     options?: PorcupineOptions,
   ) => Promise<void>,
   start: () => Promise<void>,
   stop: () => Promise<void>,
   release: () => Promise<void>,
-  keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
   isLoadedCallback: (isLoaded: boolean) => void,
   isListeningCallback: (isListening: boolean) => void,
-  errorCallback: (error: string) => void,
+  errorCallback: (error: any) => void,
 }
 
 export default {
@@ -52,10 +52,15 @@ export default {
     $porcupine(): PorcupineVue {
       return {
         $_porcupine_: null as PorcupineWorker | null,
-        keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => { return; },
-        isLoadedCallback: (isLoaded: boolean) => { return; },
-        isListeningCallback: (isListening: boolean) => { return; },
-        errorCallback: (error: string) => { console.error(error); },
+        isLoadedCallback: function(): void {
+          return;
+        },
+        isListeningCallback: function(): void {
+          return;
+        },
+        errorCallback: function(): void {
+          return;
+        },
         async init(
           accessKey: string,
           keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -63,11 +68,17 @@ export default {
           model: PorcupineModel,
           isLoadedCallback: (isLoaded: boolean) => void,
           isListeningCallback: (isListening: boolean) => void,
+          errorCallback: (error: any) => void,
           options: PorcupineOptions = {},
         ): Promise<void> {
           try {
+            if (this.$_porcupine_ !== null) {
+              errorCallback(new Error("Porcupine is already initialized"));
+              return;
+            }
+
             if (options.processErrorCallback) {
-              this.errorCallback = options.processErrorCallback;
+              console.warn("'processErrorCallback' options is not supported, use 'errorCallback' instead.");
             }
 
             this.$_porcupine_ = await PorcupineWorker.create(
@@ -75,14 +86,15 @@ export default {
               keywords,
               keywordDetectionCallback,
               model,
-              options
+              {...options, processErrorCallback: errorCallback }
             );
 
             this.isListeningCallback = isListeningCallback;
             this.isLoadedCallback = isLoadedCallback;
+            this.errorCallback = errorCallback;
             isLoadedCallback(true);
           } catch (error: any) {
-            this.errorCallback(error);
+            errorCallback(error);
           }
         },
         /**
@@ -117,10 +129,9 @@ export default {
         },
         async release(): Promise<void> {
           if (this.$_porcupine_) {
-            await WebVoiceProcessor.unsubscribe(this.$_porcupine_);
+            await this.stop();
             this.$_porcupine_.terminate();
             this.$_porcupine_ = null;
-
             this.isLoadedCallback(false);
           }
         }
