@@ -53,7 +53,7 @@ const VoiceWidget = defineComponent({
       detections: [] as string[],
       isLoaded: false,
       isListening: false,
-      error: null,
+      error: null as string | null,
       $porcupine: {} as PorcupineVue,
     };
   },
@@ -92,7 +92,7 @@ const VoiceWidget = defineComponent({
     isListeningCallback: function (isListening: boolean) {
       this.isListening = isListening;
     },
-    errorCallback: function (error: any) {
+    errorCallback: function (error: string | null) {
       this.error = error;
     },
   },

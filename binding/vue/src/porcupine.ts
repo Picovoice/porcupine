@@ -41,7 +41,7 @@ export interface PorcupineVue {
   release: () => Promise<void>,
   isLoadedCallback: (isLoaded: boolean) => void,
   isListeningCallback: (isListening: boolean) => void,
-  errorCallback: (error: string) => void,
+  errorCallback: (error: string | null) => void,
 }
 
 export default {
@@ -68,7 +68,7 @@ export default {
           model: PorcupineModel,
           isLoadedCallback: (isLoaded: boolean) => void,
           isListeningCallback: (isListening: boolean) => void,
-          errorCallback: (error: string) => void,
+          errorCallback: (error: string | null) => void,
           options: PorcupineOptions = {},
         ): Promise<void> {
           if (options.processErrorCallback) {
@@ -89,6 +89,7 @@ export default {
               this.isLoadedCallback = isLoadedCallback;
               this.errorCallback = errorCallback;
               isLoadedCallback(true);
+              errorCallback(null);
             }
           } catch (error: any) {
             errorCallback(error.toString());
@@ -105,6 +106,7 @@ export default {
             }
             await WebVoiceProcessor.subscribe(this.$_porcupine_);
             this.isListeningCallback(true);
+            this.errorCallback(null);
           } catch (error: any) {
             this.errorCallback(error.toString());
           }
@@ -120,6 +122,7 @@ export default {
             }
             await WebVoiceProcessor.unsubscribe(this.$_porcupine_);
             this.isListeningCallback(false);
+            this.errorCallback(null);
           } catch (error: any) {
             this.errorCallback(error.toString());
           }
@@ -129,6 +132,7 @@ export default {
             await this.stop();
             this.$_porcupine_.terminate();
             this.$_porcupine_ = null;
+
             this.isLoadedCallback(false);
           }
         }

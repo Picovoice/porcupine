@@ -227,7 +227,7 @@ this.$porcupine.init(
         keywordModel, // porcupine model
         this.isLoadedCallback,
         this.isListeningCallback,
-        { processErrorCallback: this.errorCallback } // options
+        this.errorCallback,
 );
 ```
 
