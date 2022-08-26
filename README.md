@@ -13,7 +13,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://github.com/Picovoice/porcupine/tree/master/binding/ios)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-angular)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-react)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 <!-- markdown-link-check-disable -->
