@@ -26,7 +26,7 @@ export const usePorcupine = (): {
   wakeWordDetection: PorcupineDetection | null,
   isLoaded: boolean,
   isListening: boolean,
-  error: any,
+  error: string | null,
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -45,7 +45,11 @@ export const usePorcupine = (): {
   const [error, setError] = useState<string | null>(null);
 
   const keywordDetectionCallback = useCallback((keyword: PorcupineDetection) => {
-      setWakeWordDetection(keyword);
+    setWakeWordDetection(keyword);
+  }, []);
+
+  const errorCallback = useCallback((e: string) => {
+    setError(e);
   }, []);
 
   const init = useCallback(async (
@@ -54,15 +58,31 @@ export const usePorcupine = (): {
     model: PorcupineModel,
     options: PorcupineOptions = {},
   ): Promise<void> => {
+    if (options.processErrorCallback) {
+      console.warn(`'processErrorCallback' options is not supported, use 'error' state to handle errors.`);
+    }
 
-  }, [keywordDetectionCallback]);
+    if (porcupineRef.current !== null) {
+      porcupineRef.current = await PorcupineWorker.create(
+        accessKey,
+        keywords,
+        keywordDetectionCallback,
+        model,
+        { ...options, processErrorCallback: errorCallback }
+      );
+      setIsLoaded(true);
+      setError(null);
+    }
+  }, [keywordDetectionCallback, errorCallback]);
 
   const start = useCallback(async (): Promise<void> => {
     try {
-      if (!porcupine) {
+      if (!porcupineRef.current) {
+        setError("Porcupine not initialized");
+        return;
       }
 
-      await WebVoiceProcessor.subscribe(porcupine);
+      await WebVoiceProcessor.subscribe(porcupineRef.current);
       setIsListening(true);
     } catch (e: any) {
       setError(e.toString());
@@ -72,7 +92,12 @@ export const usePorcupine = (): {
 
   const stop = useCallback(async (): Promise<void> => {
     try {
-      await WebVoiceProcessor.unsubscribe(porcupine);
+      if (!porcupineRef.current) {
+        setError("Porcupine not initialized");
+        return;
+      }
+
+      await WebVoiceProcessor.unsubscribe(porcupineRef.current);
       setIsListening(false);
     } catch (e: any) {
       setError(e.toString());
@@ -81,6 +106,13 @@ export const usePorcupine = (): {
   }, []);
 
   const release = useCallback(async (): Promise<void> => {
+    if (porcupineRef.current) {
+      await stop();
+      porcupineRef.current.terminate();
+      porcupineRef.current = null;
+
+      setIsLoaded(false);
+    }
   }, []);
 
   return {
