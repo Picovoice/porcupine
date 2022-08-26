@@ -47,13 +47,17 @@ export class PorcupineService implements OnDestroy {
       return;
     }
 
+    if (options.processErrorCallback) {
+      console.warn(`'processErrorCallback' options is not supported, subscribe to 'error$' instead.`);
+    }
+
     try {
       this.porcupine = await PorcupineWorker.create(
         accessKey,
         keywords,
         this.keywordDetectionCallback,
         model,
-        options
+        { processErrorCallback: this.errorCallback }
       );
       this.isLoaded$.next(true);
     } catch (error) {
@@ -94,7 +98,7 @@ export class PorcupineService implements OnDestroy {
 
   public async release(): Promise<void> {
     if (this.porcupine) {
-      await WebVoiceProcessor.unsubscribe(this.porcupine);
+      await this.stop();
       this.porcupine.terminate();
       this.porcupine = null;
 

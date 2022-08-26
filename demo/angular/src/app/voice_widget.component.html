@@ -25,6 +25,7 @@
   <br />
   <button (click)="start()" [disabled]="error || !isLoaded || isListening">Start</button>
   <button (click)="stop()" [disabled]="error || !isLoaded || !isListening">Stop</button>
+  <button (click)="release()" [disabled]="error || !isLoaded">Release</button>
   <h3>Keyword Detections (listening for "Alexa, Porcupine"):</h3>
   <ul>
     <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>

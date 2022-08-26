@@ -155,7 +155,6 @@ async ngOnInit() {
     ${ACCESS_KEY},
     [BuiltInKeyword.Porcupine],
     porcupineModel,
-    options
   );
 }
 ```
@@ -227,7 +226,6 @@ await this.porcupineService.init(
   ${ACCESS_KEY},
   keywordModel,
   porcupineModel,
-  options
 );
 ```
 

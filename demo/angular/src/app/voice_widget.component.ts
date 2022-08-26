@@ -78,4 +78,8 @@ export class VoiceWidget implements OnDestroy {
       }
     }
   }
+
+  public async release(): Promise<void> {
+    await this.porcupineService.release();
+  }
 }
