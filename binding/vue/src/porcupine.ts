@@ -141,10 +141,10 @@ export default {
   },
   // Vue 3 method to clean resources.
   beforeUnmount(this: any): void {
-    this.$porcupine.terminate();
+    this.$porcupine.release();
   },
   // Vue 2 method to clean resources.
   beforeDestroy(this: any): void {
-    this.$porcupine.terminate();
+    this.$porcupine.release();
   }
 };
