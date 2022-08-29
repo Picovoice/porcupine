@@ -59,7 +59,7 @@ export const usePorcupine = (): {
     options: PorcupineOptions = {},
   ): Promise<void> => {
     if (options.processErrorCallback) {
-      console.warn(`'processErrorCallback' options is not supported, use 'error' state to handle errors.`);
+      console.warn("'processErrorCallback' is only supported in the Porcupine Web SDK. Use the 'error' state to monitor for errors in the React SDK.");
     }
 
     try {
@@ -82,7 +82,7 @@ export const usePorcupine = (): {
   const start = useCallback(async (): Promise<void> => {
     try {
       if (!porcupineRef.current) {
-        setError("Porcupine not initialized");
+        setError("Porcupine has not been initialized or has been released");
         return;
       }
 
@@ -98,7 +98,7 @@ export const usePorcupine = (): {
   const stop = useCallback(async (): Promise<void> => {
     try {
       if (!porcupineRef.current) {
-        setError("Porcupine not initialized");
+        setError("Porcupine has not been initialized or has been released");
         return;
       }
 

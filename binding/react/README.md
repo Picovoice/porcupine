@@ -30,13 +30,13 @@ Porcupine is:
 Using `Yarn`:
 
 ```console
-yarn add @picovoice/porcupine-web
+yarn add @picovoice/porcupine-react
 ```
 
 or using `npm`:
 
 ```console
-npm install --save @picovoice/porcupine-web
+npm install --save @picovoice/porcupine-react
 ```
 
 ### AccessKey
