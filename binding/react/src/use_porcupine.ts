@@ -23,7 +23,7 @@ import {
 } from '@picovoice/porcupine-web';
 
 export const usePorcupine = (): {
-  wakeWordDetection: PorcupineDetection | null,
+  keywordDetection: PorcupineDetection | null,
   isLoaded: boolean,
   isListening: boolean,
   error: string | null,
@@ -38,14 +38,14 @@ export const usePorcupine = (): {
   release: () => Promise<void>,
 } => {
   const porcupineRef = useRef<PorcupineWorker | null>(null);
-  const [wakeWordDetection, setWakeWordDetection] = useState<PorcupineDetection | null>(null);
+  const [keywordDetection, setKeywordDetection] = useState<PorcupineDetection | null>(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const keywordDetectionCallback = useCallback((keyword: PorcupineDetection) => {
-    setWakeWordDetection(keyword);
+    setKeywordDetection(keyword);
   }, []);
 
   const errorCallback = useCallback((e: string) => {
@@ -128,7 +128,7 @@ export const usePorcupine = (): {
   }, []);
 
   return {
-    wakeWordDetection,
+    keywordDetection,
     isLoaded,
     isListening,
     error,

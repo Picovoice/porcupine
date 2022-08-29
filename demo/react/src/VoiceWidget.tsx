@@ -14,7 +14,7 @@ export default function VoiceWidget() {
   ]);
 
   const {
-    wakeWordDetection,
+    keywordDetection,
     isLoaded,
     isListening,
     error,
@@ -33,10 +33,10 @@ export default function VoiceWidget() {
   }
 
   useEffect(() => {
-    if (wakeWordDetection !== null) {
-      setKeywordDetections((oldVal) => [...oldVal, wakeWordDetection.label])
+    if (keywordDetection !== null) {
+      setKeywordDetections((oldVal) => [...oldVal, keywordDetection.label])
     }
-  }, [wakeWordDetection])
+  }, [keywordDetection])
 
   return (
     <div className="voice-widget">
