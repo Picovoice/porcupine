@@ -43,7 +43,7 @@ export class PorcupineService implements OnDestroy {
     options: PorcupineOptions = {},
   ): Promise<void> {
     if (options.processErrorCallback) {
-      console.warn(`'processErrorCallback' options is not supported, subscribe to 'error$' instead.`);
+      console.warn('\'processErrorCallback\' is only supported in the Porcupine Web SDK. Use the \'error\' state to monitor for errors in the Angular SDK.');
     }
 
     try {
@@ -65,7 +65,7 @@ export class PorcupineService implements OnDestroy {
 
   public async start(): Promise<void> {
     if (this.porcupine === null) {
-      this.error$.next('Porcupine not initialized');
+      this.error$.next('Porcupine has not been initialized or has been released');
       return;
     }
 
@@ -81,7 +81,7 @@ export class PorcupineService implements OnDestroy {
 
   public async stop(): Promise<void> {
     if (this.porcupine === null) {
-      this.error$.next('Porcupine not initialized');
+      this.error$.next('Porcupine has not been initialized or has been released');
       return;
     }
 
