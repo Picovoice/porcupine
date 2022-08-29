@@ -72,7 +72,7 @@ export default {
           options: PorcupineOptions = {},
         ): Promise<void> {
           if (options.processErrorCallback) {
-            console.warn("'processErrorCallback' options is not supported, use 'errorCallback' instead.");
+            console.warn("'processErrorCallback' is only supported in the Porcupine Web SDK. Use the 'errorCallback' state to monitor for errors in the Vue SDK.");
           }
 
           try {
@@ -101,7 +101,7 @@ export default {
         async start(): Promise<void> {
           try {
             if (!this.$_porcupine_) {
-              this.errorCallback('Porcupine not initialized');
+              this.errorCallback("Porcupine has not been initialized or has been released");
               return;
             }
             await WebVoiceProcessor.subscribe(this.$_porcupine_);
@@ -117,7 +117,7 @@ export default {
         async stop(): Promise<void> {
           try {
             if (!this.$_porcupine_) {
-              this.errorCallback('Porcupine not initialized');
+              this.errorCallback("Porcupine has not been initialized or has been released");
               return;
             }
             await WebVoiceProcessor.unsubscribe(this.$_porcupine_);
@@ -141,10 +141,10 @@ export default {
   },
   // Vue 3 method to clean resources.
   beforeUnmount(this: any): void {
-    this.$porcupine.release();
+    this.$porcupine.terminate();
   },
   // Vue 2 method to clean resources.
   beforeDestroy(this: any): void {
-    this.$porcupine.release();
+    this.$porcupine.terminate();
   }
 };
