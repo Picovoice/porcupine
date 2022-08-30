@@ -114,7 +114,7 @@ import { BuiltInKeyword } from '@picovoice/porcupine-web';
 import { usePorcupine } from '@picovoice/porcupine-react';
 
 const {
-  wakeWordDetection,
+  keywordDetection,
   isLoaded,
   isListening,
   error,
@@ -144,14 +144,14 @@ await start();
 ```
 
 If `WebVoiceProcessor` has started correctly, `isListening` will be set to true.
-Use the `wakeWordDetection` state to get wake word detection results:
+Use the `keywordDetection` state to get wake word detection results:
 
 ```typescript
 useEffect(() => {
-  if (wakeWordDetection !== null) {
-    console.log(wakeWordDetection.label);
+  if (keywordDetection !== null) {
+    console.log(keywordDetection.label);
   }
-}, [wakeWordDetection])
+}, [keywordDetection])
 ```
 
 ### Stop
@@ -204,7 +204,7 @@ Then, initialize an instance of `Porcupine`:
 
 ```typescript
 const {
-  wakeWordDetection,
+  keywordDetection,
   isLoaded,
   isListening,
   error,
