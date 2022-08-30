@@ -34,7 +34,7 @@
     "format": "prettier --write \"**/*.{js,ts,json}\""
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "^2.1.5"
+    "@picovoice/porcupine-web": "=2.1.7"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
@@ -62,7 +62,7 @@
     "typescript": "^4.6.3"
   },
   "peerDependencies": {
-    "@picovoice/web-voice-processor": ">=4.0.0",
+    "@picovoice/web-voice-processor": "~4.0.0",
     "react": ">=17",
     "react-dom": ">=17"
   }
