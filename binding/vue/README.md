@@ -17,10 +17,13 @@ Porcupine is:
 - scalable to many simultaneous wake-words / always-on voice commands
 - cross-platform
 
-## Compatibility
+## Framework Compatibility
 
 - Vue.js 2.6.11+
 - Vue.js 3.0.0+
+
+## Browser Compatibility
+
 - Chrome / Edge
 - Firefox
 - Safari
