@@ -159,7 +159,7 @@ async ngOnInit() {
 }
 ```
 
-### Start
+### Process Audio Frames
 
 Run the following to start wake word detection:
 
@@ -168,8 +168,6 @@ await this.porcupineService.start();
 ```
 
 The results are available on `porcupineService.keywordDetection$` as mentioned above.
-
-### Stop
 
 To stop wake word detection run:
 
