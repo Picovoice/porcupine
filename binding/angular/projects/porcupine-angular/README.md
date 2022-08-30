@@ -234,4 +234,4 @@ supported languages are available [here](https://github.com/Picovoice/porcupine/
 
 ## Demo
 
-For example usage refer to our [Web angular application](https://github.com/Picovoice/porcupine/tree/master/demo/angular).
+For example usage refer to our [Angular Demo application](https://github.com/Picovoice/porcupine/tree/master/demo/angular).
