@@ -19,6 +19,8 @@ Porcupine is:
 
 ## Compatibility
 
+- Vue.js 2.6.11+
+- Vue.js 3.0.0+
 - Chrome / Edge
 - Firefox
 - Safari
@@ -112,8 +114,8 @@ instance of Porcupine instead, check out [Porcupine Web binding](https://www.npm
 
 Create the following functions:
  - `keywordDetectionCallback` function to get the streaming results from the worker
- - `isLoadedCallback` function to check if Porcupine has loaded
- - `isListeningCallback` function to check if Porcupine started/stopped listening for wake word detection
+- `isLoadedCallback` function that is called when Porcupine has loaded or unloaded
+- `isListeningCallback` function that is called when Porcupine has started/stopped wake word detection
  - `errorCallback` function to catch any error occurred
 
 ```typescript
@@ -161,7 +163,7 @@ Import `Porcupine` mixin, add it to your component and initialize Porcupine:
 </script>
 ```
 
-### Process Audio Frames in Worker Thread
+### Process Audio Frames
 
 Porcupine Vue binding uses [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
 To start detecting wake word, run the `start` function:
@@ -171,8 +173,6 @@ await this.$porcupine.start();
 ```
 
 The `start` function initializes Porcupine and WebVoiceProcessor, then starts keyword detection.
-
-### Stop
 
 Run `stop` to stop keyword detection. This cleans up all resources used by Porcupine and WebVoiceProcessor.
 
@@ -238,4 +238,4 @@ supported languages are available [here](https://github.com/Picovoice/porcupine/
 
 ## Demo
 
-For example usage refer to our [Web vue application](https://github.com/Picovoice/porcupine/tree/master/demo/vue).
+For example usage refer to our [Vue Demo application](https://github.com/Picovoice/porcupine/tree/master/demo/vue).
