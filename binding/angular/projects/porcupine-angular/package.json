@@ -21,7 +21,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.5",
+    "@picovoice/porcupine-web": "=2.1.7",
     "tslib": "^2.0.0"
   }
 }

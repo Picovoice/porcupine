@@ -32,7 +32,7 @@
     "@angular-eslint/template-parser": "1.2.0",
     "@angular/cli": "~11.0.5",
     "@angular/compiler-cli": "~11.0.5",
-    "@picovoice/porcupine-web": "=2.1.5",
+    "@picovoice/porcupine-web": "=2.1.7",
     "@picovoice/web-voice-processor": "~4.0.0",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^14.0.0",
