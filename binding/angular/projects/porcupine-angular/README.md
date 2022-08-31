@@ -126,19 +126,19 @@ import { PorcupineService } from "@picovoice/porcupine-angular"
 ...
 
   constructor(private porcupineService: PorcupineService) {
-    this.keywordDetection = porcupineService.keywordDetection$.subscribe(
+    this.keywordSubscription = porcupineService.keywordDetection$.subscribe(
       porcupineDetection => {
         console.log(`Porcupine Detected "${porcupineDetection.label}"`)
       });
-    this.isLoadedDetection = porcupineService.isLoaded$.subscribe(
+    this.isLoadedSubscription = porcupineService.isLoaded$.subscribe(
       isLoaded => {
         console.log(isLoaded);
       });
-    this.isListeningDetection = porcupineService.isListening$.subscribe(
+    this.isListeningSubscription = porcupineService.isListening$.subscribe(
       isListening => {
         console.log(isListening);
       });
-    this.errorDetection = porcupineService.error$.subscribe(
+    this.errorSubscription = porcupineService.error$.subscribe(
       error => {
         console.error(error);
       });
@@ -181,10 +181,10 @@ Clean up used resources with:
 
 ```typescript
 ngOnDestroy(): void {
-  this.keywordDetection.unsubscribe();
-  this.isLoadedDetection.unsubscribe();
-  this.isListeningDetection.unsubscribe();
-  this.errorDetection.unsubscribe();
+  this.keywordSubscription.unsubscribe();
+  this.isLoadedSubscription.unsubscribe();
+  this.isListeningSubscription.unsubscribe();
+  this.errorSubscription.unsubscribe();
   this.porcupineService.release();
 }
 ```

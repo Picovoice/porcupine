@@ -13,10 +13,10 @@ import porcupineParams from '../lib/porcupine_params';
   styleUrls: ['./voice_widget.component.scss']
 })
 export class VoiceWidget implements OnDestroy {
-  private keywordDetection: Subscription;
-  private isLoadedDetection: Subscription;
-  private isListeningDetection: Subscription;
-  private errorDetection: Subscription;
+  private keywordSubscription: Subscription;
+  private isLoadedSubscription: Subscription;
+  private isListeningSubscription: Subscription;
+  private errorSubscription: Subscription;
 
   isLoaded = false;
   isListening = false;
@@ -27,31 +27,31 @@ export class VoiceWidget implements OnDestroy {
   constructor(private porcupineService: PorcupineService) {
     // Subscribe to Porcupine Keyword detections
     // Store each detection, so we can display it in an HTML list
-    this.keywordDetection = porcupineService.keywordDetection$.subscribe(
-      porcupineDetection => {
-        this.detections = [...this.detections, porcupineDetection.label];
+    this.keywordSubscription = porcupineService.keywordDetection$.subscribe(
+      porcupineSubscription => {
+        this.detections = [...this.detections, porcupineSubscription.label];
       });
 
     // Subscribe to isListening, isLoaded, and error
-    this.isLoadedDetection = porcupineService.isLoaded$.subscribe(
+    this.isLoadedSubscription = porcupineService.isLoaded$.subscribe(
       isLoaded => {
         this.isLoaded = isLoaded;
       });
-    this.isListeningDetection = porcupineService.isListening$.subscribe(
+    this.isListeningSubscription = porcupineService.isListening$.subscribe(
       isListening => {
         this.isListening = isListening;
       });
-    this.errorDetection = porcupineService.error$.subscribe(
+    this.errorSubscription = porcupineService.error$.subscribe(
       error => {
         this.error = error;
       });
   }
 
   ngOnDestroy(): void {
-    this.keywordDetection.unsubscribe();
-    this.isLoadedDetection.unsubscribe();
-    this.isListeningDetection.unsubscribe();
-    this.errorDetection.unsubscribe();
+    this.keywordSubscription.unsubscribe();
+    this.isLoadedSubscription.unsubscribe();
+    this.isListeningSubscription.unsubscribe();
+    this.errorSubscription.unsubscribe();
     this.porcupineService.release();
   }
 

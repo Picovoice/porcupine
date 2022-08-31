@@ -1352,19 +1352,19 @@ import {BuiltInKeyword} from '@picovoice/porcupine-web';
 import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}";
 
 constructor(private porcupineService: PorcupineService) {
-  this.keywordDetection = porcupineService.keyword$.subscribe(
+  this.keywordSubscription = porcupineService.keyword$.subscribe(
     porcupineDetection => {
       console.log(`Porcupine Detected "${porcupineDetection.label}"`)
     });
-  this.isLoadedDetection = porcupineService.isLoaded$.subscribe(
+  this.isLoadedSubscription = porcupineService.isLoaded$.subscribe(
     isLoaded => {
       console.log(isLoaded);
     });
-  this.isListeningDetection = porcupineService.isListening$.subscribe(
+  this.isListeningSubscription = porcupineService.isListening$.subscribe(
     isListening => {
       console.log(isListening);
     });
-  this.errorDetection = porcupineService.error$.subscribe(
+  this.errorSubscription = porcupineService.error$.subscribe(
     error => {
       console.error(error);
     });
@@ -1382,10 +1382,10 @@ async ngOnInit() {
 }
 
 ngOnDestroy() {
-  this.keywordDetection.unsubscribe();
-  this.isLoadedDetection.unsubscribe();
-  this.isListeningDetection.unsubscribe();
-  this.errorDetection.unsubscribe();
+  this.keywordSubscription.unsubscribe();
+  this.isLoadedSubscription.unsubscribe();
+  this.isListeningSubscription.unsubscribe();
+  this.errorSubscription.unsubscribe();
   this.porcupineService.release();
 }
 ```
