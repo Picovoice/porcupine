@@ -12,7 +12,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://github.com/Picovoice/porcupine/tree/master/binding/ios)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-angular)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-angular)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
@@ -1336,41 +1336,58 @@ if (done) {
 #### Angular
 
 ```console
-yarn add @picovoice/porcupine-web-angular
+yarn add @picovoice/porcupine-angular @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-angular
+npm install @picovoice/porcupine-angular @picovoice/web-voice-processor
 ```
 
 ```typescript
-async ngOnInit() {
-    // Load Porcupine worker chunk with specific language model
-    const porcupineFactoryEn = 
-      await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
-    const accessKey = // Obtained from Picovoice Console (https://console.picovoice.ai/)
-    // Initialize Porcupine Service
-    try {
-      await this.porcupineService.init(
-        porcupineFactoryEn,
-        {
-          accessKey: accessKey,
-          keywords: [{ builtin: "Okay Google", sensitivity: 0.65 }, { builtin: "Picovoice" }]
-        }
-      )
-      console.log("Porcupine is now loaded and listening")
-    }
-    catch (error) {
-      console.error(error)
-    }
-  }
+import { Subscription } from "rxjs";
+import { PorcupineService } from "@picovoice/porcupine-web-angular";
+import {BuiltInKeyword} from '@picovoice/porcupine-web';
+import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}";
 
-  ngOnDestroy() {
-    this.porcupineDetection.unsubscribe()
-    this.porcupineService.release()
-  }
+constructor(private porcupineService: PorcupineService) {
+  this.keywordSubscription = porcupineService.keyword$.subscribe(
+    porcupineDetection => {
+      console.log(`Porcupine Detected "${porcupineDetection.label}"`)
+    });
+  this.isLoadedSubscription = porcupineService.isLoaded$.subscribe(
+    isLoaded => {
+      console.log(isLoaded);
+    });
+  this.isListeningSubscription = porcupineService.isListening$.subscribe(
+    isListening => {
+      console.log(isListening);
+    });
+  this.errorSubscription = porcupineService.error$.subscribe(
+    error => {
+      console.error(error);
+    });
+}
+
+async ngOnInit() {
+  await this.porcupineService.init(
+    ${ACCESS_KEY},
+    [BuiltInKeyword.Porcupine],
+    porcupineModel,
+    options
+  ).then(() => {
+    this.porcupineService.start();
+  });
+}
+
+ngOnDestroy() {
+  this.keywordSubscription.unsubscribe();
+  this.isLoadedSubscription.unsubscribe();
+  this.isListeningSubscription.unsubscribe();
+  this.errorSubscription.unsubscribe();
+  this.porcupineService.release();
+}
 ```
 
 #### React

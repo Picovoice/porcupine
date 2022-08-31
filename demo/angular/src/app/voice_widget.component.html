@@ -3,7 +3,7 @@
   <h3>
     <label>
       AccessKey obtained from
-      <a href="https://picovoice.ai/console/">Picovoice Console</a>: 
+      <a href="https://picovoice.ai/console/">Picovoice Console</a>:
       <input
         type="text"
         name="accessKey"
@@ -15,19 +15,18 @@
       Start Porcupine
     </button>
   </h3>
-  <h3>Dynamic Import Loaded: {{ isChunkLoaded }}</h3>
   <h3>Porcupine Loaded: {{ isLoaded }}</h3>
   <h3>Listening: {{ isListening }}</h3>
-  <h3>Error: {{ isError }}</h3>
+  <h3>Error: {{ error !== null }}</h3>
 
-  <p class="error-message" *ngIf="isError">{{ errorMessage }}</p>
+  <p class="error-message" *ngIf="error !== null">{{ error.toString() }}</p>
 
-  <h3>Keyword: {{ keywords['custom'] | json }}</h3>
+  <h3>Keywords: Alexa, Porcupine</h3>
   <br />
-  <button (click)="start()" [disabled]="isError || isListening">Start</button>
-  <button (click)="pause()" [disabled]="isError || !isListening">Pause</button>
-  <button (click)="stop()" [disabled]="isError || !isListening">Stop</button>
-  <h3>Keyword Detections (listening for "Deep Sky Blue"):</h3>
+  <button (click)="start()" [disabled]="error || !isLoaded || isListening">Start</button>
+  <button (click)="stop()" [disabled]="error || !isLoaded || !isListening">Stop</button>
+  <button (click)="release()" [disabled]="error || !isLoaded">Release</button>
+  <h3>Keyword Detections (listening for "Alexa, Porcupine"):</h3>
   <ul>
     <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>
   </ul>

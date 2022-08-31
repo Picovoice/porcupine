@@ -1,99 +1,85 @@
-import { Component } from "@angular/core"
-import { Subscription } from "rxjs"
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { PorcupineService, PorcupineServiceArgs } from "@picovoice/porcupine-web-angular"
+import { PorcupineService } from '@picovoice/porcupine-angular';
 
-import { DEEP_SKY_BLUE_PPN_64 } from "./porcupine_keywords"
-import { PorcupineKeyword } from "@picovoice/porcupine-web-core"
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+
+import porcupineParams from '../lib/porcupine_params';
 
 @Component({
-  selector: 'voice-widget',
+  selector: 'app-voice-widget',
   templateUrl: './voice_widget.component.html',
   styleUrls: ['./voice_widget.component.scss']
 })
-export class VoiceWidget {
-  private keywordDetection: Subscription
-  private listeningDetection: Subscription
-  private errorDetection: Subscription
-  private isErrorDetection: Subscription
+export class VoiceWidget implements OnDestroy {
+  private keywordSubscription: Subscription;
+  private isLoadedSubscription: Subscription;
+  private isListeningSubscription: Subscription;
+  private errorSubscription: Subscription;
 
-  title: "voice-widget"
-  isChunkLoaded: boolean = false
-  isLoaded: boolean = false
-  isError: boolean = false
-  error: Error | string | null = null
-  isListening: boolean | null = null
-  errorMessage: string
-  detections: Array<string> = []
-  keywords: PorcupineKeyword = { custom: "Deep Sky Blue", base64: DEEP_SKY_BLUE_PPN_64, sensitivity: 0.75 }
+  isLoaded = false;
+  isListening = false;
+  error: Error | string | null = null;
+
+  detections: Array<string> = [];
 
   constructor(private porcupineService: PorcupineService) {
     // Subscribe to Porcupine Keyword detections
-    // Store each detection so we can display it in an HTML list
-    this.keywordDetection = porcupineService.keyword$.subscribe(
-      keywordLabel => {
-        this.detections = [...this.detections, keywordLabel]
-      })
+    // Store each detection, so we can display it in an HTML list
+    this.keywordSubscription = porcupineService.keywordDetection$.subscribe(
+      porcupineSubscription => {
+        this.detections = [...this.detections, porcupineSubscription.label];
+      });
 
-    // Subscribe to listening, isError, and error message
-    this.listeningDetection = porcupineService.listening$.subscribe(
-      listening => {
-        this.isListening = listening
-      })
-    this.errorDetection = porcupineService.error$.subscribe(
+    // Subscribe to isListening, isLoaded, and error
+    this.isLoadedSubscription = porcupineService.isLoaded$.subscribe(
+      isLoaded => {
+        this.isLoaded = isLoaded;
+      });
+    this.isListeningSubscription = porcupineService.isListening$.subscribe(
+      isListening => {
+        this.isListening = isListening;
+      });
+    this.errorSubscription = porcupineService.error$.subscribe(
       error => {
-        this.error = error
-      })
-    this.isErrorDetection = porcupineService.isError$.subscribe(
-      isError => {
-        this.isError = isError
-      })
+        this.error = error;
+      });
   }
 
-  async ngOnInit() {
+  ngOnDestroy(): void {
+    this.keywordSubscription.unsubscribe();
+    this.isLoadedSubscription.unsubscribe();
+    this.isListeningSubscription.unsubscribe();
+    this.errorSubscription.unsubscribe();
+    this.porcupineService.release();
   }
 
-  ngOnDestroy() {
-    this.keywordDetection.unsubscribe()
-    this.listeningDetection.unsubscribe()
-    this.errorDetection.unsubscribe()
-    this.isErrorDetection.unsubscribe()
-    this.porcupineService.release()
+  public async stop(): Promise<void> {
+    await this.porcupineService.stop();
   }
 
-  public pause() {
-    this.porcupineService.pause();
+  public async start(): Promise<void> {
+    await this.porcupineService.start();
   }
 
-  public stop() {
-    this.porcupineService.stop();
-  }
-
-  public start() {
-    this.porcupineService.start();
-  }
-
-  public async initEngine(accessKey: string) {
-    if (accessKey.length >= 0) { 
-      this.porcupineService.release();
-      const porcupineServiceArgs: PorcupineServiceArgs = { accessKey: accessKey, keywords: this.keywords};
-      // Load Porcupine worker chunk with specific language model (large ~1-2MB chunk; needs to be dynamically imported)
-      const porcupineFactoryEn = (await import('@picovoice/porcupine-web-en-worker')).PorcupineWorkerFactory
-      this.isChunkLoaded = true;
-      console.info("Porcupine EN is loaded.")
-      // Initialize Porcupine Service
+  public async initEngine(accessKey: string): Promise<void> {
+    if (accessKey.length >= 0) {
+      await this.porcupineService.release();
       try {
-        await this.porcupineService.init(porcupineFactoryEn,
-          porcupineServiceArgs
-        )
-        console.info("Porcupine is ready!")
-        this.isLoaded = true;
+        await this.porcupineService.init(
+          accessKey,
+          [BuiltInKeyword.Alexa, BuiltInKeyword.Porcupine],
+          { base64: porcupineParams }
+        );
       }
       catch (error) {
-        console.error(error)
-        this.isError = true;
-        this.errorMessage = error.toString();
+        this.error = error;
       }
     }
+  }
+
+  public async release(): Promise<void> {
+    await this.porcupineService.release();
   }
 }

@@ -1,8 +1,6 @@
-# porcupine-web-angular-demo
+# porcupine-angular-demo
 
-This demo application includes a sample `VoiceWidget` Angular component which uses the `PorcupineService` Angular service to allow listening for keywords. Porcupine keyword detections are handled via the `keyword$` event. Our VoiceWidget subscribes to this event and displays the results.
-
-The demo uses dynamic imports to split the PorcupineService away from the main application bundle. This means that the initial download size of the Angular app will not be impacted by the ~1-2 MB requirement of Porcupine. While small for all-in-one offline Voice AI, the size is large for an initial web app load.
+This demo application includes a sample `VoiceWidget` Angular component which uses the `PorcupineService` Angular service to allow listening for keywords. Porcupine keyword detections are handled via the `keywordDetection$` event. Our VoiceWidget subscribes to this event and displays the results.
 
 If you decline microphone permission in the browser, or another such issue prevents Porcupine from starting, the error will be displayed.
 
@@ -30,8 +28,8 @@ Open `http://localhost:4200/` to view it in the browser.
 
 ## Try Porcupine
 
-The demo is listening for the wake word "Deep Sky Blue". Say the wake word:
+The demo is listening for the wake word "Alexa or Porcupine". Say the wake word:
 
-> "Deep Sky Blue"
+> "Porcupine"
 
 Detections will appear on the page.

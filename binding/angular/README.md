@@ -1,6 +1,6 @@
-## porcupine-web-angular
+## porcupine-angular
 
-This is the Angular workspace for building the `porcupine-web-angular` package.
+This is the Angular workspace for building the `porcupine-angular` package.
 
 ## Install
 
@@ -15,7 +15,7 @@ yarn
 To build the project:
 
 ```console
-yarn build porcupine-web-angular --prod
+yarn build porcupine-angular --prod
 ```
 
 ## Lint and Format

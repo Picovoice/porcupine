@@ -6,8 +6,8 @@
       "files": ["*.ts"],
       "parserOptions": {
         "project": [
-          "projects/porcupine-web-angular/tsconfig.lib.json",
-          "projects/porcupine-web-angular/tsconfig.spec.json"
+          "projects/porcupine-angular/tsconfig.lib.json",
+          "projects/porcupine-angular/tsconfig.spec.json"
         ],
         "createDefaultProgram": true
       },

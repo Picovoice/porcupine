@@ -6,10 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'porcupine-web-angular-demo-porcupine';
-  show = true
+  title = 'porcupine-angular-demo-porcupine';
+  show = true;
 
-  toggle() {
-    this.show = !this.show
+  toggle(): void {
+    this.show = !this.show;
   }
 }
