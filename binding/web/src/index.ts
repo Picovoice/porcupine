@@ -23,6 +23,8 @@ import porcupineWasmSimd from '../lib/pv_porcupine_simd.wasm';
 
 import { BuiltInKeyword } from './built_in_keywords';
 
+import { keywordsProcess } from './utils';
+
 Porcupine.setWasm(porcupineWasm);
 Porcupine.setWasmSimd(porcupineWasmSimd);
 PorcupineWorker.setWasm(porcupineWasm);
@@ -31,6 +33,7 @@ PorcupineWorker.setWasmSimd(porcupineWasmSimd);
 export {
   BuiltInKeyword,
   DetectionCallback,
+  keywordsProcess,
   Porcupine,
   PorcupineDetection,
   PorcupineKeyword,

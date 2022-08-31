@@ -397,7 +397,7 @@
         writeMessage("Starting process performance test!");
         start = Date.now();
         for (let i = 0; i < numIterations; i++) {
-          await ppnWorker(handle, pcm);
+          await porcupineDetectionCounts(handle, pcm);
         }
         end = Date.now();
         writeMessage(`Process Performance: ${((end - start) / 1000) / numIterations}`);

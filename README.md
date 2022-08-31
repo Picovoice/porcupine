@@ -13,8 +13,8 @@
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://github.com/Picovoice/porcupine/tree/master/binding/ios)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-angular)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 <!-- markdown-link-check-disable -->
 [![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)
@@ -1276,9 +1276,7 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/po
       console.log("Porcupine worker ready!");
 
       console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
-      window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
-      window.webVp.subscribe(porcupine);
-      window.start();
+      await window.WebVoiceProcessor.WebVoiceProcessor.subscribe(porcupine);
       console.log("WebVoiceProcessor ready and listening!");
 
       document.addEventListener("DOMContentLoaded", function () {
@@ -1322,16 +1320,14 @@ const porcupine = await PorcupineWorker.create(
 );
 
 console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
-window.webVp = await WebVoiceProcessor.WebVoiceProcessor.instance();
-window.webVp.subscribe(porcupine);
-window.start();
+await WebVoiceProcessor.subscribe(porcupine);
 console.log("WebVoiceProcessor ready and listening!");
 
 ...
 
 // Finished with Porcupine? Release the WebVoiceProcessor and the worker.
 if (done) {
-  webVp.release()
+  await WebVoiceProcessor.unsubscribe(porcupine);
   porcupine.release()
   porcupine.terminate()
 }
@@ -1380,41 +1376,45 @@ async ngOnInit() {
 #### React
 
 ```console
-yarn add @picovoice/porcupine-web-react
+yarn add @picovoice/porcupine-react @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-react
+npm install @picovoice/porcupine-react @picovoice/web-voice-processor
 ```
 
 ```javascript
-import React, { useState } from "react";
-import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
-import { usePorcupine } from "@picovoice/porcupine-web-react";
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { usePorcupine } from '@picovoice/porcupine-react';
 
-const accessKey = // AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
-const keywords = [{ builtin: "Picovoice", sensitivity: 0.65 }];
-
-function VoiceWidget(props) {
-  const keywordEventHandler = (keywordLabel) => {
-    console.log(`Porcupine detected ${keywordLabel}`);
-  };
-
+function App(props) {
   const {
+    wakeWordDetection,
     isLoaded,
     isListening,
-    isError,
-    errorMessage,
+    error,
+    init,
     start,
-    pause,
-    setDetectionCallback
-  } = usePorcupine(
-    PorcupineWorkerFactory,
-    { accessKey, keywords, start: true },
-    keywordEventHandler
-  );
+    stop,
+    release,
+  } = usePorcupine();
+
+  const initEngine = async () => {
+    await init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      porcupineModel
+    );
+    await start();
+  }
+  
+  useEffect(() => {
+    if (wakeWordDetection !== null) {
+      console.log(wakeWordDetection.label);
+    }
+  }, [wakeWordDetection])
 }
 ```
 

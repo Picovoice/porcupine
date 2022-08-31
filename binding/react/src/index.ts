@@ -1,6 +1,5 @@
-import { usePorcupine, PorcupineHookArgs } from './use_porcupine';
+import { usePorcupine } from './use_porcupine';
 
 export {
-  usePorcupine,
-  PorcupineHookArgs
+  usePorcupine
 };
