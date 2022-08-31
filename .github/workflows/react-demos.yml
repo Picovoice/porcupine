@@ -37,10 +37,6 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Build binding
-      run: yarn install && yarn build
-      working-directory: binding/react
-
     - name: Install dependencies
       run: yarn install
 
