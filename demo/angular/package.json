@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
     "@picovoice/porcupine-angular": "../../binding/angular/dist/porcupine-angular",
-    "@picovoice/web-voice-processor": "~4.0.0",
+    "@picovoice/web-voice-processor": "~4.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

@@ -1166,7 +1166,7 @@
     rimraf "^3.0.2"
 
 "@picovoice/porcupine-angular@../../binding/angular/dist/porcupine-angular":
-  version "2.1.4"
+  version "2.1.0"
   dependencies:
     "@picovoice/porcupine-web" "=2.1.5"
     tslib "^2.0.0"
@@ -1185,10 +1185,10 @@
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.0.tgz#fd1f9b60f8daf050d764d5549ad19ca64a0d1184"
-  integrity sha512-EMZrl/dbZou6vVxfElS9N+IQDMCRfYNYYh2CCFQjrPGwXLez9CaKGdF07N5GoIaf5wyM4l8pZzVTcGxoZCKY4Q==
+"@picovoice/web-voice-processor@~4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.1.tgz#9a47dcd56efa5431870a25f0c8093f3eee6923ea"
+  integrity sha512-RmzeovecBG7WpxTksqTCDNID1lcbJse8rdp/R+HrriufDgkilNXAfKyIm7VknzHA48Pw9e/eJJPLrntAQwzdcw==
 
 "@schematics/angular@11.0.7":
   version "11.0.7"
