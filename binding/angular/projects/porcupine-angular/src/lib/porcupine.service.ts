@@ -47,8 +47,8 @@ export class PorcupineService implements OnDestroy {
   ): Promise<void> {
     if (options.processErrorCallback) {
       console.warn(
-        "'processErrorCallback' is only supported in the Porcupine Web SDK. " +
-          "Use the 'error' state to monitor for errors in the Angular SDK."
+        '\'processErrorCallback\' is only supported in the Porcupine Web SDK. ' +
+          'Use the \'error\' state to monitor for errors in the Angular SDK.'
       );
     }
 
