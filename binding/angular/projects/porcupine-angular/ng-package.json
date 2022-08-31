@@ -2,7 +2,11 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/porcupine-angular",
   "lib": {
-    "entryFile": "src/public-api.ts"
+    "entryFile": "src/public-api.ts",
+    "umdModuleIds": {
+      "@picovoice/porcupine-web": "PorcupineWeb",
+      "@picovoice/web-voice-processor": "WebVoiceProcessor"
+    }
   },
   "allowedNonPeerDependencies": ["@picovoice/porcupine-web"]
 }
