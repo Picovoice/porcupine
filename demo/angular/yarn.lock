@@ -1165,8 +1165,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-angular@../../binding/angular/dist/porcupine-angular":
+"@picovoice/porcupine-angular@~2.1.0":
   version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-2.1.0.tgz#1880cf5df50590b4ed82fd1994947f25b6cf3b04"
+  integrity sha512-/pq0pQRXQhdLSJR5tTqRiWO8fnjdPpaF1/toLDiUF4Eoj+z0Hee0P/sCBTKVdpFBMKsjLIR9ia03+sk7bZeBUQ==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.7"
     tslib "^2.0.0"
