@@ -34,7 +34,7 @@ This binding is for running Porcupine on **Node.js 12+** on the following platfo
 
 ### Web Browsers
 
-This npm package is for Node.js and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/porcupine-web-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-web-vue).
+This npm package is for Node.js and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/porcupine-angular), [React](https://www.npmjs.com/package/@picovoice/porcupine-react), and [Vue](https://www.npmjs.com/package/@picovoice/porcupine-vue).
 
 ## AccessKey
 
