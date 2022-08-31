@@ -38,13 +38,18 @@ export class PorcupineService implements OnDestroy {
 
   public async init(
     accessKey: string,
-    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    keywords:
+      | Array<PorcupineKeyword | BuiltInKeyword>
+      | PorcupineKeyword
+      | BuiltInKeyword,
     model: PorcupineModel,
-    options: PorcupineOptions = {},
+    options: PorcupineOptions = {}
   ): Promise<void> {
     if (options.processErrorCallback) {
-      console.warn('\'processErrorCallback\' is only supported in the Porcupine Web SDK. ' +
-        'Use the \'error\' state to monitor for errors in the Angular SDK.');
+      console.warn(
+        "'processErrorCallback' is only supported in the Porcupine Web SDK. " +
+          "Use the 'error' state to monitor for errors in the Angular SDK."
+      );
     }
 
     try {
@@ -66,7 +71,9 @@ export class PorcupineService implements OnDestroy {
 
   public async start(): Promise<void> {
     if (this.porcupine === null) {
-      this.error$.next('Porcupine has not been initialized or has been released');
+      this.error$.next(
+        'Porcupine has not been initialized or has been released'
+      );
       return;
     }
 
@@ -82,7 +89,9 @@ export class PorcupineService implements OnDestroy {
 
   public async stop(): Promise<void> {
     if (this.porcupine === null) {
-      this.error$.next('Porcupine has not been initialized or has been released');
+      this.error$.next(
+        'Porcupine has not been initialized or has been released'
+      );
       return;
     }
 
@@ -110,7 +119,9 @@ export class PorcupineService implements OnDestroy {
     await this.release();
   }
 
-  private keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void => {
+  private keywordDetectionCallback = (
+    porcupineDetection: PorcupineDetection
+  ): void => {
     this.keywordDetection$.next(porcupineDetection);
   };
 
