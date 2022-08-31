@@ -3,7 +3,7 @@
   "description": "Porcupine wake word engine for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
-  "version": "2.1.3",
+  "version": "2.1.7",
   "keywords": [
     "porcupine",
     "web",

@@ -9,209 +9,133 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
+  BuiltInKeyword,
+  PorcupineDetection,
   PorcupineKeyword,
+  PorcupineModel,
+  PorcupineOptions,
   PorcupineWorker,
-  PorcupineWorkerFactory,
-} from '@picovoice/porcupine-web-core';
+} from '@picovoice/porcupine-web';
 
-export type PorcupineHookArgs = {
-  /** Immediately start the microphone upon initialization? */
-  start: boolean;
-  /** AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
-  accessKey: string;
-  /** Keywords to listen for */
-  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
-};
+export const usePorcupine = (): {
+  keywordDetection: PorcupineDetection | null,
+  isLoaded: boolean,
+  isListening: boolean,
+  error: string | null,
+  init: (
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    model: PorcupineModel,
+    options?: PorcupineOptions,
+  ) => Promise<void>,
+  start: () => Promise<void>,
+  stop: () => Promise<void>,
+  release: () => Promise<void>,
+} => {
+  const porcupineRef = useRef<PorcupineWorker | null>(null);
+  const [keywordDetection, setKeywordDetection] = useState<PorcupineDetection | null>(null);
 
-export function usePorcupine(
-  /** The language-specific worker factory, imported as { PorcupineWorkerFactory }
-   * from the @picovoice/porcupine-web-xx-worker series of packages, where xx is the two-letter language code. */
-  porcupineWorkerFactory: PorcupineWorkerFactory | null,
-  /** usePorcupine Hook Parameters. */
-  porcupineHookArgs: PorcupineHookArgs | null,
-  /** User-defined callback function invoked upon detection of the keywords. */
-  keywordEventHandler: (label: string) => void
-): {
-  /** A state indicating whether the engine is initialized successfully */
-  isLoaded: boolean;
-  /** A state indicating whether the webVoiceProcessor is passing audio to the engine. */
-  isListening: boolean;
-  /** A state indicating whether the Hook returned an error. */
-  isError: boolean | null;
-  /** A string expression of the error. */
-  errorMessage: string | null;
-  /** A pointer to the internal webVoiceProcessor object. */
-  webVoiceProcessor: WebVoiceProcessor | null;
-  /** A method to start listening to the mic and processing the audio. */
-  start: () => void;
-  /** A method to stop listening to the mic. */
-  stop: () => void;
-  /** A method to stop processing the audio. */
-  pause: () => void;
-  /** Setter for keywordEventHandler */
-  setKeywordEventHandler: React.Dispatch<
-    React.SetStateAction<(label: string) => void>
-  >;
-} {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [
-    webVoiceProcessor,
-    setWebVoiceProcessor,
-  ] = useState<WebVoiceProcessor | null>(null);
-  const [isError, setIsError] = useState<boolean | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [keywordCallback, setKeywordCallback] = useState(
-    () => keywordEventHandler
-  );
+  const [error, setError] = useState<string | null>(null);
 
-  const start = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.start().then(() => {
-        setIsListening(true);
-        return true;
-      });
+  const keywordDetectionCallback = useCallback((keyword: PorcupineDetection) => {
+    setKeywordDetection(keyword);
+  }, []);
+
+  const errorCallback = useCallback((e: string) => {
+    setError(e);
+  }, []);
+
+  const init = useCallback(async (
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    model: PorcupineModel,
+    options: PorcupineOptions = {},
+  ): Promise<void> => {
+    if (options.processErrorCallback) {
+      console.warn("'processErrorCallback' is only supported in the Porcupine Web SDK. Use the 'error' state to monitor for errors in the React SDK.");
     }
-    return false;
-  };
 
-  const stop = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.stop().then(() => {
-        setIsListening(false);
-        return true;
-      });
+    try {
+      if (!porcupineRef.current) {
+        porcupineRef.current = await PorcupineWorker.create(
+          accessKey,
+          keywords,
+          keywordDetectionCallback,
+          model,
+          { ...options, processErrorCallback: errorCallback }
+        );
+        setIsLoaded(true);
+        setError(null);
+      }
+    } catch (e: any) {
+      setError(e.toString);
     }
-    return false;
-  };
+  }, [keywordDetectionCallback, errorCallback]);
 
-  const pause = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.pause();
+  const start = useCallback(async (): Promise<void> => {
+    try {
+      if (!porcupineRef.current) {
+        setError("Porcupine has not been initialized or has been released");
+        return;
+      }
+
+      await WebVoiceProcessor.subscribe(porcupineRef.current);
+      setIsListening(true);
+      setError(null);
+    } catch (e: any) {
+      setError(e.toString());
       setIsListening(false);
-      return true;
     }
-    return false;
-  };
+  }, []);
 
-  const processErrorCallback = (error: string | Error): void => {
-    setIsError(true);
-    setErrorMessage(error.toString());
-  };
+  const stop = useCallback(async (): Promise<void> => {
+    try {
+      if (!porcupineRef.current) {
+        setError("Porcupine has not been initialized or has been released");
+        return;
+      }
+
+      await WebVoiceProcessor.unsubscribe(porcupineRef.current);
+      setIsListening(false);
+      setError(null);
+    } catch (e: any) {
+      setError(e.toString());
+      setIsListening(false);
+    }
+  }, []);
+
+  const release = useCallback(async (): Promise<void> => {
+    if (porcupineRef.current) {
+      await stop();
+      porcupineRef.current.terminate();
+      porcupineRef.current = null;
+
+      setIsLoaded(false);
+    }
+  }, []);
 
   useEffect(() => {
-    // If using dynamic import() on porcupine-web-xx-worker,
-    // initially the worker factory may not exist yet; do nothing
-    if (
-      porcupineWorkerFactory === null ||
-      porcupineWorkerFactory === undefined
-    ) {
-      return (): void => {
-        /* NOOP */
-      };
-    }
-
-    // When these are null, don't start Porcupine.
-    // If they previously were non-null, the useEffect cleanup will run and terminate the extant worker/webvp.
-    if (porcupineHookArgs === null || porcupineHookArgs === undefined) {
-      return (): void => {
-        /* NOOP */
-      };
-    }
-
-    const {
-      accessKey,
-      keywords,
-      start: startWebVp = true,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    } = porcupineHookArgs!;
-
-    if (
-      keywords === null ||
-      keywords === undefined ||
-      (Array.isArray(keywords) && keywords.length === 0)
-    ) {
-      return (): void => {
-        /* NOOP */
-      };
-    }
-
-    async function startPorcupine(): Promise<{
-      webVp: WebVoiceProcessor;
-      ppnWorker: PorcupineWorker;
-    }> {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const ppnWorker: PorcupineWorker = await porcupineWorkerFactory!.create(
-        accessKey,
-        keywords,
-        keywordCallback,
-        processErrorCallback
-      );
-
-      try {
-        const webVp = await WebVoiceProcessor.init({
-          engines: [ppnWorker],
-          start: startWebVp,
-        });
-
-        return { webVp, ppnWorker };
-      } catch (error) {
-        ppnWorker.postMessage({ command: 'release' });
-        throw error;
-      }
-    }
-
-    const startPorcupinePromise = startPorcupine();
-
-    startPorcupinePromise
-      .then(({ webVp }) => {
-        setIsLoaded(true);
-        setIsListening(webVp.isRecording);
-        setWebVoiceProcessor(webVp);
-        setIsError(false);
-      })
-      .catch(error => {
-        setIsError(true);
-        setErrorMessage(error.toString());
-      });
-
-    return async (): Promise<void> => {
-      startPorcupinePromise.then(({ webVp, ppnWorker }) => {
-        if (webVp !== undefined && webVp !== null) {
-          webVp.release();
-        }
-        if (ppnWorker !== undefined && ppnWorker !== null) {
-          ppnWorker.postMessage({ command: 'release' });
-          ppnWorker.terminate();
-        }
-      }).catch(() => {
-        // do nothing
-      });
+    return () => {
+      release();
     };
-  }, [
-    porcupineWorkerFactory,
-    // https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    // ".... we know our data structure is relatively shallow, doesn't have cycles,
-    // and is easily serializable ... doesn't have functions or weird objects like Dates.
-    // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
-    JSON.stringify(porcupineHookArgs),
-    keywordCallback,
-  ]);
+  }, []);
 
   return {
+    keywordDetection,
     isLoaded,
     isListening,
-    isError,
-    errorMessage,
-    webVoiceProcessor,
+    error,
+    init,
     start,
-    pause,
     stop,
-    setKeywordEventHandler: setKeywordCallback,
+    release,
   };
-}
+};
+

@@ -1,4 +1,4 @@
-import porcupineMixin, { PorcupineVue, PorcupineWorkerFactoryArgs } from './porcupine';
+import porcupineMixin, { PorcupineVue } from './porcupine';
 
 // Create module definition for Vue.use()
 const plugin = {
@@ -25,4 +25,4 @@ if (GlobalVue) {
 export default porcupineMixin;
 
 // export types
-export { PorcupineVue, PorcupineWorkerFactoryArgs };
+export { PorcupineVue };

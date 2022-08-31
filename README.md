@@ -13,8 +13,8 @@
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://github.com/Picovoice/porcupine/tree/master/binding/ios)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-angular)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-react)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web-vue)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 <!-- markdown-link-check-disable -->
 [![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)
@@ -1393,111 +1393,101 @@ ngOnDestroy() {
 #### React
 
 ```console
-yarn add @picovoice/porcupine-web-react
+yarn add @picovoice/porcupine-react @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-react
+npm install @picovoice/porcupine-react @picovoice/web-voice-processor
 ```
 
 ```javascript
-import React, { useState } from "react";
-import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-en-worker";
-import { usePorcupine } from "@picovoice/porcupine-web-react";
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { usePorcupine } from '@picovoice/porcupine-react';
 
-const accessKey = // AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
-const keywords = [{ builtin: "Picovoice", sensitivity: 0.65 }];
-
-function VoiceWidget(props) {
-  const keywordEventHandler = (keywordLabel) => {
-    console.log(`Porcupine detected ${keywordLabel}`);
-  };
-
+function App(props) {
   const {
+    wakeWordDetection,
     isLoaded,
     isListening,
-    isError,
-    errorMessage,
+    error,
+    init,
     start,
-    pause,
-    setDetectionCallback
-  } = usePorcupine(
-    PorcupineWorkerFactory,
-    { accessKey, keywords, start: true },
-    keywordEventHandler
-  );
+    stop,
+    release,
+  } = usePorcupine();
+
+  const initEngine = async () => {
+    await init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      porcupineModel
+    );
+    await start();
+  }
+  
+  useEffect(() => {
+    if (wakeWordDetection !== null) {
+      console.log(wakeWordDetection.label);
+    }
+  }, [wakeWordDetection])
 }
 ```
 
 #### Vue
 
 ```console
-yarn add @picovoice/porcupine-web-vue
+yarn add @picovoice/porcupine-vue @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/porcupine-web-vue
+npm install @picovoice/porcupine-vue @picovoice/web-voice-processor
 ```
 
 ```html
 <script lang="ts">
-import porcupineMixin from "@picovoice/porcupine-web-vue";
-import { PorcupineWorkerFactoryEn } from "@picovoice/porcupine-web-en-worker";
+  import {BuiltInKeyword} from "@picovoice/porcupine-web";
+  import porcupineMixin from "@picovoice/porcupine-vue";
 
-export default {
-  name: "App",
-  mixins: [porcupineMixin],
-  data: function() {
-    return {
-      detections: [] as string[],
-      isError: false,
-      isLoaded: false,
-      factory: PorcupineWorkerFactoryEn,
-      factoryArgs: {
-        accessKey: '${ACCESS_KEY}', // from Picovoice Console (https://console.picovoice.ai/)
-        keywords: [
-          { builtin: 'Grasshopper', sensitivity: 0.5 },
-          { builtin: 'Grapefruit', sensitivity: 0.6 },
-        ],
-      }
-    };
-  },
-  async created() {
-    await this.$porcupine.init(
-      this.factoryArgs,     // Porcupine factory arguments
-      this.factory,         // Porcupine Web Worker component
-      this.ppnKeywordFn,    // Callback invoked after detection of keyword
-      this.ppnReadyFn,      // Callback invoked after loading Porcupine
-      this.ppnErrorFn       // Callback invoked in an error occurs while initializing Porcupine
-    );
-  },
-  methods: {
-    start: function () {
-      if (this.$porcupine.start()) {
-        this.isListening = !this.isListening;
+  import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
+
+  export default {
+    mixins: [porcupineMixin],
+    mounted() {
+      this.$porcupine.init(
+              ${ACCESS_KEY},
+              [BuiltInKeyword.Porcupine],
+              this.keywordDetectionCallback,
+              { base64: porcupineParams }, // porcupine model
+              this.isLoadedCallback,
+              this.isListeningCallback,
+              this.errorCallback
+      ).then(() => {
+        this.$porcupine.start();
+      });
+    },
+    methods: {
+      keywordDetectionCallback: function(keyword) {
+        console.log(`Porcupine detected keyword: ${keyword.label}`);
+      },
+      isLoadedCallback: function(isLoaded) {
+        console.log(isLoaded);
+      },
+      isListeningCallback: function(isListening) {
+        console.log(isListening);
+      },
+      errorCallback: function(error) {
+        console.error(error);
       }
     },
-    pause: function () {
-      if (this.$porcupine.pause()) {
-        this.isListening = !this.isListening;
-      }
-    },
-    ppnReadyFn: function() {
-      this.isLoaded = true;
-    },
-    ppnKeywordFn: function(data: string) {
-      this.detections = [...this.detections, data.keywordLabel];
-    },
-    ppnErrorFn: function(error: Error) {
-      this.isError = true;
-      this.errorMessage = error.toString();
-    },
-  },
-};
+    // beforeDestroy for Vue 2.
+    beforeUnmount() {
+      this.$porcupine.release();
+    }
+  }
 </script>
 ```
 

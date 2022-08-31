@@ -7,10 +7,37 @@ module.exports = {
     mocha: true
   },
 
-  // parser: '@typescript-eslint/parser',
-  // parserOptions: {
-  //   ecmaVersion: 2018
-  // },
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 2018
+  },
+
+  ignorePatterns: ['**/*.js', 'node_modules', 'dist'],
+  overrides: [
+    {
+      files: ['src/**/*.ts'],
+      extends: ['plugin:@typescript-eslint/recommended'],
+      rules: {
+        '@typescript-eslint/no-parameter-properties': 2,
+        '@typescript-eslint/no-explicit-any': 0,
+        '@typescript-eslint/no-var-requires': 2,
+        '@typescript-eslint/no-non-null-assertion': 2,
+        '@typescript-eslint/no-use-before-define': 2,
+        '@typescript-eslint/camelcase': 0,
+        '@typescript-eslint/no-empty-interface': 2,
+        '@typescript-eslint/explicit-function-return-type': 1,
+        '@typescript-eslint/ban-ts-comment': 0,
+        '@typescript-eslint/no-empty-function': [2, { "allow": ["constructors"] }],
+        '@typescript-eslint/no-inferrable-types': [
+          2,
+          {
+            ignoreParameters: true,
+            ignoreProperties: true
+          }
+        ]
+      }
+    }
+  ],
 
   rules: {
     //=========================================================================
@@ -71,7 +98,7 @@ module.exports = {
     'use-isnan': 2,
     // ensure JSDoc comments are valid
     'valid-jsdoc': [
-      2,
+      0,
       {
         requireReturn: false,
         requireReturnDescription: false
@@ -90,7 +117,7 @@ module.exports = {
     // specify the maximum cyclomatic complexity allowed in a program
     complexity: [0, 11],
     // require return statements to either always or never specify values
-    'consistent-return': 2,
+    'consistent-return': 1,
     // specify curly brace conventions for all control statements
     curly: [2, 'multi-line'],
     // require default case in switch statements
@@ -266,7 +293,7 @@ module.exports = {
     // enforce one true brace style
     'brace-style': [1, '1tbs', { allowSingleLine: true }],
     // require camel case names
-    camelcase: [1, { properties: 'always' }],
+    camelcase: [0, { properties: 'always' }],
     // enforce spacing before and after comma
     'comma-spacing': [1, { before: false, after: true }],
     // enforce one true comma style
@@ -358,7 +385,7 @@ module.exports = {
     // require quotes around object literal property names
     'quote-props': 0,
     // specify whether double or single quotes should be used
-    quotes: [1, 'single', 'avoid-escape'],
+    quotes: 0,
     // Require JSDoc comment
     'require-jsdoc': 0,
     // enforce spacing before and after semicolons

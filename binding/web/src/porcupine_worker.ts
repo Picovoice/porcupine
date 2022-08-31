@@ -112,7 +112,7 @@ export class PorcupineWorker {
     const customWritePath = (model.customWritePath) ? model.customWritePath : 'porcupine_model';
     const modelPath = await loadModel({ ...model, customWritePath});
 
-    const { processErrorCallback } = options;
+    const { processErrorCallback, ...workerOptions } = options;
 
     const worker = new PvWorker();
     const returnPromise: Promise<PorcupineWorker> = new Promise((resolve, reject) => {
@@ -161,7 +161,7 @@ export class PorcupineWorker {
       sensitivities: sensitivities,
       wasm: this._wasm,
       wasmSimd: this._wasmSimd,
-      options: options,
+      options: workerOptions,
     });
 
     return returnPromise;

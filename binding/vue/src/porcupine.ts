@@ -9,40 +9,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
+import {WebVoiceProcessor} from '@picovoice/web-voice-processor';
 
 import {
+  BuiltInKeyword,
+  PorcupineDetection,
   PorcupineKeyword,
+  PorcupineModel,
+  PorcupineOptions,
   PorcupineWorker,
-  PorcupineWorkerFactory
-} from "@picovoice/porcupine-web-core";
-
-/**
-* Type alias for PorcupineWorkerFactory arguments.
-*/
-export type PorcupineWorkerFactoryArgs = {
-  accessKey: string;
-  keywords: Array<PorcupineKeyword | string> | PorcupineKeyword | string;
-  start?: boolean;
-};
+} from '@picovoice/porcupine-web';
 
 /**
  * Type alias for Porcupine Vue Mixin.
  * Use with `Vue as VueConstructor extends {$porcupine: PorcupineVue}` to get types in typescript.
  */
 export interface PorcupineVue {
-  $_ppnWorker_: Worker | null;
-  $_webVp_: WebVoiceProcessor | null;
+  $_porcupine_: PorcupineWorker | null,
   init: (
-    porcupineFactoryArgs: PorcupineWorkerFactoryArgs,
-    porcupineFactory: PorcupineWorkerFactory,
-    keywordCallback: (label: string) => void,
-    readyCallback: () => void,
-    errorCallback: (error: string | Error) => void) => void;
-  start: () => Promise<boolean>;
-  stop: () => Promise<boolean>;
-  pause: () => boolean;
-  delete: () => void;
+    accessKey: string,
+    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
+    model: PorcupineModel,
+    isLoadedCallback: (isLoaded: boolean) => void,
+    isListeningCallback: (isListening: boolean) => void,
+    errorCallback: (error: any) => void,
+    options?: PorcupineOptions,
+  ) => Promise<void>,
+  start: () => Promise<void>,
+  stop: () => Promise<void>,
+  release: () => Promise<void>,
+  isLoadedCallback: (isLoaded: boolean) => void,
+  isListeningCallback: (isListening: boolean) => void,
+  errorCallback: (error: string | null) => void,
 }
 
 export default {
@@ -52,90 +51,100 @@ export default {
      */
     $porcupine(): PorcupineVue {
       return {
-        $_ppnWorker_: null as PorcupineWorker | null,
-        $_webVp_: null as WebVoiceProcessor | null,
-        /**
-         * Init function for Porcupine.
-         * 
-         * @param porcupineFactoryArgs Arguments for PorcupineWorkerFactory.
-         * @param porcupineFactory The language-specific worker factory
-         * @param keywordCallback A method invoked upon detection of the keywords.
-         * @param readyCallback A method invoked after component has initialized.
-         * @param errorCallback A method invoked if an error occurs within `PorcupineWorkerFactory`.
-         */
+        $_porcupine_: null as PorcupineWorker | null,
+        isLoadedCallback: function (): void {
+          return;
+        },
+        isListeningCallback: function (): void {
+          return;
+        },
+        errorCallback: function (): void {
+          return;
+        },
         async init(
-          porcupineFactoryArgs,
-          porcupineFactory,
-          keywordCallback = (_: string) => {},
-          readyCallback = () => {},
-          errorCallback = (error: string | Error) => {console.error(error)}
-        ) {
+          accessKey: string,
+          keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+          keywordDetectionCallback: (porcupineDetection: PorcupineDetection) => void,
+          model: PorcupineModel,
+          isLoadedCallback: (isLoaded: boolean) => void,
+          isListeningCallback: (isListening: boolean) => void,
+          errorCallback: (error: string | null) => void,
+          options: PorcupineOptions = {},
+        ): Promise<void> {
+          if (options.processErrorCallback) {
+            console.warn("'processErrorCallback' is only supported in the Porcupine Web SDK. Use the 'errorCallback' state to monitor for errors in the Vue SDK.");
+          }
+
           try {
-            const { accessKey, keywords } = porcupineFactoryArgs;
-            this.$_ppnWorker_ = await porcupineFactory.create(
-              accessKey,
-              JSON.parse(JSON.stringify(keywords)),
-              keywordCallback,
-              errorCallback
-            );
-            this.$_webVp_ = await WebVoiceProcessor.init({
-              engines: [this.$_ppnWorker_!],
-            });
-            readyCallback();
-          } catch (error) {
-            errorCallback(error as Error);
+            if (!this.$_porcupine_) {
+              this.$_porcupine_ = await PorcupineWorker.create(
+                accessKey,
+                keywords,
+                keywordDetectionCallback,
+                model,
+                {...options, processErrorCallback: errorCallback}
+              );
+
+              this.isListeningCallback = isListeningCallback;
+              this.isLoadedCallback = isLoadedCallback;
+              this.errorCallback = errorCallback;
+              isLoadedCallback(true);
+              errorCallback(null);
+            }
+          } catch (error: any) {
+            errorCallback(error.toString());
           }
         },
         /**
          * Start processing audio.
          */
-        async start() {
-          if (this.$_webVp_ !== null) {
-            await this.$_webVp_.start();
-            return true;
-          } else {
-            return false;
-          }
-        },
-        /**
-         * Pause processing audio.
-         */
-        pause() {
-          if (this.$_webVp_ !== null) {
-            this.$_webVp_.pause();
-            return true;
-          } else {
-            return false;
+        async start(): Promise<void> {
+          try {
+            if (!this.$_porcupine_) {
+              this.errorCallback("Porcupine has not been initialized or has been released");
+              return;
+            }
+            await WebVoiceProcessor.subscribe(this.$_porcupine_);
+            this.isListeningCallback(true);
+            this.errorCallback(null);
+          } catch (error: any) {
+            this.errorCallback(error.toString());
           }
         },
         /**
          * Stop processing audio.
          */
-        async stop() {
-          if (this.$_webVp_ !== null) {
-            await this.$_webVp_.stop();
-            return true;
-          } else {
-            return false;
+        async stop(): Promise<void> {
+          try {
+            if (!this.$_porcupine_) {
+              this.errorCallback("Porcupine has not been initialized or has been released");
+              return;
+            }
+            await WebVoiceProcessor.unsubscribe(this.$_porcupine_);
+            this.isListeningCallback(false);
+            this.errorCallback(null);
+          } catch (error: any) {
+            this.errorCallback(error.toString());
           }
         },
-        /**
-         * Delete used resources.
-         */
-        delete() {
-          this.$_webVp_?.release();
-          this.$_ppnWorker_?.postMessage({ command: 'release' });
-          this.$_ppnWorker_?.terminate();
+        async release(): Promise<void> {
+          if (this.$_porcupine_) {
+            await this.stop();
+            this.$_porcupine_.terminate();
+            this.$_porcupine_ = null;
+
+            this.isLoadedCallback(false);
+          }
         }
-      }
+      };
     }
   },
   // Vue 3 method to clean resources.
-  beforeUnmount(this: any) {
-    this.$porcupine.delete();
+  beforeUnmount(this: any): void {
+    this.$porcupine.release();
   },
   // Vue 2 method to clean resources.
-  beforeDestroy(this: any) {
-    this.$porcupine.delete();
+  beforeDestroy(this: any): void {
+    this.$porcupine.release();
   }
 };
