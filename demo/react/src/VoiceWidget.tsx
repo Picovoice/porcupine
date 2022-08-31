@@ -1,54 +1,42 @@
-import { useEffect, useState } from "react";
-import { usePorcupine } from "@picovoice/porcupine-web-react";
-import { PorcupineWorkerFactory } from "@picovoice/porcupine-web-core";
+import {useEffect, useState} from "react";
+
+import {BuiltInKeyword} from "@picovoice/porcupine-web";
+import {usePorcupine} from "@picovoice/porcupine-react";
+
+import porcupineParams from "./lib/porcupine_params";
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
-  const [workerChunk, setWorkerChunk] = useState<
-    Record<string, PorcupineWorkerFactory | null>
-  >({ factory: null });
-  const [isChunkLoaded, setIsChunkLoaded] = useState(false);
   const [accessKey, setAccessKey] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [keywords] = useState([
-    { builtin: "Alexa", sensitivity: 0.7 },
-    { builtin: "Picovoice", sensitivity: 0.8 },
+  const [keywords] = useState<Array<BuiltInKeyword>>([
+    BuiltInKeyword.Alexa,
+    BuiltInKeyword.Picovoice
   ]);
 
-  useEffect(() => {
-    if (workerChunk.factory === null) {
-      let isCanceled = false;
-      const loadPorcupine = async () => {
-        // Dynamically import the worker
-        const ppnEnFactory = (
-          await import("@picovoice/porcupine-web-en-worker")
-        ).PorcupineWorkerFactory;
-        console.log("Porcupine worker (EN) chunk is loaded.");
+  const {
+    keywordDetection,
+    isLoaded,
+    isListening,
+    error,
+    init,
+    start,
+    stop,
+    release
+  } = usePorcupine();
 
-        if (!isCanceled) {
-          setWorkerChunk({ factory: ppnEnFactory });
-          setIsChunkLoaded(true);
-        }
-      };
-
-      loadPorcupine();
-
-      return () => {
-        isCanceled = true;
-      };
-    }
-  }, [workerChunk]);
-
-  const keywordEventHandler = (porcupineKeywordLabel: string) => {
-    setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
-  };
-
-  const { isLoaded, isListening, isError, errorMessage, start, pause, stop } =
-    usePorcupine(
-      workerChunk.factory,
-      { accessKey, keywords, start: true },
-      keywordEventHandler
+  const initEngine = async () => {
+    await init(
+      accessKey,
+      keywords,
+      {base64: porcupineParams}
     );
+  }
+
+  useEffect(() => {
+    if (keywordDetection !== null) {
+      setKeywordDetections((oldVal) => [...oldVal, keywordDetection.label])
+    }
+  }, [keywordDetection])
 
   return (
     <div className="voice-widget">
@@ -60,40 +48,41 @@ export default function VoiceWidget() {
           <input
             type="text"
             name="accessKey"
-            onChange={(value) => setInputValue(value.target.value)}
-            disabled={isLoaded}
+            onChange={(value) => setAccessKey(value.target.value)}
           />
+          <button
+            className="init-button"
+            onClick={() => initEngine()}
+          >
+            Init Porcupine
+          </button>
         </label>
-        <button className="start-button" onClick={() => setAccessKey(inputValue)} disabled={isLoaded}>
-          Start Porcupine
-        </button>
       </h3>
-      <h3>Dynamic Import Loaded: {JSON.stringify(isChunkLoaded)}</h3>
-      <h3>Porcupine Loaded: {JSON.stringify(isLoaded)}</h3>
+      <h3>Loaded: {JSON.stringify(isLoaded)}</h3>
       <h3>Listening: {JSON.stringify(isListening)}</h3>
-      <h3>Error: {JSON.stringify(isError)}</h3>
-      {isError && accessKey && (
-        <p className="error-message">{JSON.stringify(errorMessage)}</p>
+      <h3>Error: {JSON.stringify(error !== null)}</h3>
+      {error && (
+        <p className="error-message">{JSON.stringify(error)}</p>
       )}
       <h3>Keywords: {JSON.stringify(keywords)}</h3>
-      <br />
+      <br/>
       <button
         onClick={() => start()}
-        disabled={isError || isListening || !isLoaded}
+        disabled={error !== null || !isLoaded || isListening}
       >
         Start
       </button>
       <button
-        onClick={() => pause()}
-        disabled={isError || !isListening || !isLoaded}
-      >
-        Pause
-      </button>
-      <button
         onClick={() => stop()}
-        disabled={isError || !isListening || !isLoaded}
+        disabled={error !== null ||!isLoaded || !isListening}
       >
         Stop
+      </button>
+      <button
+        onClick={() => release()}
+        disabled={error !== null || !isLoaded}
+      >
+        Release
       </button>
       <h3>Keyword Detections (listening for "Picovoice" and "Alexa"):</h3>
       {keywordDetections.length > 0 && (

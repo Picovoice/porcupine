@@ -14,6 +14,12 @@ button {
   margin-left: 0.5rem;
 }
 
+.init-button {
+  padding: 0;
+  margin: 0;
+  font-size: medium;
+}
+
 .voice-widget {
   border: 2px double #377dff;
   padding: 2rem;

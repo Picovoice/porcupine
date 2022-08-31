@@ -8,6 +8,7 @@ const pkg = require('./package.json');
 const { babel } = require('@rollup/plugin-babel');
 const terser = require('rollup-plugin-terser').terser;
 const { DEFAULT_EXTENSIONS } = require('@babel/core');
+const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 
 const extensions = [...DEFAULT_EXTENSIONS, '.ts'];
 
@@ -27,7 +28,7 @@ console.log(iifeBundleName);
 
 export default {
   input: [path.resolve(__dirname, pkg.entry)],
-  external: ['react', 'react-dom'],
+  external: ['react', 'react-dom', '@picovoice/web-voice-processor'],
   output: [
     {
       file: path.resolve(__dirname, pkg['module']),
@@ -46,9 +47,10 @@ export default {
       name: iifeBundleName,
       sourcemap: false,
       globals: {
-        react: 'React',
+        'react': 'React',
         'react-dom': 'ReactDOM',
-      },
+        '@picovoice/web-voice-processor': 'WebVoiceProcessor'
+      }
     },
     {
       file: path.resolve(__dirname, 'dist', 'iife', 'index.min.js'),
@@ -57,9 +59,10 @@ export default {
       sourcemap: false,
       plugins: [terser()],
       globals: {
-        react: 'React',
+        'react': 'React',
         'react-dom': 'ReactDOM',
-      },
+        '@picovoice/web-voice-processor': 'WebVoiceProcessor'
+      }
     },
   ],
   plugins: [
@@ -76,5 +79,6 @@ export default {
       babelHelpers: 'runtime',
       exclude: '**/node_modules/**',
     }),
+    peerDepsExternal(),
   ],
 };
