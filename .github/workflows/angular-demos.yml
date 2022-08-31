@@ -38,10 +38,6 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Build Angular binding
-      run: yarn install && yarn build
-      working-directory: binding/angular
-
     - name: Install dependencies
       run: yarn install
 
