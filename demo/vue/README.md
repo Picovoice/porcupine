@@ -1,8 +1,8 @@
 # porcupine-web-vue-demo
 
-This demo application includes a sample `VoiceWidget` Vue component which uses the `porcupineMixin` Vue mixin which integrates components to allow listening for keywords. Porcupine keyword detections are handled via the `keywordCallback` function.
+**NOTE**: Although this demo is using Vue 3, the [Vue Porcupine binding](https://github.com/Picovoice/porcupine/tree/master/binding/vue) works with both Vue 2 and Vue 3.
 
-The demo uses dynamic imports to split the VoiceWidget away from the main application bundle. This means that the initial download size of the Vue app will not be impacted by the ~1-2 MB requirement of Porcupine. While small for all-in-one offline Voice AI, the size is large for an initial web app load.
+This demo application includes a sample `VoiceWidget` Vue component which uses the `porcupineMixin` Vue mixin which integrates components to allow listening for keywords. Porcupine keyword detections are handled via the `keywordCallback` function.
 
 If you decline microphone permission in the browser, or another such issue prevents Porcupine from starting, the error will be displayed.
 

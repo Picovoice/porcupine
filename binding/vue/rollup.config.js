@@ -27,6 +27,7 @@ console.log(iifeBundleName);
 
 export default {
   input: [path.resolve(__dirname, pkg.entry)],
+  external: ['@picovoice/web-voice-processor'],
   output: [
     {
       file: path.resolve(__dirname, pkg['module']),
@@ -46,6 +47,7 @@ export default {
       sourcemap: false,
       globals: {
         vue: 'Vue',
+        '@picovoice/web-voice-processor': 'WebVoiceProcessor',
       },
     },
     {
@@ -56,6 +58,7 @@ export default {
       plugins: [terser()],
       globals: {
         vue: 'Vue',
+        '@picovoice/web-voice-processor': 'WebVoiceProcessor',
       },
     },
   ],
