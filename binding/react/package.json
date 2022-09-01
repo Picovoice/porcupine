@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "React component for Porcupine Web SDK",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -34,7 +34,7 @@
     "format": "prettier --write \"**/*.{js,ts,json}\""
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.7"
+    "@picovoice/porcupine-web": "=2.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
