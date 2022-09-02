@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -10,7 +10,6 @@
 #
 
 import argparse
-import struct
 import tkinter as tk
 from threading import Thread
 
@@ -40,7 +39,8 @@ class PorcupineThread(Thread):
         recorder = None
 
         try:
-            ppn = pvporcupine.create(access_key=self._access_key, keywords=KEYWORDS, sensitivities=[0.75] * len(KEYWORDS))
+            ppn = \
+                pvporcupine.create(access_key=self._access_key, keywords=KEYWORDS, sensitivities=[0.75] * len(KEYWORDS))
 
             recorder = PvRecorder(device_index=self._device_index, frame_length=ppn.frame_length)
             recorder.start()
@@ -90,7 +90,7 @@ def main():
     keyword_var = tk.StringVar(window)
 
     for x in KEYWORDS:
-        tk.Radiobutton(window, text=x, variable=keyword_var, value=x, indicator=0).pack(fill=tk.X, ipady=5)
+        tk.Radiobutton(window, text=x, variable=keyword_var, value=x, indicatoron=False).pack(fill=tk.X, ipady=5)
 
     porcupine_thread = PorcupineThread(access_key=args.access_key,
                                        device_index=args.audio_device_index,
