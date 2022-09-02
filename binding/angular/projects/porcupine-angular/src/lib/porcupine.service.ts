@@ -64,7 +64,7 @@ export class PorcupineService implements OnDestroy {
         this.isLoaded$.next(true);
         this.error$.next(null);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.error$.next(error.toString());
     }
   }

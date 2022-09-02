@@ -12,22 +12,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/porcupine-angular/tsconfig.lib.json",
             "project": "projects/porcupine-angular/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "projects/porcupine-angular/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/porcupine-angular/tsconfig.lib.json"
             }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/porcupine-angular/src/test.ts",
-            "tsConfig": "projects/porcupine-angular/tsconfig.spec.json",
-            "karmaConfig": "projects/porcupine-angular/karma.conf.js"
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -41,5 +36,8 @@
       }
     }
   },
-  "defaultProject": "porcupine-angular"
+  "defaultProject": "porcupine-angular",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
