@@ -12,7 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@picovoice/porcupine-vue": "~2.1.1",
+    "@picovoice/porcupine-vue": "../../binding/vue",
     "@picovoice/web-voice-processor": "~4.0.1",
     "core-js": "^3.6.5",
     "vue": "^3.2.37",

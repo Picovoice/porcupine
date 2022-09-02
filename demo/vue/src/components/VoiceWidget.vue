@@ -5,7 +5,7 @@
       <label>
         AccessKey obtained from
         <a href="https://console.picovoice.ai/">Picovoice Console</a>:
-        <input type="text" name="accessKey" v-on:change="updateInputValue" />
+        <input type="text" name="accessKey" v-on:change="updateAccessKey" />
       </label>
       <button class="start-button" v-on:click="initEngine">
         Start Porcupine
@@ -15,7 +15,7 @@
     <h3>Listening: {{ isListening }}</h3>
     <h3>Error: {{ error !== null }}</h3>
     <p class="error-message" v-if="error !== null">
-      {{ error.toString() }}
+      {{ error }}
     </p>
     <button v-on:click="start" :disabled="!isLoaded || error || isListening">
       Start
@@ -23,9 +23,7 @@
     <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">
       Stop
     </button>
-    <button v-on:click="release" :disabled="!isLoaded || error">
-      Release
-    </button>
+    <button v-on:click="release" :disabled="!isLoaded || error">Release</button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
@@ -36,64 +34,48 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onBeforeUnmount } from "vue";
 
 import { BuiltInKeyword, PorcupineDetection } from "@picovoice/porcupine-web";
-import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-vue";
+import { usePorcupine } from "@picovoice/porcupine-vue";
 
 // @ts-ignore
 import porcupineParams from "@/lib/porcupine_params";
 
 const VoiceWidget = defineComponent({
   name: "VoiceWidget",
-  mixins: [porcupineMixin],
   data() {
     return {
-      inputValue: "",
+      accessKey: "",
       detections: [] as string[],
-      isLoaded: false,
-      isListening: false,
-      error: null as string | null,
-      $porcupine: {} as PorcupineVue,
     };
   },
+  setup() {
+    const porcupine = usePorcupine();
+
+    onBeforeUnmount(() => {
+      porcupine.release();
+    });
+
+    return porcupine;
+  },
+  watch: {
+    keywordDetection(porcupineDetection: PorcupineDetection | null) {
+      if (porcupineDetection !== null) {
+        this.detections.push(porcupineDetection.label);
+      }
+    },
+  },
   methods: {
-    start: function () {
-      this.$porcupine.start();
-    },
-    stop: function () {
-      this.$porcupine.stop();
-    },
-    release: function () {
-      this.$porcupine.release();
-    },
     initEngine: function () {
-      this.$porcupine.init(
-        this.inputValue,
+      this.init(
+        this.accessKey,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
-        this.keywordDetectionCallback,
-        { base64: porcupineParams },
-        this.isLoadedCallback,
-        this.isListeningCallback,
-        this.errorCallback
+        { base64: porcupineParams }
       );
     },
-    updateInputValue: function (event: any) {
-      this.inputValue = event.target.value;
-    },
-    keywordDetectionCallback: function (
-      porcupineDetection: PorcupineDetection
-    ) {
-      this.detections = [...this.detections, porcupineDetection.label];
-    },
-    isLoadedCallback: function (isLoaded: boolean) {
-      this.isLoaded = isLoaded;
-    },
-    isListeningCallback: function (isListening: boolean) {
-      this.isListening = isListening;
-    },
-    errorCallback: function (error: string | null) {
-      this.error = error;
+    updateAccessKey: function (event: any) {
+      this.accessKey = event.target.value;
     },
   },
 });

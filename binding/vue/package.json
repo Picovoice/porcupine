@@ -25,7 +25,7 @@
     "@babel/plugin-transform-runtime": "^7.18.2",
     "@babel/preset-env": "^7.18.2",
     "@babel/runtime": "^7.18.3",
-    "@picovoice/web-voice-processor": "^4.0.0",
+    "@picovoice/web-voice-processor": "~4.0.1",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^18.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
@@ -41,11 +41,12 @@
     "rollup-plugin-typescript2": "^0.31.2",
     "rollup-plugin-web-worker-loader": "^1.6.1",
     "tslib": "^2.3.1",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "vue": "2.7.10"
   },
   "peerDependencies": {
-    "@picovoice/web-voice-processor": "~4.0.0",
-    "vue": "^2.6.11 || ^3.0.0"
+    "@picovoice/web-voice-processor": "~4.0.1",
+    "vue": "^2.7.0 || ^3.0.0"
   },
   "keywords": [
     "porcupine",
