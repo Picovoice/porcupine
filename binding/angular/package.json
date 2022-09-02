@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "format": "prettier --write \"**/*.{js,ts,json}\""
   },
   "private": true,
   "dependencies": {
