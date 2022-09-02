@@ -19,7 +19,7 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
-    "@picovoice/porcupine-angular": "../../binding/angular/dist/porcupine-angular",
+    "@picovoice/porcupine-angular": "~2.1.2",
     "@picovoice/web-voice-processor": "~4.0.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

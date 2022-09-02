@@ -1647,8 +1647,10 @@
   dependencies:
     esquery "^1.0.1"
 
-"@picovoice/porcupine-angular@../../binding/angular/dist/porcupine-angular":
+"@picovoice/porcupine-angular@~2.1.2":
   version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-2.1.2.tgz#2b00ed5a936b6ebc38faf15e9039bfef788b3b13"
+  integrity sha512-jHpOusUX/dKrF64kHKPuiWy/zqn2orbEG8So0m5sY+TsV4Skgz4GIWkFW+G8qhLcOKWUHzSp5hRv7dpx4brtuA==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.8"
     tslib "^2.3.0"
