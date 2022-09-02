@@ -1411,10 +1411,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-react@~2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.1.1.tgz#0a64567897b100b998904169c0a24fbae0abd879"
-  integrity sha512-TxHTnV58ESWrNvddNUhpN3dTH3p0XpD/JpYIDzJ1FmZUVUfPFmIFO2IhzU+eL7XNqRE2mZmAfKQ1BGJoUhJdYQ==
+"@picovoice/porcupine-react@~2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.1.2.tgz#fee0c5f98708778d4c2a8a7ba91ccff3e91fc139"
+  integrity sha512-J1fRaZXT4encnwoGlAwQsfs7kVK9US2SXB0VDn4ANCVA+vk/anqDFXmgjBiajGWjXLpswOoX7UJynQd6xa5jKg==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.8"
 

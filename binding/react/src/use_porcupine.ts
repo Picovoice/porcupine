@@ -75,7 +75,7 @@ export const usePorcupine = (): {
         setError(null);
       }
     } catch (e: any) {
-      setError(e.toString);
+      setError(e.toString());
     }
   }, [keywordDetectionCallback, errorCallback]);
 
