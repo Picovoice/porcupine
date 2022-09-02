@@ -31,11 +31,14 @@
     "@angular-eslint/template-parser": "13.5.0",
     "@angular/cli": "~13.3.9",
     "@angular/compiler-cli": "~13.3.0",
+    "@picovoice/porcupine-web": "=2.1.8",
+    "@picovoice/web-voice-processor": "~4.0.1",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.27.1",
     "@typescript-eslint/parser": "5.27.1",
-    "eslint": "^8.17.0",
+    "eslint": "~8.22.0",
     "ng-packagr": "^13.0.0",
+    "prettier": "^2.7.1",
     "typescript": "~4.6.2"
   }
 }

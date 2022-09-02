@@ -1,23 +1,24 @@
 {
-  "name": "demo",
-  "version": "0.0.0",
+  "name": "porcupine-angular-demo",
+  "version": "2.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./src/lib/porcupine_params.js"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~13.3.0",
-    "@angular/common": "~13.3.0",
-    "@angular/compiler": "~13.3.0",
-    "@angular/core": "~13.3.0",
-    "@angular/forms": "~13.3.0",
-    "@angular/platform-browser": "~13.3.0",
-    "@angular/platform-browser-dynamic": "~13.3.0",
-    "@angular/router": "~13.3.0",
+    "@angular/animations": "^14.2.0",
+    "@angular/common": "^14.2.0",
+    "@angular/compiler": "^14.2.0",
+    "@angular/core": "^14.2.0",
+    "@angular/forms": "^14.2.0",
+    "@angular/platform-browser": "^14.2.0",
+    "@angular/platform-browser-dynamic": "^14.2.0",
+    "@angular/router": "^14.2.0",
     "@picovoice/porcupine-angular": "../../binding/angular/dist/porcupine-angular",
     "@picovoice/web-voice-processor": "~4.0.1",
     "rxjs": "~7.5.0",
@@ -25,18 +26,18 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.3.9",
-    "@angular-eslint/builder": "13.5.0",
-    "@angular-eslint/eslint-plugin": "13.5.0",
-    "@angular-eslint/eslint-plugin-template": "13.5.0",
-    "@angular-eslint/schematics": "13.5.0",
-    "@angular-eslint/template-parser": "13.5.0",
-    "@angular/cli": "~13.3.9",
-    "@angular/compiler-cli": "~13.3.0",
+    "@angular-devkit/build-angular": "^14.2.1",
+    "@angular-eslint/builder": "^14.0.3",
+    "@angular-eslint/eslint-plugin": "^14.0.3",
+    "@angular-eslint/eslint-plugin-template": "^14.0.3",
+    "@angular-eslint/schematics": "~14.0.3",
+    "@angular-eslint/template-parser": "^14.0.3",
+    "@angular/cli": "^14.2.1",
+    "@angular/compiler-cli": "^14.2.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.27.1",
     "@typescript-eslint/parser": "5.27.1",
-    "eslint": "~8.22.0",
+    "eslint": "^8.17.0",
     "typescript": "~4.6.2"
   }
 }

@@ -5,6 +5,7 @@ import { PorcupineService } from '@picovoice/porcupine-angular';
 
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
 
+// @ts-ignore
 import porcupineParams from '../lib/porcupine_params';
 
 @Component({
@@ -73,7 +74,7 @@ export class VoiceWidget implements OnDestroy {
           { base64: porcupineParams }
         );
       }
-      catch (error) {
+      catch (error: any) {
         this.error = error;
       }
     }
