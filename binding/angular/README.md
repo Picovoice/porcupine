@@ -15,7 +15,7 @@ yarn
 To build the project:
 
 ```console
-yarn build porcupine-angular --prod
+yarn build
 ```
 
 ## Lint and Format
@@ -31,3 +31,4 @@ Lint code with ESLint:
 ```console
 yarn lint
 ```
+
