@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount } from "vue";
+import Vue from "vue";
 
 import { BuiltInKeyword, PorcupineDetection } from "@picovoice/porcupine-web";
 import { usePorcupine } from "@picovoice/porcupine-vue";
@@ -42,42 +42,39 @@ import { usePorcupine } from "@picovoice/porcupine-vue";
 // @ts-ignore
 import porcupineParams from "@/lib/porcupine_params";
 
-const VoiceWidget = defineComponent({
+const VoiceWidget = Vue.extend({
   name: "VoiceWidget",
   data() {
+    const porcupine = usePorcupine();
+    console.log(porcupine)
+
     return {
       accessKey: "",
       detections: [] as string[],
+      ...porcupine
     };
-  },
-  setup() {
-    const porcupine = usePorcupine();
-
-    onBeforeUnmount(() => {
-      porcupine.release();
-    });
-
-    return porcupine;
   },
   watch: {
     keywordDetection(porcupineDetection: PorcupineDetection | null) {
       if (porcupineDetection !== null) {
         this.detections.push(porcupineDetection.label);
       }
-    },
+    }
   },
   methods: {
-    initEngine: function () {
-      this.init(
-        this.accessKey,
-        [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
-        { base64: porcupineParams }
-      );
+    initEngine: async function () {
+      console.log(this.error.value === null)
+      // await this.init(
+      //   this.accessKey,
+      //   [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
+      //   { base64: porcupineParams }
+      // );
+      console.log("after init")
     },
     updateAccessKey: function (event: any) {
       this.accessKey = event.target.value;
     },
-  },
+  }
 });
 
 export default VoiceWidget;

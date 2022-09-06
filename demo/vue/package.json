@@ -15,8 +15,8 @@
     "@picovoice/porcupine-vue": "../../binding/vue",
     "@picovoice/web-voice-processor": "~4.0.1",
     "core-js": "^3.6.5",
-    "vue": "^3.2.37",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "=2.6.11",
+    "vue-template-compiler": "=2.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

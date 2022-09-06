@@ -11,13 +11,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
+import Vue from "vue";
 
-export default defineComponent({
+export default Vue.extend({
   name: "App",
   components: {
-    VoiceWidget: defineAsyncComponent(() =>
-      import("./components/VoiceWidget.vue")
+    VoiceWidget: Vue.component(
+      'VoiceWidget',
+      async () => await import("./components/VoiceWidget.vue")
     ),
   },
   data: function () {
