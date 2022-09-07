@@ -32,7 +32,7 @@
     "@angular-eslint/template-parser": "~13.5.0",
     "@angular/cli": "~13.3.9",
     "@angular/compiler-cli": "~13.3.0",
-    "@picovoice/porcupine-web": "=2.1.8",
+    "@picovoice/porcupine-web": "=2.1.9",
     "@picovoice/web-voice-processor": "~4.0.1",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^5.27.1",

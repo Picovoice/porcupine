@@ -200,13 +200,14 @@ export class Porcupine {
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
 
-    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
+    const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(keywords);
 
     const customWritePath = (model.customWritePath) ? model.customWritePath : 'porcupine_model';
     const modelPath = await loadModel({ ...model, customWritePath});
 
     return this._init(
       accessKey,
+      keywordPaths,
       keywordLabels,
       keywordDetectionCallback,
       sensitivities,
@@ -235,13 +236,13 @@ export class Porcupine {
 
   public static async _init(
     accessKey: string,
+    keywordPaths: Array<string>,
     keywordLabels: Array<string>,
     keywordDetectionCallback: DetectionCallback,
     sensitivities: Float32Array,
     modelPath: string,
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
-
     if (!isAccessKeyValid(accessKey)) {
       throw new Error('Invalid AccessKey');
     }
@@ -256,7 +257,7 @@ export class Porcupine {
             accessKey.trim(),
             (isSimd) ? this._wasmSimd : this._wasm,
             modelPath,
-            keywordLabels,
+            keywordPaths,
             sensitivities);
           return new Porcupine(
             wasmOutput,

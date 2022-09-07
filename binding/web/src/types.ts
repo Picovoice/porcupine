@@ -50,7 +50,8 @@ export type PorcupineWorkerInitRequest = {
   command: 'init';
   accessKey: string;
   modelPath: string;
-  keywords: Array<string>;
+  keywordLabels: Array<string>;
+  keywordPaths: Array<string>;
   sensitivities: Float32Array;
   wasm: string;
   wasmSimd: string;

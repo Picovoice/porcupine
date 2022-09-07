@@ -1627,10 +1627,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/porcupine-web@=2.1.8":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.8.tgz#168c96caa21d1d9a2200b2b14a0b977dcffdcff7"
-  integrity sha512-ReP/M20Wy6LSZFWc4eJaCpVB0VvFdBv7/Ch+AlRF3T2tukkzMpC63H5DQMtm0VlFwWJpFn37zA7qsdTHWHP1wg==
+"@picovoice/porcupine-web@=2.1.9":
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.9.tgz#b4956b5035ddc9e1d7f5db9847fcc82499ad4e7a"
+  integrity sha512-SaJjyUAJKWLUiZtzJj2Y8Jhjx+bbmvqXDAh2jkxCfJCxjZUWdysqGi0DA7EArPLKuiieCucNecrIcxzUQDsW3g==
   dependencies:
     "@picovoice/web-utils" "=1.2.6"
 
