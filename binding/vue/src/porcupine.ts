@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import Vue, { ref } from 'vue';
+import { ref } from 'vue';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -23,15 +23,15 @@ import {
 } from '@picovoice/porcupine-web';
 
 const createRef = <T>(data: T) => {
-  if (Vue && Vue.observable) {
-    const obj = Vue.observable({ value: data });
+  if (!ref) {
+    const obj = { value: data };
 
-    return new Proxy(obj, {
-      get(target, property, receiver): any {
-        return Reflect.get(target, property, receiver);
+    return Object.defineProperty({} as {value: T}, "value", {
+      get(): any {
+        return obj.value;
       },
-      set(target, property, value, receiver) {
-        return Reflect.set(target, "value", value, receiver);
+      set(newValue: T) {
+        obj.value = newValue;
       }
     });
   }
