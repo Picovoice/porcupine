@@ -207,8 +207,8 @@ export class Porcupine {
 
     return this._init(
       accessKey,
-      keywordLabels,
       keywordPaths,
+      keywordLabels,
       keywordDetectionCallback,
       sensitivities,
       modelPath);
@@ -236,14 +236,13 @@ export class Porcupine {
 
   public static async _init(
     accessKey: string,
-    keywordLabels: Array<string>,
     keywordPaths: Array<string>,
+    keywordLabels: Array<string>,
     keywordDetectionCallback: DetectionCallback,
     sensitivities: Float32Array,
     modelPath: string,
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
-
     if (!isAccessKeyValid(accessKey)) {
       throw new Error('Invalid AccessKey');
     }

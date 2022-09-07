@@ -58,8 +58,8 @@ self.onmessage = async function(
         Porcupine.setWasmSimd(event.data.wasmSimd);
         porcupine = await Porcupine._init(
           event.data.accessKey,
-          event.data.keywordLabels,
           event.data.keywordPaths,
+          event.data.keywordLabels,
           keywordDetectionCallback,
           event.data.sensitivities,
           event.data.modelPath);

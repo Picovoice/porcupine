@@ -158,7 +158,7 @@ export class PorcupineWorker {
       accessKey: accessKey,
       modelPath: modelPath,
       keywordPaths: keywordPaths,
-      keywordLabel: keywordLabels,
+      keywordLabels: keywordLabels,
       sensitivities: sensitivities,
       wasm: this._wasm,
       wasmSimd: this._wasmSimd,

@@ -13,7 +13,8 @@ import { PorcupineKeyword } from './types';
 import { BUILT_IN_KEYWORD_BYTES, BuiltInKeyword } from './built_in_keywords';
 
 import {
-  loadModel, PvModel,
+  loadModel,
+  PvModel,
 } from '@picovoice/web-utils';
 
 const DEFAULT_SENSITIVITY = 0.5;
