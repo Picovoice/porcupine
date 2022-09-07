@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { computed, ComputedRef, ref } from 'vue';
+import Vue, { ref } from 'vue';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -22,11 +22,28 @@ import {
   PorcupineWorker,
 } from '@picovoice/porcupine-web';
 
+const createRef = <T>(data: T) => {
+  if (Vue && Vue.observable) {
+    const obj = Vue.observable({ value: data });
+
+    return new Proxy(obj, {
+      get(target, property, receiver): any {
+        return Reflect.get(target, property, receiver);
+      },
+      set(target, property, value, receiver) {
+        return Reflect.set(target, "value", value, receiver);
+      }
+    });
+  }
+
+  return ref<T>(data);
+};
+
 export function usePorcupine(): {
-  keywordDetection: ComputedRef<PorcupineDetection | null>,
-  isLoaded: ComputedRef<boolean>,
-  isListening: ComputedRef<boolean>,
-  error: ComputedRef<string | null>,
+  keywordDetection: { value: PorcupineDetection | null },
+  isLoaded: { value: boolean },
+  isListening: { value: boolean },
+  error: { value: string | null },
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -37,17 +54,11 @@ export function usePorcupine(): {
   stop: () => Promise<void>,
   release: () => Promise<void>,
   } {
-  const porcupineRef = ref<PorcupineWorker | null>(null);
-
-  const keywordDetectionRef = ref<PorcupineDetection | null>(null);
-  const isLoadedRef = ref(false);
-  const isListeningRef = ref(false);
-  const errorRef = ref<string | null>(null);
-
-  const keywordDetection = computed(() => keywordDetectionRef.value);
-  const isLoaded = computed(() => isLoadedRef.value);
-  const isListening = computed(() => isListeningRef.value);
-  const error = computed(() => errorRef.value);
+  const porcupineRef = createRef<PorcupineWorker | null>(null);
+  const keywordDetectionRef = createRef<PorcupineDetection | null>(null);
+  const isLoadedRef = createRef(false);
+  const isListeningRef = createRef(false);
+  const errorRef = createRef<string | null>(null);
 
   const keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void => {
     keywordDetectionRef.value = porcupineDetection;
@@ -127,10 +138,10 @@ export function usePorcupine(): {
   };
 
   return {
-    keywordDetection,
-    isLoaded,
-    isListening,
-    error,
+    keywordDetection: keywordDetectionRef,
+    isLoaded: isLoadedRef,
+    isListening: isListeningRef,
+    error: errorRef,
     init,
     start,
     stop,

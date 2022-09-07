@@ -11,19 +11,19 @@
         Start Porcupine
       </button>
     </h3>
-    <h3>Loaded: {{ isLoaded }}</h3>
-    <h3>Listening: {{ isListening }}</h3>
-    <h3>Error: {{ error !== null }}</h3>
-    <p class="error-message" v-if="error !== null">
-      {{ error }}
-    </p>
-    <button v-on:click="start" :disabled="!isLoaded || error || isListening">
-      Start
-    </button>
-    <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">
-      Stop
-    </button>
-    <button v-on:click="release" :disabled="!isLoaded || error">Release</button>
+    <h3>Loaded: {{ porcupine.isLoaded }}</h3>
+<!--    <h3>Listening: {{ isListening }}</h3>-->
+<!--    <h3>Error: {{ error !== null }}</h3>-->
+<!--    <p class="error-message" v-if="error !== null">-->
+<!--      {{ error }}-->
+<!--    </p>-->
+<!--    <button v-on:click="start" :disabled="!isLoaded || error || isListening">-->
+<!--      Start-->
+<!--    </button>-->
+<!--    <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">-->
+<!--      Stop-->
+<!--    </button>-->
+<!--    <button v-on:click="release" :disabled="!isLoaded || error">Release</button>-->
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
@@ -45,36 +45,40 @@ import porcupineParams from "@/lib/porcupine_params";
 const VoiceWidget = Vue.extend({
   name: "VoiceWidget",
   data() {
-    const porcupine = usePorcupine();
-    console.log(porcupine)
-
     return {
       accessKey: "",
       detections: [] as string[],
-      ...porcupine
+      porcupine: null
     };
+  },
+  beforeMount() {
+    const porcupine = usePorcupine();
+    // @ts-ignore
+    Vue.set(this, "porcupine", porcupine)
+    console.log(porcupine)
   },
   watch: {
     keywordDetection(porcupineDetection: PorcupineDetection | null) {
       if (porcupineDetection !== null) {
         this.detections.push(porcupineDetection.label);
       }
-    }
+    },
   },
   methods: {
     initEngine: async function () {
-      console.log(this.error.value === null)
-      // await this.init(
-      //   this.accessKey,
-      //   [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
-      //   { base64: porcupineParams }
-      // );
-      console.log("after init")
+      console.log(this);
+      // @ts-ignore
+      await this.porcupine.init(
+        this.accessKey,
+        [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
+        { base64: porcupineParams }
+      );
+      console.log("after init");
     },
     updateAccessKey: function (event: any) {
       this.accessKey = event.target.value;
     },
-  }
+  },
 });
 
 export default VoiceWidget;
