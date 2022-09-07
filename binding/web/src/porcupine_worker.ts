@@ -107,7 +107,7 @@ export class PorcupineWorker {
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
 
-    const [keywordPaths, sensitivities] = await keywordsProcess(keywords);
+    const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(keywords);
 
     const customWritePath = (model.customWritePath) ? model.customWritePath : 'porcupine_model';
     const modelPath = await loadModel({ ...model, customWritePath});
@@ -157,7 +157,8 @@ export class PorcupineWorker {
       command: 'init',
       accessKey: accessKey,
       modelPath: modelPath,
-      keywords: keywordPaths,
+      keywordPaths: keywordPaths,
+      keywordLabel: keywordLabels,
       sensitivities: sensitivities,
       wasm: this._wasm,
       wasmSimd: this._wasmSimd,

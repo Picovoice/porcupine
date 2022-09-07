@@ -200,7 +200,7 @@ export class Porcupine {
     options: PorcupineOptions = {},
   ): Promise<Porcupine> {
 
-    const [keywordLabels, sensitivities] = await keywordsProcess(keywords);
+    const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(keywords);
 
     const customWritePath = (model.customWritePath) ? model.customWritePath : 'porcupine_model';
     const modelPath = await loadModel({ ...model, customWritePath});
@@ -208,6 +208,7 @@ export class Porcupine {
     return this._init(
       accessKey,
       keywordLabels,
+      keywordPaths,
       keywordDetectionCallback,
       sensitivities,
       modelPath);
@@ -236,6 +237,7 @@ export class Porcupine {
   public static async _init(
     accessKey: string,
     keywordLabels: Array<string>,
+    keywordPaths: Array<string>,
     keywordDetectionCallback: DetectionCallback,
     sensitivities: Float32Array,
     modelPath: string,
@@ -256,7 +258,7 @@ export class Porcupine {
             accessKey.trim(),
             (isSimd) ? this._wasmSimd : this._wasm,
             modelPath,
-            keywordLabels,
+            keywordPaths,
             sensitivities);
           return new Porcupine(
             wasmOutput,

@@ -13,12 +13,12 @@ import { PorcupineKeyword } from './types';
 import { BUILT_IN_KEYWORD_BYTES, BuiltInKeyword } from './built_in_keywords';
 
 import {
-  loadModel,
+  loadModel, PvModel,
 } from '@picovoice/web-utils';
 
 const DEFAULT_SENSITIVITY = 0.5;
 
-export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword): Promise<[Array<string>, Float32Array]> {
+export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword): Promise<[Array<string>, Array<string>, Float32Array]> {
 
   if (keywords === undefined || keywords === null) {
     throw new Error(
@@ -31,9 +31,9 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
   } else if (keywords.length === 0) {
     throw new Error('The keywords argument array is empty');
   }
-
   const keywordSensitivities = [];
   const keywordLabels = [];
+  const keywordPaths = [];
 
   for (const keyword of keywords) {
     // normalize keywords to PorcupineKeyword
@@ -55,9 +55,10 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
     }
 
     if ('label' in keywordArgNormalized) {
-      keywordLabels.push(keywordArgNormalized.label);
       const customWritePath = (keywordArgNormalized.customWritePath) ? keywordArgNormalized.customWritePath : keywordArgNormalized.label;
-      await loadModel({ ...keywordArgNormalized, customWritePath});
+      await loadModel({ ...keywordArgNormalized, customWritePath} as PvModel);
+      keywordLabels.push(keywordArgNormalized.label);
+      keywordPaths.push(customWritePath);
     } else if ('builtin' in keywordArgNormalized) {
       const validEnums = Object.values(BuiltInKeyword);
       const builtInName = keywordArgNormalized.builtin;
@@ -68,12 +69,13 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
           `Keyword ${builtInName} does not map to list of built-in keywords (${validEnums})`,
         );
       }
-      keywordLabels.push(keywordArgNormalized.builtin);
       await loadModel({
         base64: BUILT_IN_KEYWORD_BYTES.get(keywordEnum),
         customWritePath: keywordArgNormalized.builtin,
         forceWrite: true
       });
+      keywordLabels.push(keywordArgNormalized.builtin);
+      keywordPaths.push(keywordArgNormalized.builtin);
     } else {
       throw new Error(
         'Unknown keyword argument: ' + JSON.stringify(keyword),
@@ -99,5 +101,5 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
   }
   const sensitivities = new Float32Array(keywordSensitivities);
 
-  return [keywordLabels, sensitivities];
+  return [keywordPaths, keywordLabels, sensitivities];
 }
