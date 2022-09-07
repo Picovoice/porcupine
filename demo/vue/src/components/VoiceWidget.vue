@@ -11,19 +11,19 @@
         Start Porcupine
       </button>
     </h3>
-    <h3>Loaded: {{ porcupine.isLoaded }}</h3>
-<!--    <h3>Listening: {{ isListening }}</h3>-->
-<!--    <h3>Error: {{ error !== null }}</h3>-->
-<!--    <p class="error-message" v-if="error !== null">-->
-<!--      {{ error }}-->
-<!--    </p>-->
-<!--    <button v-on:click="start" :disabled="!isLoaded || error || isListening">-->
-<!--      Start-->
-<!--    </button>-->
-<!--    <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">-->
-<!--      Stop-->
-<!--    </button>-->
-<!--    <button v-on:click="release" :disabled="!isLoaded || error">Release</button>-->
+    <h3>Loaded: {{ isLoaded }}</h3>
+    <h3>Listening: {{ isListening }}</h3>
+    <h3>Error: {{ error !== null }}</h3>
+    <p class="error-message" v-if="error !== null">
+      {{ error }}
+    </p>
+    <button v-on:click="start" :disabled="!isLoaded || error || isListening">
+      Start
+    </button>
+    <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">
+      Stop
+    </button>
+    <button v-on:click="release" :disabled="!isLoaded || error">Release</button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
@@ -34,47 +34,53 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent, ref, watch } from "vue";
 
-import { BuiltInKeyword, PorcupineDetection } from "@picovoice/porcupine-web";
+import { BuiltInKeyword } from "@picovoice/porcupine-web";
 import { usePorcupine } from "@picovoice/porcupine-vue";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import porcupineParams from "@/lib/porcupine_params";
 
-const VoiceWidget = Vue.extend({
+const VoiceWidget = defineComponent({
   name: "VoiceWidget",
-  data() {
-    return {
-      accessKey: "",
-      detections: [] as string[],
-      porcupine: null
-    };
+  mounted() {
+    console.log(this)
   },
-  beforeMount() {
+  setup() {
+
     const porcupine = usePorcupine();
-    // @ts-ignore
-    Vue.set(this, "porcupine", porcupine)
-    console.log(porcupine)
-  },
-  watch: {
-    keywordDetection(porcupineDetection: PorcupineDetection | null) {
-      if (porcupineDetection !== null) {
-        this.detections.push(porcupineDetection.label);
+    const accessKey = ref("");
+    const detections = ref<string[]>([]);
+
+    watch(porcupine.keywordDetection, (keyword) => {
+      if (keyword !== null) {
+        detections.value.push(keyword.label);
       }
-    },
-  },
-  methods: {
-    initEngine: async function () {
-      console.log(this);
-      // @ts-ignore
-      await this.porcupine.init(
-        this.accessKey,
+    });
+
+    watch(porcupine.isLoaded, (a) => {
+      console.log(a)
+    })
+
+    async function initEngine () {
+      await porcupine.init(
+        accessKey.value,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
         { base64: porcupineParams }
       );
-      console.log("after init");
-    },
+      console.log(porcupine)
+    }
+
+    return {
+      accessKey,
+      detections,
+      initEngine,
+      ...porcupine,
+    };
+  },
+  methods: {
     updateAccessKey: function (event: any) {
       this.accessKey = event.target.value;
     },
