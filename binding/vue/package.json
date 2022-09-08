@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-vue",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Vue binding for Porcupine Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",
@@ -18,7 +18,7 @@
     "watch": "rollup --config --watch"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.9"
+    "@picovoice/porcupine-web": "=2.1.10"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
