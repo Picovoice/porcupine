@@ -1452,6 +1452,8 @@ npm install @picovoice/porcupine-vue @picovoice/web-voice-processor
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
 import { usePorcupine } from '@picovoice/porcupine-vue';
 
+import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
+
 // Use Vue.extend for JavaScript
 export default {
   data() {
@@ -1466,7 +1468,7 @@ export default {
     init(
       ${ACCESS_KEY},
       [BuiltInKeyword.Porcupine],
-      porcupineModel
+      { base64: porcupineParams }, // porcupine model
     );
 
     return {
