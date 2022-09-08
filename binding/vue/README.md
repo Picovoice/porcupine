@@ -152,6 +152,8 @@ export default (Vue as VueConstructor<Vue & PorcupineVue>).extend({
 
 In case of any errors, watch for `error.value` to check the error message, else watch `isLoaded.value` to check if `Porcupine` has loaded.
 
+**NOTE**: If needed to call `usePorcupine` outside of `data`, make sure to add observer properly via `Vue.set` or `observable`.
+
 #### Process Audio Frames
 
 Porcupine Vue binding uses [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
