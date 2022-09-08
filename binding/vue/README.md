@@ -114,11 +114,11 @@ const porcupineModel = {
 
 Use `usePorcupine` and `init` to initialize `Porcupine`.
 
-In case of any errors, watch for `state.error` to check the error message, else watch `state.isLoaded` to check if `Porcupine` has loaded.
+In case of any errors, watch for `state.error` to check the error message, otherwise watch `state.isLoaded` to check if `Porcupine` has loaded.
 
 #### Porcupine in Vue 2
 
-**NOTE**: If needed to call `usePorcupine` outside of `data`, make sure to add observer property via `Vue.set` or `observable`.
+**NOTE**: If you need to call `usePorcupine` outside of `data`, make sure to add observer property via `Vue.set` or `observable`.
 
 ```vue
 <script lang='ts'>
@@ -175,7 +175,7 @@ export default (Vue as VueConstructor<Vue & PorcupineVue>).extend({
 
 #### Porcupine in Vue 3
 
-For Vue 3, we take advantage of the [Composition API](https://vuejs.org/api/composition-api-setup.html), specially use of `reactive`.
+In Vue 3, we take advantage of the [Composition API](https://vuejs.org/api/composition-api-setup.html), especially the use of `reactive`.
 
 ```vue
 <script lang='ts'>
