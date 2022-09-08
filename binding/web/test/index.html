@@ -374,8 +374,6 @@
             publicPath: "porcupine_params.pv",
             forceWrite: true,
           });
-        await porcupineDetectionCounts(handle, pcm);
-        assertEquals(2, detections.get(0), 'Failed to detect the keyword');
         handle.release()
         writeMessage("Checking UTF-8 paths... done!");
 
