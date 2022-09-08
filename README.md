@@ -1449,13 +1449,12 @@ npm install @picovoice/porcupine-vue @picovoice/web-voice-processor
 
 ```vue
 <script lang='ts'>
-import { defineComponent, onBeforeUnmount, watch } from 'vue';
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
 import { usePorcupine } from '@picovoice/porcupine-vue';
 
 // Use Vue.extend for JavaScript
-export default defineComponent({
-  setup() {
+export default {
+  data() {
     const {
       state,
       init,
@@ -1464,43 +1463,39 @@ export default defineComponent({
       release
     } = usePorcupine();
 
-    watch(() => state.isLoaded, (newVal) => {
-      console.log(newVal);
-    });
-
-    watch(() => state.isListening, (newVal) => {
-      console.log(newVal);
-    });
-
-    watch(() => state.keywordDetection, (keyword) => {
-      if (keyword !== null) {
-        console.log(keyword.label);
-      }
-    });
-
-    watch(() => state.error, (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
-
-    onBeforeUnmount(() => {
-      release();
-    });
-
     init(
       ${ACCESS_KEY},
       [BuiltInKeyword.Porcupine],
       porcupineModel
-    )
+    );
 
     return {
+      state,
       start,
       stop,
       release
     }
-  }
-});
+  },
+  watch: {
+    "state.keywordDetection": function (keyword) {
+      if (keyword !== null) {
+        console.log(keyword.label);
+      }
+    },
+    "state.isLoaded": function (isLoaded) {
+      console.log(isLoaded)
+    },
+    "state.isListening": function (isListening) {
+      console.log(isListening)
+    },
+    "state.error": function (error) {
+      console.error(error)
+    },
+  },
+  onBeforeDestroy() {
+    this.release();
+  },
+};
 </script>
 ```
 

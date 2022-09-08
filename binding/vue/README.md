@@ -146,7 +146,7 @@ export default (Vue as VueConstructor<Vue & PorcupineVue>).extend({
     }
   },
   watch: {
-    "state.keywordDetection": function (keyword: PorcupineDetection) {
+    "state.keywordDetection": function (keyword) {
       if (keyword !== null) {
         console.log(keyword.label);
       }
