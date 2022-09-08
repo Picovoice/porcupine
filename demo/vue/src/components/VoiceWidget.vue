@@ -11,19 +11,21 @@
         Start Porcupine
       </button>
     </h3>
-    <h3>Loaded: {{ isLoaded }}</h3>
-    <h3>Listening: {{ isListening }}</h3>
-    <h3>Error: {{ error !== null }}</h3>
-    <p class="error-message" v-if="error !== null">
-      {{ error }}
+    <h3>Loaded: {{ state.isLoaded }}</h3>
+    <h3>Listening: {{ state.isListening }}</h3>
+    <h3>Error: {{ state.error !== null }}</h3>
+    <p class="error-message" v-if="state.error !== null">
+      {{ state.error }}
     </p>
-    <button v-on:click="start" :disabled="!isLoaded || error || isListening">
+    <button v-on:click="start" :disabled="!state.isLoaded || state.error || state.isListening">
       Start
     </button>
-    <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">
+    <button v-on:click="stop" :disabled="!state.isLoaded || state.error || !state.isListening">
       Stop
     </button>
-    <button v-on:click="release" :disabled="!isLoaded || error">Release</button>
+    <button v-on:click="release" :disabled="!state.isLoaded || state.error">
+      Release
+    </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
@@ -50,13 +52,17 @@ const VoiceWidget = defineComponent({
     const accessKey = ref("");
     const detections = ref<string[]>([]);
 
-    watch(porcupine.keywordDetection, (keyword) => {
-      if (keyword !== null) {
-        detections.value.push(keyword.label);
+    watch(
+      () => porcupine.state.keywordDetection,
+      keyword => {
+        if (keyword !== null) {
+          detections.value.push(keyword.label);
+        }
       }
-    });
+    );
 
     async function initEngine () {
+      console.log(porcupine)
       await porcupine.init(
         accessKey.value,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
