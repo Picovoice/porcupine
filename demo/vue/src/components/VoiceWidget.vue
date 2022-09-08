@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { onBeforeUnmount, defineComponent, ref, watch } from "vue";
 
 import { BuiltInKeyword } from "@picovoice/porcupine-web";
 import { usePorcupine } from "@picovoice/porcupine-vue";
@@ -61,8 +61,7 @@ const VoiceWidget = defineComponent({
       }
     );
 
-    async function initEngine () {
-      console.log(porcupine)
+    async function initEngine() {
       await porcupine.init(
         accessKey.value,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
@@ -73,6 +72,10 @@ const VoiceWidget = defineComponent({
     function updateAccessKey(event: any) {
       accessKey.value = event.target.value;
     }
+
+    onBeforeUnmount(() => {
+      porcupine.release();
+    });
 
     return {
       accessKey,

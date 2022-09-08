@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Ref, UnwrapRef, version, ref } from 'vue';
+import { reactive, Ref, ref, UnwrapNestedRefs, UnwrapRef, version } from 'vue';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -22,18 +22,13 @@ import {
   PorcupineWorker,
 } from '@picovoice/porcupine-web';
 
-type RefType<T> =
-  [Ref] extends [undefined] ? { value: T } :
-    [T] extends [Ref] ? T :
-    [T] extends [object] ? Ref<T> : Ref<UnwrapRef<T>>;
-
-const createRef = <T>(data: T): RefType<T> => {
+const createRef = <T>(data: T): Ref<UnwrapRef<T>> => {
   if (!ref || !version || version.charAt(0) < "3") {
     const obj = {
       value: data
     };
 
-    return new Proxy(obj as RefType<T>, {
+    return new Proxy(obj as Ref<UnwrapRef<T>>, {
       get(target, property, receiver): T {
         return Reflect.get(target, property, receiver);
       },
@@ -43,14 +38,24 @@ const createRef = <T>(data: T): RefType<T> => {
     });
   }
 
-  return ref<T>(data) as RefType<T>;
+  return ref<T>(data);
+};
+
+const createReactive = <T extends object>(data: T): UnwrapNestedRefs<T> => {
+  if (!reactive || !version || version.charAt(0) < "3") {
+    return data as UnwrapNestedRefs<T>;
+  }
+
+  return reactive<T>(data);
 };
 
 export type PorcupineVue = {
-  keywordDetection: RefType<PorcupineDetection | null>,
-  isLoaded: RefType<boolean>,
-  isListening: RefType<boolean>,
-  error: RefType<string | null>,
+  state: {
+    keywordDetection: PorcupineDetection | null,
+    isLoaded: boolean,
+    isListening: boolean,
+    error: string | null,
+  },
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -64,17 +69,25 @@ export type PorcupineVue = {
 
 export function usePorcupine(): PorcupineVue {
   const porcupineRef = createRef<PorcupineWorker | null>(null);
-  const keywordDetectionRef = createRef<PorcupineDetection | null>(null);
-  const isLoadedRef = createRef(false);
-  const isListeningRef = createRef(false);
-  const errorRef = createRef<string | null>(null);
+
+  const state = createReactive<{
+    keywordDetection: PorcupineDetection | null,
+    isLoaded: boolean,
+    isListening: boolean,
+    error: string | null,
+  }>({
+    keywordDetection: null,
+    isLoaded: false,
+    isListening: false,
+    error: null,
+  });
 
   const keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void => {
-    keywordDetectionRef.value = porcupineDetection;
+    state.keywordDetection = porcupineDetection;
   };
 
   const errorCallback = (e: any): void => {
-    errorRef.value = e.toString();
+    state.error = e.toString();
   };
 
   const init = async (
@@ -96,43 +109,43 @@ export function usePorcupine(): PorcupineVue {
           model,
           { ...options, processErrorCallback: errorCallback }
         );
-        isLoadedRef.value = true;
-        errorRef.value = null;
+        state.isLoaded = true;
+        state.error = null;
       }
     } catch (e: any) {
-      errorRef.value = e.toString();
+      state.error = e.toString();
     }
   };
 
   const start = async (): Promise<void> => {
     try {
       if (!porcupineRef.value) {
-        errorRef.value = "Porcupine has not been initialized or has been released";
+        state.error = "Porcupine has not been initialized or has been released";
         return;
       }
 
       await WebVoiceProcessor.subscribe(porcupineRef.value);
-      isListeningRef.value = true;
-      errorRef.value = null;
+      state.isListening = true;
+      state.error = null;
     } catch (e: any) {
-      errorRef.value = e.toString();
-      isListeningRef.value = false;
+      state.error = e.toString();
+      state.isListening = false;
     }
   };
 
   const stop = async (): Promise<void> => {
     try {
       if (!porcupineRef.value) {
-        errorRef.value = "Porcupine has not been initialized or has been released";
+        state.error = "Porcupine has not been initialized or has been released";
         return;
       }
 
       await WebVoiceProcessor.unsubscribe(porcupineRef.value);
-      isListeningRef.value = false;
-      errorRef.value = null;
+      state.isListening = false;
+      state.error = null;
     } catch (e: any) {
-      errorRef.value = e.toString();
-      isListeningRef.value = false;
+      state.error = e.toString();
+      state.isListening = false;
     }
   };
 
@@ -142,15 +155,12 @@ export function usePorcupine(): PorcupineVue {
       porcupineRef.value.terminate();
       porcupineRef.value = null;
 
-      isLoadedRef.value = false;
+      state.isLoaded = false;
     }
   };
 
   return {
-    keywordDetection: keywordDetectionRef,
-    isLoaded: isLoadedRef,
-    isListening: isListeningRef,
-    error: errorRef,
+    state,
     init,
     start,
     stop,
