@@ -420,9 +420,6 @@ export class Porcupine {
     if (modelPathAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
     }
-    // for (let i = 0; i < modelPath.length; i++) {
-    //   memoryBufferUint8[modelPathAddress + i] = modelPath.charCodeAt(i);
-    // }
     memoryBufferUint8.set(modelPathEncoded, modelPathAddress);
     memoryBufferUint8[modelPathAddress + modelPathEncoded.length] = 0;
 
@@ -445,9 +442,6 @@ export class Porcupine {
       if (keywordPathAddress === 0) {
         throw new Error('malloc failed: Cannot allocate memory');
       }
-      // for (let i = 0; i < keywordPath.length; i++) {
-      //   memoryBufferUint8[keywordPathAddress + i] = keywordPath.charCodeAt(i);
-      // }
       memoryBufferUint8.set(keywordPathEncoded, keywordPathAddress);
       memoryBufferUint8[keywordPathAddress + keywordPathEncoded.length] = 0;
       keywordPathsAddressList.push(keywordPathAddress);
