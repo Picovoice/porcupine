@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { ref } from 'vue';
+import { Ref, UnwrapRef, version, ref } from 'vue';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -22,28 +22,35 @@ import {
   PorcupineWorker,
 } from '@picovoice/porcupine-web';
 
-const createRef = <T>(data: T) => {
-  if (!ref) {
-    const obj = { value: data };
+type RefType<T> =
+  [Ref] extends [undefined] ? { value: T } :
+    [T] extends [Ref] ? T :
+    [T] extends [object] ? Ref<T> : Ref<UnwrapRef<T>>;
 
-    return Object.defineProperty({} as {value: T}, "value", {
-      get(): any {
-        return obj.value;
+const createRef = <T>(data: T): RefType<T> => {
+  if (!ref || !version || version.charAt(0) < "3") {
+    const obj = {
+      value: data
+    };
+
+    return new Proxy(obj as RefType<T>, {
+      get(target, property, receiver): T {
+        return Reflect.get(target, property, receiver);
       },
-      set(newValue: T) {
-        obj.value = newValue;
+      set(target, property, newValue: T, receiver): boolean {
+        return Reflect.set(target, property, newValue, receiver);
       }
     });
   }
 
-  return ref<T>(data);
+  return ref<T>(data) as RefType<T>;
 };
 
-export function usePorcupine(): {
-  keywordDetection: { value: PorcupineDetection | null },
-  isLoaded: { value: boolean },
-  isListening: { value: boolean },
-  error: { value: string | null },
+export type PorcupineVue = {
+  keywordDetection: RefType<PorcupineDetection | null>,
+  isLoaded: RefType<boolean>,
+  isListening: RefType<boolean>,
+  error: RefType<string | null>,
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -53,7 +60,9 @@ export function usePorcupine(): {
   start: () => Promise<void>,
   stop: () => Promise<void>,
   release: () => Promise<void>,
-  } {
+};
+
+export function usePorcupine(): PorcupineVue {
   const porcupineRef = createRef<PorcupineWorker | null>(null);
   const keywordDetectionRef = createRef<PorcupineDetection | null>(null);
   const isLoadedRef = createRef(false);

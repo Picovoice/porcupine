@@ -1,7 +1,7 @@
 {
   "name": "@picovoice/porcupine-vue",
   "version": "2.1.2",
-  "description": "Vue mixin for Porcupine Web SDK",
+  "description": "Vue binding for Porcupine Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",
   "iife": "dist/iife/index.js",
@@ -32,7 +32,6 @@
     "@rollup/pluginutils": "^4.2.1",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
-    "@vue/composition-api": "^1.7.0",
     "cross-env": "^7.0.3",
     "eslint": "~8.22.0",
     "npm-run-all": "^4.1.5",
@@ -42,8 +41,8 @@
     "rollup-plugin-typescript2": "^0.31.2",
     "rollup-plugin-web-worker-loader": "^1.6.1",
     "tslib": "^2.3.1",
-    "typescript": "^4.6.3",
-    "vue": "2.7.10"
+    "typescript": "~4.7.4",
+    "vue": "^3.2.38"
   },
   "peerDependencies": {
     "@picovoice/web-voice-processor": "~4.0.1",

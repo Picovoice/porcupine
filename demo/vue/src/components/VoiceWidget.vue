@@ -45,11 +45,7 @@ import porcupineParams from "@/lib/porcupine_params";
 
 const VoiceWidget = defineComponent({
   name: "VoiceWidget",
-  mounted() {
-    console.log(this)
-  },
   setup() {
-
     const porcupine = usePorcupine();
     const accessKey = ref("");
     const detections = ref<string[]>([]);
@@ -60,30 +56,25 @@ const VoiceWidget = defineComponent({
       }
     });
 
-    watch(porcupine.isLoaded, (a) => {
-      console.log(a)
-    })
-
     async function initEngine () {
       await porcupine.init(
         accessKey.value,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
         { base64: porcupineParams }
       );
-      console.log(porcupine)
+    }
+
+    function updateAccessKey(event: any) {
+      accessKey.value = event.target.value;
     }
 
     return {
       accessKey,
       detections,
       initEngine,
+      updateAccessKey,
       ...porcupine,
     };
-  },
-  methods: {
-    updateAccessKey: function (event: any) {
-      this.accessKey = event.target.value;
-    },
   },
 });
 

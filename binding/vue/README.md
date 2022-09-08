@@ -110,89 +110,189 @@ const porcupineModel = {
 }
 ```
 
-### Initialize Porcupine
+### Porcupine in Vue 2
 
-**Note**: Due to limitations on Vue, one component can only have one instance of Porcupine. To use multiple 
-instance of Porcupine instead, check out [Porcupine Web binding](https://www.npmjs.com/package/@picovoice/porcupine-web).
+Use `usePorcupine` and `init` to initialize `Porcupine`:
 
-Create the following functions:
- - `keywordDetectionCallback` function to get the streaming results from the worker
-- `isLoadedCallback` function that is called when Porcupine has loaded or unloaded
-- `isListeningCallback` function that is called when Porcupine has started/stopped wake word detection
- - `errorCallback` function to catch any error occurred
+```vue
 
-```typescript
-...
-methods: {
-  keywordDetectionCallback: function(keyword) {
-    console.log(`Porcupine detected keyword: ${keyword.label}`);
-  },
-  isLoadedCallback: function(isLoaded) {
-    console.log(isLoaded);
-  },
-  isListeningCallback: function(isListening) {
-    console.log(isListening);
-  },
-  errorCallback: function(error) {
-    console.error(error);
-  }
-};
-...
-```
+<script lang='ts'>
+import Vue, { VueConstructor } from 'vue';
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { PorcupineVue, usePorcupine } from '@picovoice/porcupine-vue';
 
-Import `Porcupine` mixin, add it to your component and initialize Porcupine:
-
-```html
-<script lang="ts">
-  import {BuiltInKeyword} from "@picovoice/porcupine-web";
-  import porcupineMixin from "@picovoice/porcupine-vue";
-  
-  import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
-
-  export default {
-    mixins: [porcupineMixin],
-    mounted() {
-      this.$porcupine.init(
-              ${ACCESS_KEY},
-              [BuiltInKeyword.Porcupine],
-              this.keywordDetectionCallback,
-              { base64: porcupineParams }, // porcupine model
-              this.isLoadedCallback,
-              this.isListeningCallback,
-              this.errorCallback,
-      );
+// Use Vue.extend for JavaScript
+export default (Vue as VueConstructor<Vue & PorcupineVue>).extend({
+  data() {
+    /**
+     { keywordDetection,
+       isLoaded,
+       isListening,
+       error,
+       init,
+       start,
+       stop,
+       release } = usePorcupine();
+     */
+    const porcupine = usePorcupine();
+    return {
+      ...porcupine
     }
+  },
+  mounted() {
+    this.init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      porcupineModel
+    );
   }
+});
 </script>
 ```
 
-### Process Audio Frames
+In case of any errors, watch for `error.value` to check the error message, else watch `isLoaded.value` to check if `Porcupine` has loaded.
+
+#### Process Audio Frames
 
 Porcupine Vue binding uses [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
 To start detecting wake word, run the `start` function:
 
 ```typescript
-await this.$porcupine.start();
+await this.start();
 ```
 
-The `start` function initializes Porcupine and WebVoiceProcessor, then starts keyword detection.
-
-Run `stop` to stop keyword detection. This cleans up all resources used by Porcupine and WebVoiceProcessor.
+If `WebVoiceProcessor` has started correctly, `isListening.value` will be set to true. Watch `keywordDetection.value` to get keyword detection results:
 
 ```typescript
-await this.$porcupine.stop();
+...
+watch: {
+  "keywordDetection.value": function (keyword: PorcupineDetection) {
+    if (keyword !== null) {
+      console.log(keyword.label);
+    }
+  }
+}
+...
 ```
 
-### Release
+#### Stop
 
-When done with Porcupine, either call `release` or destroy the mounted component:
+Run `stop` to stop keyword detection:
 
 ```typescript
-await this.$porcupine.release();
+await this.stop();
 ```
 
-If any arguments require changes, call `release` then `init` to initialize
-Porcupine with the new settings.
+If `WebVoiceProcessor` has stopped correctly, `isListening.value` will be set to false.
+
+#### Release
+
+Run release explicitly to clean up all resources used by `Porcupine` and `WebVoiceProcessor`:
+
+```typescript
+beforeDestroy() {
+  this.release();
+}
+```
+
+This will set `isLoaded.value` and `isListening.value` to false.
+
+### Porcupine in Vue 3
+
+For Vue 3, we take advantage of the [Composition API](https://vuejs.org/api/composition-api-setup.html), specially use of `ref`.
+
+Use `usePorcupine` and `init` to initialize `Porcupine`:
+
+```vue
+
+<script lang='ts'>
+import { defineComponent, watch } from 'vue';
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { usePorcupine } from '@picovoice/porcupine-vue';
+
+// Use Vue.extend for JavaScript
+export default defineComponent({
+  setup() {
+    const { 
+      keywordDetection,
+      isLoaded,
+      isListening,
+      error,
+      init,
+      start,
+      stop,
+      release } = usePorcupine();
+    
+    watch(isLoaded, (newVal) => {
+      console.log(newVal);
+    });
+
+    watch(isListening, (newVal) => {
+      console.log(newVal);
+    });
+
+    watch(keywordDetection, (keyword) => {
+      if (keyword !== null) {
+        console.log(keyword.label);
+      }
+    });
+    
+    watch(error, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+    
+    init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      porcupineModel
+    )
+    
+    return {
+      start,
+      stop,
+      release
+    }
+  }
+});
+</script>
+```
+
+In case of any errors, watch for `error` to check the error message, else watch `isLoaded` to check if `Porcupine` has loaded.
+
+#### Process Audio Frames
+
+Porcupine Vue binding uses [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
+To start detecting wake word, run the `start` function:
+
+```typescript
+await this.start();
+```
+
+If `WebVoiceProcessor` has started correctly, `isListening` will be set to true. Watch `keywordDetection` to get keyword detection results.
+
+#### Stop
+
+Run `stop` to stop keyword detection:
+
+```typescript
+await this.stop();
+```
+
+If `WebVoiceProcessor` has stopped correctly, `isListening` will be set to false.
+
+#### Release
+
+Run release explicitly to clean up all resources used by `Porcupine` and `WebVoiceProcessor`:
+
+```typescript
+beforeUnmount() {
+  release();
+)
+```
+
+This will set `isLoaded` and `isListening` to false.
 
 ## Custom Keywords
 
@@ -223,14 +323,10 @@ const keywordModel = {
 Then, initialize an instance of `Porcupine`:
 
 ```typescript
-this.$porcupine.init(
-        ${ACCESS_KEY},
-        [BuiltInKeyword.Porcupine],
-        this.keywordDetectionCallback,
-        keywordModel, // porcupine model
-        this.isLoadedCallback,
-        this.isListeningCallback,
-        this.errorCallback,
+this.init(
+  ${ACCESS_KEY},
+  [BuiltInKeyword.Porcupine],
+  keywordModel, // porcupine model
 );
 ```
 
