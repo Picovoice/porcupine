@@ -34,7 +34,7 @@ Below are the colors associated with supported wake words for this demo:
 - ![#00ff00](../../resources/images/00ff00.png) `Picovoice`
 - ![#0000ff](../../resources/images/0000ff.png) `Porcupine`
 - ![#000000](../../resources/images/000000.png) `Terminator`
-<!-- markdown-link-check-enable-->
+<!-- markdown-link-check-enable -->
 
 From the root of the repository run:
 
