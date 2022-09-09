@@ -411,18 +411,17 @@ export class Porcupine {
     }
     memoryBufferUint8[accessKeyAddress + accessKey.length] = 0;
 
+    const modelPathEncoded = new TextEncoder().encode(modelPath);
     // acquire and init memory for c_model_path
     const modelPathAddress = await aligned_alloc(
       Uint8Array.BYTES_PER_ELEMENT,
-      (modelPath.length + 1) * Uint8Array.BYTES_PER_ELEMENT,
+      (modelPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT,
     );
     if (modelPathAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
     }
-    for (let i = 0; i < modelPath.length; i++) {
-      memoryBufferUint8[modelPathAddress + i] = modelPath.charCodeAt(i);
-    }
-    memoryBufferUint8[modelPathAddress + modelPath.length] = 0;
+    memoryBufferUint8.set(modelPathEncoded, modelPathAddress);
+    memoryBufferUint8[modelPathAddress + modelPathEncoded.length] = 0;
 
     // acquire and init memory for c_keyword_paths
     const keywordPathsAddressAddress = await aligned_alloc(
@@ -435,17 +434,16 @@ export class Porcupine {
 
     const keywordPathsAddressList = [];
     for (const keywordPath of keywordPaths) {
+      const keywordPathEncoded = new TextEncoder().encode(keywordPath);
       const keywordPathAddress = await aligned_alloc(
         Uint8Array.BYTES_PER_ELEMENT,
-        (keywordPath.length + 1) * Uint8Array.BYTES_PER_ELEMENT,
+        (keywordPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT,
       );
       if (keywordPathAddress === 0) {
         throw new Error('malloc failed: Cannot allocate memory');
       }
-      for (let i = 0; i < keywordPath.length; i++) {
-        memoryBufferUint8[keywordPathAddress + i] = keywordPath.charCodeAt(i);
-      }
-      memoryBufferUint8[keywordPathAddress + keywordPath.length] = 0;
+      memoryBufferUint8.set(keywordPathEncoded, keywordPathAddress);
+      memoryBufferUint8[keywordPathAddress + keywordPathEncoded.length] = 0;
       keywordPathsAddressList.push(keywordPathAddress);
     }
     memoryBufferInt32.set(

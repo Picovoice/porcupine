@@ -357,6 +357,26 @@
         assertEquals(true, is_failed, 'Failed to handle invalid built-in keyword')
         writeMessage("Checking invalid builtin keyword type... done!");
 
+        writeMessage("Checking UTF-8 paths...");
+        handle = await PorcupineWeb.Porcupine.create(
+          accessKey,
+          {
+            label: "ヤマアラシ",
+            sensitivity: 0.7,
+            base64: customKeyword64,
+            customWritePath: "ヤマアラシ.ppn",
+            forceWrite: true,
+            version: 2,
+          },
+          porcupineKeywordCallback,
+          {
+            customWritePath: "ヤマアラシ_params.pv",
+            publicPath: "porcupine_params.pv",
+            forceWrite: true,
+          });
+        handle.release()
+        writeMessage("Checking UTF-8 paths... done!");
+
         writeMessage("Checking basic parameter validation...");
         is_failed = false;
         try {
