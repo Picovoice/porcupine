@@ -53,7 +53,7 @@ Below are the LED colors associated with supported wake words for the multiple w
 - ![#ff8000](../../../resources/images/ff8000.png) `Picovoice`
 - ![#ff0000](../../../resources/images/ff0000.png) `Bumblebee`
 - ![#0000ff](../../../resources/images/0000ff.png) `Alexa`
-<!-- markdown-link-check-enable-->
+<!-- markdown-link-check-enable -->
 > :warning: **This project exclusively utilizes the Cortex-M7 core of the STM32H747XIH6 microcontroller. If you would like to use the Cortex-M4 core along with the Cortex-M7 core, set the BOOT_CM4_ADD0 option byte in STM32CubeProgrammer to 0x818**
 
 ## Create Custom Wake Word

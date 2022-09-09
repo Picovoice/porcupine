@@ -18,7 +18,7 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 <!-- markdown-link-check-disable -->
 [![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)
-<!-- markdown-link-check-enable-->
+<!-- markdown-link-check-enable -->
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 [![Twitter URL](https://img.shields.io/twitter/url?label=%40AiPicovoice&style=social&url=https%3A%2F%2Ftwitter.com%2FAiPicovoice)](https://twitter.com/AiPicovoice)

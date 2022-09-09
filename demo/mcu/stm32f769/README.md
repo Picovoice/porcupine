@@ -49,7 +49,7 @@ Below are the LED colors associated with supported wake words for the multiple w
 <!-- markdown-link-check-disable -->
 - ![#00ff00](../../../resources/images/00ff00.png) `Porcupine`
 - ![#ff8000](../../../resources/images/ff8000.png) `Picovoice`
-<!-- markdown-link-check-enable-->
+<!-- markdown-link-check-enable -->
 ## Create Custom Wake Word
 
 1. Copy the UUID of the board printed at the beginning of the session to the serial port monitor.
