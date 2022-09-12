@@ -5,25 +5,25 @@
       <label>
         AccessKey obtained from
         <a href="https://console.picovoice.ai/">Picovoice Console</a>:
-        <input type="text" name="accessKey" v-on:change="updateInputValue" />
+        <input type="text" name="accessKey" v-on:change="updateAccessKey" />
       </label>
       <button class="start-button" v-on:click="initEngine">
         Start Porcupine
       </button>
     </h3>
-    <h3>Loaded: {{ isLoaded }}</h3>
-    <h3>Listening: {{ isListening }}</h3>
-    <h3>Error: {{ error !== null }}</h3>
-    <p class="error-message" v-if="error !== null">
-      {{ error.toString() }}
+    <h3>Loaded: {{ state.isLoaded }}</h3>
+    <h3>Listening: {{ state.isListening }}</h3>
+    <h3>Error: {{ state.error !== null }}</h3>
+    <p class="error-message" v-if="state.error !== null">
+      {{ state.error }}
     </p>
-    <button v-on:click="start" :disabled="!isLoaded || error || isListening">
+    <button v-on:click="start" :disabled="!state.isLoaded || state.error || state.isListening">
       Start
     </button>
-    <button v-on:click="stop" :disabled="!isLoaded || error || !isListening">
+    <button v-on:click="stop" :disabled="!state.isLoaded || state.error || !state.isListening">
       Stop
     </button>
-    <button v-on:click="release" :disabled="!isLoaded || error">
+    <button v-on:click="release" :disabled="!state.isLoaded || state.error">
       Release
     </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
@@ -36,65 +36,54 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { onBeforeUnmount, defineComponent, ref, watch } from "vue";
 
-import { BuiltInKeyword, PorcupineDetection } from "@picovoice/porcupine-web";
-import porcupineMixin, { PorcupineVue } from "@picovoice/porcupine-vue";
+import { BuiltInKeyword } from "@picovoice/porcupine-web";
+import { usePorcupine } from "@picovoice/porcupine-vue";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import porcupineParams from "@/lib/porcupine_params";
 
 const VoiceWidget = defineComponent({
   name: "VoiceWidget",
-  mixins: [porcupineMixin],
-  data() {
-    return {
-      inputValue: "",
-      detections: [] as string[],
-      isLoaded: false,
-      isListening: false,
-      error: null as string | null,
-      $porcupine: {} as PorcupineVue,
-    };
-  },
-  methods: {
-    start: function () {
-      this.$porcupine.start();
-    },
-    stop: function () {
-      this.$porcupine.stop();
-    },
-    release: function () {
-      this.$porcupine.release();
-    },
-    initEngine: function () {
-      this.$porcupine.init(
-        this.inputValue,
+  setup() {
+    const porcupine = usePorcupine();
+    const accessKey = ref("");
+    const detections = ref<string[]>([]);
+
+    watch(
+      () => porcupine.state.keywordDetection,
+      keyword => {
+        if (keyword !== null) {
+          detections.value.push(keyword.label);
+        }
+      }
+    );
+
+    async function initEngine() {
+      await porcupine.init(
+        accessKey.value,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
-        this.keywordDetectionCallback,
-        { base64: porcupineParams },
-        this.isLoadedCallback,
-        this.isListeningCallback,
-        this.errorCallback
+        { base64: porcupineParams }
       );
-    },
-    updateInputValue: function (event: any) {
-      this.inputValue = event.target.value;
-    },
-    keywordDetectionCallback: function (
-      porcupineDetection: PorcupineDetection
-    ) {
-      this.detections = [...this.detections, porcupineDetection.label];
-    },
-    isLoadedCallback: function (isLoaded: boolean) {
-      this.isLoaded = isLoaded;
-    },
-    isListeningCallback: function (isListening: boolean) {
-      this.isListening = isListening;
-    },
-    errorCallback: function (error: string | null) {
-      this.error = error;
-    },
+    }
+
+    function updateAccessKey(event: any) {
+      accessKey.value = event.target.value;
+    }
+
+    onBeforeUnmount(() => {
+      porcupine.release();
+    });
+
+    return {
+      accessKey,
+      detections,
+      initEngine,
+      updateAccessKey,
+      ...porcupine,
+    };
   },
 });
 

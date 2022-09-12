@@ -112,57 +112,125 @@ const porcupineModel = {
 
 ### Initialize Porcupine
 
-**Note**: Due to limitations on Vue, one component can only have one instance of Porcupine. To use multiple 
-instance of Porcupine instead, check out [Porcupine Web binding](https://www.npmjs.com/package/@picovoice/porcupine-web).
+Use `usePorcupine` and `init` to initialize `Porcupine`.
 
-Create the following functions:
- - `keywordDetectionCallback` function to get the streaming results from the worker
-- `isLoadedCallback` function that is called when Porcupine has loaded or unloaded
-- `isListeningCallback` function that is called when Porcupine has started/stopped wake word detection
- - `errorCallback` function to catch any error occurred
+In case of any errors, watch for `state.error` to check the error message, otherwise watch `state.isLoaded` to check if `Porcupine` has loaded.
 
-```typescript
-...
-methods: {
-  keywordDetectionCallback: function(keyword) {
-    console.log(`Porcupine detected keyword: ${keyword.label}`);
+#### Porcupine in Vue 2
+
+**NOTE**: If you need to call `usePorcupine` outside of `data`, make sure to add observer property via `Vue.set` or `observable`.
+
+```vue
+<script lang='ts'>
+import Vue, { VueConstructor } from 'vue';
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { PorcupineVue, usePorcupine } from '@picovoice/porcupine-vue';
+
+// Use Vue.extend for JavaScript
+export default (Vue as VueConstructor<Vue & PorcupineVue>).extend({
+  data() {
+    const {
+      state,
+      init,
+      start,
+      stop,
+      release
+    } = usePorcupine();
+
+    init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      porcupineModel
+    );
+    
+    return {
+      state,
+      start,
+      stop,
+      release
+    }
   },
-  isLoadedCallback: function(isLoaded) {
-    console.log(isLoaded);
+  watch: {
+    "state.keywordDetection": function (keyword) {
+      if (keyword !== null) {
+        console.log(keyword.label);
+      }
+    },
+    "state.isLoaded": function (isLoaded) {
+      console.log(isLoaded)
+    },
+    "state.isListening": function (isListening) {
+      console.log(isListening)
+    },
+    "state.error": function (error) {
+      console.error(error)
+    },
   },
-  isListeningCallback: function(isListening) {
-    console.log(isListening);
+  onBeforeDestroy() {
+    this.release();
   },
-  errorCallback: function(error) {
-    console.error(error);
-  }
-};
-...
+});
+</script>
 ```
 
-Import `Porcupine` mixin, add it to your component and initialize Porcupine:
+#### Porcupine in Vue 3
 
-```html
-<script lang="ts">
-  import {BuiltInKeyword} from "@picovoice/porcupine-web";
-  import porcupineMixin from "@picovoice/porcupine-vue";
-  
-  import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
+In Vue 3, we take advantage of the [Composition API](https://vuejs.org/api/composition-api-setup.html), especially the use of `reactive`.
 
-  export default {
-    mixins: [porcupineMixin],
-    mounted() {
-      this.$porcupine.init(
-              ${ACCESS_KEY},
-              [BuiltInKeyword.Porcupine],
-              this.keywordDetectionCallback,
-              { base64: porcupineParams }, // porcupine model
-              this.isLoadedCallback,
-              this.isListeningCallback,
-              this.errorCallback,
-      );
+```vue
+<script lang='ts'>
+import { defineComponent, onBeforeUnmount, watch } from 'vue';
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { usePorcupine } from '@picovoice/porcupine-vue';
+
+// Use Vue.extend for JavaScript
+export default defineComponent({
+  setup() {
+    const { 
+      state,
+      init,
+      start,
+      stop,
+      release
+    } = usePorcupine();
+    
+    watch(() => state.isLoaded, (newVal) => {
+      console.log(newVal);
+    });
+
+    watch(() => state.isListening, (newVal) => {
+      console.log(newVal);
+    });
+
+    watch(() => state.keywordDetection, (keyword) => {
+      if (keyword !== null) {
+        console.log(keyword.label);
+      }
+    });
+    
+    watch(() => state.error, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+
+    onBeforeUnmount(() => {
+      release();
+    });
+    
+    init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      porcupineModel
+    )
+    
+    return {
+      start,
+      stop,
+      release
     }
   }
+});
 </script>
 ```
 
@@ -172,27 +240,30 @@ Porcupine Vue binding uses [WebVoiceProcessor](https://github.com/Picovoice/web-
 To start detecting wake word, run the `start` function:
 
 ```typescript
-await this.$porcupine.start();
+await this.start();
 ```
 
-The `start` function initializes Porcupine and WebVoiceProcessor, then starts keyword detection.
+If `WebVoiceProcessor` has started correctly, `state.isListening` will be set to true. Watch `state.keywordDetection` to get keyword detection results.
 
-Run `stop` to stop keyword detection. This cleans up all resources used by Porcupine and WebVoiceProcessor.
+### Stop
+
+Run `stop` to stop keyword detection:
 
 ```typescript
-await this.$porcupine.stop();
+await this.stop();
 ```
+
+If `WebVoiceProcessor` has stopped correctly, `state.isListening` will be set to false.
 
 ### Release
 
-When done with Porcupine, either call `release` or destroy the mounted component:
+Run release explicitly to clean up all resources used by `Porcupine` and `WebVoiceProcessor`:
 
 ```typescript
-await this.$porcupine.release();
+this.release();
 ```
 
-If any arguments require changes, call `release` then `init` to initialize
-Porcupine with the new settings.
+This will set `state.isLoaded` and `state.isListening` to false.
 
 ## Custom Keywords
 
@@ -223,14 +294,10 @@ const keywordModel = {
 Then, initialize an instance of `Porcupine`:
 
 ```typescript
-this.$porcupine.init(
-        ${ACCESS_KEY},
-        [BuiltInKeyword.Porcupine],
-        this.keywordDetectionCallback,
-        keywordModel, // porcupine model
-        this.isLoadedCallback,
-        this.isListeningCallback,
-        this.errorCallback,
+this.init(
+  ${ACCESS_KEY},
+  [BuiltInKeyword.Porcupine],
+  keywordModel, // porcupine model
 );
 ```
 

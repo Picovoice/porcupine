@@ -27,7 +27,7 @@ console.log(iifeBundleName);
 
 export default {
   input: [path.resolve(__dirname, pkg.entry)],
-  external: ['@picovoice/web-voice-processor'],
+  external: ['vue', '@picovoice/web-voice-processor'],
   output: [
     {
       file: path.resolve(__dirname, pkg['module']),

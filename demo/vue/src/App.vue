@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Porcupine Web + Vue ("Porcupine" Renderless Component)</h1>
+    <h1>Porcupine Web + Vue ("Porcupine" Component)</h1>
     <button v-on:click="toggle">
       Toggle VoiceWidget <span v-if="show">"OFF"</span><span v-else>"ON"</span>
     </button>

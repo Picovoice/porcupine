@@ -1447,47 +1447,57 @@ yarn add @picovoice/porcupine-vue @picovoice/web-voice-processor
 npm install @picovoice/porcupine-vue @picovoice/web-voice-processor
 ```
 
-```html
-<script lang="ts">
-  import {BuiltInKeyword} from "@picovoice/porcupine-web";
-  import porcupineMixin from "@picovoice/porcupine-vue";
+```vue
+<script lang='ts'>
+import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { usePorcupine } from '@picovoice/porcupine-vue';
 
-  import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
+import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
 
-  export default {
-    mixins: [porcupineMixin],
-    mounted() {
-      this.$porcupine.init(
-              ${ACCESS_KEY},
-              [BuiltInKeyword.Porcupine],
-              this.keywordDetectionCallback,
-              { base64: porcupineParams }, // porcupine model
-              this.isLoadedCallback,
-              this.isListeningCallback,
-              this.errorCallback
-      ).then(() => {
-        this.$porcupine.start();
-      });
-    },
-    methods: {
-      keywordDetectionCallback: function(keyword) {
-        console.log(`Porcupine detected keyword: ${keyword.label}`);
-      },
-      isLoadedCallback: function(isLoaded) {
-        console.log(isLoaded);
-      },
-      isListeningCallback: function(isListening) {
-        console.log(isListening);
-      },
-      errorCallback: function(error) {
-        console.error(error);
+// Use Vue.extend for JavaScript
+export default {
+  data() {
+    const {
+      state,
+      init,
+      start,
+      stop,
+      release
+    } = usePorcupine();
+
+    init(
+      ${ACCESS_KEY},
+      [BuiltInKeyword.Porcupine],
+      { base64: porcupineParams }, // porcupine model
+    );
+
+    return {
+      state,
+      start,
+      stop,
+      release
+    }
+  },
+  watch: {
+    "state.keywordDetection": function (keyword) {
+      if (keyword !== null) {
+        console.log(keyword.label);
       }
     },
-    // beforeDestroy for Vue 2.
-    beforeUnmount() {
-      this.$porcupine.release();
-    }
-  }
+    "state.isLoaded": function (isLoaded) {
+      console.log(isLoaded)
+    },
+    "state.isListening": function (isListening) {
+      console.log(isListening)
+    },
+    "state.error": function (error) {
+      console.error(error)
+    },
+  },
+  onBeforeDestroy() {
+    this.release();
+  },
+};
 </script>
 ```
 
