@@ -7,7 +7,6 @@ using ReactiveUI;
 using Avalonia.Media;
 
 using Pv;
-using OpenTK.Audio.OpenAL;
 
 namespace AvaloniaVUI.ViewModels
 {
@@ -87,40 +86,38 @@ namespace AvaloniaVUI.ViewModels
 
                 using Porcupine porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, commands);
 
-                short[] frameBuffer = new short[porcupine.FrameLength];
-                ALCaptureDevice captureDevice = ALC.CaptureOpenDevice(null, porcupine.SampleRate, ALFormat.Mono16, porcupine.FrameLength * 2);
+                // create and start recording
+                using (PvRecorder recorder = PvRecorder.Create(-1, porcupine.FrameLength))
                 {
-                    ALC.CaptureStart(captureDevice);
+                    recorder.Start();
+
+                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+                    Console.WriteLine("Listening...");
+
                     while (true)
                     {
-                        int samplesAvailable = ALC.GetAvailableSamples(captureDevice);
-                        if (samplesAvailable > porcupine.FrameLength)
+                        short[] pcm = recorder.Read();
+                        int keywordIndex = porcupine.Process(pcm);
+                        if (keywordIndex >= 0)
                         {
-                            ALC.CaptureSamples(captureDevice, ref frameBuffer[0], porcupine.FrameLength);
-                            int keywordIndex = porcupine.Process(frameBuffer);
-
-                            if (keywordIndex >= 0)
+                            switch (keywordIndex)
                             {
-                                switch (keywordIndex)
-                                {
-                                    case 0:
-                                        IsGrapefruit = true;
-                                        break;
-                                    case 1:
-                                        IsGrasshopper = true;
-                                        break;
-                                    case 2:
-                                        IsBumblebee = true;
-                                        break;
-                                    case 3:
-                                        IsBlueberry = true;
-                                        break;
-                                }
+                                case 0:
+                                    IsGrapefruit = true;
+                                    break;
+                                case 1:
+                                    IsGrasshopper = true;
+                                    break;
+                                case 2:
+                                    IsBumblebee = true;
+                                    break;
+                                case 3:
+                                    IsBlueberry = true;
+                                    break;
                             }
                         }
                     }
                 }
-
             });
         }
     }
