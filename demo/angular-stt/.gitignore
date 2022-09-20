@@ -41,5 +41,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-src/lib
+src/lib/*
 !src/lib/.gitkeep

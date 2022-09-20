@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 import { PorcupineService } from '@picovoice/porcupine-angular';
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
 
+// @ts-ignore
+import porcupineParams from '../lib/porcupine_params';
+
 declare var webkitSpeechRecognition: any;
 
 @Component({
@@ -11,7 +14,7 @@ declare var webkitSpeechRecognition: any;
   templateUrl: './voice_box.component.html',
   styleUrls: ['./voice_box.component.scss']
 })
-export class VoiceBox implements OnDestroy {
+export class VoiceBoxComponent implements OnDestroy {
   private keywordSubscription: Subscription;
   private isLoadedSubscription: Subscription;
   private isListeningSubscription: Subscription;
@@ -78,7 +81,7 @@ export class VoiceBox implements OnDestroy {
         await this.porcupineService.init(
           accessKey,
           [BuiltInKeyword.OkayGoogle],
-          { publicPath: "assets/porcupine_params.pv" }
+          { base64: porcupineParams }
         );
         await this.porcupineService.start();
       }
