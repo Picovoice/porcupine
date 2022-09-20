@@ -1,0 +1,30 @@
+<div class="voice-box">
+  <fieldset
+    class="transcript-box"
+    [class.idle]="isListening && !this.listenTranscript"
+    [class.transcribing]="isListening && this.listenTranscript"
+  >
+    <legend *ngIf="error !== null">Error</legend>
+    <legend *ngIf="!isLoaded && error === null">Enter AccessKey and Press Start</legend>
+    <legend *ngIf="isLoaded && !isListening">Loading...</legend>
+    <legend *ngIf="isListening && !this.listenTranscript">Idle (Say "Okay Google")</legend>
+    <legend *ngIf="isListening && this.listenTranscript">Transcribing...</legend>
+
+    <p class="error-message" *ngIf="error !== null">{{ error.toString() }}</p>
+    <div *ngIf="!isLoaded">
+      <label>
+        AccessKey obtained from
+        <a href="https://picovoice.ai/console/">Picovoice Console</a>:
+        <input
+          type="text"
+          name="accessKey"
+          #accessKey
+        />
+      </label>
+      <button class="start-button" (click)="initEngine(accessKey.value)" [disabled]="isLoaded">
+        Start
+      </button>
+    </div>
+    <pre class="transcript-output">{{ transcript }}</pre>
+  </fieldset>
+</div>
