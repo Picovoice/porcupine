@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2018-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -37,7 +37,7 @@ public class Porcupine {
         BUILT_IN_KEYWORD_PATHS = Utils.getPackagedKeywordPaths();
     }
 
-    private final long libraryHandle;
+    private long handle;
 
     /**
      * Constructor.
@@ -62,7 +62,7 @@ public class Porcupine {
         } catch (Exception exception) {
             throw new PorcupineException(exception);
         }
-        libraryHandle = PorcupineNative.init(
+        handle = PorcupineNative.init(
                 accessKey,
                 modelPath,
                 keywordPaths,
@@ -73,7 +73,10 @@ public class Porcupine {
      * Releases resources acquired by Porcupine.
      */
     public void delete() {
-        PorcupineNative.delete(libraryHandle);
+        if (handle != 0) {
+            PorcupineNative.delete(handle);
+            handle = 0;
+        }
     }
 
     /**
@@ -89,7 +92,23 @@ public class Porcupine {
      * @throws PorcupineException if there is an error while processing the audio frame.
      */
     public int process(short[] pcm) throws PorcupineException {
-        return PorcupineNative.process(libraryHandle, pcm);
+        if (handle == 0) {
+            throw new PorcupineException(
+                    new IllegalStateException("Attempted to call Porcupine process after delete."));
+        }
+        if (pcm == null) {
+            throw new PorcupineException(
+                    new IllegalArgumentException("Passed null frame to Porcupine process."));
+        }
+
+        if (pcm.length != getFrameLength()) {
+            throw new PorcupineException(
+                    new IllegalArgumentException(
+                            String.format("Porcupine process requires frames of length %d. " +
+                                    "Received frame of size %d.", getFrameLength(), pcm.length)));
+        }
+
+        return PorcupineNative.process(handle, pcm);
     }
 
     /**

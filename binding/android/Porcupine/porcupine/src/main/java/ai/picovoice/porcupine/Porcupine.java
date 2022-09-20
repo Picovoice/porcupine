@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -66,7 +66,11 @@ public class Porcupine {
             String modelPath,
             String[] keywordPaths,
             float[] sensitivities) throws PorcupineException {
-        handle = init(accessKey, modelPath, keywordPaths, sensitivities);
+        handle = PorcupineNative.init(
+                accessKey,
+                modelPath,
+                keywordPaths,
+                sensitivities);
     }
 
     /**
@@ -74,7 +78,7 @@ public class Porcupine {
      */
     public void delete() {
         if (handle != 0) {
-            delete(handle);
+            PorcupineNative.delete(handle);
             handle = 0;
         }
     }
@@ -108,7 +112,7 @@ public class Porcupine {
                                     "Received frame of size %d.", getFrameLength(), pcm.length)));
         }
 
-        return process(handle, pcm);
+        return PorcupineNative.process(handle, pcm);
     }
 
     /**
@@ -116,31 +120,27 @@ public class Porcupine {
      *
      * @return Version.
      */
-    public native String getVersion();
+    public String getVersion() {
+        return PorcupineNative.getVersion();
+    }
 
     /**
      * Getter for number of audio samples per frame..
      *
      * @return Number of audio samples per frame.
      */
-    public native int getFrameLength();
+    public int getFrameLength() {
+        return PorcupineNative.getFrameLength();
+    }
 
     /**
      * Getter for audio sample rate accepted by Picovoice.
      *
      * @return Audio sample rate accepted by Picovoice.
      */
-    public native int getSampleRate();
-
-    private native long init(
-            String accessKey,
-            String modelPath,
-            String[] keywordPaths,
-            float[] sensitivities);
-
-    private native void delete(long object);
-
-    private native int process(long object, short[] pcm);
+    public int getSampleRate() {
+        return PorcupineNative.getSampleRate();
+    }
 
     public enum BuiltInKeyword {
         ALEXA,
