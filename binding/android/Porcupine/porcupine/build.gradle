@@ -27,7 +27,9 @@ android {
     }
 }
 
-apply from: "${rootDir}/publish-mavencentral.gradle"
+if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
+    apply from: "${rootDir}/publish-mavencentral.gradle"
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])

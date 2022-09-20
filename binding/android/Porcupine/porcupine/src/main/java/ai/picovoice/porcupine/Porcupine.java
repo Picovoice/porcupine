@@ -97,19 +97,16 @@ public class Porcupine {
      */
     public int process(short[] pcm) throws PorcupineException {
         if (handle == 0) {
-            throw new PorcupineException(
-                    new IllegalStateException("Attempted to call Porcupine process after delete."));
+            throw new PorcupineInvalidStateException("Attempted to call Porcupine process after delete.");
         }
         if (pcm == null) {
-            throw new PorcupineException(
-                    new IllegalArgumentException("Passed null frame to Porcupine process."));
+            throw new PorcupineInvalidArgumentException("Passed null frame to Porcupine process.");
         }
 
         if (pcm.length != getFrameLength()) {
-            throw new PorcupineException(
-                    new IllegalArgumentException(
+            throw new PorcupineInvalidArgumentException(
                             String.format("Porcupine process requires frames of length %d. " +
-                                    "Received frame of size %d.", getFrameLength(), pcm.length)));
+                                    "Received frame of size %d.", getFrameLength(), pcm.length));
         }
 
         return PorcupineNative.process(handle, pcm);
