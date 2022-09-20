@@ -53,6 +53,7 @@ export class VoiceBoxComponent implements OnDestroy {
                 for (const line of event.results) {
                   this.transcript += line[0].transcript.trim() + "\n\n";
                 }
+                this.speech = null;
               };
               this.speech.start();
               this.listenTranscript = true;
