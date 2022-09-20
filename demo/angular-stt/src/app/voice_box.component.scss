@@ -1,0 +1,31 @@
+.voice-box {
+  .transcript-box {
+    padding: 2rem;
+    margin: 2rem;
+    border-radius: 0.25rem;
+  }
+
+  .error-message {
+    background-color: maroon;
+    color: white;
+    padding: 1rem;
+    border-left: 5px solid red;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  .idle {
+    border: 1px solid #377dff;
+  }
+
+  .transcribing {
+    border: 1px solid red;
+  }
+
+  .transcript-output {
+    width: 100%;
+    min-height: 10rem;
+    text-align: left;
+  }
+}
