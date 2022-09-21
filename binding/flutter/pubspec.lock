@@ -80,7 +80,7 @@ packages:
       name: flutter_voice_processor
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.7"
+    version: "1.0.9"
   lints:
     dependency: "direct dev"
     description:
