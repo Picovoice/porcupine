@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2018-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -14,9 +14,8 @@ package ai.picovoice.porcupine;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.stream.*;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Java binding for Porcupine wake word engine. It detects utterances of given keywords within an
@@ -28,8 +27,6 @@ import java.util.logging.Logger;
  */
 public class Porcupine {
 
-    private final long libraryHandle;
-
     public static final String LIBRARY_PATH;
     public static final String MODEL_PATH;
     public static final HashMap<BuiltInKeyword, String> BUILT_IN_KEYWORD_PATHS;
@@ -39,6 +36,8 @@ public class Porcupine {
         MODEL_PATH = Utils.getPackagedModelPath();
         BUILT_IN_KEYWORD_PATHS = Utils.getPackagedKeywordPaths();
     }
+
+    private long handle;
 
     /**
      * Constructor.
@@ -52,20 +51,32 @@ public class Porcupine {
      *                      of increasing the false alarm rate.
      * @throws PorcupineException if there is an error while initializing Porcupine.
      */
-    public Porcupine(String accessKey, String libraryPath, String modelPath, String[] keywordPaths, float[] sensitivities) throws PorcupineException {
+    public Porcupine(
+            String accessKey,
+            String libraryPath,
+            String modelPath,
+            String[] keywordPaths,
+            float[] sensitivities) throws PorcupineException {
         try {
             System.load(libraryPath);
         } catch (Exception exception) {
             throw new PorcupineException(exception);
         }
-        libraryHandle = init(accessKey, modelPath, keywordPaths, sensitivities);
+        handle = PorcupineNative.init(
+                accessKey,
+                modelPath,
+                keywordPaths,
+                sensitivities);
     }
 
     /**
      * Releases resources acquired by Porcupine.
      */
     public void delete() {
-        delete(libraryHandle);
+        if (handle != 0) {
+            PorcupineNative.delete(handle);
+            handle = 0;
+        }
     }
 
     /**
@@ -81,7 +92,23 @@ public class Porcupine {
      * @throws PorcupineException if there is an error while processing the audio frame.
      */
     public int process(short[] pcm) throws PorcupineException {
-        return process(libraryHandle, pcm);
+        if (handle == 0) {
+            throw new PorcupineException(
+                    new IllegalStateException("Attempted to call Porcupine process after delete."));
+        }
+        if (pcm == null) {
+            throw new PorcupineException(
+                    new IllegalArgumentException("Passed null frame to Porcupine process."));
+        }
+
+        if (pcm.length != getFrameLength()) {
+            throw new PorcupineException(
+                    new IllegalArgumentException(
+                            String.format("Porcupine process requires frames of length %d. " +
+                                    "Received frame of size %d.", getFrameLength(), pcm.length)));
+        }
+
+        return PorcupineNative.process(handle, pcm);
     }
 
     /**
@@ -89,27 +116,27 @@ public class Porcupine {
      *
      * @return Version.
      */
-    public native String getVersion();
+    public String getVersion() {
+        return PorcupineNative.getVersion();
+    }
 
     /**
      * Getter for number of audio samples per frame.
      *
      * @return Number of audio samples per frame.
      */
-    public native int getFrameLength();
+    public int getFrameLength() {
+        return PorcupineNative.getFrameLength();
+    }
 
     /**
      * Getter for audio sample rate accepted by Picovoice.
      *
      * @return Audio sample rate accepted by Picovoice.
      */
-    public native int getSampleRate();
-
-    private native long init(String accessKey, String modelPath, String[] keywordPaths, float[] sensitivities);
-
-    private native void delete(long object);
-
-    private native int process(long object, short[] pcm);
+    public int getSampleRate() {
+        return PorcupineNative.getSampleRate();
+    }
 
     public enum BuiltInKeyword {
         ALEXA,
@@ -228,7 +255,7 @@ public class Porcupine {
                 }
             }
 
-            if(this.keywordPaths != null && this.keywords != null){
+            if (this.keywordPaths != null && this.keywords != null) {
                 throw new PorcupineInvalidArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
                         "Only one of the two arguments may be set for initialization.");
             }

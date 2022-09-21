@@ -3,7 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '2.1.2'
+    PUBLISH_VERSION = '2.1.3'
     PUBLISH_ARTIFACT_ID = 'porcupine-android'
 }
 
@@ -27,7 +27,9 @@ android {
     }
 }
 
-apply from: "${rootDir}/publish-mavencentral.gradle"
+if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
+    apply from: "${rootDir}/publish-mavencentral.gradle"
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
