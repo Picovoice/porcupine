@@ -7,7 +7,7 @@ PODS:
     - Flutter
   - Porcupine-iOS (2.1.2):
     - ios-voice-processor (~> 1.0.2)
-  - porcupine_flutter (2.1.3):
+  - porcupine_flutter (2.1.6):
     - Flutter
     - Porcupine-iOS (~> 2.1.2)
 
@@ -38,7 +38,7 @@ SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   Porcupine-iOS: 884f40edadf4b72fac6fae768d3247bdb48841f7
-  porcupine_flutter: 67d6fa52eb84ae7f9bb98ca09789ae0d5bcb9e8c
+  porcupine_flutter: b1f28f08b9da19bcba7adb38e6231b55ebdd0558
 
 PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 

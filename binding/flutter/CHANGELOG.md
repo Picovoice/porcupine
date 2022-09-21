@@ -37,3 +37,6 @@
 
 ## [2.1.5] - 2022-08-02
 * Add documentation and repository links
+
+## [2.1.6] - 2022-09-21
+* Update Android libs
