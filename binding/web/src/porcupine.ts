@@ -11,7 +11,7 @@
 
 /* eslint camelcase: 0 */
 
-import { Mutex } from 'async-mutex';
+import {Mutex} from 'async-mutex';
 
 import {
   aligned_alloc_type,
@@ -22,18 +22,12 @@ import {
   pv_free_type,
 } from '@picovoice/web-utils';
 
-import { simd } from 'wasm-feature-detect';
+import {simd} from 'wasm-feature-detect';
 
-import {
-  DetectionCallback,
-  PorcupineDetection,
-  PorcupineKeyword,
-  PorcupineModel,
-  PorcupineOptions,
-} from './types';
+import {DetectionCallback, PorcupineKeyword, PorcupineModel, PorcupineOptions, } from './types';
 
-import { keywordsProcess } from './utils';
-import { BuiltInKeyword } from './built_in_keywords';
+import {keywordsProcess} from './utils';
+import {BuiltInKeyword} from './built_in_keywords';
 
 /**
  * WebAssembly function types
@@ -45,11 +39,15 @@ type pv_porcupine_init_type = (
   numKeywords: number,
   keywordPaths: number,
   sensitivities: number,
-  object: number,
+  object: number
 ) => Promise<number>;
-type pv_porcupine_process_type = (object: number, pcm: number, keywordIndex: number) => Promise<number>;
+type pv_porcupine_process_type = (
+  object: number,
+  pcm: number,
+  keywordIndex: number
+) => Promise<number>;
 type pv_porcupine_delete_type = (object: number) => Promise<void>;
-type pv_status_to_string_type = (status: number) => Promise<number>
+type pv_status_to_string_type = (status: number) => Promise<number>;
 type pv_sample_rate_type = () => Promise<number>;
 type pv_porcupine_frame_length_type = () => Promise<number>;
 type pv_porcupine_version_type = () => Promise<number>;
@@ -111,7 +109,7 @@ export class Porcupine {
     handleWasm: PorcupineWasmOutput,
     keywordLabels: ArrayLike<string>,
     keywordDetectionCallback: DetectionCallback,
-    processErrorCallback?: (error: string) => void,
+    processErrorCallback?: (error: string) => void
   ) {
     Porcupine._frameLength = handleWasm.frameLength;
     Porcupine._sampleRate = handleWasm.sampleRate;
@@ -194,16 +192,22 @@ export class Porcupine {
    */
   public static async create(
     accessKey: string,
-    keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
+    keywords:
+      | Array<PorcupineKeyword | BuiltInKeyword>
+      | PorcupineKeyword
+      | BuiltInKeyword,
     keywordDetectionCallback: DetectionCallback,
     model: PorcupineModel,
-    options: PorcupineOptions = {},
+    options: PorcupineOptions = {}
   ): Promise<Porcupine> {
+    const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(
+      keywords
+    );
 
-    const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(keywords);
-
-    const customWritePath = (model.customWritePath) ? model.customWritePath : 'porcupine_model';
-    const modelPath = await loadModel({ ...model, customWritePath});
+    const customWritePath = model.customWritePath
+      ? model.customWritePath
+      : 'porcupine_model';
+    const modelPath = await loadModel({ ...model, customWritePath });
 
     return this._init(
       accessKey,
@@ -211,7 +215,8 @@ export class Porcupine {
       keywordLabels,
       keywordDetectionCallback,
       sensitivities,
-      modelPath);
+      modelPath
+    );
   }
 
   /**
@@ -241,10 +246,18 @@ export class Porcupine {
     keywordDetectionCallback: DetectionCallback,
     sensitivities: Float32Array,
     modelPath: string,
-    options: PorcupineOptions = {},
+    options: PorcupineOptions = {}
   ): Promise<Porcupine> {
     if (!isAccessKeyValid(accessKey)) {
       throw new Error('Invalid AccessKey');
+    }
+
+    if (
+      keywordPaths.length !== keywordLabels.length ||
+      keywordPaths.length !== sensitivities.length
+    ) {
+      throw new Error(`Number of keyword paths given (${keywordPaths.length}) does not match number of 
+          keyword labels (${keywordLabels.length}) or sensitivities (${sensitivities.length})`);
     }
 
     const { processErrorCallback } = options;
@@ -255,15 +268,17 @@ export class Porcupine {
           const isSimd = await simd();
           const wasmOutput = await Porcupine.initWasm(
             accessKey.trim(),
-            (isSimd) ? this._wasmSimd : this._wasm,
+            isSimd ? this._wasmSimd : this._wasm,
             modelPath,
             keywordPaths,
-            sensitivities);
+            sensitivities
+          );
           return new Porcupine(
             wasmOutput,
             keywordLabels,
             keywordDetectionCallback,
-            processErrorCallback);
+            processErrorCallback
+          );
         })
         .then((result: Porcupine) => {
           resolve(result);
@@ -283,7 +298,9 @@ export class Porcupine {
    */
   public async process(pcm: Int16Array): Promise<void> {
     if (!(pcm instanceof Int16Array)) {
-      const error = new Error('The argument \'pcm\' must be provided as an Int16Array');
+      const error = new Error(
+        "The argument 'pcm' must be provided as an Int16Array"
+      );
       if (this._processErrorCallback) {
         this._processErrorCallback(error.toString());
       } else {
@@ -300,27 +317,27 @@ export class Porcupine {
 
         this._memoryBuffer.set(
           pcm,
-          this._inputBufferAddress / Int16Array.BYTES_PER_ELEMENT,
+          this._inputBufferAddress / Int16Array.BYTES_PER_ELEMENT
         );
 
         const status = await this._pvPorcupineProcess(
           this._objectAddress,
           this._inputBufferAddress,
-          this._keywordIndexAddress,
+          this._keywordIndexAddress
         );
         if (status !== PV_STATUS_SUCCESS) {
           const memoryBuffer = new Uint8Array(this._wasmMemory.buffer);
           throw new Error(
             `process failed with status ${arrayBufferToStringAtIndex(
               memoryBuffer,
-              await this._pvStatusToString(status),
-            )}`,
+              await this._pvStatusToString(status)
+            )}`
           );
         }
 
         const keywordIndex = this._memoryBufferView.getInt32(
           this._keywordIndexAddress,
-          true,
+          true
         );
 
         if (keywordIndex !== -1) {
@@ -329,7 +346,6 @@ export class Porcupine {
             index: keywordIndex,
           });
         }
-
       })
       .catch((error: any) => {
         if (this._processErrorCallback) {
@@ -368,7 +384,8 @@ export class Porcupine {
     wasmBase64: string,
     modelPath: string,
     keywordPaths: Array<string>,
-    sensitivities: Float32Array): Promise<any> {
+    sensitivities: Float32Array
+  ): Promise<any> {
     // A WebAssembly page has a constant size of 64KiB. -> 1MiB ~= 16 pages
     // minimum memory requirements for init: 17 pages
     const memory = new WebAssembly.Memory({ initial: 128 });
@@ -381,18 +398,24 @@ export class Porcupine {
 
     const aligned_alloc = exports.aligned_alloc as aligned_alloc_type;
     const pv_free = exports.pv_free as pv_free_type;
-    const pv_porcupine_version = exports.pv_porcupine_version as pv_porcupine_version_type;
-    const pv_porcupine_frame_length = exports.pv_porcupine_frame_length as pv_porcupine_frame_length_type;
-    const pv_porcupine_process = exports.pv_porcupine_process as pv_porcupine_process_type;
-    const pv_porcupine_delete = exports.pv_porcupine_delete as pv_porcupine_delete_type;
-    const pv_porcupine_init = exports.pv_porcupine_init as pv_porcupine_init_type;
-    const pv_status_to_string = exports.pv_status_to_string as pv_status_to_string_type;
+    const pv_porcupine_version =
+      exports.pv_porcupine_version as pv_porcupine_version_type;
+    const pv_porcupine_frame_length =
+      exports.pv_porcupine_frame_length as pv_porcupine_frame_length_type;
+    const pv_porcupine_process =
+      exports.pv_porcupine_process as pv_porcupine_process_type;
+    const pv_porcupine_delete =
+      exports.pv_porcupine_delete as pv_porcupine_delete_type;
+    const pv_porcupine_init =
+      exports.pv_porcupine_init as pv_porcupine_init_type;
+    const pv_status_to_string =
+      exports.pv_status_to_string as pv_status_to_string_type;
     const pv_sample_rate = exports.pv_sample_rate as pv_sample_rate_type;
 
     // acquire and init memory for c_object
     const objectAddressAddress = await aligned_alloc(
       Int32Array.BYTES_PER_ELEMENT,
-      Int32Array.BYTES_PER_ELEMENT,
+      Int32Array.BYTES_PER_ELEMENT
     );
     if (objectAddressAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
@@ -401,7 +424,7 @@ export class Porcupine {
     // acquire and init memory for c_access_key
     const accessKeyAddress = await aligned_alloc(
       Uint8Array.BYTES_PER_ELEMENT,
-      (accessKey.length + 1) * Uint8Array.BYTES_PER_ELEMENT,
+      (accessKey.length + 1) * Uint8Array.BYTES_PER_ELEMENT
     );
     if (accessKeyAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
@@ -415,7 +438,7 @@ export class Porcupine {
     // acquire and init memory for c_model_path
     const modelPathAddress = await aligned_alloc(
       Uint8Array.BYTES_PER_ELEMENT,
-      (modelPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT,
+      (modelPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT
     );
     if (modelPathAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
@@ -426,7 +449,7 @@ export class Porcupine {
     // acquire and init memory for c_keyword_paths
     const keywordPathsAddressAddress = await aligned_alloc(
       Int32Array.BYTES_PER_ELEMENT,
-      keywordPaths.length * Int32Array.BYTES_PER_ELEMENT,
+      keywordPaths.length * Int32Array.BYTES_PER_ELEMENT
     );
     if (keywordPathsAddressAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
@@ -437,7 +460,7 @@ export class Porcupine {
       const keywordPathEncoded = new TextEncoder().encode(keywordPath);
       const keywordPathAddress = await aligned_alloc(
         Uint8Array.BYTES_PER_ELEMENT,
-        (keywordPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT,
+        (keywordPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT
       );
       if (keywordPathAddress === 0) {
         throw new Error('malloc failed: Cannot allocate memory');
@@ -448,24 +471,24 @@ export class Porcupine {
     }
     memoryBufferInt32.set(
       new Int32Array(keywordPathsAddressList),
-      keywordPathsAddressAddress / Int32Array.BYTES_PER_ELEMENT,
+      keywordPathsAddressAddress / Int32Array.BYTES_PER_ELEMENT
     );
 
     const sensitivityAddress = await aligned_alloc(
       Float32Array.BYTES_PER_ELEMENT,
-      keywordPaths.length * Float32Array.BYTES_PER_ELEMENT,
+      keywordPaths.length * Float32Array.BYTES_PER_ELEMENT
     );
     if (sensitivityAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
     }
     memoryBufferFloat32.set(
       sensitivities,
-      sensitivityAddress / Float32Array.BYTES_PER_ELEMENT,
+      sensitivityAddress / Float32Array.BYTES_PER_ELEMENT
     );
 
     const keywordIndexAddress = await aligned_alloc(
       Int32Array.BYTES_PER_ELEMENT,
-      Int32Array.BYTES_PER_ELEMENT,
+      Int32Array.BYTES_PER_ELEMENT
     );
     if (keywordIndexAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
@@ -477,7 +500,8 @@ export class Porcupine {
       keywordPaths.length,
       keywordPathsAddressAddress,
       sensitivityAddress,
-      objectAddressAddress);
+      objectAddressAddress
+    );
 
     await pv_free(accessKeyAddress);
     await pv_free(modelPathAddress);
@@ -488,8 +512,8 @@ export class Porcupine {
       throw new Error(
         `'pv_porcupine_init' failed with status ${arrayBufferToStringAtIndex(
           memoryBufferUint8,
-          await pv_status_to_string(status),
-        )}`,
+          await pv_status_to_string(status)
+        )}`
       );
     }
     const memoryBufferView = new DataView(memory.buffer);
@@ -501,12 +525,12 @@ export class Porcupine {
     const versionAddress = await pv_porcupine_version();
     const version = arrayBufferToStringAtIndex(
       memoryBufferUint8,
-      versionAddress,
+      versionAddress
     );
 
     const inputBufferAddress = await aligned_alloc(
       Int16Array.BYTES_PER_ELEMENT,
-      frameLength * Int16Array.BYTES_PER_ELEMENT,
+      frameLength * Int16Array.BYTES_PER_ELEMENT
     );
     if (inputBufferAddress === 0) {
       throw new Error('malloc failed: Cannot allocate memory');
