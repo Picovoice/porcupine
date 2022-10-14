@@ -32,8 +32,8 @@
     "@angular-eslint/template-parser": "~13.5.0",
     "@angular/cli": "~13.3.9",
     "@angular/compiler-cli": "~13.3.0",
-    "@picovoice/porcupine-web": "=2.1.10",
-    "@picovoice/web-voice-processor": "~4.0.1",
+    "@picovoice/porcupine-web": "=2.1.11",
+    "@picovoice/web-voice-processor": "~4.0.2",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
@@ -42,5 +42,8 @@
     "prettier": "^2.7.1",
     "typescript": "~4.6.2"
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

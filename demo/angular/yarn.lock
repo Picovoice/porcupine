@@ -1647,32 +1647,32 @@
   dependencies:
     esquery "^1.0.1"
 
-"@picovoice/porcupine-angular@~2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-2.1.2.tgz#2b00ed5a936b6ebc38faf15e9039bfef788b3b13"
-  integrity sha512-jHpOusUX/dKrF64kHKPuiWy/zqn2orbEG8So0m5sY+TsV4Skgz4GIWkFW+G8qhLcOKWUHzSp5hRv7dpx4brtuA==
+"@picovoice/porcupine-angular@~2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-2.1.5.tgz#16da80523d8675a409e411910f799def3cfff876"
+  integrity sha512-ij6lAaAgqi9H3PZHNo1RAs4ClJTjcFDlHjEWeYF16lZFH0MiHpWVajAv6mEEy2IFmn8XBy+iEKCJ948K1yDFSg==
   dependencies:
-    "@picovoice/porcupine-web" "=2.1.8"
+    "@picovoice/porcupine-web" "=2.1.11"
     tslib "^2.3.0"
 
-"@picovoice/porcupine-web@=2.1.8":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.8.tgz#168c96caa21d1d9a2200b2b14a0b977dcffdcff7"
-  integrity sha512-ReP/M20Wy6LSZFWc4eJaCpVB0VvFdBv7/Ch+AlRF3T2tukkzMpC63H5DQMtm0VlFwWJpFn37zA7qsdTHWHP1wg==
+"@picovoice/porcupine-web@=2.1.11":
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.11.tgz#6c4485b8a7d6324fb8530e80cd264756eca7a838"
+  integrity sha512-upf1gFAuQnxLS9JwLjumzVqMIXOaVySwigYzlEcDX71FpKBFNd2cyL6+0jrwO0SV2VMSOMyp2EgKQDRunrg4OQ==
   dependencies:
-    "@picovoice/web-utils" "=1.2.6"
+    "@picovoice/web-utils" "=1.2.8"
 
-"@picovoice/web-utils@=1.2.6":
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.6.tgz#a3b53de19b15438e48f74516c91ca1f6bb90e786"
-  integrity sha512-Nr+qGUeZRy3nfN8JdGoz2NE1O6WE50JI4weHb95gsadstQApOppKNmK9iuCK+3NCh7tGXYZLyyZJ1Ny+Sfo1WA==
+"@picovoice/web-utils@=1.2.8":
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.8.tgz#ae74f6fa55b0db08a8d2331a9a20f75d5e5e9373"
+  integrity sha512-XeKXFwDGU323OxNmp504hR3i12t5dyvgUD62yLzfqX3wPilRtpQ/uUUmf7O/sFcxYE0AXT5FDyLqaCAZFlDBsw==
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.1.tgz#9a47dcd56efa5431870a25f0c8093f3eee6923ea"
-  integrity sha512-RmzeovecBG7WpxTksqTCDNID1lcbJse8rdp/R+HrriufDgkilNXAfKyIm7VknzHA48Pw9e/eJJPLrntAQwzdcw==
+"@picovoice/web-voice-processor@~4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.2.tgz#e7593e560ce7cbe82bd5bae67259643eb099b852"
+  integrity sha512-6T4sY2mqKNNUWNg+Yov+VY3mhoo1JmyJqJIvxnWbQoHHNKgOAUsq8nDQHdXizFVnpdkg33va3KC0KNaSdP+TXA==
 
 "@schematics/angular@14.2.1":
   version "14.2.1"
