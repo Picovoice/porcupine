@@ -24,7 +24,7 @@
     async function startPorcupine(accessKey) {
       writeMessage("Porcupine is loading. Please wait...");
       try {
-        let porcupine = await PorcupineWeb.Porcupine.create(
+        let porcupine = await PorcupineWeb.PorcupineWorker.create(
           accessKey,
           [
             PorcupineWeb.BuiltInKeyword.Picovoice, // built-in keyword

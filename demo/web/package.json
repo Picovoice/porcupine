@@ -18,8 +18,8 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web": "2.1.9",
-    "@picovoice/web-voice-processor": "4.0.1"
+    "@picovoice/porcupine-web": "=2.1.11",
+    "@picovoice/web-voice-processor": "~4.0.2"
   },
   "devDependencies": {
     "http-server": "^14.0.0"

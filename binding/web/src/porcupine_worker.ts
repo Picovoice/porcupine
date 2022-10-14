@@ -19,7 +19,6 @@ import { keywordsProcess } from './utils';
 
 import {
   DetectionCallback,
-  PorcupineDetection,
   PorcupineKeyword,
   PorcupineModel,
   PorcupineOptions,

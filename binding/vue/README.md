@@ -28,6 +28,11 @@ Porcupine is:
 - Firefox
 - Safari
 
+### Restrictions
+
+IndexedDB and WebWorkers are required to use `Porcupine Vue`. Browsers without support (i.e. Firefox Incognito Mode) 
+should use the [`PorcupineWeb binding`](https://github.com/Picovoice/porcupine/tree/master/binding/web) main thread method.
+
 ## Installation
 
 ### Package
