@@ -8,8 +8,7 @@ function App() {
   return (
     <div className="App">
       <h1>
-        Porcupine Web + React Hook ("usePorcupine" from
-        @picovoice/porcupine-web-react)
+        Porcupine React Hook ("usePorcupine" from @picovoice/porcupine-react)
       </h1>
       <button onClick={() => setShow(!show)}>
         Toggle VoiceWidget {show ? "OFF" : "ON"}

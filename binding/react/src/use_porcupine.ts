@@ -123,7 +123,11 @@ export const usePorcupine = (): {
 
   useEffect(() => {
     return () => {
-      release();
+      if (porcupineRef.current) {
+        WebVoiceProcessor.unsubscribe(porcupineRef.current);
+        porcupineRef.current.terminate();
+        porcupineRef.current = null;
+      }
     };
   }, []);
 
@@ -138,4 +142,3 @@ export const usePorcupine = (): {
     release,
   };
 };
-
