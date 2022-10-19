@@ -1411,10 +1411,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-react@~2.1.5":
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.1.5.tgz#9ab50cbb1ef2df685e5b79ebbfb5b77b4293a684"
-  integrity sha512-4t4DfLD+DC63XBZwEXSSTEEbqKjkjtPzQPJUOGOo+xjBQEB0lzHyfiiN/LSxqCo7A+urucy2MP2PvdGGeeWpoA==
+"@picovoice/porcupine-react@~2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.1.6.tgz#dadb27155509aada300708e279b106b71af6cc26"
+  integrity sha512-UOrYTbls6QGaKL4TqHUeccA5L8X8PuzI7hZTfavbwj77bOLkrU8EHopFA4v9gPBgtmsI4DPoZ+cIgF8wrea4Lw==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.11"
 
@@ -3308,9 +3308,9 @@ commander@^4.1.1:
   integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
 
 commander@^9.2.0:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.0.tgz#bc4a40918fefe52e22450c111ecd6b7acce6f11c"
-  integrity sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.1.tgz#d1dd8f2ce6faf93147295c0df13c7c21141cfbdd"
+  integrity sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw==
 
 common-tags@^1.8.0:
   version "1.8.0"

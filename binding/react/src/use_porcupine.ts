@@ -59,6 +59,7 @@ export const usePorcupine = (): {
     options: PorcupineOptions = {},
   ): Promise<void> => {
     if (options.processErrorCallback) {
+      // eslint-disable-next-line no-console
       console.warn("'processErrorCallback' is only supported in the Porcupine Web SDK. Use the 'error' state to monitor for errors in the React SDK.");
     }
 
@@ -121,10 +122,12 @@ export const usePorcupine = (): {
     }
   }, []);
 
-  useEffect(() => {
-    return () => {
-      release();
-    };
+  useEffect(() => () => {
+    if (porcupineRef.current) {
+      WebVoiceProcessor.unsubscribe(porcupineRef.current);
+      porcupineRef.current.terminate();
+      porcupineRef.current = null;
+    }
   }, []);
 
   return {
@@ -138,4 +141,3 @@ export const usePorcupine = (): {
     release,
   };
 };
-

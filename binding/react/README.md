@@ -171,13 +171,15 @@ If `WebVoiceProcessor` has stopped correctly, `isListening` will be set to false
 
 ### Release
 
-Run `release` to clean up all resources used by Porcupine and WebVoiceProcessor:
+While running in a component, you can call `release` to clean up all resources used by Porcupine and WebVoiceProcessor:
 
 ```typescript
 await release();
 ```
 
 This will set `isLoaded` and `isListening` to false.
+
+You do not need to call `release` when your component is unmounted - the hook will clean up automatically on unmount.
 
 ## Custom Keywords
 
