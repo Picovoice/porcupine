@@ -1101,16 +1101,15 @@ There are two possibilities for integrating Porcupine into an Android applicatio
 
 [PorcupineManager](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java)
 provides a high-level API for integrating Porcupine into Android applications. It manages all activities related to creating
-an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback. Keyword files (`.ppn`)
-should be placed under the Android project assets folder (`src/main/assets/`).
+an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback.
 
 ```java
 import ai.picovoice.porcupine.*;
 
-final String accessKey = "${ACCESS_KEY}";
-final String keywordPath = "/path/to/keyword.ppn"
-try {
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String keywordPath = "/path/to/keyword.ppn" // path relative to 'assets' folder
 
+try {
     PorcupineManager porcupineManager = new PorcupineManager.Builder()
                         .setAccessKey(accessKey)
                         .setKeywordPath(keywordPath)
@@ -1124,6 +1123,7 @@ try {
                         });
 } catch (PorcupineException e) { }
 ```
+Keyword files (`.ppn`) should be placed under the Android project assets folder (`src/main/assets/`).
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
