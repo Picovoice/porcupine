@@ -1101,7 +1101,7 @@ There are two possibilities for integrating Porcupine into an Android applicatio
 
 [PorcupineManager](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java)
 provides a high-level API for integrating Porcupine into Android applications. It manages all activities related to creating
-an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback. Keyword files
+an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback. Keyword files (`.ppn`)
 should be placed under the Android project assets folder (`src/main/assets/`).
 
 ```java
