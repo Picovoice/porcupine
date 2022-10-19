@@ -1106,10 +1106,10 @@ an input audio stream, feeding it into the Porcupine library, and invoking a use
 ```java
 import ai.picovoice.porcupine.*;
 
-final String accessKey = "${ACCESS_KEY}";
-final String keywordPath = "/path/to/keyword.ppn"
-try {
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String keywordPath = "/path/to/keyword.ppn" // path relative to 'assets' folder
 
+try {
     PorcupineManager porcupineManager = new PorcupineManager.Builder()
                         .setAccessKey(accessKey)
                         .setKeywordPath(keywordPath)
@@ -1123,6 +1123,7 @@ try {
                         });
 } catch (PorcupineException e) { }
 ```
+Keyword files (`.ppn`) should be placed under the Android project assets folder (`src/main/assets/`).
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
@@ -1133,7 +1134,7 @@ When initialized, input audio can be monitored using `manager.start()`. Stop the
 #### Low-Level API
 
 [Porcupine](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a
-binding for Android. It can be initialized using.
+binding for Android. It can be initialized using:
 
 ```java
 import ai.picovoice.porcupine.*;
@@ -1426,7 +1427,7 @@ function App(props) {
     );
     await start();
   }
-  
+
   useEffect(() => {
     if (wakeWordDetection !== null) {
       console.log(wakeWordDetection.label);
@@ -1626,9 +1627,9 @@ object can be constructed as follows.
 
 ```c
 // Available at lib/common/porcupine_params.pv
-const char *model_path = ... 
+const char *model_path = ...
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const char *access_key = ... 
+const char *access_key = ...
 const char *keyword_path = ...
 const float sensitivity = 0.5f;
 
