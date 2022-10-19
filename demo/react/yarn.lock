@@ -1411,8 +1411,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-react@../../binding/react":
-  version "2.1.5"
+"@picovoice/porcupine-react@~2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.1.6.tgz#dadb27155509aada300708e279b106b71af6cc26"
+  integrity sha512-UOrYTbls6QGaKL4TqHUeccA5L8X8PuzI7hZTfavbwj77bOLkrU8EHopFA4v9gPBgtmsI4DPoZ+cIgF8wrea4Lw==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.11"
 
