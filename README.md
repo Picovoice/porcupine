@@ -1101,7 +1101,8 @@ There are two possibilities for integrating Porcupine into an Android applicatio
 
 [PorcupineManager](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/PorcupineManager.java)
 provides a high-level API for integrating Porcupine into Android applications. It manages all activities related to creating
-an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback.
+an input audio stream, feeding it into the Porcupine library, and invoking a user-provided detection callback. Keyword files
+should be placed under the Android project assets folder (`src/main/assets/`).
 
 ```java
 import ai.picovoice.porcupine.*;
@@ -1133,7 +1134,7 @@ When initialized, input audio can be monitored using `manager.start()`. Stop the
 #### Low-Level API
 
 [Porcupine](binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/Porcupine.java) provides a
-binding for Android. It can be initialized using.
+binding for Android. It can be initialized using:
 
 ```java
 import ai.picovoice.porcupine.*;
@@ -1426,7 +1427,7 @@ function App(props) {
     );
     await start();
   }
-  
+
   useEffect(() => {
     if (wakeWordDetection !== null) {
       console.log(wakeWordDetection.label);
@@ -1626,9 +1627,9 @@ object can be constructed as follows.
 
 ```c
 // Available at lib/common/porcupine_params.pv
-const char *model_path = ... 
+const char *model_path = ...
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const char *access_key = ... 
+const char *access_key = ...
 const char *keyword_path = ...
 const float sensitivity = 0.5f;
 
