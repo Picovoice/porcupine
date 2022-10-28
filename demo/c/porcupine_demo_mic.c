@@ -229,7 +229,7 @@ int picovoice_main(int argc, char *argv[]) {
 
     const int32_t frame_length = pv_porcupine_frame_length_func();
     pv_recorder_t *recorder = NULL;
-    pv_recorder_status_t recorder_status = pv_recorder_init(device_index, frame_length, 100, true, &recorder);
+    pv_recorder_status_t recorder_status = pv_recorder_init(device_index, frame_length, 100, true, true, &recorder);
     if (recorder_status != PV_RECORDER_STATUS_SUCCESS) {
         fprintf(stderr, "Failed to initialize device with %s.\n", pv_recorder_status_to_string(recorder_status));
         exit(1);
