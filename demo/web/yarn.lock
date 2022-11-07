@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-web@=2.1.11":
-  version "2.1.11"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.11.tgz#6c4485b8a7d6324fb8530e80cd264756eca7a838"
-  integrity sha512-upf1gFAuQnxLS9JwLjumzVqMIXOaVySwigYzlEcDX71FpKBFNd2cyL6+0jrwO0SV2VMSOMyp2EgKQDRunrg4OQ==
+"@picovoice/porcupine-web@latest":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.12.tgz#96870bd30dbe44d3a367bceec7109ded06a7ee08"
+  integrity sha512-t3wDW+x9PDpLv9y313bmi78tSZvPG9f++fOfqu0bQyPbLKaA6ZHwqEe6S25o45M/GlTOcIBt/qnq8nKKJtqwIw==
   dependencies:
     "@picovoice/web-utils" "=1.2.8"
 

@@ -47,6 +47,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
+        pip install packaging
         pip install selenium
         pip install webdriver-manager
     - name: Pre-build dependencies
@@ -54,6 +55,9 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
+
+    - name: Copy libs
+      run: yarn copywasm
 
     - name: Build
       run: yarn build
