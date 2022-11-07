@@ -1411,17 +1411,17 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/porcupine-react@~2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.1.6.tgz#dadb27155509aada300708e279b106b71af6cc26"
-  integrity sha512-UOrYTbls6QGaKL4TqHUeccA5L8X8PuzI7hZTfavbwj77bOLkrU8EHopFA4v9gPBgtmsI4DPoZ+cIgF8wrea4Lw==
+"@picovoice/porcupine-react@latest":
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.1.7.tgz#722fcdfd35b35598734e16ab100dbc35bb83f8f9"
+  integrity sha512-zE262l+2emEADnPjfsBvB5QQeXxPuvQxK6UXPMkQ6c0FhbjUMxzLW9O2ZVyP99872Zdg6lpSgS9qcCqT9rErXA==
   dependencies:
-    "@picovoice/porcupine-web" "=2.1.11"
+    "@picovoice/porcupine-web" "=2.1.12"
 
-"@picovoice/porcupine-web@=2.1.11":
-  version "2.1.11"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.11.tgz#6c4485b8a7d6324fb8530e80cd264756eca7a838"
-  integrity sha512-upf1gFAuQnxLS9JwLjumzVqMIXOaVySwigYzlEcDX71FpKBFNd2cyL6+0jrwO0SV2VMSOMyp2EgKQDRunrg4OQ==
+"@picovoice/porcupine-web@=2.1.12":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.12.tgz#96870bd30dbe44d3a367bceec7109ded06a7ee08"
+  integrity sha512-t3wDW+x9PDpLv9y313bmi78tSZvPG9f++fOfqu0bQyPbLKaA6ZHwqEe6S25o45M/GlTOcIBt/qnq8nKKJtqwIw==
   dependencies:
     "@picovoice/web-utils" "=1.2.8"
 

@@ -3,7 +3,7 @@
   "description": "Porcupine wake word engine for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "keywords": [
     "porcupine",
     "web",
@@ -30,7 +30,6 @@
     "start": "cross-env TARGET='debug' rollup --config --watch",
     "watch": "rollup --config --watch",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
-    "postinstall": "yarn copywasm && yarn copyppn",
     "copywasm": "node scripts/copy_wasm.js",
     "copyppn": "node scripts/copy_ppn.js",
     "setup-test": "node scripts/setup_test.js && npx pvbase64 -i ./test/porcupine_params.pv -o ./test/porcupine_params.js"
