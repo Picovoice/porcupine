@@ -27,4 +27,4 @@ jobs:
       run: pip install pycodestyle
 
     - name: Check python codestyle
-      run: pycodestyle **/*.py --max-line-length=120
+      run: pycodestyle . --max-line-length=120
