@@ -37,6 +37,7 @@ MULTIPLE_KEYWORDS_PARAMETERS = [
         ['pt', ['abacaxi', 'fenomeno', 'formiga'], [0, 2, 1]],
     ]
 
+
 class PorcupineTestCase(unittest.TestCase):
 
     def run_porcupine(self, language, keywords, ground_truth, audio_file_name=None):

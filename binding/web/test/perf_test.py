@@ -41,7 +41,12 @@ class SimpleHttpServer(threading.Thread):
         print(f'stopping server on port {self._server.server_port}')
 
 
-def run_perf_test_selenium(url, access_key, absolute_audio_file, init_performance_threshold_sec, proc_performance_threshold_sec):
+def run_perf_test_selenium(
+        url,
+        access_key,
+        absolute_audio_file,
+        init_performance_threshold_sec,
+        proc_performance_threshold_sec):
     desired_capabilities = DesiredCapabilities.CHROME
     desired_capabilities['goog:loggingPrefs'] = {'browser': 'ALL'}
     opts = Options()
