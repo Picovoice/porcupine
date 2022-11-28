@@ -154,7 +154,7 @@ class APA102:
         # Calculate pixel brightness as a percentage of the
         # defined global_brightness. Round up to nearest integer
         # as we expect some brightness unless set to 0
-        brightness = ceil(bright_percent*self.global_brightness/100.0)
+        brightness = ceil(bright_percent * self.global_brightness / 100.0)
         brightness = int(brightness)
 
         # LED startframe is three "1" bits, followed by 5 brightness bits

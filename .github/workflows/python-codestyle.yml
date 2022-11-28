@@ -24,7 +24,7 @@ jobs:
         python-version: '3.10'
 
     - name: Install dependencies
-      run: pip install pycodestyle
+      run: pip install flake8 pep8-naming
 
     - name: Check python codestyle
-      run: pycodestyle . --max-line-length=120
+      run: flake8 --ignore=F401,F403,F405 --max-line-length=120 .

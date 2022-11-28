@@ -13,7 +13,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from webdriver_manager.chrome import ChromeDriverManager
 
 
@@ -54,11 +54,11 @@ def run_unit_test_selenium(url, access_key, absolute_audio_file):
     wait = WebDriverWait(driver, 60)
 
     driver.find_element(By.ID, "audioFile").send_keys(absolute_audio_file)
-    wait.until(EC.visibility_of_element_located((By.ID, "audioLoaded")))
+    wait.until(ec.visibility_of_element_located((By.ID, "audioLoaded")))
 
     driver.find_element(By.ID, "accessKey").send_keys(access_key)
     driver.find_element(By.ID, "submit").click()
-    wait.until(EC.visibility_of_element_located((By.ID, "testComplete")))
+    wait.until(ec.visibility_of_element_located((By.ID, "testComplete")))
 
     test_result = 1
     test_message = "Tests failed"
