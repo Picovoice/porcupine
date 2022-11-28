@@ -67,8 +67,8 @@ def main():
     parser.add_argument(
         '--sensitivities',
         nargs='+',
-        help="Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher " +
-             "sensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 " +
+        help="Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher "
+             "sensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 "
              "will be used.",
         type=float,
         default=None)

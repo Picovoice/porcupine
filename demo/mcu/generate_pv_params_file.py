@@ -80,7 +80,7 @@ def generate_pv_params(ppn_files, header_file_folders):
                     f_out.write('\n'.join(ppn_c_array))
                     f_out.write('};\n\n')
 
-                f_out.write(f'#endif\n\n')
+                f_out.write('#endif\n\n')
 
             f_out.write(FOOTER)
 

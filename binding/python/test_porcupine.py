@@ -25,17 +25,18 @@ SINGLE_KEYWORD_PARAMETERS = [
 ]
 
 MULTIPLE_KEYWORDS_PARAMETERS = [
-        ['en',
-         ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
-         [6, 0, 1, 2, 3, 4, 5, 6, 7]],
-        ['es', ['emparedado', 'leopardo', 'manzana'], [0, 1, 2]],
-        ['de', ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'], [0, 1, 2, 3]],
-        ['fr', ['framboise', 'mon chouchou', 'parapluie'], [0, 1, 0, 2]],
-        ['it', ['espresso', 'cameriere', 'porcospino'], [2, 0, 1]],
-        ['ja', ['ninja', 'bushi', 'ringo'], [2, 1, 0]],
-        ['ko', ['aiseukeulim', 'bigseubi', 'koppulso'], [1, 2, 0]],
-        ['pt', ['abacaxi', 'fenomeno', 'formiga'], [0, 2, 1]],
-    ]
+    ['en',
+     ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
+     [6, 0, 1, 2, 3, 4, 5, 6, 7]],
+    ['es', ['emparedado', 'leopardo', 'manzana'], [0, 1, 2]],
+    ['de', ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'], [0, 1, 2, 3]],
+    ['fr', ['framboise', 'mon chouchou', 'parapluie'], [0, 1, 0, 2]],
+    ['it', ['espresso', 'cameriere', 'porcospino'], [2, 0, 1]],
+    ['ja', ['ninja', 'bushi', 'ringo'], [2, 1, 0]],
+    ['ko', ['aiseukeulim', 'bigseubi', 'koppulso'], [1, 2, 0]],
+    ['pt', ['abacaxi', 'fenomeno', 'formiga'], [0, 2, 1]],
+]
+
 
 class PorcupineTestCase(unittest.TestCase):
 

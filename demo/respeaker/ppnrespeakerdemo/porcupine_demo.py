@@ -55,7 +55,10 @@ class PorcupineDemo(Thread):
 
         self._device_index = device_index
         self._keywords = list(KEYWORDS_COLOR.keys())
-        self._porcupine = pvporcupine.create(access_key=access_key, keywords=self._keywords, sensitivities=[sensitivity] * len(KEYWORDS_COLOR))
+        self._porcupine = pvporcupine.create(
+            access_key=access_key,
+            keywords=self._keywords,
+            sensitivities=[sensitivity] * len(KEYWORDS_COLOR))
 
     @staticmethod
     def _set_color(color):
