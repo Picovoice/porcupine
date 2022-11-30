@@ -43,7 +43,7 @@
     "@release-it/conventional-changelog": "^5.1.1",
     "@types/jest": "^26.0.0",
     "@types/react": "^16.9.19",
-    "@types/react-native": "0.62.13",
+    "@types/react-native": "0.68.5",
     "commitlint": "^8.3.5",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -54,15 +54,15 @@
     "ncp": "^2.0.0",
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
-    "react": "16.11.0",
-    "react-native": "0.62.2",
+    "react": "17.0.2",
+    "react-native": "0.68.5",
     "release-it": "^15.4.1",
     "typescript": "^4.9.3"
   },
   "peerDependencies": {
     "@picovoice/react-native-voice-processor": "*",
-    "react": ">= 16.11",
-    "react-native": ">= 0.62"
+    "react": ">= 17.0",
+    "react-native": ">= 0.63"
   },
   "jest": {
     "preset": "react-native",
