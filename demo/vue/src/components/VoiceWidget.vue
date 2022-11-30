@@ -17,13 +17,19 @@
     <p class="error-message" v-if="state.error !== null">
       {{ state.error }}
     </p>
-    <button v-on:click="start" :disabled="!state.isLoaded || state.error || state.isListening">
+    <button
+      v-on:click="start"
+      :disabled="!state.isLoaded || !!state.error || state.isListening"
+    >
       Start
     </button>
-    <button v-on:click="stop" :disabled="!state.isLoaded || state.error || !state.isListening">
+    <button
+      v-on:click="stop"
+      :disabled="!state.isLoaded || !!state.error || !state.isListening"
+    >
       Stop
     </button>
-    <button v-on:click="release" :disabled="!state.isLoaded || state.error">
+    <button v-on:click="release" :disabled="!state.isLoaded || !!state.error">
       Release
     </button>
     <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
@@ -41,9 +47,8 @@ import { onBeforeUnmount, defineComponent, ref, watch } from "vue";
 import { BuiltInKeyword } from "@picovoice/porcupine-web";
 import { usePorcupine } from "@picovoice/porcupine-vue";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import porcupineParams from "@/lib/porcupine_params";
+import porcupineParams from "@/lib/porcupine_params.js";
 
 const VoiceWidget = defineComponent({
   name: "VoiceWidget",

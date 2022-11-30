@@ -31,7 +31,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 body {
   padding: 2rem;
 }
