@@ -14,14 +14,14 @@ This project was bootstrapped with Vue CLI. See the [Configuration Reference](ht
 
 ```console
 yarn
-yarn serve
+yarn start
 ```
 
 (or)
 
 ```console
 npm install
-npm run serve
+npm run start
 ```
 
 The command-line output will provide you with a localhost link and port to open in your browser.
@@ -30,7 +30,7 @@ The command-line output will provide you with a localhost link and port to open 
 
 Say the wake phrases:
 
-> "Grapefruit" 
+> "Grapefruit"
 or
 
 > "Grasshopper"
