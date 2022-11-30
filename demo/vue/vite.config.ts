@@ -16,7 +16,7 @@ export default defineConfig({
   },
   build: {
     commonjsOptions: {
-      include: [/lib\/porcupine_params.js/],
+      include: [/lib/],
     },
   },
 });
