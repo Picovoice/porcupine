@@ -105,11 +105,10 @@ export class PorcupineWorker {
     model: PorcupineModel,
     options: PorcupineOptions = {},
   ): Promise<PorcupineWorker> {
-
     const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(keywords);
 
     const customWritePath = (model.customWritePath) ? model.customWritePath : 'porcupine_model';
-    const modelPath = await loadModel({ ...model, customWritePath});
+    const modelPath = await loadModel({ ...model, customWritePath });
 
     const { processErrorCallback, ...workerOptions } = options;
 

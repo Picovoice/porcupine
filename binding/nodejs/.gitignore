@@ -2,3 +2,4 @@ node_modules
 lib
 resources
 package-lock.json
+yarn-error.log

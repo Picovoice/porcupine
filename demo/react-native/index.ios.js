@@ -1,1 +1,1 @@
-require ('./index.tsx')
+require('./index.tsx');

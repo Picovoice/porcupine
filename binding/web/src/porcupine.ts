@@ -11,7 +11,7 @@
 
 /* eslint camelcase: 0 */
 
-import {Mutex} from 'async-mutex';
+import { Mutex } from 'async-mutex';
 
 import {
   aligned_alloc_type,
@@ -22,12 +22,12 @@ import {
   pv_free_type,
 } from '@picovoice/web-utils';
 
-import {simd} from 'wasm-feature-detect';
+import { simd } from 'wasm-feature-detect';
 
-import {DetectionCallback, PorcupineKeyword, PorcupineModel, PorcupineOptions, } from './types';
+import { DetectionCallback, PorcupineKeyword, PorcupineModel, PorcupineOptions } from './types';
 
-import {keywordsProcess} from './utils';
-import {BuiltInKeyword} from './built_in_keywords';
+import { keywordsProcess } from './utils';
+import { BuiltInKeyword } from './built_in_keywords';
 
 /**
  * WebAssembly function types
@@ -198,7 +198,7 @@ export class Porcupine {
       | BuiltInKeyword,
     keywordDetectionCallback: DetectionCallback,
     model: PorcupineModel,
-    options: PorcupineOptions = {}
+    options: PorcupineOptions = {} // eslint-disable-line
   ): Promise<Porcupine> {
     const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(
       keywords

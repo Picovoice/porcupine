@@ -9,14 +9,19 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import { VoiceProcessor, BufferEmitter } from '@picovoice/react-native-voice-processor';
+import {
+  VoiceProcessor,
+  BufferEmitter,
+} from '@picovoice/react-native-voice-processor';
 import { EventSubscription, NativeEventEmitter } from 'react-native';
 
 import Porcupine from './porcupine';
 import type BuiltInKeywords from './builtin_keywords';
 import type * as PorcupineErrors from './porcupine_errors';
 export type DetectionCallback = (keywordIndex: number) => void;
-export type ProcessErrorCallback = (error: PorcupineErrors.PorcupineError) => void;
+export type ProcessErrorCallback = (
+  error: PorcupineErrors.PorcupineError
+) => void;
 
 class PorcupineManager {
   private _voiceProcessor: VoiceProcessor;
@@ -53,7 +58,11 @@ class PorcupineManager {
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback, processErrorCallback);
+    return new PorcupineManager(
+      porcupine,
+      detectionCallback,
+      processErrorCallback
+    );
   }
 
   /**
@@ -81,10 +90,18 @@ class PorcupineManager {
       modelPath,
       sensitivities
     );
-    return new PorcupineManager(porcupine, detectionCallback, processErrorCallback);
+    return new PorcupineManager(
+      porcupine,
+      detectionCallback,
+      processErrorCallback
+    );
   }
 
-  private constructor(porcupine: Porcupine, detectionCallback: DetectionCallback, processErrorCallback?: ProcessErrorCallback) {
+  private constructor(
+    porcupine: Porcupine,
+    detectionCallback: DetectionCallback,
+    processErrorCallback?: ProcessErrorCallback
+  ) {
     this._detectionCallback = detectionCallback;
     this._processErrorCallback = processErrorCallback;
     this._porcupine = porcupine;

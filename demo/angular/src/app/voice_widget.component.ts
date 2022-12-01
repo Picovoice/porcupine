@@ -13,7 +13,7 @@ import porcupineParams from '../lib/porcupine_params';
   templateUrl: './voice_widget.component.html',
   styleUrls: ['./voice_widget.component.scss']
 })
-export class VoiceWidget implements OnDestroy {
+export class VoiceWidgetComponent implements OnDestroy {
   private keywordSubscription: Subscription;
   private isLoadedSubscription: Subscription;
   private isListeningSubscription: Subscription;
