@@ -20,7 +20,6 @@ import {
 const DEFAULT_SENSITIVITY = 0.5;
 
 export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword): Promise<[Array<string>, Array<string>, Float32Array]> {
-
   if (keywords === undefined || keywords === null) {
     throw new Error(
       'The keywords argument is undefined / empty',
@@ -28,7 +27,7 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
   }
 
   if (!Array.isArray(keywords)) {
-    keywords = [keywords];
+    keywords = [keywords]; // eslint-disable-line
   } else if (keywords.length === 0) {
     throw new Error('The keywords argument array is empty');
   }
@@ -57,7 +56,7 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
 
     if ('label' in keywordArgNormalized) {
       const customWritePath = (keywordArgNormalized.customWritePath) ? keywordArgNormalized.customWritePath : keywordArgNormalized.label;
-      await loadModel({ ...keywordArgNormalized, customWritePath} as PvModel);
+      await loadModel({ ...keywordArgNormalized, customWritePath } as PvModel);
       keywordLabels.push(keywordArgNormalized.label);
       keywordPaths.push(customWritePath);
     } else if ('builtin' in keywordArgNormalized) {

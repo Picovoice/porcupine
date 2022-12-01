@@ -11,22 +11,21 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import {performance} from "perf_hooks";
+import { performance } from "perf_hooks";
 
 import Porcupine from "../src/porcupine";
-import {BuiltinKeyword, getInt16Frames} from "../src";
-import {WaveFile} from "wavefile";
+import { BuiltinKeyword, getInt16Frames } from "../src";
+import { WaveFile } from "wavefile";
 
 const WAV_PATH_MULTIPLE_KEYWORDS =
   "../../../resources/audio_samples/multiple_keywords.wav";
 
-const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
-const NUM_TEST_ITERATIONS = Number(process.argv.filter((x) => x.startsWith('--num_test_iterations='))[0]?.split('--num_test_iterations=')[1] ?? 0);
-const PERFORMANCE_THRESHOLD_SEC = Number(process.argv.filter((x) => x.startsWith('--performance_threshold_sec='))[0]?.split('--performance_threshold_sec=')[1] ?? 0);
+const ACCESS_KEY = process.argv.filter(x => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
+const NUM_TEST_ITERATIONS = Number(process.argv.filter(x => x.startsWith('--num_test_iterations='))[0]?.split('--num_test_iterations=')[1] ?? 0);
+const PERFORMANCE_THRESHOLD_SEC = Number(process.argv.filter(x => x.startsWith('--performance_threshold_sec='))[0]?.split('--performance_threshold_sec=')[1] ?? 0);
 
 describe("performance", () => {
   test("process", () => {
-
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       [BuiltinKeyword.PORCUPINE],
@@ -39,7 +38,7 @@ describe("performance", () => {
 
     const frames = getInt16Frames(waveAudioFile, porcupineEngine.frameLength);
 
-    let perf_results = []
+    let perfResults = [];
     for (let i = 0; i < NUM_TEST_ITERATIONS; i++) {
       let total = 0;
       for (let j = 0; j < frames.length; j++) {
@@ -47,14 +46,15 @@ describe("performance", () => {
         porcupineEngine.process(frames[j]);
         total += (performance.now() - before);
       }
-      perf_results.push(total)
+      perfResults.push(total);
     }
 
     porcupineEngine.release();
 
-    let avgPerfMs = perf_results.reduce((acc, a) => acc + a, 0) / NUM_TEST_ITERATIONS
-    let avgPerfSec = Number((avgPerfMs / 1000).toFixed(3))
-    console.log("Average Performance: " + avgPerfSec)
+    let avgPerfMs = perfResults.reduce((acc, a) => acc + a, 0) / NUM_TEST_ITERATIONS;
+    let avgPerfSec = Number((avgPerfMs / 1000).toFixed(3));
+    // eslint-disable-next-line no-console
+    console.log("Average Performance: " + avgPerfSec);
     expect(avgPerfSec).toBeLessThanOrEqual(PERFORMANCE_THRESHOLD_SEC);
-  })
-})
+  });
+});

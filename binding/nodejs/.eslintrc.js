@@ -4,7 +4,8 @@ module.exports = {
     browser: true,
     node: true,
     es6: true,
-    mocha: true
+    jest: true,
+    jasmine: true
   },
 
   parser: '@typescript-eslint/parser',
@@ -16,12 +17,13 @@ module.exports = {
   overrides: [
     {
       files: ['src/**/*.ts'],
-      extends: ['plugin:@typescript-eslint/recommended'],
+      plugins: ['jest'],
+      extends: ['plugin:@typescript-eslint/recommended', 'plugin:jest/recommended'],
       rules: {
         '@typescript-eslint/no-parameter-properties': 2,
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-var-requires': 2,
-        '@typescript-eslint/no-non-null-assertion': 2,
+        '@typescript-eslint/no-non-null-assertion': 0,
         '@typescript-eslint/no-use-before-define': 2,
         '@typescript-eslint/camelcase': 0,
         '@typescript-eslint/no-empty-interface': 2,
@@ -182,7 +184,7 @@ module.exports = {
     // disallows creating new instances of String,Number, and Boolean
     'no-new-wrappers': 2,
     // disallow use of new operator when not part of the assignment or comparison
-    'no-new': 2,
+    'no-new': 0,
     // disallow use of octal escape sequences in string literals, such as
     // var foo = "Copyright \251";
     'no-octal-escape': 2,

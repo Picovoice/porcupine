@@ -10,100 +10,100 @@
 //
 
 class PorcupineError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineError';
+  }
 }
 
 class PorcupineMemoryError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineMemoryError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineMemoryError';
+  }
 }
 
 class PorcupineIOError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineIOError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineIOError';
+  }
 }
 
 class PorcupineInvalidArgumentError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineInvalidArgumentError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineInvalidArgumentError';
+  }
 }
 
 class PorcupineStopIterationError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineStopIterationError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineStopIterationError';
+  }
 }
 
 class PorcupineKeyError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineKeyError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineKeyError';
+  }
 }
 
 class PorcupineInvalidStateError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineInvalidStateError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineInvalidStateError';
+  }
 }
 
 class PorcupineRuntimeError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineRuntimeError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineRuntimeError';
+  }
 }
 
 class PorcupineActivationError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineActivationError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineActivationError';
+  }
 }
 
 class PorcupineActivationLimitError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineActivationLimitError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineActivationLimitError';
+  }
 }
 
 class PorcupineActivationThrottledError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineActivationThrottledError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineActivationThrottledError';
+  }
 }
 
 class PorcupineActivationRefusedError extends PorcupineError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PorcupineActivationRefusedError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PorcupineActivationRefusedError';
+  }
 }
 
 export {
-    PorcupineError,
-    PorcupineMemoryError,
-    PorcupineIOError,
-    PorcupineInvalidArgumentError,
-    PorcupineStopIterationError,
-    PorcupineKeyError,
-    PorcupineInvalidStateError,
-    PorcupineRuntimeError,
-    PorcupineActivationError,
-    PorcupineActivationLimitError,
-    PorcupineActivationThrottledError,
-    PorcupineActivationRefusedError
+  PorcupineError,
+  PorcupineMemoryError,
+  PorcupineIOError,
+  PorcupineInvalidArgumentError,
+  PorcupineStopIterationError,
+  PorcupineKeyError,
+  PorcupineInvalidStateError,
+  PorcupineRuntimeError,
+  PorcupineActivationError,
+  PorcupineActivationLimitError,
+  PorcupineActivationThrottledError,
+  PorcupineActivationRefusedError,
 };

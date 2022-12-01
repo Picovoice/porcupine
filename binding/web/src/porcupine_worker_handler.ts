@@ -14,14 +14,13 @@
 
 import { Porcupine } from './porcupine';
 import {
-  DetectionCallback,
   PorcupineWorkerRequest,
   PorcupineDetection,
 } from './types';
 
 let porcupine: Porcupine | null = null;
 
-const keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void =>{
+const keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void => {
   self.postMessage({
     command: 'ok',
     porcupineDetection: porcupineDetection,

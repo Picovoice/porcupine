@@ -45,8 +45,8 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
-    - name: Build
-      run: yarn build porcupine-angular --prod
-
     - name: Lint
       run: yarn lint
+
+    - name: Build
+      run: yarn build porcupine-angular --prod

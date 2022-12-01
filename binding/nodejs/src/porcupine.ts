@@ -89,7 +89,7 @@ export default class Porcupine {
       );
     }
 
-    for (let sensitivity of sensitivities) {
+    for (const sensitivity of sensitivities) {
       if (sensitivity < 0 || sensitivity > 1 || isNaN(sensitivity)) {
         throw new RangeError(
           `Sensitivity value in 'sensitivities' not in range [0,1]: ${sensitivity}`
@@ -131,7 +131,7 @@ export default class Porcupine {
       }
     }
 
-    const pvPorcupine = require(libraryPath);
+    const pvPorcupine = require(libraryPath); // eslint-disable-line
 
     let porcupineHandleAndStatus: PorcupineHandleAndStatus | null = null;
     try {
@@ -241,11 +241,12 @@ export default class Porcupine {
    * Be sure to call this when finished with the instance
    * to reclaim the memory that was allocated by the C library.
    */
-  release() {
+  release(): void {
     if (this._handle > 0) {
       this._pvPorcupine.delete(this._handle);
       this._handle = 0;
     } else {
+      // eslint-disable-next-line no-console
       console.warn("Porcupine is not initialized; nothing to destroy");
     }
   }

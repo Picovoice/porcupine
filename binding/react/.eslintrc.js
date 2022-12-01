@@ -34,7 +34,8 @@ module.exports = {
             ignoreParameters: true,
             ignoreProperties: true
           }
-        ]
+        ],
+        '@typescript-eslint/no-shadow': 2
       }
     }
   ],
@@ -117,7 +118,7 @@ module.exports = {
     // specify the maximum cyclomatic complexity allowed in a program
     complexity: [0, 11],
     // require return statements to either always or never specify values
-    'consistent-return': 1,
+    'consistent-return': 2,
     // specify curly brace conventions for all control statements
     curly: [2, 'multi-line'],
     // require default case in switch statements
@@ -249,7 +250,7 @@ module.exports = {
     // disallow shadowing of names such as arguments
     'no-shadow-restricted-names': 2,
     // disallow declaration of variables already declared in the outer scope
-    'no-shadow': 2,
+    'no-shadow': 0,
     // disallow use of undefined when initializing variables
     'no-undef-init': 0,
     // disallow use of undeclared variables unless mentioned in a /*global */ block
@@ -373,7 +374,7 @@ module.exports = {
     // disallow the use of Boolean literals in conditional expressions
     'no-unneeded-ternary': 0,
     // require or disallow padding inside curly braces
-    'object-curly-spacing': 0,
+    'object-curly-spacing': ["error", "always"],
     // allow just one var statement per function
     'one-var': [1, 'never'],
     // require assignment operator shorthand where possible or prohibit it entirely

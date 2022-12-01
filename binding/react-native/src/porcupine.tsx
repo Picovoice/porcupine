@@ -11,14 +11,14 @@
 
 import { NativeModules } from 'react-native';
 import * as PorcupineErrors from './porcupine_errors';
-import type BuiltInKeywords  from './builtin_keywords';
+import type BuiltInKeywords from './builtin_keywords';
 
 const RCTPorcupine = NativeModules.PvPorcupine;
 
 type NativeError = {
   code: string;
   message: string;
-}
+};
 
 class Porcupine {
   private _handle: string;
@@ -43,14 +43,14 @@ class Porcupine {
     modelPath: string = '',
     sensitivities: number[] = []
   ) {
-
     try {
-      let { handle, frameLength, sampleRate, version } = await RCTPorcupine.fromBuiltInKeywords(
-        accessKey,
-        modelPath,
-        Object.values(keywords),
-        sensitivities
-      );
+      let { handle, frameLength, sampleRate, version } =
+        await RCTPorcupine.fromBuiltInKeywords(
+          accessKey,
+          modelPath,
+          Object.values(keywords),
+          sensitivities
+        );
       return new Porcupine(handle, frameLength, sampleRate, version);
     } catch (err) {
       if (err instanceof PorcupineErrors.PorcupineError) {
@@ -79,12 +79,13 @@ class Porcupine {
     sensitivities: number[] = []
   ) {
     try {
-      let { handle, frameLength, sampleRate, version } = await RCTPorcupine.fromKeywordPaths(
-        accessKey,
-        modelPath,
-        keywordsPaths,
-        sensitivities
-      );
+      let { handle, frameLength, sampleRate, version } =
+        await RCTPorcupine.fromKeywordPaths(
+          accessKey,
+          modelPath,
+          keywordsPaths,
+          sensitivities
+        );
       return new Porcupine(handle, frameLength, sampleRate, version);
     } catch (err) {
       if (err instanceof PorcupineErrors.PorcupineError) {
@@ -118,21 +119,24 @@ class Porcupine {
   async process(frame: number[]) {
     if (frame === undefined) {
       throw new PorcupineErrors.PorcupineInvalidArgumentError(
-        "Frame array provided to process() is undefined or null");
+        'Frame array provided to process() is undefined or null'
+      );
     } else if (frame.length !== this._frameLength) {
       throw new PorcupineErrors.PorcupineInvalidArgumentError(
-        `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this._frameLength})`);
+        `Size of frame array provided to 'process' (${frame.length}) does not match the engine 'frameLength' (${this._frameLength})`
+      );
     }
 
     // sample the first frame to check for non-integer values
     if (!Number.isInteger(frame[0])) {
       throw new PorcupineErrors.PorcupineInvalidArgumentError(
-        `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`);
+        `Non-integer frame values provided to process(): ${frame[0]}. Porcupine requires 16-bit integers`
+      );
     }
 
     try {
       return await RCTPorcupine.process(this._handle, frame);
-    } catch(err) {
+    } catch (err) {
       const nativeError = err as NativeError;
       throw Porcupine.codeToError(nativeError.code, nativeError.message);
     }
@@ -175,7 +179,7 @@ class Porcupine {
    * @param message Detailed message of the error.
    */
   private static codeToError(code: string, message: string) {
-    switch(code) {
+    switch (code) {
       case 'PorcupineException':
         return new PorcupineErrors.PorcupineError(message);
       case 'PorcupineMemoryException':

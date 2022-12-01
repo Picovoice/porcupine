@@ -12,6 +12,6 @@
 
 import { BuiltinKeyword, getBuiltinKeywordPath } from "./builtin_keywords";
 import Porcupine from "./porcupine";
-import { getInt16Frames, checkWaveFile } from "./wave_util"
+import { getInt16Frames, checkWaveFile } from "./wave_util";
 
 export { Porcupine, BuiltinKeyword, getBuiltinKeywordPath, getInt16Frames, checkWaveFile };

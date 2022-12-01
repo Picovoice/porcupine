@@ -12,7 +12,11 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PorcupineManager, BuiltInKeywords, PorcupineErrors} from '@picovoice/porcupine-react-native';
+import {
+  PorcupineManager,
+  BuiltInKeywords,
+  PorcupineErrors,
+} from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
 
 type Props = {};
@@ -31,7 +35,7 @@ export default class App extends Component<Props, State> {
   _porcupineManager: PorcupineManager | undefined;
   _detectionColour: string = '#00E5C3';
   _defaultColour: string = '#F5FCFF';
-  _accessKey: string = "${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+  _accessKey: string = '${YOUR_ACCESS_KEY_HERE}'; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
   constructor(props: Props) {
     super(props);
@@ -43,7 +47,7 @@ export default class App extends Component<Props, State> {
       isListening: false,
       backgroundColour: this._defaultColour,
       isError: false,
-      errorMessage: null
+      errorMessage: null,
     };
   }
 
@@ -64,7 +68,7 @@ export default class App extends Component<Props, State> {
     });
 
     let recordAudioRequest;
-    if (Platform.OS == 'android') {
+    if (Platform.OS === 'android') {
       recordAudioRequest = this._requestRecordAudioPermission();
     } else {
       recordAudioRequest = new Promise(function (resolve, _) {
@@ -112,8 +116,11 @@ export default class App extends Component<Props, State> {
   }
 
   _toggleListening() {
-    if (this.state.isListening) this._stopProcessing();
-    else this._startProcessing();
+    if (this.state.isListening) {
+      this._stopProcessing();
+    } else {
+      this._startProcessing();
+    }
   }
 
   async _loadNewKeyword(keyword: BuiltInKeywords) {
@@ -128,7 +135,6 @@ export default class App extends Component<Props, State> {
         this._accessKey,
         [keyword],
         (keywordIndex: number) => {
-                    
           if (keywordIndex >= 0) {
             this.setState({
               backgroundColour: this._detectionColour,
@@ -145,31 +151,35 @@ export default class App extends Component<Props, State> {
           this._stopProcessing();
           this.setState({
             isError: true,
-            errorMessage: error.message
+            errorMessage: error.message,
           });
         },
         '',
-        [.5]
+        [0.5],
       );
     } catch (err) {
       let errorMessage = '';
       if (err instanceof PorcupineErrors.PorcupineInvalidArgumentError) {
         errorMessage = `${err.message}\nPlease make sure accessKey ${this._accessKey} is a valid access key.`;
       } else if (err instanceof PorcupineErrors.PorcupineActivationError) {
-        errorMessage = "AccessKey activation error";
+        errorMessage = 'AccessKey activation error';
       } else if (err instanceof PorcupineErrors.PorcupineActivationLimitError) {
-        errorMessage = "AccessKey reached its device limit";
-      } else if (err instanceof PorcupineErrors.PorcupineActivationRefusedError) {
-        errorMessage = "AccessKey refused";
-      } else if (err instanceof PorcupineErrors.PorcupineActivationThrottledError) {
-        errorMessage = "AccessKey has been throttled";
+        errorMessage = 'AccessKey reached its device limit';
+      } else if (
+        err instanceof PorcupineErrors.PorcupineActivationRefusedError
+      ) {
+        errorMessage = 'AccessKey refused';
+      } else if (
+        err instanceof PorcupineErrors.PorcupineActivationThrottledError
+      ) {
+        errorMessage = 'AccessKey has been throttled';
       } else {
         errorMessage = err.toString();
       }
 
       this.setState({
         isError: true,
-        errorMessage: errorMessage
+        errorMessage: errorMessage,
       });
     }
   }
@@ -191,7 +201,7 @@ export default class App extends Component<Props, State> {
     } catch (err) {
       this.setState({
         isError: true,
-        errorMessage: err.toString()
+        errorMessage: err.toString(),
       });
       return false;
     }
@@ -211,58 +221,34 @@ export default class App extends Component<Props, State> {
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>Porcupine</Text>
         </View>
-        <View style={{flex: 1, paddingTop: '10%'}}>
-          <Text style={{color: '#666666', marginLeft: 15, marginBottom: 5}}>
-            Keyword
-          </Text>
-          <View
-            style={{
-              width: '90%',
-              height: '40%',
-              alignContent: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-            }}>
+        <View style={styles.keyword}>
+          <Text style={styles.keywordText}>Keyword</Text>
+          <View style={styles.picker}>
             <Picker
               selectedValue={this.state.currentKeyword}
               mode="dropdown"
               style={{}}
               itemStyle={styles.itemStyle}
-              onValueChange={(keyword) =>
-                this._loadNewKeyword(keyword)
-              }>
+              onValueChange={(keyword) => this._loadNewKeyword(keyword)}>
               {keywordOptions}
             </Picker>
           </View>
         </View>
 
-        <View
-          style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+        <View style={styles.button}>
           <TouchableOpacity
-            style={{
-              width: '50%',
-              height: '50%',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#377DFF',
-              borderRadius: 100,
-            }}
+            style={styles.buttonStyle}
             onPress={() => this._toggleListening()}
             disabled={this.state.buttonDisabled || this.state.isError}>
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
-        {this.state.isError &&
+        {this.state.isError && (
           <View style={styles.errorBox}>
-            <Text style={{
-              color: 'white',
-              fontSize: 16
-            }}>
-              {this.state.errorMessage}
-            </Text>
+            <Text style={styles.errorText}>{this.state.errorMessage}</Text>
           </View>
-        }
-        <View style={{flex: 1, justifyContent: 'flex-end', paddingBottom: 25}}>
+        )}
+        <View style={styles.footerView}>
           <Text style={styles.instructions}>
             Made in Vancouver, Canada by Picovoice
           </Text>
@@ -295,7 +281,32 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 15,
   },
+  keyword: {
+    flex: 1,
+    paddingTop: '10%',
+  },
+  keywordText: {
+    color: '#666666',
+    marginLeft: 15,
+    marginBottom: 5,
+  },
+  picker: {
+    width: '90%',
+    height: '40%',
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  button: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
   buttonStyle: {
+    width: '50%',
+    height: '50%',
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor: '#377DFF',
     borderRadius: 100,
   },
@@ -310,6 +321,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  footerView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 25,
+  },
   instructions: {
     textAlign: 'center',
     color: '#666666',
@@ -319,6 +335,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 20,
     padding: 20,
-    textAlign: 'center'
+    textAlign: 'center',
+  },
+  errorText: {
+    color: 'white',
+    fontSize: 16,
   },
 });

@@ -31,7 +31,7 @@ export enum BuiltinKeyword {
   TERMINATOR = "terminator",
 }
 
-export function getBuiltinKeywordPath(builtinKeyword: BuiltinKeyword) {
+export function getBuiltinKeywordPath(builtinKeyword: BuiltinKeyword): string {
   const platform = getPlatform();
   return path.resolve(
     __dirname,
