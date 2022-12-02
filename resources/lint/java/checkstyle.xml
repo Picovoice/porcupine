@@ -15,7 +15,7 @@
 
 <module name="Checker">
     <module name="SuppressionFilter">
-        <property name="file" value="${config_loc}/suppression.xml" />
+        <property name="file" value="${config_loc}/suppress.xml" />
     </module>
 
     <module name="SuppressWarningsFilter"/>
