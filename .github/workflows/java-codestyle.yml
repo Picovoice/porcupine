@@ -12,7 +12,7 @@ on:
       - '**/*.java'
 
 jobs:
-  check-python-codestyle:
+  check-java-codestyle:
     runs-on: ubuntu-latest
 
     steps:
