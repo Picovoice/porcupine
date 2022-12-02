@@ -87,10 +87,14 @@ namespace Pv
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
+#pragma warning disable IDE0058
+#pragma warning disable IDE0059
             IntPtr libHandle = IntPtr.Zero;
             NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
             return libHandle;
         }
+#pragma warning restore IDE0059
+#pragma warning restore IDE0058
 
 #endif
 

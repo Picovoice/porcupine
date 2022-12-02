@@ -1,6 +1,8 @@
 using System;
+
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+
 using AvaloniaVUI.ViewModels;
 
 namespace AvaloniaVUI
@@ -11,8 +13,8 @@ namespace AvaloniaVUI
 
         public IControl Build(object data)
         {
-            var name = data.GetType().FullName.Replace("ViewModel", "View");
-            var type = Type.GetType(name);
+            string name = data.GetType().FullName.Replace("ViewModel", "View");
+            Type type = Type.GetType(name);
 
             if (type != null)
             {

@@ -24,6 +24,7 @@ Porcupine is:
 </Description>
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	  <PackageIcon>pv_circle_512.png</PackageIcon>
+	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 	<ItemGroup>
 		<Content Include="Porcupine.targets">

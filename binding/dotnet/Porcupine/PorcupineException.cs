@@ -13,15 +13,15 @@ using System;
 
 namespace Pv
 {
-    public class PorcupineException : Exception 
+    public class PorcupineException : Exception
     {
         public PorcupineException() { }
 
-        public PorcupineException(string message) : base (message) { }
+        public PorcupineException(string message) : base(message) { }
 
     }
 
-    public class PorcupineMemoryException : PorcupineException 
+    public class PorcupineMemoryException : PorcupineException
     {
         public PorcupineMemoryException() { }
 
