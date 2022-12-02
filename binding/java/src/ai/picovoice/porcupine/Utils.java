@@ -33,7 +33,7 @@ class Utils {
     private static final Path RESOURCE_DIRECTORY;
     private static final String ENVIRONMENT_NAME;
     private static final String ARCHITECTURE;
-    private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     static {
         RESOURCE_DIRECTORY = getResourceDirectory();
@@ -105,8 +105,9 @@ class Utils {
                 // copy contents into resource directory
                 if (jarEntry.isDirectory()) {
                     Path dstPath = resourceDirectoryPath.resolve(jarEntryName);
-                    if (!dstPath.toFile().exists())
+                    if (!dstPath.toFile().exists()) {
                         Files.createDirectory(dstPath);
+                    }
                 } else {
                     Path file = resourceDirectoryPath.resolve(jarEntryName);
                     try (InputStream is = jf.getInputStream(jarEntry)) {
@@ -140,8 +141,9 @@ class Utils {
                     case "0xc08":
                         return "beaglebone";
                     default:
-                        throw new RuntimeException(String.format("Execution environment not supported. " +
-                                "Porcupine Java does not support CPU Part (%s).", cpuPart));
+                        throw new RuntimeException(String.format("Execution environment " +
+                                "not supported. Porcupine Java does not support CPU Part (%s).",
+                                cpuPart));
                 }
             }
             return "linux";
@@ -187,13 +189,19 @@ class Utils {
                     return "";
                 default:
                     throw new RuntimeException(
-                            String.format("Environment (%s) with CPU Part (%s) is not supported by Porcupine.", ENVIRONMENT_NAME, cpuPart)
+                            String.format("Environment (%s) with CPU Part (%s) is " +
+                                    "not supported by Porcupine.",
+                                    ENVIRONMENT_NAME,
+                                    cpuPart)
                     );
             }
         }
 
         throw new RuntimeException(
-                String.format("Environment (%s) with architecture (%s) is not supported by Porcupine.", ENVIRONMENT_NAME, arch)
+                String.format("Environment (%s) with architecture (%s) " +
+                        "is not supported by Porcupine.",
+                        ENVIRONMENT_NAME,
+                        arch)
         );
     }
 
@@ -215,7 +223,9 @@ class Utils {
 
     public static HashMap<Porcupine.BuiltInKeyword, String> getPackagedKeywordPaths() {
         HashMap<Porcupine.BuiltInKeyword, String> keywordPaths = new HashMap<>();
-        Path keywordFileDir = RESOURCE_DIRECTORY.resolve("resources/keyword_files").resolve(ENVIRONMENT_NAME);
+        Path keywordFileDir = RESOURCE_DIRECTORY
+                .resolve("resources/keyword_files")
+                .resolve(ENVIRONMENT_NAME);
         File[] keywordFiles = keywordFileDir.toFile().listFiles();
 
         if (keywordFiles == null || keywordFiles.length == 0) {
@@ -224,8 +234,11 @@ class Utils {
         }
 
         for (File keywordFile : keywordFiles) {
-            final String keywordName = keywordFile.getName().split("_")[0].toUpperCase().replace(' ', '_');
-            keywordPaths.put(Porcupine.BuiltInKeyword.valueOf(keywordName), keywordFile.getAbsolutePath());
+            final String keywordName = keywordFile
+                    .getName().split("_")[0].toUpperCase().replace(' ', '_');
+            keywordPaths.put(
+                    Porcupine.BuiltInKeyword.valueOf(keywordName),
+                    keywordFile.getAbsolutePath());
         }
 
         return keywordPaths;
@@ -234,7 +247,9 @@ class Utils {
     public static String getPackagedLibraryPath() {
         switch (ENVIRONMENT_NAME) {
             case "windows":
-                return RESOURCE_DIRECTORY.resolve("lib/java/windows/amd64/pv_porcupine_jni.dll").toString();
+                return RESOURCE_DIRECTORY
+                        .resolve("lib/java/windows/amd64/pv_porcupine_jni.dll")
+                        .toString();
             case "mac":
                 return RESOURCE_DIRECTORY.resolve("lib/java/mac")
                                          .resolve(ARCHITECTURE)

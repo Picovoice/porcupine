@@ -12,11 +12,8 @@
 
 package ai.picovoice.porcupine;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +26,11 @@ import java.util.stream.Stream;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class PorcupineTest {
 
@@ -70,7 +69,8 @@ public class PorcupineTest {
         assertTrue(porcupine.getSampleRate() > 0);
     }
 
-    private void runTestCase(String audioFileName, ArrayList<Integer> expectedResults) throws IOException, UnsupportedAudioFileException, PorcupineException {
+    private void runTestCase(String audioFileName, ArrayList<Integer> expectedResults)
+            throws IOException, UnsupportedAudioFileException, PorcupineException {
         int frameLen = porcupine.getFrameLength();
         String audioFilePath = PorcupineTestUtils.getTestAudioFilePath(audioFileName);
         File testAudioPath = new File(audioFilePath);
@@ -88,7 +88,11 @@ public class PorcupineTest {
 
             if (numBytesRead / byteDepth == frameLen) {
 
-                ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
+                ByteBuffer
+                        .wrap(pcm)
+                        .order(ByteOrder.LITTLE_ENDIAN)
+                        .asShortBuffer()
+                        .get(porcupineFrame);
                 int result = porcupine.process(porcupineFrame);
                 assertTrue(result >= -1);
                 if (result >= 0) {
@@ -101,7 +105,8 @@ public class PorcupineTest {
     }
 
     @Test
-    void testBuiltinKeywords() throws IOException, UnsupportedAudioFileException, PorcupineException {
+    void testBuiltinKeywords()
+            throws IOException, UnsupportedAudioFileException, PorcupineException {
         final Porcupine.BuiltInKeyword[] keywords = new Porcupine.BuiltInKeyword[]{
                 Porcupine.BuiltInKeyword.ALEXA,
                 Porcupine.BuiltInKeyword.AMERICANO,
@@ -126,7 +131,8 @@ public class PorcupineTest {
 
     @ParameterizedTest(name = "testSingleKeyword for ''{0}''")
     @MethodSource("singleKeywordProvider")
-    void testSingleKeyword(String language, String keyword, String audioFileName) throws IOException, UnsupportedAudioFileException, PorcupineException {
+    void testSingleKeyword(String language, String keyword, String audioFileName)
+            throws IOException, UnsupportedAudioFileException, PorcupineException {
         final String[] keywords = {keyword};
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
@@ -138,6 +144,22 @@ public class PorcupineTest {
                 new ArrayList<>(Collections.singletonList(0)));
     }
 
+    @ParameterizedTest(name = "testMultipleKeywords for ''{0}''")
+    @MethodSource("multipleKeywordsProvider")
+    void testSingleKeyword(
+            String language,
+            String[] keywords,
+            String audioFileName,
+            ArrayList results)
+            throws IOException, UnsupportedAudioFileException, PorcupineException {
+        porcupine = new Porcupine.Builder()
+                .setAccessKey(accessKey)
+                .setModelPath(PorcupineTestUtils.getTestModelPath(language))
+                .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
+                .build();
+        runTestCase(audioFileName, results);
+    }
+
     private static Stream<Arguments> singleKeywordProvider() {
         return Stream.of(
                 Arguments.of("en", "porcupine", "porcupine.wav"),
@@ -145,17 +167,6 @@ public class PorcupineTest {
                 Arguments.of("es", "manzana", "manzana.wav"),
                 Arguments.of("fr", "mon chouchou", "mon_chouchou.wav")
         );
-    }
-
-    @ParameterizedTest(name = "testMultipleKeywords for ''{0}''")
-    @MethodSource("multipleKeywordsProvider")
-    void testSingleKeyword(String language, String[] keywords, String audioFileName, ArrayList results) throws IOException, UnsupportedAudioFileException, PorcupineException {
-        porcupine = new Porcupine.Builder()
-                .setAccessKey(accessKey)
-                .setModelPath(PorcupineTestUtils.getTestModelPath(language))
-                .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
-                .build();
-        runTestCase(audioFileName, results);
     }
 
     private static Stream<Arguments> multipleKeywordsProvider() {
@@ -199,7 +210,8 @@ public class PorcupineTest {
     }
 
     @Test
-    void testWithNonAsciiModelName() throws IOException, UnsupportedAudioFileException, PorcupineException {
+    void testWithNonAsciiModelName()
+            throws IOException, UnsupportedAudioFileException, PorcupineException {
         final String language = "es";
         final String[] keywords = {"murciélago"};
         porcupine = new Porcupine.Builder()

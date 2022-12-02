@@ -22,8 +22,9 @@ public class PorcupineTestUtils {
     }
 
     public static String appendLanguage(String s, String language) {
-        if (language.equals("en"))
+        if (language.equals("en")) {
             return s;
+        }
         return s + "_" + language;
     }
 
