@@ -87,8 +87,8 @@ public class Porcupine {
      *            equal to {@link #getSampleRate()} and be 16-bit linearly-encoded. Porcupine
      *            operates on single-channel audio.
      * @return Index of observed keyword at the end of the current frame. Indexing is 0-based and
-     * matches the ordering of keyword models provided to the constructor. If no keyword is detected
-     * then it returns -1.
+     *         matches the ordering of keyword models provided to the constructor. If no
+     *         keyword is detected then it returns -1.
      * @throws PorcupineException if there is an error while processing the audio frame.
      */
     public int process(short[] pcm) throws PorcupineException {
@@ -138,6 +138,9 @@ public class Porcupine {
         return PorcupineNative.getSampleRate();
     }
 
+    /**
+     * BuiltInKeyword Enum.
+     */
     public enum BuiltInKeyword {
         ALEXA,
         AMERICANO,
@@ -164,7 +167,7 @@ public class Porcupine {
     }
 
     /**
-     * Builder for creating an instance of Porcupine with a mixture of default arguments
+     * Builder for creating an instance of Porcupine with a mixture of default arguments.
      */
     public static class Builder {
 
@@ -234,15 +237,16 @@ public class Porcupine {
             }
 
             if (accessKey == null) {
-                throw new PorcupineInvalidArgumentException("AccessKey is required for Porcupine initialization.");
+                throw new PorcupineInvalidArgumentException(
+                        "AccessKey is required for Porcupine initialization.");
             }
 
             if (libraryPath == null) {
                 if (Utils.isResourcesAvailable()) {
                     libraryPath = LIBRARY_PATH;
                 } else {
-                    throw new PorcupineInvalidArgumentException("Default library unavailable. Please " +
-                            "provide a native Porcupine library path (-l <library_path>).");
+                    throw new PorcupineInvalidArgumentException("Default library unavailable. " +
+                            "Please provide a native Porcupine library path (-l <library_path>).");
                 }
             }
 
@@ -250,19 +254,20 @@ public class Porcupine {
                 if (Utils.isResourcesAvailable()) {
                     modelPath = MODEL_PATH;
                 } else {
-                    throw new PorcupineInvalidArgumentException("Default model unavailable. Please provide a " +
-                            "valid Porcupine model path (-m <model_path>).");
+                    throw new PorcupineInvalidArgumentException("Default model unavailable. " +
+                            "Please provide a valid Porcupine model path (-m <model_path>).");
                 }
             }
 
             if (this.keywordPaths != null && this.keywords != null) {
-                throw new PorcupineInvalidArgumentException("Both 'keywords' and 'keywordPaths' were set. " +
-                        "Only one of the two arguments may be set for initialization.");
+                throw new PorcupineInvalidArgumentException("Both 'keywords' and 'keywordPaths' " +
+                        "were set. Only one of the two arguments may be set for initialization.");
             }
 
             if (this.keywordPaths == null) {
                 if (this.keywords == null) {
-                    throw new PorcupineInvalidArgumentException("Either 'keywords' or 'keywordPaths' must be set.");
+                    throw new PorcupineInvalidArgumentException(
+                            "Either 'keywords' or 'keywordPaths' must be set.");
                 }
 
                 if (Utils.isResourcesAvailable()) {
@@ -271,8 +276,8 @@ public class Porcupine {
                         this.keywordPaths[i] = BUILT_IN_KEYWORD_PATHS.get(keywords[i]);
                     }
                 } else {
-                    throw new PorcupineInvalidArgumentException("BuiltIn keywords unavailable. Please provide " +
-                            "a valid Porcupine keyword path.");
+                    throw new PorcupineInvalidArgumentException("BuiltIn keywords unavailable. " +
+                            "Please provide a valid Porcupine keyword path.");
                 }
             }
 
@@ -282,8 +287,12 @@ public class Porcupine {
             }
 
             if (sensitivities.length != keywordPaths.length) {
-                throw new PorcupineInvalidArgumentException(String.format("Number of keywords (%d) " +
-                        "does not match number of sensitivities (%d)", keywordPaths.length, sensitivities.length));
+                throw new PorcupineInvalidArgumentException(
+                        String.format(
+                                "Number of keywords (%d) does not match number of " +
+                                        "sensitivities (%d)",
+                                keywordPaths.length,
+                                sensitivities.length));
             }
 
             return new Porcupine(accessKey, libraryPath, modelPath, keywordPaths, sensitivities);

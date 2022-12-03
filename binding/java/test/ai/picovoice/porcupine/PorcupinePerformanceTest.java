@@ -21,14 +21,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PorcupinePerformanceTest {
 
     private final String accessKey = System.getProperty("pvTestingAccessKey");
     private final int numTestIterations = Integer.parseInt(System.getProperty("numTestIterations"));
-    private final double performanceThresholdSec = Double.parseDouble(System.getProperty("performanceThresholdSec"));
+    private final double performanceThresholdSec =
+            Double.parseDouble(System.getProperty("performanceThresholdSec"));
 
     @Test
     void testPerformance() throws Exception {
@@ -54,7 +54,11 @@ public class PorcupinePerformanceTest {
             int numBytesRead;
             while ((numBytesRead = audioInputStream.read(pcm)) != -1) {
                 if (numBytesRead / byteDepth == frameLen) {
-                    ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(porcupineFrame);
+                    ByteBuffer
+                            .wrap(pcm)
+                            .order(ByteOrder.LITTLE_ENDIAN)
+                            .asShortBuffer()
+                            .get(porcupineFrame);
                     long before = System.nanoTime();
                     porcupine.process(porcupineFrame);
                     totalNSec += (System.nanoTime() - before);

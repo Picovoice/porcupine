@@ -105,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL, 
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
         try {
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (PorcupineInvalidArgumentException e) {
             onPorcupineInitError(
-                String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
+                    String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
             );
         } catch (PorcupineActivationException e) {
             onPorcupineInitError("AccessKey activation error");
@@ -161,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean hasRecordPermission() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == 
+            PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestRecordPermission() {
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopService() {
-        if(porcupineManager != null) {
+        if (porcupineManager != null) {
             try {
                 porcupineManager.stop();
             } catch (PorcupineException e) {
@@ -200,7 +203,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[]
+            permissions,
+            @NonNull int[] grantResults
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
             onPorcupineInitError("Microphone permission is required for this demo");
@@ -264,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
                         displayError("No recognition result matched.");
                         playback(1000);
                     }
+                    return;
                 case SpeechRecognizer.ERROR_CLIENT:
                     return;
                 case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
