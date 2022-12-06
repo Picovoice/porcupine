@@ -184,6 +184,8 @@ this._porcupineManager = await PorcupineManager.fromKeywordPaths(
     [0.25, 0.6]);
 ```
 
+Alternatively, if the model files are deployed to the device with a different method, the absolute paths to the files on device can be used.
+
 Once you have instantiated a `PorcupineManager`, you can start audio capture and wake word detection by calling:
 
 ```javascript
@@ -291,6 +293,8 @@ try {
     );
 } catch (err) { }
 ```
+
+Alternatively, if the model files are deployed to the device with a different method, the absolute paths to the files on device can be used.
 
 ## Non-English Wake Words
 

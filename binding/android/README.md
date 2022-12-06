@@ -137,6 +137,8 @@ try {
 } catch (PorcupineException e) { }
 ```
 
+Alternatively, if the model files are deployed to the device with a different method, the absolute paths to the files on device can be used.
+
 Once you have instantiated a PorcupineManager, you can start audio capture and wake word detection by calling:
 
 ```java
@@ -218,6 +220,7 @@ try {
                         .build(context);
 } catch (PorcupineException e) { }
 ```
+Alternatively, if the keyword file is deployed to the device with a different method, the absolute path to the file on device can be used.
 
 ## Non-English Wake Words
 

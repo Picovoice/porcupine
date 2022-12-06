@@ -15,15 +15,9 @@ Porcupine is:
 
 To learn more about Porcupine, see the [product](https://picovoice.ai/products/porcupine/), [documentation](https://picovoice.ai/docs/), and [GitHub](https://github.com/Picovoice/porcupine/) pages.
 
-### Custom wake words
-
-Porcupine includes several built-in keywords, which are stored as `.ppn` files. To train custom PPN files, see the [Picovoice Console](https://console.picovoice.ai/).
-
-Unlike the built-in keywords, custom PPN files generated with the Picovoice Console carry restrictions including (but not limited to): training allowance, time limits, available platforms, and commercial usage.
-
 ## Installation
 
-The Porcupine iOS binding is available via [CocoaPods](https://cocoapods.org/pods/Porcupine-iOS). To import it into your iOS project, add the following line to your Podfile: 
+The Porcupine iOS binding is available via [CocoaPods](https://cocoapods.org/pods/Porcupine-iOS). To import it into your iOS project, add the following line to your Podfile:
 
 ```ruby
 pod 'Porcupine-iOS'
@@ -60,7 +54,7 @@ let accessKey = "${ACCESS_KEY}" // Obtained from Picovoice Console (https://cons
 do {
     let porcupineManager = try PorcupineManager(
         accessKey: accessKey,
-        keyword: Porcupine.BuiltInKeyword.picovoice, 
+        keyword: Porcupine.BuiltInKeyword.picovoice,
         onDetection: wakeWordCallback)
 } catch { }
 ```
@@ -72,7 +66,7 @@ The callback should accept a single integer, which specifies which wake word has
 let wakeWordCallback: ((Int32) -> Void) = { keywordIndex in
                 if keywordIndex == 0 {
                     // wake word 0 detected!
-                }                
+                }
             }
 }
 ```
@@ -86,16 +80,16 @@ do {
     let paths = ["path/to/keyword/one.ppn", "path/to/keyword/two.ppn"]
     let porcupineManager = try PorcupineManager(
         accessKey: accessKey,
-        keywordPaths: paths, 
+        keywordPaths: paths,
         onDetection: wakeWordCallback)
 } catch { }
 ```
 
 In addition to custom keywords, you can override the default Porcupine English model file and/or keyword sensitivities.
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
-The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, pass in a different model file. 
+The model file contains the parameters for the wake word engine. To change the language that Porcupine understands, pass in a different model file.
 
 These optional parameters can be set like so:
 ```swift
@@ -106,7 +100,7 @@ do {
         accessKey: accessKey,
         keywordPaths: paths,
         modelPath: "path/to/model/file.pv",
-        sensitivities: [0.7, 0.35], 
+        sensitivities: [0.7, 0.35],
         onDetection: wakeWordCallback)
 } catch { }
 ```
@@ -134,7 +128,7 @@ porcupineManager.delete()
 
 [Porcupine](Porcupine.swift) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
-To construct an instance of Porcupine, pass it a keyword. 
+To construct an instance of Porcupine, pass it a keyword.
 
 ```swift
 import Porcupine
@@ -173,12 +167,14 @@ porcupine.delete();
 
 ## Custom Wake Word Integration
 
-To add a custom wake word to your iOS application you must include it in your app as a bundled resource (found by selecting in Build Phases > Copy Bundle Resources). Then in code, get its path like so:
+To add a custom wake word to your iOS application you can include it in your app as a bundled resource (found by selecting in Build Phases > Copy Bundle Resources). Then in code, get its path like so:
 
 ```swift
 // file is called keyword_ios.ppn
 let keywordPath = Bundle.main.path(forResource: "keyword_ios", ofType: "ppn")
 ```
+
+Alternatively, if the model files are deployed to the device with a different method, the absolute paths to the files on device can be used.
 
 ## Non-English Contexts
 
