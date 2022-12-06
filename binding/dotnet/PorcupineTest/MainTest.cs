@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -10,11 +10,12 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Pv;
@@ -25,7 +26,7 @@ namespace PorcupineTest
     public class MainTest
     {
         private static string ACCESS_KEY;
-        private static string _relativeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static readonly string _relativeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
@@ -39,7 +40,9 @@ namespace PorcupineTest
             string cpuInfo = File.ReadAllText("/proc/cpuinfo");
             string[] cpuPartList = cpuInfo.Split('\n').Where(x => x.Contains("CPU part")).ToArray();
             if (cpuPartList.Length == 0)
+            {
                 throw new PlatformNotSupportedException($"Unsupported CPU.\n{cpuInfo}");
+            }
 
             string cpuPart = cpuPartList[0].Split(' ').Last().ToLower();
 
@@ -64,7 +67,9 @@ namespace PorcupineTest
         private static string AppendLanguage(string s, string language)
         {
             if (language == "en")
+            {
                 return s;
+            }
             return $"{s}_{language}";
         }
 
@@ -105,7 +110,7 @@ namespace PorcupineTest
             List<short> data = GetPcmFromFile(testAudioPath, porcupine.SampleRate);
 
             int framecount = (int)Math.Floor((float)(data.Count / frameLen));
-            var results = new List<int>();
+            List<int> results = new List<int>();
             for (int i = 0; i < framecount; i++)
             {
                 int start = i * frameLen;

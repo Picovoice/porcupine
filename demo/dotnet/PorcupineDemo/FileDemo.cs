@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -92,7 +92,7 @@ namespace PorcupineDemo
                     // skip right channel
                     if (numChannels == 2)
                     {
-                        reader.ReadInt16();
+                        _ = reader.ReadInt16();
                     }
                 }
                 stopWatch.Stop();
@@ -146,7 +146,7 @@ namespace PorcupineDemo
             if (args.Length == 0)
             {
                 Console.WriteLine(HELP_STR);
-                Console.Read();
+                _ = Console.Read();
                 return;
             }
 
@@ -227,7 +227,7 @@ namespace PorcupineDemo
             if (showHelp)
             {
                 Console.WriteLine(HELP_STR);
-                Console.Read();
+                _ = Console.Read();
                 return;
             }
 

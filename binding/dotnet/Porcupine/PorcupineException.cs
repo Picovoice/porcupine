@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -13,15 +13,15 @@ using System;
 
 namespace Pv
 {
-    public class PorcupineException : Exception 
+    public class PorcupineException : Exception
     {
         public PorcupineException() { }
 
-        public PorcupineException(string message) : base (message) { }
+        public PorcupineException(string message) : base(message) { }
 
     }
 
-    public class PorcupineMemoryException : PorcupineException 
+    public class PorcupineMemoryException : PorcupineException
     {
         public PorcupineMemoryException() { }
 

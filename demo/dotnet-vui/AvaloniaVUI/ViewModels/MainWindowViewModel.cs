@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-using ReactiveUI;
 using Avalonia.Media;
 
 using Pv;
+
+using ReactiveUI;
 
 namespace AvaloniaVUI.ViewModels
 {
@@ -87,34 +87,32 @@ namespace AvaloniaVUI.ViewModels
                 using Porcupine porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, commands);
 
                 // create and start recording
-                using (PvRecorder recorder = PvRecorder.Create(-1, porcupine.FrameLength))
+                using PvRecorder recorder = PvRecorder.Create(-1, porcupine.FrameLength);
+                recorder.Start();
+
+                Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+                Console.WriteLine("Listening...");
+
+                while (true)
                 {
-                    recorder.Start();
-
-                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
-                    Console.WriteLine("Listening...");
-
-                    while (true)
+                    short[] pcm = recorder.Read();
+                    int keywordIndex = porcupine.Process(pcm);
+                    if (keywordIndex >= 0)
                     {
-                        short[] pcm = recorder.Read();
-                        int keywordIndex = porcupine.Process(pcm);
-                        if (keywordIndex >= 0)
+                        switch (keywordIndex)
                         {
-                            switch (keywordIndex)
-                            {
-                                case 0:
-                                    IsGrapefruit = true;
-                                    break;
-                                case 1:
-                                    IsGrasshopper = true;
-                                    break;
-                                case 2:
-                                    IsBumblebee = true;
-                                    break;
-                                case 3:
-                                    IsBlueberry = true;
-                                    break;
-                            }
+                            case 0:
+                                IsGrapefruit = true;
+                                break;
+                            case 1:
+                                IsGrasshopper = true;
+                                break;
+                            case 2:
+                                IsBumblebee = true;
+                                break;
+                            case 3:
+                                IsBlueberry = true;
+                                break;
                         }
                     }
                 }

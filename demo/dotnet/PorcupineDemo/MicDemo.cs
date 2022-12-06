@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -80,32 +80,30 @@ namespace PorcupineDemo
             };
 
             // create and start recording
-            using (PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength))
+            using PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength);
+            Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+            Console.Write($"Listening for [{string.Join(' ', keywordNames.Select(k => $"'{k}'"))}]...\n");
+            recorder.Start();
+
+            while (true)
             {
-                Console.WriteLine($"Using device: {recorder.SelectedDevice}");
-                Console.Write($"Listening for [{string.Join(' ', keywordNames.Select(k => $"'{k}'"))}]...\n");
-                recorder.Start();
+                short[] pcm = recorder.Read();
 
-                while (true)
+                int result = porcupine.Process(pcm);
+                if (result >= 0)
                 {
-                    short[] pcm = recorder.Read();
-
-                    int result = porcupine.Process(pcm);
-                    if (result >= 0)
-                    {
-                        Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
-                    }
-
-                    if (outputFileWriter != null)
-                    {
-                        foreach (short sample in pcm)
-                        {
-                            outputFileWriter.Write(sample);
-                        }
-                        totalSamplesWritten += pcm.Length;
-                    }
-                    Thread.Yield();
+                    Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
                 }
+
+                if (outputFileWriter != null)
+                {
+                    foreach (short sample in pcm)
+                    {
+                        outputFileWriter.Write(sample);
+                    }
+                    totalSamplesWritten += pcm.Length;
+                }
+                _ = Thread.Yield();
             }
         }
 
@@ -120,9 +118,11 @@ namespace PorcupineDemo
         private static void WriteWavHeader(BinaryWriter writer, ushort channelCount, ushort bitDepth, int sampleRate, int totalSampleCount)
         {
             if (writer == null)
+            {
                 return;
+            }
 
-            writer.Seek(0, SeekOrigin.Begin);
+            _ = writer.Seek(0, SeekOrigin.Begin);
             writer.Write(Encoding.ASCII.GetBytes("RIFF"));
             writer.Write((bitDepth / 8 * totalSampleCount) + 36);
             writer.Write(Encoding.ASCII.GetBytes("WAVE"));
@@ -156,7 +156,7 @@ namespace PorcupineDemo
             if (args.Length == 0)
             {
                 Console.WriteLine(HELP_STR);
-                Console.Read();
+                _ = Console.Read();
                 return;
             }
 
@@ -252,7 +252,7 @@ namespace PorcupineDemo
             if (showHelp)
             {
                 Console.WriteLine(HELP_STR);
-                Console.Read();
+                _ = Console.Read();
                 return;
             }
 
@@ -260,7 +260,7 @@ namespace PorcupineDemo
             if (showAudioDevices)
             {
                 ShowAudioDevices();
-                Console.Read();
+                _ = Console.Read();
                 return;
             }
 

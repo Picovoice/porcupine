@@ -9,8 +9,8 @@
     specific language governing permissions and limitations under the License.
 */
 
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +23,7 @@ namespace Pv
     {
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
 
-        private static bool _isArm => _arch == Architecture.Arm || _arch == Architecture.Arm64;
+        private static bool _isArm => _arch is Architecture.Arm || _arch is Architecture.Arm64;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
@@ -55,33 +55,35 @@ namespace Pv
             {
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/amd64/{libName}.dll");
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _arch == Architecture.X64)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _arch == Architecture.X64)
             {
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/x86_64/{libName}.dylib");
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _isArm)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _isArm)
             {
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/arm64/{libName}.dylib");
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/{PvLinuxMachine()}/{libName}.so");
             }
-            else
-            {
-                throw new PlatformNotSupportedException($"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture}) is not currently supported.\n" +
-                                                        "Visit https://picovoice.ai/docs/api/porcupine-dotnet/ to see a list of supported platforms.");
-            }
+            throw new PlatformNotSupportedException($"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture}) is not currently supported.\n" +
+                                                    "Visit https://picovoice.ai/docs/api/porcupine-dotnet/ to see a list of supported platforms.");
         }
 
         public static string PvLinuxMachine()
         {
             string archInfo = "";
             if (_arch == Architecture.X64)
+            {
                 return "x86_64";
-            else if (_arch == Architecture.Arm64)
+            }
+
+            if (_arch == Architecture.Arm64)
+            {
                 archInfo = "-aarch64";
 
+            }
             string cpuPart = GetCpuPart();
             switch (cpuPart)
             {
@@ -140,7 +142,9 @@ namespace Pv
             string cpuInfo = File.ReadAllText("/proc/cpuinfo");
             string[] cpuPartList = cpuInfo.Split('\n').Where(x => x.Contains("CPU part")).ToArray();
             if (cpuPartList.Length == 0)
+            {
                 throw new PlatformNotSupportedException($"Unsupported CPU.\n{cpuInfo}");
+            }
 
             string cpuPart = cpuPartList[0].Split(' ').Last().ToLower();
             return cpuPart;
