@@ -61,7 +61,8 @@ self.onmessage = async function(
           event.data.keywordLabels,
           keywordDetectionCallback,
           event.data.sensitivities,
-          event.data.modelPath);
+          event.data.modelPath,
+          event.data.options);
         self.postMessage({
           command: 'ok',
           version: porcupine.version,
