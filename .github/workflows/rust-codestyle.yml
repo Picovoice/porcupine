@@ -67,7 +67,7 @@ jobs:
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
-      working-directory: binding/demo/filedemo
+      working-directory: demo/rust/filedemo
 
   check-rust-micdemo-codestyle:
     runs-on: ubuntu-latest
@@ -88,4 +88,4 @@ jobs:
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
-      working-directory: binding/demo/micdemo
+      working-directory: demo/rust/micdemo
