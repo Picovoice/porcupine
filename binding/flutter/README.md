@@ -116,7 +116,7 @@ Available built-in keywords are stored in the `BuiltInKeyword` enum.
 To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.fromKeywordPaths`
 static constructor and provide the paths to the `.ppn` file(s).
 ```dart
-const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 _porcupineManager = await PorcupineManager.fromKeywordPaths(
     accessKey,
@@ -229,7 +229,7 @@ flutter:
 
 You can then pass it directly to Porcupine's `fromKeywordPaths` constructor:
 ```dart
-const accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 String keywordAsset = "assets/keyword.ppn"
 try{
@@ -240,6 +240,8 @@ try{
     // handle porcupine init error
 }
 ```
+
+Alternatively, if the model files are deployed to the device with a different method, the absolute paths to the files on device can be used.
 
 ## Non-English Wake Words
 
