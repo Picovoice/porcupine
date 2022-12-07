@@ -6,10 +6,12 @@ on:
     branches: [ master ]
     paths:
       - '**/*.go'
+      - '.github/workflows/go-codestyle.yml'
   pull_request:
     branches: [ master ]
     paths:
       - '**/*.go'
+      - '.github/workflows/go-codestyle.yml'
 
 jobs:
   check-go-codestyle:
