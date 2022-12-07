@@ -36,9 +36,6 @@ jobs:
       with:
         go-version: ${{ matrix.go }}
 
-    - name: Golang lint
-      uses: golangci/golangci-lint-action@v3
-
     - name: Build micdemo
       run: go build
       working-directory: demo/go/micdemo
@@ -57,11 +54,6 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: ${{ matrix.go }}
-        
-    - name: Golang lint
-      uses: golangci/golangci-lint-action@v3
-      with:
-        working-directory: demo/go/micdemo
 
     - name: Build filedemo
       run: go build
