@@ -68,6 +68,9 @@ jobs:
     - name: Install dependencies
       run: go get
 
+    - name: Golang lint
+      uses: golangci/golangci-lint-action@v3
+
     - name: Build
       run: go build
 
@@ -89,6 +92,9 @@ jobs:
 
     - name: Install dependencies
       run: go get
+
+    - name: Golang lint
+      uses: golangci/golangci-lint-action@v3
 
     - name: Build
       run: go build
