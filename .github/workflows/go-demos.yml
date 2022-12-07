@@ -38,8 +38,6 @@ jobs:
 
     - name: Golang lint
       uses: golangci/golangci-lint-action@v3
-      with:
-        working-directory: demo/go/filedemo
 
     - name: Build micdemo
       run: go build
@@ -63,7 +61,7 @@ jobs:
     - name: Golang lint
       uses: golangci/golangci-lint-action@v3
       with:
-        working-directory: demo/go/filedemo
+        working-directory: demo/go/micdemo
 
     - name: Build filedemo
       run: go build
