@@ -11,8 +11,6 @@
 
 use chrono::prelude::*;
 use clap::{App, Arg, ArgGroup};
-use ctrlc;
-use hound;
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
 use pv_recorder::RecorderBuilder;
 use std::path::PathBuf;
@@ -31,10 +29,10 @@ fn porcupine_demo(
 ) {
     let mut porcupine_builder = match keywords_or_paths {
         KeywordsOrPaths::Keywords(ref keywords) => {
-            PorcupineBuilder::new_with_keywords(access_key, &keywords)
+            PorcupineBuilder::new_with_keywords(access_key, keywords)
         }
         KeywordsOrPaths::KeywordPaths(ref keyword_paths) => {
-            PorcupineBuilder::new_with_keyword_paths(access_key, &keyword_paths)
+            PorcupineBuilder::new_with_keyword_paths(access_key, keyword_paths)
         }
     };
 
@@ -79,7 +77,7 @@ fn porcupine_demo(
             );
         }
 
-        if !output_path.is_none() {
+        if output_path.is_some() {
             audio_data.extend_from_slice(&pcm);
         }
     }
@@ -242,14 +240,9 @@ fn main() {
         }
     };
 
-    let sensitivities: Option<Vec<f32>> = match matches.values_of("sensitivities") {
-        Some(sensitivities) => Some(
-            sensitivities
-                .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
-                .collect(),
-        ),
-        None => None,
-    };
+    let sensitivities: Option<Vec<f32>> = matches.values_of("sensitivities").map(|sensitivities| sensitivities
+        .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
+        .collect());
 
     let model_path = matches.value_of("model_path");
     let output_path = matches.value_of("output_path");
