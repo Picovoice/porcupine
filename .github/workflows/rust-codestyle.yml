@@ -31,6 +31,7 @@ jobs:
 
     - name: Rust pre-build
       run: bash copy.sh
+      working-directory: binding/rust
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
