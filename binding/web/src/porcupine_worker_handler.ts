@@ -51,8 +51,6 @@ self.onmessage = async function(
         return;
       }
       try {
-        event.data.options.processErrorCallback = processErrorCallback;
-
         Porcupine.setWasm(event.data.wasm);
         Porcupine.setWasmSimd(event.data.wasmSimd);
         porcupine = await Porcupine._init(
@@ -61,7 +59,8 @@ self.onmessage = async function(
           event.data.keywordLabels,
           keywordDetectionCallback,
           event.data.sensitivities,
-          event.data.modelPath);
+          event.data.modelPath,
+          { ...event.data.options, processErrorCallback });
         self.postMessage({
           command: 'ok',
           version: porcupine.version,

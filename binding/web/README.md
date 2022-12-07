@@ -82,8 +82,7 @@ npx pvbase64 -i ${MODEL_FILE} -o ${OUTPUT_DIRECTORY}/${MODEL_NAME}.js
 ```
 
 The output will be a js file which you can import into any file of your project. For detailed information
-about `pvbase64`,
-run:
+about `pvbase64`, run:
 
 ```console
 npx pvbase64 -h
@@ -193,15 +192,17 @@ await handle.terminate();
 ## Custom Keywords
 
 Create custom keywords using the [Picovoice Console](https://console.picovoice.ai/).
-Train the Porcupine keyword model for the target platform WebAssembly (WASM).
-Inside the downloaded `.zip` file, there are two files:
+Train and download a Porcupine keyword model (`.ppn`) for the target platform `Web (WASM)`. 
+This model file can be used directly with `publicPath`, but, if `base64` is preferable, convert the `.ppn` file to a base64 
+JavaScript variable using the built-in `pvbase64` script:
 
-- `.ppn` file which is the keyword model file in binary format
-- `_b64.txt` file which contains the same binary model encoded with Base64
+```console
+npx pvbase64 -i ${KEYWORD_FILE}.ppn -o ${KEYWORD_BASE64}.js -n ${KEYWORD_BASE64_VAR_NAME}
+```
 
 Similar to the model file (`.pv`), keyword files (`.ppn`) are saved in IndexedDB to be used by Web Assembly.
-Either `base64` or `publicPath` must be set to instantiate Porcupine. If both are set, Porcupine will use
-the `base64` model.
+Either `base64` or `publicPath` must be set for each keyword to instantiate Porcupine. 
+If both are set, Porcupine will use the `base64` model. 
 An arbitrary `label` is required to identify the keyword once the detection occurs.
 
 ```typescript
