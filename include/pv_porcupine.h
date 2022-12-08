@@ -46,12 +46,13 @@ typedef struct pv_porcupine pv_porcupine_t;
  * failure.
  */
 PV_API pv_status_t pv_porcupine_init(
-        const char *access_key,
-        const char *model_path,
-        int32_t num_keywords,
-        const char *const *keyword_paths,
-        const float *sensitivities,
-        pv_porcupine_t **object);
+    const char *access_key,
+    const char *model_path,
+    int32_t num_keywords,
+    const char *const *keyword_paths,
+    const float *sensitivities,
+    pv_porcupine_t **object
+);
 
 /**
  * Destructor.
@@ -71,7 +72,9 @@ PV_API void pv_porcupine_delete(pv_porcupine_t *object);
  * the ordering of keyword models provided to 'pv_porcupine_init()'. If no keyword is detected then it is set to -1.
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' or 'PV_STATUS_OUT_OF_MEMORY' on failure.
  */
-PV_API pv_status_t pv_porcupine_process(pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index);
+PV_API pv_status_t pv_porcupine_process(
+    pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index
+);
 
 /**
  * Getter for version.
@@ -88,7 +91,6 @@ PV_API const char *pv_porcupine_version(void);
 PV_API int32_t pv_porcupine_frame_length(void);
 
 #ifdef __cplusplus
-
 }
 
 #endif

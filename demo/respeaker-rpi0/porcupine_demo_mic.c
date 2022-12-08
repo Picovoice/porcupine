@@ -9,14 +9,14 @@
     specific language governing permissions and limitations under the License.
 */
 
+#include <alsa/asoundlib.h>
+#include <asm/ioctl.h>
 #include <dlfcn.h>
 #include <errno.h>
+#include <linux/spi/spidev.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <alsa/asoundlib.h>
-#include <asm/ioctl.h>
-#include <linux/spi/spidev.h>
 #include <sys/ioctl.h>
 
 #include "pv_porcupine.h"
@@ -86,13 +86,13 @@ static void spi_write_data(unsigned char *data, int len) {
 }
 
 static void set_color(const uint8_t rgb[3]) {
-    for(int32_t i = 0; i < 4; i++) {
+    for (int32_t i = 0; i < 4; i++) {
         uint8_t zero = 0x00;
         spi_write_data(&zero, 1);
     }
 
     static const uint32_t BRIGHTNESS = 1;
-    for(int32_t i = 0; i < 12; i++) {
+    for (int32_t i = 0; i < 12; i++) {
         uint8_t led_frame[4];
         led_frame[0] = 0b11100000 | (0b00011111 & BRIGHTNESS);
         led_frame[1] = rgb[2];
@@ -101,14 +101,14 @@ static void set_color(const uint8_t rgb[3]) {
         spi_write_data(led_frame, 4);
     }
 
-    for(int32_t i = 0; i < 4; i++) {
+    for (int32_t i = 0; i < 4; i++) {
         uint8_t zero = 0x00;
         spi_write_data(&zero, 1);
     }
 }
 
 void interrupt_handler(int _) {
-    (void) _;
+    (void)_;
     is_interrupted = true;
 }
 
@@ -116,9 +116,14 @@ int main(int argc, char *argv[]) {
     if (argc != 15) {
         fprintf(
             stderr,
-            "usage : %s access_key library_path model_path sensitivity input_audio_device alexa_keyword_path "
-            "computer_keyword_path hey_google_keyword_path hey_siri_keyword_path jarvis_keyword_path "
-            "picovoice_keyword_path porcupine_keyword_path bumblebee_keyword_path terminator_keyword_path\n", argv[0]);
+            "usage : %s access_key library_path model_path sensitivity "
+            "input_audio_device alexa_keyword_path "
+            "computer_keyword_path hey_google_keyword_path "
+            "hey_siri_keyword_path jarvis_keyword_path "
+            "picovoice_keyword_path porcupine_keyword_path "
+            "bumblebee_keyword_path terminator_keyword_path\n",
+            argv[0]
+        );
         exit(1);
     }
 
@@ -127,9 +132,9 @@ int main(int argc, char *argv[]) {
     const char *access_key = argv[1];
     const char *library_path = argv[2];
     const char *model_path = argv[3];
-    const float sensitivity = (float) atof(argv[4]);
+    const float sensitivity = (float)atof(argv[4]);
     const char *input_audio_device = argv[5];
-    const char **keyword_paths = (const char **) &argv[6];
+    const char **keyword_paths = (const char **)&argv[6];
     const int32_t num_keywords = 9;
 
     void *porcupine_library = dlopen(library_path, RTLD_NOW);
@@ -140,41 +145,63 @@ int main(int argc, char *argv[]) {
 
     char *error = NULL;
 
-    const char *(*pv_status_to_string_func)(pv_status_t) = dlsym(porcupine_library, "pv_status_to_string");
+    const char *(*pv_status_to_string_func)(pv_status_t) =
+        dlsym(porcupine_library, "pv_status_to_string");
     if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_status_to_string' with '%s'.\n", error);
+        fprintf(
+            stderr, "failed to load 'pv_status_to_string' with '%s'.\n", error
+        );
         exit(1);
     }
 
-    int32_t (*pv_sample_rate_func)() = dlsym(porcupine_library, "pv_sample_rate");
+    int32_t (*pv_sample_rate_func)() =
+        dlsym(porcupine_library, "pv_sample_rate");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_sample_rate' with '%s'.\n", error);
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
-            dlsym(porcupine_library, "pv_porcupine_init");
+    pv_status_t (*pv_porcupine_init_func
+    )(const char *,
+      const char *,
+      int32_t,
+      const char *const *,
+      const float *,
+      pv_porcupine_t **) = dlsym(porcupine_library, "pv_porcupine_init");
     if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_init' with '%s'.\n", error);
+        fprintf(
+            stderr, "failed to load 'pv_porcupine_init' with '%s'.\n", error
+        );
         exit(1);
     }
 
-    void (*pv_porcupine_delete_func)(pv_porcupine_t *) = dlsym(porcupine_library, "pv_porcupine_delete");
+    void (*pv_porcupine_delete_func)(pv_porcupine_t *) =
+        dlsym(porcupine_library, "pv_porcupine_delete");
     if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_delete' with '%s'.\n", error);
+        fprintf(
+            stderr, "failed to load 'pv_porcupine_delete' with '%s'.\n", error
+        );
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) =
-            dlsym(porcupine_library, "pv_porcupine_process");
+    pv_status_t (*pv_porcupine_process_func
+    )(pv_porcupine_t *, const int16_t *, int32_t *) =
+        dlsym(porcupine_library, "pv_porcupine_process");
     if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_process' with '%s'.\n", error);
+        fprintf(
+            stderr, "failed to load 'pv_porcupine_process' with '%s'.\n", error
+        );
         exit(1);
     }
 
-    int32_t (*pv_porcupine_frame_length_func)() = dlsym(porcupine_library, "pv_porcupine_frame_length");
+    int32_t (*pv_porcupine_frame_length_func)() =
+        dlsym(porcupine_library, "pv_porcupine_frame_length");
     if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_porcupine_frame_length' with '%s'.\n", error);
+        fprintf(
+            stderr,
+            "failed to load 'pv_porcupine_frame_length' with '%s'.\n",
+            error
+        );
         exit(1);
     }
 
@@ -183,59 +210,111 @@ int main(int argc, char *argv[]) {
     for (int32_t i = 0; i < num_keywords; i++) {
         sensitivities[i] = sensitivity;
     }
-    pv_status_t status = pv_porcupine_init_func(access_key, model_path, num_keywords, keyword_paths, sensitivities, &porcupine);
+    pv_status_t status = pv_porcupine_init_func(
+        access_key,
+        model_path,
+        num_keywords,
+        keyword_paths,
+        sensitivities,
+        &porcupine
+    );
     if (status != PV_STATUS_SUCCESS) {
-        fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string_func(status));
+        fprintf(
+            stderr,
+            "'pv_porcupine_init' failed with '%s'\n",
+            pv_status_to_string_func(status)
+        );
         exit(1);
     }
 
     snd_pcm_t *alsa_handle = NULL;
-    int error_code = snd_pcm_open(&alsa_handle, input_audio_device, SND_PCM_STREAM_CAPTURE, 0);
+    int error_code = snd_pcm_open(
+        &alsa_handle, input_audio_device, SND_PCM_STREAM_CAPTURE, 0
+    );
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_open' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_open' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
     snd_pcm_hw_params_t *hardware_params = NULL;
     error_code = snd_pcm_hw_params_malloc(&hardware_params);
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_hw_params_malloc' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_hw_params_malloc' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
     error_code = snd_pcm_hw_params_any(alsa_handle, hardware_params);
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_hw_params_any' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_hw_params_any' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
-    error_code = snd_pcm_hw_params_set_access(alsa_handle, hardware_params, SND_PCM_ACCESS_RW_INTERLEAVED);
+    error_code = snd_pcm_hw_params_set_access(
+        alsa_handle, hardware_params, SND_PCM_ACCESS_RW_INTERLEAVED
+    );
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_hw_params_set_access' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_hw_params_set_access' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
-    error_code = snd_pcm_hw_params_set_format(alsa_handle, hardware_params, SND_PCM_FORMAT_S16_LE);
+    error_code = snd_pcm_hw_params_set_format(
+        alsa_handle, hardware_params, SND_PCM_FORMAT_S16_LE
+    );
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_hw_params_set_format' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_hw_params_set_format' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
-    error_code = snd_pcm_hw_params_set_rate(alsa_handle, hardware_params, pv_sample_rate_func(), 0);
+    error_code = snd_pcm_hw_params_set_rate(
+        alsa_handle, hardware_params, pv_sample_rate_func(), 0
+    );
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_hw_params_set_rate' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_hw_params_set_rate' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
-    error_code = snd_pcm_hw_params_set_channels(alsa_handle, hardware_params, 1);
+    error_code =
+        snd_pcm_hw_params_set_channels(alsa_handle, hardware_params, 1);
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_hw_params_set_channels' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_hw_params_set_channels' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
     error_code = snd_pcm_hw_params(alsa_handle, hardware_params);
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_hw_params' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_hw_params' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
@@ -243,7 +322,11 @@ int main(int argc, char *argv[]) {
 
     error_code = snd_pcm_prepare(alsa_handle);
     if (error_code != 0) {
-        fprintf(stderr, "'snd_pcm_prepare' failed with '%s'\n", snd_strerror(error_code));
+        fprintf(
+            stderr,
+            "'snd_pcm_prepare' failed with '%s'\n",
+            snd_strerror(error_code)
+        );
         exit(1);
     }
 
@@ -261,17 +344,27 @@ int main(int argc, char *argv[]) {
     while (!is_interrupted) {
         const int count = snd_pcm_readi(alsa_handle, pcm, frame_length);
         if (count < 0) {
-            fprintf(stderr, "'snd_pcm_readi' failed with '%s'\n", snd_strerror(count));
+            fprintf(
+                stderr,
+                "'snd_pcm_readi' failed with '%s'\n",
+                snd_strerror(count)
+            );
             exit(1);
         } else if (count != frame_length) {
-            fprintf(stderr, "read %d frames instead of %d\n", count, frame_length);
+            fprintf(
+                stderr, "read %d frames instead of %d\n", count, frame_length
+            );
             exit(1);
         }
 
         int32_t keyword_index = -1;
         status = pv_porcupine_process_func(porcupine, pcm, &keyword_index);
         if (status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n", pv_status_to_string_func(status));
+            fprintf(
+                stderr,
+                "'pv_porcupine_process' failed with '%s'\n",
+                pv_status_to_string_func(status)
+            );
             exit(1);
         }
         if (keyword_index != -1) {
@@ -284,8 +377,7 @@ int main(int argc, char *argv[]) {
                 "Picovoice",
                 "Porcupine",
                 "Bumblebee",
-                "Terminator"
-            };
+                "Terminator"};
 
             fprintf(stdout, "detected '%s'\n", KEYWORDS[keyword_index]);
 
@@ -298,35 +390,34 @@ int main(int argc, char *argv[]) {
                 "green",
                 "blue",
                 "orange",
-                "off"
-            };
+                "off"};
 
             switch (keyword_index) {
-                case 0:
+            case 0:
                 set_color(YELLOW_RGB);
                 break;
-                case 1:
+            case 1:
                 set_color(WHITE_RGB);
                 break;
-                case 2:
+            case 2:
                 set_color(RED_RGB);
                 break;
-                case 3:
+            case 3:
                 set_color(PURPLE_RGB);
                 break;
-                case 4:
+            case 4:
                 set_color(PINK_RGB);
                 break;
-                case 5:
+            case 5:
                 set_color(GREEN_RGB);
                 break;
-                case 6:
+            case 6:
                 set_color(BLUE_RGB);
                 break;
-                case 7:
+            case 7:
                 set_color(ORANGE_RGB);
                 break;
-                case 8:
+            case 8:
                 set_color(OFF_RGB);
                 break;
             }

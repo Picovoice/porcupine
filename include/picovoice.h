@@ -54,7 +54,6 @@ typedef enum {
 PV_API const char *pv_status_to_string(pv_status_t status);
 
 #ifdef __cplusplus
-
 }
 
 #endif

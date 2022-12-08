@@ -35,27 +35,25 @@ static pv_status_t pv_clock_config(void) {
     RCC_OscInitStruct.PLL.PLLN = 400;
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
     RCC_OscInitStruct.PLL.PLLQ = 7;
-    if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
-    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStruct.ClockType =
+        (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 |
+         RCC_CLOCKTYPE_PCLK2);
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-    if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK) {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
     return PV_STATUS_SUCCESS;
 }
 
-const uint8_t *pv_get_uuid(void) {
-    return (const uint8_t *) uuid;
-}
+const uint8_t *pv_get_uuid(void) { return (const uint8_t *)uuid; }
 
-const uint32_t pv_get_uuid_size(void) {
-    return UUID_SIZE;
-}
+const uint32_t pv_get_uuid_size(void) { return UUID_SIZE; }
 
 pv_status_t pv_board_init() {
     if (HAL_Init() != HAL_OK) {
@@ -64,7 +62,7 @@ pv_status_t pv_board_init() {
     if (pv_clock_config() != PV_STATUS_SUCCESS) {
         return PV_STATUS_INVALID_STATE;
     }
-    memcpy(uuid, (uint8_t *) UUID_ADDRESS, UUID_SIZE);
+    memcpy(uuid, (uint8_t *)UUID_ADDRESS, UUID_SIZE);
 
     BSP_LED_Init(LED3);
     BSP_LED_Init(LED4);
@@ -74,18 +72,17 @@ pv_status_t pv_board_init() {
     return PV_STATUS_SUCCESS;
 }
 
-void pv_board_deinit() {
-}
+void pv_board_deinit() {}
 
 void pv_error_handler(void) {
     __disable_irq();
-    while(true);
+    while (true)
+        ;
 }
 
-void assert_failed(uint8_t* file, uint32_t line)
-{
-    (void) file;
-    (void) line;
+void assert_failed(uint8_t *file, uint32_t line) {
+    (void)file;
+    (void)line;
     pv_error_handler();
 }
 

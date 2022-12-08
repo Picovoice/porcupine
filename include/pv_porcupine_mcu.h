@@ -32,7 +32,6 @@ extern "C" {
  */
 typedef struct pv_porcupine pv_porcupine_t;
 
-
 /**
  * Constructor.
  *
@@ -48,14 +47,15 @@ typedef struct pv_porcupine pv_porcupine_t;
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' or 'PV_STATUS_OUT_OF_MEMORY' on failure.
  */
 PV_API pv_status_t pv_porcupine_init(
-        const char *access_key,
-        int32_t memory_size,
-        void *memory_buffer,
-        int32_t num_keywords,
-        const int32_t *keyword_model_sizes,
-        const void *const *keyword_models,
-        const float *sensitivities,
-        pv_porcupine_t **object);
+    const char *access_key,
+    int32_t memory_size,
+    void *memory_buffer,
+    int32_t num_keywords,
+    const int32_t *keyword_model_sizes,
+    const void *const *keyword_models,
+    const float *sensitivities,
+    pv_porcupine_t **object
+);
 
 /**
  * Destructor.
@@ -75,7 +75,9 @@ PV_API void pv_porcupine_delete(pv_porcupine_t *object);
  * the ordering of keyword models provided to 'pv_porcupine_init()'. If no keyword is detected then it is set to -1.
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' or 'PV_STATUS_OUT_OF_MEMORY' on failure.
  */
-PV_API pv_status_t pv_porcupine_process(pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index);
+PV_API pv_status_t pv_porcupine_process(
+    pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index
+);
 
 /**
  * Computes the minimum required memory buffer size, in bytes, for the given keyword model.
@@ -93,12 +95,13 @@ PV_API pv_status_t pv_porcupine_process(pv_porcupine_t *object, const int16_t *p
  * */
 
 PV_API pv_status_t pv_porcupine_get_min_memory_buffer_size(
-        int32_t preliminary_memory_size,
-        void *preliminary_memory_buffer,
-        int32_t num_keywords,
-        const int32_t *keyword_model_sizes,
-        const void *const *keyword_models,
-        int32_t *min_memory_buffer_size);
+    int32_t preliminary_memory_size,
+    void *preliminary_memory_buffer,
+    int32_t num_keywords,
+    const int32_t *keyword_model_sizes,
+    const void *const *keyword_models,
+    int32_t *min_memory_buffer_size
+);
 
 /**
  * Getter for version.
