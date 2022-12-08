@@ -58,8 +58,7 @@ static void wake_word_callback(int32_t keyword_index) {
 }
 
 static void error_handler(void) {
-    while (true)
-        ;
+    while (true) {}
 }
 
 int main(void) {

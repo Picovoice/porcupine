@@ -208,8 +208,7 @@ pv_status_t pv_board_init() {
 
 void pv_error_handler(void) {
     __disable_irq();
-    while (true)
-        ;
+    while (true) {}
 }
 
 void assert_failed(uint8_t *file, uint32_t line) {

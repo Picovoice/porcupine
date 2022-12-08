@@ -39,8 +39,7 @@ static void wake_word_callback(void) {
 }
 
 static void error_handler(void) {
-    while (true)
-        ;
+    while (true) {}
 }
 
 int main(void) {

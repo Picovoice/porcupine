@@ -128,8 +128,7 @@ void pv_board_deinit() {
 }
 
 static void pv_error_handler(void) {
-    while (true)
-        ;
+    while (true) {}
 }
 
 void assert_failed(uint8_t *file, uint32_t line) {
