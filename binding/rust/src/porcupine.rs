@@ -27,7 +27,7 @@ use libloading::os::unix::Symbol as RawSymbol;
 #[cfg(windows)]
 use libloading::os::windows::Symbol as RawSymbol;
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(PartialEq, Eq, Clone, Debug)]
 pub enum BuiltinKeywords {
     Alexa,
     Americano,
@@ -113,7 +113,7 @@ impl BuiltinKeywords {
 struct CPorcupine {}
 
 #[repr(C)]
-#[derive(PartialEq, Clone, Debug)]
+#[derive(PartialEq, Eq, Clone, Debug)]
 #[allow(non_camel_case_types)]
 pub enum PvStatus {
     SUCCESS = 0,

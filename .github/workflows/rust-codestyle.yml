@@ -1,0 +1,91 @@
+name: Rust
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/rust/**'
+      - '!binding/rust/README.md'
+      - '.github/workflows/rust-codestyle.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'binding/rust/**'
+      - '!binding/rust/README.md'
+      - '.github/workflows/rust-codestyle.yml'
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check-rust-binding-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Rust pre-build
+      run: bash copy.sh
+      working-directory: binding/rust
+
+    - name: Rust dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt install libasound2-dev -y
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+
+    - name: Run clippy
+      run: cargo clippy -- -D warnings
+      working-directory: binding/rust
+
+  check-rust-filedemo-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Rust dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt install libasound2-dev -y
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+
+    - name: Run clippy
+      run: cargo clippy -- -D warnings
+      working-directory: demo/rust/filedemo
+
+  check-rust-micdemo-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Rust dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt install libasound2-dev -y
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+
+    - name: Run clippy
+      run: cargo clippy -- -D warnings
+      working-directory: demo/rust/micdemo
