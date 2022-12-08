@@ -11,6 +11,10 @@ on:
     paths:
       - '**/*.swift'
 
+defaults:
+  run:
+    working-directory: ./
+
 jobs:
   check-switch-codestyle:
     runs-on: macos-latest
