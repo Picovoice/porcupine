@@ -61,8 +61,7 @@ PV_API pv_status_t pv_porcupine_init(
         const int32_t *keyword_model_sizes,
         const void *const *keyword_models,
         const float *sensitivities,
-        pv_porcupine_t **object
-);
+        pv_porcupine_t **object);
 
 /**
  * Destructor.
@@ -112,8 +111,7 @@ PV_API pv_status_t pv_porcupine_get_min_memory_buffer_size(
         int32_t num_keywords,
         const int32_t *keyword_model_sizes,
         const void *const *keyword_models,
-        int32_t *min_memory_buffer_size
-);
+        int32_t *min_memory_buffer_size);
 
 /**
  * Getter for version.

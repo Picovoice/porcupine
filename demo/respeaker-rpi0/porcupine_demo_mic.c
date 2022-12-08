@@ -179,7 +179,9 @@ int main(int argc, char *argv[]) {
 
     pv_porcupine_t *porcupine = NULL;
     float sensitivities[num_keywords];
-    for (int32_t i = 0; i < num_keywords; i++) { sensitivities[i] = sensitivity; }
+    for (int32_t i = 0; i < num_keywords; i++) {
+        sensitivities[i] = sensitivity;
+    }
     pv_status_t status = pv_porcupine_init_func(access_key, model_path, num_keywords, keyword_paths, sensitivities, &porcupine);
     if (status != PV_STATUS_SUCCESS) {
         fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string_func(status));

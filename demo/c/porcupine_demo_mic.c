@@ -117,7 +117,9 @@ void show_audio_devices(void) {
     }
 
     fprintf(stdout, "Printing devices...\n");
-    for (int32_t i = 0; i < count; i++) { fprintf(stdout, "index: %d, name: %s\n", i, devices[i]); }
+    for (int32_t i = 0; i < count; i++) {
+        fprintf(stdout, "index: %d, name: %s\n", i, devices[i]);
+    }
 
     pv_recorder_free_device_list(count, devices);
 }
@@ -317,7 +319,9 @@ int main(int argc, char *argv[]) {
 
 #if defined(_WIN32) || defined(_WIN64)
 
-    for (int i = 0; i < argc; ++i) { free(utf8_argv[i]); }
+    for (int i = 0; i < argc; ++i) {
+        free(utf8_argv[i]);
+    }
 
 #endif
 

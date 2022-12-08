@@ -292,7 +292,9 @@ int main(int argc, char *argv[]) {
 
 #if defined(_WIN32) || defined(_WIN64)
 
-    for (int i = 0; i < argc; ++i) { free(utf8_argv[i]); }
+    for (int i = 0; i < argc; ++i) {
+        free(utf8_argv[i]);
+    }
 
 #endif
 

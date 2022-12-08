@@ -57,8 +57,7 @@ PV_API pv_status_t pv_porcupine_init(
         int32_t num_keywords,
         const char *const *keyword_paths,
         const float *sensitivities,
-        pv_porcupine_t **object
-);
+        pv_porcupine_t **object);
 
 /**
  * Destructor.
