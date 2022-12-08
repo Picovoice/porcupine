@@ -14,7 +14,7 @@ on:
       - '.github/workflows/c-codestyle.yml'
 
 jobs:
-  check-python-codestyle:
+  check-c-codestyle:
     runs-on: ubuntu-latest
 
     steps:
