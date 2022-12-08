@@ -7,13 +7,13 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-public class PorcupineError : LocalizedError {
-    private let message: String;
-    
+public class PorcupineError: LocalizedError {
+    private let message: String
+
     public init (_ message: String) {
         self.message = message
     }
-    
+
     public var errorDescription: String? {
         return message
     }
@@ -25,24 +25,24 @@ public class PorcupineError : LocalizedError {
     }
 }
 
-public class PorcupineMemoryError : PorcupineError {}
+public class PorcupineMemoryError: PorcupineError {}
 
-public class PorcupineIOError : PorcupineError {}
+public class PorcupineIOError: PorcupineError {}
 
-public class PorcupineInvalidArgumentError : PorcupineError {}
+public class PorcupineInvalidArgumentError: PorcupineError {}
 
-public class PorcupineStopIterationError : PorcupineError {}
+public class PorcupineStopIterationError: PorcupineError {}
 
-public class PorcupineKeyError : PorcupineError {}
+public class PorcupineKeyError: PorcupineError {}
 
-public class PorcupineInvalidStateError : PorcupineError {}
+public class PorcupineInvalidStateError: PorcupineError {}
 
-public class PorcupineRuntimeError : PorcupineError {}
+public class PorcupineRuntimeError: PorcupineError {}
 
-public class PorcupineActivationError : PorcupineError {}
+public class PorcupineActivationError: PorcupineError {}
 
-public class PorcupineActivationLimitError : PorcupineError {}
+public class PorcupineActivationLimitError: PorcupineError {}
 
-public class PorcupineActivationThrottledError : PorcupineError {}
+public class PorcupineActivationThrottledError: PorcupineError {}
 
-public class PorcupineActivationRefusedError : PorcupineError {}
+public class PorcupineActivationRefusedError: PorcupineError {}

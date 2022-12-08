@@ -29,24 +29,26 @@ class PerformanceTest: XCTestCase {
         let performanceThresholdSec = Double(thresholdString)
         try XCTSkipIf(performanceThresholdSec == nil)
 
-        let p:Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
+        let p: Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
 
         let bundle = Bundle(for: type(of: self))
-        let fileURL:URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav")!
+        let fileURL: URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav")!
 
         let data = try Data(contentsOf: fileURL)
         let frameLengthBytes = Int(Porcupine.frameLength) * 2
 
         var results: [Double] = []
         for _ in 0...numTestIterations {
-            var pcmBuffer = Array<Int16>(repeating: 0, count: Int(Porcupine.frameLength))
+            var pcmBuffer = [Int16](repeating: 0, count: Int(Porcupine.frameLength))
 
             var totalNSec = 0.0
             var index = 44
-            while(index + frameLengthBytes < data.count) {
-                _ = pcmBuffer.withUnsafeMutableBytes { data.copyBytes(to: $0, from: index..<(index + frameLengthBytes)) }
+            while index + frameLengthBytes < data.count {
+                _ = pcmBuffer.withUnsafeMutableBytes {
+                    data.copyBytes(to: $0, from: index..<(index + frameLengthBytes))
+                }
                 let before = CFAbsoluteTimeGetCurrent()
-                try p.process(pcm:pcmBuffer)
+                try p.process(pcm: pcmBuffer)
                 let after = CFAbsoluteTimeGetCurrent()
                 totalNSec += (after - before)
                 index += frameLengthBytes

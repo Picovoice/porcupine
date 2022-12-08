@@ -48,7 +48,10 @@ class PorcupineAppTestUITests: BaseTest {
         let keywordPath = bundle.path(forResource: "hey barista_ios", ofType: "ppn")!
         let keywordPath2 = bundle.path(forResource: "pico clock_ios", ofType: "ppn")!
 
-        let p = try Porcupine.init(accessKey: accessKey, keywordPaths: [keywordPath, keywordPath2], sensitivities: [0.35, 0.6])
+        let p = try Porcupine.init(
+            accessKey: accessKey,
+            keywordPaths: [keywordPath, keywordPath2],
+            sensitivities: [0.35, 0.6])
         p.delete()
     }
 
@@ -71,7 +74,10 @@ class PorcupineAppTestUITests: BaseTest {
 
         var didFail = false
         do {
-            _ = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine, modelPath: "bad_path/bad_path.pv")
+            _ = try Porcupine.init(
+                accessKey: accessKey,
+                keyword: Porcupine.BuiltInKeyword.porcupine,
+                modelPath: "bad_path/bad_path.pv")
         } catch {
             didFail = true
         }
@@ -143,7 +149,7 @@ class PorcupineAppTestUITests: BaseTest {
 
         XCTAssert(didFail)
     }
-    
+
     func testInitWithNonAsciiModelName() throws {
         let bundle = Bundle(for: type(of: self))
         let keywordPath = bundle.path(forResource: "murciélago_ios", ofType: "ppn")!

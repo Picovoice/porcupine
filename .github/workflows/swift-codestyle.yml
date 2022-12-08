@@ -1,0 +1,24 @@
+name: Swift Codestyle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/*.swift'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '**/*.swift'
+
+jobs:
+  check-switch-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Check swift codestyle
+      uses: norio-nomura/action-swiftlint@3.2.1
+      with:
+        args: lint --config resources/lint/swift/.swiftlint.yml --strict
