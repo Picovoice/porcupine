@@ -12,8 +12,8 @@ on:
       - '**/*.swift'
 
 jobs:
-  check-python-codestyle:
-     runs-on: macos-latest
+  check-switch-codestyle:
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
