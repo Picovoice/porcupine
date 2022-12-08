@@ -56,7 +56,12 @@ func main() {
 	}
 
 	p := porcupine.Porcupine{}
-	defer p.Delete()
+	defer func() {
+		err := p.Delete()
+		if err != nil {
+			log.Fatalf("Failed to release resources: %s", err)
+		}
+	}()
 
 	if *accessKeyArg == "" {
 		log.Fatalf("AccessKey is required.")
