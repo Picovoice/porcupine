@@ -114,8 +114,7 @@ void interrupt_handler(int _) {
 
 int main(int argc, char *argv[]) {
     if (argc != 15) {
-        fprintf(
-                stderr,
+        fprintf(stderr,
                 "usage : %s access_key library_path model_path sensitivity input_audio_device alexa_keyword_path "
                 "computer_keyword_path hey_google_keyword_path hey_siri_keyword_path jarvis_keyword_path "
                 "picovoice_keyword_path porcupine_keyword_path bumblebee_keyword_path terminator_keyword_path\n",
@@ -166,8 +165,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) =
-            dlsym(porcupine_library, "pv_porcupine_process");
+    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) = dlsym(porcupine_library, "pv_porcupine_process");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_porcupine_process' with '%s'.\n", error);
         exit(1);
@@ -181,9 +179,7 @@ int main(int argc, char *argv[]) {
 
     pv_porcupine_t *porcupine = NULL;
     float sensitivities[num_keywords];
-    for (int32_t i = 0; i < num_keywords; i++) {
-        sensitivities[i] = sensitivity;
-    }
+    for (int32_t i = 0; i < num_keywords; i++) { sensitivities[i] = sensitivity; }
     pv_status_t status = pv_porcupine_init_func(access_key, model_path, num_keywords, keyword_paths, sensitivities, &porcupine);
     if (status != PV_STATUS_SUCCESS) {
         fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string_func(status));
@@ -276,29 +272,12 @@ int main(int argc, char *argv[]) {
             exit(1);
         }
         if (keyword_index != -1) {
-            static const char *KEYWORDS[] = {
-                    "Alexa",
-                    "Computer",
-                    "Hey Google",
-                    "Hey Siri",
-                    "Jarvis",
-                    "Picovoice",
-                    "Porcupine",
-                    "Bumblebee",
-                    "Terminator"};
+            static const char *KEYWORDS[] =
+                    {"Alexa", "Computer", "Hey Google", "Hey Siri", "Jarvis", "Picovoice", "Porcupine", "Bumblebee", "Terminator"};
 
             fprintf(stdout, "detected '%s'\n", KEYWORDS[keyword_index]);
 
-            static const char *COLORS[] = {
-                    "yellow",
-                    "white",
-                    "red",
-                    "purple",
-                    "pink",
-                    "green",
-                    "blue",
-                    "orange",
-                    "off"};
+            static const char *COLORS[] = {"yellow", "white", "red", "purple", "pink", "green", "blue", "orange", "off"};
 
             switch (keyword_index) {
                 case 0:

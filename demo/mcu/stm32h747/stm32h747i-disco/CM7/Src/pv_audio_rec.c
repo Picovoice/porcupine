@@ -86,18 +86,11 @@ const int16_t *pv_audio_rec_get_new_buffer(void) {
 
 void BSP_AUDIO_IN_TransferComplete_CallBack(uint32_t Instance) {
     if (Instance == 1U) {
-        SCB_InvalidateDCache_by_Addr(
-                (uint32_t *) &record_pdm_buffer[AUDIO_IN_PDM_BUFFER_SIZE / 2],
-                AUDIO_IN_PDM_BUFFER_SIZE * 2);
-        BSP_AUDIO_IN_PDMToPCM(Instance,
-                              (uint16_t *) &record_pdm_buffer[AUDIO_IN_PDM_BUFFER_SIZE / 2],
-                              record_pcm_buffer);
-        SCB_CleanDCache_by_Addr((uint32_t *) record_pcm_buffer,
-                                AUDIO_IN_PDM_BUFFER_SIZE / 4);
+        SCB_InvalidateDCache_by_Addr((uint32_t *) &record_pdm_buffer[AUDIO_IN_PDM_BUFFER_SIZE / 2], AUDIO_IN_PDM_BUFFER_SIZE * 2);
+        BSP_AUDIO_IN_PDMToPCM(Instance, (uint16_t *) &record_pdm_buffer[AUDIO_IN_PDM_BUFFER_SIZE / 2], record_pcm_buffer);
+        SCB_CleanDCache_by_Addr((uint32_t *) record_pcm_buffer, AUDIO_IN_PDM_BUFFER_SIZE / 4);
 
-        for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE / 2; i++) {
-            ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2];
-        }
+        for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE / 2; i++) { ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2]; }
         if (buffer_index >= PV_AUDIO_REC_RECORD_BUFFER_SIZE) {
             read_index = write_index;
             write_index = 1 - write_index;
@@ -108,16 +101,11 @@ void BSP_AUDIO_IN_TransferComplete_CallBack(uint32_t Instance) {
 
 void BSP_AUDIO_IN_HalfTransfer_CallBack(uint32_t Instance) {
     if (Instance == 1U) {
-        SCB_InvalidateDCache_by_Addr((uint32_t *) &record_pdm_buffer[0],
-                                     AUDIO_IN_PDM_BUFFER_SIZE * 2);
-        BSP_AUDIO_IN_PDMToPCM(Instance, (uint16_t *) &record_pdm_buffer[0],
-                              record_pcm_buffer);
-        SCB_CleanDCache_by_Addr((uint32_t *) record_pcm_buffer,
-                                AUDIO_IN_PDM_BUFFER_SIZE / 4);
+        SCB_InvalidateDCache_by_Addr((uint32_t *) &record_pdm_buffer[0], AUDIO_IN_PDM_BUFFER_SIZE * 2);
+        BSP_AUDIO_IN_PDMToPCM(Instance, (uint16_t *) &record_pdm_buffer[0], record_pcm_buffer);
+        SCB_CleanDCache_by_Addr((uint32_t *) record_pcm_buffer, AUDIO_IN_PDM_BUFFER_SIZE / 4);
 
-        for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE / 2; i++) {
-            ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2];
-        }
+        for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE / 2; i++) { ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2]; }
         if (buffer_index >= PV_AUDIO_REC_RECORD_BUFFER_SIZE) {
             read_index = write_index;
             write_index = 1 - write_index;

@@ -63,8 +63,7 @@ static pv_status_t pv_clock_config(void) {
     HAL_PWREx_ConfigSupply(PWR_DIRECT_SMPS_SUPPLY);
     __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-    while (!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {
-    }
+    while (!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -87,8 +86,8 @@ static pv_status_t pv_clock_config(void) {
         return PV_STATUS_INVALID_STATE;
     }
 
-    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_PCLK1 |
-                                   RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_D3PCLK1);
+    RCC_ClkInitStruct.ClockType =
+            (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_D3PCLK1);
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;

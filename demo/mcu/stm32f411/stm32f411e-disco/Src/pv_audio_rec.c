@@ -80,11 +80,8 @@ const int16_t *pv_audio_rec_get_new_buffer(void) {
 }
 
 void BSP_AUDIO_IN_TransferComplete_CallBack(void) {
-    BSP_AUDIO_IN_PDMToPCM((uint16_t *) &record_pdm_buffer[AUDIO_IN_PDM_BUFFER_SIZE / 2],
-                          record_pcm_buffer);
-    for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE; i++) {
-        ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2];
-    }
+    BSP_AUDIO_IN_PDMToPCM((uint16_t *) &record_pdm_buffer[AUDIO_IN_PDM_BUFFER_SIZE / 2], record_pcm_buffer);
+    for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE; i++) { ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2]; }
     if (buffer_index >= PV_AUDIO_REC_RECORD_BUFFER_SIZE) {
         read_index = write_index;
         write_index = 1 - write_index;
@@ -93,11 +90,8 @@ void BSP_AUDIO_IN_TransferComplete_CallBack(void) {
 }
 
 void BSP_AUDIO_IN_HalfTransfer_CallBack(void) {
-    BSP_AUDIO_IN_PDMToPCM((uint16_t *) &record_pdm_buffer[0],
-                          record_pcm_buffer);
-    for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE; i++) {
-        ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2];
-    }
+    BSP_AUDIO_IN_PDMToPCM((uint16_t *) &record_pdm_buffer[0], record_pcm_buffer);
+    for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE; i++) { ping_pong_buffer[write_index][buffer_index++] = record_pcm_buffer[i * 2]; }
     if (buffer_index >= PV_AUDIO_REC_RECORD_BUFFER_SIZE) {
         read_index = write_index;
         write_index = 1 - write_index;

@@ -152,7 +152,8 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) = load_symbol(porcupine_library, "pv_porcupine_init");
+    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
+            load_symbol(porcupine_library, "pv_porcupine_init");
     if (!pv_porcupine_init_func) {
         print_dl_error("failed to load 'pv_porcupine_init'");
         exit(1);
@@ -164,8 +165,7 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) =
-            load_symbol(porcupine_library, "pv_porcupine_process");
+    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) = load_symbol(porcupine_library, "pv_porcupine_process");
     if (!pv_porcupine_process_func) {
         print_dl_error("failed to load 'pv_porcupine_process'");
         exit(1);
@@ -238,8 +238,7 @@ int picovoice_main(int argc, char *argv[]) {
         struct timeval after;
         gettimeofday(&after, NULL);
 
-        total_cpu_time_usec +=
-                (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
+        total_cpu_time_usec += (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
         total_processed_time_usec += (pv_porcupine_frame_length_func() * 1e6) / pv_sample_rate_func();
 
         if (keyword_index != -1) {
@@ -293,9 +292,7 @@ int main(int argc, char *argv[]) {
 
 #if defined(_WIN32) || defined(_WIN64)
 
-    for (int i = 0; i < argc; ++i) {
-        free(utf8_argv[i]);
-    }
+    for (int i = 0; i < argc; ++i) { free(utf8_argv[i]); }
 
 #endif
 

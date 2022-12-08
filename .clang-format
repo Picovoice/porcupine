@@ -3,7 +3,7 @@ BasedOnStyle: LLVM
 Cpp11BracedListStyle: true
 AccessModifierOffset: -4
 AlignTrailingComments: false
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: BlockIndent
 AllowAllArgumentsOnNextLine: false
 AllowAllConstructorInitializersOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
@@ -17,6 +17,8 @@ AllowShortLoopsOnASingleLine: true
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: Yes
 BreakBeforeBraces: Custom
+BinPackArguments: false
+BinPackParameters: false
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: false
@@ -36,7 +38,7 @@ BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
-ColumnLimit: 0
+ColumnLimit: 150
 CommentPragmas:  '^[^ ]'
 CompactNamespaces: false
 ContinuationIndentWidth: 8

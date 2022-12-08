@@ -150,9 +150,7 @@ void pv_pcm_process(int16_t *record_pcm_buffer) {
 
     int32_t temp_buffer_size = PV_AUDIO_REC_RECORD_BUFFER_SIZE - buffer_index;
     if (temp_buffer_size < AUDIO_IN_PCM_BUFFER_SIZE) {
-        for (uint32_t i = 0; i < temp_buffer_size; i++) {
-            ping_pong_buffer[write_index][buffer_index++] = *record_pcm_buffer++;
-        }
+        for (uint32_t i = 0; i < temp_buffer_size; i++) { ping_pong_buffer[write_index][buffer_index++] = *record_pcm_buffer++; }
         read_index = write_index;
         write_index = 1 - write_index;
         buffer_index = 0;
@@ -161,9 +159,7 @@ void pv_pcm_process(int16_t *record_pcm_buffer) {
         temp_buffer_size = AUDIO_IN_PCM_BUFFER_SIZE;
     }
 
-    for (uint32_t i = 0; i < temp_buffer_size; i++) {
-        ping_pong_buffer[write_index][buffer_index++] = *record_pcm_buffer++;
-    }
+    for (uint32_t i = 0; i < temp_buffer_size; i++) { ping_pong_buffer[write_index][buffer_index++] = *record_pcm_buffer++; }
 
     if (buffer_index >= PV_AUDIO_REC_RECORD_BUFFER_SIZE) {
         read_index = write_index;

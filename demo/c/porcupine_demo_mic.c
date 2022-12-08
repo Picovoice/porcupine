@@ -93,9 +93,12 @@ static struct option long_options[] = {
 };
 
 static void print_usage(const char *program_name) {
-    fprintf(stderr, "Usage : %s -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSITIVITY -a ACCESS_KEY -d AUDIO_DEVICE_INDEX\n"
-                    "        %s [-s, --show_audio_devices]\n",
-            program_name, program_name);
+    fprintf(stderr,
+            "Usage : %s -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSITIVITY -a ACCESS_KEY -d "
+            "AUDIO_DEVICE_INDEX\n"
+            "        %s [-s, --show_audio_devices]\n",
+            program_name,
+            program_name);
 }
 
 void interrupt_handler(int _) {
@@ -114,9 +117,7 @@ void show_audio_devices(void) {
     }
 
     fprintf(stdout, "Printing devices...\n");
-    for (int32_t i = 0; i < count; i++) {
-        fprintf(stdout, "index: %d, name: %s\n", i, devices[i]);
-    }
+    for (int32_t i = 0; i < count; i++) { fprintf(stdout, "index: %d, name: %s\n", i, devices[i]); }
 
     pv_recorder_free_device_list(count, devices);
 }
@@ -183,7 +184,8 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) = load_symbol(porcupine_library, "pv_porcupine_init");
+    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
+            load_symbol(porcupine_library, "pv_porcupine_init");
     if (!pv_porcupine_init_func) {
         print_dl_error("failed to load 'pv_porcupine_init'");
         exit(1);
@@ -315,9 +317,7 @@ int main(int argc, char *argv[]) {
 
 #if defined(_WIN32) || defined(_WIN64)
 
-    for (int i = 0; i < argc; ++i) {
-        free(utf8_argv[i]);
-    }
+    for (int i = 0; i < argc; ++i) { free(utf8_argv[i]); }
 
 #endif
 
