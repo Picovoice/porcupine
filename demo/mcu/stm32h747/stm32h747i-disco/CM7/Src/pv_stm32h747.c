@@ -87,9 +87,8 @@ static pv_status_t pv_clock_config(void) {
         return PV_STATUS_INVALID_STATE;
     }
 
-    RCC_ClkInitStruct.ClockType =
-        (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 |
-         RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_D3PCLK1);
+    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_PCLK1 |
+                                   RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_D3PCLK1);
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
@@ -133,12 +132,10 @@ static pv_status_t pv_uart_init(void) {
     if (HAL_UART_Init(&huart) != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
-    if (HAL_UARTEx_SetTxFifoThreshold(&huart, UART_TXFIFO_THRESHOLD_1_8) !=
-        HAL_OK) {
+    if (HAL_UARTEx_SetTxFifoThreshold(&huart, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
-    if (HAL_UARTEx_SetRxFifoThreshold(&huart, UART_RXFIFO_THRESHOLD_1_8) !=
-        HAL_OK) {
+    if (HAL_UARTEx_SetRxFifoThreshold(&huart, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
     if (HAL_UARTEx_DisableFifoMode(&huart) != HAL_OK) {
@@ -156,9 +153,13 @@ pv_status_t pv_message_init(void) {
     return PV_STATUS_SUCCESS;
 }
 
-const uint8_t *pv_get_uuid(void) { return (const uint8_t *)uuid; }
+const uint8_t *pv_get_uuid(void) {
+    return (const uint8_t *) uuid;
+}
 
-const uint32_t pv_get_uuid_size(void) { return UUID_SIZE; }
+const uint32_t pv_get_uuid_size(void) {
+    return UUID_SIZE;
+}
 
 pv_status_t pv_board_init() {
     MPU_Config();
@@ -170,7 +171,7 @@ pv_status_t pv_board_init() {
     if (pv_clock_config() != PV_STATUS_SUCCESS) {
         return PV_STATUS_INVALID_STATE;
     }
-    memcpy(uuid, (uint8_t *)UUID_ADDRESS, UUID_SIZE);
+    memcpy(uuid, (uint8_t *) UUID_ADDRESS, UUID_SIZE);
 
     BSP_LED_Init(LED1);
     BSP_LED_Init(LED2);
@@ -180,7 +181,8 @@ pv_status_t pv_board_init() {
     return PV_STATUS_SUCCESS;
 }
 
-void pv_board_deinit() {}
+void pv_board_deinit() {
+}
 
 void pv_error_handler(void) {
     while (true)
@@ -188,12 +190,12 @@ void pv_error_handler(void) {
 }
 
 void assert_failed(uint8_t *file, uint32_t line) {
-    (void)file;
-    (void)line;
+    (void) file;
+    (void) line;
     pv_error_handler();
 }
 
 int __io_putchar(int ch) {
-    HAL_UART_Transmit(&huart, (uint8_t *)&ch, 1, 1000);
+    HAL_UART_Transmit(&huart, (uint8_t *) &ch, 1, 1000);
     return ch;
 }

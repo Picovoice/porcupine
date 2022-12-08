@@ -24,11 +24,9 @@
 
 #define MEMORY_BUFFER_SIZE (20 * 1024)
 
-static const char *ACCESS_KEY =
-    ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+static const char *ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
-    static int8_t memory_buffer[MEMORY_BUFFER_SIZE]
-    __attribute__((aligned(16)));
+        static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
 static const int32_t KEYWORD_MODEL_SIZES = sizeof(DEFAULT_KEYWORD_ARRAY);
 static const void *KEYWORD_MODELS = DEFAULT_KEYWORD_ARRAY;
@@ -78,15 +76,14 @@ int main(void) {
     pv_porcupine_t *handle = NULL;
 
     status = pv_porcupine_init(
-        ACCESS_KEY,
-        MEMORY_BUFFER_SIZE,
-        memory_buffer,
-        1,
-        &KEYWORD_MODEL_SIZES,
-        &KEYWORD_MODELS,
-        &SENSITIVITY,
-        &handle
-    );
+            ACCESS_KEY,
+            MEMORY_BUFFER_SIZE,
+            memory_buffer,
+            1,
+            &KEYWORD_MODEL_SIZES,
+            &KEYWORD_MODELS,
+            &SENSITIVITY,
+            &handle);
 
     if (status != PV_STATUS_SUCCESS) {
         printf("Porcupine init failed with '%s'", pv_status_to_string(status));
@@ -98,13 +95,9 @@ int main(void) {
         const int16_t *buffer = pv_audio_rec_get_new_buffer();
         if (buffer) {
             int32_t keyword_index;
-            const pv_status_t status =
-                pv_porcupine_process(handle, buffer, &keyword_index);
+            const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
             if (status != PV_STATUS_SUCCESS) {
-                printf(
-                    "Porcupine process failed with '%s'",
-                    pv_status_to_string(status)
-                );
+                printf("Porcupine process failed with '%s'", pv_status_to_string(status));
                 error_handler();
             }
             if (keyword_index != -1) {

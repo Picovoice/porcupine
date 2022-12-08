@@ -20,9 +20,7 @@
 #define PV_INT16_MAX (32767)
 #define PV_INT16_MIN (-32767 - 1)
 
-#define pv_int32_to_int16(N)                                                   \
-    (((N) < (PV_INT16_MIN)) ? (PV_INT16_MIN)                                   \
-                            : (((N) > (PV_INT16_MAX)) ? (PV_INT16_MAX) : (N)))
+#define pv_int32_to_int16(N) (((N) < (PV_INT16_MIN)) ? (PV_INT16_MIN) : (((N) > (PV_INT16_MAX)) ? (PV_INT16_MAX) : (N)))
 
 __IO uint32_t SdmmcTest = 0;
 __IO uint32_t SdramTest = 0;
@@ -37,9 +35,7 @@ __IO uint32_t SdramTest = 0;
 
 ALIGN_32BYTES(static int32_t record_pdm_buffer[AUDIO_IN_PDM_BUFFER_SIZE]);
 ALIGN_32BYTES(static uint16_t record_pcm_buffer[AUDIO_IN_PCM_BUFFER_SIZE]);
-ALIGN_32BYTES(
-    static int16_t ping_pong_buffer[2][PV_AUDIO_REC_RECORD_BUFFER_SIZE]
-);
+ALIGN_32BYTES(static int16_t ping_pong_buffer[2][PV_AUDIO_REC_RECORD_BUFFER_SIZE]);
 
 static int32_t last_read_index = -1;
 static int32_t read_index = 1;
@@ -62,11 +58,7 @@ pv_status_t pv_audio_rec_init(void) {
     pv_audio_rec.record_pcm_buffer = record_pcm_buffer;
     pv_audio_rec.filter_old_output = 0;
 
-    if (BSP_AUDIO_IN_Init(
-            PV_AUDIO_REC_AUDIO_FREQUENCY,
-            DEFAULT_AUDIO_IN_BIT_RESOLUTION,
-            PV_AUDIO_REC_CHANNEL_NUMBER
-        ) != AUDIO_OK) {
+    if (BSP_AUDIO_IN_Init(PV_AUDIO_REC_AUDIO_FREQUENCY, DEFAULT_AUDIO_IN_BIT_RESOLUTION, PV_AUDIO_REC_CHANNEL_NUMBER) != AUDIO_OK) {
         return PV_STATUS_INVALID_STATE;
     }
     BSP_AUDIO_IN_AllocScratch(record_pdm_buffer, AUDIO_IN_PDM_BUFFER_SIZE);
@@ -75,9 +67,7 @@ pv_status_t pv_audio_rec_init(void) {
 
 pv_status_t pv_audio_rec_start(void) {
     pv_audio_rec_init();
-    if (BSP_AUDIO_IN_Record(
-            (uint16_t *)(record_pcm_buffer), AUDIO_IN_PCM_BUFFER_SIZE
-        ) != AUDIO_OK) {
+    if (BSP_AUDIO_IN_Record((uint16_t *) (record_pcm_buffer), AUDIO_IN_PCM_BUFFER_SIZE) != AUDIO_OK) {
         return PV_STATUS_INVALID_STATE;
     }
     pv_audio_rec.is_recording = true;
@@ -108,19 +98,15 @@ const int16_t *pv_audio_rec_get_new_buffer(void) {
 
 static inline int16_t pv_hpf(int16_t s_int16, int16_t s_old_int16) {
     //0xFC and 0x100 are the tuning parameters come from st for high pass filter
-    pv_audio_rec.filter_old_output =
-        (0xFC * (pv_audio_rec.filter_old_output + (int32_t)s_int16 -
-                 (int32_t)s_old_int16)) /
-        0x100;
-    return (int16_t)pv_int32_to_int16(pv_audio_rec.filter_old_output);
+    pv_audio_rec.filter_old_output = (0xFC * (pv_audio_rec.filter_old_output + (int32_t) s_int16 - (int32_t) s_old_int16)) / 0x100;
+    return (int16_t) pv_int32_to_int16(pv_audio_rec.filter_old_output);
 }
 
 void BSP_AUDIO_IN_TransferComplete_CallBack(void) {
     for (uint32_t i = 0; i < AUDIO_IN_PCM_BUFFER_SIZE / 4; i++) {
         ping_pong_buffer[write_index][buffer_index++] = pv_hpf(
-            record_pcm_buffer[(AUDIO_IN_PCM_BUFFER_SIZE / 2) + i * 2],
-            record_pcm_buffer[(AUDIO_IN_PCM_BUFFER_SIZE / 2) + (i - 1) * 2]
-        );
+                record_pcm_buffer[(AUDIO_IN_PCM_BUFFER_SIZE / 2) + i * 2],
+                record_pcm_buffer[(AUDIO_IN_PCM_BUFFER_SIZE / 2) + (i - 1) * 2]);
     }
 
     if (buffer_index >= AUDIO_IN_PCM_BUFFER_SIZE) {
@@ -131,12 +117,11 @@ void BSP_AUDIO_IN_TransferComplete_CallBack(void) {
 }
 
 void BSP_AUDIO_IN_HalfTransfer_CallBack(void) {
-    ping_pong_buffer[write_index][buffer_index++] = pv_hpf(
-        record_pcm_buffer[0], record_pcm_buffer[AUDIO_IN_PCM_BUFFER_SIZE - 2]
-    );
+    ping_pong_buffer[write_index][buffer_index++] = pv_hpf(record_pcm_buffer[0], record_pcm_buffer[AUDIO_IN_PCM_BUFFER_SIZE - 2]);
     for (uint32_t i = 1; i < AUDIO_IN_PCM_BUFFER_SIZE / 4; i++) {
-        ping_pong_buffer[write_index][buffer_index++] =
-            pv_hpf(record_pcm_buffer[i * 2], record_pcm_buffer[(i - 1) * 2]);
+        ping_pong_buffer[write_index][buffer_index++] = pv_hpf(
+                record_pcm_buffer[i * 2],
+                record_pcm_buffer[(i - 1) * 2]);
     }
     if (buffer_index >= AUDIO_IN_PCM_BUFFER_SIZE) {
         read_index = write_index;

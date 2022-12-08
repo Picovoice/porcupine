@@ -41,8 +41,7 @@ DMA_HandleTypeDef hdma_sai4_a;
 
 #define PV_AUDIO_DUMP_DURATION_SEC (3)
 #define PV_AUDIO_REC_AUDIO_FREQUENCY (16000U)
-#define PV_AUDIO_DUMP_BUFFER_SIZE                                              \
-    ((uint32_t)(PV_AUDIO_DUMP_DURATION_SEC * PV_AUDIO_REC_AUDIO_FREQUENCY))
+#define PV_AUDIO_DUMP_BUFFER_SIZE ((uint32_t) (PV_AUDIO_DUMP_DURATION_SEC * PV_AUDIO_REC_AUDIO_FREQUENCY))
 
 struct {
     uint32_t channel_number;
@@ -87,10 +86,7 @@ static void MX_SAI4_Init(void) {
 
 static void MX_BDMA_Init(void) {
     __HAL_RCC_BDMA_CLK_ENABLE();
-    NVIC_SetPriority(
-        BDMA_Channel0_IRQn,
-        NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0)
-    );
+    NVIC_SetPriority(BDMA_Channel0_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
     NVIC_EnableIRQ(BDMA_Channel0_IRQn);
 }
 
@@ -155,8 +151,7 @@ void pv_pcm_process(int16_t *record_pcm_buffer) {
     int32_t temp_buffer_size = PV_AUDIO_REC_RECORD_BUFFER_SIZE - buffer_index;
     if (temp_buffer_size < AUDIO_IN_PCM_BUFFER_SIZE) {
         for (uint32_t i = 0; i < temp_buffer_size; i++) {
-            ping_pong_buffer[write_index][buffer_index++] =
-                *record_pcm_buffer++;
+            ping_pong_buffer[write_index][buffer_index++] = *record_pcm_buffer++;
         }
         read_index = write_index;
         write_index = 1 - write_index;
