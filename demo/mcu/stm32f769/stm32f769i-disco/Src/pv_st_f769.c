@@ -17,15 +17,15 @@
 #include "pv_st_f769.h"
 
 #define UUID_ADDRESS (0x1FF0F420)
-#define UUID_SIZE (12)
+#define UUID_SIZE    (12)
 
 
-#define PV_COM (USART1)
-#define PV_COM_ALT (GPIO_AF7_USART1)
-#define PV_COM_IRQn (USART1_IRQn)
-#define PV_COM_TX_Pin (GPIO_PIN_10)
+#define PV_COM              (USART1)
+#define PV_COM_ALT          (GPIO_AF7_USART1)
+#define PV_COM_IRQn         (USART1_IRQn)
+#define PV_COM_TX_Pin       (GPIO_PIN_10)
 #define PV_COM_TX_GPIO_Port (GPIOA)
-#define PV_COM_RX_Pin (GPIO_PIN_9)
+#define PV_COM_RX_Pin       (GPIO_PIN_9)
 #define PV_COM_RX_GPIO_Port (GPIOA)
 
 static uint8_t uuid[UUID_SIZE];

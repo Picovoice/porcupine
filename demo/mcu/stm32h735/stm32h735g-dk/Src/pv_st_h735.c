@@ -18,14 +18,14 @@
 #include "pv_st_h735.h"
 
 #define UUID_ADDRESS (0x1FF1E800)
-#define UUID_SIZE (12)
+#define UUID_SIZE    (12)
 
-#define PV_COM (USART3)
-#define PV_COM_ALT (GPIO_AF7_USART3)
-#define PV_COM_IRQn (USART3_IRQn)
-#define PV_COM_TX_Pin (GPIO_PIN_8)
+#define PV_COM              (USART3)
+#define PV_COM_ALT          (GPIO_AF7_USART3)
+#define PV_COM_IRQn         (USART3_IRQn)
+#define PV_COM_TX_Pin       (GPIO_PIN_8)
 #define PV_COM_TX_GPIO_Port (GPIOD)
-#define PV_COM_RX_Pin (GPIO_PIN_9)
+#define PV_COM_RX_Pin       (GPIO_PIN_9)
 #define PV_COM_RX_GPIO_Port (GPIOD)
 
 static uint8_t uuid[UUID_SIZE];

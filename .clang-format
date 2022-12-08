@@ -2,6 +2,7 @@
 BasedOnStyle: LLVM
 Cpp11BracedListStyle: true
 AccessModifierOffset: -4
+AlignConsecutiveMacros: true
 AlignTrailingComments: false
 AlignAfterOpenBracket: Align
 AllowAllArgumentsOnNextLine: false

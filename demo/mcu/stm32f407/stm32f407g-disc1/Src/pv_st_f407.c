@@ -17,7 +17,7 @@
 #include "pv_st_f407.h"
 
 #define UUID_ADDRESS (0x1FFF7A10)
-#define UUID_SIZE (12)
+#define UUID_SIZE    (12)
 
 static uint8_t uuid[UUID_SIZE];
 
