@@ -1,4 +1,4 @@
-name: C
+name: C Codestyle
 
 on:
   workflow_dispatch:
