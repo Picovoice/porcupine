@@ -58,9 +58,6 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
-    - name: Lint
-      run: yarn lint
-
     - name: Test
       run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
 
@@ -79,9 +76,6 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
-
-    - name: Lint
-      run: yarn lint
 
     - name: Test
       run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}}

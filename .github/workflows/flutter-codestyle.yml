@@ -1,0 +1,34 @@
+name: Flutter Codestyle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/*.dart'
+      - '.github/workflows/flutter-codestyle.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '**/*.dart'
+      - '.github/workflows/flutter-codestyle.yml'
+
+jobs:
+  check-flutter-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Flutter 2.8.1
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 2.8.1
+
+    - name: Run Binding Analyzer
+      run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      working-directory: binding/flutter
+
+    - name: Run Demo Analyzer
+      run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      working-directory: demo/flutter
