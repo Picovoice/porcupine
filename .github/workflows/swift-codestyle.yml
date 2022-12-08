@@ -18,8 +18,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Swiftlint
-      run: brew install swiftlint
-
     - name: Check swift codestyle
-      run: swiftlint lint --config resources/lint/swift/.swiftlint.yml --strict
+      run: ./resources/lint/swft/swiftlint lint --config resources/lint/swift/.swiftlint.yml --strict
