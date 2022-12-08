@@ -19,4 +19,6 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Check swift codestyle
-      run: ./resources/lint/swift/swiftlint lint --config resources/lint/swift/.swiftlint.yml --strict
+      uses: norio-nomura/action-swiftlint@3.2.1
+      with:
+        args: lint --config resources/lint/swift/.swiftlint.yml --strict
