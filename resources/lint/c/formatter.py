@@ -15,7 +15,7 @@ IGNORE_LIST = {
 EXCLUDE_PATTERN = {
     '.*ios.*',
     '.*node_modules.*',
-    '.*?\/mcu(?!.*src/(pv|main)).*',
+    '.*?/mcu(?!.*src/(pv|main)).*',
     '.*build.*',
     '.*psoc062s2.*'
 }
@@ -51,7 +51,7 @@ def formatter(verbose, check_only):
     c_source_files = [file_path for file_path in all_files if
                       not any(ignored_path in file_path for ignored_path in IGNORE_LIST)]
 
-    c_source_files = [file_path for file_path in c_source_files if 
+    c_source_files = [file_path for file_path in c_source_files if
                       not any(re.match(pattern, file_path, flags=re.IGNORECASE) for pattern in EXCLUDE_PATTERN)]
 
     c_source_files_num = len(c_source_files)
@@ -80,4 +80,3 @@ def find(pattern, path):
 
 if __name__ == '__main__':
     main()
-
