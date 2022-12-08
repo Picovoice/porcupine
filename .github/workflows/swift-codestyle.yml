@@ -1,4 +1,4 @@
-name: Swift
+name: Swift Codestyle
 
 on:
   workflow_dispatch:
