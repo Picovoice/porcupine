@@ -13,38 +13,45 @@ import Porcupine
 
 @objc(PvPorcupine)
 class PvPorcupine: NSObject {
-    private var porcupinePool:Dictionary<String, Porcupine> = [:]
+    private var porcupinePool: [String: Porcupine] = [:]
 
     @objc(fromBuiltInKeywords:modelPath:keywords:sensitivities:resolver:rejecter:)
-    func fromBuiltInKeywords(accessKey: String, modelPath: String, keywords: [String], sensitivities: [Float32],
-        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+    func fromBuiltInKeywords(
+        accessKey: String,
+        modelPath: String,
+        keywords: [String],
+        sensitivities: [Float32],
+        resolver resolve: RCTPromiseResolveBlock,
+        rejecter reject: RCTPromiseRejectBlock
+    ) {
         do {
             var keywordValues: [Porcupine.BuiltInKeyword] = []
             for keyword in keywords {
                 if let builtIn = Porcupine.BuiltInKeyword(rawValue: keyword.capitalized) {
                     keywordValues.append(builtIn)
                 } else {
-                    let (code, message) = errorToCodeAndMessage(PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
+                    let (code, message) = errorToCodeAndMessage(
+                        PorcupineInvalidArgumentError("'\(keyword.lowercased())' is not a built in keyword"))
                     reject(code, message, nil)
                     return
                 }
             }
-            
+
             let porcupine = try Porcupine(
                 accessKey: accessKey,
                 keywords: keywordValues,
                 modelPath: modelPath.isEmpty ? nil : modelPath,
                 sensitivities: sensitivities.isEmpty ? nil : sensitivities)
-            
+
             let handle: String = String(describing: porcupine)
             porcupinePool[handle] = porcupine
-            
+
             var param: [String: Any] = [:]
             param["handle"] = handle
             param["frameLength"] = Porcupine.frameLength
             param["sampleRate"] = Porcupine.sampleRate
             param["version"] = Porcupine.version
-            
+
             resolve(param)
         } catch let error as PorcupineError {
             let (code, message) = errorToCodeAndMessage(error)
@@ -56,24 +63,30 @@ class PvPorcupine: NSObject {
     }
 
     @objc(fromKeywordPaths:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
-    func fromKeywordPaths(accessKey: String, modelPath: String, keywordPaths: [String], sensitivities: [Float32],
-        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+    func fromKeywordPaths(
+        accessKey: String,
+        modelPath: String,
+        keywordPaths: [String],
+        sensitivities: [Float32],
+        resolver resolve: RCTPromiseResolveBlock,
+        rejecter reject: RCTPromiseRejectBlock
+    ) {
         do {
             let porcupine = try Porcupine(
                 accessKey: accessKey,
                 keywordPaths: keywordPaths,
                 modelPath: modelPath.isEmpty ? nil : modelPath,
                 sensitivities: sensitivities.isEmpty ? nil : sensitivities)
-            
+
             let handle: String = String(describing: porcupine)
             porcupinePool[handle] = porcupine
-            
+
             var param: [String: Any] = [:]
             param["handle"] = handle
             param["frameLength"] = Porcupine.frameLength
             param["sampleRate"] = Porcupine.sampleRate
             param["version"] = Porcupine.version
-            
+
             resolve(param)
         } catch let error as PorcupineError {
             let (code, message) = errorToCodeAndMessage(error)
@@ -83,23 +96,28 @@ class PvPorcupine: NSObject {
             reject(code, message, nil)
         }
     }
-    
+
     @objc(delete:)
-    func delete(handle:String) -> Void {        
+    func delete(handle: String) {
         if let porcupine = porcupinePool.removeValue(forKey: handle) {
             porcupine.delete()
         }
     }
-    
+
     @objc(process:pcm:resolver:rejecter:)
-    func process(handle:String, pcm:[Int16], 
-        resolver resolve:RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
+    func process(
+        handle: String,
+        pcm: [Int16],
+        resolver resolve: RCTPromiseResolveBlock,
+        rejecter reject: RCTPromiseRejectBlock
+    ) {
         do {
             if let porcupine = porcupinePool[handle] {
                 let keywordIndex = try porcupine.process(pcm: pcm)
                 resolve(keywordIndex)
             } else {
-                let (code, message) = errorToCodeAndMessage(PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'"))
+                let (code, message) = errorToCodeAndMessage(
+                    PorcupineRuntimeError("Invalid handle provided to Porcupine 'process'"))
                 reject(code, message, nil)
             }
         } catch let error as PorcupineError {
@@ -110,7 +128,7 @@ class PvPorcupine: NSObject {
             reject(code, message, nil)
         }
     }
-    
+
     private func errorToCodeAndMessage(_ error: PorcupineError) -> (String, String) {
         return (error.name.replacingOccurrences(of: "Error", with: "Exception"), error.localizedDescription)
     }

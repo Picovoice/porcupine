@@ -1,0 +1,10 @@
+disabled_rules:
+  - identifier_name
+  - function_body_length
+  - force_cast
+  - implicit_getter
+  - cyclomatic_complexity
+  - function_parameter_count
+excluded:
+  - ${PWD}/**/Pods
+  - ${PWD}/**/node_modules

@@ -1,0 +1,25 @@
+name: Swift
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/*.swift'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '**/*.swift'
+
+jobs:
+  check-python-codestyle:
+     runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Swiftlint
+      run: brew install swiftlint
+
+    - name: Check swift codestyle
+      run: swiftlint lint --config resources/lint/swift/.swiftlint.yml --strict

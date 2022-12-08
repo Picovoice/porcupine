@@ -27,17 +27,17 @@ class BaseTest: XCTestCase {
     func processFile(p: Porcupine, testAudioURL: URL) throws -> [Int32] {
         let data = try Data(contentsOf: testAudioURL)
         let frameLengthBytes = Int(Porcupine.frameLength) * 2
-        var pcmBuffer = Array<Int16>(repeating: 0, count: Int(Porcupine.frameLength))
+        var pcmBuffer = [Int16](repeating: 0, count: Int(Porcupine.frameLength))
 
         var results: [Int32] = []
         var index = 44
 
-        while (index + frameLengthBytes < data.count) {
+        while index + frameLengthBytes < data.count {
             _ = pcmBuffer.withUnsafeMutableBytes {
                 data.copyBytes(to: $0, from: index..<(index + frameLengthBytes))
             }
             let keywordIndex: Int32 = try p.process(pcm: pcmBuffer)
-            if (keywordIndex >= 0) {
+            if keywordIndex >= 0 {
                 results.append(keywordIndex)
             }
 

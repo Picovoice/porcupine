@@ -24,7 +24,7 @@ class PorcupineLanguageTests: BaseTest {
         ["it", ["espresso", "cameriere", "porcospino"], [2, 0, 1]],
         ["ja", ["ninja", "bushi", "ringo"], [2, 1, 0]],
         ["ko", ["aiseukeulim", "bigseubi", "koppulso"], [1, 2, 0]],
-        ["pt", ["abacaxi", "fenomeno", "formiga"], [0, 2, 1]],
+        ["pt", ["abacaxi", "fenomeno", "formiga"], [0, 2, 1]]
     ]
 
     var language: String = ""
@@ -51,7 +51,9 @@ class PorcupineLanguageTests: BaseTest {
                     newTestCase.language = testCase[0] as! String
                     newTestCase.modelPath = bundle.path(forResource: "porcupine_params\(suffix)", ofType: "pv")!
                     newTestCase.keywordPaths = keywordFiles
-                    newTestCase.testAudioPath = bundle.url(forResource: "multiple_keywords\(suffix)", withExtension: "wav")!
+                    newTestCase.testAudioPath = bundle.url(
+                        forResource: "multiple_keywords\(suffix)",
+                        withExtension: "wav")!
                     newTestCase.expectedResults = testCase[2] as! [Int]
                     xcTestSuite.addTest(newTestCase)
                 }

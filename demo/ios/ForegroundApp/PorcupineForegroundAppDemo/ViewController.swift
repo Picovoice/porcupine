@@ -16,7 +16,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var errorPanel: UITextView!
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
-    var wakeWordDict = [String:Porcupine.BuiltInKeyword]()
+    var wakeWordDict = [String: Porcupine.BuiltInKeyword]()
     var wakeWordKeys = [String]()
     var wakeWord = Porcupine.BuiltInKeyword.alexa
 
@@ -29,14 +29,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             wakeWordDict[w.rawValue] = w
         }
         wakeWordKeys = [String](wakeWordDict.keys.sorted())
-        
+
         wakeWordPicker.delegate = self
         wakeWordPicker.dataSource = self
 
         let viewSize = view.frame.size
         let startButtonSize = CGSize(width: 120, height: 120)
         let errorLabelSize = CGSize(width: (viewSize.width - 40), height: 120)
-        
+
         startButton.frame.size = startButtonSize
         startButton.frame.origin =
             CGPoint(x: (viewSize.width - startButtonSize.width) / 2, y: viewSize.height - (startButtonSize.height + 40))
@@ -44,11 +44,16 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         startButton.clipsToBounds = true
 
         wakeWordPicker.frame.origin = CGPoint(x: 0, y: 0)
-        wakeWordPicker.frame.size = CGSize(width: viewSize.width, height: viewSize.height - (startButtonSize.height + errorLabelSize.height + 40))
-        
-        
+        wakeWordPicker.frame.size = CGSize(
+            width: viewSize.width,
+            height: viewSize.height - (startButtonSize.height + errorLabelSize.height + 40)
+        )
+
         errorPanel.layer.cornerRadius = 10
-        errorPanel.frame.origin = CGPoint(x: ((viewSize.width - errorLabelSize.width) / 2), y: viewSize.height - (startButtonSize.height + errorLabelSize.height + 60)  )
+        errorPanel.frame.origin = CGPoint(
+            x: ((viewSize.width - errorLabelSize.width) / 2),
+            y: viewSize.height - (startButtonSize.height + errorLabelSize.height + 60)
+        )
         errorPanel.frame.size = errorLabelSize
         errorPanel.isHidden = true
     }
@@ -79,21 +84,25 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBAction func toggleStartButton(_ sender: UIButton) {
         if !isRecording {
             let originalColor = self.view.backgroundColor
-            let keywordCallback: ((Int32) -> Void) = { keywordIndex in
+            let keywordCallback: ((Int32) -> Void) = { _ in
                 self.view.backgroundColor = UIColor.orange
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.view.backgroundColor = originalColor
                 }
             }
-            
+
             let errorCallback: ((Error) -> Void) = {error in
                 self.showErrorAlert("\(error)")
             }
 
             do {
-                porcupineManager = try PorcupineManager(accessKey: accessKey, keyword: wakeWord, onDetection: keywordCallback, errorCallback: errorCallback)
+                porcupineManager = try PorcupineManager(
+                    accessKey: accessKey,
+                    keyword: wakeWord,
+                    onDetection: keywordCallback,
+                    errorCallback: errorCallback)
                 try porcupineManager.start()
-                
+
                 wakeWordPicker.isUserInteractionEnabled = false
                 isRecording = true
                 startButton.setTitle("STOP", for: UIControl.State.normal)
@@ -105,7 +114,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 showErrorAlert("AccessKey activation refused")
             } catch is PorcupineActivationLimitError {
                 showErrorAlert("AccessKey reached its limit")
-            } catch is PorcupineActivationThrottledError  {
+            } catch is PorcupineActivationThrottledError {
                 showErrorAlert("AccessKey is throttled")
             } catch {
                 showErrorAlert("\(error)")
