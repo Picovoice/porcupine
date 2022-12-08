@@ -274,8 +274,17 @@ int main(int argc, char *argv[]) {
             exit(1);
         }
         if (keyword_index != -1) {
-            static const char *KEYWORDS[] =
-                    {"Alexa", "Computer", "Hey Google", "Hey Siri", "Jarvis", "Picovoice", "Porcupine", "Bumblebee", "Terminator"};
+            static const char *KEYWORDS[] = {
+                    "Alexa",
+                    "Computer",
+                    "Hey Google",
+                    "Hey Siri",
+                    "Jarvis",
+                    "Picovoice",
+                    "Porcupine",
+                    "Bumblebee",
+                    "Terminator",
+            };
 
             fprintf(stdout, "detected '%s'\n", KEYWORDS[keyword_index]);
 
