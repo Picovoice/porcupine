@@ -1,5 +1,5 @@
-demo/* linguist-vendored
-lib/* linguist-vendored
-resources/* linguist-vendored
+demo/** linguist-vendored
+lib/** linguist-vendored
+resources/** linguist-vendored
 
 *.py linguist-vendored=false
