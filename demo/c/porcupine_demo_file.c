@@ -41,7 +41,6 @@ static void *open_dl(const char *dl_path) {
     return dlopen(dl_path, RTLD_NOW);
 
 #endif
-
 }
 
 static void *load_symbol(void *handle, const char *symbol) {
@@ -55,7 +54,6 @@ static void *load_symbol(void *handle, const char *symbol) {
     return dlsym(handle, symbol);
 
 #endif
-
 }
 
 static void close_dl(void *handle) {
@@ -69,7 +67,6 @@ static void close_dl(void *handle) {
     dlclose(handle);
 
 #endif
-
 }
 
 static void print_dl_error(const char *message) {
@@ -83,16 +80,15 @@ static void print_dl_error(const char *message) {
     fprintf(stderr, "%s with '%s'.\n", message, dlerror());
 
 #endif
-
 }
 
 static struct option long_options[] = {
-        {"library_path",                required_argument, NULL, 'l'},
-        {"model_path",                  required_argument, NULL, 'm'},
-        {"keyword_path",                required_argument, NULL, 'k'},
-        {"sensitivity",                 required_argument, NULL, 't'},
-        {"access_key",                  required_argument, NULL, 'a'},
-        {"wav_path",                    required_argument, NULL, 'w'},
+        {"library_path", required_argument, NULL, 'l'},
+        {"model_path",   required_argument, NULL, 'm'},
+        {"keyword_path", required_argument, NULL, 'k'},
+        {"sensitivity",  required_argument, NULL, 't'},
+        {"access_key",   required_argument, NULL, 'a'},
+        {"wav_path",     required_argument, NULL, 'w'},
 };
 
 void print_usage(const char *program_name) {
@@ -156,8 +152,8 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **)
-    = load_symbol(porcupine_library, "pv_porcupine_init");
+    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
+            load_symbol(porcupine_library, "pv_porcupine_init");
     if (!pv_porcupine_init_func) {
         print_dl_error("failed to load 'pv_porcupine_init'");
         exit(1);
@@ -169,8 +165,7 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
-    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) =
-            load_symbol(porcupine_library, "pv_porcupine_process");
+    pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) = load_symbol(porcupine_library, "pv_porcupine_process");
     if (!pv_porcupine_process_func) {
         print_dl_error("failed to load 'pv_porcupine_process'");
         exit(1);
@@ -243,8 +238,7 @@ int picovoice_main(int argc, char *argv[]) {
         struct timeval after;
         gettimeofday(&after, NULL);
 
-        total_cpu_time_usec +=
-                (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
+        total_cpu_time_usec += (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
         total_processed_time_usec += (pv_porcupine_frame_length_func() * 1e6) / pv_sample_rate_func();
 
         if (keyword_index != -1) {
@@ -269,14 +263,14 @@ int main(int argc, char *argv[]) {
 #if defined(_WIN32) || defined(_WIN64)
 
 #define UTF8_COMPOSITION_FLAG (0)
-#define NULL_TERMINATED (-1)
+#define NULL_TERMINATED       (-1)
 
     LPWSTR *wargv = CommandLineToArgvW(GetCommandLineW(), &argc);
     if (wargv == NULL) {
         fprintf(stderr, "CommandLineToArgvW failed\n");
         exit(1);
     }
-    
+
     char *utf8_argv[argc];
 
     for (int i = 0; i < argc; ++i) {

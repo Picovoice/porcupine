@@ -25,9 +25,9 @@
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+static const char *ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
-static const int32_t KEYWORD_MODEL_SIZES = sizeof(DEFAULT_KEYWORD_ARRAY);
+        static const int32_t KEYWORD_MODEL_SIZES = sizeof(DEFAULT_KEYWORD_ARRAY);
 static const void *KEYWORD_MODELS = DEFAULT_KEYWORD_ARRAY;
 static const float SENSITIVITY = 0.75f;
 
@@ -37,19 +37,19 @@ static void wake_word_callback(void) {
 }
 
 static void error_handler(void) {
-    while(true);
+    while (true) {}
 }
 
 int main(void) {
 
     pv_status_t status = pv_board_init();
     if (status != PV_STATUS_SUCCESS) {
-     error_handler();
+        error_handler();
     }
 
     status = pv_message_init();
     if (status != PV_STATUS_SUCCESS) {
-     error_handler();
+        error_handler();
     }
 
     const uint8_t *board_uuid = pv_get_uuid();
@@ -61,8 +61,8 @@ int main(void) {
 
     status = pv_audio_rec_init();
     if (status != PV_STATUS_SUCCESS) {
-     printf("Audio init failed with '%s'", pv_status_to_string(status));
-     error_handler();
+        printf("Audio init failed with '%s'", pv_status_to_string(status));
+        error_handler();
     }
 
     status = pv_audio_rec_start();
@@ -73,15 +73,7 @@ int main(void) {
 
     pv_porcupine_t *handle = NULL;
 
-    status = pv_porcupine_init(
-            ACCESS_KEY,
-            MEMORY_BUFFER_SIZE,
-            memory_buffer,
-            1,
-            &KEYWORD_MODEL_SIZES,
-            &KEYWORD_MODELS,
-            &SENSITIVITY,
-            &handle);
+    status = pv_porcupine_init(ACCESS_KEY, MEMORY_BUFFER_SIZE, memory_buffer, 1, &KEYWORD_MODEL_SIZES, &KEYWORD_MODELS, &SENSITIVITY, &handle);
 
     if (status != PV_STATUS_SUCCESS) {
         printf("Porcupine init failed with '%s'", pv_status_to_string(status));
@@ -90,10 +82,10 @@ int main(void) {
 
     uint32_t frame_number = 0;
     while (true) {
-         const int16_t *buffer = pv_audio_rec_get_new_buffer();
-         if (buffer) {
-         int32_t keyword_index;
-         const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
+        const int16_t *buffer = pv_audio_rec_get_new_buffer();
+        if (buffer) {
+            int32_t keyword_index;
+            const pv_status_t status = pv_porcupine_process(handle, buffer, &keyword_index);
             if (status != PV_STATUS_SUCCESS) {
                 printf("Porcupine process failed with '%s'", pv_status_to_string(status));
                 error_handler();
@@ -107,10 +99,8 @@ int main(void) {
                 frame_number = 0;
             }
         }
-
     }
     pv_board_deinit();
     pv_audio_rec_deinit();
     pv_porcupine_delete(handle);
 }
-

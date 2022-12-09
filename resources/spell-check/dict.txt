@@ -181,6 +181,7 @@ wavefile
 wavspec
 webfonts
 webvp
+werror
 xcframework
 xcworkspace
 xpresso

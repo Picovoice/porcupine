@@ -10,7 +10,6 @@
 */
 
 #include <stdbool.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,7 +23,7 @@
 
 #define MEMORY_BUFFER_SIZE (50 * 1024)
 
-static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+static const char *ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
@@ -33,26 +32,26 @@ static const int32_t KEYWORD_MODEL_SIZES[] = {
         sizeof(DEFAULT_KEYWORD_ARRAY),
         sizeof(PICOVOICE_KEYWORD_ARRAY),
         sizeof(BUMBLEBEE_KEYWORD_ARRAY),
-        sizeof(ALEXA_KEYWORD_ARRAY)
+        sizeof(ALEXA_KEYWORD_ARRAY),
 };
 static const void *KEYWORD_MODELS[] = {
         DEFAULT_KEYWORD_ARRAY,
         PICOVOICE_KEYWORD_ARRAY,
         BUMBLEBEE_KEYWORD_ARRAY,
-        ALEXA_KEYWORD_ARRAY
+        ALEXA_KEYWORD_ARRAY,
 };
 static const float SENSITIVITIES[] = {
         0.75f,
         0.75f,
         0.75f,
-        0.75f
+        0.75f,
 };
 
 static const char *KEYWORDS_NAME[] = {
         "Porcupine",
         "Picovoice",
         "Bumblebee",
-        "Alexa"
+        "Alexa",
 };
 
 static void wake_word_callback(int32_t keyword_index) {
@@ -61,19 +60,19 @@ static void wake_word_callback(int32_t keyword_index) {
 }
 
 static void error_handler(void) {
-    while(true);
+    while (true) {}
 }
 
 int main(void) {
 
     pv_status_t status = pv_board_init();
     if (status != PV_STATUS_SUCCESS) {
-     error_handler();
+        error_handler();
     }
 
     status = pv_message_init();
     if (status != PV_STATUS_SUCCESS) {
-     error_handler();
+        error_handler();
     }
 
     const uint8_t *board_uuid = pv_get_uuid();
@@ -85,8 +84,8 @@ int main(void) {
 
     status = pv_audio_rec_init();
     if (status != PV_STATUS_SUCCESS) {
-     printf("Audio init failed with '%s'", pv_status_to_string(status));
-     error_handler();
+        printf("Audio init failed with '%s'", pv_status_to_string(status));
+        error_handler();
     }
 
     status = pv_audio_rec_start();
@@ -132,7 +131,6 @@ int main(void) {
                 frame_number = 0;
             }
         }
-
     }
     pv_board_deinit();
     pv_audio_rec_deinit();

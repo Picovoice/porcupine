@@ -16,18 +16,18 @@
 
 #include "pv_stm32h747.h"
 
-#define UUID_ADDRESS    (0x1FF1E800)
-#define UUID_SIZE       (12)
+#define UUID_ADDRESS (0x1FF1E800)
+#define UUID_SIZE    (12)
 
-#define PV_COM                          (USART1)
-#define PV_COM_ALT                      (GPIO_AF7_USART1)
-#define PV_COM_IRQn                     (USART1_IRQn)
-#define PV_COM_TX_Pin                   (GPIO_PIN_10)
-#define PV_COM_TX_GPIO_Port             (GPIOA)
-#define PV_COM_RX_Pin                   (GPIO_PIN_9)
-#define PV_COM_RX_GPIO_Port             (GPIOA)
+#define PV_COM              (USART1)
+#define PV_COM_ALT          (GPIO_AF7_USART1)
+#define PV_COM_IRQn         (USART1_IRQn)
+#define PV_COM_TX_Pin       (GPIO_PIN_10)
+#define PV_COM_TX_GPIO_Port (GPIOA)
+#define PV_COM_RX_Pin       (GPIO_PIN_9)
+#define PV_COM_RX_GPIO_Port (GPIOA)
 
-#define SDRAM_DEVICE_ADDR         0xD0000000U
+#define SDRAM_DEVICE_ADDR 0xD0000000U
 
 static uint8_t uuid[UUID_SIZE];
 UART_HandleTypeDef huart;
@@ -63,7 +63,7 @@ static pv_status_t pv_clock_config(void) {
     HAL_PWREx_ConfigSupply(PWR_DIRECT_SMPS_SUPPLY);
     __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-    while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
+    while (!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -82,12 +82,12 @@ static pv_status_t pv_clock_config(void) {
     RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
     RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
     ret = HAL_RCC_OscConfig(&RCC_OscInitStruct);
-    if(ret != HAL_OK) {
+    if (ret != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
 
-    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_PCLK1 | \
-                                 RCC_CLOCKTYPE_PCLK2  | RCC_CLOCKTYPE_D3PCLK1);
+    RCC_ClkInitStruct.ClockType =
+            (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_D3PCLK1);
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
@@ -96,12 +96,12 @@ static pv_status_t pv_clock_config(void) {
     RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV2;
     RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV2;
     ret = HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4);
-    if(ret != HAL_OK) {
+    if (ret != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
 
-    __HAL_RCC_CSI_ENABLE() ;
-    __HAL_RCC_SYSCFG_CLK_ENABLE() ;
+    __HAL_RCC_CSI_ENABLE();
+    __HAL_RCC_SYSCFG_CLK_ENABLE();
     HAL_EnableCompensationCell();
 
     return PV_STATUS_SUCCESS;
@@ -184,17 +184,16 @@ void pv_board_deinit() {
 }
 
 void pv_error_handler(void) {
-    while(true);
+    while (true) {}
 }
 
-void assert_failed(uint8_t* file, uint32_t line)
-{
+void assert_failed(uint8_t *file, uint32_t line) {
     (void) file;
     (void) line;
     pv_error_handler();
 }
 
-int __io_putchar (int ch) {
+int __io_putchar(int ch) {
     HAL_UART_Transmit(&huart, (uint8_t *) &ch, 1, 1000);
     return ch;
 }
