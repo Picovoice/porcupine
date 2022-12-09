@@ -1,3 +1,5 @@
-demos/* linguist-detectable=false
-lib/* linguist-detectable=false
-resources/* linguist-detectable=false
+demos/* linguist-vendored
+lib/* linguist-vendored
+resources/* linguist-vendored
+
+*.py linguist-vendored=false
