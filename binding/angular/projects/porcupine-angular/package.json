@@ -1,10 +1,10 @@
 {
   "name": "@picovoice/porcupine-angular",
   "description": "Angular service for Porcupine Web SDK",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "peerDependencies": {
-    "@angular/common": "^13.0.0 || ^14.0.0",
-    "@angular/core": "^13.0.0 || ^14.0.0",
+    "@angular/common": ">=13.0.0",
+    "@angular/core": ">=13.0.0",
     "@picovoice/web-voice-processor": "~4.0.2"
   },
   "keywords": [
