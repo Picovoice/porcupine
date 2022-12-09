@@ -36,11 +36,7 @@ jobs:
 
     - name: Run Binding Linter
       run: yarn && yarn lint
-      working-directory: binding/flutter
-
-    - name: Run Demo Linter
-      run: yarn && yarn lint
-      working-directory: demo/flutter
+      working-directory: binding/web
 
   check-angular-codestyle:
     runs-on: ubuntu-latest
