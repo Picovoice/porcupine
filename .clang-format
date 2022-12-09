@@ -43,6 +43,20 @@ ColumnLimit: 0
 CommentPragmas:  '^[^ ]'
 CompactNamespaces: false
 ContinuationIndentWidth: 8
+IncludeBlocks:   Preserve
+IncludeCategories:
+  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
+    Priority:        2
+    SortPriority:    0
+    CaseSensitive:   false
+  - Regex:           '^(<|"(gtest|gmock|isl|json)/)'
+    Priority:        3
+    SortPriority:    0
+    CaseSensitive:   false
+  - Regex:           '.*'
+    Priority:        1
+    SortPriority:    0
+    CaseSensitive:   false
 IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 4
