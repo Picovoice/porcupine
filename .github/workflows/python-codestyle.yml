@@ -1,4 +1,4 @@
-name: Python
+name: Python Codestyle
 
 on:
   workflow_dispatch:

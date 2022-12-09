@@ -18,27 +18,6 @@ defaults:
     working-directory: demo/flutter
 
 jobs:
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        flutter-version: ['2.8.1']
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Install Flutter ${{ matrix.flutter-version }}
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: ${{ matrix.flutter-version }}
-
-    - name: Run Binding Analyzer
-      run: flutter analyze --no-fatal-infos --no-fatal-warnings
-      working-directory: binding/flutter
-
-    - name: Run Demo Analyzer
-      run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
   build-android:
     name: Build Android demo

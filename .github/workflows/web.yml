@@ -60,9 +60,6 @@ jobs:
     - name: Copy libs
       run: yarn copywasm && yarn copyppn
 
-    - name: Lint
-      run: yarn lint
-
     - name: Build
       run: yarn build
 

@@ -10,8 +10,6 @@ indent_size = 2
 
 # C# files
 [*.cs]
-# Default severity for analyzer diagnostics with category 'Style' (escalated to build warnings)
-dotnet_analyzer_diagnostic.category-Style.severity = error
 
 #### Core EditorConfig Options ####
 

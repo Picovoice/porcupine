@@ -1,0 +1,38 @@
+name: .NET Codestyle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/*.cs'
+      - '.github/workflows/dotnet-codestyle.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '**/*.cs'
+      - '.github/workflows/donet-codestyle.yml'
+
+jobs:
+  check-dotnet-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET 6.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Run Binding Codestyle
+      run: dotnet format --verify-no-changes
+      working-directory: binding/dotnet
+
+    - name: Run Demo Codestyle
+      run: dotnet format --verify-no-changes
+      working-directory: demo/dotnet
+
+    - name: Run Demo-vui Codestyle
+      run: dotnet format --verify-no-changes
+      working-directory: demo/dotnet-vui
