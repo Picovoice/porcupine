@@ -9,14 +9,15 @@
     specific language governing permissions and limitations under the License.
 */
 
-#include <alsa/asoundlib.h>
-#include <asm/ioctl.h>
 #include <dlfcn.h>
 #include <errno.h>
-#include <linux/spi/spidev.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <alsa/asoundlib.h>
+#include <asm/ioctl.h>
+#include <linux/spi/spidev.h>
+#include <signal.h>
 #include <sys/ioctl.h>
 
 #include "pv_porcupine.h"
