@@ -1,0 +1,43 @@
+name: Vue Codestyle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/vue/*.js'
+      - '**/vue/*.ts'
+      - '**/vue/*.vue'
+      - '**/vue/*.vue'
+      - '.github/workflows/vue-codestyle.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '**/vue/*.js'
+      - '**/vue/*.ts'
+      - '**/vue/*.vue'
+      - '**/vue/*.vue'
+      - '.github/workflows/vue-codestyle.yml'
+
+jobs:
+  check-vue-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js lts/*
+      uses: actions/setup-node@v2
+      with:
+        node-version: lts/*
+
+    - name: Pre-build dependencies
+      run: npm install yarn
+
+    - name: Run Binding Linter
+      run: yarn && yarn lint
+      working-directory: binding/vue
+
+    - name: Run Demo Linter
+      run: yarn && yarn lint
+      working-directory: demo/vue
