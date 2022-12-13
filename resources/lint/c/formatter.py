@@ -17,7 +17,6 @@ EXCLUDE_PATTERN = {
     '.*node_modules.*',
     '.*?/mcu(?!.*src/(pv|main)).*',
     '.*build.*',
-    '.*psoc062s2.*'
 }
 
 

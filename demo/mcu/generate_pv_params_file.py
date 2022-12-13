@@ -122,7 +122,6 @@ if __name__ == '__main__':
     }
     include_folders = {
         'imxrt1050/imxrt1050-evkb/inc': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],
-        'psoc062s2/include': ['en', 'de', 'es', 'fr'],
         'stm32f407/stm32f407g-disc1/Inc/': ['en', 'de', 'es', 'fr'],
         'stm32f411/stm32f411e-disco/Inc/': ['en', 'de', 'es', 'fr'],
         'stm32f469/stm32f469i-disco/Inc/': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],

@@ -130,7 +130,6 @@ porcupinemicdemo
 ppnrespeakerdemo
 prefs
 println
-psoc
 pthread
 ptrs
 pubspec
