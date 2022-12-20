@@ -1,7 +1,6 @@
-
 # Porcupine Wake Word Engine Demo for STM32F411 (Multiple languages)
 
-This package contains a demo project for the STM32F411 Discovery kit using Porcupine wake word engine. 
+This package contains a demo project for the STM32F411 Discovery kit using Porcupine wake word engine.
 
 ## Supported Languages
 
@@ -12,19 +11,24 @@ This package contains a demo project for the STM32F411 Discovery kit using Porcu
 
 ## Installation
 
-For this demo, you need to: 
-1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-1. Download `STM32Cube middleware for audio PDM to PCM conversion` and copy it to the project folder. A more detailed guide can be found in the [readme](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) file.
+For this demo, you need to:
+
+1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an
+   all-in-one multi-OS development tool for STM32 microcontrollers.
+2. Download [STM32Cube MCU Package for STM32F4 series](https://www.st.com/en/embedded-software/stm32cubef4.html) and
+   extract it somewhere on your computer.
 
 ## AccessKey
 
-Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Porcupine SDKs.
+Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using
+Porcupine SDKs.
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
-In the demo project, there is a separate build configuration for each supported languages. In order to activate a specific configuration:
+In the demo project, there is a separate build configuration for each supported languages. In order to activate a
+specific configuration:
 
 1. Click `Project` > `Build Configuration` > `Set Active`
 2. Select the target configuration
@@ -32,15 +36,23 @@ In the demo project, there is a separate build configuration for each supported 
 Then, to compile and run the demo project on a STM32f411 discovery board, perform the following steps:
 
 1. Open STM32CubeIDE
-2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f469i-disco](./stm32f411e-disco) folder from this repository, and then press the `Finish` button.
-3. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM)
+2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select
+   the [stm32f469i-disco](./stm32f411e-disco) folder from this repository, and then press the `Finish` button.
+3. Go to the folder where you extracted `STM32Cube MCU Package for STM32F4 series`, and then copy the contents of
+   the `/Middlewares/ST/STM32_Audio/Addons/PDM` folder
+   to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM).
 4. Select the `stm32f411e-disco-demo` project inside the `Project Explorer` window
-5. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
-5. Click `Project` > `Build Project`
-6. Connect the board to the computer and press `Run` > `Debug`
-7. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one of them in the `Qualifier` window and press `ok`
+5. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained
+   from [Picovoice Console](https://console.picovoice.ai/)
+6. Click `Project` > `Build Project`
+7. Connect the board to the computer and press `Run` > `Debug`
+8. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one
+   of them in the `Qualifier` window and press `ok`
 
-> :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf), Chapter 7.
+> :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer
+>
+to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf)
+> , Chapter 7.
 
 For the single wake word demos, the default wake words are:
 
@@ -63,7 +75,8 @@ Below are the LED colors associated with supported wake words for the multiple w
 ## Create Custom Wake Word
 
 1. Copy the UUID of the board printed at the beginning of the session to the serial port monitor.
-2. Go to [Picovoice Console](https://console.picovoice.ai/) to create a model for [Porcupine wake word engine](https://picovoice.ai/docs/quick-start/console-porcupine/).
+2. Go to [Picovoice Console](https://console.picovoice.ai/) to create a model
+   for [Porcupine wake word engine](https://picovoice.ai/docs/quick-start/console-porcupine/).
 3. Select `Arm Cortex-M` as the platform when training the model.
 4. Select `STM32` as the board type and provide the UUID of the chipset on the board.
 
@@ -72,5 +85,8 @@ The model is now being trained. You will be able to download it within a few hou
 ## Import the Custom Wake Word
 
 1. Download your custom voice model(s) from [Picovoice Console](https://console.picovoice.ai/).
-2. Decompress the zip file. The model for Porcupine wake word is located in two files: A binary `.ppn` file, and as a `.h` header file containing a `C` array version of the binary model.
-3. Copy the contents of the array inside the `.h` header file and update the `DEFAULT_KEYWORD_ARRAY` value in [/stm32f411e-disco/Inc/pv_params.h](./stm32f411e-disco/Inc/pv_params.h) in the language section for which the model is trained.
+2. Decompress the zip file. The model for Porcupine wake word is located in two files: A binary `.ppn` file, and as
+   a `.h` header file containing a `C` array version of the binary model.
+3. Copy the contents of the array inside the `.h` header file and update the `DEFAULT_KEYWORD_ARRAY` value
+   in [/stm32f411e-disco/Inc/pv_params.h](./stm32f411e-disco/Inc/pv_params.h) in the language section for which the
+   model is trained.
