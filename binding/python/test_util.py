@@ -23,8 +23,11 @@ def load_test_data():
         json_test_data = data_file.read()
     test_data = json.loads(json_test_data)['tests']
 
-    single_keyword_parameters = [(t['language'], [t['wakeword']], f"{t['wakeword'].replace(' ', '_')}.wav") for t in test_data['singleKeyword']]
-    multiple_keywords_parameters = [(t['language'], t['wakewords'], t['groundTruth']) for t in test_data['multipleKeyword']]
+    single_keyword_parameters = [
+        (t['language'], [t['wakeword']], f"{t['wakeword'].replace(' ', '_')}.wav")
+        for t in test_data['singleKeyword']]
+    multiple_keywords_parameters = [
+        (t['language'], t['wakewords'], t['groundTruth']) for t in test_data['multipleKeyword']]
 
     return single_keyword_parameters, multiple_keywords_parameters
 
