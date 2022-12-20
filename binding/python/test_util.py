@@ -9,10 +9,24 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import json
+import os
 import struct
 import wave
 
 from util import *
+
+
+def load_test_data():
+    data_file_path = os.path.join(os.path.dirname(__file__), "../../resources/test/test_data.json")
+    with open(data_file_path) as data_file:
+        json_test_data = data_file.read()
+    test_data = json.loads(json_test_data)['tests']
+
+    single_keyword_parameters = [(t['language'], [t['wakeword']], f"{t['wakeword'].replace(' ', '_')}.wav") for t in test_data['singleKeyword']]
+    multiple_keywords_parameters = [(t['language'], t['wakewords'], t['groundTruth']) for t in test_data['multipleKeyword']]
+
+    return single_keyword_parameters, multiple_keywords_parameters
 
 
 def _append_language(s, language):
