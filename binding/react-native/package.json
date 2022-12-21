@@ -121,22 +121,11 @@
     "trailingComma": "es5",
     "useTabs": false
   },
-  "@react-native-community/bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      "commonjs",
-      "module",
-      "typescript"
-    ]
-  },
   "dependencies": {},
   "files": [
-    "src",
-    "lib",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__"
+    "*",
+    "!node_modules",
+    "!pkg"
   ],
   "react-native-builder-bob": {
     "source": "src",
