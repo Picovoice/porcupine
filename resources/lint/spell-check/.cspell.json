@@ -12,9 +12,9 @@
   ],
   "ignorePaths": [
     // submodules
-    "../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*",
-    "../../demo/c/dr_libs/**/*",
-    "../../demo/c/pvrecorder/**/*",
+    "../../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*",
+    "../../../demo/c/dr_libs/**/*",
+    "../../../demo/c/pvrecorder/**/*",
 
     // binaries
     "**/*.a",
@@ -28,8 +28,8 @@
     "**/*.so",
     "**/*.wasm",
     "**/*.wav",
-    "../../binding/unity/porcupine-*.unitypackage",
-    "../../lib/ios/**/*",
+    "../../../binding/unity/porcupine-*.unitypackage",
+    "../../../lib/ios/**/*",
 
     // .NET
     "**/*.csproj",
@@ -71,16 +71,16 @@
     "**/tslint.json",
 
     // mcu
-    "../../demo/mcu/**/*.ld",
-    "../../demo/mcu/**/*.s",
-    "../../demo/mcu/**/*_HAL_Driver/**/*",
-    "../../demo/mcu/**/Drivers/BSP/**/*",
-    "../../demo/mcu/**/Drivers/CMSIS/**/*",
-    "../../demo/mcu/**/stm32*",
-    "../../demo/mcu/**/syscalls.c",
-    "../../demo/mcu/**/system*",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/source/semihost_hardfault.c",
-    "../../demo/mcu/imxrt1050/imxrt1050-evkb/{board,CMSIS,codec,component,device,drivers,startup,utilities,xip}/**/*",
+    "../../../demo/mcu/**/*.ld",
+    "../../../demo/mcu/**/*.s",
+    "../../../demo/mcu/**/*_HAL_Driver/**/*",
+    "../../../demo/mcu/**/Drivers/BSP/**/*",
+    "../../../demo/mcu/**/Drivers/CMSIS/**/*",
+    "../../../demo/mcu/**/stm32*",
+    "../../../demo/mcu/**/syscalls.c",
+    "../../../demo/mcu/**/system*",
+    "../../../demo/mcu/imxrt1050/imxrt1050-evkb/source/semihost_hardfault.c",
+    "../../../demo/mcu/imxrt1050/imxrt1050-evkb/{board,CMSIS,codec,component,device,drivers,startup,utilities,xip}/**/*",
 
     // react
     "**/demo/react/src/reportWebVitals.js",
@@ -98,9 +98,9 @@
     "**/*.meta",
     "**/*.unity",
     "**/manifest.json",
-    "../../demo/unity/images/image_attribution.md",
+    "../../../demo/unity/images/image_attribution.md",
 
     // 3rd party
-    "../../demo/respeaker/ppnrespeakerdemo/apa102.py",
+    "../../../demo/respeaker/ppnrespeakerdemo/apa102.py",
   ]
 }
