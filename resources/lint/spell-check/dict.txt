@@ -175,6 +175,7 @@ unitypackage
 uppercased
 vtable
 wakeword
+wakewords
 wargv
 wavefile
 wavspec
