@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt'
+        distribution: 'temurin'
 
     - name: Check Java CodeStyle
       run: java -Dconfig_loc=resources/lint/java/ -jar resources/lint/java/checkstyle-10.5.0-all.jar -c resources/lint/java/checkstyle.xml binding/android/ binding/java/ binding/flutter/android/ binding/react-native/android/ demo/android/ demo/java/
