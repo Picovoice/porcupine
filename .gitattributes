@@ -12,3 +12,4 @@ binding/flutter/android/** linguist-detectable=false
 binding/flutter/ios/** linguist-detectable=false
 binding/unity/** linguist-detectable=false
 *.py linguist-detectable=true
+demo/python/*.py linguist-detectable=true
