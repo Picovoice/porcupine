@@ -4,7 +4,7 @@ resources/** linguist-detectable=false
 
 binding/java/** linguist-detectable=false
 binding/angular/** linguist-detectable=false
-binding/react/** linguist-detectable=false
+binding/web/** linguist-detectable=false
 binding/vue/** linguist-detectable=false
 binding/react-native/** linguist-detectable=false
 binding/nodejs/** linguist-detectable=false
@@ -12,4 +12,3 @@ binding/flutter/android/** linguist-detectable=false
 binding/flutter/ios/** linguist-detectable=false
 binding/unity/** linguist-detectable=false
 *.py linguist-detectable=true
-demo/python/*.py linguist-detectable=true
