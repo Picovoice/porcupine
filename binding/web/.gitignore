@@ -2,6 +2,9 @@ node_modules
 dist
 lib/pv_porcupine*.wasm
 keywords/*.ppn
-test/porcupine_params.js
-test/porcupine_params.pv
+test/porcupine_params*.js
+test/porcupine_params*.pv
+test/test_data.json
+test/keywords
+test/audio_samples
 src/built_in_keywords_64.ts
