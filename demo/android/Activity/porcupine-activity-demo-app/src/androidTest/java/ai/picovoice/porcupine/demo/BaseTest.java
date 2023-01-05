@@ -27,6 +27,7 @@ import org.junit.Rule;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -64,6 +65,22 @@ public class BaseTest {
         testResourcesPath = new File(appContext.getFilesDir(), "test_resources").getAbsolutePath();
 
         accessKey = appContext.getString(R.string.pvTestingAccessKey);
+    }
+
+    public static String getTestDataString() throws IOException {
+        Context testContext = InstrumentationRegistry.getInstrumentation().getContext();
+        AssetManager assetManager = testContext.getAssets();
+
+        InputStream is = new BufferedInputStream(assetManager.open("test_resources/test_data.json"), 256);
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[256];
+        int bytesRead;
+        while ((bytesRead = is.read(buffer)) != -1) {
+            result.write(buffer, 0, bytesRead);
+        }
+
+        return result.toString("UTF-8");
     }
 
     private void extractAssetsRecursively(String path) throws IOException {
