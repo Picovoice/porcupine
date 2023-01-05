@@ -16,15 +16,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
@@ -330,84 +336,45 @@ public class PorcupineTest {
         public int[] expectedResults;
 
         @Parameterized.Parameters(name = "{0}")
-        public static Collection<Object[]> initParameters() {
-            return Arrays.asList(new Object[][]{
-                    {
-                            "model_files/porcupine_params_de.pv",
-                            new String[]{
-                                    "keyword_files/de/ananas_android.ppn",
-                                    "keyword_files/de/heuschrecke_android.ppn",
-                                    "keyword_files/de/himbeere_android.ppn",
-                                    "keyword_files/de/leguan_android.ppn",
-                                    "keyword_files/de/stachelschwein_android.ppn"
-                            },
-                            "audio_samples/multiple_keywords_de.wav",
-                            new int[]{0, 1, 2, 3, 4}
-                    },
-                    {
-                            "model_files/porcupine_params_es.pv",
-                            new String[]{
-                                    "keyword_files/es/emparedado_android.ppn",
-                                    "keyword_files/es/leopardo_android.ppn",
-                                    "keyword_files/es/manzana_android.ppn",
-                                    "keyword_files/es/murciélago_android.ppn"
-                            },
-                            "audio_samples/multiple_keywords_es.wav",
-                            new int[]{0, 1, 2, 3}
-                    },
-                    {
-                            "model_files/porcupine_params_fr.pv",
-                            new String[]{
-                                    "keyword_files/fr/framboise_android.ppn",
-                                    "keyword_files/fr/mon chouchou_android.ppn",
-                                    "keyword_files/fr/parapluie_android.ppn"
-                            },
-                            "audio_samples/multiple_keywords_fr.wav",
-                            new int[]{0, 1, 0, 2}
-                    },
-                    {
-                            "model_files/porcupine_params_it.pv",
-                            new String[]{
-                                    "keyword_files/it/cameriere_android.ppn",
-                                    "keyword_files/it/espresso_android.ppn",
-                                    "keyword_files/it/porcospino_android.ppn",
-                                    "keyword_files/it/silenzio_bruno_android.ppn"
-                            },
-                            "audio_samples/multiple_keywords_it.wav",
-                            new int[]{2, 1, 0}
-                    },
-                    {
-                            "model_files/porcupine_params_ja.pv",
-                            new String[]{
-                                    "keyword_files/ja/bushi_android.ppn",
-                                    "keyword_files/ja/ninja_android.ppn",
-                                    "keyword_files/ja/ringo_android.ppn",
-                            },
-                            "audio_samples/multiple_keywords_ja.wav",
-                            new int[]{2, 0, 1}
-                    },
-                    {
-                            "model_files/porcupine_params_ko.pv",
-                            new String[]{
-                                    "keyword_files/ko/aiseukeulim_android.ppn",
-                                    "keyword_files/ko/bigseubi_android.ppn",
-                                    "keyword_files/ko/koppulso_android.ppn",
-                            },
-                            "audio_samples/multiple_keywords_ko.wav",
-                            new int[]{1, 2, 0}
-                    },
-                    {
-                            "model_files/porcupine_params_pt.pv",
-                            new String[]{
-                                    "keyword_files/pt/abacaxi_android.ppn",
-                                    "keyword_files/pt/fenomeno_android.ppn",
-                                    "keyword_files/pt/formiga_android.ppn",
-                                    "keyword_files/pt/porco_espinho_android.ppn",
-                            },
-                            "audio_samples/multiple_keywords_pt.wav",
-                            new int[]{3, 0, 2, 1}
-                    }
-            });
+        public static Collection<Object[]> initParameters() throws IOException {
+            String testDataJsonString = getTestDataString();
+
+            JsonObject testDataJson = JsonParser.parseString(testDataJsonString).getAsJsonObject();
+            JsonArray multipleKeywordDataJson = testDataJson.getAsJsonObject("tests").getAsJsonArray("multipleKeyword");
+
+            List<Object[]> parameters = new ArrayList<>();
+            for (int i = 0; i < multipleKeywordDataJson.size(); i++) {
+                JsonObject testData = multipleKeywordDataJson.get(i).getAsJsonObject();
+                String language = testData.get("language").getAsString();
+                JsonArray keywords = testData.getAsJsonArray("wakewords");
+                JsonArray groundTruthJson = testData.getAsJsonArray("groundTruth");
+
+                String modelFile = String.format("model_files/porcupine_params_%s.pv", language);
+                String[] keywordFiles = new String[keywords.size()];
+                for (int j = 0; j < keywords.size(); j++) {
+                    String keyword = keywords.get(j).getAsString();
+                    keywordFiles[j] = String.format("keyword_files/%s/%s_android.ppn", language, keyword);
+                }
+                String audioFile = String.format("audio_samples/multiple_keywords_%s.wav", language);
+                int[] groundTruth = new int[groundTruthJson.size()];
+                for (int j = 0; j < groundTruthJson.size(); j++) {
+                    groundTruth[j] = groundTruthJson.get(j).getAsInt();
+                }
+
+                if (Objects.equals(language, "en")) {
+                    modelFile = "model_files/porcupine_params.pv";
+                    audioFile = "audio_samples/multiple_keywords.wav";
+                }
+
+                parameters.add(new Object[] {
+                        modelFile,
+                        keywordFiles,
+                        audioFile,
+                        groundTruth
+                });
+            }
+
+            return parameters;
         }
 
 
