@@ -4,3 +4,6 @@ node_modules
 dist/
 *.log
 .DS_Store
+test/*.pv
+test/*.js
+cypress/**/*.wav

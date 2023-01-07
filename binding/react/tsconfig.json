@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "allowJs": false,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "downlevelIteration": true,
     "isolatedModules": false,
     "lib": ["esnext", "dom"],
@@ -14,7 +15,8 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["cypress", "node"]
   },
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "cypress/**/*.ts"]
 }

@@ -24,15 +24,6 @@ const testDataSource = join(
   'test_data.json'
 );
 
-const audioSourceDirectory = join(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'resources',
-  'audio_samples',
-);
-
 
 console.log("Copying the PPN model...");
 
@@ -46,10 +37,6 @@ const sourceDirectory = join(
 
 try {
   fs.mkdirSync(outputDirectory, { recursive: true });
-
-  fs.readdirSync(paramsSourceDirectory).forEach(file => {
-    fs.copyFileSync(join(paramsSourceDirectory, file), join(outputDirectory, file));
-  });
 
   fs.readdirSync(paramsSourceDirectory).forEach(file => {
     fs.copyFileSync(join(paramsSourceDirectory, file), join(outputDirectory, file));
