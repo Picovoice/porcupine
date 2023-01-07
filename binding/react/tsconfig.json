@@ -18,5 +18,11 @@
     "noImplicitAny": true,
     "types": ["cypress", "node"]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "cypress/**/*.ts"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "cypress",
+    "test"
+  ]
 }

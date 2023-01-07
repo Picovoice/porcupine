@@ -7,6 +7,8 @@ export default defineConfig({
       bundler: "vite"
     },
     supportFile: "cypress/support/index.ts",
-    specPattern: "test/*.test.{js,jsx,ts,tsx}"
+    specPattern: "test/*.test.{js,jsx,ts,tsx}",
+    video: false,
+    screenshotOnRunFailure: false
   },
 });

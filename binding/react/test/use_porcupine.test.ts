@@ -1,6 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks/dom';
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
-import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import { usePorcupine } from '../src';
 
