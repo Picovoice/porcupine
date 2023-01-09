@@ -6,4 +6,6 @@ dist/
 .DS_Store
 test/*.pv
 test/*.js
+test/**/*.ppn
 cypress/**/*.wav
+cypress/**/*.json
