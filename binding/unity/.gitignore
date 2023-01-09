@@ -70,3 +70,5 @@ Assets/Porcupine/Demo/**
 UIElementsSchema
 UserSettings
 .vsconfig
+Assets/StreamingAssets/test/
+Assets/InitTestScene*
