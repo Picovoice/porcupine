@@ -16,7 +16,7 @@ if (rootProject.file("local.properties").exists()) {
 
 android {
     compileSdkVersion defaultTargetSdkVersion
-    
+
     defaultConfig {
         applicationId "ai.picovoice.porcupine.demo"
         minSdkVersion 21
@@ -55,6 +55,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.code.gson:gson:2.10'
     implementation 'ai.picovoice:porcupine-android:2.1.3'
 
     // Espresso UI Testing
