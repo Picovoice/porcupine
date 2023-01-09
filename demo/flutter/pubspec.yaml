@@ -12,14 +12,22 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   flutter_picker: ^2.0.1
   porcupine_flutter: ^2.1.6
-  
+
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
   lints: ^1.0.1
+  wav: ^1.2.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/test_resources/
+    - assets/test_resources/audio_samples/
+    - assets/test_resources/keyword_files/
+    - assets/test_resources/model_files/
