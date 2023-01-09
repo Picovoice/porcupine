@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook } from '@testing-library/react-hooks/dom';
 import { BuiltInKeyword } from '@picovoice/porcupine-web';
 
 import { usePorcupine } from '../src';
