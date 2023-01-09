@@ -41,7 +41,7 @@ try {
     fs.copyFileSync(join(paramsSourceDirectory, file), join(testDirectory, file));
   });
 
-  fs.copyFileSync(testDataSource, join(fixturesDirectory, 'test_data.json'));
+  fs.copyFileSync(testDataSource, join(testDirectory, 'test_data.json'));
 
   fs.mkdirSync(join(testDirectory, 'keywords'), { recursive: true });
   fs.readdirSync(sourceDirectory).forEach(folder => {
