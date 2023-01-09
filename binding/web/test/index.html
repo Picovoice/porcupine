@@ -444,7 +444,7 @@
             },
             porcupineKeywordCallback,
             {
-              publicPath: testInfo.language == 'en' ? "porcupine_params.pv" : `porcupine_params_${testInfo.language}.pv`,
+              publicPath: testInfo.language === 'en' ? "porcupine_params.pv" : `porcupine_params_${testInfo.language}.pv`,
               forceWrite: true,
             });
           const testPcm = await loadAudioFile(`audio_samples/${testInfo.wakeword.replaceAll(' ', '_')}.wav`)

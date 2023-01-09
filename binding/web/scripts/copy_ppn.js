@@ -26,20 +26,17 @@ const sourceDirectory = join(
   "..",
   "..",
   "resources",
+  "keyword_files",
+  "wasm"
 );
 
 const outputDirectory = join(__dirname, "..", "keywords");
 
 try {
   fs.mkdirSync(outputDirectory, { recursive: true });
-
-  fs.readdirSync(sourceDirectory).forEach(folder => {
-    if (folder.includes("keyword_files")) {
-      fs.readdirSync(join(sourceDirectory, folder, 'wasm')).forEach(file => {
-        fs.copyFileSync(join(sourceDirectory, folder, 'wasm', file), join(outputDirectory, file));
-      })
-    }
-  });
+  ppnFiles.forEach(file => {
+    fs.copyFileSync(join(sourceDirectory, file), join(outputDirectory, file))
+  })
 } catch (error) {
   console.error(error);
 }
