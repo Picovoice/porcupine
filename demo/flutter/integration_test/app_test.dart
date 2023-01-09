@@ -15,7 +15,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   final String accessKey = "{TESTING_ACCESS_KEY_HERE}";
-  final String platform = Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : "error";
+  final String platform = Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : throw ("Unsupported platform");
 
   Future<List<int>> loadAudioFile(String audioPath) async {
       const INT16_MAX = 32767;
@@ -33,20 +33,21 @@ void main() {
   }
 
   group('Porcupine Keyword Tests', () {
+    late dynamic testData;
+
+    setUp(() async {
+      String testDataJson = await rootBundle.loadString('assets/test_resources/test_data.json');
+      testData = json.decode(testDataJson);
+    });
+
     testWidgets('Test singleKeyword all languages',
       (tester) async {
-        String testDataJson = await rootBundle.loadString('assets/test_resources/test_data.json');
-        var testData = json.decode(testDataJson);
-
         for (int t = 0; t < testData['tests']['singleKeyword'].length; t++) {
           String language = testData['tests']['singleKeyword'][t]['language'];
           String keyword = testData['tests']['singleKeyword'][t]['wakeword'];
 
           String keywordPath = "assets/test_resources/keyword_files/${keyword}_${platform}.ppn";
-          String modelPath = "assets/test_resources/model_files/porcupine_params_$language.pv";
-          if (language == "en") {
-            modelPath = "assets/test_resources/model_files/porcupine_params.pv";
-          }
+          String modelPath = "assets/test_resources/model_files/porcupine_params${language != "en" ? "_${language}" : ""}.pv";
 
           Porcupine porcupine;
           try {
@@ -79,19 +80,13 @@ void main() {
 
     testWidgets('Test multipleKeyword all languages',
       (tester) async {
-        String testDataJson = await rootBundle.loadString('assets/test_resources/test_data.json');
-        var testData = json.decode(testDataJson);
-
         for (int t = 0; t < testData['tests']['multipleKeyword'].length; t++) {
           String language = testData['tests']['multipleKeyword'][t]['language'];
           List<String> keywords = List<String>.from(testData['tests']['multipleKeyword'][t]['wakewords']);
           List<int> groundTruth = List<int>.from(testData['tests']['multipleKeyword'][t]['groundTruth']);
 
           List<String> keywordPaths = keywords.map((keyword) { return "assets/test_resources/keyword_files/${keyword}_${platform}.ppn"; }).toList();
-          String modelPath = "assets/test_resources/model_files/porcupine_params_$language.pv";
-          if (language == "en") {
-            modelPath = "assets/test_resources/model_files/porcupine_params.pv";
-          }
+          String modelPath = "assets/test_resources/model_files/porcupine_params${language != "en" ? "_${language}" : ""}.pv";
 
           Porcupine porcupine;
           try {
@@ -104,10 +99,7 @@ void main() {
             return;
           }
 
-          String audioPath = "assets/test_resources/audio_samples/multiple_keywords_$language.wav";
-          if (language == "en") {
-            audioPath = "assets/test_resources/audio_samples/multiple_keywords.wav";
-          }
+          String audioPath = "assets/test_resources/audio_samples/multiple_keywords${language != "en" ? "_${language}" : ""}.wav";
           List<int> pcm = await loadAudioFile(audioPath);
 
           List<int> detections = [];
