@@ -10,7 +10,7 @@
       ],
       "parserOptions": {
         "project": [
-          "projects/porcupine-angular/tsconfig.lib.json"
+          "tsconfig.lib.json"
         ],
         "createDefaultProgram": true
       },

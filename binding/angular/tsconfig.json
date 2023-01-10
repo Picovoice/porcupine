@@ -17,7 +17,6 @@
     "importHelpers": true,
     "paths": {
       "porcupine-angular": [
-        "dist/porcupine-angular/porcupine-angular",
         "dist/porcupine-angular"
       ]
     },
