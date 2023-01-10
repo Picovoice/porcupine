@@ -186,7 +186,7 @@ namespace Tests
             string filepath = Path.Combine(
                 Application.streamingAssetsPath,
                 "test",
-                "lib/common",
+                "model_files",
                 $"{filename}.pv"
             );
             return ExtractResource(filepath);
