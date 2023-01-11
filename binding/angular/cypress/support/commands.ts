@@ -1,10 +1,16 @@
-import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
+import { WebVoiceProcessor } from "@picovoice/web-voice-processor";
 
-Cypress.Commands.add("mockRecording", (path: string, delayMs = 1000) => {
+Cypress.Commands.add("wrapFn", (fn) => {
+  return cy.wrap(null).then(async () => {
+    return await fn();
+  });
+});
+
+Cypress.Commands.add("mockRecording", (path, delayMs = 1000) => {
   // @ts-ignore
   const instance = WebVoiceProcessor.instance();
 
-  instance._microphoneStream?.getAudioTracks().forEach((track: any) => {
+  instance._microphoneStream?.getAudioTracks().forEach((track) => {
     track.enabled = false;
   });
 
@@ -15,7 +21,7 @@ Cypress.Commands.add("mockRecording", (path: string, delayMs = 1000) => {
     }
   }).wait(delayMs);
 
-  instance._microphoneStream?.getAudioTracks().forEach((track: any) => {
+  instance._microphoneStream?.getAudioTracks().forEach((track) => {
     track.enabled = true;
   });
 });
