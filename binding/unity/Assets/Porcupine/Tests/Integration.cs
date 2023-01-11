@@ -50,7 +50,7 @@ namespace Tests
 
     public class Integration
     {
-        private static string ACCESS_KEY = "TESTING_ACCESS_KEY";
+        private static string ACCESS_KEY = "{TESTING_ACCESS_KEY_HERE}";
         private Porcupine porcupine;
 
 #if !UNITY_EDITOR && UNITY_ANDROID
