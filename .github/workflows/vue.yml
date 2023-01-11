@@ -47,3 +47,9 @@ jobs:
 
     - name: Build
       run: yarn build
+
+    - name: Setup test
+      run: yarn setup-test
+
+    - name: Run test
+      run: yarn test --env ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}}

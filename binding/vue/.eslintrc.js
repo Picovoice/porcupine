@@ -36,6 +36,13 @@ module.exports = {
           }
         ]
       }
+    },
+    {
+      files: ['test/**/*.ts', 'cypress/**/*.ts'],
+      extends: ['plugin:cypress/recommended'],
+      rules: {
+        'no-unused-expressions': 0
+      }
     }
   ],
 
@@ -167,7 +174,7 @@ module.exports = {
     // disallow unnecessary nested blocks
     'no-lone-blocks': 2,
     // disallow creation of functions within loops
-    'no-loop-func': 2,
+    'no-loop-func': 0,
     // disallow the use of magic numbers
     'no-magic-numbers': 0, //TODO: need discussion
     // disallow use of multiple spaces
