@@ -48,7 +48,7 @@ jobs:
         ./copy_test_resources.sh
 
     - name: Inject AppID
-      run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+      run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Run tests
