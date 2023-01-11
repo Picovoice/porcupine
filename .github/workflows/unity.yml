@@ -85,7 +85,7 @@ jobs:
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform ${{ matrix.platform }} -logFile -
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform ${{ matrix.platform }} -logFile - || echo "Run potentially failed - checking results anyways"
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
