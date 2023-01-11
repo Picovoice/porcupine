@@ -46,6 +46,10 @@ describe('Porcupine Binding', () => {
       )
     );
 
+    cy.wrapFn(
+      () => porcupineService.release()
+    );
+
     porcupineService.isLoaded$.subscribe(isLoaded => {
       expect(isLoaded).to.be.true;
       done();
@@ -121,6 +125,10 @@ describe('Porcupine Binding', () => {
 
       cy.wrapFn(
         () => porcupineService.stop()
+      );
+
+      cy.wrapFn(
+        () => porcupineService.release()
       );
 
       let i = 0;
