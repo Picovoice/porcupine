@@ -77,6 +77,9 @@ jobs:
         ./copy.sh
         ./copy_test_resources.sh
 
+    - name: Clean conflicting dylib
+      run: rm -rf Assets/Porcupine/Plugins/mac/x86_64
+
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         Assets/Porcupine/Tests/Integration.cs
