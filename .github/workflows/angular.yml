@@ -46,7 +46,7 @@ jobs:
       run: yarn install
 
     - name: Build
-      run: yarn build porcupine-angular --prod
+      run: yarn build porcupine-angular
 
     - name: Setup test
       run: yarn setup-test
