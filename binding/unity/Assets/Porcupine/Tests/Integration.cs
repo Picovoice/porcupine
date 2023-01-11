@@ -135,7 +135,7 @@ namespace Tests
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
             List<short> data = new List<short>();
-            using (BinaryReader reader = new BinaryReader(File.Open(audioFilePath, FileMode.Open)))
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(audioFilePath)))
             {
                 reader.ReadBytes(24); // skip over part of the header
                 Assert.AreEqual(reader.ReadInt32(), expectedSampleRate, "Specified sample rate did not match test file.");
