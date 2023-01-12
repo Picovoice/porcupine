@@ -84,6 +84,11 @@ jobs:
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         Assets/Porcupine/Tests/Integration.cs
 
+    - name: Use simulator iOS framework
+      run: |
+        rm -rf ./Assets/Porcupine/Plugins/ios/PvPorcupine.framework
+        cp -R ../../lib/ios/PvPorcupine.xcframework/ios-arm64_i386_x86_64-simulator/PvPorcupine.framework ./Assets/Porcupine/Plugins/ios/PvPorcupine.framework
+
     - name: Run tests
       run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform ${{ matrix.platform }} -logFile - || echo "Run potentially failed - checking results anyways"
 
