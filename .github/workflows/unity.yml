@@ -122,10 +122,3 @@ jobs:
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
-
-    - name: Archive Test Results
-      if: always()
-      uses: actions/upload-artifact@v1
-      with:
-        name: test-results
-        path: app/build
