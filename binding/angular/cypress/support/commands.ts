@@ -16,8 +16,8 @@ Cypress.Commands.add("mockRecording", (path, delayMs = 1000) => {
 
   cy.fixture(path, 'base64').then(Cypress.Blob.base64StringToBlob).then(async blob => {
     const data = new Int16Array(await blob.arrayBuffer());
-    for (let i = 0; i < data.length; i++) {
-      instance.recorderCallback(data.slice(i * 512, (i + 1) * 512));
+    for (let i = 0; i < data.length; i += 512) {
+      instance.recorderCallback(data.slice(i, i + 512));
     }
   }).wait(delayMs);
 
