@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "types": ["cypress", "node"],
+    "target": "es5",
+    "lib": ["es5", "dom", "esnext"]
+  },
+  "include": [
+    "../test/**/*.ts",
+    "./**/*.ts"
+  ],
+  "exclude": []
+}
