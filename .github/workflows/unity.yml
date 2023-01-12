@@ -115,7 +115,7 @@ jobs:
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Start Emulator
-      run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator -avd Pixel_6_API_33 &
+      run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
 
     - name: Run tests
       run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform ${{ matrix.platform }} -logFile - || echo "Run potentially failed - checking results anyways"
