@@ -33,11 +33,8 @@ defaults:
 
 jobs:
   playtest-linux:
-    name: Run PlayTest unit tests on ${{ matrix.platform }}
+    name: Run PlayTest unit tests on Linux
     runs-on: pv-android
-    strategy:
-      matrix:
-        platform: ['StandaloneLinux64']
 
     steps:
     - uses: actions/checkout@v3
@@ -55,17 +52,41 @@ jobs:
 
     - name: Run tests
       run: xvfb-run --auto-servernum --server-args='-screen 0 640x480x24'
-        /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform ${{ matrix.platform }} -logFile -
+        /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneLinux64 -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
 
-  playtest-mac-ios:
-    name: Run PlayTest unit tests on ${{ matrix.platform }}
+  playtest-mac:
+    name: Run PlayTest unit tests on macOS
     runs-on: pv-ios
-    strategy:
-      matrix:
-        platform: ['StandaloneOSX', 'iOS']
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Pre-build dependencies
+      run: |
+        ./copy.sh
+        ./copy_test_resources.sh
+
+    - name: Clean conflicting dylib
+      run: rm -rf Assets/Porcupine/Plugins/mac/arm64
+
+    - name: Inject AppID
+      run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+        Assets/Porcupine/Tests/Integration.cs
+
+    - name: Run tests
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
+
+    - name: Check Results
+      run: sed -n 2p unityresults.xml | grep 'result="Passed"'
+
+  playtest-ios:
+    name: Run PlayTest unit tests on iOS
+    runs-on: pv-ios
 
     steps:
     - uses: actions/checkout@v3
@@ -90,17 +111,14 @@ jobs:
         cp -R ../../lib/ios/PvPorcupine.xcframework/ios-arm64_i386_x86_64-simulator/PvPorcupine.framework ./Assets/Porcupine/Plugins/ios/PvPorcupine.framework
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform ${{ matrix.platform }} -logFile - || echo "Run potentially failed - checking results anyways"
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform iOS -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
 
   playtest-android:
-    name: Run PlayTest unit tests on ${{ matrix.platform }}
+    name: Run PlayTest unit tests on Android
     runs-on: pv-ios
-    strategy:
-      matrix:
-        platform: ['Android']
 
     steps:
     - uses: actions/checkout@v3
@@ -123,7 +141,7 @@ jobs:
       run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform ${{ matrix.platform }} -logFile - || echo "Run potentially failed - checking results anyways"
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform Android -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
