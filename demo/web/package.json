@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./porcupine_params.js && ncp ../../resources/keyword_files/wasm/porcupine_wasm.ppn ./",
+    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./porcupine_params.js && ncp ../../resources/keyword_files/wasm/porcupine_wasm.ppn ./porcupine_wasm.ppn",
     "start": "http-server -a localhost -p 5000"
   },
   "keywords": [
