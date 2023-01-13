@@ -5,8 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./porcupine_params.js && cp ../../resources/keyword_files/wasm/porcupine_wasm.ppn ./",
-    "start": "yarn run http-server -a localhost -p 5000"
+    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./porcupine_params.js && ncp ../../resources/keyword_files/wasm/porcupine_wasm.ppn ./porcupine_wasm.ppn",
+    "start": "http-server -a localhost -p 5000"
   },
   "keywords": [
     "Picovoice",
@@ -22,6 +22,7 @@
     "@picovoice/web-voice-processor": "~4.0.2"
   },
   "devDependencies": {
-    "http-server": "^14.0.0"
+    "http-server": "^14.0.0",
+    "ncp": "^2.0.0"
   }
 }
