@@ -19,8 +19,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@picovoice/porcupine-web": "latest",
-    "@picovoice/web-voice-processor": "~4.0.2",
-    "yarn": "^1.22.19"
+    "@picovoice/web-voice-processor": "~4.0.2"
   },
   "devDependencies": {
     "http-server": "^14.0.0",
