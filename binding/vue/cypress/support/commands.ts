@@ -1,14 +1,10 @@
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
-import { act } from '@testing-library/react-hooks/dom';
 
-Cypress.Commands.add("wrapHook", (fn: () => Promise<any>) => {
+Cypress.Commands.add("wrapFn", (fn) => {
   return cy.wrap(null).then(async () => {
-    await act(async () => {
-      await fn();
-    });
+    return await fn();
   });
 });
-
 Cypress.Commands.add("mockRecording", (path: string, delayMs = 1000) => {
   // @ts-ignore
   const instance = WebVoiceProcessor.instance();

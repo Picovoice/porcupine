@@ -14,7 +14,8 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["cypress", "node"]
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "cypress", "test"]
 }
