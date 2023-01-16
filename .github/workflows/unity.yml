@@ -95,20 +95,20 @@ jobs:
 
     - name: Pre-build dependencies
       run: |
+        dos2unix copy.sh
         bash copy.sh
+        dos2unix copy_test_resources.sh
         bash copy_test_resources.sh
 
     - name: Inject AppID
-      shell: bash
-      run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
-        Assets/Porcupine/Tests/Integration.cs
+      run: bash -c "sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+        Assets/Porcupine/Tests/Integration.cs"
 
     - name: Run tests
       run: C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile -
 
     - name: Check Results
-      shell: bash
-      run: sed -n 2p unityresults.xml | grep 'result="Passed"'
+      run: bash -c "sed -n 2p unityresults.xml | grep 'result=\"Passed\"'"
 
   playtest-android:
     name: Run PlayTest unit tests on Android
