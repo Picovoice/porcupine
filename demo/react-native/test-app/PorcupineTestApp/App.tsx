@@ -26,16 +26,17 @@ import {runPorcupineTests, Result} from './Tests';
 function printResults(results: Result[]) {
   return results.map(result => {
     return (
-      <Text
+      <View
         key={result.testName}
         style={{
           backgroundColor: result.success ? 'green' : 'red',
           marginBottom: 5,
           padding: 5,
         }}>
-        {result.testName} (success: {`${result.success}`}){' '}
-        {result.errorString ? result.errorString : ''}
-      </Text>
+        <Text>{result.testName}</Text>
+        <Text testID="testResult">{`${result.success}`}</Text>
+        {result.errorString ? <Text>result.errorString</Text> : <></>}
+      </View>
     );
   });
 }
@@ -69,10 +70,10 @@ function App(): JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Button title="Run Tests" id="runTests" onPress={runTests} />
+          <Button title="Run Tests" testID="runTests" onPress={runTests} />
           {printResults(results)}
           {running ? (
-            <Text id="running">Tests running, please wait...</Text>
+            <Text testID="testStatus">Tests running, please wait...</Text>
           ) : (
             ''
           )}

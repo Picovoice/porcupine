@@ -1,4 +1,6 @@
-describe('Example', () => {
+const testData = require('../test_data.json');
+
+describe('Porcupine', () => {
   beforeAll(async () => {
     await device.launchApp();
   });
@@ -7,17 +9,18 @@ describe('Example', () => {
     await device.reloadReactNative();
   });
 
-  it('should have welcome screen', async () => {
-    await expect(element(by.id('welcome'))).toBeVisible();
-  });
+  it('should pass all tests', async () => {
+    await element(by.id('runTests')).tap();
 
-  it('should show hello screen after tap', async () => {
-    await element(by.id('hello_button')).tap();
-    await expect(element(by.text('Hello!!!'))).toBeVisible();
-  });
+    await waitFor(element(by.id('testStatus')))
+      .not.toExist()
+      .withTimeout(12 * 60 * 1000);
 
-  it('should show world screen after tap', async () => {
-    await element(by.id('world_button')).tap();
-    await expect(element(by.text('World!!!'))).toBeVisible();
+    const numTestCases =
+      testData.tests.singleKeyword.length +
+      testData.tests.multipleKeyword.length;
+    for (let i = 0; i < numTestCases; i += 1) {
+      await expect(element(by.id('testResult')).atIndex(i)).toHaveText('true');
+    }
   });
 });
