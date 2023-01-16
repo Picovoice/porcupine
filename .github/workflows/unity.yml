@@ -94,7 +94,6 @@ jobs:
         submodules: 'recursive'
 
     - name: Pre-build dependencies
-      shell: bash
       run: |
         bash copy.sh
         bash copy_test_resources.sh
