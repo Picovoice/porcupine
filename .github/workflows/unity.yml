@@ -84,6 +84,32 @@ jobs:
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
 
+  playtest-windows:
+    name: Run PlayTest unit tests on Windows
+    runs-on: pv-windows
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Pre-build dependencies
+      run: |
+        dos2unix ./copy.sh
+        bash ./copy.sh
+        dos2unix ./copy_test_resources.sh
+        bash ./copy_test_resources.sh
+
+    - name: Inject AppID
+      run: bash -c "sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+        Assets/Porcupine/Tests/Integration.cs"
+
+    - name: Run tests
+      run: C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile -
+
+    - name: Check Results
+      run: bash -c "sed -n 2p unityresults.xml | grep 'result=\"Passed\"'"
+
   playtest-android:
     name: Run PlayTest unit tests on Android
     runs-on: pv-ios
