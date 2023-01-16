@@ -105,11 +105,10 @@ jobs:
         Assets/Porcupine/Tests/Integration.cs"
 
     - name: Run tests
-      run: >
-        & "C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe" --% -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile -
+      run: Start-Process "C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe" -ArgumentList "-runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile -" -wait
 
     - name: Check Results
-      run: bash -c "sed -n 2p unityresults.xml | grep 'result=\"Passed\"'"
+      run: bash -c "sed -n 2p unityresults.xml | grep 'result=`"Passed`"'"
 
   playtest-android:
     name: Run PlayTest unit tests on Android
