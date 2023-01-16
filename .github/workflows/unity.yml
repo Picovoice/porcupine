@@ -94,12 +94,12 @@ jobs:
         submodules: 'recursive'
 
     - name: Pre-build dependencies
-      shell: cmd
+      shell: bash
       run: |
         dos2unix ./copy.sh
-        bash ./copy.sh
+        ./copy.sh
         dos2unix ./copy_test_resources.sh
-        bash ./copy_test_resources.sh
+        ./copy_test_resources.sh
 
     - name: Inject AppID
       shell: bash
