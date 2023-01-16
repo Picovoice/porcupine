@@ -96,10 +96,8 @@ jobs:
     - name: Pre-build dependencies
       shell: bash
       run: |
-        dos2unix ./copy.sh
-        ./copy.sh
-        dos2unix ./copy_test_resources.sh
-        ./copy_test_resources.sh
+        bash ./copy.sh
+        bash ./copy_test_resources.sh
 
     - name: Inject AppID
       shell: bash
