@@ -109,7 +109,7 @@ jobs:
         & "C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe" -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile - | Out-Host
 
     - name: Check Results
-      run: bash -c "sed -n 2p unityresults.xml | grep 'result=`"Passed`"'"
+      run: bash -c "sed -n 2p unityresults.xml | grep Passed"
 
   playtest-android:
     name: Run PlayTest unit tests on Android
