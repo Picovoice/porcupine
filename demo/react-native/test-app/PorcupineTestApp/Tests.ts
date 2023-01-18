@@ -7,7 +7,7 @@ import {Porcupine} from '@picovoice/porcupine-react-native';
 const testData = require('./test_data.json');
 const platform = Platform.OS;
 
-const accessKey: string = '${TESTING_ACCESS_KEY_HERE}';
+const accessKey: string = '{TESTING_ACCESS_KEY_HERE}';
 
 export type Result = {
   testName: string;
