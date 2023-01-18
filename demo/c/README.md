@@ -14,10 +14,16 @@ Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` 
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
-## Build
+## Build Linux/MacOS
 
 ```console
 cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_mic
+```
+
+## Build Windows
+
+```console
+cmake -S demo/c/. -B demo/c/build -G "MinGW Makefiles" && cmake --build demo/c/build --target porcupine_demo_mic
 ```
 
 ## Run
