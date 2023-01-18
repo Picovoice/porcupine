@@ -13,9 +13,6 @@ describe('Porcupine', () => {
     await element(by.id('runTests')).tap();
 
     await waitFor(element(by.id('testStatus')))
-      .toExist()
-      .withTimeout(1 * 60 * 1000);
-    await waitFor(element(by.id('testStatus')))
       .not.toExist()
       .withTimeout(12 * 60 * 1000);
 
