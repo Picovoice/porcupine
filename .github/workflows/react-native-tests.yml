@@ -41,6 +41,13 @@ jobs:
         yarn install
         ./copy_test_resources.sh
 
+    - name: Pre-build environment
+      run: |
+        export ANDROID_HOME=/home/picovoice/Android/Sdk
+        export ANDROID_SDK_ROOT=$ANDROID_HOME
+        export PATH=$PATH:$ANDROID_HOME/emulator
+        export PATH=$PATH:$ANDROID_HOME/platform-tools
+
     - name: Inject AppID
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
 
