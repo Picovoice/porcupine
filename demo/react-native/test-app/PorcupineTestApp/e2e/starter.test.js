@@ -16,6 +16,7 @@ describe('Porcupine', () => {
       testData.tests.singleKeyword.length +
       testData.tests.multipleKeyword.length;
     for (let i = 0; i < numTestCases; i += 1) {
+      await waitFor(element(by.id('testResult')).atIndex(i)).toExist().withTimeout(1 * 60 * 1000)
       await expect(element(by.id('testResult')).atIndex(i)).toHaveText('true');
     }
   });

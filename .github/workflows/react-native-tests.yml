@@ -1,4 +1,4 @@
-name: React Native
+name: React Native Tests
 on:
   workflow_dispatch:
   push:
@@ -45,10 +45,7 @@ jobs:
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
 
     - name: Build tests
-      run: detox build --configuration android.emu.debug
+      run: detox build --configuration android.emu.release
 
     - name: Run tests
-      run: |
-        yarn start &
-        sleep 12
-        detox test --configuration android.emu.debug
+      run: detox test --configuration android.emu.release
