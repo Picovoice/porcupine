@@ -99,6 +99,7 @@ makefiles
 manzana
 maxsplit
 mclk
+Makefiles
 micdemo
 microcontroller
 microcontrollers

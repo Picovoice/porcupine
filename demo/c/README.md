@@ -23,7 +23,7 @@ cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupi
 ## Build Windows
 
 ```console
-cmake -S demo/c/. -B demo/c/build-G "MinGW Makefiles" && cmake --build demo/c/build --target porcupine_demo_mic
+cmake -S demo/c/. -B demo/c/build -G "MinGW Makefiles" && cmake --build demo/c/build --target porcupine_demo_mic
 ```
 
 ## Run
