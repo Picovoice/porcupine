@@ -10,7 +10,7 @@ on:
       - 'lib/ios/**'
       - 'resources/keyword_files/android/**'
       - 'resources/keyword_files/ios/**'
-      - '.github/workflows/react-native.yml'
+      - '.github/workflows/react-native-tests.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -20,7 +20,7 @@ on:
       - 'lib/ios/**'
       - 'resources/keyword_files/android/**'
       - 'resources/keyword_files/ios/**'
-      - '.github/workflows/react-native.yml'
+      - '.github/workflows/react-native-tests.yml'
 
 defaults:
   run:
