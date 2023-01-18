@@ -48,4 +48,7 @@ jobs:
       run: detox build --configuration android.emu.debug
 
     - name: Run tests
-      run: detox test --configuration android.emu.debug
+      run: |
+        yarn start &
+        sleep 12
+        detox test --configuration android.emu.debug
