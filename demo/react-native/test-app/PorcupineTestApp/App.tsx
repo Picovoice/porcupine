@@ -35,7 +35,7 @@ function printResults(results: Result[]) {
         }}>
         <Text>{result.testName}</Text>
         <Text testID="testResult">{`${result.success}`}</Text>
-        {result.errorString ? <Text>result.errorString</Text> : <></>}
+        {result.errorString ? <Text>{`${result.errorString}`}</Text> : <></>}
       </View>
     );
   });

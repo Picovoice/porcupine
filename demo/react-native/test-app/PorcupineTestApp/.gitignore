@@ -64,3 +64,4 @@ yarn-error.log
 
 test_data.json
 android/app/src/main/assets
+ios/PorcupineTestApp/Assets.bundle

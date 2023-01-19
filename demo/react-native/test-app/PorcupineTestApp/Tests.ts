@@ -15,8 +15,20 @@ export type Result = {
   errorString?: string;
 };
 
+function getPath(filePath) {
+  if (platform === "ios") {
+    return `Assets.bundle/${filePath}`;
+  }
+  return filePath;
+}
+
 async function getBinaryFile(audioFilePath) {
-  const fileBase64 = await fs.readFileAssets(audioFilePath, 'base64'); // TODO iOS
+  let fileBase64;
+  if (platform === "ios") {
+    fileBase64 = await fs.readFile(`${fs.MainBundlePath}/${audioFilePath}`, 'base64');
+  } else {
+    fileBase64 = await fs.readFileAssets(audioFilePath, 'base64');
+  }
   const fileBinary = atob(fileBase64);
 
   const bytes = new Uint8Array(fileBinary.length);
@@ -93,12 +105,12 @@ async function runTestcase(
   let porcupine = null;
   try {
     const keywordPaths = keywords.map(
-      keyword => `keyword_files/${language}/${keyword}_${platform}.ppn`,
+      keyword => getPath(`keyword_files/${language}/${keyword}_${platform}.ppn`),
     );
     const modelPath =
       language === 'en'
-        ? 'model_files/porcupine_params.pv'
-        : `model_files/porcupine_params_${language}.pv`;
+        ? getPath('model_files/porcupine_params.pv')
+        : getPath(`model_files/porcupine_params_${language}.pv`);
     porcupine = await Porcupine.fromKeywordPaths(
       accessKey,
       keywordPaths,
@@ -124,10 +136,10 @@ async function runTestcase(
 async function singleKeywordTest(testcases): Result[] {
   const results = [];
   for (const testcase of testcases) {
-    const audioFilePath = `audio_samples/${testcase.wakeword.replaceAll(
+    const audioFilePath = getPath(`audio_samples/${testcase.wakeword.replaceAll(
       ' ',
       '_',
-    )}.wav`;
+    )}.wav`);
     const result = await runTestcase(
       testcase.language,
       [testcase.wakeword],
@@ -145,8 +157,8 @@ async function multipleKeywordTest(testcases): Result[] {
   for (const testcase of testcases) {
     const audioFilePath =
       testcase.language === 'en'
-        ? 'audio_samples/multiple_keywords.wav'
-        : `audio_samples/multiple_keywords_${testcase.language}.wav`;
+        ? getPath('audio_samples/multiple_keywords.wav')
+        : getPath(`audio_samples/multiple_keywords_${testcase.language}.wav`);
     const result = await runTestcase(
       testcase.language,
       testcase.wakewords,
