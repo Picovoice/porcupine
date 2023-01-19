@@ -49,3 +49,30 @@ jobs:
 
     - name: Run tests
       run: detox test --configuration android.emu.release
+
+  test-ios:
+    name: Run tests on iOS
+    runs-on: pv-ios
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Pre-build dependencies
+      run: |
+        yarn install
+        ./copy_test_resources.sh
+
+    - name: Cocoapods install
+      working-directory: demo/react-native/test-app/PorcupineTestApp/ios
+      run: pod install
+
+    - name: Inject AppID
+      run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
+
+    - name: Build tests
+      run: detox build --configuration ios.sim.release
+
+    - name: Run tests
+      run: detox test --configuration ios.sim.release
