@@ -67,3 +67,5 @@ codorials
 **/__tests__
 pkg
 copy.js
+
+test-app/
