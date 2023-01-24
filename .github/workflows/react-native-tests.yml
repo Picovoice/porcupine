@@ -65,7 +65,7 @@ jobs:
         ./copy_test_resources.sh
 
     - name: Cocoapods install
-      working-directory: demo/react-native/test-app/PorcupineTestApp/ios
+      working-directory: binding/react-native/test-app/PorcupineTestApp/ios
       run: pod install
 
     - name: Inject AppID
