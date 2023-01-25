@@ -1,0 +1,78 @@
+name: React Native Tests
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/react-native/**'
+      - 'lib/common/**'
+      - 'lib/android/**'
+      - 'lib/ios/**'
+      - 'resources/keyword_files/android/**'
+      - 'resources/keyword_files/ios/**'
+      - '.github/workflows/react-native-tests.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'binding/react-native/**'
+      - 'lib/common/**'
+      - 'lib/android/**'
+      - 'lib/ios/**'
+      - 'resources/keyword_files/android/**'
+      - 'resources/keyword_files/ios/**'
+      - '.github/workflows/react-native-tests.yml'
+
+defaults:
+  run:
+    working-directory: binding/react-native/test-app/PorcupineTestApp
+
+jobs:
+  test-android:
+    name: Run tests on Android
+    runs-on: pv-android
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Pre-build dependencies
+      run: |
+        yarn install
+        ./copy_test_resources.sh
+
+    - name: Inject AppID
+      run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
+
+    - name: Build tests
+      run: detox build --configuration android.emu.release
+
+    - name: Run tests
+      run: detox test --configuration android.emu.release
+
+  test-ios:
+    name: Run tests on iOS
+    runs-on: pv-ios
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Pre-build dependencies
+      run: |
+        yarn install
+        ./copy_test_resources.sh
+
+    - name: Cocoapods install
+      working-directory: binding/react-native/test-app/PorcupineTestApp/ios
+      run: pod install
+
+    - name: Inject AppID
+      run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
+
+    - name: Build tests
+      run: detox build --configuration ios.sim.release
+
+    - name: Run tests
+      run: detox test --configuration ios.sim.release
