@@ -1431,28 +1431,28 @@
     which "^3.0.0"
 
 "@picovoice/porcupine-angular@latest":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-2.1.8.tgz#ec18d408e49734c256ba99fae1426b5deac0049b"
-  integrity sha512-usu3+7EAuJtGsyEZdhE8shfsAV8tMf0N5GiF8HdpVUIwRE1udvTz31Jc6h7UUV6/4mKabVusxusrtjBwipy7KA==
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-2.1.9.tgz#7bee48f4fc5fe55f1284d82d457ad004d3dafe81"
+  integrity sha512-UIlfhr1CmAs8HRRD0falFAKvAtNtGqj8upPn+Ug/SY6Pq9OwVuOqIEuCJGQrlpV9G8nk1cAx6CPdjXrQZGxVyQ==
   dependencies:
-    "@picovoice/porcupine-web" "=2.1.13"
+    "@picovoice/porcupine-web" "=2.1.14"
     tslib "^2.3.0"
 
-"@picovoice/porcupine-web@=2.1.13":
-  version "2.1.13"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.13.tgz#1209ba04d5da9382e11d4419b72bbe145423b201"
-  integrity sha512-EKouhR0mmNV8H4LKhwW3MnN5GtGypWImo+0etQWDV9slImk4qK/oKdPvjfL7+mEv8TdjUzphaxi0b7SuGUvHNw==
+"@picovoice/porcupine-web@=2.1.14":
+  version "2.1.14"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.14.tgz#63c5c46b82864fb15a63c5ac6a76748d02ccf0b1"
+  integrity sha512-wxdC1LPbUinT9+dbp3pVqNt0egFcLHiLobK3Y7RbEu/y/7miz1ybFJw69/v96S7KQfFJ6dTvSl63P9OgY3F/PQ==
   dependencies:
-    "@picovoice/web-utils" "=1.2.9"
+    "@picovoice/web-utils" "=1.2.10"
 
-"@picovoice/web-utils@=1.2.9":
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.9.tgz#080bc377e2fa71388f40655904d2485ef586f517"
-  integrity sha512-vYAV/izQuzy/+3QF/6LlSSJh7l9cIIvD4t9ZJ91vYg2XA9yk0k7V5S+6jxPcyiVMSy8Zlc9kBwCOWZchhlSMwA==
+"@picovoice/web-utils@=1.2.10":
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.10.tgz#893cf6e6578923bba958975b80d266c6d50627d2"
+  integrity sha512-wFURWnBXw9DIMkUtjADQ4sFTjgDuZXUkiZJBO+mFO51t3hnXJw10U15pT6fx/epNqMMQnGx+9jeSS7Io3/AI+A==
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.2":
+"@picovoice/web-voice-processor@~4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.3.tgz#728b1e61ae027f2679796fda27040209ebeadf5b"
   integrity sha512-4hUKRNMfdqIx74VPi8mwkow8yyLM1NsMWi+Ak2uxK213A+26R5Xr9ms99hkOuPrBMHCGl+Ffuo9QXmkGBjsbnQ==

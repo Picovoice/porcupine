@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@picovoice/porcupine-vue": "latest",
-    "@picovoice/web-voice-processor": "~4.0.2",
+    "@picovoice/web-voice-processor": "~4.0.3",
     "vue": "^3.2.45"
   },
   "devDependencies": {
