@@ -7,16 +7,20 @@ on:
     paths:
       - 'binding/react/**'
       - '!binding/react/README.md'
+      - 'lib/common/**'
       - 'lib/wasm/**'
       - 'resources/**'
+      - '!resources/lint/**'
       - '.github/workflows/react.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'binding/react/**'
       - '!binding/react/README.md'
+      - 'lib/common/**'
       - 'lib/wasm/**'
       - 'resources/**'
+      - '!resources/lint/**'
       - '.github/workflows/react.yml'
 
 defaults:

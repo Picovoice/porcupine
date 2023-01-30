@@ -1,5 +1,5 @@
 /*
-    Copyright 2022 Picovoice Inc.
+    Copyright 2022-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -12,7 +12,14 @@
 
 package ai.picovoice.porcupine;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 public class PorcupineTestUtils {
     private static final String ENVIRONMENT_NAME;
@@ -57,5 +64,13 @@ public class PorcupineTestUtils {
             keywordPaths[i] = getTestKeywordPath(language, keywords[i]);
         }
         return keywordPaths;
+    }
+
+    public static JsonObject loadTestData() throws IOException {
+        final Path testDataPath = Paths.get(System.getProperty("user.dir"))
+                .resolve("../../resources/test")
+                .resolve("test_data.json");
+        final String testDataContent = new String(Files.readAllBytes(testDataPath));
+        return JsonParser.parseString(testDataContent).getAsJsonObject();
     }
 }

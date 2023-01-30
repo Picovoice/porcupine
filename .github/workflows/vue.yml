@@ -7,16 +7,20 @@ on:
     paths:
       - 'binding/vue/**'
       - '!binding/vue/README.md'
-      - 'lib/**'
+      - 'lib/common/**'
+      - 'lib/wasm/**'
       - 'resources/**'
+      - '!resources/lint/**'
       - '.github/workflows/vue.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'binding/vue/**'
       - '!binding/vue/README.md'
-      - 'lib/**'
+      - 'lib/common/**'
+      - 'lib/wasm/**'
       - 'resources/**'
+      - '!resources/lint/**'
       - '.github/workflows/vue.yml'
 
 defaults:
