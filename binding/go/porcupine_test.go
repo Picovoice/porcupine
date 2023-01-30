@@ -12,13 +12,16 @@ package porcupine
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math"
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -27,64 +30,20 @@ var (
 	porcupine     Porcupine
 )
 
-var singleKeywordTestParameters = []struct {
-	language        string
-	keywords        []string
-	expectedResults []int
-	testAudioFile   string
-}{
-	{"en", []string{"porcupine"}, []int{0}, "porcupine.wav"},
-	{"es", []string{"manzana"}, []int{0}, "manzana.wav"},
-	{"de", []string{"heuschrecke"}, []int{0}, "heuschrecke.wav"},
-	{"fr", []string{"mon chouchou"}, []int{0}, "mon_chouchou.wav"},
+type singleKeywordTestParameterType struct {
+	language      string
+	keyword       string
+	testAudioFile string
 }
 
-var multipleKeywordTestParameters = []struct {
-	language        string
-	keywords        []string
-	expectedResults []int
-}{
-	{
-		"en",
-		[]string{"americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"},
-		[]int{6, 0, 1, 2, 3, 4, 5, 6, 7},
-	},
-	{
-		"es",
-		[]string{"emparedado", "leopardo", "manzana"},
-		[]int{0, 1, 2},
-	},
-	{
-		"de",
-		[]string{"ananas", "heuschrecke", "leguan", "stachelschwein"},
-		[]int{0, 1, 2, 3},
-	},
-	{
-		"fr",
-		[]string{"framboise", "mon chouchou", "parapluie"},
-		[]int{0, 1, 0, 2},
-	},
-	{
-		"it",
-		[]string{"espresso", "cameriere", "porcospino"},
-		[]int{2, 0, 1},
-	},
-	{
-		"ja",
-		[]string{"ninja", "bushi", "ringo"},
-		[]int{2, 1, 0},
-	},
-	{
-		"ko",
-		[]string{"aiseukeulim", "bigseubi", "koppulso"},
-		[]int{1, 2, 0},
-	},
-	{
-		"pt",
-		[]string{"abacaxi", "fenomeno", "formiga"},
-		[]int{0, 2, 1},
-	},
+type multipleKeywordTestParameterType struct {
+	language      string
+	keywords      []string
+	testAudioFile string
+	groundTruth   []int
 }
+
+var singleKeywordTestParameters, multipleKeywordTestParameters = loadTestData()
 
 func TestMain(m *testing.M) {
 
@@ -126,6 +85,80 @@ func getTestKeywordPaths(language string, keywords []string) []string {
 		keywordPaths = append(keywordPaths, getTestKeywordPath(language, keyword))
 	}
 	return keywordPaths
+}
+
+func loadTestData() ([]singleKeywordTestParameterType, []multipleKeywordTestParameterType) {
+	var data map[string]interface{}
+	content, err := ioutil.ReadFile("../../resources/test/test_data.json")
+	if err != nil {
+		log.Fatalf("Could not read test data json: %v", err)
+	}
+
+	err = json.Unmarshal(content, &data)
+	if err != nil {
+		log.Fatalf("Could not decode test data json: %v", err)
+	}
+
+	testsValue, ok := data["tests"].(map[string]interface{})
+	if !ok {
+		log.Fatalln("Could not find `tests` in test_data.json")
+	}
+	singleKeywordValue, ok := testsValue["singleKeyword"].([]map[string]interface{})
+	if !ok {
+		log.Fatalln("Could not find `singleKeyword` in test_data.json")
+	}
+
+	var singleKeywordTestParameters []singleKeywordTestParameterType
+	for _, x := range singleKeywordValue {
+		language, ok := x["language"].(string)
+		if !ok {
+			log.Fatalln("Could not find `language` in test_data.json")
+		}
+		keyword, ok := x["wakeword"].(string)
+		if !ok {
+			log.Fatalln("Could not find `wakeword` in test_data.json")
+		}
+
+		singleKeywordTestData := singleKeywordTestParameterType{
+			language:      language,
+			keyword:       keyword,
+			testAudioFile: strings.Replace(keyword, " ", "_", -1) + ".wav",
+		}
+
+		singleKeywordTestParameters = append(singleKeywordTestParameters, singleKeywordTestData)
+	}
+
+	multipleKeywordValue, ok := testsValue["multipleKeyword"].([]map[string]interface{})
+	if !ok {
+		log.Fatalln("Could not find `multipleKeyword` in test_data.json")
+	}
+
+	var multipleKeywordTestParameters []multipleKeywordTestParameterType
+	for _, x := range multipleKeywordValue {
+		language, ok := x["language"].(string)
+		if !ok {
+			log.Fatalln("Could not find `language` in test_data.json")
+		}
+		keywords, ok := x["wakewords"].([]string)
+		if !ok {
+			log.Fatalln("Could not find `wakewords` in test_data.json")
+		}
+		groundTruth, ok := x["groundTruth"].([]int)
+		if !ok {
+			log.Fatalln("Could not find `groundTruth` in test_data.json")
+		}
+
+		multipleKeywordTestData := multipleKeywordTestParameterType{
+			language:      language,
+			keywords:      keywords,
+			testAudioFile: appendLanguage("multiple_keywords", language) + ".wav",
+			groundTruth:   groundTruth,
+		}
+
+		multipleKeywordTestParameters = append(multipleKeywordTestParameters, multipleKeywordTestData)
+	}
+
+	return singleKeywordTestParameters, multipleKeywordTestParameters
 }
 
 func runTestCase(
@@ -196,17 +229,18 @@ func TestSingleBuiltIn(t *testing.T) {
 }
 
 func TestSingleKeyword(t *testing.T) {
+
 	for _, tt := range singleKeywordTestParameters {
 		t.Run(tt.language+" single keyword", func(t *testing.T) {
 			porcupine = Porcupine{
 				AccessKey:    testAccessKey,
 				ModelPath:    getTestModelPath(tt.language),
-				KeywordPaths: getTestKeywordPaths(tt.language, tt.keywords)}
+				KeywordPaths: getTestKeywordPaths(tt.language, []string{tt.keyword})}
 			runTestCase(
 				t,
 				&porcupine,
 				tt.testAudioFile,
-				tt.expectedResults)
+				[]int{0})
 			delErr := porcupine.Delete()
 			if delErr != nil {
 				t.Fatalf("%v", delErr)
@@ -250,8 +284,8 @@ func TestMultipleKeywords(t *testing.T) {
 			runTestCase(
 				t,
 				&porcupine,
-				fmt.Sprintf("%s.wav", appendLanguage("multiple_keywords", tt.language)),
-				tt.expectedResults)
+				tt.testAudioFile,
+				tt.groundTruth)
 			delErr := porcupine.Delete()
 			if delErr != nil {
 				t.Fatalf("%v", delErr)
