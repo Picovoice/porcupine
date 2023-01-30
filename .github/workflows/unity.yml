@@ -7,24 +7,28 @@ on:
     paths:
       - 'binding/unity/**'
       - '!binding/unity/README.md'
+      - 'lib/common/**'
       - 'lib/android/**'
       - 'lib/ios/**'
       - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/windows/**'
       - 'resources/**'
+      - '!resources/lint/**'
       - '.github/workflows/unity.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'binding/unity/**'
       - '!binding/unity/README.md'
+      - 'lib/common/**'
       - 'lib/android/**'
       - 'lib/ios/**'
       - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/windows/**'
       - 'resources/**'
+      - '!resources/lint/**'
       - '.github/workflows/unity.yml'
 
 defaults:
