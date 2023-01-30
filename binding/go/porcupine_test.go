@@ -26,30 +26,31 @@ import (
 )
 
 var (
-	testAccessKey string
-	porcupine     Porcupine
+	testAccessKey                 string
+	porcupine                     Porcupine
+	singleKeywordTestParameters   []SingleKeywordTestData
+	multipleKeywordTestParameters []MultipleKeywordTestData
 )
 
-type singleKeywordTestParameterType struct {
+type SingleKeywordTestData struct {
 	language      string
 	keyword       string
 	testAudioFile string
 }
 
-type multipleKeywordTestParameterType struct {
+type MultipleKeywordTestData struct {
 	language      string
 	keywords      []string
 	testAudioFile string
 	groundTruth   []int
 }
 
-var singleKeywordTestParameters, multipleKeywordTestParameters = loadTestData()
-
 func TestMain(m *testing.M) {
 
 	flag.StringVar(&testAccessKey, "access_key", "", "AccessKey for testing")
 	flag.Parse()
 
+	singleKeywordTestParameters, multipleKeywordTestParameters = loadTestData()
 	os.Exit(m.Run())
 }
 
@@ -87,72 +88,47 @@ func getTestKeywordPaths(language string, keywords []string) []string {
 	return keywordPaths
 }
 
-func loadTestData() ([]singleKeywordTestParameterType, []multipleKeywordTestParameterType) {
-	var data map[string]interface{}
+func loadTestData() ([]SingleKeywordTestData, []MultipleKeywordTestData) {
+
 	content, err := ioutil.ReadFile("../../resources/test/test_data.json")
 	if err != nil {
 		log.Fatalf("Could not read test data json: %v", err)
 	}
 
-	err = json.Unmarshal(content, &data)
+	var testData struct {
+		Tests struct {
+			SingleKeyword []struct {
+				Language string `json:"language"`
+				Keyword  string `json:"wakeword"`
+			} `json:"singleKeyword"`
+			MultipleKeyword []struct {
+				Language    string   `json:"language"`
+				Keywords    []string `json:"wakewords"`
+				GroundTruth []int    `json:"groundTruth"`
+			} `json:"multipleKeyword"`
+		} `json:"tests"`
+	}
+	err = json.Unmarshal(content, &testData)
 	if err != nil {
 		log.Fatalf("Could not decode test data json: %v", err)
 	}
 
-	testsValue, ok := data["tests"].(map[string]interface{})
-	if !ok {
-		log.Fatalln("Could not find `tests` in test_data.json")
-	}
-	singleKeywordValue, ok := testsValue["singleKeyword"].([]map[string]interface{})
-	if !ok {
-		log.Fatalln("Could not find `singleKeyword` in test_data.json")
-	}
-
-	var singleKeywordTestParameters []singleKeywordTestParameterType
-	for _, x := range singleKeywordValue {
-		language, ok := x["language"].(string)
-		if !ok {
-			log.Fatalln("Could not find `language` in test_data.json")
-		}
-		keyword, ok := x["wakeword"].(string)
-		if !ok {
-			log.Fatalln("Could not find `wakeword` in test_data.json")
-		}
-
-		singleKeywordTestData := singleKeywordTestParameterType{
-			language:      language,
-			keyword:       keyword,
-			testAudioFile: strings.Replace(keyword, " ", "_", -1) + ".wav",
+	for _, x := range testData.Tests.SingleKeyword {
+		singleKeywordTestData := SingleKeywordTestData{
+			language:      x.Language,
+			keyword:       x.Keyword,
+			testAudioFile: strings.Replace(x.Keyword, " ", "_", -1) + ".wav",
 		}
 
 		singleKeywordTestParameters = append(singleKeywordTestParameters, singleKeywordTestData)
 	}
 
-	multipleKeywordValue, ok := testsValue["multipleKeyword"].([]map[string]interface{})
-	if !ok {
-		log.Fatalln("Could not find `multipleKeyword` in test_data.json")
-	}
-
-	var multipleKeywordTestParameters []multipleKeywordTestParameterType
-	for _, x := range multipleKeywordValue {
-		language, ok := x["language"].(string)
-		if !ok {
-			log.Fatalln("Could not find `language` in test_data.json")
-		}
-		keywords, ok := x["wakewords"].([]string)
-		if !ok {
-			log.Fatalln("Could not find `wakewords` in test_data.json")
-		}
-		groundTruth, ok := x["groundTruth"].([]int)
-		if !ok {
-			log.Fatalln("Could not find `groundTruth` in test_data.json")
-		}
-
-		multipleKeywordTestData := multipleKeywordTestParameterType{
-			language:      language,
-			keywords:      keywords,
-			testAudioFile: appendLanguage("multiple_keywords", language) + ".wav",
-			groundTruth:   groundTruth,
+	for _, x := range testData.Tests.MultipleKeyword {
+		multipleKeywordTestData := MultipleKeywordTestData{
+			language:      x.Language,
+			keywords:      x.Keywords,
+			testAudioFile: appendLanguage("multiple_keywords", x.Language) + ".wav",
+			groundTruth:   x.GroundTruth,
 		}
 
 		multipleKeywordTestParameters = append(multipleKeywordTestParameters, multipleKeywordTestData)
