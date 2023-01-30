@@ -62,6 +62,7 @@ formiga
 framecount
 gpiozero
 gradlew
+gson
 heuschrecke
 himbeere
 hmodule
