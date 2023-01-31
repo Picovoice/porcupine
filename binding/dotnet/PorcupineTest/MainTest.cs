@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -71,7 +71,7 @@ namespace PorcupineTest
 
         private static JObject LoadJsonTestData()
         {
-            string content = File.ReadAllText(Path.Combine(_rootDir, "/resources/tests/test_data_json"));
+            string content = File.ReadAllText(Path.Combine(_rootDir, "resources/test/test_data.json"));
             return JObject.Parse(content);
         }
 
@@ -87,7 +87,7 @@ namespace PorcupineTest
             get
             {
                 JObject testDataJson = LoadJsonTestData();
-                IList<SingleKeywordJson> singleKeywordJson = ((JArray)testDataJson["singleKeyword"]).ToObject<IList<SingleKeywordJson>>();
+                IList<SingleKeywordJson> singleKeywordJson = ((JArray)testDataJson["tests"]["singleKeyword"]).ToObject<IList<SingleKeywordJson>>();
                 return singleKeywordJson
                     .Select(x => new object[] {
                         x.language,
@@ -111,7 +111,7 @@ namespace PorcupineTest
             get
             {
                 JObject testDataJson = LoadJsonTestData();
-                IList<MultipleKeywordJson> multipleKeywordJson = ((JArray)testDataJson["multipleKeyword"]).ToObject<IList<MultipleKeywordJson>>();
+                IList<MultipleKeywordJson> multipleKeywordJson = ((JArray)testDataJson["tests"]["multipleKeyword"]).ToObject<IList<MultipleKeywordJson>>();
                 return multipleKeywordJson
                     .Select(x => new object[] {
                         x.language,
@@ -256,7 +256,7 @@ namespace PorcupineTest
 
         [TestMethod]
         [DynamicData(nameof(MultipleKeywordTestData))]
-        public void TestMultipleKeyword(string language, string[] keywords, int[] expectedResults)
+        public void TestMultipleKeyword(string language, string[] keywords, string testAudio, int[] groundTruth)
         {
             _porcupine = Porcupine.FromKeywordPaths(
                 _accessKey,
@@ -265,8 +265,8 @@ namespace PorcupineTest
             );
 
             RunTestCase(
-                String.Format("multiple_keywords_{0}.wav", language),
-                expectedResults.ToList()
+                testAudio,
+                groundTruth.ToList()
             );
         }
 
