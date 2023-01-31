@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -20,6 +20,7 @@ import {
   isAccessKeyValid,
   loadModel,
   pv_free_type,
+  PvError
 } from '@picovoice/web-utils';
 
 import { simd } from 'wasm-feature-detect';
@@ -394,7 +395,9 @@ export class Porcupine {
     const memoryBufferInt32 = new Int32Array(memory.buffer);
     const memoryBufferFloat32 = new Float32Array(memory.buffer);
 
-    const exports = await buildWasm(memory, wasmBase64);
+    const pvError = new PvError();
+
+    const exports = await buildWasm(memory, wasmBase64, pvError);
 
     const aligned_alloc = exports.aligned_alloc as aligned_alloc_type;
     const pv_free = exports.pv_free as pv_free_type;
@@ -509,11 +512,13 @@ export class Porcupine {
     await pv_free(sensitivityAddress);
 
     if (status !== PV_STATUS_SUCCESS) {
+      const msg = `'pv_porcupine_init' failed with status ${arrayBufferToStringAtIndex(
+        memoryBufferUint8,
+        await pv_status_to_string(status)
+      )}`;
+
       throw new Error(
-        `'pv_porcupine_init' failed with status ${arrayBufferToStringAtIndex(
-          memoryBufferUint8,
-          await pv_status_to_string(status)
-        )}`
+        `${msg}\nDetails: ${pvError.getErrorString()}`
       );
     }
     const memoryBufferView = new DataView(memory.buffer);
