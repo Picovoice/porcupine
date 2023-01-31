@@ -38,8 +38,8 @@ namespace PorcupineTest
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
-                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";        
-        
+                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
+
         private Porcupine _porcupine;
 
         private static string PvLinuxEnv()
@@ -75,7 +75,7 @@ namespace PorcupineTest
         private static JObject LoadJsonTestData()
         {
             string content = File.ReadAllText(Path.Combine(_rootDir, "/resources/tests/test_data_json"));
-            return JObject.Parse(content);            
+            return JObject.Parse(content);
         }
 
         [Serializable]
@@ -92,10 +92,10 @@ namespace PorcupineTest
                 JObject testDataJson = LoadJsonTestData();
                 IList<SingleKeywordJson> singleKeywordJson = ((JArray)testDataJson["singleKeyword"]).ToObject<IList<SingleKeywordJson>>();
                 return singleKeywordJson
-                    .Select(x => new object[] { 
-                        x.language, 
-                        x.wakeword, 
-                        x.wakeword.Replace(' ', '_') + ".wav" 
+                    .Select(x => new object[] {
+                        x.language,
+                        x.wakeword,
+                        x.wakeword.Replace(' ', '_') + ".wav"
                     });
             }
         }
@@ -114,11 +114,11 @@ namespace PorcupineTest
             get
             {
                 JObject testDataJson = LoadJsonTestData();
-                IList<MultipleKeywordJson> multipleKeywordJson = ((JArray)testDataJson["multipleKeyword"]).ToObject<IList<MultipleKeywordJson>>();                
+                IList<MultipleKeywordJson> multipleKeywordJson = ((JArray)testDataJson["multipleKeyword"]).ToObject<IList<MultipleKeywordJson>>();
                 return multipleKeywordJson
-                    .Select(x => new object[] { 
-                        x.language, 
-                        x.wakewords, 
+                    .Select(x => new object[] {
+                        x.language,
+                        x.wakewords,
                         AppendLanguage("multiple_keywords", x.language) + ".wav",
                         x.groundTruth
                     });
@@ -244,7 +244,7 @@ namespace PorcupineTest
         [TestMethod]
         [DynamicData(nameof(SingleKeywordTestData))]
         public void TestSingleKeyword(string language, string keyword, string testAudio)
-        {            
+        {
             _porcupine = Porcupine.FromKeywordPaths(
                 _accessKey,
                 GetKeywordPaths(language, new List<string> { keyword }),
