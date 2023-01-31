@@ -108,6 +108,7 @@ middlewares
 miniaudio
 murciélago
 netcoreapp
+newtonsoft
 noncacheable
 nunit
 objblock
