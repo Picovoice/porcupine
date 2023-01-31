@@ -1,4 +1,4 @@
-// Copyright 2021-2022 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -12,78 +12,37 @@ package porcupine
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math"
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
 var (
-	testAccessKey string
-	porcupine     Porcupine
+	testAccessKey                 string
+	porcupine                     Porcupine
+	singleKeywordTestParameters   []SingleKeywordTestData
+	multipleKeywordTestParameters []MultipleKeywordTestData
 )
 
-var singleKeywordTestParameters = []struct {
-	language        string
-	keywords        []string
-	expectedResults []int
-	testAudioFile   string
-}{
-	{"en", []string{"porcupine"}, []int{0}, "porcupine.wav"},
-	{"es", []string{"manzana"}, []int{0}, "manzana.wav"},
-	{"de", []string{"heuschrecke"}, []int{0}, "heuschrecke.wav"},
-	{"fr", []string{"mon chouchou"}, []int{0}, "mon_chouchou.wav"},
+type SingleKeywordTestData struct {
+	language      string
+	keyword       string
+	testAudioFile string
 }
 
-var multipleKeywordTestParameters = []struct {
-	language        string
-	keywords        []string
-	expectedResults []int
-}{
-	{
-		"en",
-		[]string{"americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"},
-		[]int{6, 0, 1, 2, 3, 4, 5, 6, 7},
-	},
-	{
-		"es",
-		[]string{"emparedado", "leopardo", "manzana"},
-		[]int{0, 1, 2},
-	},
-	{
-		"de",
-		[]string{"ananas", "heuschrecke", "leguan", "stachelschwein"},
-		[]int{0, 1, 2, 3},
-	},
-	{
-		"fr",
-		[]string{"framboise", "mon chouchou", "parapluie"},
-		[]int{0, 1, 0, 2},
-	},
-	{
-		"it",
-		[]string{"espresso", "cameriere", "porcospino"},
-		[]int{2, 0, 1},
-	},
-	{
-		"ja",
-		[]string{"ninja", "bushi", "ringo"},
-		[]int{2, 1, 0},
-	},
-	{
-		"ko",
-		[]string{"aiseukeulim", "bigseubi", "koppulso"},
-		[]int{1, 2, 0},
-	},
-	{
-		"pt",
-		[]string{"abacaxi", "fenomeno", "formiga"},
-		[]int{0, 2, 1},
-	},
+type MultipleKeywordTestData struct {
+	language      string
+	keywords      []string
+	testAudioFile string
+	groundTruth   []int
 }
 
 func TestMain(m *testing.M) {
@@ -91,6 +50,7 @@ func TestMain(m *testing.M) {
 	flag.StringVar(&testAccessKey, "access_key", "", "AccessKey for testing")
 	flag.Parse()
 
+	singleKeywordTestParameters, multipleKeywordTestParameters = loadTestData()
 	os.Exit(m.Run())
 }
 
@@ -126,6 +86,55 @@ func getTestKeywordPaths(language string, keywords []string) []string {
 		keywordPaths = append(keywordPaths, getTestKeywordPath(language, keyword))
 	}
 	return keywordPaths
+}
+
+func loadTestData() ([]SingleKeywordTestData, []MultipleKeywordTestData) {
+
+	content, err := ioutil.ReadFile("../../resources/test/test_data.json")
+	if err != nil {
+		log.Fatalf("Could not read test data json: %v", err)
+	}
+
+	var testData struct {
+		Tests struct {
+			SingleKeyword []struct {
+				Language string `json:"language"`
+				Keyword  string `json:"wakeword"`
+			} `json:"singleKeyword"`
+			MultipleKeyword []struct {
+				Language    string   `json:"language"`
+				Keywords    []string `json:"wakewords"`
+				GroundTruth []int    `json:"groundTruth"`
+			} `json:"multipleKeyword"`
+		} `json:"tests"`
+	}
+	err = json.Unmarshal(content, &testData)
+	if err != nil {
+		log.Fatalf("Could not decode test data json: %v", err)
+	}
+
+	for _, x := range testData.Tests.SingleKeyword {
+		singleKeywordTestData := SingleKeywordTestData{
+			language:      x.Language,
+			keyword:       x.Keyword,
+			testAudioFile: strings.Replace(x.Keyword, " ", "_", -1) + ".wav",
+		}
+
+		singleKeywordTestParameters = append(singleKeywordTestParameters, singleKeywordTestData)
+	}
+
+	for _, x := range testData.Tests.MultipleKeyword {
+		multipleKeywordTestData := MultipleKeywordTestData{
+			language:      x.Language,
+			keywords:      x.Keywords,
+			testAudioFile: appendLanguage("multiple_keywords", x.Language) + ".wav",
+			groundTruth:   x.GroundTruth,
+		}
+
+		multipleKeywordTestParameters = append(multipleKeywordTestParameters, multipleKeywordTestData)
+	}
+
+	return singleKeywordTestParameters, multipleKeywordTestParameters
 }
 
 func runTestCase(
@@ -196,17 +205,18 @@ func TestSingleBuiltIn(t *testing.T) {
 }
 
 func TestSingleKeyword(t *testing.T) {
+
 	for _, tt := range singleKeywordTestParameters {
 		t.Run(tt.language+" single keyword", func(t *testing.T) {
 			porcupine = Porcupine{
 				AccessKey:    testAccessKey,
 				ModelPath:    getTestModelPath(tt.language),
-				KeywordPaths: getTestKeywordPaths(tt.language, tt.keywords)}
+				KeywordPaths: getTestKeywordPaths(tt.language, []string{tt.keyword})}
 			runTestCase(
 				t,
 				&porcupine,
 				tt.testAudioFile,
-				tt.expectedResults)
+				[]int{0})
 			delErr := porcupine.Delete()
 			if delErr != nil {
 				t.Fatalf("%v", delErr)
@@ -250,8 +260,8 @@ func TestMultipleKeywords(t *testing.T) {
 			runTestCase(
 				t,
 				&porcupine,
-				fmt.Sprintf("%s.wav", appendLanguage("multiple_keywords", tt.language)),
-				tt.expectedResults)
+				tt.testAudioFile,
+				tt.groundTruth)
 			delErr := porcupine.Delete()
 			if delErr != nil {
 				t.Fatalf("%v", delErr)
