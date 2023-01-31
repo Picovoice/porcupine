@@ -24,7 +24,7 @@ single_keyword_parameters = load_test_data()
 class PorcupineCTestCase(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         cls._access_key = sys.argv[1]
         cls._platform = sys.argv[2]
         cls._arch = "" if len(sys.argv) != 4 else sys.argv[3]
