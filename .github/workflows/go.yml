@@ -14,8 +14,14 @@ on:
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
-      - 'resources/**'
-      - '!resources/lint/**'
+      - 'resources/audio_samples/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - 'resources/test/**'
       - '.github/workflows/go.yml'
   pull_request:
     branches: [ master ]
@@ -29,8 +35,14 @@ on:
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
-      - 'resources/**'
-      - '!resources/lint/**'
+      - 'resources/audio_samples/**'
+      - 'resources/keyword_files/beaglebone/**'
+      - 'resources/keyword_files/jetson/**'
+      - 'resources/keyword_files/linux/**'
+      - 'resources/keyword_files/mac/**'
+      - 'resources/keyword_files/raspberry-pi/**'
+      - 'resources/keyword_files/windows/**'
+      - 'resources/test/**'
       - '.github/workflows/go.yml'
 
 defaults:

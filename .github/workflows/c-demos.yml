@@ -14,12 +14,14 @@ on:
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
+      - 'resources/audio_samples/**'
       - 'resources/keyword_files/beaglebone/**'
       - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
+      - 'resources/test/**'
       - '.github/workflows/c-demos.yml'
   pull_request:
     branches: [ master ]
@@ -33,12 +35,14 @@ on:
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
+      - 'resources/audio_samples/**'
       - 'resources/keyword_files/beaglebone/**'
       - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
+      - 'resources/test/**'
       - '.github/workflows/c-demos.yml'
 
 
@@ -93,20 +97,22 @@ jobs:
         - os: ubuntu-latest
           platform: linux
           arch: x86_64
-          ext: so
         - os: windows-latest
           platform: windows
           arch: amd64
-          ext: dll
         - os: macos-latest
           platform: mac
           arch: x86_64
-          ext: dylib
 
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+
+    - name: Set up Python '3.10'
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
 
     - name: Create build directory
       run: cmake -B ./build
@@ -114,41 +120,11 @@ jobs:
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file
 
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (en)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
-        model_path: ../../lib/common/porcupine_params.pv
-        keyword_path: ../../resources/keyword_files/${{ matrix.platform }}/porcupine_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords.wav
+    - name: Install dependencies
+      run: pip install -r test/requirements.txt
 
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (de)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
-        model_path: ../../lib/common/porcupine_params_de.pv
-        keyword_path: ../../resources/keyword_files_de/${{ matrix.platform }}/ananas_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords_de.wav
-
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (es)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
-        model_path: ../../lib/common/porcupine_params_es.pv
-        keyword_path: ../../resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords_es.wav
-
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (fr)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.${{ matrix.ext }}
-        model_path: ../../lib/common/porcupine_params_fr.pv
-        keyword_path: ../../resources/keyword_files_fr/${{ matrix.platform }}/framboise_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
+    - name: Test
+      run: python test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}
 
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -190,47 +166,8 @@ jobs:
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file
 
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (en)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
-        model_path: ../../lib/common/porcupine_params.pv
-        keyword_path: ../../resources/keyword_files/${{ matrix.platform }}/porcupine_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords.wav
+    - name: Install dependencies
+      run: pip install -r test/requirements.txt
 
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (de)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
-        model_path: ../../lib/common/porcupine_params_de.pv
-        keyword_path: ../../resources/keyword_files_de/${{ matrix.platform }}/ananas_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords_de.wav
-
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (es)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
-        model_path: ../../lib/common/porcupine_params_es.pv
-        keyword_path: ../../resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords_es.wav
-
-    - uses: ./.github/actions/c-filedemo
-      name: Run filedemo (fr)
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
-        model_path: ../../lib/common/porcupine_params_fr.pv
-        keyword_path: ../../resources/keyword_files_fr/${{ matrix.platform }}/framboise_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/multiple_keywords_fr.wav
-
-    - uses: ./.github/actions/c-filedemo
-      name: Run the demo with a non ascii wake word file
-      with:
-        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        library_path: ../../lib/${{ matrix.platform }}/${{ matrix.arch }}/libpv_porcupine.so
-        model_path: ../../lib/common/porcupine_params_es.pv
-        keyword_path: ../../resources/keyword_files_es/${{ matrix.platform }}/murciélago_${{ matrix.platform }}.ppn
-        audio_path: ../../resources/audio_samples/murciélago.wav
+    - name: Test
+      run: python test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}

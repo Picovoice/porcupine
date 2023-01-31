@@ -131,6 +131,10 @@ int picovoice_main(int argc, char *argv[]) {
 
     if (!library_path || !model_path || !keyword_path || !access_key) {
         print_usage(argv[0]);
+        printf("%s", library_path);
+        printf("%s", model_path);
+        printf("%s", keyword_path);
+        printf("%s", access_key);
         exit(1);
     }
 
