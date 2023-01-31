@@ -15,25 +15,32 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using Pv;
+
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PorcupineTest
 {
     [TestClass]
     public class MainTest
     {
-        private static string ACCESS_KEY;
-        private static readonly string _relativeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static string _accessKey;
+        private static readonly string _rootDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../../../../../..");
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
-                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
-        private Porcupine porcupine;
+                                                    (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";        
+        
+        private Porcupine _porcupine;
 
         private static string PvLinuxEnv()
         {
@@ -61,8 +68,63 @@ namespace PorcupineTest
         [ClassInitialize]
         public static void ClassInitialize(TestContext _)
         {
-            ACCESS_KEY = Environment.GetEnvironmentVariable("ACCESS_KEY");
+            _accessKey = Environment.GetEnvironmentVariable("ACCESS_KEY");
         }
+
+
+        private static JObject LoadJsonTestData()
+        {
+            string content = File.ReadAllText(Path.Combine(_rootDir, "/resources/tests/test_data_json"));
+            return JObject.Parse(content);            
+        }
+
+        [Serializable]
+        private class SingleKeywordJson
+        {
+            public string language;
+            public string wakeword;
+        }
+
+        public static IEnumerable<object[]> SingleKeywordTestData
+        {
+            get
+            {
+                JObject testDataJson = LoadJsonTestData();
+                IList<SingleKeywordJson> singleKeywordJson = ((JArray)testDataJson["singleKeyword"]).ToObject<IList<SingleKeywordJson>>();
+                return singleKeywordJson
+                    .Select(x => new object[] { 
+                        x.language, 
+                        x.wakeword, 
+                        x.wakeword.Replace(' ', '_') + ".wav" 
+                    });
+            }
+        }
+
+
+        [Serializable]
+        private class MultipleKeywordJson
+        {
+            public string language;
+            public string[] wakewords;
+            public int[] groundTruth;
+        }
+
+        public static IEnumerable<object[]> MultipleKeywordTestData
+        {
+            get
+            {
+                JObject testDataJson = LoadJsonTestData();
+                IList<MultipleKeywordJson> multipleKeywordJson = ((JArray)testDataJson["multipleKeyword"]).ToObject<IList<MultipleKeywordJson>>();                
+                return multipleKeywordJson
+                    .Select(x => new object[] { 
+                        x.language, 
+                        x.wakewords, 
+                        AppendLanguage("multiple_keywords", x.language) + ".wav",
+                        x.groundTruth
+                    });
+            }
+        }
+
 
         private static string AppendLanguage(string s, string language)
         {
@@ -76,8 +138,8 @@ namespace PorcupineTest
         private static string GetKeywordPath(string language, string keyword)
         {
             return Path.Combine(
-                _relativeDir,
-                "../../../../../../resources",
+                _rootDir,
+                "resources",
                 AppendLanguage("keyword_files", language),
                 $"{_env}/{keyword}_{_env}.ppn"
             );
@@ -97,17 +159,17 @@ namespace PorcupineTest
         {
             string file_name = AppendLanguage("porcupine_params", language);
             return Path.Combine(
-                _relativeDir,
-                "../../../../../../lib/common",
+                _rootDir,
+                "lib/common",
                 $"{file_name}.pv"
             );
         }
 
         private void RunTestCase(string audioFileName, List<int> expectedResults)
         {
-            int frameLen = porcupine.FrameLength;
-            string testAudioPath = Path.Combine(_relativeDir, "resources/audio_samples", audioFileName);
-            List<short> data = GetPcmFromFile(testAudioPath, porcupine.SampleRate);
+            int frameLen = _porcupine.FrameLength;
+            string testAudioPath = Path.Combine(_rootDir, "resources/audio_samples", audioFileName);
+            List<short> data = GetPcmFromFile(testAudioPath, _porcupine.SampleRate);
 
             int framecount = (int)Math.Floor((float)(data.Count / frameLen));
             List<int> results = new List<int>();
@@ -116,7 +178,7 @@ namespace PorcupineTest
                 int start = i * frameLen;
                 int count = frameLen;
                 List<short> frame = data.GetRange(start, count);
-                int result = porcupine.Process(frame.ToArray());
+                int result = _porcupine.Process(frame.ToArray());
                 Assert.IsTrue(result >= -1, "Porcupine returned an unexpected result (<-1)");
                 if (result >= 0)
                 {
@@ -130,29 +192,29 @@ namespace PorcupineTest
                 Assert.AreEqual(expectedResults[i], results[i], $"Expected keyword {expectedResults[i]}, but Porcupine detected keyword {results[i]}.");
             }
 
-            porcupine.Dispose();
+            _porcupine.Dispose();
         }
 
         [TestMethod]
         public void TestFrameLength()
         {
-            porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
-            Assert.IsTrue(porcupine.FrameLength > 0, "Specified frame length was not a valid number.");
-            porcupine.Dispose();
+            _porcupine = Porcupine.FromBuiltInKeywords(_accessKey, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
+            Assert.IsTrue(_porcupine.FrameLength > 0, "Specified frame length was not a valid number.");
+            _porcupine.Dispose();
         }
 
         [TestMethod]
         public void TestVersion()
         {
-            porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
-            Assert.IsFalse(string.IsNullOrWhiteSpace(porcupine.Version), "Porcupine did not return a valid version number.");
-            porcupine.Dispose();
+            _porcupine = Porcupine.FromBuiltInKeywords(_accessKey, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
+            Assert.IsFalse(string.IsNullOrWhiteSpace(_porcupine.Version), "Porcupine did not return a valid version number.");
+            _porcupine.Dispose();
         }
 
         [TestMethod]
         public void TestSingleKeywordBuiltin()
         {
-            porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
+            _porcupine = Porcupine.FromBuiltInKeywords(_accessKey, new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE });
             RunTestCase(
                 "porcupine.wav",
                 new List<int>() { 0 });
@@ -173,45 +235,34 @@ namespace PorcupineTest
                 BuiltInKeyword.PORCUPINE,
                 BuiltInKeyword.TERMINATOR
             };
-            porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, inputKeywords);
+            _porcupine = Porcupine.FromBuiltInKeywords(_accessKey, inputKeywords);
             RunTestCase(
                 "multiple_keywords.wav",
                 new List<int>() { 7, 0, 1, 2, 3, 4, 5, 6, 7, 8 });
         }
 
         [TestMethod]
-        [DataRow("en", "porcupine", "porcupine.wav")]
-        [DataRow("de", "heuschrecke", "heuschrecke.wav")]
-        [DataRow("es", "manzana", "manzana.wav")]
-        [DataRow("fr", "mon chouchou", "mon_chouchou.wav")]
-        public void TestSingleKeyword(string language, string keyword, string audioFileName)
-        {
-            List<string> keywords = new List<string>() { keyword };
-
-            porcupine = Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
-                GetKeywordPaths(language, keywords),
+        [DynamicData(nameof(SingleKeywordTestData))]
+        public void TestSingleKeyword(string language, string keyword, string testAudio)
+        {            
+            _porcupine = Porcupine.FromKeywordPaths(
+                _accessKey,
+                GetKeywordPaths(language, new List<string> { keyword }),
                 GetModelPath(language)
             );
 
             RunTestCase(
-                audioFileName,
-                new List<int>() { 0 }
+                testAudio,
+                new List<int> { 0 }
             );
         }
 
         [TestMethod]
-        [DataRow("de", new string[] { "heuschrecke", "ananas", "leguan", "stachelschwein" }, new int[] { 1, 0, 2, 3 })]
-        [DataRow("es", new string[] { "emparedado", "leopardo", "manzana" }, new int[] { 0, 1, 2 })]
-        [DataRow("fr", new string[] { "framboise", "mon chouchou", "parapluie" }, new int[] { 0, 1, 0, 2 })]
-        [DataRow("ko", new string[] { "aiseukeulim", "bigseubi", "koppulso" }, new int[] { 1, 2, 0 })]
-        [DataRow("ja", new string[] { "ninja", "bushi", "ringo" }, new int[] { 2, 1, 0 })]
-        [DataRow("it", new string[] { "espresso", "cameriere", "porcospino" }, new int[] { 2, 0, 1 })]
-        [DataRow("pt", new string[] { "abacaxi", "fenomeno", "formiga" }, new int[] { 0, 2, 1 })]
+        [DynamicData(nameof(MultipleKeywordTestData))]
         public void TestMultipleKeyword(string language, string[] keywords, int[] expectedResults)
         {
-            porcupine = Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
+            _porcupine = Porcupine.FromKeywordPaths(
+                _accessKey,
                 GetKeywordPaths(language, keywords.ToList()),
                 GetModelPath(language)
             );
@@ -230,8 +281,8 @@ namespace PorcupineTest
                 "murciélago",
             };
 
-            porcupine = Porcupine.FromKeywordPaths(
-                ACCESS_KEY,
+            _porcupine = Porcupine.FromKeywordPaths(
+                _accessKey,
                 GetKeywordPaths(language, keywords),
                 GetModelPath(language)
             );
