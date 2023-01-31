@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-vue",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "Vue binding for Porcupine Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",

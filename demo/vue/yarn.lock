@@ -77,10 +77,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-vue@^2.1.8":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-vue/-/porcupine-vue-2.1.8.tgz#a02fee4532ed5d8b5ba3de1dd0a0758610709096"
-  integrity sha512-Cgn58jwUwssBhiwXaDDkRzRa1rAAFV50uatQjoQVLRBwIElFCXqIv8VJj4zkkH8bK3Wn+p3goJO5KNqncCg/Qg==
+"@picovoice/porcupine-vue@^2.1.9":
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-vue/-/porcupine-vue-2.1.9.tgz#0d6af7f8c06740675ec918bdce2ca9ffcd457794"
+  integrity sha512-PX1ExS5CM4y8Vj+OM3CwZcECBnbnfSjmWYHFyRkeuOPiQhMgvlgwKk14PvPPIYBpl2qnaoPISWLtlKco0vu2fQ==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.15"
 

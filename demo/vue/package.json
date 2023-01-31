@@ -15,7 +15,7 @@
     "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./src/lib/porcupine_params.js"
   },
   "dependencies": {
-    "@picovoice/porcupine-vue": "^2.1.8",
+    "@picovoice/porcupine-vue": "^2.1.9",
     "@picovoice/web-voice-processor": "~4.0.2",
     "vue": "^3.2.45"
   },
