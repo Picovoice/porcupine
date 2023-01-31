@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-web@latest":
-  version "2.1.13"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.13.tgz#1209ba04d5da9382e11d4419b72bbe145423b201"
-  integrity sha512-EKouhR0mmNV8H4LKhwW3MnN5GtGypWImo+0etQWDV9slImk4qK/oKdPvjfL7+mEv8TdjUzphaxi0b7SuGUvHNw==
+"@picovoice/porcupine-web@^2.1.15":
+  version "2.1.15"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.15.tgz#c84d720126c260748e9d8a86eea02bf27eb6463c"
+  integrity sha512-xhZt3xqxlx46YkxNxrTf/twLVthkE63OIhgO9/0H7ORZlvcJehRBxKJ0YiZvSiFc1i1hsd/ijeD3MQ8G8QP2DQ==
   dependencies:
-    "@picovoice/web-utils" "=1.2.9"
+    "@picovoice/web-utils" "=1.2.11"
 
-"@picovoice/web-utils@=1.2.9":
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.9.tgz#080bc377e2fa71388f40655904d2485ef586f517"
-  integrity sha512-vYAV/izQuzy/+3QF/6LlSSJh7l9cIIvD4t9ZJ91vYg2XA9yk0k7V5S+6jxPcyiVMSy8Zlc9kBwCOWZchhlSMwA==
+"@picovoice/web-utils@=1.2.11":
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.11.tgz#4a9564eacbacf1b74ba9d0df27c78646fe200e7d"
+  integrity sha512-DtgRXr618LjNLHvcIMKehy7THiJm6Lm1DFaHjHEDLFmIh9NrfYrbw9yosytHq1+n/mV2VfePQPhWsrPMI1JlVw==
   dependencies:
     commander "^9.2.0"
 
@@ -103,9 +103,9 @@ function-bind@^1.1.1:
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
 get-intrinsic@^1.0.2:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/get-intrinsic/-/get-intrinsic-1.1.3.tgz#063c84329ad93e83893c7f4f243ef63ffa351385"
-  integrity sha512-QJVz1Tj7MS099PevUG5jvnt9tSkXN8K14dxQlikJuPt4uD9hHAHjLyLBiLR5zELelBdD9QNRAXZzsJx0WaDL9A==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/get-intrinsic/-/get-intrinsic-1.2.0.tgz#7ad1dc0535f3a2904bba075772763e5051f6d05f"
+  integrity sha512-L049y6nFOuom5wGyRc3/gdTLO94dySVKRACj1RmJZBQXlbTMhtNIgkWkUHq+jYmZvKf14EW1EoJnnjbmoHij0Q==
   dependencies:
     function-bind "^1.1.1"
     has "^1.0.3"
