@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,8 +22,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Pv;
-
-using static System.Net.Mime.MediaTypeNames;
 
 namespace PorcupineTest
 {
