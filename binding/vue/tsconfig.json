@@ -17,5 +17,5 @@
     "noImplicitAny": true,
     "types": ["cypress", "node"]
   },
-  "exclude": ["node_modules", "dist", "cypress", "test"]
+  "exclude": ["node_modules", "dist", "cypress", "test", "cypress.config.ts"]
 }
