@@ -78,8 +78,8 @@ namespace PorcupineTest
         [Serializable]
         private class SingleKeywordJson
         {
-            public string language;
-            public string wakeword;
+            public string language { get; set; }
+            public string wakeword { get; set; }
         }
 
         public static IEnumerable<object[]> SingleKeywordTestData
@@ -101,9 +101,9 @@ namespace PorcupineTest
         [Serializable]
         private class MultipleKeywordJson
         {
-            public string language;
-            public string[] wakewords;
-            public int[] groundTruth;
+            public string language { get; set; }
+            public string[] wakewords { get; set; }
+            public int[] groundTruth { get; set; }
         }
 
         public static IEnumerable<object[]> MultipleKeywordTestData
