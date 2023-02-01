@@ -186,6 +186,7 @@ wakewords
 wargv
 wavefile
 wavspec
+wchars
 webfonts
 webvp
 werror
