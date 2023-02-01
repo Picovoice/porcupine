@@ -40,7 +40,7 @@ function testPorcupineDetection(
   const keywordPaths = keywords.map(keyword => getKeywordPathsByLanguage(language, keyword)
   );
 
-  const modelPath = getModelPathByLanguage( language);
+  const modelPath = getModelPathByLanguage(language);
   const engineInstance = new Porcupine(
     ACCESS_KEY,
     keywordPaths,
@@ -83,12 +83,12 @@ function testPorcupineDetection(
 
 describe("successful keyword detections", () => {
   it.each(SINGLE_KEYWORD_PARAMETERS)(
-    'testing single keyword for %p with %p', (language:string, keyword:string, filename:string) => {
+    'testing single keyword for %p with %p', (language: string, keyword: string, filename: string) => {
       testPorcupineDetection(language, [keyword], [0], filename);
     });
 
   it.each(MULTIPLE_KEYWORDS_PARAMETERS)(
-    'testing multiple for %p with %p', (language:string, keywords:string[], result:number[]) => {
+    'testing multiple for %p with %p', (language: string, keywords: string[], result: number[]) => {
       testPorcupineDetection(language, keywords, result);
     });
 

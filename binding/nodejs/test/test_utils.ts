@@ -46,13 +46,13 @@ export function getAudioFileByLanguage(
 export function getSingleKeywordParameters(): [string, string, string][] {
   let singleKeywordJson = TEST_DATA_JSON.tests.singleKeyword;
   return singleKeywordJson.map(
-    (x:any) => [x.language, x.wakeword, x.wakeword.replace(" ", "_") + ".wav"]
+    (x: any) => [x.language, x.wakeword, x.wakeword.replace(" ", "_") + ".wav"]
   );
 }
 
 export function getMultipleKeywordParameters(): [string, string[], number[]][] {
   let multipleKeywordJson = TEST_DATA_JSON.tests.multipleKeyword;
   return multipleKeywordJson.map(
-    (x:any) => [x.language, x.wakewords, x.groundTruth]
+    (x: any) => [x.language, x.wakewords, x.groundTruth]
   );
 }
