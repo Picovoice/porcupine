@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2022 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -18,27 +18,16 @@ import { WaveFile } from "wavefile";
 
 import { PorcupineInvalidArgumentError } from "../src/errors";
 import { BuiltinKeyword } from "../src/builtin_keywords";
-import { getAudioFileByLanguage, getKeywordPathsByLanguage, getModelPathByLanguage } from "./test_utils";
+import {
+  getAudioFileByLanguage,
+  getKeywordPathsByLanguage,
+  getModelPathByLanguage,
+  getMultipleKeywordParameters,
+  getSingleKeywordParameters
+} from "./test_utils";
 
-const SINGLE_KEYWORD_PARAMETERS: [string, string[], number[], string][] = [
-  ['en', ['porcupine'], [0], 'porcupine.wav'],
-  ['es', ['manzana'], [0], 'manzana.wav'],
-  ['de', ['heuschrecke'], [0], 'heuschrecke.wav'],
-  ['fr', ['mon chouchou'], [0], 'mon_chouchou.wav'],
-];
-
-const MULTIPLE_KEYWORDS_PARAMETERS: [string, string[], number[]][] = [
-  ['en',
-    ['americano', 'blueberry', 'bumblebee', 'grapefruit', 'grasshopper', 'picovoice', 'porcupine', 'terminator'],
-    [6, 0, 1, 2, 3, 4, 5, 6, 7]],
-  ['es', ['emparedado', 'leopardo', 'manzana'], [0, 1, 2]],
-  ['de', ['ananas', 'heuschrecke', 'leguan', 'stachelschwein'], [0, 1, 2, 3]],
-  ['fr', ['framboise', 'mon chouchou', 'parapluie'], [0, 1, 0, 2]],
-  ['it', ['espresso', 'cameriere', 'porcospino'], [2, 0, 1]],
-  ['ja', ['ninja', 'bushi', 'ringo'], [2, 1, 0]],
-  ['ko', ['aiseukeulim', 'bigseubi', 'koppulso'], [1, 2, 0]],
-  ['pt', ['abacaxi', 'fenomeno', 'formiga'], [0, 2, 1]],
-];
+const SINGLE_KEYWORD_PARAMETERS = getSingleKeywordParameters();
+const MULTIPLE_KEYWORDS_PARAMETERS = getMultipleKeywordParameters();
 
 const ACCESS_KEY = process.argv.filter(x => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
 
@@ -48,10 +37,10 @@ function testPorcupineDetection(
   keywords: string[] | BuiltinKeyword[],
   groundTruth: number[] | number,
   audioFileName: string | null = null): void {
-  const keywordPaths = keywords.map(keyword => getKeywordPathsByLanguage("../../../", language, keyword)
+  const keywordPaths = keywords.map(keyword => getKeywordPathsByLanguage(language, keyword)
   );
 
-  const modelPath = getModelPathByLanguage("../../../", language);
+  const modelPath = getModelPathByLanguage(language);
   const engineInstance = new Porcupine(
     ACCESS_KEY,
     keywordPaths,
@@ -59,7 +48,7 @@ function testPorcupineDetection(
     modelPath,
   );
 
-  const waveFilePath = getAudioFileByLanguage("../../../", language, audioFileName);
+  const waveFilePath = getAudioFileByLanguage(language, audioFileName);
   const waveBuffer = fs.readFileSync(waveFilePath);
   const waveAudioFile = new WaveFile(waveBuffer);
 
@@ -94,12 +83,12 @@ function testPorcupineDetection(
 
 describe("successful keyword detections", () => {
   it.each(SINGLE_KEYWORD_PARAMETERS)(
-    'testing single keyword for %p with %p', (language, keywords, result, filename) => {
-      testPorcupineDetection(language, keywords, result, filename);
+    'testing single keyword for %p with %p', (language: string, keyword: string, filename: string) => {
+      testPorcupineDetection(language, [keyword], [0], filename);
     });
 
   it.each(MULTIPLE_KEYWORDS_PARAMETERS)(
-    'testing multiple for %p with %p', (language, keywords, result) => {
+    'testing multiple for %p with %p', (language: string, keywords: string[], result: number[]) => {
       testPorcupineDetection(language, keywords, result);
     });
 
@@ -117,9 +106,9 @@ describe("Non ascii characters", () => {
   test("single non ascii character in the model name", () => {
     new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage("../../../", 'es', 'murciélago')],
+      [getKeywordPathsByLanguage('es', 'murciélago')],
       [0.5],
-      getModelPathByLanguage("../../../", 'es')
+      getModelPathByLanguage('es')
     );
   });
 });
@@ -129,7 +118,7 @@ describe("basic parameter validation", () => {
     expect(() => {
       new Porcupine(
         ACCESS_KEY,
-        [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+        [getKeywordPathsByLanguage('en', 'porcupine')],
         [0.1, 0.2,]);
     }).toThrow(PorcupineInvalidArgumentError);
   });
@@ -139,7 +128,7 @@ describe("basic parameter validation", () => {
       new Porcupine(
         ACCESS_KEY,
         // @ts-expect-error
-        getKeywordPathsByLanguage("../../../", 'en', 'porcupine'),
+        getKeywordPathsByLanguage('en', 'porcupine'),
         [0.1]);
     }).toThrow(PorcupineInvalidArgumentError);
   });
@@ -148,7 +137,7 @@ describe("basic parameter validation", () => {
     expect(() => {
       new Porcupine(
         ACCESS_KEY,
-        [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+        [getKeywordPathsByLanguage('en', 'porcupine')],
         [4.2]);
     }).toThrow(RangeError);
   });
@@ -157,7 +146,7 @@ describe("basic parameter validation", () => {
     expect(() => {
       new Porcupine(
         ACCESS_KEY,
-        [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+        [getKeywordPathsByLanguage('en', 'porcupine')],
         // @ts-expect-error
         "porcupine");
     }).toThrow(RangeError);
@@ -177,7 +166,7 @@ describe("frame validation", () => {
   test("accepts non Int16Array if array is valid", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     const emptyArray = Array.apply(null, Array(porcupineEngine.frameLength)).map((x, i) => i);
     // @ts-expect-error
@@ -188,7 +177,7 @@ describe("frame validation", () => {
   test("mismatched frameLength throws error", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     expect(() => {
       // @ts-expect-error
@@ -200,7 +189,7 @@ describe("frame validation", () => {
   test("null/undefined frames throws error", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     expect(() => {
       // @ts-expect-error
@@ -216,7 +205,7 @@ describe("frame validation", () => {
   test("passing floating point frame values throws PorcupineInvalidArgumentError", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage("../../../", 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     const floatFrames = Array.from({ length: porcupineEngine.frameLength }).map(
       () => 3.1415
