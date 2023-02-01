@@ -50,7 +50,7 @@ class PorcupineCTestCase(unittest.TestCase):
             keyword_files_root,
             self._platform)
 
-        return os.path.join(keyword_files_dir, f"{keyword}_{self._platform}.ppn")
+        return os.path.join(keyword_files_dir, "%s_%s.ppn" % (keyword, self._platform))
 
     def _get_audio_file_by_language(self, language, audio_file_name=None):
         if audio_file_name is None:
