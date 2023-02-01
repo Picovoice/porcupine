@@ -170,4 +170,4 @@ jobs:
       run: pip install -r test/requirements.txt
 
     - name: Test
-      run: python test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}
+      run: python3 test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}
