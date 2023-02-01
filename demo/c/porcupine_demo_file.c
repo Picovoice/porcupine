@@ -18,6 +18,9 @@
 
 #include <windows.h>
 
+#define UTF8_COMPOSITION_FLAG (0)
+#define NULL_TERMINATED       (-1)
+
 #else
 
 #include <dlfcn.h>
@@ -185,7 +188,20 @@ int picovoice_main(int argc, char *argv[]) {
 
     drwav f;
 
-    if (!drwav_init_file(&f, wav_path, NULL)) {
+#if defined(_WIN32) || defined(_WIN64)
+
+    int wav_path_wchars_num = MultiByteToWideChar(CP_UTF8, UTF8_COMPOSITION_FLAG, wav_path, NULL_TERMINATED, NULL, 0);
+    wchar_t wav_path_w[wav_path_wchars_num];
+    MultiByteToWideChar(CP_UTF8, UTF8_COMPOSITION_FLAG, wav_path, NULL_TERMINATED, wav_path_w, wav_path_wchars_num);
+    const int drwav_init_file_status = drwav_init_file_w(&f, wav_path_w, NULL);
+
+#else
+
+    const int drwav_init_file_status = drwav_init_file(&f, wav_path, NULL);
+
+#endif
+
+    if (!drwav_init_file_status) {
         fprintf(stderr, "failed to open wav file at '%s'.", wav_path);
         exit(1);
     }
@@ -261,9 +277,6 @@ int picovoice_main(int argc, char *argv[]) {
 int main(int argc, char *argv[]) {
 
 #if defined(_WIN32) || defined(_WIN64)
-
-#define UTF8_COMPOSITION_FLAG (0)
-#define NULL_TERMINATED       (-1)
 
     LPWSTR *wargv = CommandLineToArgvW(GetCommandLineW(), &argc);
     if (wargv == NULL) {

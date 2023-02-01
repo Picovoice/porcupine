@@ -16,6 +16,22 @@
 			{
 				"language": "fr",
 				"wakeword": "mon chouchou"
+			},
+			{
+				"language": "it",
+				"wakeword": "cameriere"
+			},
+			{
+				"language": "ja",
+				"wakeword": "ringo"
+			},
+			{
+				"language": "ko",
+				"wakeword": "bigseubi"
+			},
+			{
+				"language": "pt",
+				"wakeword": "fenomeno"
 			}
 		],
 		"multipleKeyword": [
