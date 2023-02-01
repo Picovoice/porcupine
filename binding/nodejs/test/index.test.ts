@@ -106,9 +106,9 @@ describe("Non ascii characters", () => {
   test("single non ascii character in the model name", () => {
     new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage( 'es', 'murciélago')],
+      [getKeywordPathsByLanguage('es', 'murciélago')],
       [0.5],
-      getModelPathByLanguage( 'es')
+      getModelPathByLanguage('es')
     );
   });
 });
@@ -118,7 +118,7 @@ describe("basic parameter validation", () => {
     expect(() => {
       new Porcupine(
         ACCESS_KEY,
-        [getKeywordPathsByLanguage( 'en', 'porcupine')],
+        [getKeywordPathsByLanguage('en', 'porcupine')],
         [0.1, 0.2,]);
     }).toThrow(PorcupineInvalidArgumentError);
   });
@@ -128,7 +128,7 @@ describe("basic parameter validation", () => {
       new Porcupine(
         ACCESS_KEY,
         // @ts-expect-error
-        getKeywordPathsByLanguage( 'en', 'porcupine'),
+        getKeywordPathsByLanguage('en', 'porcupine'),
         [0.1]);
     }).toThrow(PorcupineInvalidArgumentError);
   });
@@ -137,7 +137,7 @@ describe("basic parameter validation", () => {
     expect(() => {
       new Porcupine(
         ACCESS_KEY,
-        [getKeywordPathsByLanguage( 'en', 'porcupine')],
+        [getKeywordPathsByLanguage('en', 'porcupine')],
         [4.2]);
     }).toThrow(RangeError);
   });
@@ -146,7 +146,7 @@ describe("basic parameter validation", () => {
     expect(() => {
       new Porcupine(
         ACCESS_KEY,
-        [getKeywordPathsByLanguage( 'en', 'porcupine')],
+        [getKeywordPathsByLanguage('en', 'porcupine')],
         // @ts-expect-error
         "porcupine");
     }).toThrow(RangeError);
@@ -166,7 +166,7 @@ describe("frame validation", () => {
   test("accepts non Int16Array if array is valid", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage( 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     const emptyArray = Array.apply(null, Array(porcupineEngine.frameLength)).map((x, i) => i);
     // @ts-expect-error
@@ -177,7 +177,7 @@ describe("frame validation", () => {
   test("mismatched frameLength throws error", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage( 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     expect(() => {
       // @ts-expect-error
@@ -189,7 +189,7 @@ describe("frame validation", () => {
   test("null/undefined frames throws error", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage( 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     expect(() => {
       // @ts-expect-error
@@ -205,7 +205,7 @@ describe("frame validation", () => {
   test("passing floating point frame values throws PorcupineInvalidArgumentError", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
-      [getKeywordPathsByLanguage( 'en', 'porcupine')],
+      [getKeywordPathsByLanguage('en', 'porcupine')],
       [0.5]);
     const floatFrames = Array.from({ length: porcupineEngine.frameLength }).map(
       () => 3.1415
