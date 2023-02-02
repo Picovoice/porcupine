@@ -130,7 +130,7 @@ fn show_audio_devices() {
                 println!("index: {idx}, device name: {device:?}");
             }
         }
-        Err(err) => panic!("Failed to get audio devices: {err}"),
+        Err(err) => panic!("Failed to get audio devices: {}", err),
     };
 }
 
