@@ -36,3 +36,4 @@ libloading = "0.7"
 [dev-dependencies]
 rodio = "0.14"
 itertools = "0.10.1"
+serde_json = "1.0.91"
