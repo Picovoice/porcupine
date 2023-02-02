@@ -94,7 +94,7 @@ class PorcupineDemo(Thread):
                 wav_file = wave.open(self._output_path, "w")
                 wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
 
-            print('Using device: %s', recorder.selected_device)
+            print('Using device: %s' % recorder.selected_device)
 
             print('Listening {')
             for keyword, sensitivity in zip(keywords, self._sensitivities):
