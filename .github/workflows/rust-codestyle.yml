@@ -43,6 +43,7 @@ jobs:
         profile: minimal
         toolchain: 1.65.0
         override: true
+        components: clippy
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
@@ -64,6 +65,7 @@ jobs:
         profile: minimal
         toolchain: 1.65.0
         override: true
+        components: clippy
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
@@ -85,6 +87,7 @@ jobs:
         profile: minimal
         toolchain: 1.65.0
         override: true
+        components: clippy
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
