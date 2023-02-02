@@ -149,7 +149,7 @@ pub fn pv_platform() -> String {
 
 pub fn pv_keyword_paths() -> HashMap<String, String> {
     let pv_platform = pv_platform();
-    let keyword_file_pattern = format!("_{}.ppn", pv_platform);
+    let keyword_file_pattern = format!("_{pv_platform}.ppn");
 
     let mut dir = PathBuf::from(env!("OUT_DIR"));
     dir.push(DEFAULT_RELATIVE_KEYWORDS_DIR);

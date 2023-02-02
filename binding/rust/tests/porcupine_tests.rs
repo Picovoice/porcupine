@@ -13,8 +13,9 @@
 mod tests {
     use itertools::Itertools;
     use rodio::{source::Source, Decoder};
+    use serde_json::{Value};
     use std::env;
-    use std::fs::File;
+    use std::fs::{File, read_to_string};
     use std::io::BufReader;
 
     use porcupine::util::pv_platform;
@@ -26,6 +27,17 @@ mod tests {
         } else {
             format!("{}_{}", path, language)
         }
+    }
+
+    fn load_test_data() -> Value {
+        let test_json_path = format!(
+            "{}{}",
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../resources/test/test_data.json"
+        );
+        let contents: String = read_to_string(test_json_path).expect("Unable to read test_data.json");
+        let test_json: Value = serde_json::from_str(&contents).expect("Unable to parse test_data.json");
+        test_json
     }
 
     fn model_path_by_language(language: &str) -> String {
@@ -50,10 +62,10 @@ mod tests {
 
     fn run_porcupine_test(
         language: &str,
-        keywords: &[&str],
-        ground_truth: &[i32],
+        keywords: Vec<&str>,
+        ground_truth: Vec<i32>,
         audio_file_name: &str,
-    ) {
+    ) -> Result<(), String>{
         let access_key = env::var("PV_ACCESS_KEY")
             .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
 
@@ -90,57 +102,15 @@ mod tests {
             }
         }
 
-        assert_eq!(results, ground_truth);
-    }
-
-    macro_rules! porcupine_keywords_tests {
-        ($($language:ident: $values:expr,)*) => {
-        $(
-            #[test]
-            fn $language() {
-                let language = stringify!($language);
-                let (keywords, ground_truth) = $values;
-                let audio_file_name = format!("{}.wav", append_lang("multiple_keywords", language));
-                run_porcupine_test(language, keywords, ground_truth, &audio_file_name);
-            }
-        )*
+        if results != ground_truth {
+            Err(format!(
+                "`{language}` test failed on `{audio_file_name}` -> {results:?} != {ground_truth:?}"
+            ))
+        } else {
+            Ok(())
         }
     }
 
-    porcupine_keywords_tests! {
-        en: (
-            &["americano", "blueberry","bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"],
-            &[6, 0, 1, 2, 3, 4, 5, 6, 7],
-        ),
-        es: (
-            &["emparedado", "leopardo", "manzana", "murciélago"],
-            &[0, 1, 2, 3],
-        ),
-        de: (
-            &["ananas", "heuschrecke", "leguan", "stachelschwein"],
-            &[0, 1, 2, 3],
-        ),
-        fr: (
-            &["framboise", "mon chouchou", "parapluie"],
-            &[0, 1, 0, 2],
-        ),
-        ko: (
-            &["aiseukeulim", "bigseubi", "koppulso"],
-            &[1, 2, 0],
-        ),
-        ja: (
-            &["ninja", "bushi", "ringo"],
-            &[2, 1, 0],
-        ),
-        it: (
-            &["espresso", "cameriere", "porcospino"],
-            &[2, 0, 1],
-        ),
-        pt: (
-            &["abacaxi", "fenomeno", "formiga"],
-            &[0, 2, 1],
-        ),
-    }
 
     #[test]
     fn test_process_single_builtin() {
@@ -233,5 +203,44 @@ mod tests {
                 expected_result
             );
         }
+    }
+
+    #[test]
+    fn test_single_keyword() -> Result<(), String>  {
+        let test_json: Value = load_test_data();
+
+        for t in test_json["tests"]["singleKeyword"].as_array().unwrap() {
+            let language = t["language"].as_str().unwrap();
+            let keyword = t["wakeword"].as_str().unwrap();
+            let test_audio = t["wakeword"].as_str().unwrap().replace(" ", "_") + ".wav";
+
+            run_porcupine_test(language, vec![keyword], vec![0], &test_audio)?;
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn test_multiple_keyword() -> Result<(), String> {
+        let test_json: Value = load_test_data();
+
+        for t in test_json["tests"]["multipleKeyword"].as_array().unwrap() {
+            let language = t["language"].as_str().unwrap();
+
+            let keyword_json = t["wakewords"].as_array().unwrap();
+            let mut keywords = Vec::new();
+            for k in keyword_json {
+                keywords.push(k.as_str().unwrap());
+            }
+
+            let ground_truth_json = t["groundTruth"].as_array().unwrap();
+            let mut ground_truth = Vec::new();
+            for g in ground_truth_json {
+                ground_truth.push(g.as_i64().unwrap() as i32);
+            }
+
+            let test_audio = append_lang("multiple_keywords", language) + ".wav";
+            run_porcupine_test(language, keywords, ground_truth, &test_audio)?
+        }
+        Ok(())
     }
 }
