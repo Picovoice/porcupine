@@ -41,7 +41,7 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: stable
+        toolchain: 1.65.0
         override: true
 
     - name: Run clippy
@@ -62,7 +62,7 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: stable
+        toolchain: 1.65.0
         override: true
 
     - name: Run clippy
@@ -83,7 +83,7 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: stable
+        toolchain: 1.65.0
         override: true
 
     - name: Run clippy
