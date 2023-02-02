@@ -303,8 +303,7 @@ unsafe fn load_library_fn<T>(
             PorcupineError::new(
                 PorcupineErrorStatus::LibraryLoadError,
                 format!(
-                    "Failed to load function symbol from porcupine library: {}",
-                    err
+                    "Failed to load function symbol from porcupine library: {err}"
                 ),
             )
         })
@@ -316,8 +315,7 @@ fn check_fn_call_status(status: PvStatus, function_name: &str) -> Result<(), Por
         _ => Err(PorcupineError::new(
             PorcupineErrorStatus::LibraryError(status),
             format!(
-                "Function '{}' in the porcupine library failed",
-                function_name
+                "Function '{function_name}' in the porcupine library failed"
             ),
         )),
     }
@@ -418,7 +416,7 @@ impl PorcupineInner {
             if !(0.0..=1.0).contains(sensitivity) {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    format!("Sensitivity value {} should be within [0, 1]", sensitivity),
+                    format!("Sensitivity value {sensitivity} should be within [0, 1]"),
                 ));
             }
         }
@@ -426,7 +424,7 @@ impl PorcupineInner {
         let lib = unsafe { Library::new(library_path.as_ref()) }.map_err(|err| {
             PorcupineError::new(
                 PorcupineErrorStatus::LibraryLoadError,
-                format!("Failed to load porcupine dynamic library: {}", err),
+                format!("Failed to load porcupine dynamic library: {err}"),
             )
         })?;
 
@@ -435,7 +433,7 @@ impl PorcupineInner {
             Err(err) => {
                 return Err(PorcupineError::new(
                     PorcupineErrorStatus::ArgumentError,
-                    format!("AccessKey is not a valid C string {}", err),
+                    format!("AccessKey is not a valid C string {err}"),
                 ))
             }
         };
@@ -477,7 +475,7 @@ impl PorcupineInner {
                 Err(err) => {
                     return Err(PorcupineError::new(
                         PorcupineErrorStatus::LibraryLoadError,
-                        format!("Failed to get version info from Porcupine Library: {}", err),
+                        format!("Failed to get version info from Porcupine Library: {err}"),
                     ))
                 }
             };

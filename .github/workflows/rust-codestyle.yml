@@ -41,9 +41,8 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: 1.65.0
+        toolchain: stable
         override: true
-        components: clippy
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
@@ -63,9 +62,8 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: 1.65.0
+        toolchain: stable
         override: true
-        components: clippy
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
@@ -85,9 +83,8 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: 1.65.0
+        toolchain: stable
         override: true
-        components: clippy
 
     - name: Run clippy
       run: cargo clippy -- -D warnings

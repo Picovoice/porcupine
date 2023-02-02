@@ -127,10 +127,10 @@ fn show_audio_devices() {
     match audio_devices {
         Ok(audio_devices) => {
             for (idx, device) in audio_devices.iter().enumerate() {
-                println!("index: {}, device name: {:?}", idx, device);
+                println!("index: {idx}, device name: {device:?}");
             }
         }
-        Err(err) => panic!("Failed to get audio devices: {}", err),
+        Err(err) => panic!("Failed to get audio devices: {err}"),
     };
 }
 

@@ -104,8 +104,7 @@ mod tests {
 
         if results != ground_truth {
             Err(format!(
-                "`{}` test failed on `{}` -> {:?} != {:?}",
-                language, audio_file_name, results, ground_truth
+                "`{language}` test failed on `{audio_file_name}` -> {results:?} != {ground_truth:?}"
             ))
         } else {
             Ok(())

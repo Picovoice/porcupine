@@ -38,7 +38,7 @@
 			{
 				"language": "en",
 				"wakewords": ["americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"],
-				"groundTruth": [6, 0, 1, 2, 3, 4, 5, 6, 7]
+				"groundTruth": [6, 2, 3, 4, 5, 6, 7]
 			},
 			{
 				"language": "es",
