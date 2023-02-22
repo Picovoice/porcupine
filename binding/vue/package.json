@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-vue",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "Vue binding for Porcupine Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",
@@ -20,7 +20,7 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.15"
+    "@picovoice/porcupine-web": "=2.1.16"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
