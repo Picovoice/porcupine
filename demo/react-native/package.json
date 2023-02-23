@@ -13,8 +13,8 @@
     "ios-install": "yarn && yarn ios-link"
   },
   "dependencies": {
-    "@picovoice/porcupine-react-native": "2.1.4",
-    "@picovoice/react-native-voice-processor": "^1.0.4",
+    "@picovoice/porcupine-react-native": "/Users/ianlavery/work/github/porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.1.5.tgz",
+    "@picovoice/react-native-voice-processor": "/Users/ianlavery/work/github/react-native-voice-processor/pkg/picovoice-react-native-voice-processor-1.1.0.tgz",
     "@react-native-picker/picker": "^1.9.2",
     "react": "^17.0.2",
     "react-native": "^0.68.5"
