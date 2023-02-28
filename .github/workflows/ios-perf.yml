@@ -28,11 +28,9 @@ jobs:
 
     strategy:
       matrix:
-        device: [iOS-14.5, iOS-32bit]
+        device: [ios-perf]
         include:
-        - device: iOS-14.5
-          performanceThresholdSec: 0.5
-        - device: iOS-32bit
+        - device: ios-perf
           performanceThresholdSec: 0.5
 
     steps:
@@ -50,6 +48,9 @@ jobs:
 
       - name: Make build dir
         run: mkdir ddp
+
+      - name: Copy test_resources
+        run: ./copy_test_resources.sh
 
       - name: Run Cocoapods
         run: pod install
