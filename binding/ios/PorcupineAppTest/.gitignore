@@ -18,3 +18,6 @@ build/*
 xcuserdata
 Pods
 ddp
+
+PorcupineAppTestUITests/test_resources/*
+!PorcupineAppTestUITests/test_resources/.gitkeep

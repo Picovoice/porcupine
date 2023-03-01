@@ -12,75 +12,76 @@ import XCTest
 
 import Porcupine
 
+struct TestData: Decodable {
+    var tests: TestDataTests
+}
+
+struct TestDataTests: Decodable {
+    var singleKeyword: [SingleKeywordTest]
+    var multipleKeyword: [MultipleKeywordTest]
+}
+
+struct SingleKeywordTest: Decodable {
+    var language: String
+    var wakeword: String
+}
+
+struct MultipleKeywordTest: Decodable {
+    var language: String
+    var wakewords: [String]
+    var groundTruth: [Int]
+}
+
 class PorcupineLanguageTests: BaseTest {
-
-    static var testData: [[Any]] = [
-        ["en",
-         ["americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"],
-         [6, 0, 1, 2, 3, 4, 5, 6, 7]],
-        ["es", ["emparedado", "leopardo", "manzana"], [0, 1, 2]],
-        ["de", ["ananas", "heuschrecke", "leguan", "stachelschwein"], [0, 1, 2, 3]],
-        ["fr", ["framboise", "mon chouchou", "parapluie"], [0, 1, 0, 2]],
-        ["it", ["espresso", "cameriere", "porcospino"], [2, 0, 1]],
-        ["ja", ["ninja", "bushi", "ringo"], [2, 1, 0]],
-        ["ko", ["aiseukeulim", "bigseubi", "koppulso"], [1, 2, 0]],
-        ["pt", ["abacaxi", "fenomeno", "formiga"], [0, 2, 1]]
-    ]
-
-    var language: String = ""
-    var modelPath: String = ""
-    var keywordPaths: [String] = []
-    var testAudioPath: URL? = URL(string: "")
-    var expectedResults: [Int] = []
-
-    override class var defaultTestSuite: XCTestSuite {
-        get {
-            let xcTestSuite = XCTestSuite(name: NSStringFromClass(self))
-            let bundle = Bundle(for: self)
-
-            for testCase in testData {
-                let suffix = (testCase[0]) as! String == "en" ? "" : "_\(testCase[0])"
-                for invocation in testInvocations {
-                    let newTestCase = PorcupineLanguageTests(invocation: invocation)
-
-                    var keywordFiles: [String] = []
-                    for keyword in testCase[1] as! [String] {
-                        keywordFiles.append(bundle.path(forResource: "\(keyword)_ios", ofType: "ppn")!)
-                    }
-
-                    newTestCase.language = testCase[0] as! String
-                    newTestCase.modelPath = bundle.path(forResource: "porcupine_params\(suffix)", ofType: "pv")!
-                    newTestCase.keywordPaths = keywordFiles
-                    newTestCase.testAudioPath = bundle.url(
-                        forResource: "multiple_keywords\(suffix)",
-                        withExtension: "wav")!
-                    newTestCase.expectedResults = testCase[2] as! [Int]
-                    xcTestSuite.addTest(newTestCase)
-                }
-            }
-
-            return xcTestSuite
-        }
-    }
-
     func testWrapper() throws {
-        let testResults = try XCTContext.runActivity(named: "(\(language))") { _ -> [Int32] in
-            let p = try Porcupine.init(
-                    accessKey: accessKey,
-                    keywordPaths: keywordPaths,
-                    modelPath: modelPath)
-            XCTAssert(Porcupine.version != "")
-            XCTAssert(Porcupine.frameLength > 0)
-            XCTAssert(Porcupine.sampleRate > 0)
+        let bundle = Bundle(for: type(of: self))
+        let testDataJsonUrl = bundle.url(
+            forResource: "test_data",
+            withExtension: "json",
+            subdirectory: "test_resources")!
 
-            let ret = try processFile(p: p, testAudioURL: testAudioPath!)
-            p.delete()
-            return ret
-        }
+        let testDataJsonData = try Data(contentsOf: testDataJsonUrl)
+        let testData = try JSONDecoder().decode(TestData.self, from: testDataJsonData)
 
-        XCTAssert(expectedResults.count == testResults.count)
-        for i in 0..<expectedResults.count {
-            XCTAssert(expectedResults[i] == testResults[i])
+        for testCase in testData.tests.multipleKeyword {
+            let suffix = testCase.language == "en" ? "" : "_\(testCase.language)"
+
+            let language: String = testCase.language
+            let modelPath: String = bundle.path(
+                forResource: "porcupine_params\(suffix)",
+                ofType: "pv",
+                inDirectory: "test_resources/model_files")!
+            var keywordPaths: [String] = []
+            for keyword in testCase.wakewords {
+                keywordPaths.append(bundle.path(
+                    forResource: "\(keyword)_ios",
+                    ofType: "ppn",
+                    inDirectory: "test_resources/keyword_files/\(testCase.language)")!)
+            }
+            let testAudioPath: URL = bundle.url(
+                forResource: "multiple_keywords\(suffix)",
+                withExtension: "wav",
+                subdirectory: "test_resources/audio_samples")!
+            let expectedResults: [Int] = testCase.groundTruth
+
+            try XCTContext.runActivity(named: "(\(language))") { _ in
+                let p = try Porcupine.init(
+                        accessKey: accessKey,
+                        keywordPaths: keywordPaths,
+                        modelPath: modelPath)
+                XCTAssert(Porcupine.version != "")
+                XCTAssert(Porcupine.frameLength > 0)
+                XCTAssert(Porcupine.sampleRate > 0)
+
+                let results = try processFile(p: p, testAudioURL: testAudioPath)
+
+                XCTAssert(expectedResults.count == results.count)
+                for i in 0..<expectedResults.count {
+                    XCTAssert(expectedResults[i] == results[i])
+                }
+
+                p.delete()
+            }
         }
     }
 }

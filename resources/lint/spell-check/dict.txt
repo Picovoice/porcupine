@@ -6,6 +6,7 @@ alsa
 americano
 ananas
 annyeong
+Appcenter
 armeabi
 armv
 atclause
@@ -34,6 +35,7 @@ commandline
 compat
 computador
 computadora
+convmv
 coolterm
 cortexm
 cporcupine
@@ -110,6 +112,7 @@ murciélago
 netcoreapp
 newtonsoft
 noncacheable
+notest
 nunit
 objblock
 ocotp
