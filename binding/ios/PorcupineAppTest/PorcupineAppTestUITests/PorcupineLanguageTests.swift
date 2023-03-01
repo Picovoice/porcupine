@@ -12,21 +12,21 @@ import XCTest
 
 import Porcupine
 
-struct TestData : Decodable {
+struct TestData: Decodable {
     var tests: TestDataTests
 }
 
-struct TestDataTests : Decodable {
+struct TestDataTests: Decodable {
     var singleKeyword: [SingleKeywordTest]
     var multipleKeyword: [MultipleKeywordTest]
 }
 
-struct SingleKeywordTest : Decodable {
+struct SingleKeywordTest: Decodable {
     var language: String
     var wakeword: String
 }
 
-struct MultipleKeywordTest : Decodable {
+struct MultipleKeywordTest: Decodable {
     var language: String
     var wakewords: [String]
     var groundTruth: [Int]
@@ -35,7 +35,10 @@ struct MultipleKeywordTest : Decodable {
 class PorcupineLanguageTests: BaseTest {
     func testWrapper() throws {
         let bundle = Bundle(for: type(of: self))
-        let testDataJsonUrl = bundle.url(forResource: "test_data", withExtension: "json", subdirectory: "test_resources")!
+        let testDataJsonUrl = bundle.url(
+            forResource: "test_data",
+            withExtension: "json",
+            subdirectory: "test_resources")!
 
         let testDataJsonData = try Data(contentsOf: testDataJsonUrl)
         let testData = try JSONDecoder().decode(TestData.self, from: testDataJsonData)
@@ -44,14 +47,23 @@ class PorcupineLanguageTests: BaseTest {
             let suffix = testCase.language == "en" ? "" : "_\(testCase.language)"
 
             let language: String = testCase.language
-            let modelPath: String = bundle.path(forResource: "porcupine_params\(suffix)", ofType: "pv", inDirectory: "test_resources/model_files")!
+            let modelPath: String = bundle.path(
+                forResource: "porcupine_params\(suffix)",
+                ofType: "pv",
+                inDirectory: "test_resources/model_files")!
             var keywordPaths: [String] = []
             for keyword in testCase.wakewords {
-                keywordPaths.append(bundle.path(forResource: "\(keyword)_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/\(testCase.language)")!)
+                keywordPaths.append(bundle.path(
+                    forResource: "\(keyword)_ios",
+                    ofType: "ppn",
+                    inDirectory: "test_resources/keyword_files/\(testCase.language)")!)
             }
-            let testAudioPath: URL = bundle.url(forResource: "multiple_keywords\(suffix)", withExtension: "wav", subdirectory: "test_resources/audio_samples")!
+            let testAudioPath: URL = bundle.url(
+                forResource: "multiple_keywords\(suffix)",
+                withExtension: "wav",
+                subdirectory: "test_resources/audio_samples")!
             let expectedResults: [Int] = testCase.groundTruth
-            
+
             try XCTContext.runActivity(named: "(\(language))") { _ in
                 let p = try Porcupine.init(
                         accessKey: accessKey,
@@ -62,12 +74,12 @@ class PorcupineLanguageTests: BaseTest {
                 XCTAssert(Porcupine.sampleRate > 0)
 
                 let results = try processFile(p: p, testAudioURL: testAudioPath)
-                
+
                 XCTAssert(expectedResults.count == results.count)
                 for i in 0..<expectedResults.count {
                     XCTAssert(expectedResults[i] == results[i])
                 }
-                
+
                 p.delete()
             }
         }
