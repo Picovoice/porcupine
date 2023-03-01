@@ -36,8 +36,8 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitSuccessWithCustomArguments() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "hey barista_ios", ofType: "ppn")!
-        let modelPath = bundle.path(forResource: "porcupine_params", ofType: "pv")
+        let keywordPath = bundle.path(forResource: "hey barista_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let modelPath = bundle.path(forResource: "porcupine_params", ofType: "pv", inDirectory: "test_resources/model_files")
 
         let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         p.delete()
@@ -45,8 +45,8 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitSuccessWithMultipleCustomKeywordsAndSensitivities() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "hey barista_ios", ofType: "ppn")!
-        let keywordPath2 = bundle.path(forResource: "pico clock_ios", ofType: "ppn")!
+        let keywordPath = bundle.path(forResource: "hey barista_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let keywordPath2 = bundle.path(forResource: "pico clock_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
 
         let p = try Porcupine.init(
             accessKey: accessKey,
@@ -57,8 +57,8 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitFailWithMismatchedLanguage() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "ananas_ios", ofType: "ppn")!
-        let modelPath = bundle.path(forResource: "porcupine_params", ofType: "pv")!
+        let keywordPath = bundle.path(forResource: "ananas_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/de")!
+        let modelPath = bundle.path(forResource: "porcupine_params", ofType: "pv", inDirectory: "test_resources/model_files")!
 
         var didFail = false
         do {
@@ -138,7 +138,7 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitFailWithWrongKeywordPlatform() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "alexa_linux", ofType: "ppn")!
+        let keywordPath = bundle.path(forResource: "alexa_linux", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
 
         var didFail = false
         do {
@@ -152,8 +152,8 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitWithNonAsciiModelName() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "murciélago_ios", ofType: "ppn")!
-        let modelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
+        let keywordPath = bundle.path(forResource: "murciélago_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/es")!
+        let modelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv", inDirectory: "test_resources/model_files")!
 
         let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
         p.delete()
@@ -163,7 +163,7 @@ class PorcupineAppTestUITests: BaseTest {
         let p: Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
 
         let bundle = Bundle(for: type(of: self))
-        let fileURL: URL = bundle.url(forResource: "porcupine", withExtension: "wav")!
+        let fileURL: URL = bundle.url(forResource: "porcupine", withExtension: "wav", subdirectory: "test_resources/audio_samples")!
 
         let results = try processFile(p: p, testAudioURL: fileURL)
         p.delete()
@@ -187,7 +187,7 @@ class PorcupineAppTestUITests: BaseTest {
         let p: Porcupine = try Porcupine.init(accessKey: accessKey, keywords: keywords)
 
         let bundle = Bundle(for: type(of: self))
-        let fileURL: URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav")!
+        let fileURL: URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav", subdirectory: "test_resources/audio_samples")!
 
         let results = try processFile(p: p, testAudioURL: fileURL)
         p.delete()
