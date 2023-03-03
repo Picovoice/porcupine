@@ -1,12 +1,6 @@
 [submodule "binding/unity/Assets/Porcupine/VoiceProcessor"]
 	path = binding/unity/Assets/Porcupine/VoiceProcessor
 	url = ../unity-voice-processor.git
-[submodule "demo/mcu/psoc062s2"]
-	path = demo/mcu/psoc062s2
-	url = ../porcupine-demo-psoc6.git
-[submodule "lib/mcu/psoc062s2"]
-	path = lib/mcu/psoc062s2
-	url = ../porcupine-lib-psoc6.git
 [submodule "demo/c/dr_libs"]
 	path = demo/c/dr_libs
 	url = ../../mackron/dr_libs.git
