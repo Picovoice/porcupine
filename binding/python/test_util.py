@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Picovoice Inc.
+# Copyright 2022-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -10,16 +10,16 @@
 #
 
 import json
-import os
 import struct
 import wave
+import unicodedata
 
-from util import *
+from _util import *
 
 
 def load_test_data():
-    data_file_path = os.path.join(os.path.dirname(__file__), "../../resources/test/test_data.json")
-    with open(data_file_path) as data_file:
+    data_file_path = os.path.join(os.path.dirname(__file__), "../../resources/.test/test_data.json")
+    with open(data_file_path, encoding='utf-8') as data_file:
         json_test_data = data_file.read()
     test_data = json.loads(json_test_data)['tests']
 
@@ -72,8 +72,9 @@ def get_keyword_paths_by_language(relative, language, keywords):
         pv_keyword_files_subdir())
 
     res = list()
+
     keyword_paths = {
-        keyword_file.rsplit('_')[0]: os.path.join(keyword_files_dir, keyword_file)
+        keyword_file.rsplit('_', 1)[0]: os.path.join(keyword_files_dir, keyword_file)
         for keyword_file in os.listdir(keyword_files_dir)
     }
 

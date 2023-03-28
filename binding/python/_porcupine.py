@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2022 Picovoice Inc.
+# Copyright 2018-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -8,10 +8,10 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 #
-
 import os
 from ctypes import *
 from enum import Enum
+from typing import Sequence
 
 
 class PorcupineError(Exception):
@@ -101,7 +101,13 @@ class Porcupine(object):
     class CPorcupine(Structure):
         pass
 
-    def __init__(self, access_key, library_path, model_path, keyword_paths, sensitivities):
+    def __init__(
+            self,
+            access_key: str,
+            library_path: str,
+            model_path: str,
+            keyword_paths: Sequence[str],
+            sensitivities: Sequence[float]):
         """
         Constructor.
 
@@ -179,7 +185,7 @@ class Porcupine(object):
 
         self._delete_func(self._handle)
 
-    def process(self, pcm):
+    def process(self, pcm: Sequence[int]) -> int:
         """
         Processes a frame of the incoming audio stream and emits the detection result.
 
@@ -201,19 +207,36 @@ class Porcupine(object):
         return result.value
 
     @property
-    def version(self):
+    def version(self) -> str:
         """Version"""
 
         return self._version
 
     @property
-    def frame_length(self):
+    def frame_length(self) -> int:
         """Number of audio samples per frame."""
 
         return self._frame_length
 
     @property
-    def sample_rate(self):
+    def sample_rate(self) -> int:
         """Audio sample rate accepted by Picovoice."""
 
         return self._sample_rate
+
+
+__all__ = [
+    'Porcupine',
+    'PorcupineActivationError',
+    'PorcupineActivationLimitError',
+    'PorcupineActivationRefusedError',
+    'PorcupineActivationThrottledError',
+    'PorcupineError',
+    'PorcupineIOError',
+    'PorcupineInvalidArgumentError',
+    'PorcupineInvalidStateError',
+    'PorcupineKeyError',
+    'PorcupineMemoryError',
+    'PorcupineRuntimeError',
+    'PorcupineStopIterationError',
+]

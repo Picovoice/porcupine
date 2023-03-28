@@ -109,7 +109,7 @@ provided it only processes the first (left) channel. The following processes a f
 "Picovoice"
 
 ```console
-porcupine_demo_file --access_key ${ACCESS_KEY} --input_audio_path ${AUDIO_PATH} --keywords picovoice
+porcupine_demo_file --access_key ${ACCESS_KEY} --wav_path ${AUDIO_PATH} --keywords picovoice
 ```
 
 `keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
@@ -122,7 +122,7 @@ porcupine_demo_file --help
 To detect multiple phrases concurrently provide them as separate arguments
 
 ```console
-porcupine_demo_file --access_key ${ACCESS_KEY} --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
+porcupine_demo_file --access_key ${ACCESS_KEY} --wav_path ${AUDIO_PATH} --keywords grasshopper porcupine
 ```
 
 To detect non-default keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/))
@@ -130,7 +130,7 @@ use `keyword_paths` argument
 
 ```console
 porcupine_demo_file --access_key ${ACCESS_KEY} \
---input_audio_path ${AUDIO_PATH} \
+--wav_path ${AUDIO_PATH} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
@@ -138,7 +138,7 @@ To detect non-English keywords provide the respective model path:
 
 ```console
 porcupine_demo_mic --access_key ${ACCESS_KEY} \
---input_audio_path ${AUDIO_PATH} \
+--wav_path ${AUDIO_PATH} \
 --model_path ${NON_ENGLISH_MODEL_PATH} \
 --keyword_paths ${NON_ENGLISH_KEYWORD_PATH} 
 ```
@@ -150,7 +150,7 @@ The sensitivity of the engine can be tuned per keyword using the `sensitivities`
 
 ```console
 porcupine_demo_file --access_key ${ACCESS_KEY} \
---input_audio_path ${AUDIO_PATH} \
+--wav_path ${AUDIO_PATH} \
 --keywords grasshopper porcupine --sensitivities 0.3 0.6
 ```
 

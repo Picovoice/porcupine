@@ -22,4 +22,4 @@ jobs:
         run: npm install -g cspell
 
       - name: Run CSpell
-        run: cspell --config resources/lint/spell-check/.cspell.json "**/*"
+        run: cspell --config resources/.lint/spell-check/.cspell.json "**/*"
