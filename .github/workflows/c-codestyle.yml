@@ -8,7 +8,7 @@ on:
       - '**/*.c'
       - '.github/workflows/c-codestyle.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '**/*.c'
       - '.github/workflows/c-codestyle.yml'
