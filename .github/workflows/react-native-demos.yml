@@ -9,7 +9,7 @@ on:
       - '!demo/react-native/README.md'
       - '.github/workflows/react-native-demos.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'demo/react-native/**'
       - '!demo/react-native/README.md'

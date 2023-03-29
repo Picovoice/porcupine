@@ -9,7 +9,7 @@ on:
       - '!demo/angular/README.md'
       - '.github/workflows/angular-demos.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'demo/angular/**'
       - '!demo/angular/README.md'

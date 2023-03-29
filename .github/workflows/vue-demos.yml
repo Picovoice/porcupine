@@ -8,7 +8,7 @@ on:
       - '!demo/vue/README.md'
       - '.github/workflows/vue-demos.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'demo/vue/**'
       - '!demo/vue/README.md'

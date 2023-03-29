@@ -19,7 +19,7 @@ on:
       - 'resources/test/**'
       - '.github/workflows/java.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'binding/java/**'
       - '!binding/java/README.md'

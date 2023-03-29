@@ -24,7 +24,7 @@ on:
       - 'resources/test/**'
       - '.github/workflows/python.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'binding/python/**'
       - '!binding/python/README.md'

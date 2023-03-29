@@ -16,7 +16,7 @@ on:
       - 'resources/keyword_files/windows/**'
       - '.github/workflows/java-perf.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'lib/common/**'
       - 'lib/java/**'

@@ -7,7 +7,7 @@ on:
     paths:
       - '**/*.swift'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '**/*.swift'
 

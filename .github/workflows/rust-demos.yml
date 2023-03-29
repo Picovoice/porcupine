@@ -9,7 +9,7 @@ on:
       - '!demo/rust/README.md'
       - '.github/workflows/rust-demos.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'demo/rust/**'
       - '!demo/rust/README.md'
