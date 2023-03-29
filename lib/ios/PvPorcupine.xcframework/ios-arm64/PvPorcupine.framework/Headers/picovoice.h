@@ -1,12 +1,14 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2018-2023 Picovoice Inc.
 
-    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
-    file accompanying this source.
+    You may not use this file except in compliance with the license. A copy of
+   the license is located in the "LICENSE" file accompanying this source.
 
-    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
-    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-    specific language governing permissions and limitations under the License.
+    Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+   License for the specific language governing permissions and limitations under
+   the License.
 */
 
 #ifndef PICOVOICE_H
@@ -31,17 +33,7 @@ PV_API int32_t pv_sample_rate(void);
  * Status codes.
  */
 typedef enum {
-
-#ifdef __PV_PLATFORM_WASM__
-
-    PV_STATUS_SUCCESS = 10000,
-
-#else
-
     PV_STATUS_SUCCESS = 0,
-
-#endif
-
     PV_STATUS_OUT_OF_MEMORY,
     PV_STATUS_IO_ERROR,
     PV_STATUS_INVALID_ARGUMENT,
