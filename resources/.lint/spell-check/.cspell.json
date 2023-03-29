@@ -104,5 +104,8 @@
 
     // 3rd party
     "../../../demo/respeaker/ppnrespeakerdemo/apa102.py",
+
+    // test
+    "**/test_data.json"
   ]
 }
