@@ -37,6 +37,14 @@ module.exports = {
         ],
         '@typescript-eslint/no-shadow': 2
       }
+    },
+    {
+      files: ['test/**/*.ts', 'cypress/**/*.ts'],
+      extends: ['plugin:cypress/recommended'],
+      rules: {
+        'no-unused-expressions': 0,
+        'no-unused-vars': 0
+      }
     }
   ],
 

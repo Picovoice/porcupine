@@ -25,31 +25,20 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.8]
         node-version: [lts/*]
         include:
-        - python-version: 3.8
+        - node-version: lts/*
           initPerformanceThresholdSec: 0.4
           procPerformanceThresholdSec: 1.2
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+    - uses: actions/checkout@v3
 
     - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install system dependencies
-      run: |
-        pip install packaging
-        pip install selenium
-        pip install webdriver-manager
     - name: Pre-build dependencies
       run: npm install yarn
 
@@ -66,5 +55,4 @@ jobs:
       run: yarn setup-test
 
     - name: Test
-      run: python test/perf_test.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --audio_file ../../resources/audio_samples/multiple_keywords.wav
-        --init_performance_threshold_sec ${{ matrix.initPerformanceThresholdSec }} --proc_performance_threshold_sec ${{ matrix.procPerformanceThresholdSec }}
+      run: yarn test-perf --env ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}},NUM_TEST_ITERATIONS=20,INIT_PERFORMANCE_THRESHOLD_SEC=${{matrix.initPerformanceThresholdSec}},PROC_PERFORMANCE_THRESHOLD_SEC=${{matrix.procPerformanceThresholdSec}}
