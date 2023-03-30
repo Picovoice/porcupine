@@ -21,4 +21,4 @@ jobs:
     - name: Check swift codestyle
       uses: norio-nomura/action-swiftlint@3.2.1
       with:
-        args: lint --config resources/lint/swift/.swiftlint.yml --strict
+        args: lint --config resources/.lint/swift/.swiftlint.yml --strict
