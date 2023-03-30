@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
@@ -34,3 +33,10 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 }
+
+task copyLibs(type: Copy) {
+    from("${rootDir}/../../lib/android")
+    into("${rootDir}/porcupine/src/main/jniLibs")
+}
+
+preBuild.dependsOn copyLibs
