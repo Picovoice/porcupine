@@ -27,7 +27,7 @@
         <PackageIcon>pv_circle_512.png</PackageIcon>
     </PropertyGroup>
 
-    <!--.NET Standard 2.0+ Libs-->
+    <!--Target files-->
     <ItemGroup>
         <Content Include="Porcupine.netstandard2.0.targets">
             <PackagePath>
@@ -37,11 +37,15 @@
         </Content>
         <Content Include="Porcupine.targets">
             <PackagePath>
-                build/netcoreapp3.0;
-                build/net6.0;
+                build/netcoreapp3.0/Porcupine.targets;
+                build/net6.0/Porcupine.targets;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <!--.NET Standard 2.0+ libs-->
+    <ItemGroup>
         <Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
             <PackagePath>
                 build/netstandard2.0/libpv_porcupine.dll;
@@ -74,7 +78,7 @@
         </Content>
     </ItemGroup>
 
-    <!--.NET Core 3.0+ Libs-->
+    <!--.NET Core 3.0+ libs-->
     <ItemGroup>
         <Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
             <PackagePath>
@@ -85,7 +89,6 @@
             <Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
             <Visible>false</Visible>
         </Content>
-        <None Remove="Porcupine.netstandard2.0.targets" />
         <Content Include="..\..\..\lib\jetson\cortex-a57-aarch64\libpv_porcupine.so">
             <PackagePath>
                 build/netcoreapp3.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
@@ -106,7 +109,7 @@
         </Content>
     </ItemGroup>
 
-    <!--.NET 6.0+ Libs-->
+    <!--.NET 6.0+ libs-->
     <ItemGroup>
         <Content Include="..\..\..\lib\mac\arm64\libpv_porcupine.dylib">
             <PackagePath>
