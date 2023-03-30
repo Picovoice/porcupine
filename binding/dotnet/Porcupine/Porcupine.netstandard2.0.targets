@@ -1,0 +1,30 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <Content Include="$(MSBuildThisFileDirectory)libpv_porcupine.dll">
+            <Link>libpv_porcupine.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="$(MSBuildThisFileDirectory)libpv_porcupine.dylib">
+            <Link>libpv_porcupine.dylib</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="$(MSBuildThisFileDirectory)libpv_porcupine.so">
+            <Link>libpv_porcupine.so</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Visible>false</Visible>
+        </Content>        
+    </ItemGroup>
+	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)resources/**">
+			<Link>resources/%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="$(MSBuildThisFileDirectory)lib/**">
+			<Link>lib/%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+	</ItemGroup>
+</Project>

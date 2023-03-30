@@ -28,14 +28,18 @@ namespace PorcupineTest
     [TestClass]
     public class MainTest
     {
-        private static string _accessKey;
-        private static readonly string _rootDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../../../../../..");
+        private static readonly string ROOT_DIR = Path.Combine(
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+            "../../../../../..");
+
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
                                                  RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
                                                     (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
+
+        private static string _accessKey;
 
         private Porcupine _porcupine;
 
@@ -71,7 +75,7 @@ namespace PorcupineTest
 
         private static JObject LoadJsonTestData()
         {
-            string content = File.ReadAllText(Path.Combine(_rootDir, "resources/test/test_data.json"));
+            string content = File.ReadAllText(Path.Combine(ROOT_DIR, "resources/.test/test_data.json"));
             return JObject.Parse(content);
         }
 
@@ -135,7 +139,7 @@ namespace PorcupineTest
         private static string GetKeywordPath(string language, string keyword)
         {
             return Path.Combine(
-                _rootDir,
+                ROOT_DIR,
                 "resources",
                 AppendLanguage("keyword_files", language),
                 $"{_env}/{keyword}_{_env}.ppn"
@@ -156,7 +160,7 @@ namespace PorcupineTest
         {
             string file_name = AppendLanguage("porcupine_params", language);
             return Path.Combine(
-                _rootDir,
+                ROOT_DIR,
                 "lib/common",
                 $"{file_name}.pv"
             );
@@ -165,7 +169,7 @@ namespace PorcupineTest
         private void RunTestCase(string audioFileName, List<int> expectedResults)
         {
             int frameLen = _porcupine.FrameLength;
-            string testAudioPath = Path.Combine(_rootDir, "resources/audio_samples", audioFileName);
+            string testAudioPath = Path.Combine(ROOT_DIR, "resources/audio_samples", audioFileName);
             List<short> data = GetPcmFromFile(testAudioPath, _porcupine.SampleRate);
 
             int framecount = (int)Math.Floor((float)(data.Count / frameLen));
