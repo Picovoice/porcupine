@@ -25,8 +25,7 @@ def create(
         model_path: Optional[str] = None,
         keyword_paths: Optional[Sequence[str]] = None,
         keywords: Optional[Sequence[str]] = None,
-        sensitivities: Optional[Sequence[str]] = None) -> Porcupine:
-
+        sensitivities: Optional[Sequence[float]] = None) -> Porcupine:
     """
     Factory method for Porcupine wake word engine.
 
