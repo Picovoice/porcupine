@@ -31,7 +31,7 @@ def main():
         '--keywords',
         nargs='+',
         help='List of default keywords for detection. Available keywords: %s' % ', '.join(
-            f'`{w}`' for w in sorted(pvporcupine.KEYWORDS)),
+            '%s' % w for w in sorted(pvporcupine.KEYWORDS)),
         choices=sorted(pvporcupine.KEYWORDS),
         metavar='')
 
