@@ -12,7 +12,6 @@
 import json
 import struct
 import wave
-import unicodedata
 
 from _util import *
 
