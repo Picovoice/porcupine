@@ -36,7 +36,7 @@ jobs:
           performanceThresholdSec: 1.25
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.4.0
