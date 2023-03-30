@@ -21,7 +21,7 @@ on:
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
-      - 'resources/test/**'
+      - 'resources/.test/**'
       - '.github/workflows/python.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
@@ -42,7 +42,7 @@ on:
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
-      - 'resources/test/**'
+      - 'resources/.test/**'
       - '.github/workflows/python.yml'
 
 defaults:
@@ -59,10 +59,10 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -81,7 +81,7 @@ jobs:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install dependencies
       run: pip install -r requirements.txt
