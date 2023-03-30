@@ -1,5 +1,5 @@
 #
-# Copyright 2019-2022 Picovoice Inc.
+# Copyright 2019-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -22,8 +22,9 @@ os.mkdir(package_folder)
 shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
 
 shutil.copy(os.path.join(os.path.dirname(__file__), '__init__.py'), os.path.join(package_folder, '__init__.py'))
-shutil.copy(os.path.join(os.path.dirname(__file__), 'porcupine.py'), os.path.join(package_folder, 'porcupine.py'))
-shutil.copy(os.path.join(os.path.dirname(__file__), 'util.py'), os.path.join(package_folder, 'util.py'))
+shutil.copy(os.path.join(os.path.dirname(__file__), '_porcupine.py'), os.path.join(package_folder, '_porcupine.py'))
+shutil.copy(os.path.join(os.path.dirname(__file__), '_factory.py'), os.path.join(package_folder, '_factory.py'))
+shutil.copy(os.path.join(os.path.dirname(__file__), '_util.py'), os.path.join(package_folder, '_util.py'))
 
 platforms = ('beaglebone', 'jetson', 'linux', 'mac', 'raspberry-pi', 'windows')
 
@@ -41,8 +42,9 @@ for platform in platforms:
 MANIFEST_IN = """
 include pvporcupine/LICENSE
 include pvporcupine/__init__.py
-include pvporcupine/porcupine.py
-include pvporcupine/util.py
+include pvporcupine/_porcupine.py
+include pvporcupine/_factory.py
+include pvporcupine/_util.py
 include pvporcupine/lib/common/porcupine_params.pv
 include pvporcupine/lib/beaglebone/libpv_porcupine.so
 recursive-include pvporcupine/lib/jetson *
@@ -67,7 +69,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="2.1.4",
+    version="2.2.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",
