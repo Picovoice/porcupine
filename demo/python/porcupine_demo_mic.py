@@ -130,7 +130,9 @@ def main():
     wav_file = None
     if args.output_path is not None:
         wav_file = wave.open(args.output_path, "w")
-        wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
+        wav_file.setnchannels(1)
+        wav_file.setsampwidth(2)
+        wav_file.setframerate(16000)
 
     print('Listening ... (press Ctrl+C to exit)')
 
@@ -147,7 +149,7 @@ def main():
     except KeyboardInterrupt:
         print('Stopping ...')
     finally:
-        recorder.stop()
+        recorder.delete()
         porcupine.delete()
         if wav_file is not None:
             wav_file.close()
