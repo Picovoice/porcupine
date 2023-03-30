@@ -92,7 +92,7 @@ public class Porcupine {
         }
 
         var keywordPathsArgs = keywordPaths
-        for i in 0..<keywordPathsArgs.count where !FileManager().fileExists(atPath: keywordPathsArgs[i] {
+        for i in 0..<keywordPathsArgs.count where !FileManager().fileExists(atPath: keywordPathsArgs[i]) {
             keywordPathsArgs[i] = try getResourcePath(keywordPathsArgs[i])
         }
 
@@ -112,7 +112,7 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPath: Absolute paths to a keyword model file.
     ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. 
+    ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
     public convenience init(
@@ -134,7 +134,7 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywords: An array of built-in keywords from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. 
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
     public convenience init(
@@ -168,7 +168,7 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. 
+    ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
     public convenience init(
@@ -204,8 +204,8 @@ public class Porcupine {
         }
 
         if pcm.count != Porcupine.frameLength {
-            throw PorcupineInvalidArgumentError("Frame of audio data must contain \(Porcupine.frameLength)
-                samples - given frame contained \(pcm.count)")
+            throw PorcupineInvalidArgumentError("Frame of audio data must contain \(Porcupine.frameLength) " +
+                "samples - given frame contained \(pcm.count)")
         }
 
         var result: Int32 = -1

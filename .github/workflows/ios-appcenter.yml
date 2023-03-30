@@ -5,13 +5,17 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'binding/ios/PorcupineAppTest/Podfile.lock'
       - '.github/workflows/ios-appcenter.yml'
+      - 'binding/ios/PorcupineAppTest/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - 'binding/ios/PorcupineAppTest/Podfile.lock'
       - '.github/workflows/ios-appcenter.yml'
+      - 'binding/ios/PorcupineAppTest/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
 
 defaults:
   run:
@@ -24,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
