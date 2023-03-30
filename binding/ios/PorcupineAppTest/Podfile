@@ -1,14 +1,14 @@
 source 'https://cdn.cocoapods.org/'
-platform :ios, '9.0'
+platform :ios, '11.0'
 
 target 'PorcupineAppTest' do
-  pod 'Porcupine-iOS', '~> 2.1.2'
+  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.2-ios/binding/ios/Porcupine-iOS.podspec'
 end
 
 target 'PorcupineAppTestUITests' do
-  pod 'Porcupine-iOS', '~> 2.1.2'
+  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.2-ios/binding/ios/Porcupine-iOS.podspec'
 end
 
 target 'PerformanceTest' do
-  pod 'Porcupine-iOS', '~> 2.1.2'
+  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.2-ios/binding/ios/Porcupine-iOS.podspec'
 end
