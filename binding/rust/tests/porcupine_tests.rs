@@ -33,7 +33,7 @@ mod tests {
         let test_json_path = format!(
             "{}{}",
             env!("CARGO_MANIFEST_DIR"),
-            "/../../resources/test/test_data.json"
+            "/../../resources/.test/test_data.json"
         );
         let contents: String = read_to_string(test_json_path).expect("Unable to read test_data.json");
         let test_json: Value = serde_json::from_str(&contents).expect("Unable to parse test_data.json");

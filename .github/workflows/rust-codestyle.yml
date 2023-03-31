@@ -5,15 +5,15 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'binding/rust/**'
-      - '!binding/rust/README.md'
       - '.github/workflows/rust-codestyle.yml'
+      - 'binding/rust/**/*.rs'
+      - 'demo/rust/**/*.rs'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - 'binding/rust/**'
-      - '!binding/rust/README.md'
       - '.github/workflows/rust-codestyle.yml'
+      - 'binding/rust/**/*.rs'
+      - 'demo/rust/**/*.rs'
 
 env:
   CARGO_TERM_COLOR: always
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Rust pre-build
       run: bash copy.sh
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
