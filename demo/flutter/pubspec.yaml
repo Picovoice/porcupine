@@ -14,7 +14,8 @@ dependencies:
     sdk: flutter
 
   flutter_picker: ^2.0.1
-  porcupine_flutter: ^2.1.6
+  porcupine_flutter:
+    path: ../../binding/flutter
 
 dev_dependencies:
   integration_test:

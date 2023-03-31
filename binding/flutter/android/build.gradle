@@ -1,5 +1,5 @@
 group 'ai.picovoice.flutter.porcupine'
-version '2.1.6'
+version '2.2.0'
 
 buildscript {
     repositories {
@@ -16,6 +16,9 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1223'
+        }
     }
 }
 
@@ -43,5 +46,5 @@ android {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-android:2.1.3'
+    implementation 'ai.picovoice:porcupine-android:2.2.0'
 }

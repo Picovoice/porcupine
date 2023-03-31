@@ -32,7 +32,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt'
+        distribution: 'temurin'
 
     - name: Install Flutter ${{ matrix.flutter-version }}
       uses: subosito/flutter-action@v2
