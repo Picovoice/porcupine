@@ -1,74 +1,97 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <TargetFrameworks>net6.0;netcoreapp3.1;netstandard2.0</TargetFrameworks>
-	  <Version>2.1.6</Version>
-	  <Authors>Picovoice</Authors>
-	  <Company />
-	  <Product>Porcupine Wake Word Engine</Product>
-	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-	  <PackageProjectUrl>https://github.com/Picovoice/porcupine</PackageProjectUrl>
-	  <RepositoryUrl>https://github.com/Picovoice/porcupine.git</RepositoryUrl>
-	  <RepositoryType>git</RepositoryType>
-	  <PackageTags>porcupine, picovoice, wake word, hotword, trigger word, offline, private, voice ai, speech recognition</PackageTags>
-	  <PackageReleaseNotes>See https://github.com/Picovoice/porcupine/ </PackageReleaseNotes>
-	  <Copyright>Picovoice 2020-2022</Copyright>
-	  <Description>Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications.
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;netcoreapp3.0;netstandard2.0</TargetFrameworks>
+        <Version>2.2.0</Version>
+        <Authors>Picovoice</Authors>
+        <Company />
+        <Product>Porcupine Wake Word Engine</Product>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/Picovoice/porcupine</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Picovoice/porcupine.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>porcupine, picovoice, wake word, hotword, trigger word, offline, private, voice ai, speech recognition</PackageTags>
+        <PackageReleaseNotes>See https://github.com/Picovoice/porcupine/ </PackageReleaseNotes>
+        <Copyright>Picovoice 2020-2023</Copyright>
+        <Description>
+            Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications.
 
-Porcupine is:
-  - using deep neural networks trained in real-world environments.
-  - compact and computationally-efficient making it perfect for IoT.
-  - scalable. It can detect multiple always-listening voice commands
-     with no added CPU/memory footprint.
-  - self-service. Developers can train custom wake phrases using Picovoice Console.
-</Description>
-	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-	  <PackageIcon>pv_circle_512.png</PackageIcon>
-	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-  </PropertyGroup>
-	<ItemGroup>
-		<Content Include="Porcupine.targets">
-			<PackagePath>
-				build/netstandard2.0;
-				build/netcoreapp3.1;
-				build/net6.0;
-			</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
-			<PackagePath>
-				build/netstandard2.0/lib/windows/amd64/libpv_porcupine.dll;
-				build/netcoreapp3.1/lib/windows/amd64/libpv_porcupine.dll;
-				build/net6.0/lib/windows/amd64/libpv_porcupine.dll;
-			</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\windows\amd64\libpv_porcupine.dll</Link>
-			<Visible>false</Visible>
-		</Content>
-		<Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">
-			<PackagePath>
-				build/netstandard2.0/lib/linux/x86_64/libpv_porcupine.so;
-				build/netcoreapp3.1/lib/linux/x86_64/libpv_porcupine.so;
-				build/net6.0/lib/linux/x86_64/libpv_porcupine.so;
-			</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\linux\x86_64\libpv_porcupine.so</Link>
-			<Visible>false</Visible>
-		</Content>
-		<Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
-			<PackagePath>
-				build/netstandard2.0/lib/raspberry-pi;
-				build/netcoreapp3.1/lib/raspberry-pi;
-				build/net6.0/lib/raspberry-pi;
-			</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<Visible>false</Visible>
-		</Content>
+            Porcupine is:
+            - using deep neural networks trained in real-world environments.
+            - compact and computationally-efficient making it perfect for IoT.
+            - scalable. It can detect multiple always-listening voice commands
+            with no added CPU/memory footprint.
+            - self-service. Developers can train custom wake phrases using Picovoice Console.
+        </Description>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageIcon>pv_circle_512.png</PackageIcon>
+    </PropertyGroup>
+
+    <!--Target files-->
+    <ItemGroup>
+        <Content Include="Porcupine.netstandard2.0.targets">
+            <PackagePath>
+                build/netstandard2.0/Porcupine.targets;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Porcupine.targets">
+            <PackagePath>
+                build/netcoreapp3.0/Porcupine.targets;
+                build/net6.0/Porcupine.targets;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <!--.NET Standard 2.0+ libs-->
+    <ItemGroup>
+        <Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
+            <PackagePath>
+                build/netstandard2.0/libpv_porcupine.dll;
+                build/netcoreapp3.0/lib/windows/amd64/libpv_porcupine.dll;
+                build/net6.0/lib/windows/amd64/libpv_porcupine.dll;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\windows\amd64\libpv_porcupine.dll</Link>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">
+            <PackagePath>
+                build/netstandard2.0/libpv_porcupine.so;
+                build/netcoreapp3.0/lib/linux/x86_64/libpv_porcupine.so;
+                build/net6.0/lib/linux/x86_64/libpv_porcupine.so;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\linux\x86_64\libpv_porcupine.so</Link>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
+            <PackagePath>
+                build/netstandard2.0/libpv_porcupine.dylib;
+                build/netcoreapp3.0/lib/mac/x86_64/libpv_porcupine.dylib;
+                build/net6.0/lib/mac/x86_64/libpv_porcupine.dylib;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
+            <Visible>false</Visible>
+        </Content>
+    </ItemGroup>
+
+    <!--.NET Core 3.0+ libs-->
+    <ItemGroup>
+        <Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
+            <PackagePath>
+                build/netcoreapp3.0/lib/raspberry-pi;
+                build/net6.0/lib/raspberry-pi;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <Visible>false</Visible>
+        </Content>
         <Content Include="..\..\..\lib\jetson\cortex-a57-aarch64\libpv_porcupine.so">
             <PackagePath>
-                build/netstandard2.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
-                build/netcoreapp3.1/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
+                build/netcoreapp3.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
                 build/net6.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -77,25 +100,30 @@ Porcupine is:
         </Content>
         <Content Include="..\..\..\lib\beaglebone\libpv_porcupine.so">
             <PackagePath>
-                build/netstandard2.0/lib/beaglebone/libpv_porcupine.so;
-                build/netcoreapp3.1/lib/beaglebone/libpv_porcupine.so;
+                build/netcoreapp3.0/lib/beaglebone/libpv_porcupine.so;
                 build/net6.0/lib/beaglebone/libpv_porcupine.so;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\beaglebone\libpv_porcupine.so</Link>
             <Visible>false</Visible>
         </Content>
-		<Content Include="..\..\..\lib\mac\**\*">
-			<PackagePath>
-				build/netstandard2.0/lib/mac;
-				build/netcoreapp3.1/lib/mac;
-				build/net6.0/lib/mac;
-			</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>lib\mac\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<Visible>false</Visible>
+    </ItemGroup>
+
+    <!--.NET 6.0+ libs-->
+    <ItemGroup>
+        <Content Include="..\..\..\lib\mac\arm64\libpv_porcupine.dylib">
+            <PackagePath>
+                build/net6.0/lib/mac/arm64/libpv_porcupine.dylib;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\mac\arm64\libpv_porcupine.dylib</Link>
+            <Visible>false</Visible>
         </Content>
-		<Content Include="..\..\..\resources\keyword_files\windows\alexa_windows.ppn;
+    </ItemGroup>
+
+    <!--Resources-->
+    <ItemGroup>
+        <Content Include="..\..\..\resources\keyword_files\windows\alexa_windows.ppn;
                           ..\..\..\resources\keyword_files\windows\americano_windows.ppn;
                           ..\..\..\resources\keyword_files\windows\blueberry_windows.ppn;
                           ..\..\..\resources\keyword_files\windows\bumblebee_windows.ppn;
@@ -109,15 +137,15 @@ Porcupine is:
                           ..\..\..\resources\keyword_files\windows\picovoice_windows.ppn;
                           ..\..\..\resources\keyword_files\windows\porcupine_windows.ppn;
                           ..\..\..\resources\keyword_files\windows\terminator_windows.ppn;">
-			<PackagePath>
-				build/netstandard2.0/resources/keyword_files/windows;
-				build/netcoreapp3.1/resources/keyword_files/windows;
-				build/net6.0/resources/keyword_files/windows;
-			</PackagePath>
-			<Link>resources\keyword_files\windows\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\..\..\resources\keyword_files\mac\alexa_mac.ppn;
+            <PackagePath>
+                build/netstandard2.0/resources/keyword_files/windows;
+                build/netcoreapp3.0/resources/keyword_files/windows;
+                build/net6.0/resources/keyword_files/windows;
+            </PackagePath>
+            <Link>resources\keyword_files\windows\%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="..\..\..\resources\keyword_files\mac\alexa_mac.ppn;
                           ..\..\..\resources\keyword_files\mac\americano_mac.ppn;
                           ..\..\..\resources\keyword_files\mac\blueberry_mac.ppn;
                           ..\..\..\resources\keyword_files\mac\bumblebee_mac.ppn;
@@ -131,15 +159,15 @@ Porcupine is:
                           ..\..\..\resources\keyword_files\mac\picovoice_mac.ppn;
                           ..\..\..\resources\keyword_files\mac\porcupine_mac.ppn;
                           ..\..\..\resources\keyword_files\mac\terminator_mac.ppn;">
-			<PackagePath>
-				build/netstandard2.0/resources/keyword_files/mac;
-				build/netcoreapp3.1/resources/keyword_files/mac;
-				build/net6.0/resources/keyword_files/mac;
-			</PackagePath>
-			<Link>resources\keyword_files\mac\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\..\..\resources\keyword_files\linux\alexa_linux.ppn;
+            <PackagePath>
+                build/netstandard2.0/resources/keyword_files/mac;
+                build/netcoreapp3.0/resources/keyword_files/mac;
+                build/net6.0/resources/keyword_files/mac;
+            </PackagePath>
+            <Link>resources\keyword_files\mac\%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="..\..\..\resources\keyword_files\linux\alexa_linux.ppn;
                           ..\..\..\resources\keyword_files\linux\americano_linux.ppn;
                           ..\..\..\resources\keyword_files\linux\blueberry_linux.ppn;
                           ..\..\..\resources\keyword_files\linux\bumblebee_linux.ppn;
@@ -153,15 +181,15 @@ Porcupine is:
                           ..\..\..\resources\keyword_files\linux\picovoice_linux.ppn;
                           ..\..\..\resources\keyword_files\linux\porcupine_linux.ppn;
                           ..\..\..\resources\keyword_files\linux\terminator_linux.ppn;">
-			<PackagePath>
-				build/netstandard2.0/resources/keyword_files/linux;
-				build/netcoreapp3.1/resources/keyword_files/linux;
-				build/net6.0/resources/keyword_files/linux;
-			</PackagePath>
-			<Link>resources\keyword_files\linux\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\..\..\resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn;
+            <PackagePath>
+                build/netstandard2.0/resources/keyword_files/linux;
+                build/netcoreapp3.0/resources/keyword_files/linux;
+                build/net6.0/resources/keyword_files/linux;
+            </PackagePath>
+            <Link>resources\keyword_files\linux\%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="..\..\..\resources\keyword_files\raspberry-pi\alexa_raspberry-pi.ppn;
                           ..\..\..\resources\keyword_files\raspberry-pi\americano_raspberry-pi.ppn;
                           ..\..\..\resources\keyword_files\raspberry-pi\blueberry_raspberry-pi.ppn;
                           ..\..\..\resources\keyword_files\raspberry-pi\bumblebee_raspberry-pi.ppn;
@@ -175,14 +203,14 @@ Porcupine is:
                           ..\..\..\resources\keyword_files\raspberry-pi\picovoice_raspberry-pi.ppn;
                           ..\..\..\resources\keyword_files\raspberry-pi\porcupine_raspberry-pi.ppn;
                           ..\..\..\resources\keyword_files\raspberry-pi\terminator_raspberry-pi.ppn;">
-			<PackagePath>
-				build/netstandard2.0/resources/keyword_files/raspberry-pi;
-				build/netcoreapp3.1/resources/keyword_files/raspberry-pi;
-				build/net6.0/resources/keyword_files/raspberry-pi;
-			</PackagePath>
-			<Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+            <PackagePath>
+                build/netstandard2.0/resources/keyword_files/raspberry-pi;
+                build/netcoreapp3.0/resources/keyword_files/raspberry-pi;
+                build/net6.0/resources/keyword_files/raspberry-pi;
+            </PackagePath>
+            <Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
         <Content Include="..\..\..\resources\keyword_files\jetson\alexa_jetson.ppn;
                           ..\..\..\resources\keyword_files\jetson\americano_jetson.ppn;
                           ..\..\..\resources\keyword_files\jetson\blueberry_jetson.ppn;
@@ -197,14 +225,14 @@ Porcupine is:
                           ..\..\..\resources\keyword_files\jetson\picovoice_jetson.ppn;
                           ..\..\..\resources\keyword_files\jetson\porcupine_jetson.ppn;
                           ..\..\..\resources\keyword_files\jetson\terminator_jetson.ppn;">
-			<PackagePath>
-				build/netstandard2.0/resources/keyword_files/jetson;
-				build/netcoreapp3.1/resources/keyword_files/jetson;
-				build/net6.0/resources/keyword_files/jetson;
-			</PackagePath>
-			<Link>resources\keyword_files\jetson\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+            <PackagePath>
+                build/netstandard2.0/resources/keyword_files/jetson;
+                build/netcoreapp3.0/resources/keyword_files/jetson;
+                build/net6.0/resources/keyword_files/jetson;
+            </PackagePath>
+            <Link>resources\keyword_files\jetson\%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
         <Content Include="..\..\..\resources\keyword_files\beaglebone\alexa_beaglebone.ppn;
                           ..\..\..\resources\keyword_files\beaglebone\americano_beaglebone.ppn;
                           ..\..\..\resources\keyword_files\beaglebone\blueberry_beaglebone.ppn;
@@ -219,31 +247,31 @@ Porcupine is:
                           ..\..\..\resources\keyword_files\beaglebone\picovoice_beaglebone.ppn;
                           ..\..\..\resources\keyword_files\beaglebone\porcupine_beaglebone.ppn;
                           ..\..\..\resources\keyword_files\beaglebone\terminator_beaglebone.ppn;">
-			<PackagePath>
-				build/netstandard2.0/resources/keyword_files/beaglebone;
-				build/netcoreapp3.1/resources/keyword_files/beaglebone;
-				build/net6.0/resources/keyword_files/beaglebone;
-			</PackagePath>
-			<Link>resources\keyword_files\beaglebone\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\..\..\lib\common\porcupine_params.pv">
-			<PackagePath>
-				build/netstandard2.0/lib/common/porcupine_params.pv;
-				build/netcoreapp3.1/lib/common/porcupine_params.pv;
-				build/net6.0/lib/common/porcupine_params.pv;
-			</PackagePath>
-			<Link>lib\common\porcupine_params.pv</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Content\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="Content\pv_circle_512.png">
-	    <Pack>True</Pack>
-	    <PackagePath></PackagePath>
-	  </None>
-	</ItemGroup>
+            <PackagePath>
+                build/netstandard2.0/resources/keyword_files/beaglebone;
+                build/netcoreapp3.0/resources/keyword_files/beaglebone;
+                build/net6.0/resources/keyword_files/beaglebone;
+            </PackagePath>
+            <Link>resources\keyword_files\beaglebone\%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="..\..\..\lib\common\porcupine_params.pv">
+            <PackagePath>
+                build/netstandard2.0/lib/common/porcupine_params.pv;
+                build/netcoreapp3.0/lib/common/porcupine_params.pv;
+                build/net6.0/lib/common/porcupine_params.pv;
+            </PackagePath>
+            <Link>lib\common\porcupine_params.pv</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Content\" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Content\pv_circle_512.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
 </Project>
