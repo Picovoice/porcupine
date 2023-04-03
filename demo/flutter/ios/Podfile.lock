@@ -5,8 +5,9 @@ PODS:
   - integration_test (0.0.1):
     - Flutter
   - ios-voice-processor (1.0.3)
-  - path_provider_ios (0.0.1):
+  - path_provider_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - Porcupine-iOS (2.2.0):
     - ios-voice-processor (~> 1.0.2)
   - porcupine_flutter (2.2.0):
@@ -17,7 +18,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
 
@@ -32,8 +33,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_voice_processor/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
   Porcupine-iOS:
     :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec
   porcupine_flutter:
@@ -41,7 +42,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Porcupine-iOS:
-    :commit: fa08492c1404f4e4b9062ac1025f98394eb28eb1
+    :commit: e19bb0138fce3da735cd078c07c582e11d5f5405
     :git: https://github.com/Picovoice/porcupine.git
 
 SPEC CHECKSUMS:
@@ -49,10 +50,10 @@ SPEC CHECKSUMS:
   flutter_voice_processor: afb59b604d99397a1ccf15c935ac8f2c2327f09f
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   Porcupine-iOS: f223c0235756c4ae3b5ccfd282afcd8a3fc75b50
   porcupine_flutter: bb07c08c1a5c504732ea0b1eb7cb3be4916858be
 
-PODFILE CHECKSUM: be5f6588121fa5ce960fabc947e60340302e0578
+PODFILE CHECKSUM: 5ff56daa3a52763ae14eff4a1e4438fa03cc7e82
 
 COCOAPODS: 1.11.3
