@@ -79,10 +79,10 @@ PODS:
   - ios-voice-processor (1.0.3)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
-  - Porcupine-iOS (2.1.2):
+  - Porcupine-iOS (2.2.0):
     - ios-voice-processor (~> 1.0.2)
-  - porcupine-react-native (2.1.4):
-    - Porcupine-iOS (~> 2.1.2)
+  - porcupine-react-native (2.2.0):
+    - Porcupine-iOS (~> 2.2.0)
     - React
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -303,8 +303,8 @@ PODS:
   - React-jsinspector (0.71.0)
   - React-logger (0.71.0):
     - glog
-  - react-native-voice-processor (1.0.4):
-    - React
+  - react-native-voice-processor (1.1.0):
+    - React-Core
   - React-perflogger (0.71.0)
   - React-RCTActionSheet (0.71.0):
     - React-Core/RCTActionSheetHeaders (= 0.71.0)
@@ -423,6 +423,7 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
+  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec`)
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -473,7 +474,6 @@ SPEC REPOS:
     - ios-voice-processor
     - libevent
     - OpenSSL-Universal
-    - Porcupine-iOS
     - SocketRocket
     - YogaKit
 
@@ -490,6 +490,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
+  Porcupine-iOS:
+    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec
   porcupine-react-native:
     :path: "../node_modules/@picovoice/porcupine-react-native"
   RCT-Folly:
@@ -553,6 +555,11 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  Porcupine-iOS:
+    :commit: e19bb0138fce3da735cd078c07c582e11d5f5405
+    :git: https://github.com/Picovoice/porcupine.git
+
 SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
@@ -574,8 +581,8 @@ SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Porcupine-iOS: 884f40edadf4b72fac6fae768d3247bdb48841f7
-  porcupine-react-native: 08b9c7fba702ea5068f490c66d4d51ccc18c4333
+  Porcupine-iOS: f223c0235756c4ae3b5ccfd282afcd8a3fc75b50
+  porcupine-react-native: 0cda03f9099df747be460629b5dc058eee6c94db
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: dea3e4163184ea57c50288c15c32c1529265c58f
   RCTTypeSafety: a0834ab89159a346731e8aae55ad6e2cce61c327
@@ -590,7 +597,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 060dd495f1e2af3d87216f7ca8a94c55ec885b4f
   React-jsinspector: 5061fcbec93fd672183dfb39cc2f65e55a0835db
   React-logger: a6c0b3a807a8e81f6d7fea2e72660766f55daa50
-  react-native-voice-processor: d6de50c8942d0c9b9e89d7c1c982c85c298a8b6f
+  react-native-voice-processor: 3d396bfd42d11ee270bf292ce7cc935ea62d4cae
   React-perflogger: e5fc4149e9bbb972b8520277f3b23141faa47a36
   React-RCTActionSheet: 991de88216bf03ab9bb1d213d73c62ecbe64ade7
   React-RCTAnimation: b74e3d1bf5280891a573e447b487fa1db0713b5b
@@ -609,6 +616,6 @@ SPEC CHECKSUMS:
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: fb1d50a66017a3c342cb20b8a61e6ff53757e3ba
+PODFILE CHECKSUM: b3fcc91c01e20611f9ee5b0af596111dffc45856
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
