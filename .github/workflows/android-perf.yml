@@ -5,17 +5,13 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'lib/android/**'
-      - 'lib/common/**'
-      - 'resources/keyword_files/android/**'
       - '.github/workflows/android-perf.yml'
+      - 'demo/android/Activity/**/build.gradle'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - 'lib/android/**'
-      - 'lib/common/**'
-      - 'resources/keyword_files/android/**'
       - '.github/workflows/android-perf.yml'
+      - 'demo/android/Activity/**/build.gradle'
 
 defaults:
   run:
@@ -48,7 +44,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '11'
-        distribution: 'adopt'
+        distribution: 'temurin'
 
     - name: Copy test_resources
       run: ./copy_test_resources.sh
