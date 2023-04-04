@@ -1,4 +1,4 @@
-name: Unity
+name: Unity Codestyle
 
 on:
   workflow_dispatch:
