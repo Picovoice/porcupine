@@ -15,27 +15,21 @@ Porcupine is:
 
 To learn more about Porcupine, see the [product](https://picovoice.ai/products/porcupine/), [documentation](https://picovoice.ai/docs/), and [GitHub](https://github.com/Picovoice/porcupine/) pages.
 
-### Custom wake words
-
-Porcupine includes several built-in keywords, which are stored as `.ppn` files. To train custom PPN files, see the [Picovoice Console](https://console.picovoice.ai/).
-
-Unlike the built-in keywords, custom PPN files generated with the Picovoice Console carry restrictions including (but not limited to): training allowance, time limits, available platforms, and commercial usage.
-
 ## Compatibility
 
-[Porcupine unity package](porcupine-2.1.3.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
+[Porcupine unity package](porcupine-2.2.0.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
 
-- Android 4.4+ (API 19+) (ARM only)
-- iOS 9.0+
+- Android 5.0+ (API 21+) (ARM only)
+- iOS 11.0+
 - Windows (x86_64)
 - macOS (x86_64)
 - Linux (x86_64)
 
-For running Porcupine on **macOS M1 (arm64)**, use the [Apple Silicon](porcupine-2.1.3-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
+For running Porcupine on **macOS M1 (arm64)**, use the [Apple Silicon](porcupine-2.2.0-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
 
 ## Installation
 
-The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.0.0.unitypackage](porcupine-2.1.3.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Porcupine Unity SDK is to import [porcupine-2.2.0.unitypackage](porcupine-2.2.0.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 **NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from GitHub. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
 
@@ -49,7 +43,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 To build the package from source, first you have to clone the repo with submodules:
 ```console
 git clone --recurse-submodules git@github.com:Picovoice/porcupine.git
-# or 
+# or
 git clone --recurse-submodules https://github.com/Picovoice/porcupine.git
 ```
 
@@ -105,9 +99,9 @@ static constructor and provide the paths to the `.ppn` file(s).
 string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 List<string> keywordPaths = new List<string>(){ "/path/to/keyword.ppn" };
-PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths( 
+PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths(
                                         accessKey,
-                                        keywordPaths, 
+                                        keywordPaths,
                                         OnWakeWordDetected);
 ```
 
@@ -118,8 +112,8 @@ These optional parameters can be passed in like so:
 string accessKey = "${ACCESS_KEY}"; // // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 List<string> keywordPaths = new List<string>()
-{ 
-    "/path/to/keyword/file/one.ppn", 
+{
+    "/path/to/keyword/file/one.ppn",
     "/path/to/keyword/file/two.ppn"
 };
 string modelPath = "path/to/model/file.pv";
@@ -164,7 +158,7 @@ Unity package to capture frames of audio and automatically pass it to the wake w
 
 [Porcupine](Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline.
 
-To create an instance of `Porcupine`, use the `.Create` static constructor. You can pass a list of built-in keywords as its `keywords` argument or a list or paths to custom keywords using its `keywordPaths` argument. 
+To create an instance of `Porcupine`, use the `.Create` static constructor. You can pass a list of built-in keywords as its `keywords` argument or a list or paths to custom keywords using its `keywordPaths` argument.
 
 ```csharp
 using Pv.Unity;
@@ -175,8 +169,8 @@ try
 {
     List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>(){ Porcupine.BuiltInKeyword.PORCUPINE, Porcupine.BuiltInKeyword.PICOVOICE };
     Porcupine _porcupine = Porcupine.FromBuiltInKeywords(accessKey: accessKey, keywords: keywords);
-} 
-catch (Exception ex) 
+}
+catch (Exception ex)
 {
     // handle porcupine init error
 }
@@ -187,10 +181,10 @@ To search for a keyword in audio, you must pass frames of audio to Porcupine usi
 ```csharp
 short[] frame = getAudioFrame();
 
-try 
+try
 {
     int keywordIndex = _porcupine.Process(frame);
-    if (keywordIndex >= 0) 
+    if (keywordIndex >= 0)
     {
         // detection made!
     }
@@ -198,7 +192,7 @@ try
 catch (Exception ex)
 {
     Debug.LogError(ex.ToString());
-}  
+}
 ```
 
 For process to work correctly, the audio data must be in the audio format required by Picovoice.

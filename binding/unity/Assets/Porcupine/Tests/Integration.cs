@@ -23,29 +23,29 @@ namespace Tests
     [Serializable]
     public class TestData
     {
-      public Tests tests;
+        public Tests tests;
     }
 
     [Serializable]
     public class Tests
     {
-      public SingleKeywordTest[] singleKeyword;
-      public MultipleKeywordTest[] multipleKeyword;
+        public SingleKeywordTest[] singleKeyword;
+        public MultipleKeywordTest[] multipleKeyword;
     }
 
     [Serializable]
     public class SingleKeywordTest
     {
-      public string language;
-      public string wakeword;
+        public string language;
+        public string wakeword;
     }
 
     [Serializable]
     public class MultipleKeywordTest
     {
-      public string language;
-      public string[] wakewords;
-      public int[] groundTruth;
+        public string language;
+        public string[] wakewords;
+        public int[] groundTruth;
     }
 
     public class Integration
@@ -115,7 +115,8 @@ namespace Tests
 #endif
         }
 
-        private static TestData LoadJsonTestData() {
+        private static TestData LoadJsonTestData()
+        {
             string dataAsJson = File.ReadAllText(ExtractResource(Path.Combine(Application.streamingAssetsPath, "test/test_data.json")));
             return JsonUtility.FromJson<TestData>(dataAsJson);
         }

@@ -1,4 +1,15 @@
-﻿using System;
+﻿//
+// Copyright 2021-2023 Picovoice Inc.
+//
+// You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+// file accompanying this source.
+//
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations under the License.
+//
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +17,8 @@ using UnityEngine.UI;
 
 using Pv.Unity;
 
-public class PorcupineDemo : MonoBehaviour {
+public class PorcupineDemo : MonoBehaviour
+{
 
     private const string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
@@ -22,10 +34,10 @@ public class PorcupineDemo : MonoBehaviour {
     PorcupineManager _porcupineManager;
     private bool isError = false;
 
-    void Start() 
+    void Start()
     {
         _startButton = gameObject.GetComponentInChildren<Button>();
-        _startButton.onClick.AddListener(ToggleProcessing);        
+        _startButton.onClick.AddListener(ToggleProcessing);
         _outputImg = gameObject.GetComponentInChildren<RawImage>();
         _textField = gameObject.GetComponentInChildren<Text>();
         _keywords.Remove(Porcupine.BuiltInKeyword.HEY_GOOGLE);
@@ -33,7 +45,7 @@ public class PorcupineDemo : MonoBehaviour {
 
         try
         {
-            _porcupineManager = PorcupineManager.FromBuiltInKeywords(ACCESS_KEY, _keywords, OnWakeWordDetected, processErrorCallback: ErrorCallback);            
+            _porcupineManager = PorcupineManager.FromBuiltInKeywords(ACCESS_KEY, _keywords, OnWakeWordDetected, processErrorCallback: ErrorCallback);
         }
         catch (PorcupineInvalidArgumentException ex)
         {
@@ -61,13 +73,13 @@ public class PorcupineDemo : MonoBehaviour {
         }
     }
 
-    private void ToggleProcessing() 
-    {		
+    private void ToggleProcessing()
+    {
         if (!_isProcessing)
         {
             StartProcessing();
         }
-        else 
+        else
         {
             StopProcessing();
         }
@@ -80,9 +92,10 @@ public class PorcupineDemo : MonoBehaviour {
         _isProcessing = true;
     }
 
-    private void StopProcessing() 
+    private void StopProcessing()
     {
-        if (_porcupineManager == null) {
+        if (_porcupineManager == null)
+        {
             return;
         }
 
@@ -121,7 +134,8 @@ public class PorcupineDemo : MonoBehaviour {
         StopProcessing();
     }
 
-    void Update () {
+    void Update()
+    {
         if (isError)
         {
             return;
@@ -141,7 +155,7 @@ public class PorcupineDemo : MonoBehaviour {
         }
     }
 
-    void OnApplicationQuit() 
+    void OnApplicationQuit()
     {
         if (_porcupineManager != null)
         {
