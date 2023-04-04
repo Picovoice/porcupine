@@ -1,5 +1,5 @@
 ﻿//
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -67,10 +67,15 @@ namespace Pv.Unity
         }
 
 #if !UNITY_EDITOR && UNITY_IOS
+
         private const string LIBRARY_PATH = "__Internal";
+
 #else
+
         private const string LIBRARY_PATH = "pv_porcupine";
+
 #endif
+
         private IntPtr _libraryPointer = IntPtr.Zero;
 
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -90,14 +95,14 @@ namespace Pv.Unity
 
         [DllImport(LIBRARY_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern int pv_porcupine_frame_length();
-        
+
         private static readonly string _platform;
         private static readonly Dictionary<BuiltInKeyword, string> _builtInKeywordPaths;
         public static readonly string DEFAULT_MODEL_PATH;
 
         static Porcupine()
         {
-            _platform = GetPlatform();            
+            _platform = GetPlatform();
             _builtInKeywordPaths = GetBuiltInKeywordPaths(_platform);
             DEFAULT_MODEL_PATH = GetDefaultModelPath();
         }
@@ -194,7 +199,7 @@ namespace Pv.Unity
 
 #if !UNITY_EDITOR && UNITY_ANDROID
 
-            List<String> keywordList = keywordPaths.ToList();
+            List<String> keywordList = keywordPaths.ToList();        
             for (int i = 0; i < keywordList.Count(); i++)
             {
                 if (!File.Exists(keywordList[i]))
@@ -363,7 +368,7 @@ namespace Pv.Unity
             Dispose();
         }
 
-        private static string GetPlatform() 
+        private static string GetPlatform()
         {
             switch (Application.platform)
             {
@@ -382,21 +387,29 @@ namespace Pv.Unity
                     return "android";
                 default:
                     throw new PorcupineRuntimeException(string.Format("Platform '{0}' not supported by Porcupine Unity binding", Application.platform));
-            } 
+            }
         }
 
         private static string GetDefaultModelPath()
         {
+
 #if !UNITY_EDITOR && UNITY_ANDROID
+
             return ExtractResource(Path.Combine(Application.streamingAssetsPath, "porcupine_params.pv"));
+
 #else
+
             return Path.Combine(Application.streamingAssetsPath, "porcupine_params.pv");
+
 #endif
+
         }
 
         private static Dictionary<BuiltInKeyword, string> GetBuiltInKeywordPaths(string platform)
         {
+
 #if !UNITY_EDITOR && UNITY_ANDROID
+
             string keywordFilesDir = Path.Combine(Path.Combine(Application.persistentDataPath, "keyword_files"), platform);
             if (!Directory.Exists(keywordFilesDir))
             {
@@ -410,8 +423,11 @@ namespace Pv.Unity
                     assetDir,
                     string.Format("{0}_{1}.ppn", keyword.Replace("_", " ").ToLower(), platform)));
             }            
+
 #else
+
             string keywordFilesDir = Path.Combine(Application.streamingAssetsPath, "keyword_files", platform);
+
 #endif
 
             Dictionary<BuiltInKeyword, string> keywordPaths = new Dictionary<BuiltInKeyword, string>();
@@ -434,6 +450,7 @@ namespace Pv.Unity
         }
 
 #if !UNITY_EDITOR && UNITY_ANDROID
+
         public static string ExtractResource(string filePath)
         {
             if (!filePath.StartsWith(Application.streamingAssetsPath))
