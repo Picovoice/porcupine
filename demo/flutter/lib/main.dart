@@ -285,7 +285,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   showPicker(BuildContext context) {
     Picker picker = Picker(
         adapter:
-            PickerDataAdapter<String>(pickerdata: _keywordMap.keys.toList()),
+            PickerDataAdapter<String>(pickerData: _keywordMap.keys.toList()),
         changeToFirst: true,
         textAlign: TextAlign.left,
         columnPadding: const EdgeInsets.all(8.0),
