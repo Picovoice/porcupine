@@ -2,7 +2,7 @@ import * as path from "path";
 import { getPlatform } from "../src/platforms";
 
 const ROOT_DIR = path.join(__dirname, "../../..");
-const TEST_DATA_JSON = require(path.join(ROOT_DIR, 'resources/test/test_data.json'));
+const TEST_DATA_JSON = require(path.join(ROOT_DIR, 'resources/.test/test_data.json'));
 
 function appendLanguage(
   s: string,
