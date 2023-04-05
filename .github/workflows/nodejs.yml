@@ -5,6 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/nodejs.yml'
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'
       - 'lib/node/**'
@@ -17,10 +18,10 @@ on:
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
       - 'resources/test/**'
-      - '.github/workflows/nodejs.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
+      - '.github/workflows/nodejs.yml'
       - 'binding/nodejs/**'
       - '!binding/nodejs/README.md'
       - 'lib/node/**'
@@ -33,7 +34,6 @@ on:
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
       - 'resources/test/**'
-      - '.github/workflows/nodejs.yml'
 
 defaults:
   run:
@@ -49,10 +49,10 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -73,7 +73,7 @@ jobs:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Pre-build dependencies
       run: npm install --global yarn
