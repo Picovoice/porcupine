@@ -1,34 +1,38 @@
-if [ ! -d "./porcupine-activity-demo-app/src/androidTest/assets/test_resources/audio_samples" ]
+LIB_DIR="../../../lib"
+RESOURCE_DIR="../../../resources"
+ASSETS_DIR="./porcupine-activity-demo-app/src/androidTest/assets/test_resources"
+
+if [ ! -d "${ASSETS_DIR}/audio_samples" ]
 then
     echo "Creating test audio samples directory..."
-    mkdir -p ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/audio_samples
+    mkdir -p ${ASSETS_DIR}/audio_samples
 fi
 
 echo "Copying test audio samples..."
-cp ../../../resources/audio_samples/*.wav ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/audio_samples
+cp ${RESOURCE_DIR}/audio_samples/*.wav ${ASSETS_DIR}/audio_samples
 
 echo "Copying test keyword files..."
-mkdir -p ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/en
-cp ../../../resources/keyword_files/android/*.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/en/
-cp ../../../resources/keyword_files/android/hey\ barista_android.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/en/hey_barista_android.ppn
-cp ../../../resources/keyword_files/android/pico\ clock_android.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/en/pico_clock_android.ppn
-cp ../../../resources/keyword_files/linux/alexa_linux.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/en/alexa_linux.ppn
+mkdir -p ${ASSETS_DIR}/keyword_files/en
+cp ${RESOURCE_DIR}/keyword_files/android/*.ppn ${ASSETS_DIR}/keyword_files/en/
+cp ${RESOURCE_DIR}/keyword_files/android/hey\ barista_android.ppn ${ASSETS_DIR}/keyword_files/en/hey_barista_android.ppn
+cp ${RESOURCE_DIR}/keyword_files/android/pico\ clock_android.ppn ${ASSETS_DIR}/keyword_files/en/pico_clock_android.ppn
+cp ${RESOURCE_DIR}/keyword_files/linux/alexa_linux.ppn ${ASSETS_DIR}/keyword_files/en/alexa_linux.ppn
 
-for d in ../../../resources/keyword_files_*; do
+for d in ${RESOURCE_DIR}/keyword_files_*; do
     LANGUAGE=$(echo "${d}" | cut -d'_' -f3)
 
-    mkdir -p ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/${LANGUAGE}
-    cp ../../../resources/keyword_files_${LANGUAGE}/android/*.ppn ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/${LANGUAGE}/
+    mkdir -p ${ASSETS_DIR}/keyword_files/${LANGUAGE}
+    cp ${RESOURCE_DIR}/keyword_files_${LANGUAGE}/android/*.ppn ${ASSETS_DIR}/keyword_files/${LANGUAGE}/
 done
 
-if [ ! -d "./porcupine-activity-demo-app/src/androidTest/assets/test_resources/model_files" ]
+if [ ! -d "${ASSETS_DIR}/model_files" ]
 then
     echo "Creating test model files directory..."
-    mkdir -p ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/model_files
+    mkdir -p ${ASSETS_DIR}/model_files
 fi
 
 echo "Copying test model files..."
-cp ../../../lib/common/*.pv ./porcupine-activity-demo-app/src/androidTest/assets/test_resources/model_files
+cp ${LIB_DIR}/common/*.pv ${ASSETS_DIR}/model_files
 
 echo "Copying test data file..."
-cp ../../../resources/test/test_data.json ./porcupine-activity-demo-app/src/androidTest/assets/test_resources
+cp ${RESOURCE_DIR}/.test/test_data.json ${ASSETS_DIR}
