@@ -68,7 +68,7 @@ public class PorcupineTestUtils {
 
     public static JsonObject loadTestData() throws IOException {
         final Path testDataPath = Paths.get(System.getProperty("user.dir"))
-                .resolve("../../resources/test")
+                .resolve("../../resources/.test")
                 .resolve("test_data.json");
         final String testDataContent = new String(Files.readAllBytes(testDataPath));
         return JsonParser.parseString(testDataContent).getAsJsonObject();
