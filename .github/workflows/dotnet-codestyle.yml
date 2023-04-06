@@ -5,12 +5,16 @@ on:
   push:
     branches: [ master ]
     paths:
-      - '**/*.cs'
+      - 'binding/dotnet/**/*.cs'
+      - 'demo/dotnet/**/*.cs'
+      - 'demo/dotnet-vui/**/*.cs'
       - '.github/workflows/dotnet-codestyle.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '**/*.cs'
+      - 'binding/dotnet/**/*.cs'
+      - 'demo/dotnet/**/*.cs'
+      - 'demo/dotnet-vui/**/*.cs'
       - '.github/workflows/dotnet-codestyle.yml'
 
 jobs:

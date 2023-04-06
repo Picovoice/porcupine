@@ -1,5 +1,5 @@
 ﻿//
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -15,7 +15,8 @@ using System;
 using UnityEngine;
 
 
-namespace Pv.Unity {
+namespace Pv.Unity
+{
 
     public class PorcupineManager
     {
@@ -29,17 +30,17 @@ namespace Pv.Unity {
         /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)</param>
         /// <param name="keywords">
-        /// List of built-in keywords (phrases) to detect. The list of available (default) keywords can be retrieved 
+        /// List of built-in keywords (phrases) to detect. The list of available (default) keywords can be retrieved
         /// using `PorcupineManager.BUILT_IN_KEYWORDS`.
         /// </param>
         /// <param name="wakeWordCallback">A callback that is triggered when one of the given keywords has been detected by Porcupine.</param>
-        /// <param name="modelPath">(Optional) Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>        
+        /// <param name="modelPath">(Optional) Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
         /// <param name="sensitivities">
-        /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
+        /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
         /// </param>
         /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
-        /// <returns>An instance of PorcupineManager.</returns>                             
+        /// <returns>An instance of PorcupineManager.</returns>
         public static PorcupineManager FromBuiltInKeywords(string accessKey, IEnumerable<Porcupine.BuiltInKeyword> keywords, Action<int> wakeWordCallback,
                                                     string modelPath = null, IEnumerable<float> sensitivities = null, Action<PorcupineException> processErrorCallback = null)
         {
@@ -53,13 +54,13 @@ namespace Pv.Unity {
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)</param>
         /// <param name="keywordPaths">List of absolute paths to keyword model files (.ppn).</param>
         /// <param name="wakeWordCallback">A callback that is triggered when one of the given keywords has been detected by Porcupine.</param>
-        /// <param name="modelPath">(Optional) Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>        
+        /// <param name="modelPath">(Optional) Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
         /// <param name="sensitivities">
-        /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
+        /// (Optional) Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
         /// </param>
         /// <param name="processErrorCallback">(Optional) Callback that triggers is the engine experiences a problem while processing audio.</param>
-        /// <returns>An instance of PorcupineManager.</returns>                             
+        /// <returns>An instance of PorcupineManager.</returns>
         public static PorcupineManager FromKeywordPaths(string accessKey, IEnumerable<string> keywordPaths, Action<int> wakeWordCallback,
                                                     string modelPath = null, IEnumerable<float> sensitivities = null, Action<PorcupineException> processErrorCallback = null)
         {
@@ -68,9 +69,9 @@ namespace Pv.Unity {
         }
 
         // private constructor
-        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<PorcupineException> processErrorCallback = null) 
+        private PorcupineManager(Porcupine porcupine, Action<int> wakeWordCallback, Action<PorcupineException> processErrorCallback = null)
         {
-            _porcupine = porcupine;            
+            _porcupine = porcupine;
             _wakeWordCallback = wakeWordCallback;
             _processErrorCallback = processErrorCallback;
 
@@ -80,10 +81,10 @@ namespace Pv.Unity {
 
         /// <summary>
         /// Action to catch audio frames as voice processor produces them
-        /// </summary>        
+        /// </summary>
         /// <param name="pcm">Frame of pcm audio</param>
         private void OnFrameCaptured(short[] pcm)
-        {            
+        {
             try
             {
                 int keywordIndex = _porcupine.Process(pcm);
@@ -123,7 +124,7 @@ namespace Pv.Unity {
         /// </summary>
         public void Start()
         {
-            if (_porcupine == null || _voiceProcessor == null) 
+            if (_porcupine == null || _voiceProcessor == null)
             {
                 throw new ObjectDisposedException("Porcupine", "Cannot start PorcupineManager - resources have already been released");
             }
@@ -147,18 +148,19 @@ namespace Pv.Unity {
         /// </summary>
         public void Delete()
         {
-            if(_voiceProcessor != null)
-            {                
+            if (_voiceProcessor != null)
+            {
                 if (_voiceProcessor.IsRecording)
-                {                    
-                    _voiceProcessor.StopRecording();                    
+                {
+                    _voiceProcessor.StopRecording();
                 }
 
                 _voiceProcessor.OnFrameCaptured -= OnFrameCaptured;
                 _voiceProcessor = null;
             }
 
-            if (_porcupine != null) {
+            if (_porcupine != null)
+            {
                 _porcupine.Dispose();
                 _porcupine = null;
             }

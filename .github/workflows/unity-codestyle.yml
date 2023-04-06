@@ -1,0 +1,29 @@
+name: Unity Codestyle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/unity/**/*.cs'
+      - 'demo/unity/**/*.cs'
+      - '.github/workflows/unity-codestyle.yml'
+  pull_request:
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    paths:
+      - 'binding/unity/**/*.cs'
+      - 'demo/unity/**/*.cs'
+      - '.github/workflows/unity-codestyle.yml'
+
+jobs:
+  check-unity-codestyle:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run Binding Codestyle
+      run: dotnet format whitespace binding/unity/Assets/Porcupine --folder --verify-no-changes
+
+    - name: Run Demo Codestyle
+      run: dotnet format whitespace demo/unity --folder --verify-no-changes
