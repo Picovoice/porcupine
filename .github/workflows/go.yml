@@ -14,6 +14,7 @@ on:
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
+      - 'resources/.test/**'
       - 'resources/audio_samples/**'
       - 'resources/keyword_files*/beaglebone/**'
       - 'resources/keyword_files*/jetson/**'
@@ -21,7 +22,6 @@ on:
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
-      - 'resources/test/**'
       - '.github/workflows/go.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
@@ -59,10 +59,10 @@ jobs:
         go: [ '1.16', '1.17', '1.18' ]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup go
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
 
@@ -86,7 +86,7 @@ jobs:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Pre-build dependencies
       run: ./copy.sh
