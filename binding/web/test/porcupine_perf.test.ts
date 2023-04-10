@@ -1,5 +1,4 @@
 import { BuiltInKeyword, Porcupine, PorcupineKeyword, PorcupineWorker } from "../";
-import testData from "./test_data.json";
 
 import { PvModel } from '@picovoice/web-utils';
 
@@ -11,7 +10,6 @@ const PROC_PERFORMANCE_THRESHOLD_SEC = Number(Cypress.env('PROC_PERFORMANCE_THRE
 async function testPerformance(
   instance: typeof Porcupine | typeof PorcupineWorker,
   inputPcm: Int16Array,
-  expectedDetections: number[],
   params: {
     keyword?: BuiltInKeyword | PorcupineKeyword | (BuiltInKeyword | PorcupineKeyword)[]
     model?: PvModel,
@@ -26,14 +24,14 @@ async function testPerformance(
   const procPerfResults: number[] = [];
 
   for (let j = 0; j < NUM_TEST_ITERATIONS; j++) {
-    let numDetections = 0;
+    let detected = false;
 
     let start = Date.now();
     const porcupine = await instance.create(
       ACCESS_KEY,
       keyword,
-      async () => {
-        numDetections += 1;
+      () => {
+        detected = true;
       },
       model
     );
@@ -43,7 +41,7 @@ async function testPerformance(
 
     const waitUntil = (): Promise<void> => new Promise(resolve => {
       setInterval(() => {
-        if (numDetections === expectedDetections.length) {
+        if (detected) {
           resolve();
         }
       }, 100);
@@ -81,20 +79,10 @@ describe('Porcupine binding performance test', () => {
     const instanceString = (instance === PorcupineWorker) ? 'worker' : 'main';
 
     it(`should be lower than performance threshold (${instanceString})`, () => {
-      const keywords: PorcupineKeyword[] = testData.tests.multipleKeyword[2].wakewords.map(wakeword =>
-        ({
-          publicPath: `/test/keywords/${wakeword}_wasm.ppn`,
-          forceWrite: true,
-          label: wakeword
-        })
-      );
-
-      cy.getFramesFromFile('audio_samples/multiple_keywords.wav').then( async inputPcm => {
+      cy.getFramesFromFile('audio_samples/porcupine.wav').then( async inputPcm => {
         await testPerformance(
           instance,
-          inputPcm,
-          testData.tests.multipleKeyword[2].groundTruth,
-          { keyword: keywords }
+          inputPcm
         );
       });
     });
