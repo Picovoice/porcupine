@@ -49,7 +49,7 @@ try {
   fs.readdirSync(sourceDirectory).forEach(folder => {
     if (folder.includes("keyword_files")) {
       fs.readdirSync(join(sourceDirectory, folder, 'wasm')).forEach(file => {
-        fs.copyFileSync(join(sourceDirectory, folder, 'wasm', file), join(testDirectory, 'keywords', file));
+        fs.copyFileSync(join(sourceDirectory, folder, 'wasm', file), join(testDirectory, 'keywords', file.replace("ż", "z")));
       })
     }
   });
