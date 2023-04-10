@@ -26,10 +26,9 @@ async function testPerformance(
   const procPerfResults: number[] = [];
 
   for (let j = 0; j < NUM_TEST_ITERATIONS; j++) {
-    let start = Date.now();
-
     let numDetections = 0;
 
+    let start = Date.now();
     const porcupine = await instance.create(
       ACCESS_KEY,
       keyword,
