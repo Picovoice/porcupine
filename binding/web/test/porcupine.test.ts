@@ -73,16 +73,16 @@ const runProcTest = async (
   const detections: number[] = [];
 
   const runProcess = () => new Promise<void>(async (resolve, reject) => {
-    let numFrames = 0;
-    let numProcessed = 0;
+    let numDetections = 0;
 
     const porcupine = await instance.create(
       accessKey,
       keyword,
       async porcupineDetection => {
+        numDetections += 1;
         detections.push(porcupineDetection.index);
-        numProcessed += 1;
-        if (numFrames === numProcessed) {
+        if (numDetections === expectedDetections.length) {
+          resolve();
           if (porcupine instanceof PorcupineWorker) {
             porcupine.terminate();
           } else {
@@ -98,7 +98,6 @@ const runProcTest = async (
       }
     );
 
-    numFrames = Math.round(inputPcm.length / porcupine.frameLength) - 1;
     for (let i = 0; i < (inputPcm.length - porcupine.frameLength + 1); i += porcupine.frameLength) {
       await porcupine.process(inputPcm.slice(i, i + porcupine.frameLength));
     }
@@ -177,14 +176,18 @@ describe("Porcupine Binding", function () {
     for (const testParam of testData.tests.singleKeyword) {
       it(`should be able to process single keyword (${testParam.language}) (${instanceString})`, () => {
         try {
-          cy.getFramesFromFile(`audio_samples/${testParam.wakeword}.wav`).then( async pcm => {
+          cy.getFramesFromFile(`audio_samples/${testParam.wakeword.replace(" ", "_")}.wav`).then( async pcm => {
             const suffix = (testParam.language === 'en') ? '' : `_${testParam.language}`;
             await runProcTest(
               instance,
               pcm,
               [0],
               {
-                keyword: { publicPath: `/test/keywords/${testParam.wakeword}_wasm.ppn`, forceWrite: true, label: testParam.wakeword },
+                keyword: {
+                  publicPath: `/test/keywords/${encodeURIComponent(testParam.wakeword)}_wasm.ppn`,
+                  forceWrite: true,
+                  label: testParam.wakeword
+                },
                 model: { publicPath: `/test/porcupine_params${suffix}.pv`, forceWrite: true }
               });
           });
@@ -200,7 +203,11 @@ describe("Porcupine Binding", function () {
           const suffix = (testParam.language === 'en') ? '' : `_${testParam.language}`;
           cy.getFramesFromFile(`audio_samples/multiple_keywords${suffix}.wav`).then( async pcm => {
             const keywords: PorcupineKeyword[] = testParam.wakewords.map(wakeword =>
-              ({ publicPath: `/test/keywords/${wakeword}_wasm.ppn`, forceWrite: true, label: wakeword })
+              ({
+                publicPath: `/test/keywords/${encodeURIComponent(wakeword.replace("ż", "z"))}_wasm.ppn`,
+                forceWrite: true,
+                label: wakeword
+              })
             );
 
             await runProcTest(

@@ -1,4 +1,7 @@
-import { BuiltInKeyword, Porcupine, PorcupineWorker } from "../";
+import { BuiltInKeyword, Porcupine, PorcupineKeyword, PorcupineWorker } from "../";
+import testData from "./test_data.json";
+
+import { PvModel } from '@picovoice/web-utils';
 
 const ACCESS_KEY = Cypress.env('ACCESS_KEY');
 const NUM_TEST_ITERATIONS = Number(Cypress.env('NUM_TEST_ITERATIONS'));
@@ -7,31 +10,33 @@ const PROC_PERFORMANCE_THRESHOLD_SEC = Number(Cypress.env('PROC_PERFORMANCE_THRE
 
 async function testPerformance(
   instance: typeof Porcupine | typeof PorcupineWorker,
-  inputPcm: Int16Array
+  inputPcm: Int16Array,
+  expectedDetections: number[],
+  params: {
+    keyword?: BuiltInKeyword | PorcupineKeyword | (BuiltInKeyword | PorcupineKeyword)[]
+    model?: PvModel,
+  } = {}
 ) {
+  const {
+    keyword = BuiltInKeyword.Porcupine,
+    model = { publicPath: '/test/porcupine_params.pv', forceWrite: true }
+  } = params;
+
   const initPerfResults: number[] = [];
   const procPerfResults: number[] = [];
 
   for (let j = 0; j < NUM_TEST_ITERATIONS; j++) {
     let start = Date.now();
 
-    let numFrames = 0;
-    let numProcessed = 0;
+    let numDetections = 0;
 
     const porcupine = await instance.create(
       ACCESS_KEY,
-      BuiltInKeyword.Porcupine,
+      keyword,
       async () => {
-        numProcessed += 1;
-        if (numFrames === numProcessed) {
-          if (porcupine instanceof PorcupineWorker) {
-            porcupine.terminate();
-          } else {
-            await porcupine.release();
-          }
-        }
+        numDetections += 1;
       },
-      { publicPath: '/test/porcupine_params.pv', forceWrite: true }
+      model
     );
 
     let end = Date.now();
@@ -39,14 +44,13 @@ async function testPerformance(
 
     const waitUntil = (): Promise<void> => new Promise(resolve => {
       setInterval(() => {
-        if (numFrames === numProcessed) {
+        if (numDetections === expectedDetections.length) {
           resolve();
         }
       }, 100);
     });
 
     start = Date.now();
-    numFrames = Math.round(inputPcm.length / porcupine.frameLength) - 1;
     for (let i = 0; i < (inputPcm.length - porcupine.frameLength + 1); i += porcupine.frameLength) {
       await porcupine.process(inputPcm.slice(i, i + porcupine.frameLength));
     }
@@ -78,8 +82,21 @@ describe('Porcupine binding performance test', () => {
     const instanceString = (instance === PorcupineWorker) ? 'worker' : 'main';
 
     it(`should be lower than performance threshold (${instanceString})`, () => {
+      const keywords: PorcupineKeyword[] = testData.tests.multipleKeyword[2].wakewords.map(wakeword =>
+        ({
+          publicPath: `/test/keywords/${wakeword}_wasm.ppn`,
+          forceWrite: true,
+          label: wakeword
+        })
+      );
+
       cy.getFramesFromFile('audio_samples/multiple_keywords.wav').then( async inputPcm => {
-        await testPerformance(instance, inputPcm);
+        await testPerformance(
+          instance,
+          inputPcm,
+          testData.tests.multipleKeyword[2].groundTruth,
+          { keyword: keywords }
+        );
       });
     });
   }
