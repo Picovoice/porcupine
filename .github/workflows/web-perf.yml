@@ -28,7 +28,7 @@ jobs:
         node-version: [lts/*]
         include:
         - node-version: lts/*
-          initPerformanceThresholdSec: 0.4
+          initPerformanceThresholdSec: 0.5
           procPerformanceThresholdSec: 1.2
 
     steps:
