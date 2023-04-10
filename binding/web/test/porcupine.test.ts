@@ -7,6 +7,11 @@ import { PvModel } from '@picovoice/web-utils';
 
 const ACCESS_KEY: string = Cypress.env("ACCESS_KEY");
 
+
+function delay(time: number) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 const runInitTest = async (
   instance: typeof Porcupine | typeof PorcupineWorker,
   params: {
@@ -73,21 +78,13 @@ const runProcTest = async (
   const detections: number[] = [];
 
   const runProcess = () => new Promise<void>(async (resolve, reject) => {
-    let numDetections = 0;
-
     const porcupine = await instance.create(
       accessKey,
       keyword,
       async porcupineDetection => {
-        numDetections += 1;
         detections.push(porcupineDetection.index);
-        if (numDetections === expectedDetections.length) {
+        if (detections.length === expectedDetections.length) {
           resolve();
-          if (porcupine instanceof PorcupineWorker) {
-            porcupine.terminate();
-          } else {
-            await porcupine.release();
-          }
         }
       },
       model,
@@ -100,6 +97,14 @@ const runProcTest = async (
 
     for (let i = 0; i < (inputPcm.length - porcupine.frameLength + 1); i += porcupine.frameLength) {
       await porcupine.process(inputPcm.slice(i, i + porcupine.frameLength));
+    }
+
+    await delay(1000);
+
+    if (porcupine instanceof PorcupineWorker) {
+      porcupine.terminate();
+    } else {
+      await porcupine.release();
     }
   });
 
