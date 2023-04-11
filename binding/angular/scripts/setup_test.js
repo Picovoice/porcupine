@@ -22,7 +22,7 @@ const testDataSource = join(
   '..',
   '..',
   'resources',
-  'test',
+  '.test',
   'test_data.json'
 );
 
