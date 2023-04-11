@@ -13,7 +13,9 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "types": ["node"]
   },
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "module.d.ts"],
+  "exclude": ["node_modules"]
 }

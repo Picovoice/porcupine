@@ -362,9 +362,9 @@ export class Porcupine {
    * Releases resources acquired by WebAssembly module.
    */
   public async release(): Promise<void> {
-    await this._pvPorcupineDelete(this._objectAddress);
     await this._pvFree(this._inputBufferAddress);
     await this._pvFree(this._keywordIndexAddress);
+    await this._pvPorcupineDelete(this._objectAddress);
     delete this._wasmMemory;
     this._wasmMemory = undefined;
   }
@@ -389,7 +389,7 @@ export class Porcupine {
   ): Promise<any> {
     // A WebAssembly page has a constant size of 64KiB. -> 1MiB ~= 16 pages
     // minimum memory requirements for init: 17 pages
-    const memory = new WebAssembly.Memory({ initial: 128 });
+    const memory = new WebAssembly.Memory({ initial: 256 });
 
     const memoryBufferUint8 = new Uint8Array(memory.buffer);
     const memoryBufferInt32 = new Int32Array(memory.buffer);

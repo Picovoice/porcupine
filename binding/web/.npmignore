@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 test
 lib
+keywords
+cypress
