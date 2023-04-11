@@ -30,7 +30,7 @@ export class PorcupineService implements OnDestroy {
 
   public isLoaded$: Subject<boolean> = new Subject<boolean>();
   public isListening$: Subject<boolean> = new Subject<boolean>();
-  public error$: Subject<string | null> = new Subject<string | null>();
+  public error$: Subject<Error | string | null> = new Subject<Error | string | null>();
 
   private porcupine: PorcupineWorker | null = null;
 
@@ -65,7 +65,7 @@ export class PorcupineService implements OnDestroy {
         this.error$.next(null);
       }
     } catch (error: any) {
-      this.error$.next(error.toString());
+      this.error$.next(error);
     }
   }
 
@@ -82,7 +82,7 @@ export class PorcupineService implements OnDestroy {
       this.isListening$.next(true);
       this.error$.next(null);
     } catch (error: any) {
-      this.error$.next(error.toString());
+      this.error$.next(error);
       this.isListening$.next(false);
     }
   }
@@ -100,7 +100,7 @@ export class PorcupineService implements OnDestroy {
       this.isListening$.next(false);
       this.error$.next(null);
     } catch (error: any) {
-      this.error$.next(error.toString());
+      this.error$.next(error);
       this.isListening$.next(true);
     }
   }

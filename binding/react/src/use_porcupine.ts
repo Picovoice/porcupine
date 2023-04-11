@@ -26,7 +26,7 @@ export const usePorcupine = (): {
   keywordDetection: PorcupineDetection | null,
   isLoaded: boolean,
   isListening: boolean,
-  error: string | null,
+  error: Error | string | null,
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -42,7 +42,7 @@ export const usePorcupine = (): {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Error | string | null>(null);
 
   const keywordDetectionCallback = useCallback((keyword: PorcupineDetection) => {
     setKeywordDetection(keyword);
@@ -76,7 +76,7 @@ export const usePorcupine = (): {
         setError(null);
       }
     } catch (e: any) {
-      setError(e.toString());
+      setError(e);
     }
   }, [keywordDetectionCallback, errorCallback]);
 
@@ -91,7 +91,7 @@ export const usePorcupine = (): {
       setIsListening(true);
       setError(null);
     } catch (e: any) {
-      setError(e.toString());
+      setError(e);
       setIsListening(false);
     }
   }, []);
@@ -107,7 +107,7 @@ export const usePorcupine = (): {
       setIsListening(false);
       setError(null);
     } catch (e: any) {
-      setError(e.toString());
+      setError(e);
       setIsListening(false);
     }
   }, []);

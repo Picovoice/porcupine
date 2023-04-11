@@ -56,7 +56,7 @@ describe('Porcupine binding', () => {
       )
     ).then(() => {
       expect(ppn.state.isLoaded).to.be.false;
-      expect(ppn.state.error).to.contain("Error response returned while fetching model from '/porcupine_params_failed.pv'");
+      expect(ppn.state.error?.toString).to.contain("Error response returned while fetching model from '/porcupine_params_failed.pv'");
     });
 
     cy.wrapFn(ppn.release);
@@ -73,7 +73,7 @@ describe('Porcupine binding', () => {
       )
     ).then(() => {
       expect(ppn.state.isLoaded).to.be.false;
-      expect(ppn.state.error).to.contain("Invalid AccessKey");
+      expect(ppn.state.error?.toString).to.contain("Invalid AccessKey");
     });
 
     cy.wrapFn(ppn.release);

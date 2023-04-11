@@ -72,7 +72,7 @@ describe('Porcupine Binding', () => {
     });
 
     porcupineService.error$.subscribe(error => {
-      expect(error).to.contain("Error response returned while fetching model from './porcupine_params_failed.pv'");
+      expect(error?.toString()).to.contain("Error response returned while fetching model from './porcupine_params_failed.pv'");
       done();
     });
   });
@@ -93,7 +93,7 @@ describe('Porcupine Binding', () => {
     });
 
     porcupineService.error$.subscribe(error => {
-      expect(error).to.contain("Invalid AccessKey");
+      expect(error?.toString()).to.contain("Invalid AccessKey");
       done();
     });
   });

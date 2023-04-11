@@ -54,7 +54,7 @@ export type PorcupineVue = {
     keywordDetection: PorcupineDetection | null,
     isLoaded: boolean,
     isListening: boolean,
-    error: string | null,
+    error: Error | string | null,
   },
   init: (
     accessKey: string,
@@ -74,7 +74,7 @@ export function usePorcupine(): PorcupineVue {
     keywordDetection: PorcupineDetection | null,
     isLoaded: boolean,
     isListening: boolean,
-    error: string | null,
+    error: Error | string | null,
   }>({
     keywordDetection: null,
     isLoaded: false,
@@ -87,7 +87,7 @@ export function usePorcupine(): PorcupineVue {
   };
 
   const errorCallback = (e: any): void => {
-    state.error = e.toString();
+    state.error = e;
   };
 
   const init = async (
@@ -113,7 +113,7 @@ export function usePorcupine(): PorcupineVue {
         state.error = null;
       }
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
     }
   };
 
@@ -128,7 +128,7 @@ export function usePorcupine(): PorcupineVue {
       state.isListening = true;
       state.error = null;
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
       state.isListening = false;
     }
   };
@@ -144,7 +144,7 @@ export function usePorcupine(): PorcupineVue {
       state.isListening = false;
       state.error = null;
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
       state.isListening = false;
     }
   };
