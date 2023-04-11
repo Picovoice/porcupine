@@ -47,7 +47,7 @@ jobs:
       run: npm install yarn
 
     - name: Build Porcupine
-      run: yarn install && yarn copywasm && yarm copyppn && yarn build
+      run: yarn install && yarn copywasm && yarn copyppn && yarn build
       working-directory: binding/web
 
     - name: Install dependencies
