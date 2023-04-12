@@ -14,6 +14,7 @@ on:
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
+      - 'resources/.test/**'
       - 'resources/audio_samples/**'
       - 'resources/keyword_files*/beaglebone/**'
       - 'resources/keyword_files*/jetson/**'
@@ -21,7 +22,6 @@ on:
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
-      - 'resources/.test/**'
       - '.github/workflows/dotnet.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
@@ -35,6 +35,7 @@ on:
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
+      - 'resources/.test/**'
       - 'resources/audio_samples/**'
       - 'resources/keyword_files*/beaglebone/**'
       - 'resources/keyword_files*/jetson/**'
@@ -42,7 +43,6 @@ on:
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
-      - 'resources/.test/**'
       - '.github/workflows/dotnet.yml'
 
 defaults:
