@@ -7,7 +7,7 @@ This project contains .NET Core command line demos for processing real-time audi
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
-applications. 
+applications.
 
 Porcupine is:
 
@@ -18,12 +18,12 @@ Porcupine is:
 
 ## Requirements
 
-- .NET Core 3.1
+- .NET 6.0
 
 ## Compatibility
 
 - Linux (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Windows (x86_64)
 - Raspberry Pi:
   - 2
@@ -59,8 +59,8 @@ porcupine/demo/dotnet/PorcupineDemo
 
 ### File Demo
 
-The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
-Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
+The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data.
+Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel.
 The following processes a file looking for instances of the phrase "Picovoice":
 
 ```console
@@ -79,7 +79,7 @@ dotnet run -c FileDemo.Release -- --help
 To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-dotnet run -c FileDemo.Release -- \ 
+dotnet run -c FileDemo.Release -- \
 --input_audio_path ${AUDIO_PATH} \
 --access_key ${ACCESS_KEY} \
 --keywords grasshopper "hey siri"
@@ -89,7 +89,7 @@ To detect non-default keywords (e.g. models created using [Picovoice Console](ht
 use `keyword_paths` argument:
 
 ```console
-dotnet run -c FileDemo.Release -- \ 
+dotnet run -c FileDemo.Release -- \
 --input_audio_path ${AUDIO_PATH} \
 --access_key ${ACCESS_KEY} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
@@ -98,10 +98,10 @@ dotnet run -c FileDemo.Release -- \
 The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument:
 
 ```console
-dotnet run -c FileDemo.Release -- \ 
+dotnet run -c FileDemo.Release -- \
 --input_audio_path ${AUDIO_PATH} \
 --access_key ${ACCESS_KEY} \
---keywords grasshopper porcupine \ 
+--keywords grasshopper porcupine \
 --sensitivities 0.3 0.6
 ```
 
@@ -114,8 +114,8 @@ This demo opens an audio stream from a microphone and detects utterances of a gi
 microphone and detects occurrences of "Picovoice":
 
 ```console
-dotnet run -c MicDemo.Release -- \ 
---access_key ${ACCESS_KEY} \ 
+dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keywords picovoice
 ```
 
@@ -129,16 +129,16 @@ dotnet run -c MicDemo.Release -- --help
 To detect multiple phrases concurrently provide them as separate arguments. If the wake word is more than a single word, surround the argument in quotation marks:
 
 ```console
-dotnet run -c MicDemo.Release -- \ 
---access_key ${ACCESS_KEY} \ 
+dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keywords picovoice "hey siri"
 ```
 
 To detect custom keywords (e.g. models created using [Picovoice Console](https://console.picovoice.ai/)) use `keyword_paths` argument:
 
 ```console
-dotnet run -c MicDemo.Release -- \ 
---access_key ${ACCESS_KEY} \ 
+dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
 ```
 
@@ -154,22 +154,22 @@ It provides information about various audio input devices on the box. Here is an
 ```
 index: 0, device name: USB Audio Device
 index: 1, device name: MacBook Air Microphone
-``` 
+```
 
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device in the above example, you can invoke the demo application as below:
 
 ```console
-dotnet run -c MicDemo.Release -- \ 
---access_key ${ACCESS_KEY} \  
---keywords picovoice 
+dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
+--keywords picovoice
 --audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
 ```console
-dotnet run -c MicDemo.Release -- \ 
---access_key ${ACCESS_KEY} \ 
+dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keywords picovoice \
 --audio_device_index 0 \
 --output_path ./test.wav
