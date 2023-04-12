@@ -1742,10 +1742,10 @@ pv_porcupine_delete(handle);
 
 ### v2.2.0 - April 12th, 2023
 
-* Added language support for Arabic, Dutch, Hindi, Mandarin, Polish, Russian, Swedish and Vietnamese
-* Added support for .NET 7.0 and fixed support for .NET Standard 2.0
-* iOS minimum support moved to 11.0
-* Improved stability and performance
+- Added language support for Arabic, Dutch, Hindi, Mandarin, Polish, Russian, Swedish and Vietnamese
+- Added support for .NET 7.0 and fixed support for .NET Standard 2.0
+- iOS minimum support moved to 11.0
+- Improved stability and performance
 
 ### v2.1.0 - January 20th, 2022
 
