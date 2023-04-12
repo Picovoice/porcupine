@@ -80,6 +80,8 @@
     "../../../demo/mcu/**/syscalls.c",
     "../../../demo/mcu/**/system*",
     "../../../demo/mcu/imxrt1050/imxrt1050-evkb/source/semihost_hardfault.c",
+    "../../../demo/mcu/generate_pv_params_file.py",
+    "../../../demo/mcu/**/pv_params.h",
     "../../../demo/mcu/imxrt1050/imxrt1050-evkb/{board,CMSIS,codec,component,device,drivers,startup,utilities,xip}/**/*",
 
     // react
