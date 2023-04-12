@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -54,7 +54,7 @@ export type PorcupineVue = {
     keywordDetection: PorcupineDetection | null,
     isLoaded: boolean,
     isListening: boolean,
-    error: Error | string | null,
+    error: Error | null,
   },
   init: (
     accessKey: string,
@@ -74,7 +74,7 @@ export function usePorcupine(): PorcupineVue {
     keywordDetection: PorcupineDetection | null,
     isLoaded: boolean,
     isListening: boolean,
-    error: Error | string | null,
+    error: Error | null,
   }>({
     keywordDetection: null,
     isLoaded: false,
@@ -86,7 +86,7 @@ export function usePorcupine(): PorcupineVue {
     state.keywordDetection = porcupineDetection;
   };
 
-  const errorCallback = (e: any): void => {
+  const errorCallback = (e: Error): void => {
     state.error = e;
   };
 
@@ -120,7 +120,7 @@ export function usePorcupine(): PorcupineVue {
   const start = async (): Promise<void> => {
     try {
       if (!porcupineRef.value) {
-        state.error = "Porcupine has not been initialized or has been released";
+        state.error = new Error("Porcupine has not been initialized or has been released");
         return;
       }
 
@@ -136,7 +136,7 @@ export function usePorcupine(): PorcupineVue {
   const stop = async (): Promise<void> => {
     try {
       if (!porcupineRef.value) {
-        state.error = "Porcupine has not been initialized or has been released";
+        state.error = new Error("Porcupine has not been initialized or has been released");
         return;
       }
 

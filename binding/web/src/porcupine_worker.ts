@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -126,11 +126,12 @@ export class PorcupineWorker {
                   break;
                 case 'failed':
                 case 'error':
+                  const error = new Error(ev.data.message);
                   if (processErrorCallback) {
-                    processErrorCallback(ev.data.message);
+                    processErrorCallback(error);
                   } else {
                     // eslint-disable-next-line no-console
-                    console.error(ev.data.message);
+                    console.error(error);
                   }
                   break;
                 default:

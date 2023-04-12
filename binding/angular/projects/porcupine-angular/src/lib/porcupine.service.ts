@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -30,7 +30,7 @@ export class PorcupineService implements OnDestroy {
 
   public isLoaded$: Subject<boolean> = new Subject<boolean>();
   public isListening$: Subject<boolean> = new Subject<boolean>();
-  public error$: Subject<Error | string | null> = new Subject<Error | string | null>();
+  public error$: Subject<Error | null> = new Subject<Error | null>();
 
   private porcupine: PorcupineWorker | null = null;
 
@@ -72,7 +72,7 @@ export class PorcupineService implements OnDestroy {
   public async start(): Promise<void> {
     if (this.porcupine === null) {
       this.error$.next(
-        'Porcupine has not been initialized or has been released'
+        new Error('Porcupine has not been initialized or has been released')
       );
       return;
     }
@@ -90,7 +90,7 @@ export class PorcupineService implements OnDestroy {
   public async stop(): Promise<void> {
     if (this.porcupine === null) {
       this.error$.next(
-        'Porcupine has not been initialized or has been released'
+        new Error('Porcupine has not been initialized or has been released')
       );
       return;
     }
@@ -125,7 +125,7 @@ export class PorcupineService implements OnDestroy {
     this.keywordDetection$.next(porcupineDetection);
   };
 
-  private errorCallback = (error: string) => {
+  private errorCallback = (error: Error) => {
     this.error$.next(error);
   };
 }
