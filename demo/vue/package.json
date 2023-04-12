@@ -1,6 +1,6 @@
 {
   "name": "porcupine-web-vue-demo",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "private": true,
@@ -15,8 +15,8 @@
     "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./src/lib/porcupine_params.js"
   },
   "dependencies": {
-    "@picovoice/porcupine-vue": "^2.1.10",
-    "@picovoice/web-voice-processor": "~4.0.5",
+    "@picovoice/porcupine-vue": "~2.2.0",
+    "@picovoice/web-voice-processor": "~4.0.6",
     "vue": "^3.2.45"
   },
   "devDependencies": {
