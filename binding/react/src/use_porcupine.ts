@@ -1,5 +1,5 @@
 /*
-  Copyright 2021-2022 Picovoice Inc.
+  Copyright 2021-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -26,7 +26,7 @@ export const usePorcupine = (): {
   keywordDetection: PorcupineDetection | null,
   isLoaded: boolean,
   isListening: boolean,
-  error: string | null,
+  error: Error | null,
   init: (
     accessKey: string,
     keywords: Array<PorcupineKeyword | BuiltInKeyword> | PorcupineKeyword | BuiltInKeyword,
@@ -42,13 +42,13 @@ export const usePorcupine = (): {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const keywordDetectionCallback = useCallback((keyword: PorcupineDetection) => {
     setKeywordDetection(keyword);
   }, []);
 
-  const errorCallback = useCallback((e: string) => {
+  const errorCallback = useCallback((e: Error) => {
     setError(e);
   }, []);
 
@@ -76,14 +76,14 @@ export const usePorcupine = (): {
         setError(null);
       }
     } catch (e: any) {
-      setError(e.toString());
+      setError(e);
     }
   }, [keywordDetectionCallback, errorCallback]);
 
   const start = useCallback(async (): Promise<void> => {
     try {
       if (!porcupineRef.current) {
-        setError("Porcupine has not been initialized or has been released");
+        setError(new Error("Porcupine has not been initialized or has been released"));
         return;
       }
 
@@ -91,7 +91,7 @@ export const usePorcupine = (): {
       setIsListening(true);
       setError(null);
     } catch (e: any) {
-      setError(e.toString());
+      setError(e);
       setIsListening(false);
     }
   }, []);
@@ -99,7 +99,7 @@ export const usePorcupine = (): {
   const stop = useCallback(async (): Promise<void> => {
     try {
       if (!porcupineRef.current) {
-        setError("Porcupine has not been initialized or has been released");
+        setError(new Error("Porcupine has not been initialized or has been released"));
         return;
       }
 
@@ -107,7 +107,7 @@ export const usePorcupine = (): {
       setIsListening(false);
       setError(null);
     } catch (e: any) {
-      setError(e.toString());
+      setError(e);
       setIsListening(false);
     }
   }, []);
