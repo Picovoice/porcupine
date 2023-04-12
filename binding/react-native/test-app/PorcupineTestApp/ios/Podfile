@@ -48,7 +48,4 @@ target 'PorcupineTestApp' do
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
-
-  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec'
-
 end

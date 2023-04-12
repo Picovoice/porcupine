@@ -423,7 +423,6 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec`)
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -474,6 +473,7 @@ SPEC REPOS:
     - ios-voice-processor
     - libevent
     - OpenSSL-Universal
+    - Porcupine-iOS
     - SocketRocket
     - YogaKit
 
@@ -490,8 +490,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec
   porcupine-react-native:
     :path: "../node_modules/@picovoice/porcupine-react-native"
   RCT-Folly:
@@ -555,11 +553,6 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
-CHECKOUT OPTIONS:
-  Porcupine-iOS:
-    :commit: e19bb0138fce3da735cd078c07c582e11d5f5405
-    :git: https://github.com/Picovoice/porcupine.git
-
 SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
@@ -581,7 +574,7 @@ SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Porcupine-iOS: f223c0235756c4ae3b5ccfd282afcd8a3fc75b50
+  Porcupine-iOS: 34f7b77fbd5f999eb9c4daa94acbb6c90c08ad1e
   porcupine-react-native: 0cda03f9099df747be460629b5dc058eee6c94db
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: dea3e4163184ea57c50288c15c32c1529265c58f
@@ -616,6 +609,6 @@ SPEC CHECKSUMS:
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b3fcc91c01e20611f9ee5b0af596111dffc45856
+PODFILE CHECKSUM: fb1d50a66017a3c342cb20b8a61e6ff53757e3ba
 
 COCOAPODS: 1.11.3
