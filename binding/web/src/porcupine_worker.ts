@@ -136,7 +136,7 @@ export class PorcupineWorker {
                   break;
                 default:
                   // @ts-ignore
-                  processErrorCallback(`Unrecognized command: ${event.data.command}`);
+                  processErrorCallback(new Error(`Unrecognized command: ${event.data.command}`));
               }
             };
             resolve(new PorcupineWorker(worker, event.data.version, event.data.frameLength, event.data.sampleRate));
