@@ -11,13 +11,12 @@ binding/go/porcupine_test.go linguist-detectable=false
 binding/ios/PorcupineAppTest/** linguist-detectable=false
 binding/java/src/ai/picovoice/porcupine/exception/** linguist-detectable=false
 binding/java/test/** linguist-detectable=false
-binding/node/** linguist-detectable=false
+binding/node/test/** linguist-detectable=false
 binding/react/** linguist-detectable=false
 binding/react-native/** linguist-detectable=false
 binding/rust/tests/** linguist-detectable=false
 binding/unity/** linguist-detectable=false
 binding/vue/** linguist-detectable=false
-binding/web/cypress/** linguist-detectable=false
-binding/web/test/** linguist-detectable=false
+binding/web/** linguist-detectable=false
 
 *.py linguist-detectable=true
