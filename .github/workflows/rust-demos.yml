@@ -5,15 +5,15 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/rust-demos.yml'
       - 'demo/rust/**'
       - '!demo/rust/README.md'
-      - '.github/workflows/rust-demos.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
+      - '.github/workflows/rust-demos.yml'
       - 'demo/rust/**'
       - '!demo/rust/README.md'
-      - '.github/workflows/rust-demos.yml'
 
 env:
   CARGO_TERM_COLOR: always
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Rust dependencies
       run: sudo apt install libasound2-dev
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Rust dependencies
       run: sudo apt install libasound2-dev

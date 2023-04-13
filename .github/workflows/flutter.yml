@@ -5,13 +5,23 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'demo/flutter/pubspec.yaml'
       - '.github/workflows/flutter.yml'
+      - 'demo/flutter/pubspec.yaml'
+      - 'lib/common/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
+      - 'resources/keyword_files*/android/**'
+      - 'resources/keyword_files*/ios/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - 'demo/flutter/pubspec.yaml'
       - '.github/workflows/flutter.yml'
+      - 'demo/flutter/pubspec.yaml'
+      - 'lib/common/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
+      - 'resources/keyword_files*/android/**'
+      - 'resources/keyword_files*/ios/**'
 
 defaults:
   run:
@@ -32,7 +42,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt'
+        distribution: 'temurin'
 
     - name: Install Flutter ${{ matrix.flutter-version }}
       uses: subosito/flutter-action@v2
@@ -78,6 +88,9 @@ jobs:
         flutter-version: ${{ matrix.flutter-version }}
         architecture: x64
 
+    - name: Update Cocoapods repo
+      run: pod repo update
+
     - name: Install dependencies
       run: flutter pub get
 
@@ -97,6 +110,12 @@ jobs:
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         integration_test/app_test.dart
+
+    - name: Update Cocoapods repo
+      run: pod repo update
+
+    - name: Install dependencies
+      run: flutter pub get
 
     - name: Run integration tests
       run: flutter test integration_test

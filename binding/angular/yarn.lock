@@ -1783,24 +1783,24 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/porcupine-web@=2.1.16":
-  version "2.1.16"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.16.tgz#16d435a947d239a7bc18c895ae6ceb9795623de1"
-  integrity sha512-4yLRpO8gmHG7OUB6dMu7vYXmow8ELZ+2LtgRIM2+vkuw06Fd4eQVKrRaKx8TxhuOCjMCrLCxGM+d0cyCXTMgBA==
+"@picovoice/porcupine-web@~2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.2.0.tgz#d02fe8dc3ef7fd4baa8516dd45703f40c09adc8a"
+  integrity sha512-Sd6dK0fkNbZ/+XTm05vLN5E6LHHPY4vvHLSzdTF5nKDD52JBtd6g9WKpBjuHmfoF3YxqdyxqjeBFNdLtMFjZsQ==
   dependencies:
-    "@picovoice/web-utils" "=1.2.12"
+    "@picovoice/web-utils" "=1.3.1"
 
-"@picovoice/web-utils@=1.2.12":
-  version "1.2.12"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.12.tgz#65437c3fdb69c5a2f875fd803a89f7cdbb93d607"
-  integrity sha512-u5G9PPIlhG2TvSe9lj8oyjYfQae0cWCp6W6DCl3Wk6X8hyG6m2c3Y4nkJ6Jgy7/T38SekKu01CjPrKnXCuRohQ==
+"@picovoice/web-utils@=1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.3.1.tgz#d417e98604a650b54a8e03669015ecf98c2383ec"
+  integrity sha512-jcDqdULtTm+yJrnHDjg64hARup+Z4wNkYuXHNx6EM8+qZkweBq9UA6XJrHAlUkPnlkso4JWjaIKhz3x8vZcd3g==
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.5.tgz#f62ab49d03e13f870a49e505e4eb3a6f6206d19f"
-  integrity sha512-k93u3EQRU+9ahF7Gr5s/QgtqtAgwMAHCA+It5mDKWxGe1bzNBr/RWxKLcfey8A16WAA9GiDcsES1bd9ZQOXwWQ==
+"@picovoice/web-voice-processor@~4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.6.tgz#4769283b82f64d3625794f7290d47c6d477a3f41"
+  integrity sha512-Ykfy6hrWFpOklfeN7rSJb5CGim8wDu7J+l8imRYyQxWHWVV1Wu5S8FW69zkJmwiDG2Wx+M2+h0SCMS+hNM5qow==
 
 "@rollup/plugin-json@^4.1.0":
   version "4.1.0"

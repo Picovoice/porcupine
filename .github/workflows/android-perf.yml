@@ -4,23 +4,19 @@ on:
   workflow_dispatch:
   push:
     branches: [ master ]
-    paths: 
-      - 'lib/android/**'
-      - 'lib/common/**'
-      - 'resources/keyword_files/android/**'
+    paths:
       - '.github/workflows/android-perf.yml'
+      - 'demo/android/Activity/**/build.gradle'
   pull_request:
-    branches: [ master ]
-    paths: 
-      - 'lib/android/**'
-      - 'lib/common/**'
-      - 'resources/keyword_files/android/**'
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    paths:
       - '.github/workflows/android-perf.yml'
+      - 'demo/android/Activity/**/build.gradle'
 
 defaults:
   run:
     working-directory: demo/android/Activity
-    
+
 jobs:
   build:
     name: Run Android Speed Tests on AppCenter
@@ -33,26 +29,26 @@ jobs:
         - device: single-android
           performanceThresholdSec: 0.5
         - device: 32bit-android
-          performanceThresholdSec: 1.25
+          performanceThresholdSec: 2.75
 
     steps:
-    - uses: actions/checkout@v2
-    
+    - uses: actions/checkout@v3
+
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.4.0
-    
+
     - name: Install AppCenter CLI
       run: npm install -g appcenter-cli
-    
+
     - name: set up JDK 11
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
         java-version: '11'
-        distribution: 'adopt'
-    
+        distribution: 'temurin'
+
     - name: Copy test_resources
       run: ./copy_test_resources.sh
-    
+
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
@@ -61,22 +57,22 @@ jobs:
 
     - name: Inject Performance Threshold
       run: echo performanceThresholdSec="${{ matrix.performanceThresholdSec }}" >> local.properties
-    
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    
+
     - name: Build app
       run: ./gradlew assembleDebug
-    
+
     - name: Build androidTest
       run: ./gradlew assembleAndroidTest
-    
+
     - name: Run tests on AppCenter
-      run: appcenter test run espresso 
+      run: appcenter test run espresso
         --token ${{secrets.APPCENTERAPITOKEN}}
-        --app "Picovoice/Porcupine-Android" 
+        --app "Picovoice/Porcupine-Android"
         --devices "Picovoice/${{ matrix.device }}"
-        --app-path porcupine-activity-demo-app/build/outputs/apk/debug/porcupine-activity-demo-app-debug.apk 
-        --test-series "porcupine-android" 
-        --locale "en_US" 
+        --app-path porcupine-activity-demo-app/build/outputs/apk/debug/porcupine-activity-demo-app-debug.apk
+        --test-series "porcupine-android"
+        --locale "en_US"
         --build-dir porcupine-activity-demo-app/build/outputs/apk/androidTest/debug

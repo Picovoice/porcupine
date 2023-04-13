@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -54,7 +54,7 @@ export type PorcupineVue = {
     keywordDetection: PorcupineDetection | null,
     isLoaded: boolean,
     isListening: boolean,
-    error: string | null,
+    error: Error | null,
   },
   init: (
     accessKey: string,
@@ -74,7 +74,7 @@ export function usePorcupine(): PorcupineVue {
     keywordDetection: PorcupineDetection | null,
     isLoaded: boolean,
     isListening: boolean,
-    error: string | null,
+    error: Error | null,
   }>({
     keywordDetection: null,
     isLoaded: false,
@@ -86,8 +86,8 @@ export function usePorcupine(): PorcupineVue {
     state.keywordDetection = porcupineDetection;
   };
 
-  const errorCallback = (e: any): void => {
-    state.error = e.toString();
+  const errorCallback = (e: Error): void => {
+    state.error = e;
   };
 
   const init = async (
@@ -113,14 +113,14 @@ export function usePorcupine(): PorcupineVue {
         state.error = null;
       }
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
     }
   };
 
   const start = async (): Promise<void> => {
     try {
       if (!porcupineRef.value) {
-        state.error = "Porcupine has not been initialized or has been released";
+        state.error = new Error("Porcupine has not been initialized or has been released");
         return;
       }
 
@@ -128,7 +128,7 @@ export function usePorcupine(): PorcupineVue {
       state.isListening = true;
       state.error = null;
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
       state.isListening = false;
     }
   };
@@ -136,7 +136,7 @@ export function usePorcupine(): PorcupineVue {
   const stop = async (): Promise<void> => {
     try {
       if (!porcupineRef.value) {
-        state.error = "Porcupine has not been initialized or has been released";
+        state.error = new Error("Porcupine has not been initialized or has been released");
         return;
       }
 
@@ -144,7 +144,7 @@ export function usePorcupine(): PorcupineVue {
       state.isListening = false;
       state.error = null;
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
       state.isListening = false;
     }
   };

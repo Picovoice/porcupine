@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Picovoice Inc.
+# Copyright 2022-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -13,9 +13,9 @@ import sys
 import time
 import unittest
 
-from porcupine import Porcupine
+from _porcupine import Porcupine
 from test_util import *
-from util import *
+from _util import *
 
 
 class PorcupinePerformanceTestCase(unittest.TestCase):
@@ -47,9 +47,9 @@ class PorcupinePerformanceTestCase(unittest.TestCase):
             proc_time = 0
             for j in range(num_frames):
                 frame = audio[j * porcupine.frame_length:(j + 1) * porcupine.frame_length]
-                start = time.time()
+                start = time.perf_counter()
                 porcupine.process(frame)
-                proc_time += time.time() - start
+                proc_time += time.perf_counter() - start
             perf_results.append(proc_time)
 
         porcupine.delete()

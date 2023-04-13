@@ -5,10 +5,12 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/python-perf.yml'
+      - 'binding/python/test_porcupine_perf.py'
       - 'lib/beaglebone/**'
       - 'lib/common/**'
-      - 'lib/linux/**'
       - 'lib/jetson/**'
+      - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
@@ -18,14 +20,15 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/python-perf.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
+      - '.github/workflows/python-perf.yml'
+      - 'binding/python/test_porcupine_perf.py'
       - 'lib/beaglebone/**'
       - 'lib/common/**'
-      - 'lib/linux/**'
       - 'lib/jetson/**'
+      - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
@@ -35,7 +38,6 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/python-perf.yml'
 
 defaults:
   run:
@@ -58,10 +60,10 @@ jobs:
           performance_threshold_sec: 0.65
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Python '3.10'
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -100,7 +102,7 @@ jobs:
           performance_threshold_sec: 12.0
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Machine state before
       working-directory: resources/scripts

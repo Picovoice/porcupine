@@ -5,7 +5,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [master]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
 
 jobs:
   markdown:
@@ -22,4 +22,4 @@ jobs:
         run: npm install -g cspell
 
       - name: Run CSpell
-        run: cspell --config resources/lint/spell-check/.cspell.json "**/*"
+        run: cspell --config resources/.lint/spell-check/.cspell.json "**/*"

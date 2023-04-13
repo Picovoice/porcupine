@@ -5,6 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/rust.yml'
       - 'binding/rust/**'
       - '!binding/rust/README.md'
       - 'lib/beaglebone/**'
@@ -21,11 +22,11 @@ on:
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
-      - 'resources/test/**'
-      - '.github/workflows/rust.yml'
+      - 'resources/.test/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
+      - '.github/workflows/rust.yml'
       - 'binding/rust/**'
       - '!binding/rust/README.md'
       - 'lib/beaglebone/**'
@@ -42,8 +43,7 @@ on:
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
       - 'resources/keyword_files*/windows/**'
-      - 'resources/test/**'
-      - '.github/workflows/rust.yml'
+      - 'resources/.test/**'
 
 env:
   CARGO_TERM_COLOR: always

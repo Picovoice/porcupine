@@ -1,11 +1,11 @@
 {
   "name": "@picovoice/porcupine-angular",
   "description": "Angular service for Porcupine Web SDK",
-  "version": "2.1.11",
+  "version": "2.2.0",
   "peerDependencies": {
     "@angular/common": ">=13.0.0",
     "@angular/core": ">=13.0.0",
-    "@picovoice/web-voice-processor": "~4.0.3"
+    "@picovoice/web-voice-processor": "~4.0.6"
   },
   "keywords": [
     "porcupine",
@@ -20,7 +20,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.16",
+    "@picovoice/porcupine-web": "=2.2.0",
     "tslib": "^2.3.0"
   }
 }

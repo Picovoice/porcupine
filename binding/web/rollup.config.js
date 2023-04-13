@@ -6,7 +6,7 @@ const typescript = require('rollup-plugin-typescript2');
 const workerLoader = require('rollup-plugin-web-worker-loader');
 const pkg = require('./package.json');
 const { babel } = require('@rollup/plugin-babel');
-const terser = require('rollup-plugin-terser').terser;
+const terser = require('@rollup/plugin-terser');
 const { DEFAULT_EXTENSIONS } = require('@babel/core');
 const { base64 } = require('@picovoice/web-utils/plugins');
 

@@ -26,7 +26,7 @@ applications. It is
 ## Installation
 
 ```console
-go get github.com/Picovoice/porcupine/binding/go
+go get github.com/Picovoice/porcupine/binding/go/v2
 ```
 
 ## AccessKey
@@ -40,7 +40,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 To create an instance of the engine you first create a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`:
 
 ```go
-import . "github.com/Picovoice/porcupine/binding/go"
+import . "github.com/Picovoice/porcupine/binding/go/v2"
 
 porcupine := Porcupine{
     AccessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)

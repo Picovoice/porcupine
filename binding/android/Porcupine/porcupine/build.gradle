@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '2.1.3'
+    PUBLISH_VERSION = '2.2.0'
     PUBLISH_ARTIFACT_ID = 'porcupine-android'
 }
 
@@ -34,3 +33,40 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 }
+
+task copyLibs(type: Copy) {
+    from("${rootDir}/../../../lib/android")
+    into("${rootDir}/porcupine/src/main/jniLibs")
+}
+
+task copyParams(type: Copy) {
+    from("${rootDir}/../../../lib/common")
+    include('porcupine_params.pv')
+    into("${rootDir}/porcupine/src/main/res/raw")
+}
+
+task copyModels(type: Copy) {
+    from("${rootDir}/../../../resources/keyword_files/android")
+    include('alexa_android.ppn',
+        'americano_android.ppn',
+        'blueberry_android.ppn',
+        'bumblebee_android.ppn',
+        'computer_android.ppn',
+        'grapefruit_android.ppn',
+        'grasshopper_android.ppn',
+        'hey google_android.ppn',
+        'hey siri_android.ppn',
+        'jarvis_android.ppn',
+        'ok google_android.ppn',
+        'picovoice_android.ppn',
+        'porcupine_android.ppn',
+        'terminator_android.ppn')
+    into("${rootDir}/porcupine/src/main/res/raw")
+    rename { String fileName ->
+        fileName.replace("_android", "").replace(" ", "_")
+    }
+}
+
+preBuild.dependsOn(copyLibs)
+preBuild.dependsOn(copyParams)
+preBuild.dependsOn(copyModels)

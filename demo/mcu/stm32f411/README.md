@@ -4,10 +4,24 @@ This package contains a demo project for the STM32F411 Discovery kit using Porcu
 
 ## Supported Languages
 
-1. English
-2. French
-3. German
-4. Spanish
+1. Arabic
+2. Dutch
+3. English
+4. French
+5. German
+6. Hindi
+7. Italian
+8. Japanese
+9. Korean
+10. Mandarin
+11. Polish
+12. Portuguese
+13. Russian
+14. Spanish
+15. Swedish
+16. Vietnamese
+
+- Support for additional languages is available for commercial customers on a case-by-case basis.
 
 ## Installation
 
@@ -54,21 +68,24 @@ Then, to compile and run the demo project on a STM32f411 discovery board, perfor
 to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf)
 > , Chapter 7.
 
-For the single wake word demos, the default wake words are:
+For single wake-word demos, you can identify the default keyword for each language by referring to the [pv_params.h](./stm32f411e-disco/Inc/pv_params.h) file. Within this file, locate the language section enclosed by:
 
-- `Porcupine` for English language,
-- `salut ordinateur` for French language.
-- `hey computer` for German language,
-- `hola computadora` for Spanish language,
+```c
+#if defined(__PV_LANGUAGE_{LANGUAGE_NAME}__)
+...
+#endif
+```
+
+The default keyword for each language will be listed next to the `// wake-word` comment.
 
 Below are the LED colors associated with supported wake words for the multiple wake words demo:
 
 <!-- markdown-link-check-disable -->
 
-- ![#00ff00](../../../resources/images/00ff00.png) `Porcupine`
-- ![#ff8000](../../../resources/images/ff8000.png) `Picovoice`
-- ![#ff0000](../../../resources/images/ff0000.png) `Bumblebee`
-- ![#0000ff](../../../resources/images/0000ff.png) `Alexa`
+- ![#00ff00](../../../resources/.images/00ff00.png) `Porcupine`
+- ![#ff8000](../../../resources/.images/ff8000.png) `Picovoice`
+- ![#ff0000](../../../resources/.images/ff0000.png) `Bumblebee`
+- ![#0000ff](../../../resources/.images/0000ff.png) `Alexa`
 
 <!-- markdown-link-check-enable -->
 

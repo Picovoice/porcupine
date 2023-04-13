@@ -9,7 +9,7 @@ on:
       - '!demo/go/README.md'
       - '.github/workflows/go-demos.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'demo/go/**'
       - '!demo/go/README.md'
@@ -29,10 +29,10 @@ jobs:
         go: [ '1.16', '1.17', '1.18']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup go
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
 
@@ -48,10 +48,10 @@ jobs:
         go: [ '1.16', '1.17', '1.18' ]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup go
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
 

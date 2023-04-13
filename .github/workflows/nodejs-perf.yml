@@ -5,6 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/nodejs-perf.yml'
       - 'lib/node/**'
       - 'lib/common/**'
       - 'resources/keyword_files/beaglebone/**'
@@ -13,10 +14,10 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/nodejs-perf.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
+      - '.github/workflows/nodejs-perf.yml'
       - 'lib/node/**'
       - 'lib/common/**'
       - 'resources/keyword_files/beaglebone/**'
@@ -25,7 +26,6 @@ on:
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
       - 'resources/keyword_files/windows/**'
-      - '.github/workflows/nodejs-perf.yml'
 
 defaults:
   run:
@@ -48,10 +48,10 @@ jobs:
           performance_threshold_sec: 0.65
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js '18.x'
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '18.x'
 
@@ -95,7 +95,7 @@ jobs:
           performance_threshold_sec: 12.0
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Pre-build dependencies
       run: npm install --global yarn

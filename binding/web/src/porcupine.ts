@@ -104,13 +104,13 @@ export class Porcupine {
   private static _porcupineMutex = new Mutex();
 
   private readonly _keywordDetectionCallback: DetectionCallback;
-  private readonly _processErrorCallback?: (error: string) => void;
+  private readonly _processErrorCallback?: (error: Error) => void;
 
   private constructor(
     handleWasm: PorcupineWasmOutput,
     keywordLabels: ArrayLike<string>,
     keywordDetectionCallback: DetectionCallback,
-    processErrorCallback?: (error: string) => void
+    processErrorCallback?: (error: Error) => void
   ) {
     Porcupine._frameLength = handleWasm.frameLength;
     Porcupine._sampleRate = handleWasm.sampleRate;
@@ -303,7 +303,7 @@ export class Porcupine {
         "The argument 'pcm' must be provided as an Int16Array"
       );
       if (this._processErrorCallback) {
-        this._processErrorCallback(error.toString());
+        this._processErrorCallback(error);
       } else {
         // eslint-disable-next-line no-console
         console.error(error);
@@ -350,7 +350,7 @@ export class Porcupine {
       })
       .catch((error: any) => {
         if (this._processErrorCallback) {
-          this._processErrorCallback(error.toString());
+          this._processErrorCallback(error);
         } else {
           // eslint-disable-next-line no-console
           console.error(error);
@@ -362,9 +362,9 @@ export class Porcupine {
    * Releases resources acquired by WebAssembly module.
    */
   public async release(): Promise<void> {
-    await this._pvPorcupineDelete(this._objectAddress);
     await this._pvFree(this._inputBufferAddress);
     await this._pvFree(this._keywordIndexAddress);
+    await this._pvPorcupineDelete(this._objectAddress);
     delete this._wasmMemory;
     this._wasmMemory = undefined;
   }
@@ -389,7 +389,7 @@ export class Porcupine {
   ): Promise<any> {
     // A WebAssembly page has a constant size of 64KiB. -> 1MiB ~= 16 pages
     // minimum memory requirements for init: 17 pages
-    const memory = new WebAssembly.Memory({ initial: 128 });
+    const memory = new WebAssembly.Memory({ initial: 256 });
 
     const memoryBufferUint8 = new Uint8Array(memory.buffer);
     const memoryBufferInt32 = new Int32Array(memory.buffer);

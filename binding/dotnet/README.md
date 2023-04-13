@@ -30,7 +30,7 @@ Platforms compatible with .NET Core 2.0+:
 - macOS (x86_64)
 - Windows (x86_64)
 
-Platforms compatible with .NET Core 3.1+:
+Platforms compatible with .NET Core 3.0+:
 
 - Raspberry Pi:
   - 2

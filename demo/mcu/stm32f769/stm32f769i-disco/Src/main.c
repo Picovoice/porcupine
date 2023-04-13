@@ -22,9 +22,9 @@
 #include "pv_params.h"
 #include "pv_st_f769.h"
 
-#define MEMORY_BUFFER_SIZE (20 * 1024)
+#define MEMORY_BUFFER_SIZE (50 * 1024)
 
-static const char *ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+static const char* ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 

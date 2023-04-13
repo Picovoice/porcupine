@@ -8,7 +8,7 @@ on:
       - '**/*.dart'
       - '.github/workflows/flutter-codestyle.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '**/*.dart'
       - '.github/workflows/flutter-codestyle.yml'
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install Flutter 2.8.1
       uses: subosito/flutter-action@v2

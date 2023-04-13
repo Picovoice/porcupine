@@ -565,7 +565,7 @@ dotnet add package Porcupine
 The SDK exposes a factory method to create instances of the engine:
 
 ```csharp
-using Pv
+using Pv;
 
 const string accessKey = "${ACCESS_KEY}";
 var keyword = new List<BuiltInKeyword> { BuiltInKeyword.PICOVOICE };
@@ -630,7 +630,7 @@ import ai.picovoice.porcupine.*;
 
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 final String accessKey = "${ACCESS_KEY}";
-try{
+try {
     Porcupine handle = new Porcupine.Builder()
                         .setAccessKey(accessKey)
                         .setBuiltInKeyword(BuiltInKeyword.PORCUPINE)
@@ -657,7 +657,7 @@ import ai.picovoice.porcupine.*;
 
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 final String accessKey = "${ACCESS_KEY}";
-try{
+try {
     Porcupine handle = new Porcupine.Builder()
                         .setAccessKey(accessKey)
                         .setKeywordPath("path/to/custom/keyword/file")
@@ -670,14 +670,14 @@ When initialized, valid sample rate can be obtained using `handle.getSampleRate(
 incoming audio as below:
 
 ```java
-short[] getNextAudioFrame(){
+short[] getNextAudioFrame() {
     // .. get audioFrame
     return audioFrame;
 }
 
-while(true){
+while(true) {
     int keywordIndex = handle.Process(getNextAudioFrame());
-    if(keywordIndex >= 0){
+    if(keywordIndex >= 0) {
         // .. detection event logic/callback
     }
 }
@@ -699,7 +699,7 @@ go get github.com/Picovoice/porcupine/binding/go
 To create an instance of the engine you first create a Porcupine struct with the configuration parameters for the wake word engine and then make a call to `.Init()`.
 
 ```go
-import . "github.com/Picovoice/porcupine/binding/go"
+import . "github.com/Picovoice/porcupine/binding/go/v2"
 
 porcupine := Porcupine{
   AccessKey: "${ACCESS_KEY}", // from Picovoice Console (https://console.picovoice.ai/)
@@ -725,7 +725,7 @@ When initialized, the valid sample rate is given by `SampleRate`. Expected frame
 
 To feed audio into Porcupine, use the `Process` function in your capture loop. You must call `Init()` before calling `Process`.
 ```go
-func getNextFrameAudio() []int16{
+func getNextFrameAudio() []int16 {
     // get audio frame
 }
 
@@ -885,10 +885,10 @@ import 'package:porcupine_flutter/porcupine_manager.dart';
 import 'package:porcupine_flutter/porcupine_error.dart';
 
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "{ACCESS_KEY}"
+final String accessKey = "{ACCESS_KEY}";
 
 void createPorcupineManager() async {
-    try{
+    try {
         _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
             accessKey,
             [BuiltInKeyword.PICOVOICE, BuiltInKeyword.PORCUPINE],
@@ -903,7 +903,7 @@ To create an instance of PorcupineManager that detects custom keywords, you can 
 
 ```dart
  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "{ACCESS_KEY}"
+final String accessKey = "{ACCESS_KEY}";
 
 _porcupineManager = await PorcupineManager.fromKeywordPaths(
     accessKey,
@@ -914,7 +914,7 @@ _porcupineManager = await PorcupineManager.fromKeywordPaths(
 Once you have instantiated a PorcupineManager, you can start/stop audio capture and wake word detection by calling:
 
 ```dart
-try{
+try {
     await _porcupineManager.start();
 } on PorcupineException catch (ex) {
     // deal with either audio exception
@@ -941,10 +941,10 @@ import 'package:porcupine_flutter/porcupine_manager.dart';
 import 'package:porcupine_flutter/porcupine_error.dart';
 
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "{ACCESS_KEY}"
+final String accessKey = "{ACCESS_KEY}";
 
 void createPorcupine() async {
-    try{
+    try {
         _porcupine = await Porcupine.fromBuiltInKeywords(
           accessKey,
           [BuiltInKeyword.PICOVOICE]);
@@ -993,10 +993,10 @@ using one or more of the built-in keywords.
 
 ```javascript
  // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "${ACCESS_KEY}"
+const accessKey = "${ACCESS_KEY}";
 
 async createPorcupineManager(){
-    try{
+    try {
         this._porcupineManager = await PorcupineManager.fromBuiltInKeywords(
             accessKey,
             [BuiltInKeywords.Picovoice, BuiltInKeywords.Porcupine],
@@ -1013,7 +1013,7 @@ static constructor and provide the paths to the `.ppn` file(s).
 
 ```javascript
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "${ACCESS_KEY}"
+const accessKey = "${ACCESS_KEY}";
 
 this._porcupineManager = await PorcupineManager.fromKeywordPaths(
   accessKey,
@@ -1049,10 +1049,10 @@ who want to incorporate wake word detection into an already existing audio proce
 
 ```javascript
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "${ACCESS_KEY}"
+const accessKey = "${ACCESS_KEY}";
 
 async createPorcupine(){
-    try{
+    try {
         this._porcupine = await Porcupine.fromBuiltInKeywords(
             accessKey, [BuiltInKeywords.PICOVOICE]);
     } catch (err) {
@@ -1106,7 +1106,7 @@ an input audio stream, feeding it into the Porcupine library, and invoking a use
 import ai.picovoice.porcupine.*;
 
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-final String keywordPath = "/path/to/keyword.ppn" // path relative to 'assets' folder
+final String keywordPath = "/path/to/keyword.ppn"; // path relative to 'assets' folder
 
 try {
     PorcupineManager porcupineManager = new PorcupineManager.Builder()
@@ -1139,7 +1139,7 @@ binding for Android. It can be initialized using:
 import ai.picovoice.porcupine.*;
 
 final String accessKey = "${ACCESS_KEY}";
-final String keywordPath = "/path/to/keyword.ppn"
+final String keywordPath = "/path/to/keyword.ppn";
 try {
     Porcupine porcupine = new Porcupine.Builder()
                         .setAccessKey(accessKey)
@@ -1518,7 +1518,7 @@ const {
 }= require("@picovoice/porcupine-node");
 
  // Obtained from the Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "${ACCESS_KEY}"
+const accessKey = "${ACCESS_KEY}";
 
 let handle = new Porcupine(
     accessKey,
@@ -1532,7 +1532,7 @@ let handle = new Porcupine(
 const Porcupine = require("@picovoice/porcupine-node");
 
  // Obtained from the Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "${ACCESS_KEY}"
+const accessKey = "${ACCESS_KEY}";
 
 let handle = new Porcupine(
     accessKey,
@@ -1739,6 +1739,13 @@ pv_porcupine_delete(handle);
 ```
 
 ## Releases
+
+### v2.2.0 - April 12th, 2023
+
+- Added language support for Arabic, Dutch, Hindi, Mandarin, Polish, Russian, Swedish and Vietnamese
+- Added support for .NET 7.0 and fixed support for .NET Standard 2.0
+- iOS minimum support moved to 11.0
+- Improved stability and performance
 
 ### v2.1.0 - January 20th, 2022
 

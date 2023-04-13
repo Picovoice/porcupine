@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -73,7 +73,7 @@ namespace Pv
         static Porcupine()
         {
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NETCOREAPP3_0_OR_GREATER
 
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
 
@@ -83,16 +83,19 @@ namespace Pv
             BUILT_IN_KEYWORD_PATHS = Utils.PvKeywordPaths();
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NETCOREAPP3_0_OR_GREATER
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
+
 #pragma warning disable IDE0058
 #pragma warning disable IDE0059
+
             IntPtr libHandle = IntPtr.Zero;
             NativeLibrary.TryLoad(Utils.PvLibraryPath(libraryName), out libHandle);
             return libHandle;
         }
+
 #pragma warning restore IDE0059
 #pragma warning restore IDE0058
 

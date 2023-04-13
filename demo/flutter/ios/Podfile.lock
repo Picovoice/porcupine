@@ -2,19 +2,23 @@ PODS:
   - Flutter (1.0.0)
   - flutter_voice_processor (1.0.6):
     - Flutter
+  - integration_test (0.0.1):
+    - Flutter
   - ios-voice-processor (1.0.3)
-  - path_provider_ios (0.0.1):
+  - path_provider_foundation (0.0.1):
     - Flutter
-  - Porcupine-iOS (2.1.2):
+    - FlutterMacOS
+  - Porcupine-iOS (2.2.0):
     - ios-voice-processor (~> 1.0.2)
-  - porcupine_flutter (2.1.6):
+  - porcupine_flutter (2.2.0):
     - Flutter
-    - Porcupine-iOS (~> 2.1.2)
+    - Porcupine-iOS (~> 2.2.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
 
 SPEC REPOS:
@@ -27,19 +31,22 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_voice_processor:
     :path: ".symlinks/plugins/flutter_voice_processor/ios"
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
   porcupine_flutter:
     :path: ".symlinks/plugins/porcupine_flutter/ios"
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_voice_processor: afb59b604d99397a1ccf15c935ac8f2c2327f09f
+  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
-  Porcupine-iOS: 884f40edadf4b72fac6fae768d3247bdb48841f7
-  porcupine_flutter: b1f28f08b9da19bcba7adb38e6231b55ebdd0558
+  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
+  Porcupine-iOS: 34f7b77fbd5f999eb9c4daa94acbb6c90c08ad1e
+  porcupine_flutter: bb07c08c1a5c504732ea0b1eb7cb3be4916858be
 
-PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
+PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

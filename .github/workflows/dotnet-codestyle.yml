@@ -5,26 +5,30 @@ on:
   push:
     branches: [ master ]
     paths:
-      - '**/*.cs'
+      - 'binding/dotnet/**/*.cs'
+      - 'demo/dotnet/**/*.cs'
+      - 'demo/dotnet-vui/**/*.cs'
       - '.github/workflows/dotnet-codestyle.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '**/*.cs'
-      - '.github/workflows/donet-codestyle.yml'
+      - 'binding/dotnet/**/*.cs'
+      - 'demo/dotnet/**/*.cs'
+      - 'demo/dotnet-vui/**/*.cs'
+      - '.github/workflows/dotnet-codestyle.yml'
 
 jobs:
   check-dotnet-codestyle:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup .NET 6.0
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-        
+
     - name: Run Binding Codestyle
       run: dotnet format --verify-no-changes
       working-directory: binding/dotnet

@@ -1,0 +1,113 @@
+{
+  "language": "en",
+  "dictionaries": [
+    "dict"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "dict",
+      "path": "./dict.txt",
+      "addWords": true
+    }
+  ],
+  "ignorePaths": [
+    // submodules
+    "../../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*",
+    "../../../demo/c/dr_libs/**/*",
+    "../../../demo/c/pvrecorder/**/*",
+
+    // binaries
+    "**/*.a",
+    "**/*.dll",
+    "**/*.dylib",
+    "**/*.jar",
+    "**/*.mp3",
+    "**/*.node",
+    "**/*.ppn",
+    "**/*.pv",
+    "**/*.so",
+    "**/*.wasm",
+    "**/*.wav",
+    "../../../binding/unity/porcupine-*.unitypackage",
+    "../../../lib/ios/**/*",
+
+    // .NET
+    "**/*.csproj",
+    "**/*.targets",
+
+    // android & java
+    "**/AndroidManifest.xml",
+    "**/activity_main.xml",
+
+    // angular
+    "**/angular.json",
+    "**/karma.conf.js",
+    "**/ng-package.json",
+    "**/tsconfig.lib.json",
+
+    // ios
+    "**/*.xcconfig",
+    "**/*.podspec",
+    "**/Podfile",
+    "**/*.plist",
+    "**/contents.xcworkspacedata",
+    "**/*.storyboard",
+    "**/*.pbxproj",
+    "**/*.xcscheme",
+    "**/*.m",
+
+    // java
+    "**/build.gradle",
+    "**/gradle-wrapper.properties",
+    "**/gradle.properties",
+    "**/gradlew",
+    "**/gradlew.bat",
+    "**/proguard-rules.pro",
+
+    // javascript
+    "**/package.json",
+    "**/packages-lock.json",
+    "**/tsconfig.json",
+    "**/tslint.json",
+
+    // mcu
+    "../../../demo/mcu/**/*.ld",
+    "../../../demo/mcu/**/*.s",
+    "../../../demo/mcu/**/*_HAL_Driver/**/*",
+    "../../../demo/mcu/**/Drivers/BSP/**/*",
+    "../../../demo/mcu/**/Drivers/CMSIS/**/*",
+    "../../../demo/mcu/**/stm32*",
+    "../../../demo/mcu/**/syscalls.c",
+    "../../../demo/mcu/**/system*",
+    "../../../demo/mcu/imxrt1050/imxrt1050-evkb/source/semihost_hardfault.c",
+    "../../../demo/mcu/generate_pv_params_file.py",
+    "../../../demo/mcu/**/pv_params.h",
+    "../../../demo/mcu/imxrt1050/imxrt1050-evkb/{board,CMSIS,codec,component,device,drivers,startup,utilities,xip}/**/*",
+
+    // react
+    "**/demo/react/src/reportWebVitals.js",
+
+    // react-native
+    "**/*.keystore",
+    "**/BUCK",
+    "**/build_defs.bzl",
+    "**/binding/react-native/test-app/**/*.xml",
+    "**/binding/react-native/test-app/**/*.mm",
+
+    // rust
+    "**/Cargo.toml",
+
+    // unity
+    "**/*.asset",
+    "**/*.meta",
+    "**/*.unity",
+    "**/manifest.json",
+    "../../../demo/unity/images/image_attribution.md",
+
+    // 3rd party
+    "../../../demo/respeaker/ppnrespeakerdemo/apa102.py",
+
+    // test
+    "**/test_data.json"
+  ]
+}

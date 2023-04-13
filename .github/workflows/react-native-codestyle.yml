@@ -11,7 +11,7 @@ on:
       - '**/react-native/*.tsx'
       - '.github/workflows/react-native-codestyle.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '**/react-native/*.js'
       - '**/react-native/*.ts'
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Node.js lts/*
       uses: actions/setup-node@v2
