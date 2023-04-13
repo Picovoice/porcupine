@@ -1,3 +1,4 @@
+demo/** linguist-detectable=false
 lib/** linguist-detectable=false
 resources/** linguist-detectable=false
 
@@ -8,7 +9,6 @@ binding/flutter/android/** linguist-detectable=false
 binding/flutter/ios/** linguist-detectable=false
 binding/go/porcupine_test.go linguist-detectable=false
 binding/ios/PorcupineAppTest/** linguist-detectable=false
-binding/ios/PorcupineErrors.swift linguist-detectable=false
 binding/java/src/ai/picovoice/porcupine/exception/** linguist-detectable=false
 binding/java/test/** linguist-detectable=false
 binding/node/src/platforms.ts linguist-detectable=false
@@ -19,26 +19,5 @@ binding/rust/tests/** linguist-detectable=false
 binding/unity/** linguist-detectable=false
 binding/vue/** linguist-detectable=false
 binding/web/** linguist-detectable=false
-
-demo/android/** linguist-detectable=false
-demo/angular/** linguist-detectable=false
-demo/angular-stt/** linguist-detectable=false
-demo/c/** linguist-detectable=false
-demo/dotnet/** linguist-detectable=false
-demo/dotnet-vui/** linguist-detectable=false
-demo/flutter/** linguist-detectable=false
-demo/go/** linguist-detectable=false
-demo/ios/** linguist-detectable=false
-demo/java/** linguist-detectable=false
-demo/mcu/** linguist-detectable=false
-demo/nodejs/** linguist-detectable=false
-demo/react/** linguist-detectable=false
-demo/react-native/** linguist-detectable=false
-demo/respeaker/** linguist-detectable=false
-demo/respeaker-rpi0/** linguist-detectable=false
-demo/rust/** linguist-detectable=false
-demo/unity/** linguist-detectable=false
-demo/vue/** linguist-detectable=false
-demo/web/** linguist-detectable=false
 
 *.py linguist-detectable=true
