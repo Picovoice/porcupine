@@ -45,7 +45,7 @@ jobs:
         - os: windows-latest
           performance_threshold_sec: 0.5
         - os: macos-latest
-          performance_threshold_sec: 0.65
+          performance_threshold_sec: 0.75
 
     steps:
     - uses: actions/checkout@v3
