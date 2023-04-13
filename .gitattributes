@@ -1,7 +1,7 @@
 lib/** linguist-detectable=false
 resources/** linguist-detectable=false
 
-binding/android/Porcupine/porcupine/src/main/java/ai/picovoice/porcupine/exception/** linguist-detectable=false
+binding/android/** linguist-detectable=false
 binding/angular/** linguist-detectable=false
 binding/dotnet/PorcupineTest/** linguist-detectable=false
 binding/flutter/android/** linguist-detectable=false
