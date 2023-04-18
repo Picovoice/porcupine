@@ -32,17 +32,20 @@
             { // custom keyword with base64-encoded model file
               label: "Papaya whip",
               sensitivity: 0.7,
-              base64: papayaWhip    
+              base64: papayaWhip,
+              forceWrite: true
             },
             {
               label: "Porcupine",
               sensitivity: 0.7,
               publicPath: "porcupine_wasm.ppn",
+              forceWrite: true
             }
           ],
           porcupineKeywordCallback,
           {
-            base64: modelParams
+            base64: modelParams,
+            forceWrite: true
           },
         );
 
