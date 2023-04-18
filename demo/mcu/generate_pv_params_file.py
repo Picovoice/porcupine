@@ -121,7 +121,7 @@ if __name__ == '__main__':
         'en': ('porcupine', 'picovoice', 'bumblebee', 'alexa',),
         'de': ('hey computer',),
         'es': ('hola computadora',),
-        'fr': ('salut ordinateur',),
+        'fr': ('bonjour ordinateur',),
         'it': ('ciao computer',),
         'ja': ('konnichiwa konpyūtā',),
         'ko': ('annyeong keompyuteo',),
