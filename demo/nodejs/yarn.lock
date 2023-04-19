@@ -7,22 +7,15 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.2.0.tgz#216a3b139f56f46e620035c51441388ae1a51ede"
   integrity sha512-/tZSCps9L+XqRUroaCzW/tMXIgH3tC/XfwiqY3qFcV2niBcJTnLNbJ5Du4XvVKY3f/ElZVMFGyJ4SV2oPMCScg==
 
-"@picovoice/pvrecorder-node@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/pvrecorder-node/-/pvrecorder-node-1.1.0.tgz#24102d553d4efe04c0bc6f50e7024ddf24cfc0ee"
-  integrity sha512-Dfm+DbPs+gRPGd1iOhpsH71VVmLBzuAYeGGD4G2QGE+BdauJcEQpQThhLiMmFNAB1FzJmbuMhGuo81MkUX8tGw==
-  dependencies:
-    ncp "^2.0.0"
+"@picovoice/pvrecorder-node@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/pvrecorder-node/-/pvrecorder-node-1.1.2.tgz#e76c4ba9405035be5d350b7eb582aaa93caeaa21"
+  integrity sha512-LWGwR6NGPA5QIBtI+7gcHSmMO/pHwKa8vcY4kxstKNTYCR6zbqgpUMli6pZWfv3RtVXiRZshZkLKfBzy1dGM9Q==
 
 commander@^6.1.0:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
   integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
-
-ncp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
-  integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
 wavefile@^11.0.0:
   version "11.0.0"
