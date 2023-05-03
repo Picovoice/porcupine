@@ -11,3 +11,5 @@ porcupinedemo.jks
 private_key.pepk
 upload_certificate.pem
 test_resources
+*.pv
+*.ppn

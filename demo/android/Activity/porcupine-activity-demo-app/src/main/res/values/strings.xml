@@ -1,21 +1,5 @@
 <resources>
     <string name="app_name">Porcupine Android Activity Demo</string>
-    <string-array name="keywords">
-        <item>Alexa</item>
-        <item>Americano</item>
-        <item>Blueberry</item>
-        <item>Bumblebee</item>
-        <item>Computer</item>
-        <item>Grapefruit</item>
-        <item>Grasshopper</item>
-        <item>Hey Google</item>
-        <item>Hey Siri</item>
-        <item>Jarvis</item>
-        <item>OK Google</item>
-        <item>Picovoice</item>
-        <item>Porcupine</item>
-        <item>Terminator</item>
-    </string-array>
     <string name="keyword_label">Keyword</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
