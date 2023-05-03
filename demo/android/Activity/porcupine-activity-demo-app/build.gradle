@@ -99,7 +99,6 @@ dependencies {
     implementation 'ai.picovoice:porcupine-android:2.2.0'
 
     // Espresso UI Testing
-
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
