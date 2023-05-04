@@ -3,7 +3,7 @@
 		"singleKeyword": [
 			{
 				"language": "ar",
-				"wakeword": "hummus"
+				"wakeword": "الحمص"
 			},
 			{
 				"language": "nl",
@@ -23,7 +23,7 @@
 			},
 			{
 				"language": "hi",
-				"wakeword": "namaste"
+				"wakeword": "नमस्ते"
 			},
 			{
 				"language": "it",
@@ -31,27 +31,27 @@
 			},
 			{
 				"language": "ja",
-				"wakeword": "ringo"
+				"wakeword": "りんご"
 			},
 			{
 				"language": "ko",
-				"wakeword": "bigseubi"
+				"wakeword": "빅스비"
 			},
 			{
 				"language": "zh",
-				"wakeword": "porcupine_zh"
+				"wakeword": "豪猪"
 			},
 			{
 				"language": "pl",
-				"wakeword": "porcupine_pl"
+				"wakeword": "jeżozwierz"
 			},
 			{
 				"language": "pt",
-				"wakeword": "fenomeno"
+				"wakeword": "fenômeno"
 			},
 			{
 				"language": "ru",
-				"wakeword": "pomogite"
+				"wakeword": "помогите"
 			},
 			{
 				"language": "es",
@@ -59,22 +59,22 @@
 			},
 			{
 				"language": "sv",
-				"wakeword": "porcupine_sv"
+				"wakeword": "piggsvin"
 			},
 			{
 				"language": "vn",
-				"wakeword": "chao_chi"
+				"wakeword": "chào chị"
 			}
 		],
 		"multipleKeyword": [
 			{
 				"language": "ar",
-				"wakewords": ["hummus", "coffee", "octopus", "toaster"],
+				"wakewords": ["الحمص", "قهوة", "أخطبوط", "محمصة"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
 				"language": "nl",
-				"wakewords": ["stekelvarken", "hoi_lotte", "koffie", "broodrooster"],
+				"wakewords": ["stekelvarken", "hoi lotte", "koffie", "broodrooster"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
@@ -94,7 +94,7 @@
 			},
 			{
 				"language": "hi",
-				"wakewords": ["namaste", "vidai", "mohabbat", "subhaga"],
+				"wakewords": ["नमस्ते", "विदाई", "मोहब्बत", "सुभग"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
@@ -104,32 +104,32 @@
 			},
 			{
 				"language": "ja",
-				"wakewords": ["ninja", "bushi", "ringo"],
+				"wakewords": ["忍者", "武士", "りんご"],
 				"groundTruth": [2, 1, 0]
 			},
 			{
 				"language": "ko",
-				"wakewords": ["aiseukeulim", "bigseubi", "koppulso"],
+				"wakewords": ["아이스크림", "빅스비", "코뿔소"],
 				"groundTruth": [1, 2, 0]
 			},
 			{
 				"language": "zh",
-				"wakewords": ["porcupine_zh", "coffee_zh", "hello", "dumplings"],
+				"wakewords": ["豪猪", "咖啡", "你好", "水饺"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
 				"language": "pl",
-				"wakewords": ["porcupine_pl", "kawa", "żubrówka", "pierogi"],
+				"wakewords": ["jeżozwierz", "kawa", "żubrówka", "pierogi"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
 				"language": "pt",
-				"wakewords": ["abacaxi", "fenomeno", "formiga"],
+				"wakewords": ["abacaxi", "fenômeno", "formiga"],
 				"groundTruth": [0, 2, 1]
 			},
 			{
 				"language": "ru",
-				"wakewords": ["pomogite", "vnimaniye", "ostorozhnyy", "otkryto"],
+				"wakewords": ["помогите", "внимание", "осторожный", "открыто"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
@@ -139,12 +139,12 @@
 			},
 			{
 				"language": "sv",
-				"wakewords": ["porcupine_sv", "kaffe_sv", "köttbullar", "hygge"],
+				"wakewords": ["piggsvin", "kaffe", "köttbullar", "hygge"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
 				"language": "vn",
-				"wakewords": ["con_nhim", "chao_chi", "may_pha_ca_phe", "may_nuong_banh_mi"],
+				"wakewords": ["con nhím", "chào chị", "máy pha cà phê", "máy nướng bánh mì"],
 				"groundTruth": [0, 1, 2, 3]
 			}
 		]
