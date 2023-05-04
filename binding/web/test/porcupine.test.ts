@@ -244,7 +244,9 @@ describe('Porcupine Binding', function () {
           const suffix =
             testParam.language === 'en' ? '' : `_${testParam.language}`;
           cy.getFramesFromFile(
-            `audio_samples/multiple_keywords${suffix}.wav`
+            `audio_samples/${createHash('md5')
+              .update(`multiple_keywords${suffix}`)
+              .digest('hex')}.wav`
           ).then(async pcm => {
             const keywords: PorcupineKeyword[] = testParam.wakewords.map(
               wakeword => ({
