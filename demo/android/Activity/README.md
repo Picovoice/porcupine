@@ -8,9 +8,13 @@ Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` 
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
-## Usage
+## Setup
 
-Launch the demo on your phone using Android Studio.
+1. Open the project in Android Studio
+2. Go to `Build > Select Build Variant...` and select the language you would like to run the demo in (e.g. enDebug -> English, itRelease -> Italian)
+3. Build and run on an installed simulator or a connected Android device
+
+## Usage
 
 1. Select the wake word using the dropdown
 2. Press start

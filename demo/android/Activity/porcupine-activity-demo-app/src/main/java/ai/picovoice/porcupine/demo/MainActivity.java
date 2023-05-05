@@ -1,5 +1,5 @@
 /*
-    Copyright 2021-2022 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -33,6 +33,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Objects;
+
+import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineActivationException;
 import ai.picovoice.porcupine.PorcupineActivationLimitException;
 import ai.picovoice.porcupine.PorcupineActivationRefusedException;
@@ -85,12 +90,20 @@ public class MainActivity extends AppCompatActivity {
             final Spinner mySpinner = findViewById(R.id.keyword_spinner);
             final String keywordName = mySpinner.getSelectedItem().toString();
 
-            String keyword = keywordName.toLowerCase().replace(" ", "_") + ".ppn";
-            porcupineManager = new PorcupineManager.Builder()
+            PorcupineManager.Builder builder = new PorcupineManager.Builder()
                     .setAccessKey(ACCESS_KEY)
-                    .setKeywordPath(keyword)
-                    .setSensitivity(0.7f)
-                    .build(getApplicationContext(), porcupineManagerCallback);
+                    .setSensitivity(0.7f);
+            if (Objects.equals(BuildConfig.FLAVOR, "en")) {
+                String keyword = keywordName.toUpperCase().replace(" ", "_");
+                builder.setKeyword(Porcupine.BuiltInKeyword.valueOf(keyword));
+            } else {
+                String keywordFile = keywordName.toLowerCase().replace(" ", "_") + ".ppn";
+                builder.setKeywordPath("keywords/" + keywordFile);
+                String model = "porcupine_params_" + BuildConfig.FLAVOR + ".pv";
+                builder.setModelPath("models/" + model);
+            }
+
+            porcupineManager = builder.build(getApplicationContext(), porcupineManagerCallback);
             porcupineManager.start();
         } catch (PorcupineInvalidArgumentException e) {
             onPorcupineInitError(
@@ -144,12 +157,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void configureKeywordSpinner() {
         Spinner spinner = findViewById(R.id.keyword_spinner);
+        ArrayList<String> spinnerItems = new ArrayList<>();
+        if (Objects.equals(BuildConfig.FLAVOR, "en")) {
+            for (Porcupine.BuiltInKeyword k : Porcupine.BuiltInKeyword.values()) {
+                spinnerItems.add(k.name().toLowerCase().replace("_", " "));
+            }
+        } else {
+            try {
+                for (String keyword : this.getAssets().list("keywords")) {
+                    spinnerItems.add(keyword.replace("_", " ").replace(".ppn", ""));
+                }
+            } catch (IOException ex) {
+                displayError("Unable to get keyword files for given language");
+            }
+        }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
-                R.array.keywords,
-                R.layout.keyword_spinner_item);
-        adapter.setDropDownViewResource(R.layout.keyword_spinner_item);
+                R.layout.keyword_spinner_item,
+                spinnerItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
         final ToggleButton recordButton = findViewById(R.id.record_button);
@@ -188,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean hasRecordPermission() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == 
-            PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
+                PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestRecordPermission() {
@@ -198,8 +225,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(
-            int requestCode, 
-            @NonNull String[] permissions, 
+            int requestCode,
+            @NonNull String[] permissions,
             @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {

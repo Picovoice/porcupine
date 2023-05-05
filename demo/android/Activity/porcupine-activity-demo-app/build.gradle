@@ -35,10 +35,50 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    def testDataFile = file('../../../../resources/.test/test_data.json')
+    def parsedJson = new groovy.json.JsonSlurper().parseText(testDataFile.text)
+    def languages = []
+    parsedJson.tests.singleKeyword.each { a ->
+        languages.add(a.language)
+    }
+
+    flavorDimensions "language"
+    productFlavors {
+        languages.each { language ->
+            "$language" {
+                applicationIdSuffix ".$language"
+
+            }
+        }
+
+        all { flavor ->
+            delete fileTree("$projectDir/src/main/assets") {
+                exclude '**/.gitkeep'
+            }
+            task("${flavor.name}CopyParams", type: Copy) {
+                if (flavor.name != 'en') {
+                    from("$projectDir/../../../../lib/common/")
+                    include("porcupine_params_${flavor.name}.pv")
+                    into("$projectDir/src/main/assets/models")
+                }
+            }
+            task("${flavor.name}CopyKeywords", type: Copy) {
+                description = "Copy ${flavor.name} resources"
+                if (flavor.name != 'en') {
+                    from("$projectDir/../../../../resources/keyword_files_${flavor.name}/android")
+                    include('*.ppn')
+                    into("$projectDir/src/main/assets/keywords")
+                    rename { String fileName ->
+                        fileName.replace("_android", "").replace(" ", "_")
+                    }
+                }
+            }
+        }
+    }
     sourceSets {
         androidTest {
             java {
-                System.out.println()
                 if (properties.getProperty("performanceThresholdSec", "").length() == 0) {
                     exclude "**/PerformanceTest.java"
                 } else {
@@ -67,26 +107,13 @@ dependencies {
     androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
 }
 
-task copyPorcupineResources(type: Copy) {
-    from("$projectDir/../../../../resources/keyword_files/android")
-    include('alexa_android.ppn',
-            'americano_android.ppn',
-            'blueberry_android.ppn',
-            'bumblebee_android.ppn',
-            'computer_android.ppn',
-            'grapefruit_android.ppn',
-            'grasshopper_android.ppn',
-            'hey google_android.ppn',
-            'hey siri_android.ppn',
-            'jarvis_android.ppn',
-            'ok google_android.ppn',
-            'picovoice_android.ppn',
-            'porcupine_android.ppn',
-            'terminator_android.ppn')
-    into("$projectDir/src/main/assets")
-    rename { String fileName ->
-        fileName.replace("_android", "").replace(" ", "_")
+
+afterEvaluate {
+    android.productFlavors.all {
+        flavor ->
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyParams"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyParams"
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyKeywords"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyKeywords"
     }
 }
-
-preBuild.dependsOn(copyPorcupineResources)
