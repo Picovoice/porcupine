@@ -35,7 +35,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             let bundle = Bundle(for: type(of: self))
             let keywordUrls: [URL] = bundle.urls(forResourcesWithExtension: "ppn", subdirectory: "keywords")!
             for k in keywordUrls {
-                let keyword = k.lastPathComponent.replacingOccurrences(of: "_ios.ppn", with: "").replacingOccurrences(of: "_", with: " ")
+                let keyword = k.lastPathComponent
+                    .replacingOccurrences(of: "_ios.ppn", with: "")
+                    .replacingOccurrences(of: "_", with: " ")
                 wakeWordKeys.append(keyword)
             }
         }
@@ -116,8 +118,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                         errorCallback: errorCallback)
                 } else {
                     let bundle = Bundle(for: type(of: self))
-                    let keywordUrl: URL = bundle.url(forResource: "\(wakeWord.lowercased())_ios", withExtension: "ppn", subdirectory: "keywords")!
-                    let modelUrl: URL = bundle.url(forResource: "porcupine_params_\(language)", withExtension: "pv", subdirectory: "models")!
+                    let keywordUrl: URL = bundle.url(
+                        forResource: "\(wakeWord.lowercased())_ios",
+                        withExtension: "ppn",
+                        subdirectory: "keywords")!
+                    let modelUrl: URL = bundle.url(
+                        forResource: "porcupine_params_\(language)",
+                        withExtension: "pv",
+                        subdirectory: "models")!
                     porcupineManager = try PorcupineManager(
                         accessKey: accessKey,
                         keywordPath: keywordUrl.path,

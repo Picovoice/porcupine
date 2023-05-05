@@ -166,6 +166,7 @@ slist
 snowboy
 soundfile
 spidev
+SRCROOT
 stachelschwein
 stdint
 stdlib
@@ -194,5 +195,8 @@ webfonts
 webvp
 werror
 xcframework
+xcodeproj
+xcschemes
+xcshareddata
 xcworkspace
 xpresso
