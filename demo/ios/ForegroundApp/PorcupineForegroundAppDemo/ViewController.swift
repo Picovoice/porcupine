@@ -27,7 +27,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
         if language == "en" {
             for w in Porcupine.BuiltInKeyword.allCases {
                 wakeWordKeys.append(w.rawValue)
