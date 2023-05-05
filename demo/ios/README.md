@@ -26,17 +26,23 @@ Open up the demo and press start. The demo listens for the wake word "Porcupine"
 
 ## ForegroundApp Demo
 
-This demo runs wake word detection while the application is in focus. 
+This demo runs wake word detection while the application is in focus.
 
-To run the foreground application demo, go to [ForegroundApp](./ForegroundApp) directory. Then run:
+To run the foreground application demo:
+
+1) Go to [ForegroundApp](./ForegroundApp) directory. Then run:
 
 ```console
 pod install
 ```
 
-Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
+2) Open the `PorcupineForegroundAppDemo.xcworkspace` in XCode
 
-Open the `PorcupineForegroundAppDemo.xcworkspace` and run the demo.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
 
-The demo allows you to select any of our built-in keywords for detection. Press start and say the selected keyword.
+4) Select the scheme for the language you would like to demo (e.g. `arScheme` -> Arabic Demo, `deScheme` -> German Demo)
+
+5) Run the demo with a simulator or connected iOS device
+
+The demo allows you to select any of the pre-built keywords for detection. Press start and say the selected keyword.
 
