@@ -196,6 +196,7 @@ webvp
 werror
 xcframework
 xcodeproj
+xcscheme
 xcschemes
 xcshareddata
 xcworkspace
