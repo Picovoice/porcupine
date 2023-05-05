@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2021 Picovoice Inc.
+//  Copyright 2018-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -16,19 +16,31 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var errorPanel: UITextView!
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
-    var wakeWordDict = [String: Porcupine.BuiltInKeyword]()
+    let language: String = ProcessInfo.processInfo.environment["LANGUAGE"]!
+
     var wakeWordKeys = [String]()
-    var wakeWord = Porcupine.BuiltInKeyword.alexa
+    var wakeWord = ""
 
     var porcupineManager: PorcupineManager!
     var isRecording = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        for w in Porcupine.BuiltInKeyword.allCases {
-            wakeWordDict[w.rawValue] = w
+
+
+        if language == "en" {
+            for w in Porcupine.BuiltInKeyword.allCases {
+                wakeWordKeys.append(w.rawValue)
+            }
+        } else {
+            let bundle = Bundle(for: type(of: self))
+            let keywordUrls: [URL] = bundle.urls(forResourcesWithExtension: "ppn", subdirectory: "keywords")!
+            for k in keywordUrls {
+                let keyword = k.lastPathComponent.replacingOccurrences(of: "_ios.ppn", with: "").replacingOccurrences(of: "_", with: " ")
+                wakeWordKeys.append(keyword)
+            }
         }
-        wakeWordKeys = [String](wakeWordDict.keys.sorted())
+        wakeWord = wakeWordKeys[0]
 
         wakeWordPicker.delegate = self
         wakeWordPicker.dataSource = self
@@ -71,7 +83,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        wakeWord = wakeWordDict[wakeWordKeys[row]]!
+        wakeWord = wakeWordKeys[row]
     }
 
     func showErrorAlert(_ message: String) {
@@ -96,11 +108,25 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             }
 
             do {
-                porcupineManager = try PorcupineManager(
-                    accessKey: accessKey,
-                    keyword: wakeWord,
-                    onDetection: keywordCallback,
-                    errorCallback: errorCallback)
+                if language == "en" {
+                    print(wakeWord)
+                    porcupineManager = try PorcupineManager(
+                        accessKey: accessKey,
+                        keyword: Porcupine.BuiltInKeyword.init(rawValue: wakeWord)!,
+                        onDetection: keywordCallback,
+                        errorCallback: errorCallback)
+                } else {
+                    let bundle = Bundle(for: type(of: self))
+                    let keywordUrl: URL = bundle.url(forResource: "\(wakeWord.lowercased())_ios", withExtension: "ppn", subdirectory: "keywords")!
+                    let modelUrl: URL = bundle.url(forResource: "porcupine_params_\(language)", withExtension: "pv", subdirectory: "models")!
+                    porcupineManager = try PorcupineManager(
+                        accessKey: accessKey,
+                        keywordPath: keywordUrl.path,
+                        modelPath: modelUrl.path,
+                        onDetection: keywordCallback,
+                        errorCallback: errorCallback)
+                }
+
                 try porcupineManager.start()
 
                 wakeWordPicker.isUserInteractionEnabled = false
