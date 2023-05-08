@@ -16,7 +16,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var errorPanel: UITextView!
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
-    
+
     let language: String = ProcessInfo.processInfo.environment["LANGUAGE"]!
 
     var wakeWordKeys = [String]()
