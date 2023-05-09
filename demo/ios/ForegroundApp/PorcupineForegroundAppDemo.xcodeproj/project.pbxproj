@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02A026312A05805F005CA1BA /* pre-build.sh in Resources */ = {isa = PBXBuildFile; fileRef = 02C2CC812A0327E800EF9DEA /* pre-build.sh */; };
+		02C2CC7E2A03205E00EF9DEA /* keywords in Resources */ = {isa = PBXBuildFile; fileRef = 02C2CC7D2A03205E00EF9DEA /* keywords */; };
+		02C2CC802A03206800EF9DEA /* models in Resources */ = {isa = PBXBuildFile; fileRef = 02C2CC7F2A03206800EF9DEA /* models */; };
 		98C07FAE08204ECF35C62683 /* libPods-PorcupineForegroundAppDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E42DB18835CE685BCEE511C /* libPods-PorcupineForegroundAppDemo.a */; };
 		BBE66BCE205DD6F7006005B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */; };
 		BBE66BD0205DD6F7006005B1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE66BCF205DD6F7006005B1 /* ViewController.swift */; };
@@ -30,6 +33,9 @@
 
 /* Begin PBXFileReference section */
 		026A05172693CF2C005C4511 /* libPorcupine-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPorcupine-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		02C2CC7D2A03205E00EF9DEA /* keywords */ = {isa = PBXFileReference; lastKnownFileType = folder; path = keywords; sourceTree = "<group>"; };
+		02C2CC7F2A03206800EF9DEA /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
+		02C2CC812A0327E800EF9DEA /* pre-build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "pre-build.sh"; sourceTree = "<group>"; };
 		1E42DB18835CE685BCEE511C /* libPods-PorcupineForegroundAppDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineForegroundAppDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CC3815B148D5148AA1A5964 /* Pods-PorcupineForegroundAppDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineForegroundAppDemo.debug.xcconfig"; path = "Target Support Files/Pods-PorcupineForegroundAppDemo/Pods-PorcupineForegroundAppDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		BBE66BCA205DD6F7006005B1 /* PorcupineForegroundAppDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PorcupineForegroundAppDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +81,7 @@
 		BBE66BC1205DD6F7006005B1 = {
 			isa = PBXGroup;
 			children = (
+				02C2CC812A0327E800EF9DEA /* pre-build.sh */,
 				BBE66BCC205DD6F7006005B1 /* PorcupineForegroundAppDemo */,
 				BBE66BCB205DD6F7006005B1 /* Products */,
 				BB65C7B0205F4BF400E8770E /* Frameworks */,
@@ -93,6 +100,8 @@
 		BBE66BCC205DD6F7006005B1 /* PorcupineForegroundAppDemo */ = {
 			isa = PBXGroup;
 			children = (
+				02C2CC7F2A03206800EF9DEA /* models */,
+				02C2CC7D2A03205E00EF9DEA /* keywords */,
 				BBE66BCD205DD6F7006005B1 /* AppDelegate.swift */,
 				BBE66BCF205DD6F7006005B1 /* ViewController.swift */,
 				BBE66BD1205DD6F7006005B1 /* Main.storyboard */,
@@ -172,7 +181,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02C2CC802A03206800EF9DEA /* models in Resources */,
+				02C2CC7E2A03205E00EF9DEA /* keywords in Resources */,
 				BBE66BD8205DD6F7006005B1 /* LaunchScreen.storyboard in Resources */,
+				02A026312A05805F005CA1BA /* pre-build.sh in Resources */,
 				BBE66BD5205DD6F7006005B1 /* Assets.xcassets in Resources */,
 				BBE66BD3205DD6F7006005B1 /* Main.storyboard in Resources */,
 			);
