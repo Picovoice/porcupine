@@ -5,9 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "copyppn": "ncp ../../resources/keyword_files/wasm/porcupine_wasm.ppn ./porcupine_wasm.ppn && ncp \"../../resources/keyword_files/wasm/papaya whip_wasm.ppn\" \"./papaya whip_wasm.ppn\"",
-    "postinstall": "yarn copyppn && npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./porcupine_params.js && npx pvbase64 -i \"./papaya whip_wasm.ppn\" -o papaya_whip.js -n papayaWhip",
-    "start": "http-server -a localhost -p 5000"
+    "start": "run(){ if node scripts/prepare_demo.js $1 == 0; then http-server -a localhost -p 5000; fi }; run"
   },
   "keywords": [
     "Picovoice",
