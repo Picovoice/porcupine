@@ -11,7 +11,7 @@
 
     window.addEventListener('load', function () {
       let usingBuiltIns = false;
-      if(porcupineKeywords.length === 0) {
+      if(porcupineKeywords.length === 0 && porcupineModel.publicPath.endsWith("porcupine_params.pv")) {
         usingBuiltIns = true;
         for(const k in PorcupineWeb.BuiltInKeyword) {
           porcupineKeywords.push(k);
