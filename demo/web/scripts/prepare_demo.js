@@ -58,7 +58,6 @@ if (language !== "en") {
     console.error(error);
     process.exit(1);
   }
-} else {
 }
 
 fs.writeFileSync(

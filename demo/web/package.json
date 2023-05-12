@@ -21,7 +21,6 @@
     "@picovoice/web-voice-processor": "~4.0.6"
   },
   "devDependencies": {
-    "http-server": "^14.0.0",
-    "ncp": "^2.0.0"
+    "http-server": "^14.0.0"
   }
 }
