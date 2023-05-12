@@ -3,9 +3,30 @@
 <head>
   <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
   <script src="node_modules/@picovoice/porcupine-web/dist/iife/index.js"></script>
-  <script src="porcupine_params.js"></script>
-  <script src="papaya_whip.js"></script>
+  <script src="keywords/porcupineKeywords.js"></script>
+  <script src="models/porcupineModel.js"></script>
   <script type="application/javascript">
+
+    let porcupine = undefined;
+
+    window.addEventListener('load', function () {
+      let usingBuiltIns = false;
+      if(porcupineKeywords.length === 0 && porcupineModel.publicPath.endsWith("porcupine_params.pv")) {
+        usingBuiltIns = true;
+        for(const k in PorcupineWeb.BuiltInKeyword) {
+          porcupineKeywords.push(k);
+        }
+      }
+
+      let select = document.getElementById("keywords");
+      for(let i = 0; i < porcupineKeywords.length; i++) {
+        let el = document.createElement("option");
+        el.textContent = usingBuiltIns ? PorcupineWeb.BuiltInKeyword[porcupineKeywords[i]] : porcupineKeywords[i].label;
+        el.value = `${i}`;
+        select.appendChild(el);
+      }
+    });
+
     function writeMessage(message) {
       console.log(message);
       document.getElementById("status").innerHTML = message;
@@ -22,31 +43,19 @@
       document.getElementById("result").innerHTML = message;
     }
 
-    async function startPorcupine(accessKey) {
+    async function startPorcupine(accessKey, keywordIndex) {
+      if (window.WebVoiceProcessor.WebVoiceProcessor.isRecording) {
+        await window.WebVoiceProcessor.WebVoiceProcessor.unsubscribe(porcupine);
+        await porcupine.terminate();
+      }
+
       writeMessage("Porcupine is loading. Please wait...");
       try {
-        let porcupine = await PorcupineWeb.PorcupineWorker.create(
+        porcupine = await PorcupineWeb.PorcupineWorker.create(
           accessKey,
-          [
-            PorcupineWeb.BuiltInKeyword.Picovoice, // built-in keyword
-            { // custom keyword with base64-encoded model file
-              label: "Papaya whip",
-              sensitivity: 0.7,
-              base64: papayaWhip,
-              forceWrite: true
-            },
-            {
-              label: "Porcupine",
-              sensitivity: 0.7,
-              publicPath: "porcupine_wasm.ppn",
-              forceWrite: true
-            }
-          ],
+          [porcupineKeywords[keywordIndex]],
           porcupineKeywordCallback,
-          {
-            base64: modelParams,
-            forceWrite: true
-          },
+          porcupineModel
         );
 
         writeMessage("Porcupine worker ready!");
@@ -68,18 +77,7 @@
 <p>This demo uses Porcupine for Web and the WebVoiceProcessor to:</p>
 <ol>
   <li>
-    Create an instance of Porcupine that listens for:
-    <ul>
-      <li>
-        <b>Picovoice</b> (a built-in keyword, provided by name)
-      </li>
-      <li>
-        <b>Papaya Whip</b> (a custom keyword provided via its base64 representation)
-      </li>
-      <li>
-        <b>Porcupine</b> (another custom keyword provided via a `ppn` file)
-      </li>
-    </ul>
+    Create an instance of Porcupine that listens for the selected keyword.
   </li>
   <li>
     Acquire microphone (& ask permission) data stream and convert to voice
@@ -91,7 +89,8 @@
     Listen for keyword detection events from the Porcupine engines and output them to the page.
   </li>
 </ol>
-After entering the AccessKey, click the "Start Porcupine" button.
+<p>After entering the AccessKey, click the "Start Porcupine" button.</p>
+<p>While listening you can try out different keywords using the "Keywords" dropdown.</p>
 <hr/>
 <label for="accessKey"
 >AccessKey obtained from
@@ -102,8 +101,19 @@ After entering the AccessKey, click the "Start Porcupine" button.
         type="button"
         id="submit"
         value="Start Porcupine"
-        onclick="startPorcupine(document.getElementById('accessKey').value)"
+        onclick="startPorcupine(
+                document.getElementById('accessKey').value,
+                parseInt(document.getElementById('keywords').value))"
 />
+<br>
+<br>
+<label for="keywords">Keyword:</label>
+<select
+        id="keywords"
+        name="keywords"
+        onchange="if (window.WebVoiceProcessor.WebVoiceProcessor.isRecording) { startPorcupine(
+                document.getElementById('accessKey').value,
+                parseInt(document.getElementById('keywords').value)) }"></select>
 <hr/>
 <div id="status"></div>
 <br>

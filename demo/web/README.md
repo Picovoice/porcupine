@@ -14,18 +14,20 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Install & run
 
-Use `yarn` or `npm` to install the dependencies, and the `start` script to start a local web server hosting the demo.
+Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code 
+to start a local web server hosting the demo in the language of your choice (e.g. `de` -> German, `ko` -> Korean). 
+To see a list of available languages, run `start` without a language code.
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run start
+npm run start ${LANGUAGE}
 ```
 
 Open `localhost:5000` in your web browser, as hinted at in the output:
@@ -36,5 +38,4 @@ Available on:
 Hit CTRL-C to stop the server
 ```
 
-Wait until Porcupine and the WebVoiceProcessor have initialized. Say any phrase and Porcupine will display detection
-events on the screen.
+Wait until Porcupine and the WebVoiceProcessor have initialized. Select a keyword and start recording to detect it.
