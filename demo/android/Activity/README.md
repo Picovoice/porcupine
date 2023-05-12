@@ -11,7 +11,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 ## Setup
 
 1. Open the project in Android Studio
-2. Copy your `AccessKey` into the `ACCESS_KEY` variable in (MainActivity.java)[./porcupine-activity-demo-app/src/main/java/ai/picovoice/porcupine/demo/MainActivity.java].
+2. Copy your `AccessKey` into the `ACCESS_KEY` variable in [MainActivity.java](./porcupine-activity-demo-app/src/main/java/ai/picovoice/porcupine/demo/MainActivity.java).
 3. Go to `Build > Select Build Variant...` and select the language you would like to run the demo in (e.g. enDebug -> English, itRelease -> Italian)
 4. Build and run on an installed simulator or a connected Android device
 
