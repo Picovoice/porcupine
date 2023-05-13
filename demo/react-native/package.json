@@ -6,7 +6,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "android-run": "react-native run-android",
+    "android-run": "run(){ if node scripts/prepare_demo.js $1 == 0; then react-native run-android; fi }; run",
     "android-install": "yarn",
     "ios-run": "react-native run-ios",
     "ios-link": "cd ios && pod install && cd ..",
