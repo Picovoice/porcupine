@@ -41,15 +41,15 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 Below are the colors associated with supported wake words for this demo:
 <!-- markdown-link-check-disable -->
-- ![#ffff33](../../resources/images/ffff33.png) `Alexa`
-- ![#ff8000](../../resources/images/ff8000.png) `Bumblebee`
-- ![#ffffff](../../resources/images/ffffff.png) `Computer`
-- ![#ff0000](../../resources/images/ff0000.png) `Hey Google`
-- ![#800080](../../resources/images/800080.png) `Hey Siri`
-- ![#ff3399](../../resources/images/ff3399.png) `Jarvis`
-- ![#00ff00](../../resources/images/00ff00.png) `Picovoice`
-- ![#0000ff](../../resources/images/0000ff.png) `Porcupine`
-- ![#000000](../../resources/images/000000.png) `Terminator`
+- ![#ffff33](../../resources/.images/ffff33.png) `Alexa`
+- ![#ff8000](../../resources/.images/ff8000.png) `Bumblebee`
+- ![#ffffff](../../resources/.images/ffffff.png) `Computer`
+- ![#ff0000](../../resources/.images/ff0000.png) `Hey Google`
+- ![#800080](../../resources/.images/800080.png) `Hey Siri`
+- ![#ff3399](../../resources/.images/ff3399.png) `Jarvis`
+- ![#00ff00](../../resources/.images/00ff00.png) `Picovoice`
+- ![#0000ff](../../resources/.images/0000ff.png) `Porcupine`
+- ![#000000](../../resources/.images/000000.png) `Terminator`
 <!-- markdown-link-check-enable -->
 Run the demo:
 
