@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useEffect, useState, useCallback, useRef} from "react";
 
 import {BuiltInKeyword, PorcupineKeyword} from "@picovoice/porcupine-web";
 import {usePorcupine} from "@picovoice/porcupine-react";
@@ -15,8 +15,9 @@ if (porcupineKeywords.length === 0 && porcupineModel.publicPath.endsWith("porcup
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
-  const [accessKey, setAccessKey] = useState("");
   const [keyword, setKeyword] = useState<PorcupineKeyword>(porcupineKeywords[0]);
+
+  const accessKeyRef = useRef("")
 
   const {
     keywordDetection,
@@ -30,16 +31,16 @@ export default function VoiceWidget() {
   } = usePorcupine();
 
   const initEngine = useCallback(async () => {
-    if (accessKey.length === 0) {
+    if (accessKeyRef.current.length === 0) {
       return;
     }
 
     await init(
-      accessKey,
+      accessKeyRef.current,
       [keyword],
       porcupineModel
     );
-  }, [init, keyword, accessKey])
+  }, [init, keyword])
 
   const setSelectedKeyword = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = e.target.value;
@@ -76,7 +77,7 @@ export default function VoiceWidget() {
           <input
             type="text"
             name="accessKey"
-            onChange={(value) => setAccessKey(value.target.value)}
+            onChange={(e) => {accessKeyRef.current = e.target.value}}
           />
           <button
             className="init-button"
