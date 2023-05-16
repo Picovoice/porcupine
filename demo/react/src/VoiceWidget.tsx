@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 
 import {BuiltInKeyword, PorcupineKeyword} from "@picovoice/porcupine-web";
 import {usePorcupine} from "@picovoice/porcupine-react";
@@ -16,7 +16,7 @@ if (porcupineKeywords.length === 0 && porcupineModel.publicPath.endsWith("porcup
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
   const [accessKey, setAccessKey] = useState("");
-  const [keywords] = useState<Array<PorcupineKeyword>>(porcupineKeywords);
+  const [keyword, setKeyword] = useState<PorcupineKeyword>(porcupineKeywords[0]);
 
   const {
     keywordDetection,
@@ -29,13 +29,36 @@ export default function VoiceWidget() {
     release
   } = usePorcupine();
 
-  const initEngine = async () => {
+  const initEngine = useCallback(async () => {
+    if (accessKey.length === 0) {
+      return;
+    }
+
     await init(
       accessKey,
-      keywords,
+      [keyword],
       porcupineModel
     );
+  }, [init, keyword, accessKey])
+
+  const setSelectedKeyword = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = e.target.value;
+    for (const k of porcupineKeywords) {
+      if (k.label === selected || k.builtin === selected) {
+        setKeyword(k);
+        return;
+      }
+    }
   }
+
+  useEffect(() => {
+    const changeKeyword = async () => {
+      await release();
+      await initEngine();
+    }
+
+    changeKeyword();
+  }, [initEngine, release])
 
   useEffect(() => {
     if (keywordDetection !== null) {
@@ -49,7 +72,7 @@ export default function VoiceWidget() {
       <h3>
         <label>
           AccessKey obtained from{" "}
-          <a href="https://console.picovoice.ai/">Picovoice Console</a>:
+          <a href="https://console.picovoice.ai/">Picovoice Console</a>:{" "}
           <input
             type="text"
             name="accessKey"
@@ -67,10 +90,24 @@ export default function VoiceWidget() {
       <h3>Listening: {JSON.stringify(isListening)}</h3>
       <h3>Error: {JSON.stringify(error !== null)}</h3>
       {error && (
-        <p className="error-message">{JSON.stringify(error)}</p>
+        <p className="error-message">{error.toString()}</p>
       )}
-      <h3>Keywords:</h3>
-      <h4>{porcupineKeywords.map(k => k.label ?? k.builtin).join(', ')}</h4>
+      <h3>
+        <label>Keyword: </label>
+        <select
+          value={(keyword as any).label ?? (keyword as any).builtin}
+          onChange={(e) => setSelectedKeyword(e)}
+        >
+          {porcupineKeywords.map(k =>
+            <option
+              key={k.label ?? k.builtin}
+              value={k.label ?? k.builtin}
+            >
+              {k.label ?? k.builtin}
+            </option>
+          )}
+        </select>
+      </h3>
       <br/>
       <button
         onClick={() => start()}
