@@ -10,8 +10,7 @@
     "android-install": "yarn",
     "ios-run": "run(){ if node scripts/prepare_demo.js $1 == 0; then shift; react-native run-ios \"$@\"; fi }; run",
     "ios-link": "cd ios && pod install && cd ..",
-    "ios-install": "yarn && yarn ios-link",
-    "postinstall": "patch-package"
+    "ios-install": "yarn && yarn ios-link"
   },
   "dependencies": {
     "@picovoice/porcupine-react-native": "~2.2.0",
@@ -32,7 +31,6 @@
     "eslint": "^8.28.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
-    "patch-package": "^7.0.0",
     "prettier": "^2.8.0",
     "react-test-renderer": "17.0.2",
     "typescript": "^4.9.3"
