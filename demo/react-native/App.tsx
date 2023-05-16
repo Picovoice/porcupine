@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -19,16 +19,18 @@ import {
 } from '@picovoice/porcupine-react-native';
 import {Picker} from '@react-native-picker/picker';
 
+import {language, keywords} from './params.json';
+
 type Props = {};
 type State = {
-  currentKeyword: BuiltInKeywords;
+  currentKeyword: string | BuiltInKeywords;
   keywordOptions: (string | BuiltInKeywords)[];
   buttonText: string;
   buttonDisabled: boolean;
   isListening: boolean;
   backgroundColour: string;
   isError: boolean;
-  errorMessage: string;
+  errorMessage: string | null;
 };
 
 export default class App extends Component<Props, State> {
@@ -39,9 +41,13 @@ export default class App extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+
+    const keywordOptions =
+      language === 'en' ? Object.values(BuiltInKeywords) : keywords;
+
     this.state = {
-      keywordOptions: Object.values(BuiltInKeywords),
-      currentKeyword: BuiltInKeywords.ALEXA,
+      keywordOptions: keywordOptions,
+      currentKeyword: keywordOptions[0],
       buttonText: 'Start',
       buttonDisabled: false,
       isListening: false,
@@ -123,41 +129,57 @@ export default class App extends Component<Props, State> {
     }
   }
 
-  async _loadNewKeyword(keyword: BuiltInKeywords) {
+  async _loadNewKeyword(keyword: string | BuiltInKeywords) {
     if (this.state.isListening) {
       this._stopProcessing();
     }
     this._porcupineManager?.delete();
 
     this.setState({currentKeyword: keyword});
-    try {
-      this._porcupineManager = await PorcupineManager.fromBuiltInKeywords(
-        this._accessKey,
-        [keyword],
-        (keywordIndex: number) => {
-          if (keywordIndex >= 0) {
-            this.setState({
-              backgroundColour: this._detectionColour,
-            });
 
-            setTimeout(() => {
-              this.setState({
-                backgroundColour: this._defaultColour,
-              });
-            }, 1000);
-          }
-        },
-        (error) => {
-          this._stopProcessing();
+    const detectionCallback = (keywordIndex: number) => {
+      if (keywordIndex >= 0) {
+        this.setState({
+          backgroundColour: this._detectionColour,
+        });
+
+        setTimeout(() => {
           this.setState({
-            isError: true,
-            errorMessage: error.message,
+            backgroundColour: this._defaultColour,
           });
-        },
-        '',
-        [0.5],
-      );
-    } catch (err) {
+        }, 1000);
+      }
+    };
+
+    const processErrorCallback = (error: PorcupineErrors.PorcupineError) => {
+      this._stopProcessing();
+      this.setState({
+        isError: true,
+        errorMessage: error.message,
+      });
+    };
+
+    try {
+      if (language === 'en') {
+        this._porcupineManager = await PorcupineManager.fromBuiltInKeywords(
+          this._accessKey,
+          [keyword as BuiltInKeywords],
+          detectionCallback,
+          processErrorCallback,
+        );
+      } else {
+        const keywordPath = `keywords/${keyword}_${Platform.OS}.ppn`;
+        const modelPath = `models/porcupine_params_${language}.pv`;
+
+        this._porcupineManager = await PorcupineManager.fromKeywordPaths(
+          this._accessKey,
+          [keywordPath],
+          detectionCallback,
+          processErrorCallback,
+          modelPath,
+        );
+      }
+    } catch (err: any) {
       let errorMessage = '';
       if (err instanceof PorcupineErrors.PorcupineInvalidArgumentError) {
         errorMessage = `${err.message}\nPlease make sure accessKey ${this._accessKey} is a valid access key.`;
@@ -198,7 +220,7 @@ export default class App extends Component<Props, State> {
         },
       );
       return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (err) {
+    } catch (err: any) {
       this.setState({
         isError: true,
         errorMessage: err.toString(),

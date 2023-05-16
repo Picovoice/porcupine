@@ -6,9 +6,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "android-run": "react-native run-android",
+    "android-run": "run(){ if node scripts/prepare_demo.js $1 == 0; then shift; react-native run-android \"$@\"; fi }; run",
     "android-install": "yarn",
-    "ios-run": "react-native run-ios",
+    "ios-run": "run(){ if node scripts/prepare_demo.js $1 == 0; then shift; react-native run-ios \"$@\"; fi }; run",
     "ios-link": "cd ios && pod install && cd ..",
     "ios-install": "yarn && yarn ios-link"
   },
@@ -16,21 +16,23 @@
     "@picovoice/porcupine-react-native": "~2.2.0",
     "@picovoice/react-native-voice-processor": "~1.1.0",
     "@react-native-picker/picker": "^1.9.2",
-    "react": "^17.0.2",
-    "react-native": "^0.68.5"
+    "react": "17.0.2",
+    "react-native": "0.68.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.1.6",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^3.2.0",
+    "@tsconfig/react-native": "^3.0.1",
     "@types/react": "^17.0.33",
-    "@types/react-native": "^0.68.5",
+    "@types/react-native": "^0.68.7",
     "babel-jest": "^26.6.3",
     "eslint": "^8.28.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
     "prettier": "^2.8.0",
-    "react-test-renderer": "^17.0.2",
+    "react-test-renderer": "17.0.2",
     "typescript": "^4.9.3"
   },
   "jest": {

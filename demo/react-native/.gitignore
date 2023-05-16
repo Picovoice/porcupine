@@ -57,3 +57,8 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Pv Files
+params.json
+*.pv
+*.ppn

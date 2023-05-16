@@ -11,6 +11,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1E5BCFB12A13FA3200B23148 /* keywords in Resources */ = {isa = PBXBuildFile; fileRef = 1E5BCFAF2A13FA3200B23148 /* keywords */; };
+		1E5BCFB22A13FA3200B23148 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 1E5BCFB02A13FA3200B23148 /* models */; };
 		545D08A9865AA1DC2FE16674 /* libPods-PorcupineDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 262FE5E535CF9CF9DD6AEBC8 /* libPods-PorcupineDemo.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -24,6 +26,8 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PorcupineDemo/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PorcupineDemo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PorcupineDemo/main.m; sourceTree = "<group>"; };
+		1E5BCFAF2A13FA3200B23148 /* keywords */ = {isa = PBXFileReference; lastKnownFileType = folder; name = keywords; path = PorcupineDemo/keywords; sourceTree = "<group>"; };
+		1E5BCFB02A13FA3200B23148 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = models; path = PorcupineDemo/models; sourceTree = "<group>"; };
 		262FE5E535CF9CF9DD6AEBC8 /* libPods-PorcupineDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PorcupineDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43ED59E665B01E99A2746971 /* Pods-PorcupineDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PorcupineDemo.release.xcconfig"; path = "Target Support Files/Pods-PorcupineDemo/Pods-PorcupineDemo.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PorcupineDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -46,6 +50,8 @@
 		13B07FAE1A68108700A75B9A /* PorcupineDemo */ = {
 			isa = PBXGroup;
 			children = (
+				1E5BCFAF2A13FA3200B23148 /* keywords */,
+				1E5BCFB02A13FA3200B23148 /* models */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -167,6 +173,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				1E5BCFB12A13FA3200B23148 /* keywords in Resources */,
+				1E5BCFB22A13FA3200B23148 /* models in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
