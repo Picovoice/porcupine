@@ -168,14 +168,8 @@ export default class App extends Component<Props, State> {
           processErrorCallback,
         );
       } else {
-        const keywordPath =
-          Platform.OS === 'android'
-            ? `keywords/${keyword}_android.ppn`
-            : `${keyword}_ios.ppn`;
-        const modelPath =
-          Platform.OS === 'android'
-            ? `models/porcupine_params_${language}.pv`
-            : `porcupine_params_${language}.pv`;
+        const keywordPath = `keywords/${keyword}_${Platform.OS}.ppn`;
+        const modelPath = `models/porcupine_params_${language}.pv`;
 
         this._porcupineManager = await PorcupineManager.fromKeywordPaths(
           this._accessKey,
