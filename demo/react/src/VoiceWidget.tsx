@@ -1,17 +1,23 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback, useRef} from "react";
 
-import {BuiltInKeyword} from "@picovoice/porcupine-web";
+import {BuiltInKeyword, PorcupineKeyword} from "@picovoice/porcupine-web";
 import {usePorcupine} from "@picovoice/porcupine-react";
 
-import porcupineParams from "./lib/porcupine_params";
+import porcupineModel from "./lib/porcupineModel";
+import porcupineKeywords from "./lib/porcupineKeywords";
+
+if (porcupineKeywords.length === 0 && porcupineModel.publicPath.endsWith("porcupine_params.pv")) {
+  for (const k in BuiltInKeyword) {
+    // @ts-ignore
+    porcupineKeywords.push({builtin: k});
+  }
+}
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
-  const [accessKey, setAccessKey] = useState("");
-  const [keywords] = useState<Array<BuiltInKeyword>>([
-    BuiltInKeyword.Alexa,
-    BuiltInKeyword.Picovoice
-  ]);
+  const [keyword, setKeyword] = useState<PorcupineKeyword>(porcupineKeywords[0]);
+
+  const accessKeyRef = useRef("")
 
   const {
     keywordDetection,
@@ -24,13 +30,36 @@ export default function VoiceWidget() {
     release
   } = usePorcupine();
 
-  const initEngine = async () => {
+  const initEngine = useCallback(async () => {
+    if (accessKeyRef.current.length === 0) {
+      return;
+    }
+
     await init(
-      accessKey,
-      keywords,
-      {base64: porcupineParams}
+      accessKeyRef.current,
+      [keyword],
+      porcupineModel
     );
+  }, [init, keyword])
+
+  const setSelectedKeyword = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = e.target.value;
+    for (const k of porcupineKeywords) {
+      if (k.label === selected || k.builtin === selected) {
+        setKeyword(k);
+        return;
+      }
+    }
   }
+
+  useEffect(() => {
+    const changeKeyword = async () => {
+      await release();
+      await initEngine();
+    }
+
+    changeKeyword();
+  }, [initEngine, release])
 
   useEffect(() => {
     if (keywordDetection !== null) {
@@ -44,11 +73,11 @@ export default function VoiceWidget() {
       <h3>
         <label>
           AccessKey obtained from{" "}
-          <a href="https://console.picovoice.ai/">Picovoice Console</a>:
+          <a href="https://console.picovoice.ai/">Picovoice Console</a>:{" "}
           <input
             type="text"
             name="accessKey"
-            onChange={(value) => setAccessKey(value.target.value)}
+            onChange={(e) => {accessKeyRef.current = e.target.value}}
           />
           <button
             className="init-button"
@@ -62,9 +91,24 @@ export default function VoiceWidget() {
       <h3>Listening: {JSON.stringify(isListening)}</h3>
       <h3>Error: {JSON.stringify(error !== null)}</h3>
       {error && (
-        <p className="error-message">{JSON.stringify(error)}</p>
+        <p className="error-message">{error.toString()}</p>
       )}
-      <h3>Keywords: {JSON.stringify(keywords)}</h3>
+      <h3>
+        <label>Keyword: </label>
+        <select
+          value={(keyword as any).label ?? (keyword as any).builtin}
+          onChange={(e) => setSelectedKeyword(e)}
+        >
+          {porcupineKeywords.map(k =>
+            <option
+              key={k.label ?? k.builtin}
+              value={k.label ?? k.builtin}
+            >
+              {k.label ?? k.builtin}
+            </option>
+          )}
+        </select>
+      </h3>
       <br/>
       <button
         onClick={() => start()}
@@ -84,7 +128,7 @@ export default function VoiceWidget() {
       >
         Release
       </button>
-      <h3>Keyword Detections (listening for "Picovoice" and "Alexa"):</h3>
+      <h3>Keyword Detections:</h3>
       {keywordDetections.length > 0 && (
         <ul>
           {keywordDetections.map((label: string, index: number) => (

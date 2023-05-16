@@ -18,11 +18,10 @@
     "eslint": "^8.13.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "run(){ if node scripts/prepare_demo.js $1 == 0; then react-scripts start; fi }; run",
+    "build": "run(){ if node scripts/prepare_demo.js $1 == 0; then react-scripts build; fi }; run",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o src/lib/porcupine_params.js"
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
