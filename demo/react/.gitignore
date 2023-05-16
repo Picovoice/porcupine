@@ -22,5 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-src/lib
+src/lib/*
 !src/lib/.gitkeep
+
+# Porcupine params
+public/keywords/*
+public/models/*

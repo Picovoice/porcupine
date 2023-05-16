@@ -1,17 +1,22 @@
 import {useEffect, useState} from "react";
 
-import {BuiltInKeyword} from "@picovoice/porcupine-web";
+import {BuiltInKeyword, PorcupineKeyword} from "@picovoice/porcupine-web";
 import {usePorcupine} from "@picovoice/porcupine-react";
 
-import porcupineParams from "./lib/porcupine_params";
+import porcupineModel from "./lib/porcupineModel";
+import porcupineKeywords from "./lib/porcupineKeywords";
+
+if (porcupineKeywords.length === 0 && porcupineModel.publicPath.endsWith("porcupine_params.pv")) {
+  for (const k in BuiltInKeyword) {
+    // @ts-ignore
+    porcupineKeywords.push({builtin: k});
+  }
+}
 
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState<string[]>([]);
   const [accessKey, setAccessKey] = useState("");
-  const [keywords] = useState<Array<BuiltInKeyword>>([
-    BuiltInKeyword.Alexa,
-    BuiltInKeyword.Picovoice
-  ]);
+  const [keywords] = useState<Array<PorcupineKeyword>>(porcupineKeywords);
 
   const {
     keywordDetection,
@@ -28,7 +33,7 @@ export default function VoiceWidget() {
     await init(
       accessKey,
       keywords,
-      {base64: porcupineParams}
+      porcupineModel
     );
   }
 
@@ -64,7 +69,8 @@ export default function VoiceWidget() {
       {error && (
         <p className="error-message">{JSON.stringify(error)}</p>
       )}
-      <h3>Keywords: {JSON.stringify(keywords)}</h3>
+      <h3>Keywords:</h3>
+      <h4>{porcupineKeywords.map(k => k.label ?? k.builtin).join(', ')}</h4>
       <br/>
       <button
         onClick={() => start()}
@@ -84,7 +90,7 @@ export default function VoiceWidget() {
       >
         Release
       </button>
-      <h3>Keyword Detections (listening for "Picovoice" and "Alexa"):</h3>
+      <h3>Keyword Detections:</h3>
       {keywordDetections.length > 0 && (
         <ul>
           {keywordDetections.map((label: string, index: number) => (
