@@ -40,5 +40,8 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
-    - name: Build
+    - name: Build English
       run: yarn build en
+      
+    - name: Build Other Language
+      run: yarn build ko
