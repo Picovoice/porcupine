@@ -1,23 +1,36 @@
-import { BuiltInKeyword, Porcupine, PorcupineKeyword, PorcupineWorker } from "../";
+import {
+  BuiltInKeyword,
+  Porcupine,
+  PorcupineKeyword,
+  PorcupineWorker,
+} from '../';
 
 import { PvModel } from '@picovoice/web-utils';
+import { createHash } from 'crypto';
 
 const ACCESS_KEY = Cypress.env('ACCESS_KEY');
 const NUM_TEST_ITERATIONS = Number(Cypress.env('NUM_TEST_ITERATIONS'));
-const INIT_PERFORMANCE_THRESHOLD_SEC = Number(Cypress.env('INIT_PERFORMANCE_THRESHOLD_SEC'));
-const PROC_PERFORMANCE_THRESHOLD_SEC = Number(Cypress.env('PROC_PERFORMANCE_THRESHOLD_SEC'));
+const INIT_PERFORMANCE_THRESHOLD_SEC = Number(
+  Cypress.env('INIT_PERFORMANCE_THRESHOLD_SEC')
+);
+const PROC_PERFORMANCE_THRESHOLD_SEC = Number(
+  Cypress.env('PROC_PERFORMANCE_THRESHOLD_SEC')
+);
 
 async function testPerformance(
   instance: typeof Porcupine | typeof PorcupineWorker,
   inputPcm: Int16Array,
   params: {
-    keyword?: BuiltInKeyword | PorcupineKeyword | (BuiltInKeyword | PorcupineKeyword)[]
-    model?: PvModel,
+    keyword?:
+      | BuiltInKeyword
+      | PorcupineKeyword
+      | (BuiltInKeyword | PorcupineKeyword)[];
+    model?: PvModel;
   } = {}
 ) {
   const {
     keyword = BuiltInKeyword.Porcupine,
-    model = { publicPath: '/test/porcupine_params.pv', forceWrite: true }
+    model = { publicPath: '/test/porcupine_params.pv', forceWrite: true },
   } = params;
 
   const initPerfResults: number[] = [];
@@ -39,16 +52,21 @@ async function testPerformance(
     let end = Date.now();
     initPerfResults.push((end - start) / 1000);
 
-    const waitUntil = (): Promise<void> => new Promise(resolve => {
-      setInterval(() => {
-        if (detected) {
-          resolve();
-        }
-      }, 100);
-    });
+    const waitUntil = (): Promise<void> =>
+      new Promise(resolve => {
+        setInterval(() => {
+          if (detected) {
+            resolve();
+          }
+        }, 100);
+      });
 
     start = Date.now();
-    for (let i = 0; i < (inputPcm.length - porcupine.frameLength + 1); i += porcupine.frameLength) {
+    for (
+      let i = 0;
+      i < inputPcm.length - porcupine.frameLength + 1;
+      i += porcupine.frameLength
+    ) {
       await porcupine.process(inputPcm.slice(i, i + porcupine.frameLength));
     }
     await waitUntil();
@@ -62,8 +80,10 @@ async function testPerformance(
     }
   }
 
-  const initAvgPerf = initPerfResults.reduce((a, b) => a + b) / NUM_TEST_ITERATIONS;
-  const procAvgPerf = procPerfResults.reduce((a, b) => a + b) / NUM_TEST_ITERATIONS;
+  const initAvgPerf =
+    initPerfResults.reduce((a, b) => a + b) / NUM_TEST_ITERATIONS;
+  const procAvgPerf =
+    procPerfResults.reduce((a, b) => a + b) / NUM_TEST_ITERATIONS;
 
   // eslint-disable-next-line no-console
   console.log(`Average init performance: ${initAvgPerf} seconds`);
@@ -76,15 +96,18 @@ async function testPerformance(
 
 describe('Porcupine binding performance test', () => {
   for (const instance of [Porcupine, PorcupineWorker]) {
-    const instanceString = (instance === PorcupineWorker) ? 'worker' : 'main';
+    const instanceString = instance === PorcupineWorker ? 'worker' : 'main';
+
+    const encodedAudioName = createHash('md5')
+      .update('porcupine')
+      .digest('hex');
 
     it(`should be lower than performance threshold (${instanceString})`, () => {
-      cy.getFramesFromFile('audio_samples/porcupine.wav').then( async inputPcm => {
-        await testPerformance(
-          instance,
-          inputPcm
-        );
-      });
+      cy.getFramesFromFile(`audio_samples/${encodedAudioName}.wav`).then(
+        async inputPcm => {
+          await testPerformance(instance, inputPcm);
+        }
+      );
     });
   }
 });

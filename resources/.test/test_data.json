@@ -64,6 +64,10 @@
 			{
 				"language": "vn",
 				"wakeword": "chào chị"
+			},
+			{
+				"language": "fa",
+				"wakeword": "جوجه تیغی"
 			}
 		],
 		"multipleKeyword": [
@@ -146,6 +150,11 @@
 				"language": "vn",
 				"wakewords": ["con nhím", "chào chị", "máy pha cà phê", "máy nướng bánh mì"],
 				"groundTruth": [0, 1, 2, 3]
+			},
+			{
+				"language": "fa",
+				"wakewords": ["جوجه تیغی", "صبح بخیر", "خداحافظ"],
+				"groundTruth": [0, 1, 2]
 			}
 		]
 	}
