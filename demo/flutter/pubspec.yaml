@@ -15,6 +15,7 @@ dependencies:
 
   flutter_picker: ^2.0.1
   porcupine_flutter: ^2.2.0
+  path: 1.8.0
 
 dev_dependencies:
   integration_test:
@@ -26,7 +27,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/test_resources/
-    - assets/test_resources/audio_samples/
-    - assets/test_resources/keyword_files/
-    - assets/test_resources/model_files/
+    - assets/
