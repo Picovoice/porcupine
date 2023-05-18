@@ -113,7 +113,7 @@ const serverScriptPath = path.join(
 );
 
 if (!fs.existsSync(serverScriptPath)) {
-  console.error("Cannot find required package. Did you forget to run npm or yarn?");
+  console.error("Cannot find required package. Did you forget to run install?");
   process.exit(1);
 }
 child_process.fork(serverScriptPath, ["-a", "localhost", "-p", "5000"])
