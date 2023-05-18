@@ -8,7 +8,7 @@ availableLanguages = testData["tests"]["singleKeyword"].map(
 );
 
 const language = process.argv.slice(2)[0];
-if (language === "==") {
+if (!language) {
   console.error(`Choose the language you would like to run the demo in with "yarn start [language]".
         Available languages are ${availableLanguages.join(", ")}`);
   process.exit(1);
