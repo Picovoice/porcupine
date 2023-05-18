@@ -1,3 +1,4 @@
+const child_process = require('child_process');
 const fs = require("fs");
 const path = require("path");
 const testData = require("../../../resources/.test/test_data.json");
@@ -8,13 +9,13 @@ availableLanguages = testData["tests"]["singleKeyword"].map(
 
 const language = process.argv.slice(2)[0];
 if (language === "==") {
-  console.error(`Choose the language you would like to run the demo in with "yarn start [language]". 
+  console.error(`Choose the language you would like to run the demo in with "yarn start [language]".
         Available languages are ${availableLanguages.join(", ")}`);
   process.exit(1);
 }
 
 if (!availableLanguages.includes(language)) {
-  console.error(`'${language}' is not an available demo language. 
+  console.error(`'${language}' is not an available demo language.
         Available languages are ${availableLanguages.join(", ")}`);
   process.exit(1);
 }
@@ -101,3 +102,18 @@ fs.writeFileSync(
     module.exports = porcupineModel;
 })();`
 );
+
+const serverScriptPath = path.join(
+  __dirname,
+  "..",
+  "node_modules",
+  "http-server",
+  "bin",
+  "http-server"
+);
+
+if (!fs.existsSync(serverScriptPath)) {
+  console.error("Cannot find required package. Did you forget to run npm or yarn?");
+  process.exit(1);
+}
+child_process.fork("serverScriptPath", ["-a", "localhost", "-p", "5000"])

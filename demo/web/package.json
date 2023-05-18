@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "run(){ if node scripts/prepare_demo.js $1 == 0; then http-server -a localhost -p 5000; fi }; run"
+    "start": "node scripts/run_demo.js"
   },
   "keywords": [
     "Picovoice",
