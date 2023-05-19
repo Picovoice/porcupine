@@ -1,4 +1,4 @@
-const child_process = require('child_process');
+const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const testData = require("../../../resources/.test/test_data.json");
@@ -103,17 +103,6 @@ fs.writeFileSync(
 })();`
 );
 
-const serverScriptPath = path.join(
-  __dirname,
-  "..",
-  "node_modules",
-  "http-server",
-  "bin",
-  "http-server"
-);
-
-if (!fs.existsSync(serverScriptPath)) {
-  console.error("Cannot find required package. Did you forget to run install?");
-  process.exit(1);
-}
-child_process.fork(serverScriptPath, ["-a", "localhost", "-p", "5000"])
+child_process.fork("http-server", ["-a", "localhost", "-p", "5000"], {
+  execPath: "npx",
+});
