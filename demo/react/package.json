@@ -18,8 +18,8 @@
     "eslint": "^8.13.0"
   },
   "scripts": {
-    "start": "run(){ if node scripts/prepare_demo.js $1 == 0; then react-scripts start; fi }; run",
-    "build": "run(){ if node scripts/prepare_demo.js $1 == 0; then react-scripts build; fi }; run",
+    "start": "node scripts/run_demo.js start",
+    "build": "node scripts/run_demo.js build",
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },
