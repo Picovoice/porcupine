@@ -6,9 +6,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "android-run": "run(){ if node scripts/prepare_demo.js $1 == 0; then shift; react-native run-android \"$@\"; fi }; run",
+    "android-run": "node scripts/run_demo.js run-android",
     "android-install": "yarn",
-    "ios-run": "run(){ if node scripts/prepare_demo.js $1 == 0; then shift; react-native run-ios \"$@\"; fi }; run",
+    "ios-run": "node scripts/run_demo.js run-ios",
     "ios-link": "cd ios && pod install && cd ..",
     "ios-install": "yarn && yarn ios-link"
   },

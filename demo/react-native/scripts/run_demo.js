@@ -1,19 +1,27 @@
+const child_process = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const testData = require('../../../resources/.test/test_data.json');
 
 const availableLanguages = testData.tests.singleKeyword.map((x) => x.language);
 
-const language = process.argv.slice(2)[0];
-if (language === '==') {
-  console.error(`Choose the language you would like to run the demo in with "yarn start [language]". 
-        Available languages are ${availableLanguages.join(', ')}`);
+const rnCmd = process.argv.slice(2)[0];
+const language = process.argv.slice(2)[1];
+if (!language) {
+  console.error(
+    `Choose the language you would like to run the demo in with "yarn start [language]".\nAvailable languages are ${availableLanguages.join(
+      ', ',
+    )}`,
+  );
   process.exit(1);
 }
 
 if (!availableLanguages.includes(language)) {
-  console.error(`'${language}' is not an available demo language. 
-        Available languages are ${availableLanguages.join(', ')}`);
+  console.error(
+    `'${language}' is not an available demo language.\nAvailable languages are ${availableLanguages.join(
+      ', ',
+    )}`,
+  );
   process.exit(1);
 }
 
@@ -92,3 +100,7 @@ fs.writeFileSync(
   path.join(__dirname, '..', 'params.json'),
   JSON.stringify(params),
 );
+
+child_process.fork('react-native', [rnCmd], {
+  execPath: 'npx',
+});

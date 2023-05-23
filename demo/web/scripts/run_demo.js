@@ -9,14 +9,20 @@ availableLanguages = testData["tests"]["singleKeyword"].map(
 
 const language = process.argv.slice(2)[0];
 if (!language) {
-  console.error(`Choose the language you would like to run the demo in with "yarn start [language]".
-        Available languages are ${availableLanguages.join(", ")}`);
+  console.error(
+    `Choose the language you would like to run the demo in with "yarn start [language]".\nAvailable languages are ${availableLanguages.join(
+      ", "
+    )}`
+  );
   process.exit(1);
 }
 
 if (!availableLanguages.includes(language)) {
-  console.error(`'${language}' is not an available demo language.
-        Available languages are ${availableLanguages.join(", ")}`);
+  console.error(
+    `'${language}' is not an available demo language.\nAvailable languages are ${availableLanguages.join(
+      ", "
+    )}`
+  );
   process.exit(1);
 }
 
