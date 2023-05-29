@@ -30,8 +30,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.0
+      - name: Set up Node.js LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
 
       - name: Install Cocoapods
         run: gem install cocoapods

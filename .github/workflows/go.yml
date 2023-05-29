@@ -61,7 +61,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup go
+    - name: Set up go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
