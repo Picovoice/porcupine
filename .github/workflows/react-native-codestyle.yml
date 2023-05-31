@@ -26,8 +26,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Node.js lts/*
-      uses: actions/setup-node@v2
+    - name: Set up Node.js LTS
+      uses: actions/setup-node@v3
       with:
         node-version: lts/*
 
