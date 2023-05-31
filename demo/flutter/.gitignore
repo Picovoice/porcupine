@@ -44,3 +44,4 @@ app.*.map.json
 assets/test_resources/*
 assets/keywords/*
 assets/models/*
+assets/params.json

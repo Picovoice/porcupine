@@ -8,9 +8,11 @@
 // an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 //
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:porcupine_flutter/porcupine.dart';
@@ -31,6 +33,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  late String _language;
+  late List<String> _keywords;
   final Map<String, BuiltInKeyword> _keywordMap = {};
 
   bool isError = false;
@@ -43,6 +48,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Color? backgroundColour;
   String currentKeyword = "Click to choose a keyword";
   PorcupineManager? _porcupineManager;
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +57,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       backgroundColour = defaultColour;
     });
     WidgetsBinding.instance?.addObserver(this);
+
     _initializeKeywordMap();
+    _loadParams();
   }
 
   @override
@@ -69,16 +77,32 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     }
   }
 
+  Future<void> _loadParams() async {
+    final paramsString = await DefaultAssetBundle.of(context).loadString('assets/params.json');
+    final params = json.decode(paramsString);
+
+    String language = params["language"];
+    List<String> keywords = List<String>.from(params["keywords"]);
+    if (language == "en") {
+      for (var builtIn in BuiltInKeyword.values) {
+        String keyword =
+          builtIn.toString().split(".").last.replaceAll("_", " ").toLowerCase();
+        keywords.add(keyword);
+      }
+    }
+
+    _language = language;
+    _keywords = keywords;
+  }
+
   Future<void> loadNewKeyword(String keyword) async {
     setState(() {
       isButtonDisabled = true;
     });
 
-    if (!_keywordMap.containsKey(keyword)) {
+    if (!_keywords.contains(keyword)) {
       return;
     }
-
-    BuiltInKeyword builtIn = _keywordMap[keyword]!;
 
     if (isProcessing) {
       await _stopProcessing();
@@ -89,9 +113,27 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       _porcupineManager = null;
     }
     try {
-      _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
-          accessKey, [builtIn], wakeWordCallback,
-          errorCallback: errorCallback);
+      if (_language == "en") {
+        BuiltInKeyword builtIn = _keywordMap[keyword]!;
+
+        _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
+            accessKey,
+            [builtIn],
+            wakeWordCallback,
+            errorCallback: errorCallback);
+      } else {
+        var platform = (Platform.isAndroid) ? "android" : "ios";
+        var keywordPath = "assets/keywords/$platform/${keyword}_$platform.ppn";
+        var modelPath = "assets/models/porcupine_params_$_language.pv";
+
+        _porcupineManager = await PorcupineManager.fromKeywordPaths(
+            accessKey,
+            [keywordPath],
+            wakeWordCallback,
+            modelPath: modelPath,
+            errorCallback: errorCallback);
+      }
+
       setState(() {
         currentKeyword = keyword;
         isError = false;
@@ -285,7 +327,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   showPicker(BuildContext context) {
     Picker picker = Picker(
         adapter:
-            PickerDataAdapter<String>(pickerData: _keywordMap.keys.toList()),
+            PickerDataAdapter<String>(pickerData: _keywords.toList()),
         changeToFirst: true,
         textAlign: TextAlign.left,
         columnPadding: const EdgeInsets.all(8.0),

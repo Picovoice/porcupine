@@ -41,12 +41,17 @@ void main(List<String> arguments) async {
   }
   assetsDir.createSync();
 
-  var androidKeywordDir = Directory(join(resourcePath, "keyword_files$suffix", "android"));
-  var iOSKeywordDir = Directory(join(resourcePath, "keyword_files$suffix", "ios"));
+  var androidResourceDir = Directory(join(resourcePath, "keyword_files$suffix", "android"));
+  var iOSResourceDir = Directory(join(resourcePath, "keyword_files$suffix", "ios"));
 
-  var keywordDir = Directory(keywordsPath);
-  if (!keywordDir.existsSync()) {
-    keywordDir.createSync(recursive: true);
+  var keywordAndroidDir = Directory(join(keywordsPath, 'android'));
+  if (!keywordAndroidDir.existsSync()) {
+    keywordAndroidDir.createSync(recursive: true);
+  }
+
+  var keywordIosDir = Directory(join(keywordsPath, 'ios'));
+  if (!keywordIosDir.existsSync()) {
+    keywordIosDir.createSync(recursive: true);
   }
 
   var modelDir = Directory(modelsPath);
@@ -54,19 +59,27 @@ void main(List<String> arguments) async {
     modelDir.createSync(recursive: true);
   }
 
+  var params = Map();
+  params["language"] = language;
+  params["keywords"] = [];
+
   if (language != "en") {
-    androidKeywordDir.listSync().forEach((k) {
+    androidResourceDir.listSync().forEach((k) {
       File f = File(k.path);
-      f.copySync(join(keywordDir.path, basename(k.path)));
+      f.copySync(join(keywordAndroidDir.path, basename(k.path)));
+      params["keywords"].add(basename(k.path).replaceAll("_android.ppn", ""));
     });
 
-    iOSKeywordDir.listSync().forEach((k) {
+    iOSResourceDir.listSync().forEach((k) {
       File f = File(k.path);
-      f.copySync(join(keywordDir.path, basename(k.path)));
+      f.copySync(join(keywordIosDir.path, basename(k.path)));
     });
 
     File model = File(join(libPath, "common", "porcupine_params$suffix.pv"));
     model.copySync(join(modelDir.path, basename(model.path)));
   }
 
+  var encoded = json.encode(params);
+  File f = File(join(assetsPath, "params.json"));
+  f.writeAsStringSync(encoded);
 }
