@@ -3,11 +3,10 @@
   "version": "2.2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "node scripts/run_demo.js serve",
+    "build": "node scripts/run_demo.js build",
     "watch": "ng build --watch --configuration development",
-    "lint": "ng lint",
-    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./src/lib/porcupine_params.js"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {

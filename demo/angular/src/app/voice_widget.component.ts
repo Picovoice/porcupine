@@ -3,10 +3,19 @@ import { Subscription } from 'rxjs';
 
 import { PorcupineService } from '@picovoice/porcupine-angular';
 
-import { BuiltInKeyword } from '@picovoice/porcupine-web';
+import { BuiltInKeyword, PorcupineKeyword } from '@picovoice/porcupine-web';
 
 // @ts-ignore
-import porcupineParams from '../lib/porcupine_params';
+import porcupineModel from '../lib/porcupineModel';
+// @ts-ignore
+import porcupineKeywords from '../lib/porcupineKeywords';
+
+if (porcupineKeywords.length === 0 && porcupineModel.publicPath.endsWith("porcupine_params.pv")) {
+  for (const k in BuiltInKeyword) {
+    // @ts-ignore
+    porcupineKeywords.push({builtin: BuiltInKeyword[k]});
+  }
+}
 
 @Component({
   selector: 'app-voice-widget',
@@ -24,7 +33,7 @@ export class VoiceWidgetComponent implements OnDestroy {
   error: Error | string | null = null;
 
   detections: Array<string> = [];
-
+  keywords: Array<string> = porcupineKeywords.map((k:any) => k.label ?? k.builtin);
   constructor(private porcupineService: PorcupineService) {
     // Subscribe to Porcupine Keyword detections
     // Store each detection, so we can display it in an HTML list
@@ -64,14 +73,15 @@ export class VoiceWidgetComponent implements OnDestroy {
     await this.porcupineService.start();
   }
 
-  public async initEngine(accessKey: string): Promise<void> {
+  public async initEngine(accessKey: string, selectedKeyword: string): Promise<void> {
+
     if (accessKey.length >= 0) {
       await this.porcupineService.release();
       try {
         await this.porcupineService.init(
           accessKey,
-          [BuiltInKeyword.Alexa, BuiltInKeyword.Porcupine],
-          { base64: porcupineParams }
+          porcupineKeywords[parseInt(selectedKeyword)],
+          porcupineModel
         );
       }
       catch (error: any) {

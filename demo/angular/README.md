@@ -8,28 +8,28 @@ The widget shows the various loading and error events, as well as mounting/unmou
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-## Install and run
+## Install and Run
 
-Use `yarn` or `npm`:
+Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
+to start a local web server hosting the demo in the language of your choice (e.g. `de` -> German, `ko` -> Korean).
+To see a list of available languages, run `start` without a language code.
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run start
+npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:4200/` to view it in the browser.
 
-## Try Porcupine
+## Usage
 
-The demo is listening for the wake word "Alexa or Porcupine". Say the wake word:
-
-> "Porcupine"
-
-Detections will appear on the page.
+1) Enter your AccessKey and press "Start Porcupine"
+2) Select the keyword you wish to detect
+3) Click start and say the keyword - detections will appear on the page

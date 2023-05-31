@@ -43,3 +43,5 @@ Thumbs.db
 
 src/lib
 !src/lib/.gitkeep
+src/assets/keywords
+src/assets/models
