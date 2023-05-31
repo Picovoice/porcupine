@@ -22,7 +22,7 @@ void main(List<String> arguments) async {
   List<String> availableLanguages = List<String>.from(testData["tests"]["singleKeyword"].map((x) => x["language"]).toList());
 
   if (arguments.isEmpty) {
-    print("Choose the language you would like to run the demo in with 'dart start [language]'.\n"
+    print("Choose the language you would like to run the demo in with 'dart scripts/prepare_demo.dart [language]'.\n"
         "Available languages are ${availableLanguages.join(", ")}.");
     exit(1);
   }
