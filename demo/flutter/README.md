@@ -10,6 +10,13 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Usage
 
+Run the `prepare_demo` script from [demo/flutter](.) with a language code to set up the demo in the language of your
+choice (e.g. `de` -> German, `ko` -> Korean). To see a list of available languages, run `prepare_demo` without a language code.
+
+```console
+dart scripts/prepare_demo.dart ${LANGUAGE}
+```
+
 Replace your `AccessKey` in [lib/main.dart](lib/main.dart) file:
 
 ```dart
