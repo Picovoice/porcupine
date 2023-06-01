@@ -41,4 +41,7 @@ jobs:
       run: yarn install
 
     - name: Build
-      run: yarn build
+      run: yarn build en
+
+    - name: Build another language
+      run: yarn build ja

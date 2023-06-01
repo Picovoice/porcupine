@@ -11,9 +11,6 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  optimizeDeps: {
-    include: ["@/lib/porcupine_params.js"],
-  },
   build: {
     commonjsOptions: {
       include: [/lib/],

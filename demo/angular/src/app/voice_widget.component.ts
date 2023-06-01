@@ -75,8 +75,11 @@ export class VoiceWidgetComponent implements OnDestroy {
 
   public async initEngine(accessKey: string, selectedKeyword: string): Promise<void> {
 
-    if (accessKey.length >= 0) {
+    if (this.porcupineService.isLoaded$) {
       await this.porcupineService.release();
+    }
+
+    if (accessKey.length >= 0) {
       try {
         await this.porcupineService.init(
           accessKey,

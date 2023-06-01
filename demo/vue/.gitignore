@@ -29,3 +29,5 @@ coverage
 
 src/lib/*
 !src/lib/.gitkeep
+public/keywords
+public/models
