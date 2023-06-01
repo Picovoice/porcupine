@@ -4,7 +4,7 @@ const path = require("path");
 const testData = require("../../../resources/.test/test_data.json");
 
 const availableLanguages = testData["tests"]["singleKeyword"].map(
-  (x) => x["language"]
+  x => x["language"]
 );
 
 const cmds = process.argv.slice(2, -1);
@@ -41,7 +41,7 @@ const keywordDir = path.join(
 const libDirectory = path.join(__dirname, "..", "src", "lib");
 let publicDirectory = path.join(__dirname, "..", "public", "keywords");
 if (fs.existsSync(publicDirectory)) {
-  fs.readdirSync(publicDirectory).forEach((k) => {
+  fs.readdirSync(publicDirectory).forEach(k => {
     fs.unlinkSync(path.join(publicDirectory, k));
   });
 } else {
@@ -53,9 +53,9 @@ if (language !== "en") {
   try {
     const keywords = fs
       .readdirSync(keywordDir)
-      .filter((f) => path.extname(f) === ".ppn");
+      .filter(f => path.extname(f) === ".ppn");
 
-    keywords.forEach((k) => {
+    keywords.forEach(k => {
       fs.copyFileSync(path.join(keywordDir, k), path.join(publicDirectory, k));
       keywordJS.push(`  {
     label: "${k.replace("_wasm.ppn", "").replace("_", " ")}",
@@ -76,17 +76,15 @@ fs.writeFileSync(
 ${keywordJS.join("\n")}
 ];
 
-(function () {
-  if (typeof module !== "undefined" && typeof module.exports !== "undefined")
-    module.exports = porcupineKeywords;
-})();`
+export default porcupineKeywords;
+`
 );
 
 const modelDir = path.join(rootDir, "lib", "common");
 
 publicDirectory = path.join(__dirname, "..", "public", "models");
 if (fs.existsSync(publicDirectory)) {
-  fs.readdirSync(publicDirectory).forEach((k) => {
+  fs.readdirSync(publicDirectory).forEach(k => {
     fs.unlinkSync(path.join(publicDirectory, k));
   });
 } else {
@@ -106,10 +104,8 @@ fs.writeFileSync(
   forceWrite: true,
 };
 
-(function () {
-  if (typeof module !== "undefined" && typeof module.exports !== "undefined")
-    module.exports = porcupineModel;
-})();`
+export default porcupineModel;
+`
 );
 
 child_process.fork("vite", cmds, {

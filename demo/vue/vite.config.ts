@@ -12,7 +12,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["@/lib/porcupine_params.js"],
+    include: ["@/lib/porcupineModel.js", "@/lib/porcupineKeywords.js"],
   },
   build: {
     commonjsOptions: {

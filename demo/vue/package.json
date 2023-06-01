@@ -5,14 +5,12 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "start": "vite",
-    "dev": "vite",
+    "start": "node scripts/run_demo.js",
     "build": "run-p type-check build-only",
-    "preview": "vite preview",
-    "build-only": "vite build",
+    "preview": "node scripts/run_demo.js preview",
+    "build-only": "node scripts/run_demo.js build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "postinstall": "npx pvbase64 -i ../../lib/common/porcupine_params.pv -o ./src/lib/porcupine_params.js"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "@picovoice/porcupine-vue": "~2.2.0",

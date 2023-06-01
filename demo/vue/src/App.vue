@@ -16,8 +16,8 @@ import { defineComponent, defineAsyncComponent } from "vue";
 export default defineComponent({
   name: "App",
   components: {
-    VoiceWidget: defineAsyncComponent(() =>
-      import("./components/VoiceWidget.vue")
+    VoiceWidget: defineAsyncComponent(
+      () => import("./components/VoiceWidget.vue")
     ),
   },
   data: function () {

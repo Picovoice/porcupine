@@ -14,6 +14,18 @@
     <h3>Loaded: {{ state.isLoaded }}</h3>
     <h3>Listening: {{ state.isListening }}</h3>
     <h3>Error: {{ state.error !== null }}</h3>
+    <h3>
+      <label>Keyword: </label>
+      <select>
+        <option
+          v-for="(keyword, index) in keywords"
+          :key="keyword"
+          :value="index"
+        >
+          {{ keyword }}
+        </option>
+      </select>
+    </h3>
     <p class="error-message" v-if="state.error !== null">
       {{ state.error }}
     </p>
@@ -32,7 +44,7 @@
     <button v-on:click="release" :disabled="!state.isLoaded || !!state.error">
       Release
     </button>
-    <h3>Keyword Detections (Listening for "Grasshopper" and "Grapefruit"):</h3>
+    <h3>Keyword Detections:</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
         {{ item }}
@@ -42,13 +54,26 @@
 </template>
 
 <script lang="ts">
-import { onBeforeUnmount, defineComponent, ref, watch } from "vue";
+import { defineComponent, onBeforeUnmount, ref, watch } from "vue";
 
 import { BuiltInKeyword } from "@picovoice/porcupine-web";
 import { usePorcupine } from "@picovoice/porcupine-vue";
 
 // @ts-ignore
-import porcupineParams from "@/lib/porcupine_params.js";
+import porcupineModel from "../lib/porcupineModel";
+
+// @ts-ignore
+import porcupineKeywords from "../lib/porcupineKeywords";
+
+if (
+  porcupineKeywords.length === 0 &&
+  porcupineModel.publicPath.endsWith("porcupine_params.pv")
+) {
+  for (const k in BuiltInKeyword) {
+    // @ts-ignore
+    porcupineKeywords.push({ builtin: BuiltInKeyword[k] });
+  }
+}
 
 const VoiceWidget = defineComponent({
   name: "VoiceWidget",
@@ -56,7 +81,9 @@ const VoiceWidget = defineComponent({
     const porcupine = usePorcupine();
     const accessKey = ref("");
     const detections = ref<string[]>([]);
-
+    const keywords = ref(
+      porcupineKeywords.map((k: any) => k.label ?? k.builtin)
+    );
     watch(
       () => porcupine.state.keywordDetection,
       keyword => {
@@ -70,7 +97,7 @@ const VoiceWidget = defineComponent({
       await porcupine.init(
         accessKey.value,
         [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
-        { base64: porcupineParams }
+        porcupineModel
       );
     }
 
@@ -85,6 +112,7 @@ const VoiceWidget = defineComponent({
     return {
       accessKey,
       detections,
+      keywords,
       initEngine,
       updateAccessKey,
       ...porcupine,
