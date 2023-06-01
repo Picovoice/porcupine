@@ -8,31 +8,30 @@ If you decline microphone permission in the browser, or another such issue preve
 
 The widget shows the various loading and error events, as well as mounting/unmounting the `VoiceWidget` with a toggle, demonstrating the complete lifecycle of Porcupine with in a Vue app.
 
-This project was bootstrapped with Vue CLI. See the [Configuration Reference](https://cli.vuejs.org/config/).
+This project was bootstrapped with Vite. See the [Configuration Reference](https://vitejs.dev/config/).
 
-## Install & run
+## Install and Run
+
+Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
+to start a local web server hosting the demo in the language of your choice (e.g. `de` -> German, `ko` -> Korean).
+To see a list of available languages, run `start` without a language code.
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run start
+npm run start ${LANGUAGE}
 ```
 
 The command-line output will provide you with a localhost link and port to open in your browser.
 
-## Try Porcupine
+## Usage
 
-Say the wake phrases:
-
-> "Grapefruit"
-or
-
-> "Grasshopper"
-
-The detections will appear on screen.
+1) Enter your AccessKey and press "Start Porcupine"
+2) Select the keyword you wish to detect
+3) Click start and say the keyword - detections will appear on the page
