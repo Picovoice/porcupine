@@ -3,8 +3,10 @@ import "package:path/path.dart";
 import "dart:convert";
 import "dart:io";
 
-final String resourcePath = join(dirname(Platform.script.path), "..", "..", "..", "resources");
-final String libPath = join(dirname(Platform.script.path), "..", "..", "..", "lib");
+final String resourcePath =
+    join(dirname(Platform.script.path), "..", "..", "..", "resources");
+final String libPath =
+    join(dirname(Platform.script.path), "..", "..", "..", "lib");
 final String testDataPath = join(resourcePath, ".test", "test_data.json");
 
 final String assetsPath = join(dirname(Platform.script.path), "..", "assets");
@@ -19,10 +21,12 @@ Future<Map> readJsonFile(String filePath) async {
 
 void main(List<String> arguments) async {
   var testData = await readJsonFile(testDataPath);
-  List<String> availableLanguages = List<String>.from(testData["tests"]["singleKeyword"].map((x) => x["language"]).toList());
+  List<String> availableLanguages = List<String>.from(
+      testData["tests"]["singleKeyword"].map((x) => x["language"]).toList());
 
   if (arguments.isEmpty) {
-    print("Choose the language you would like to run the demo in with 'dart scripts/prepare_demo.dart [language]'.\n"
+    print(
+        "Choose the language you would like to run the demo in with 'dart scripts/prepare_demo.dart [language]'.\n"
         "Available languages are ${availableLanguages.join(", ")}.");
     exit(1);
   }
@@ -41,8 +45,10 @@ void main(List<String> arguments) async {
   }
   assetsDir.createSync();
 
-  var androidResourceDir = Directory(join(resourcePath, "keyword_files$suffix", "android"));
-  var iOSResourceDir = Directory(join(resourcePath, "keyword_files$suffix", "ios"));
+  var androidResourceDir =
+      Directory(join(resourcePath, "keyword_files$suffix", "android"));
+  var iOSResourceDir =
+      Directory(join(resourcePath, "keyword_files$suffix", "ios"));
 
   var keywordAndroidDir = Directory(join(keywordsPath, 'android'));
   if (!keywordAndroidDir.existsSync()) {
@@ -82,4 +88,6 @@ void main(List<String> arguments) async {
   var encoded = json.encode(params);
   File f = File(join(assetsPath, "params.json"));
   f.writeAsStringSync(encoded);
+
+  print("Demo is ready to run!");
 }

@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -78,15 +78,20 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _loadParams() async {
-    final paramsString = await DefaultAssetBundle.of(context).loadString('assets/params.json');
+    final paramsString =
+        await DefaultAssetBundle.of(context).loadString('assets/params.json');
     final params = json.decode(paramsString);
 
     String language = params["language"];
     List<String> keywords = List<String>.from(params["keywords"]);
     if (language == "en") {
       for (var builtIn in BuiltInKeyword.values) {
-        String keyword =
-          builtIn.toString().split(".").last.replaceAll("_", " ").toLowerCase();
+        String keyword = builtIn
+            .toString()
+            .split(".")
+            .last
+            .replaceAll("_", " ")
+            .toLowerCase();
         keywords.add(keyword);
       }
     }
@@ -117,9 +122,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BuiltInKeyword builtIn = _keywordMap[keyword]!;
 
         _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
-            accessKey,
-            [builtIn],
-            wakeWordCallback,
+            accessKey, [builtIn], wakeWordCallback,
             errorCallback: errorCallback);
       } else {
         var platform = (Platform.isAndroid) ? "android" : "ios";
@@ -127,11 +130,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         var modelPath = "assets/models/porcupine_params_$_language.pv";
 
         _porcupineManager = await PorcupineManager.fromKeywordPaths(
-            accessKey,
-            [keywordPath],
-            wakeWordCallback,
-            modelPath: modelPath,
-            errorCallback: errorCallback);
+            accessKey, [keywordPath], wakeWordCallback,
+            modelPath: modelPath, errorCallback: errorCallback);
       }
 
       setState(() {
@@ -326,8 +326,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   showPicker(BuildContext context) {
     Picker picker = Picker(
-        adapter:
-            PickerDataAdapter<String>(pickerData: _keywords.toList()),
+        adapter: PickerDataAdapter<String>(pickerData: _keywords.toList()),
         changeToFirst: true,
         textAlign: TextAlign.left,
         columnPadding: const EdgeInsets.all(8.0),
