@@ -39,31 +39,28 @@ void main(List<String> arguments) async {
     exit(1);
   }
 
-  var assetsDir = Directory(assetsPath);
-  if (assetsDir.existsSync()) {
-    assetsDir.deleteSync(recursive: true);
-  }
-  assetsDir.createSync();
-
   var androidResourceDir =
       Directory(join(resourcePath, "keyword_files$suffix", "android"));
   var iOSResourceDir =
       Directory(join(resourcePath, "keyword_files$suffix", "ios"));
 
   var keywordAndroidDir = Directory(join(keywordsPath, 'android'));
-  if (!keywordAndroidDir.existsSync()) {
-    keywordAndroidDir.createSync(recursive: true);
+  if (keywordAndroidDir.existsSync()) {
+    keywordAndroidDir.deleteSync(recursive: true);
   }
+  keywordAndroidDir.createSync(recursive: true);
 
   var keywordIosDir = Directory(join(keywordsPath, 'ios'));
-  if (!keywordIosDir.existsSync()) {
-    keywordIosDir.createSync(recursive: true);
+  if (keywordIosDir.existsSync()) {
+    keywordIosDir.deleteSync(recursive: true);
   }
+  keywordIosDir.createSync(recursive: true);
 
   var modelDir = Directory(modelsPath);
-  if (!modelDir.existsSync()) {
-    modelDir.createSync(recursive: true);
+  if (modelDir.existsSync()) {
+    modelDir.deleteSync(recursive: true);
   }
+  modelDir.createSync(recursive: true);
 
   var params = Map();
   params["language"] = language;
