@@ -3,8 +3,10 @@ import "package:path/path.dart";
 import "dart:convert";
 import "dart:io";
 
-final String resourcePath = join(dirname(Platform.script.path), "..", "..", "..", "resources");
-final String libPath = join(dirname(Platform.script.path), "..", "..", "..", "lib");
+final String resourcePath =
+    join(dirname(Platform.script.path), "..", "..", "..", "resources");
+final String libPath =
+    join(dirname(Platform.script.path), "..", "..", "..", "lib");
 final String testDataPath = join(resourcePath, ".test", "test_data.json");
 
 final String assetsPath = join(dirname(Platform.script.path), "..", "assets");
@@ -19,10 +21,12 @@ Future<Map> readJsonFile(String filePath) async {
 
 void main(List<String> arguments) async {
   var testData = await readJsonFile(testDataPath);
-  List<String> availableLanguages = List<String>.from(testData["tests"]["singleKeyword"].map((x) => x["language"]).toList());
+  List<String> availableLanguages = List<String>.from(
+      testData["tests"]["singleKeyword"].map((x) => x["language"]).toList());
 
   if (arguments.isEmpty) {
-    print("Choose the language you would like to run the demo in with 'dart scripts/prepare_demo.dart [language]'.\n"
+    print(
+        "Choose the language you would like to run the demo in with 'dart scripts/prepare_demo.dart [language]'.\n"
         "Available languages are ${availableLanguages.join(", ")}.");
     exit(1);
   }
@@ -35,29 +39,28 @@ void main(List<String> arguments) async {
     exit(1);
   }
 
-  var assetsDir = Directory(assetsPath);
-  if (assetsDir.existsSync()) {
-    assetsDir.deleteSync(recursive: true);
-  }
-  assetsDir.createSync();
-
-  var androidResourceDir = Directory(join(resourcePath, "keyword_files$suffix", "android"));
-  var iOSResourceDir = Directory(join(resourcePath, "keyword_files$suffix", "ios"));
+  var androidResourceDir =
+      Directory(join(resourcePath, "keyword_files$suffix", "android"));
+  var iOSResourceDir =
+      Directory(join(resourcePath, "keyword_files$suffix", "ios"));
 
   var keywordAndroidDir = Directory(join(keywordsPath, 'android'));
-  if (!keywordAndroidDir.existsSync()) {
-    keywordAndroidDir.createSync(recursive: true);
+  if (keywordAndroidDir.existsSync()) {
+    keywordAndroidDir.deleteSync(recursive: true);
   }
+  keywordAndroidDir.createSync(recursive: true);
 
   var keywordIosDir = Directory(join(keywordsPath, 'ios'));
-  if (!keywordIosDir.existsSync()) {
-    keywordIosDir.createSync(recursive: true);
+  if (keywordIosDir.existsSync()) {
+    keywordIosDir.deleteSync(recursive: true);
   }
+  keywordIosDir.createSync(recursive: true);
 
   var modelDir = Directory(modelsPath);
-  if (!modelDir.existsSync()) {
-    modelDir.createSync(recursive: true);
+  if (modelDir.existsSync()) {
+    modelDir.deleteSync(recursive: true);
   }
+  modelDir.createSync(recursive: true);
 
   var params = Map();
   params["language"] = language;
@@ -82,4 +85,6 @@ void main(List<String> arguments) async {
   var encoded = json.encode(params);
   File f = File(join(assetsPath, "params.json"));
   f.writeAsStringSync(encoded);
+
+  print("Demo is ready to run!");
 }

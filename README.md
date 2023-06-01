@@ -216,6 +216,19 @@ To browse the demo source go to [demo/unity](demo/unity).
 
 To run the Porcupine demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device.
 
+Run the `prepare_demo` script from [demo/flutter](./demo/flutter) with a language code to set up the demo in the language of your
+choice (e.g. `de` -> German, `ko` -> Korean). To see a list of available languages, run `prepare_demo` without a language code.
+
+```console
+dart scripts/prepare_demo.dart ${LANGUAGE}
+```
+
+Replace your `AccessKey` in [lib/main.dart](./demo/flutter/lib/main.dart) file:
+
+```dart
+final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+```
+
 Run the following command from [demo/flutter](demo/flutter) to build and deploy the demo to your device:
 
 ```console
@@ -225,27 +238,36 @@ flutter run
 ### React Native Demos
 
 To run the React Native Porcupine demo app you will first need to set up your React Native environment. For this,
-please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has
-been set up, navigate to [demo/react-native](demo/react-native) to run the following commands:
+please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup).
+
+Replace your `AccessKey`, in [`App.tsx`](./demo/react-native/App.tsx) file:
+```typescript
+_accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+```
+
+Navigate to [demo/react-native](demo/react-native) to run the following commands:
 
 For Android:
 
 ```console
-yarn android-install    # sets up environment
-yarn android-run        # builds and deploys to Android
+yarn android-install          # sets up environment
+yarn android-run ${LANGUAGE}  # builds and deploys to Android
 ```
 
 For iOS:
 
 ```console
-yarn ios-install        # sets up environment
-yarn ios-run            # builds and deploys to iOS
+yarn ios-install              # sets up environment
+yarn ios-run ${LANGUAGE}      # builds and deploys to iOS
 ```
+
+Replace `${LANGUAGE}` with the language code of your choice (e.g. de -> German, ko -> Korean).
+To see a list of available languages, run the `android-run` or `ios-run` command without a language code.
 
 ### Android Demos
 
 Using [Android Studio](https://developer.android.com/studio/index.html), open
-[demo/android/Activity](demo/android/Activity) as an Android project, copy your AccessKey into `MainActivity.java` and then run the application.
+[demo/android/Activity](demo/android/Activity) as an Android project, copy your AccessKey into `MainActivity.java`, select the build variant (`Build > Select Build Variant...`) for the desired language and then run the application.
 
 To learn about how to use Porcupine in long-running services go to [demo/android/Service](demo/android/Service).
 
@@ -270,15 +292,24 @@ Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `Por
 
 #### ForegroundApp Demo
 
-To run the demo, go to [demo/ios/ForegroundApp](demo/ios/ForegroundApp) and run:
+To run the foreground application demo:
+
+1) Go to [ForegroundApp](./demo/ios/ForegroundApp) directory. Then run:
 
 ```console
 pod install
 ```
 
-Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](demo/ios/ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
+2) Open the `PorcupineForegroundAppDemo.xcworkspace` in XCode
 
-Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineForegroundAppDemo.xcworkspace` and run the application.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./demo/ios/ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
+
+4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `arDemo` -> Arabic Demo, `deDemo` -> German Demo)
+
+5) Run the demo with a simulator or connected iOS device
+
+The demo allows you to select any of the pre-built keywords for detection. Press start and say the selected keyword.
+
 
 ### Web Demos
 
@@ -288,14 +319,14 @@ From [demo/web](demo/web) run the following in the terminal:
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run start
+npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:5000` in your browser to try the demo.
@@ -306,14 +337,14 @@ From [demo/angular](demo/angular) run the following in the terminal:
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run start
+npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:4200` in your browser to try the demo.
@@ -324,14 +355,14 @@ From [demo/react](demo/react) run the following in the terminal:
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run start
+npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:3000` in your browser to try the demo.
@@ -342,14 +373,14 @@ From [demo/vue](demo/vue) run the following in the terminal:
 
 ```console
 yarn
-yarn serve
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run serve
+npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:8080` in your browser to try the demo.

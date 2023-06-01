@@ -52,6 +52,9 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
+
     - name: Build
       run: flutter build apk
 
@@ -68,6 +71,12 @@ jobs:
     - name: Inject AppID
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         integration_test/app_test.dart
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
 
     - name: Run integration tests
       run: flutter test integration_test
@@ -94,6 +103,9 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
+
     - name: Build
       run: flutter build ios --release --no-codesign
 
@@ -116,6 +128,9 @@ jobs:
 
     - name: Install dependencies
       run: flutter pub get
+
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
 
     - name: Run integration tests
       run: flutter test integration_test
