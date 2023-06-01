@@ -112,6 +112,6 @@ fs.writeFileSync(
 })();`
 );
 
-child_process.fork("vite", cmds, {
+child_process.fork("react-scripts", cmds, {
   execPath: "npx",
 });

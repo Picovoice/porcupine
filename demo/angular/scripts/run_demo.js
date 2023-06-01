@@ -7,8 +7,9 @@ const availableLanguages = testData["tests"]["singleKeyword"].map(
   (x) => x["language"]
 );
 
-const cmd = process.argv.slice(2)[0];
-const language = process.argv.slice(2)[1];
+const cmds = process.argv.slice(2, -1);
+const language = process.argv.slice(-1)[0];
+
 if (!language) {
   console.error(
     `Choose the language you would like to run the demo in with "yarn start [language]".\nAvailable languages are ${availableLanguages.join(
@@ -111,6 +112,6 @@ fs.writeFileSync(
 })();`
 );
 
-child_process.fork("ng", [cmd], {
+child_process.fork("ng", cmds, {
   execPath: "npx",
 });

@@ -16,7 +16,7 @@
     <h3>Error: {{ state.error !== null }}</h3>
     <h3>
       <label>Keyword: </label>
-      <select>
+      <select v-on:change="updateSelectedKeyword">
         <option
           v-for="(keyword, index) in keywords"
           :key="keyword"
@@ -84,6 +84,7 @@ const VoiceWidget = defineComponent({
     const keywords = ref(
       porcupineKeywords.map((k: any) => k.label ?? k.builtin)
     );
+    const selectedKeywordIndex = ref(0);
     watch(
       () => porcupine.state.keywordDetection,
       keyword => {
@@ -94,15 +95,25 @@ const VoiceWidget = defineComponent({
     );
 
     async function initEngine() {
+      if (porcupine.state.isLoaded) {
+        await porcupine.release();
+      }
       await porcupine.init(
         accessKey.value,
-        [BuiltInKeyword.Grasshopper, BuiltInKeyword.Grapefruit],
+        porcupineKeywords[selectedKeywordIndex.value],
         porcupineModel
       );
     }
 
     function updateAccessKey(event: any) {
       accessKey.value = event.target.value;
+    }
+
+    function updateSelectedKeyword(event: any) {
+      selectedKeywordIndex.value = parseInt(event.target.value);
+      if (porcupine.state.isLoaded) {
+        initEngine();
+      }
     }
 
     onBeforeUnmount(() => {
@@ -115,6 +126,7 @@ const VoiceWidget = defineComponent({
       keywords,
       initEngine,
       updateAccessKey,
+      updateSelectedKeyword,
       ...porcupine,
     };
   },
