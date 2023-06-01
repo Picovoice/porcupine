@@ -6,9 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node scripts/run_demo.js",
-    "build": "run-p type-check build-only",
+    "build": "node scripts/run_demo.js build",
     "preview": "node scripts/run_demo.js preview",
-    "build-only": "node scripts/run_demo.js build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },

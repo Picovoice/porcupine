@@ -7,7 +7,7 @@ const availableLanguages = testData["tests"]["singleKeyword"].map(
   x => x["language"]
 );
 
-const cmds = process.argv.slice(2, -1);
+const commands = process.argv.slice(2, -1);
 const language = process.argv.slice(-1)[0];
 
 if (!language) {
@@ -108,6 +108,6 @@ export default porcupineModel;
 `
 );
 
-child_process.fork("vite", cmds, {
+child_process.fork("vite", commands, {
   execPath: "npx",
 });

@@ -7,7 +7,7 @@ const availableLanguages = testData["tests"]["singleKeyword"].map(
   (x) => x["language"]
 );
 
-const cmds = process.argv.slice(2, -1);
+const commands = process.argv.slice(2, -1);
 const language = process.argv.slice(-1)[0];
 
 if (!language) {
@@ -112,6 +112,6 @@ fs.writeFileSync(
 })();`
 );
 
-child_process.fork("ng", cmds, {
+child_process.fork("ng", commands, {
   execPath: "npx",
 });
