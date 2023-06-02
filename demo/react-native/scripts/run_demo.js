@@ -10,7 +10,7 @@ const language = process.argv.slice(-1)[0];
 
 if (!availableLanguages.includes(language)) {
   console.error(
-    `Choose the language you would like to run the demo in with "yarn start [language]".\nAvailable languages are ${availableLanguages.join(
+    `Choose the language you would like to run the demo in with "yarn [android/ios]-run [language]".\nAvailable languages are ${availableLanguages.join(
       ", "
     )}`
   );
