@@ -78,26 +78,31 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _loadParams() async {
-    final paramsString =
-        await DefaultAssetBundle.of(context).loadString('assets/params.json');
-    final params = json.decode(paramsString);
+    try {
+      final paramsString =
+          await DefaultAssetBundle.of(context).loadString('assets/params.json');
+      final params = json.decode(paramsString);
 
-    String language = params["language"];
-    List<String> keywords = List<String>.from(params["keywords"]);
-    if (language == "en") {
-      for (var builtIn in BuiltInKeyword.values) {
-        String keyword = builtIn
-            .toString()
-            .split(".")
-            .last
-            .replaceAll("_", " ")
-            .toLowerCase();
-        keywords.add(keyword);
+      String language = params["language"];
+      List<String> keywords = List<String>.from(params["keywords"]);
+      if (language == "en") {
+        for (var builtIn in BuiltInKeyword.values) {
+          String keyword = builtIn
+              .toString()
+              .split(".")
+              .last
+              .replaceAll("_", " ")
+              .toLowerCase();
+          keywords.add(keyword);
+        }
       }
-    }
 
-    _language = language;
-    _keywords = keywords;
+      _language = language;
+      _keywords = keywords;
+    } catch (_) {
+      errorCallback(PorcupineException(
+        "Ensure 'prepare_demo.dart' script was ran before running the demo."));
+    }
   }
 
   Future<void> loadNewKeyword(String keyword) async {
