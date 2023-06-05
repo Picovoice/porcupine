@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       _keywords = keywords;
     } catch (_) {
       errorCallback(PorcupineException(
-        "Ensure 'prepare_demo.dart' script was ran before running the demo."));
+        "Could not find `params.json`. Ensure 'prepare_demo.dart' script was run before launching the demo."));
     }
   }
 
