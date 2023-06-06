@@ -59,6 +59,7 @@ if (language !== "en") {
     sensitivity: 0.7,
     publicPath: "keywords/${k}",
     forceWrite: true,
+    customWritePath: "${process.env.npm_package_version}_${k}",
   },`);
     });
   } catch (error) {
@@ -101,6 +102,7 @@ fs.writeFileSync(
   `const porcupineModel = {
   publicPath: "models/${modelName}",
   forceWrite: true,
+  customWritePath: "${process.env.npm_package_version}_${modelName}",
 };
 
 (function () {
