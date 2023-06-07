@@ -20,7 +20,6 @@ if (!availableLanguages.includes(language)) {
 }
 
 const version = process.env.npm_package_version;
-const versionNum = parseInt(version.replace(".", ""));
 const suffix = language === "en" ? "" : `_${language}`;
 const rootDir = path.join(__dirname, "..", "..", "..");
 
@@ -56,7 +55,6 @@ if (language !== "en") {
     publicPath: "assets/keywords/${k}",
     forceWrite: true,
     customWritePath: "${version}_${k}",
-    version: ${versionNum},
   },`);
     });
   } catch (error) {
@@ -100,7 +98,6 @@ fs.writeFileSync(
   publicPath: "assets/models/${modelName}",
   forceWrite: true,
   customWritePath: "${version}_${modelName}",
-  version: ${versionNum},
 };
 
 (function () {
