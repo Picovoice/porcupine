@@ -19,6 +19,7 @@ if (!availableLanguages.includes(language)) {
   process.exit(1);
 }
 
+const version = process.env.npm_package_version;
 const suffix = language === "en" ? "" : `_${language}`;
 const rootDir = path.join(__dirname, "..", "..", "..");
 
@@ -53,6 +54,7 @@ if (language !== "en") {
     sensitivity: 0.7,
     publicPath: "assets/keywords/${k}",
     forceWrite: true,
+    customWritePath: "${version}_${k}",
   },`);
     });
   } catch (error) {
@@ -95,6 +97,7 @@ fs.writeFileSync(
   `const porcupineModel = {
   publicPath: "assets/models/${modelName}",
   forceWrite: true,
+  customWritePath: "${version}_${modelName}",
 };
 
 (function () {
