@@ -52,8 +52,7 @@ if (language !== "en") {
       keywordJS.push(`  {
     label: "${k.replace("_wasm.ppn", "").replace("_", " ")}",
     sensitivity: 0.7,
-    publicPath: "keywords/${k}",
-    forceWrite: true,
+    publicPath: "keywords/${k}",    
     customWritePath: "${version}_${k}",
   },`);
     });
@@ -95,8 +94,7 @@ fs.copyFileSync(
 fs.writeFileSync(
   path.join(libDirectory, "porcupineModel.js"),
   `const porcupineModel = {
-  publicPath: "models/${modelName}",
-  forceWrite: true,
+  publicPath: "models/${modelName}",  
   customWritePath: "${version}_${modelName}",
 };
 

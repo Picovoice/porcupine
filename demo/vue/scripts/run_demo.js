@@ -52,9 +52,8 @@ if (language !== "en") {
       keywordJS.push(`  {
     label: "${k.replace("_wasm.ppn", "").replace("_", " ")}",
     sensitivity: 0.7,
-    publicPath: "keywords/${k}",
-    forceWrite: true,
-    customWritePath: "${version}_${k}",    
+    publicPath: "keywords/${k}",    
+    customWritePath: "${version}_${k}",
   },`);
     });
   } catch (error) {
@@ -93,9 +92,8 @@ fs.copyFileSync(
 fs.writeFileSync(
   path.join(libDirectory, "porcupineModel.js"),
   `const porcupineModel = {
-  publicPath: "models/${modelName}",
-  forceWrite: true,
-  customWritePath: "${version}_${modelName}",  
+  publicPath: "models/${modelName}",  
+  customWritePath: "${version}_${modelName}",
 };
 
 export default porcupineModel;
