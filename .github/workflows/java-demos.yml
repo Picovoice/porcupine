@@ -34,3 +34,6 @@ jobs:
 
     - name: Build
       run: ./gradlew build
+
+    - name: Run filedemo
+      run: java -jar build/libs/porcupine-file-demo.jar -a  ${{secrets.PV_VALID_ACCESS_KEY}} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice

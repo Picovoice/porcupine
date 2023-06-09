@@ -20,7 +20,7 @@ defaults:
     working-directory: demo/react-native
 
 jobs:
-  build:
+  build-android:
     runs-on: ubuntu-latest
 
     strategy:
@@ -30,7 +30,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
@@ -39,4 +39,45 @@ jobs:
       run: npm install yarn
 
     - name: Install dependencies
-      run: yarn install
+      run: yarn android-install
+
+    - name: Build bundle
+      run: yarn android-bundle pt
+
+    - name: Build
+      run: ./gradlew assembleDebug
+      working-directory: demo/react-native/android
+
+  build-ios:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Pre-build dependencies
+      run: npm install yarn
+
+    - name: Install dependencies
+      run: yarn ios-install
+
+    - name: Build bundle
+      run: yarn ios-bundle nl
+
+    - name: Build
+      run: xcrun xcodebuild build
+        -configuration Debug
+        -workspace PorcupineDemo.xcworkspace
+        -sdk iphoneos
+        -scheme PorcupineDemo
+        -derivedDataPath ddp
+        CODE_SIGNING_ALLOWED=NO
+      working-directory: demo/react-native/ios
