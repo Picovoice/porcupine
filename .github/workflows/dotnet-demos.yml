@@ -53,3 +53,6 @@ jobs:
 
     - name: Dotnet build filedemo
       run: dotnet build -c FileDemo.Release
+
+    - name: Run Dotnet filedemo
+      run: dotnet run -c FileDemo.Release -- --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --keywords picovoice
