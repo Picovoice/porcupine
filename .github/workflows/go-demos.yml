@@ -47,7 +47,7 @@ jobs:
       run: ./porcupine_file_demo -access_key ${{secrets.PV_VALID_ACCESS_KEY}} -input_audio_path ../../resources/audio_samples/multiple_keywords.wav -keywords picovoice
 
   build-self-hosted:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
