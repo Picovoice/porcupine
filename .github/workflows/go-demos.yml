@@ -38,15 +38,13 @@ jobs:
         go-version: ${{ matrix.go }}
 
     - name: Build micdemo
-      run: go build
-      working-directory: demo/go/micdemo
+      run: go build micdemo/porcupine_mic_demo.go
       
     - name: Build filedemo
-      run: go build
-      working-directory: demo/go/filedemo
+      run: go build filedemo/porcupine_file_demo.go
 
     - name: Test filedemo
-      run: ./porcupine_file_demo -access_key ${{secrets.PV_VALID_ACCESS_KEY}} -input_audio_path ../../resources/audio_samples/test.wav -keywords picovoice
+      run: ./porcupine_file_demo -access_key ${{secrets.PV_VALID_ACCESS_KEY}} -input_audio_path ../../resources/audio_samples/multiple_keywords.wav -keywords picovoice
 
   build-self-hosted:
     runs-on: ${{ matrix.os }}
@@ -59,13 +57,11 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Build micdemo
-      run: go build
-      working-directory: demo/go/micdemo
+      run: go build micdemo/porcupine_mic_demo.go
       
     - name: Build filedemo
-      run: go build
-      working-directory: demo/go/filedemo
+      run: go build filedemo/porcupine_file_demo.go
 
     - name: Test filedemo
-      run: ./porcupine_file_demo -access_key ${{secrets.PV_VALID_ACCESS_KEY}} -input_audio_path ../../resources/audio_samples/test.wav -keywords picovoice
+      run: ./porcupine_file_demo -access_key ${{secrets.PV_VALID_ACCESS_KEY}} -input_audio_path ../../resources/audio_samples/multiple_keywords.wav -keywords picovoice
 
