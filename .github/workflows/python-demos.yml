@@ -43,7 +43,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Test
-      run: python leopard_demo_file.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --wav_paths ../../resources/audio_samples/multiple_keywords.wav --keywords picovoice
+      run: python porcupine_demo_file.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --wav_paths ../../resources/audio_samples/multiple_keywords.wav --keywords picovoice
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -59,4 +59,4 @@ jobs:
       run: pip3 install -r requirements.txt
 
     - name: Test
-      run: python3 leopard_demo_file.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --wav_paths ../../resources/audio_samples/multiple_keywords.wav --keywords picovoice
+      run: python3 porcupine_demo_file.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --wav_paths ../../resources/audio_samples/multiple_keywords.wav --keywords picovoice
