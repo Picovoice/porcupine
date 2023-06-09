@@ -21,6 +21,9 @@ env:
 jobs:
   build-micdemo:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/rust/micdemo
 
     steps:
     - uses: actions/checkout@v3
@@ -30,10 +33,12 @@ jobs:
 
     - name: Rust build micdemo
       run: cargo build --verbose
-      working-directory: demo/rust/micdemo
 
   build-filedemo:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/rust/filedemo
 
     steps:
     - uses: actions/checkout@v3
@@ -43,12 +48,9 @@ jobs:
 
     - name: Rust build micdemo
       run: cargo build --verbose
-      working-directory: demo/rust/micdemo
 
     - name: Rust build filedemo
       run: cargo build --verbose
-      working-directory: demo/rust/filedemo
 
     - name: Test
       run: cargo run --release -- --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --keywords picovoice
-      working-directory: demo/rust/filedemo
