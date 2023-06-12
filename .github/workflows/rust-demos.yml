@@ -46,9 +46,6 @@ jobs:
     - name: Rust dependencies
       run: sudo apt install libasound2-dev
 
-    - name: Rust build micdemo
-      run: cargo build --verbose
-
     - name: Rust build filedemo
       run: cargo build --verbose
 
