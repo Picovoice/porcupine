@@ -1,0 +1,79 @@
+name: Flutter
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '.github/workflows/flutter.yml'
+      - 'demo/flutter/**'
+      - '!demo/flutter/README.md'
+  pull_request:
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    paths:
+      - '.github/workflows/flutter.yml'
+      - 'demo/flutter/**'
+      - '!demo/flutter/README.md'
+
+defaults:
+  run:
+    working-directory: demo/flutter
+
+jobs:
+  build-android:
+    name: Build Android demo
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flutter-version: ['2.8.1', '3.0.4']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Install Flutter ${{ matrix.flutter-version }}
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ matrix.flutter-version }}
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
+
+    - name: Build
+      run: flutter build apk
+
+  build-ios:
+    name: Build iOS demo
+    runs-on: macos-11
+    strategy:
+      matrix:
+        flutter-version: ['2.8.1', '3.0.4']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Flutter ${{ matrix.flutter-version }}
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ matrix.flutter-version }}
+        architecture: x64
+
+    - name: Update Cocoapods repo
+      run: pod repo update
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
+
+    - name: Build
+      run: flutter build ios --release --no-codesign

@@ -1,0 +1,96 @@
+name: iOS Demos
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'demo/ios/**'
+      - '.github/workflows/ios-demos.yml'
+  pull_request:
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    paths:
+      - 'demo/ios/**'
+      - '.github/workflows/ios-demos.yml'
+
+jobs:
+  build-foreground-app:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: demo/ios/ForegroundApp
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install Cocoapods
+        run: gem install cocoapods
+
+      - name: Install AppCenter CLI
+        run: npm install -g appcenter-cli
+
+      - name: Make build dir
+        run: mkdir ddp
+
+      - name: Run Cocoapods
+        run: pod install
+
+      - name: Build English
+        run: xcrun xcodebuild build
+          -configuration Debug
+          -workspace PorcupineForegroundAppDemo.xcworkspace
+          -sdk iphoneos
+          -scheme enDemo
+          -derivedDataPath ddp
+          CODE_SIGNING_ALLOWED=NO
+
+      - name: Build Other Language
+        run: xcrun xcodebuild build
+          -configuration Debug
+          -workspace PorcupineForegroundAppDemo.xcworkspace
+          -sdk iphoneos
+          -scheme deDemo
+          -derivedDataPath ddp
+          CODE_SIGNING_ALLOWED=NO
+
+  build-background-service:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: demo/ios/BackgroundService
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install Cocoapods
+        run: gem install cocoapods
+
+      - name: Install AppCenter CLI
+        run: npm install -g appcenter-cli
+
+      - name: Make build dir
+        run: mkdir ddp
+
+      - name: Run Cocoapods
+        run: pod install
+
+      - name: Build
+        run: xcrun xcodebuild build
+          -configuration Debug
+          -workspace PorcupineBackgroundServiceDemo.xcworkspace
+          -sdk iphoneos
+          -scheme PorcupineBackgroundServiceDemo
+          -derivedDataPath ddp
+          CODE_SIGNING_ALLOWED=NO
