@@ -20,8 +20,12 @@ defaults:
     working-directory: demo/java
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v3
@@ -31,6 +35,22 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+
+    - name: Build
+      run: ./gradlew build
+
+    - name: Run filedemo
+      run: java -jar build/libs/porcupine-file-demo.jar -a  ${{secrets.PV_VALID_ACCESS_KEY}} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+
+    steps:
+    - uses: actions/checkout@v3
 
     - name: Build
       run: ./gradlew build
