@@ -18,6 +18,10 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+defaults:
+  run:
+    working-directory: demo/rust
+
 jobs:
   build-github-hosted:
     runs-on: ${{ matrix.os }}
@@ -42,12 +46,15 @@ jobs:
 
     - name: Rust build micdemo
       run: cargo build --verbose
+      working-directory: demo/rust/micdemo
 
     - name: Rust build filedemo
       run: cargo build --verbose
+      working-directory: demo/rust/filedemo
 
     - name: Test
       run: cargo run --release -- --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --keywords picovoice
+      working-directory: demo/rust/filedemo
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -67,9 +74,12 @@ jobs:
 
     - name: Rust build micdemo
       run: cargo build --verbose
+      working-directory: demo/rust/micdemo
 
     - name: Rust build filedemo
       run: cargo build --verbose
+      working-directory: demo/rust/filedemo
 
     - name: Test
       run: cargo run --release -- --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --keywords picovoice
+      working-directory: demo/rust/filedemo
