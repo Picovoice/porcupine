@@ -110,7 +110,7 @@ Porcupine is the right product if you need to detect one or a few static (always
 
 ## Language Support
 
-- English, German, French, Spanish, Italian, Japanese, Korean, and Portuguese.
+- Arabic, Dutch, English, Farsi, French, German, Hindi, Italian, Japanese, Korean, Mandarin, Polish, Portuguese, Russian, Spanish, Swedish, and Vietnamese
 - Support for additional languages is available for commercial customers on a case-by-case basis.
 
 ## Performance
