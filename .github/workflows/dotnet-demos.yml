@@ -68,3 +68,27 @@ jobs:
 
     - name: Run Dotnet filedemo
       run: dotnet run -c FileDemo.Release -- --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --keywords picovoice
+  
+  build-vui-demo:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: demo/dotnet-vui/
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up .NET 6.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Package restore
+      run: dotnet restore
+
+    - name: Dotnet build
+      run: dotnet build
