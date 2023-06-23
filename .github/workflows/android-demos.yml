@@ -1,23 +1,23 @@
-name: Android AppCenter Tests
+name: Android Demos
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/android-appcenter.yml'
-      - 'demo/android/Activity/**'
+      - '.github/workflows/android-demos.yml'
+      - 'demo/android/**'
       - '!demo/android/Activity/README.md'
-      - 'resources/.test/**'
-      - 'resources/audio_samples/**'
+      - '!demo/android/Service/README.md'
+      - '!demo/android/STT/README.md'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '.github/workflows/android-appcenter.yml'
-      - 'demo/android/Activity/**'
+      - '.github/workflows/android-demos.yml'
+      - 'demo/android/**'
       - '!demo/android/Activity/README.md'
-      - 'resources/.test/**'
-      - 'resources/audio_samples/**'
+      - '!demo/android/Service/README.md'
+      - '!demo/android/STT/README.md'
 
 jobs:
   build-activity-demo:
