@@ -15,12 +15,13 @@ on:
       - '!demo/angular/README.md'
       - '.github/workflows/angular-demos.yml'
 
+defaults:
+  run:
+    working-directory: demo/angular
+
 jobs:
   build-demos:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: demo/angular
 
     strategy:
       matrix:
@@ -45,30 +46,3 @@ jobs:
 
     - name: Build another language
       run: yarn build ja
-  
-  build-stt-demo:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: demo/angular-stt
-
-    strategy:
-      matrix:
-        node-version: [lts/*]
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Pre-build dependencies
-      run: npm install yarn
-
-    - name: Install dependencies
-      run: yarn install
-
-    - name: Build
-      run: yarn build
