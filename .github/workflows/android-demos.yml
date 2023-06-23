@@ -19,10 +19,6 @@ on:
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
 
-defaults:
-  run:
-    working-directory: demo/android/Activity
-
 jobs:
   build-activity-demo:
     runs-on: ubuntu-latest
