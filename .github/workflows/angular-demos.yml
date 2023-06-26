@@ -57,17 +57,13 @@ jobs:
       run:
         working-directory: demo/angular-stt
 
-    strategy:
-      matrix:
-        node-version: lts/*
-
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Node.js ${{ matrix.node-version }}
+    - name: Set up Node.js LTS
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: lts/*
 
     - name: Pre-build dependencies
       run: npm install yarn
