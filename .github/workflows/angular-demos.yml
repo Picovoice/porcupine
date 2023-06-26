@@ -6,13 +6,17 @@ on:
     branches: [ master ]
     paths:
       - 'demo/angular/**'
+      - 'demo/angular-stt/**'
       - '!demo/angular/README.md'
+      - '!demo/angular-stt/README.md'
       - '.github/workflows/angular-demos.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'demo/angular/**'
+      - 'demo/angular-stt/**'
       - '!demo/angular/README.md'
+      - '!demo/angular-stt/README.md'
       - '.github/workflows/angular-demos.yml'
 
 defaults:
@@ -46,3 +50,26 @@ jobs:
 
     - name: Build another language
       run: yarn build ja
+  
+  build-stt-demo:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/angular-stt
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+
+    - name: Pre-build dependencies
+      run: npm install yarn
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build
+      run: yarn build
