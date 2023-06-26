@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "android-run": "node scripts/run_demo.js run-android",
     "android-install": "yarn",
-    "android-bundle": "node scripts/run_demo.js bundle --dev false --platform android --entry-file index.js --bundle-output ./android/leopard-rn-demo-app/src/main/assets/app.jsbundle --assets-dest ./android/leopard-rn-demo-app/src/main/res/",
+    "android-bundle": "node scripts/run_demo.js bundle --dev false --platform android --entry-file index.js --bundle-output ./android/porcupine-rn-demo-app/src/main/assets/app.jsbundle --assets-dest ./android/porcupine-rn-demo-app/src/main/res/",
     "ios-run": "node scripts/run_demo.js run-ios",
     "ios-link": "cd ios && pod install && cd ..",
     "ios-install": "yarn && yarn ios-link",
