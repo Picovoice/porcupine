@@ -87,7 +87,7 @@ namespace AvaloniaVUI.ViewModels
                 using Porcupine porcupine = Porcupine.FromBuiltInKeywords(ACCESS_KEY, commands);
 
                 // create and start recording
-                using PvRecorder recorder = PvRecorder.Create(-1, porcupine.FrameLength);
+                using PvRecorder recorder = PvRecorder.Create(porcupine.FrameLength);
                 recorder.Start();
 
                 Console.WriteLine($"Using device: {recorder.SelectedDevice}");
@@ -95,8 +95,8 @@ namespace AvaloniaVUI.ViewModels
 
                 while (true)
                 {
-                    short[] pcm = recorder.Read();
-                    int keywordIndex = porcupine.Process(pcm);
+                    short[] frame = recorder.Read();
+                    int keywordIndex = porcupine.Process(frame);
                     if (keywordIndex >= 0)
                     {
                         switch (keywordIndex)
