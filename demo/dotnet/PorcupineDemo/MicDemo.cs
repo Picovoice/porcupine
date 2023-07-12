@@ -48,48 +48,40 @@ namespace PorcupineDemo
             int audioDeviceIndex,
             string outputPath = null)
         {
-            Porcupine porcupine = null;
-            BinaryWriter outputFileWriter = null;
-            int totalSamplesWritten = 0;
-
             // init porcupine wake word engine
-            porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
+            using Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
 
             // get keyword names for labeling detection results                
             List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
+            // create recorder
+            using PvRecorder recorder = PvRecorder.Create(frameLength: porcupine.FrameLength, deviceIndex: audioDeviceIndex);
+            Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
+            {
+                e.Cancel = true;
+                recorder.Stop();
+                Console.WriteLine("Stopping...");
+            };
+
             // open stream to output file
+            BinaryWriter outputFileWriter = null;
+            int totalSamplesWritten = 0;
             if (!string.IsNullOrWhiteSpace(outputPath))
             {
                 outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
-                WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
+                WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, 0);
             }
 
-            Console.CancelKeyPress += (s, o) =>
-            {
-                Console.WriteLine("Stopping...");
-
-                if (outputFileWriter != null)
-                {
-                    // write size to header and clean up
-                    WriteWavHeader(outputFileWriter, 1, 16, 16000, totalSamplesWritten);
-                    outputFileWriter.Flush();
-                    outputFileWriter.Dispose();
-                }
-                porcupine?.Dispose();
-            };
-
-            // create and start recording
-            using PvRecorder recorder = PvRecorder.Create(deviceIndex: audioDeviceIndex, frameLength: porcupine.FrameLength);
-            Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+            // start recording
             Console.Write($"Listening for [{string.Join(' ', keywordNames.Select(k => $"'{k}'"))}]...\n");
             recorder.Start();
 
-            while (true)
+            while (recorder.IsRecording)
             {
-                short[] pcm = recorder.Read();
+                short[] frame = recorder.Read();
 
-                int result = porcupine.Process(pcm);
+                int result = porcupine.Process(frame);
                 if (result >= 0)
                 {
                     Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
@@ -97,13 +89,23 @@ namespace PorcupineDemo
 
                 if (outputFileWriter != null)
                 {
-                    foreach (short sample in pcm)
+                    foreach (short sample in frame)
                     {
                         outputFileWriter.Write(sample);
                     }
-                    totalSamplesWritten += pcm.Length;
+                    totalSamplesWritten += frame.Length;
                 }
-                _ = Thread.Yield();
+
+                Thread.Yield();
+            }
+
+            if (outputFileWriter != null)
+            {
+                // write size to header and clean up
+                WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, totalSamplesWritten);
+                outputFileWriter.Flush();
+                outputFileWriter.Dispose();
+                Console.Write($"Wrote audio to '{outputPath}'");
             }
         }
 
@@ -143,7 +145,7 @@ namespace PorcupineDemo
         /// </summary>
         public static void ShowAudioDevices()
         {
-            string[] devices = PvRecorder.GetAudioDevices();
+            string[] devices = PvRecorder.GetAvailableDevices();
             for (int i = 0; i < devices.Length; i++)
             {
                 Console.WriteLine($"index: {i}, device name: {devices[i]}");
