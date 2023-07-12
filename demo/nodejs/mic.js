@@ -20,7 +20,7 @@ const {
 const { PvRecorder } = require("@picovoice/pvrecorder-node");
 
 program
-  .requiredOption(
+  .option(
     "-a, --access_key <string>",
     "AccessKey obtain from the Picovoice Console (https://console.picovoice.ai/)"
   )
@@ -74,7 +74,7 @@ async function micDemo() {
   let showAudioDevicesDefined = showAudioDevices !== undefined;
 
   if (showAudioDevicesDefined) {
-      const devices = PvRecorder.getAudioDevices();
+      const devices = PvRecorder.getAvailableDevices();
       for (let i = 0; i < devices.length; i++) {
           console.log(`index: ${i}, device name: ${devices[i]}`);
       }
@@ -150,7 +150,7 @@ async function micDemo() {
 
   const frameLength = handle.frameLength;
 
-  const recorder = new PvRecorder(audioDeviceIndex, frameLength);
+  const recorder = new PvRecorder(frameLength, audioDeviceIndex);
   recorder.start();
 
   console.log(`Using device: ${recorder.getSelectedDevice()}...`);
