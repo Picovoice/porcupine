@@ -24,8 +24,7 @@ def main():
 
     parser.add_argument(
         '--access_key',
-        help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)',
-        required=True)
+        help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)')
 
     parser.add_argument(
         '--keywords',
@@ -67,7 +66,7 @@ def main():
     args = parser.parse_args()
 
     if args.show_audio_devices:
-        for i, device in enumerate(PvRecorder.get_audio_devices()):
+        for i, device in enumerate(PvRecorder.get_available_devices()):
             print('Device %d: %s' % (i, device))
         return
 
@@ -123,8 +122,8 @@ def main():
     print('Porcupine version: %s' % porcupine.version)
 
     recorder = PvRecorder(
-        device_index=args.audio_device_index,
-        frame_length=porcupine.frame_length)
+        frame_length=porcupine.frame_length,
+        device_index=args.audio_device_index)
     recorder.start()
 
     wav_file = None

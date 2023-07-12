@@ -1,4 +1,4 @@
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	porcupine "github.com/Picovoice/porcupine/binding/go/v2"
-	pvrecorder "github.com/Picovoice/pvrecorder/sdk/go"
+	pvrecorder "github.com/Picovoice/pvrecorder/binding/go"
 	"github.com/go-audio/wav"
 )
 
@@ -139,12 +139,8 @@ func main() {
 		defer outputWav.Close()
 	}
 
-	recorder := pvrecorder.PvRecorder{
-		DeviceIndex:    *audioDeviceIndex,
-		FrameLength:    porcupine.FrameLength,
-		BufferSizeMSec: 1000,
-		LogOverflow:    0,
-	}
+	recorder := pvrecorder.NewPvRecorder(porcupine.FrameLength)
+	recorder.DeviceIndex = *audioDeviceIndex
 
 	if err := recorder.Init(); err != nil {
 		log.Fatalf("Error: %s.\n", err.Error())
@@ -200,7 +196,7 @@ waitLoop:
 }
 
 func printAudioDevices() {
-	if devices, err := pvrecorder.GetAudioDevices(); err != nil {
+	if devices, err := pvrecorder.GetAvailableDevices(); err != nil {
 		log.Fatalf("Error: %s.\n", err.Error())
 	} else {
 		for i, device := range devices {
