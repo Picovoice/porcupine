@@ -12,7 +12,7 @@
 use chrono::prelude::*;
 use clap::{App, Arg, ArgGroup};
 use porcupine::{BuiltinKeywords, PorcupineBuilder};
-use pv_recorder::RecorderBuilder;
+use pv_recorder::PvRecorderBuilder;
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -48,9 +48,8 @@ fn porcupine_demo(
         .init()
         .expect("Failed to create Porcupine");
 
-    let recorder = RecorderBuilder::new()
+    let recorder = PvRecorderBuilder::new(porcupine.frame_length() as i32)
         .device_index(audio_device_index)
-        .frame_length(porcupine.frame_length() as i32)
         .init()
         .expect("Failed to initialize pvrecorder");
     recorder.start().expect("Failed to start audio recording");
@@ -65,10 +64,9 @@ fn porcupine_demo(
 
     let mut audio_data = Vec::new();
     while LISTENING.load(Ordering::SeqCst) {
-        let mut pcm = vec![0; recorder.frame_length()];
-        recorder.read(&mut pcm).expect("Failed to read audio frame");
+        let frame = recorder.read().expect("Failed to read audio frame");
 
-        let keyword_index = porcupine.process(&pcm).unwrap();
+        let keyword_index = porcupine.process(&frame).unwrap();
         if keyword_index >= 0 {
             println!(
                 "[{}] Detected {}",
@@ -78,7 +76,7 @@ fn porcupine_demo(
         }
 
         if output_path.is_some() {
-            audio_data.extend_from_slice(&pcm);
+            audio_data.extend_from_slice(&frame);
         }
     }
 
@@ -120,10 +118,7 @@ impl KeywordsOrPaths {
 }
 
 fn show_audio_devices() {
-    let audio_devices = RecorderBuilder::new()
-        .init()
-        .expect("Failed to initialize pvrecorder")
-        .get_audio_devices();
+    let audio_devices = PvRecorderBuilder::default().get_available_devices();
     match audio_devices {
         Ok(audio_devices) => {
             for (idx, device) in audio_devices.iter().enumerate() {
@@ -240,9 +235,11 @@ fn main() {
         }
     };
 
-    let sensitivities: Option<Vec<f32>> = matches.values_of("sensitivities").map(|sensitivities| sensitivities
-        .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
-        .collect());
+    let sensitivities: Option<Vec<f32>> = matches.values_of("sensitivities").map(|sensitivities| {
+        sensitivities
+            .map(|sensitivity| sensitivity.parse::<f32>().unwrap())
+            .collect()
+    });
 
     let model_path = matches.value_of("model_path");
     let output_path = matches.value_of("output_path");
