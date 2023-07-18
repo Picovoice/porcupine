@@ -22,11 +22,19 @@ defaults:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    shell: ${{ matrix.shell }}
 
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [14.x, 16.x, 18.x, 20.x]
+        include:
+          - os: ubuntu-latest
+            shell: bash
+          - os: windows-latest
+            shell: cmd
+          - os: macos-latest
+            shell: bash
 
     steps:
     - uses: actions/checkout@v3
