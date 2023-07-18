@@ -22,7 +22,9 @@ defaults:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    shell: ${{ matrix.shell }}
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
 
     strategy:
       matrix:
