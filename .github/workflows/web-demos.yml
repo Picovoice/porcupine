@@ -21,11 +21,22 @@ defaults:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [14.x, 16.x, 18.x, 20.x]
+        include:
+          - os: ubuntu-latest
+            shell: bash
+          - os: windows-latest
+            shell: cmd
+          - os: macos-latest
+            shell: bash
 
     steps:
     - uses: actions/checkout@v3
@@ -40,3 +51,15 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
+    
+    - name: Install pm2
+      run: npm install pm2
+
+    - name: Run Demo English
+      run: pm2 start yarn -- start en
+
+    - name: Run Demo Other Language
+      run: pm2 start yarn -- start es
+
+    - name: Stop servers
+      run: pm2 delete all
