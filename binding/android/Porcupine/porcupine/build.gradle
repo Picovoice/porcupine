@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '2.2.0'
+    PUBLISH_VERSION = '2.2.1'
     PUBLISH_ARTIFACT_ID = 'porcupine-android'
 }
 
@@ -31,7 +31,7 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "ai.picovoice:android-voice-processor:1.0.1"
 }
 
 task copyLibs(type: Copy) {

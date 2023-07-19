@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -12,19 +12,13 @@
 
 package ai.picovoice.porcupine;
 
-
 import android.content.Context;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Process;
 import android.util.Log;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
+import ai.picovoice.android.voiceprocessor.VoiceProcessor;
+import ai.picovoice.android.voiceprocessor.VoiceProcessorErrorListener;
+import ai.picovoice.android.voiceprocessor.VoiceProcessorException;
+import ai.picovoice.android.voiceprocessor.VoiceProcessorFrameListener;
 
 /**
  * High-level Android binding for Porcupine wake word engine. It handles recording audio from
@@ -33,10 +27,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * ${@link Porcupine}.
  */
 public class PorcupineManager {
-    private final MicrophoneReader microphoneReader;
     private final Porcupine porcupine;
-    private final PorcupineManagerCallback callback;
-    private final PorcupineManagerErrorCallback errorCallback;
+    private final VoiceProcessor voiceProcessor;
+    private final VoiceProcessorFrameListener vpFrameListener;
+    private final VoiceProcessorErrorListener vpErrorListener;
+
+    private boolean isListening;
 
     /**
      * Private constructor.
@@ -45,15 +41,38 @@ public class PorcupineManager {
      * @param callback      A callback function that is invoked upon detection of any of the keywords.
      * @param errorCallback A callback that reports errors encountered while processing audio.
      */
-    private PorcupineManager(Porcupine porcupine,
-                             PorcupineManagerCallback callback,
-                             PorcupineManagerErrorCallback errorCallback) {
-
-
+    private PorcupineManager(final Porcupine porcupine,
+                             final PorcupineManagerCallback callback,
+                             final PorcupineManagerErrorCallback errorCallback) {
         this.porcupine = porcupine;
-        this.callback = callback;
-        this.errorCallback = errorCallback;
-        microphoneReader = new MicrophoneReader();
+        this.voiceProcessor = VoiceProcessor.getInstance();
+        this.vpFrameListener = new VoiceProcessorFrameListener() {
+            @Override
+            public void onFrame(short[] frame) {
+                try {
+                    int keywordIndex = porcupine.process(frame);
+                    if (keywordIndex >= 0) {
+                        callback.invoke(keywordIndex);
+                    }
+                } catch (PorcupineException e) {
+                    if (errorCallback != null) {
+                        errorCallback.invoke(e);
+                    } else {
+                        Log.e("PorcupineManager", e.toString());
+                    }
+                }
+            }
+        };
+        this.vpErrorListener = new VoiceProcessorErrorListener() {
+            @Override
+            public void onError(VoiceProcessorException error) {
+                if (errorCallback != null) {
+                    errorCallback.invoke(new PorcupineException(error));
+                } else {
+                    Log.e("PorcupineManager", error.toString());
+                }
+            }
+        };
     }
 
     /**
@@ -67,22 +86,41 @@ public class PorcupineManager {
      * Starts recording audio from the microphone and monitors it for the utterances of the given
      * set of keywords.
      */
-    public void start() {
-        microphoneReader.start();
+    public void start() throws PorcupineException {
+        if (isListening) {
+            return;
+        }
+
+        this.voiceProcessor.addFrameListener(vpFrameListener);
+        this.voiceProcessor.addErrorListener(vpErrorListener);
+
+        try {
+            voiceProcessor.start(porcupine.getFrameLength(), porcupine.getSampleRate());
+        } catch (VoiceProcessorException e) {
+            throw new PorcupineException(e);
+        }
+        isListening = true;
     }
 
     /**
      * Stops recording audio from the microphone.
      *
-     * @throws PorcupineException if the {@link MicrophoneReader} throws an exception while
-     *                            it's being stopped.
+     * @throws PorcupineException if there's a problem stopping the recording.
      */
     public void stop() throws PorcupineException {
-        try {
-            microphoneReader.stop();
-        } catch (InterruptedException e) {
-            throw new PorcupineException(e);
+        if (!isListening) {
+            return;
         }
+        voiceProcessor.removeErrorListener(vpErrorListener);
+        voiceProcessor.removeFrameListener(vpFrameListener);
+        if (voiceProcessor.getNumFrameListeners() == 0) {
+            try {
+                voiceProcessor.stop();
+            } catch (VoiceProcessorException e) {
+                throw new PorcupineException(e);
+            }
+        }
+        isListening = false;
     }
 
     /**
@@ -150,7 +188,9 @@ public class PorcupineManager {
          * @return A PorcupineManager instance
          * @throws PorcupineException if there is an error while initializing Porcupine.
          */
-        public PorcupineManager build(Context context, PorcupineManagerCallback callback) throws PorcupineException {
+        public PorcupineManager build(
+                Context context,
+                PorcupineManagerCallback callback) throws PorcupineException {
 
             Porcupine porcupine = new Porcupine.Builder()
                     .setAccessKey(accessKey)
@@ -160,116 +200,6 @@ public class PorcupineManager {
                     .setSensitivities(sensitivities)
                     .build(context);
             return new PorcupineManager(porcupine, callback, errorCallback);
-        }
-    }
-
-    private class MicrophoneReader {
-        private final AtomicBoolean started = new AtomicBoolean(false);
-        private final AtomicBoolean stop = new AtomicBoolean(false);
-        private final AtomicBoolean stopped = new AtomicBoolean(false);
-
-        private final Handler callbackHandler = new Handler(Looper.getMainLooper());
-
-        void start() {
-
-            if (started.get()) {
-                return;
-            }
-
-            started.set(true);
-
-            Executors.newSingleThreadExecutor().submit(new Callable<Void>() {
-                @Override
-                public Void call() throws PorcupineException {
-                    android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
-                    read();
-                    return null;
-                }
-            });
-        }
-
-        void stop() throws InterruptedException {
-            if (!started.get()) {
-                return;
-            }
-
-            stop.set(true);
-
-            while (!stopped.get()) {
-                Thread.sleep(10);
-            }
-
-            started.set(false);
-            stop.set(false);
-            stopped.set(false);
-        }
-
-        private void read() {
-            final int minBufferSize = AudioRecord.getMinBufferSize(
-                    porcupine.getSampleRate(),
-                    AudioFormat.CHANNEL_IN_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT);
-            final int bufferSize = Math.max(porcupine.getSampleRate() / 2, minBufferSize);
-
-            AudioRecord audioRecord = null;
-
-            short[] buffer = new short[porcupine.getFrameLength()];
-
-            try {
-                audioRecord = new AudioRecord(
-                        MediaRecorder.AudioSource.MIC,
-                        porcupine.getSampleRate(),
-                        AudioFormat.CHANNEL_IN_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT,
-                        bufferSize);
-                audioRecord.startRecording();
-
-                while (!stop.get()) {
-                    if (audioRecord.read(buffer, 0, buffer.length) == buffer.length) {
-                        try {
-                            final int keywordIndex = porcupine.process(buffer);
-                            if (keywordIndex >= 0) {
-                                callbackHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        callback.invoke(keywordIndex);
-                                    }
-                                });
-                            }
-                        } catch (final PorcupineException e) {
-                            if (errorCallback != null) {
-                                callbackHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        errorCallback.invoke(e);
-                                    }
-                                });
-                            } else {
-                                Log.e("PorcupineManager", e.toString());
-                            }
-                        }
-                    }
-                }
-
-                audioRecord.stop();
-            } catch (IllegalArgumentException | IllegalStateException e) {
-                if (errorCallback != null) {
-                    callbackHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            errorCallback.invoke(new PorcupineException(e));
-                        }
-                    });
-                } else {
-                    Log.e("PorcupineManager", e.toString());
-                }
-            } finally {
-                if (audioRecord != null) {
-                    audioRecord.release();
-                }
-
-                stopped.set(true);
-            }
         }
     }
 }
