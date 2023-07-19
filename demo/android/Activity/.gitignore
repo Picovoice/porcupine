@@ -13,3 +13,5 @@ upload_certificate.pem
 test_resources
 *.pv
 *.ppn
+*.jks
+!.dummy.jks

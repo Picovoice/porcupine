@@ -63,6 +63,7 @@
     "**/gradlew",
     "**/gradlew.bat",
     "**/proguard-rules.pro",
+    "**/proguard-test-instrum.pro",
 
     // javascript
     "**/package.json",

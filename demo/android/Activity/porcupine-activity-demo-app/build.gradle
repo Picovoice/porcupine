@@ -12,6 +12,19 @@ if (rootProject.file("local.properties").exists()) {
     if (project.hasProperty("performanceThresholdSec")) {
         properties.put("performanceThresholdSec", project.getProperty("performanceThresholdSec"))
     }
+
+    if (project.hasProperty("storePassword")) {
+        properties.put("storePassword", project.getProperty("storePassword"))
+    }
+    if (project.hasProperty("storeFile")) {
+        properties.put("storeFile", project.getProperty("storeFile"))
+    }
+    if (project.hasProperty("keyAlias")) {
+        properties.put("keyAlias", project.getProperty("keyAlias"))
+    }
+    if (project.hasProperty("keyPassword")) {
+        properties.put("keyPassword", project.getProperty("keyPassword"))
+    }
 }
 
 android {
@@ -28,11 +41,31 @@ android {
         resValue 'string', 'pvTestingAccessKey', properties.getProperty("pvTestingAccessKey", "")
         resValue 'string', 'numTestIterations', properties.getProperty("numTestIterations", "")
         resValue 'string', 'performanceThresholdSec', properties.getProperty("performanceThresholdSec", "")
+
+        testBuildType System.getProperty('testBuildType', 'debug')
     }
+
+    signingConfigs {
+        instrum {
+            storePassword properties.getProperty("storePassword")
+            storeFile file(properties.getProperty("storeFile", ".dummy.jks"))
+            keyAlias properties.getProperty("keyAlias")
+            keyPassword properties.getProperty("keyPassword")
+        }
+    }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        instrum {
+            initWith release
+            matchingFallbacks = ['release']
+            proguardFiles 'proguard-rules-instrum.pro'
+            signingConfig signingConfigs.instrum
         }
     }
 

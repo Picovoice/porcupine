@@ -1,0 +1,2 @@
+-keep class com.google.** { *; }
+-keep class com.microsoft.** { *; }
