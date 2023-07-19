@@ -51,15 +51,3 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
-    
-    - name: Install pm2
-      run: npm install pm2
-
-    - name: Run Demo English
-      run: npx pm2 start yarn -- start en
-
-    - name: Run Demo Other Language
-      run: npx pm2 start yarn -- start es
-
-    - name: Stop servers
-      run: npx pm2 delete all
