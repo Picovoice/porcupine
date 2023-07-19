@@ -53,7 +53,6 @@ android {
             keyPassword properties.getProperty("keyPassword")
         }
     }
-    }
 
     buildTypes {
         release {
