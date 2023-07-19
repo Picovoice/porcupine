@@ -56,10 +56,10 @@ jobs:
       run: npm install pm2
 
     - name: Run Demo English
-      run: pm2 start yarn -- start en
+      run: npx pm2 start yarn -- start en
 
     - name: Run Demo Other Language
-      run: pm2 start yarn -- start es
+      run: npx pm2 start yarn -- start es
 
     - name: Stop servers
-      run: pm2 delete all
+      run: npx pm2 delete all
