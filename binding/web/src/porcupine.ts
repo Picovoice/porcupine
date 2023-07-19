@@ -84,9 +84,6 @@ export class Porcupine {
 
   private _wasmMemory: WebAssembly.Memory | undefined;
   private readonly _pvFree: pv_free_type;
-  private readonly _memoryBuffer: Int16Array;
-  private readonly _memoryBufferUint8: Uint8Array;
-  private readonly _memoryBufferView: DataView;
   private readonly _processMutex: Mutex;
 
   private readonly _objectAddress: number;
@@ -126,10 +123,6 @@ export class Porcupine {
     this._inputBufferAddress = handleWasm.inputBufferAddress;
     this._alignedAlloc = handleWasm.aligned_alloc;
     this._keywordIndexAddress = handleWasm.keywordIndexAddress;
-
-    this._memoryBuffer = new Int16Array(handleWasm.memory.buffer);
-    this._memoryBufferUint8 = new Uint8Array(handleWasm.memory.buffer);
-    this._memoryBufferView = new DataView(handleWasm.memory.buffer);
 
     this._keywordLabels = new Map();
     for (let i = 0; i < keywordLabels.length; i++) {
@@ -316,7 +309,9 @@ export class Porcupine {
           throw new Error('Attempted to call Porcupine process after release.');
         }
 
-        this._memoryBuffer.set(
+        const memoryBuffer = new Int16Array(this._wasmMemory.buffer);
+
+        memoryBuffer.set(
           pcm,
           this._inputBufferAddress / Int16Array.BYTES_PER_ELEMENT
         );
@@ -326,17 +321,20 @@ export class Porcupine {
           this._inputBufferAddress,
           this._keywordIndexAddress
         );
+
+        const memoryBufferUint8 = new Uint8Array(this._wasmMemory.buffer);
+        const memoryBufferView = new DataView(this._wasmMemory.buffer);
+
         if (status !== PV_STATUS_SUCCESS) {
-          const memoryBuffer = new Uint8Array(this._wasmMemory.buffer);
           throw new Error(
             `process failed with status ${arrayBufferToStringAtIndex(
-              memoryBuffer,
+              memoryBufferUint8,
               await this._pvStatusToString(status)
             )}`
           );
         }
 
-        const keywordIndex = this._memoryBufferView.getInt32(
+        const keywordIndex = memoryBufferView.getInt32(
           this._keywordIndexAddress,
           true
         );
