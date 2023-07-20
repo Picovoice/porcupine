@@ -50,6 +50,7 @@ import ai.picovoice.porcupine.PorcupineManagerCallback;
 
 public class MainActivity extends AppCompatActivity {
     private static final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}";
+
     private PorcupineManager porcupineManager = null;
     private MediaPlayer notificationPlayer;
     private final PorcupineManagerCallback porcupineManagerCallback = new PorcupineManagerCallback() {

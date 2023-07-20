@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.3'
-        classpath 'ai.picovoice:android-voice-processor:1.0.1'
+        classpath 'ai.picovoice:android-voice-processor:1.0.2'
     }
 }
 
