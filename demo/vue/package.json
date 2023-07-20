@@ -12,8 +12,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@picovoice/porcupine-vue": "~2.2.0",
-    "@picovoice/web-voice-processor": "~4.0.6",
+    "@picovoice/porcupine-vue": "~2.2.1",
+    "@picovoice/web-voice-processor": "~4.0.8",
     "vue": "^3.2.45"
   },
   "devDependencies": {

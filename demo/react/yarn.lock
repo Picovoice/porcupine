@@ -1522,17 +1522,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-react@~2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.2.0.tgz#5c5e9f20a7c5fdef0c84d9675b6d99e924e607be"
-  integrity sha512-R6W5EifeCU51YzoM99kh1tta8RjLS9nt0UG9yUm1Z3P2DiwLTSGsc0jqnmlgt64WgppVnBZxchVP864Gyx8dkg==
+"@picovoice/porcupine-react@~2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-2.2.1.tgz#db32c97ea38e3660e417e64f75f1d96f21894924"
+  integrity sha512-JlpFKEsOhEdJoQU9g1GjXDc82rkL0QS520ujQjEdi/6l8Ks9k1Qk8Xgv8Xlpppf8z/bVp+R2A67XYpolricbgA==
   dependencies:
-    "@picovoice/porcupine-web" "=2.2.0"
+    "@picovoice/porcupine-web" "=2.2.1"
 
-"@picovoice/porcupine-web@=2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.2.0.tgz#d02fe8dc3ef7fd4baa8516dd45703f40c09adc8a"
-  integrity sha512-Sd6dK0fkNbZ/+XTm05vLN5E6LHHPY4vvHLSzdTF5nKDD52JBtd6g9WKpBjuHmfoF3YxqdyxqjeBFNdLtMFjZsQ==
+"@picovoice/porcupine-web@=2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.2.1.tgz#d1302405309b8222105c216dc3dfc1ef346015f0"
+  integrity sha512-EX40nkUwWusQrbUaQjn2ZP4lYBfjztcXrnFmXQPUL7NuknTVbDAG2t5pEzSTjyb6n/91nXcEOC1EGi5u3xRSzA==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
@@ -1543,10 +1543,12 @@
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.6.tgz#4769283b82f64d3625794f7290d47c6d477a3f41"
-  integrity sha512-Ykfy6hrWFpOklfeN7rSJb5CGim8wDu7J+l8imRYyQxWHWVV1Wu5S8FW69zkJmwiDG2Wx+M2+h0SCMS+hNM5qow==
+"@picovoice/web-voice-processor@~4.0.8":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.8.tgz#95247a5393cac4d16490a53feb0f413c902ee5fa"
+  integrity sha512-/OSHn8YKniMo0jP5EwGimLOxvLQl/Yx4Hs+LydNmoSu4hfBrDdzhhfhB79118uDiK4aUUKx2A/RAD9TG0mQ/ng==
+  dependencies:
+    "@picovoice/web-utils" "=1.3.1"
 
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   version "0.5.10"
