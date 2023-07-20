@@ -179,7 +179,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (currentState == AppState.WAKEWORD) {
-                    porcupineManager.start();
+                    try {
+                        porcupineManager.start();
+                    } catch (PorcupineException e) {
+                        displayError("Failed to start porcupine.");
+                    }
                     intentTextView.setTextColor(Color.WHITE);
                     intentTextView.setText("Listening for " + defaultKeyword + " ...");
                 }

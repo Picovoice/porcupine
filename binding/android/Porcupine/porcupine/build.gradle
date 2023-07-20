@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '2.2.0'
+    PUBLISH_VERSION = '2.2.2'
     PUBLISH_ARTIFACT_ID = 'porcupine-android'
 }
 
@@ -24,6 +24,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
@@ -31,7 +35,7 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "ai.picovoice:android-voice-processor:1.0.2"
 }
 
 task copyLibs(type: Copy) {
