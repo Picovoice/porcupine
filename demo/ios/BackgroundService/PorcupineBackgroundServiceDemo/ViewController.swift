@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2021 Picovoice Inc.
+//  Copyright 2018-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import ios_voice_processor
 import Porcupine
 import SwiftySound
 
@@ -20,7 +21,7 @@ class ViewController: UIViewController, UITextViewDelegate {
     var wakeWord = Porcupine.BuiltInKeyword.porcupine
 
     var porcupineManager: PorcupineManager!
-    var isRecording = false
+    var isListening = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,48 +37,81 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
-        if !isRecording {
-            NotificationManager.shared.requestNotificationAuthorization()
-
-            do {
-                Sound.category = .playAndRecord
-                let keywordCallback: ((Int32) -> Void) = { _ in
-                    NotificationManager.shared.sendNotification()
-                    Sound.play(file: "beep.wav")
-                }
-
-                self.porcupineManager = try PorcupineManager(
-                    accessKey: accessKey,
-                    keyword: wakeWord,
-                    onDetection: keywordCallback)
-
-                try porcupineManager.start()
-                isRecording = true
-                startButton.setTitle("STOP", for: UIControl.State.normal)
-
-            } catch let error as PorcupineInvalidArgumentError {
-                showErrorAlert(message: "\(error.localizedDescription)\nEnsure your accessKey '\(accessKey)' is valid")
-            } catch is PorcupineActivationError {
-                showErrorAlert(message: "AccessKey activation error")
-            } catch is PorcupineActivationRefusedError {
-                showErrorAlert(message: "AccessKey activation refused")
-            } catch is PorcupineActivationLimitError {
-                showErrorAlert(message: "AccessKey reached its limit")
-            } catch is PorcupineActivationThrottledError {
-                showErrorAlert(message: "AccessKey is throttled")
-            } catch let error {
-                showErrorAlert(message: "\(error)")
-            }
-
+        if !isListening {
+            startListening()
         } else {
-            porcupineManager.stop()
-
-            isRecording = false
-            startButton.setTitle("START", for: UIControl.State.normal)
+            stopListening()
         }
     }
+    
+    func startListening() {
+        guard VoiceProcessor.hasRecordAudioPermission else {
+            VoiceProcessor.requestRecordAudioPermission { isGranted in
+                guard isGranted else {
+                    DispatchQueue.main.async {
+                        self.showErrorAlert(message: "Demo requires microphone permission")
+                    }
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.startListening()
+                }
+            }
+            return
+        }
+        
+        NotificationManager.shared.requestNotificationAuthorization()
 
-    private func showErrorAlert(message: String) {
+        let errorCallback: ((Error) -> Void) = {error in
+            self.showErrorAlert(message: "\(error)")
+        }
+        
+        do {
+            Sound.category = .playAndRecord
+            let keywordCallback: ((Int32) -> Void) = { _ in
+                NotificationManager.shared.sendNotification()
+                Sound.play(file: "beep.wav")
+            }
+
+            self.porcupineManager = try PorcupineManager(
+                accessKey: accessKey,
+                keyword: wakeWord,
+                onDetection: keywordCallback,
+                errorCallback: errorCallback)
+
+            try porcupineManager.start()
+            isListening = true
+            startButton.setTitle("STOP", for: UIControl.State.normal)
+
+        } catch let error as PorcupineInvalidArgumentError {
+            showErrorAlert(message: "\(error.localizedDescription)\nEnsure your accessKey '\(accessKey)' is valid")
+        } catch is PorcupineActivationError {
+            showErrorAlert(message: "AccessKey activation error")
+        } catch is PorcupineActivationRefusedError {
+            showErrorAlert(message: "AccessKey activation refused")
+        } catch is PorcupineActivationLimitError {
+            showErrorAlert(message: "AccessKey reached its limit")
+        } catch is PorcupineActivationThrottledError {
+            showErrorAlert(message: "AccessKey is throttled")
+        } catch let error {
+            showErrorAlert(message: "\(error)")
+        }
+
+    }
+    
+    func stopListening() {
+        do {
+            try porcupineManager.stop()
+        } catch {
+            showErrorAlert(message: "\(error)")
+            return
+        }
+        isListening = false
+        startButton.setTitle("START", for: UIControl.State.normal)
+    }
+
+    func showErrorAlert(message: String) {
         errorPanel.text = message
         errorPanel.isHidden = false
         startButton.isEnabled = false
