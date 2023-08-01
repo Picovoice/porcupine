@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2021 Picovoice Inc.
+//  Copyright 2018-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -9,27 +9,51 @@
 
 import ios_voice_processor
 
-public enum PorcupineManagerError: Error {
-    case recordingDenied
-    case objectDisposed
-}
-
-/// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone, 
-/// processes it in real-time using Porcupine, and notifies the
-/// client when any of the given keywords are detected.
+/// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone,
+/// processes it in real-time using Porcupine, and notifies when any of the given keywords are detected.
 public class PorcupineManager {
-    private var onDetection: ((Int32) -> Void)?
-    private var errorCallback: ((Error) -> Void)?
-
     private var porcupine: Porcupine?
+
+    private var frameListener: VoiceProcessorFrameListener?
+    private var errorListener: VoiceProcessorErrorListener?
 
     private var isListening = false
 
     /// Private constructor.
     private init(porcupine: Porcupine, onDetection: ((Int32) -> Void)?, errorCallback: ((Error) -> Void)?) throws {
-        self.onDetection = onDetection
-        self.errorCallback = errorCallback
         self.porcupine = porcupine
+        self.errorListener = VoiceProcessorErrorListener({ error in
+            guard let callback = errorCallback else {
+                print("\(error.localizedDescription)")
+                return
+            }
+            DispatchQueue.main.async {
+                callback(PorcupineError(error.localizedDescription))
+            }
+        })
+        self.frameListener = VoiceProcessorFrameListener({ frame in
+            guard let porcupine = self.porcupine else {
+                return
+            }
+
+            do {
+                let keywordIndex: Int32 = try porcupine.process(pcm: frame)
+                if keywordIndex >= 0 {
+                    DispatchQueue.main.async {
+                        onDetection?(keywordIndex)
+                    }
+                }
+            } catch {
+                guard let callback = errorCallback else {
+                    print("\(error)")
+                    return
+                }
+                DispatchQueue.main.async {
+                    callback(error)
+                }
+            }
+        })
+
     }
 
     /// Constructor.
@@ -45,22 +69,22 @@ public class PorcupineManager {
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-        accessKey: String,
-        keywordPaths: [String],
-        modelPath: String? = nil,
-        sensitivities: [Float32]? = nil,
-        onDetection: ((Int32) -> Void)?,
-        errorCallback: ((Error) -> Void)? = nil) throws {
+            accessKey: String,
+            keywordPaths: [String],
+            modelPath: String? = nil,
+            sensitivities: [Float32]? = nil,
+            onDetection: ((Int32) -> Void)?,
+            errorCallback: ((Error) -> Void)? = nil) throws {
 
         try self.init(
-            porcupine: Porcupine(
-                accessKey: accessKey,
-                keywordPaths: keywordPaths,
-                modelPath: modelPath,
-                sensitivities: sensitivities
-            ),
-            onDetection: onDetection,
-            errorCallback: errorCallback)
+                porcupine: Porcupine(
+                        accessKey: accessKey,
+                        keywordPaths: keywordPaths,
+                        modelPath: modelPath,
+                        sensitivities: sensitivities
+                ),
+                onDetection: onDetection,
+                errorCallback: errorCallback)
     }
 
     /// Constructor.
@@ -76,22 +100,22 @@ public class PorcupineManager {
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-        accessKey: String,
-        keywordPath: String,
-        modelPath: String? = nil,
-        sensitivity: Float32 = 0.5,
-        onDetection: ((Int32) -> Void)?,
-        errorCallback: ((Error) -> Void)? = nil) throws {
+            accessKey: String,
+            keywordPath: String,
+            modelPath: String? = nil,
+            sensitivity: Float32 = 0.5,
+            onDetection: ((Int32) -> Void)?,
+            errorCallback: ((Error) -> Void)? = nil) throws {
 
         try self.init(
-            porcupine: Porcupine(
-                accessKey: accessKey,
-                keywordPath: keywordPath,
-                modelPath: modelPath,
-                sensitivity: sensitivity
-            ),
-            onDetection: onDetection,
-            errorCallback: errorCallback)
+                porcupine: Porcupine(
+                        accessKey: accessKey,
+                        keywordPath: keywordPath,
+                        modelPath: modelPath,
+                        sensitivity: sensitivity
+                ),
+                onDetection: onDetection,
+                errorCallback: errorCallback)
     }
 
     /// Constructor.
@@ -103,26 +127,26 @@ public class PorcupineManager {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
-    ///   - errorCallback: Invoked if an error occurs while processing frames. 
+    ///   - errorCallback: Invoked if an error occurs while processing frames.
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-        accessKey: String,
-        keywords: [Porcupine.BuiltInKeyword],
-        modelPath: String? = nil,
-        sensitivities: [Float32]? = nil,
-        onDetection: ((Int32) -> Void)?,
-        errorCallback: ((Error) -> Void)? = nil) throws {
+            accessKey: String,
+            keywords: [Porcupine.BuiltInKeyword],
+            modelPath: String? = nil,
+            sensitivities: [Float32]? = nil,
+            onDetection: ((Int32) -> Void)?,
+            errorCallback: ((Error) -> Void)? = nil) throws {
 
         try self.init(
-            porcupine: Porcupine(
-                accessKey: accessKey,
-                keywords: keywords,
-                modelPath: modelPath,
-                sensitivities: sensitivities
-            ),
-            onDetection: onDetection,
-            errorCallback: errorCallback)
+                porcupine: Porcupine(
+                        accessKey: accessKey,
+                        keywords: keywords,
+                        modelPath: modelPath,
+                        sensitivities: sensitivities
+                ),
+                onDetection: onDetection,
+                errorCallback: errorCallback)
     }
 
     /// Constructor.
@@ -134,35 +158,40 @@ public class PorcupineManager {
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
-    ///   - errorCallback: Invoked if an error occurs while processing frames. 
+    ///   - errorCallback: Invoked if an error occurs while processing frames.
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-        accessKey: String,
-        keyword: Porcupine.BuiltInKeyword,
-        modelPath: String? = nil,
-        sensitivity: Float32 = 0.5,
-        onDetection: ((Int32) -> Void)?,
-        errorCallback: ((Error) -> Void)? = nil) throws {
+            accessKey: String,
+            keyword: Porcupine.BuiltInKeyword,
+            modelPath: String? = nil,
+            sensitivity: Float32 = 0.5,
+            onDetection: ((Int32) -> Void)?,
+            errorCallback: ((Error) -> Void)? = nil) throws {
         try self.init(
-            porcupine: Porcupine(
-                accessKey: accessKey,
-                keyword: keyword,
-                modelPath: modelPath,
-                sensitivity: sensitivity
-            ),
-            onDetection: onDetection,
-            errorCallback: errorCallback)
+                porcupine: Porcupine(
+                        accessKey: accessKey,
+                        keyword: keyword,
+                        modelPath: modelPath,
+                        sensitivity: sensitivity
+                ),
+                onDetection: onDetection,
+                errorCallback: errorCallback)
     }
 
     deinit {
-        self.delete()
+        if self.porcupine != nil {
+            self.porcupine!.delete()
+            self.porcupine = nil
+        }
     }
 
-    /// Stops recording and releases Porcupine resources
-    public func delete() {
+    /// Stops audio recording and releases Porcupine resources
+    ///
+    /// - Throws: PorcupineError if there was an error stopping PorcupineManager
+    public func delete() throws {
         if isListening {
-            stop()
+            try stop()
         }
 
         if self.porcupine != nil {
@@ -173,62 +202,48 @@ public class PorcupineManager {
 
     ///  Starts recording audio from the microphone and monitors it for the utterances of the given set of keywords.
     ///
-    /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PorcupineManagerError if
-    ///           microphone permission is not granted or Porcupine has been disposed.
+    /// - Throws: PorcupineError if there was an error starting PorcupineManager.
     public func start() throws {
-
         guard !isListening else {
             return
         }
 
         if porcupine == nil {
-            throw PorcupineManagerError.objectDisposed
+            throw PorcupineInvalidStateError("Porcupine has been deleted.")
         }
 
-        // Only check if it's denied, permission will be automatically asked.
-        guard try VoiceProcessor.shared.hasPermissions() else {
-            throw PorcupineManagerError.recordingDenied
+        VoiceProcessor.instance.addErrorListener(errorListener!)
+        VoiceProcessor.instance.addFrameListener(frameListener!)
+
+        do {
+            try VoiceProcessor.instance.start(
+                    frameLength: Porcupine.frameLength,
+                    sampleRate: Porcupine.sampleRate
+            )
+        } catch {
+            throw PorcupineError(error.localizedDescription)
         }
-
-        try VoiceProcessor.shared.start(
-            frameLength: Porcupine.frameLength,
-            sampleRate: Porcupine.sampleRate,
-            audioCallback: self.audioCallback
-        )
-
         isListening = true
     }
 
     /// Stop listening for wake words.
-    public func stop() {
+    ///
+    /// - Throws: PorcupineError if there was an error stopping PorcupineManager.
+    public func stop() throws {
         guard isListening else {
             return
         }
 
-        VoiceProcessor.shared.stop()
+        VoiceProcessor.instance.removeErrorListener(errorListener!)
+        VoiceProcessor.instance.removeFrameListener(frameListener!)
 
+        if VoiceProcessor.instance.numFrameListeners == 0 {
+            do {
+                try VoiceProcessor.instance.stop()
+            } catch {
+                throw PorcupineError(error.localizedDescription)
+            }
+        }
         isListening = false
-    }
-
-    /// Callback to run after after voice processor processes frames.
-    private func audioCallback(pcm: [Int16]) {
-        guard self.porcupine != nil else {
-            return
-        }
-
-        do {
-            let result: Int32 = try self.porcupine!.process(pcm: pcm)
-            if result >= 0 {
-                DispatchQueue.main.async {
-                    self.onDetection?(result)
-                }
-            }
-        } catch {
-            if self.errorCallback != nil {
-                self.errorCallback!(error)
-            } else {
-                print("\(error)")
-            }
-        }
     }
 }
