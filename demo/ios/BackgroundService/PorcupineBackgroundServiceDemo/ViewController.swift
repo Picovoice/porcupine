@@ -43,7 +43,7 @@ class ViewController: UIViewController, UITextViewDelegate {
             stopListening()
         }
     }
-    
+
     func startListening() {
         guard VoiceProcessor.hasRecordAudioPermission else {
             VoiceProcessor.requestRecordAudioPermission { isGranted in
@@ -53,20 +53,20 @@ class ViewController: UIViewController, UITextViewDelegate {
                     }
                     return
                 }
-                
+
                 DispatchQueue.main.async {
                     self.startListening()
                 }
             }
             return
         }
-        
+
         NotificationManager.shared.requestNotificationAuthorization()
 
         let errorCallback: ((Error) -> Void) = {error in
             self.showErrorAlert(message: "\(error)")
         }
-        
+
         do {
             Sound.category = .playAndRecord
             let keywordCallback: ((Int32) -> Void) = { _ in
@@ -99,7 +99,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         }
 
     }
-    
+
     func stopListening() {
         do {
             try porcupineManager.stop()

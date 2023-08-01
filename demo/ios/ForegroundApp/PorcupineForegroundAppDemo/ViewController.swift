@@ -103,7 +103,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             stopListening()
         }
     }
-    
+
     func startListening() {
         guard VoiceProcessor.hasRecordAudioPermission else {
             VoiceProcessor.requestRecordAudioPermission { isGranted in
@@ -113,14 +113,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     }
                     return
                 }
-                
+
                 DispatchQueue.main.async {
                     self.startListening()
                 }
             }
             return
         }
-        
+
         let originalColor = self.view.backgroundColor
         let keywordCallback: ((Int32) -> Void) = { _ in
             self.view.backgroundColor = UIColor.orange
@@ -177,7 +177,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             showErrorAlert("\(error)")
         }
     }
-    
+
     func stopListening() {
         do {
             try porcupineManager.stop()
