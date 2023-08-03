@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import ios_voice_processor
 import Porcupine
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -23,7 +24,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var wakeWord = ""
 
     var porcupineManager: PorcupineManager!
-    var isRecording = false
+    var isListening = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,68 +97,96 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
 
     @IBAction func toggleStartButton(_ sender: UIButton) {
-        if !isRecording {
-            let originalColor = self.view.backgroundColor
-            let keywordCallback: ((Int32) -> Void) = { _ in
-                self.view.backgroundColor = UIColor.orange
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.view.backgroundColor = originalColor
-                }
-            }
-
-            let errorCallback: ((Error) -> Void) = {error in
-                self.showErrorAlert("\(error)")
-            }
-
-            do {
-                if language == "en" {
-                    porcupineManager = try PorcupineManager(
-                        accessKey: accessKey,
-                        keyword: Porcupine.BuiltInKeyword.init(rawValue: wakeWord)!,
-                        onDetection: keywordCallback,
-                        errorCallback: errorCallback)
-                } else {
-                    let bundle = Bundle(for: type(of: self))
-                    let keywordUrl: URL = bundle.url(
-                        forResource: "\(wakeWord.lowercased())_ios",
-                        withExtension: "ppn",
-                        subdirectory: "keywords")!
-                    let modelUrl: URL = bundle.url(
-                        forResource: "porcupine_params_\(language)",
-                        withExtension: "pv",
-                        subdirectory: "models")!
-                    porcupineManager = try PorcupineManager(
-                        accessKey: accessKey,
-                        keywordPath: keywordUrl.path,
-                        modelPath: modelUrl.path,
-                        onDetection: keywordCallback,
-                        errorCallback: errorCallback)
-                }
-
-                try porcupineManager.start()
-
-                wakeWordPicker.isUserInteractionEnabled = false
-                isRecording = true
-                startButton.setTitle("STOP", for: UIControl.State.normal)
-            } catch let error as PorcupineInvalidArgumentError {
-                showErrorAlert("\(error.localizedDescription)\nEnsure your accessKey '\(accessKey)' is valid")
-            } catch is PorcupineActivationError {
-                showErrorAlert("AccessKey activation error")
-            } catch is PorcupineActivationRefusedError {
-                showErrorAlert("AccessKey activation refused")
-            } catch is PorcupineActivationLimitError {
-                showErrorAlert("AccessKey reached its limit")
-            } catch is PorcupineActivationThrottledError {
-                showErrorAlert("AccessKey is throttled")
-            } catch {
-                showErrorAlert("\(error)")
-            }
+        if !isListening {
+            startListening()
         } else {
-            porcupineManager.stop()
-
-            wakeWordPicker.isUserInteractionEnabled = true
-            isRecording = false
-            startButton.setTitle("START", for: UIControl.State.normal)
+            stopListening()
         }
+    }
+
+    func startListening() {
+        guard VoiceProcessor.hasRecordAudioPermission else {
+            VoiceProcessor.requestRecordAudioPermission { isGranted in
+                guard isGranted else {
+                    DispatchQueue.main.async {
+                        self.showErrorAlert("Demo requires microphone permission")
+                    }
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.startListening()
+                }
+            }
+            return
+        }
+
+        let originalColor = self.view.backgroundColor
+        let keywordCallback: ((Int32) -> Void) = { _ in
+            self.view.backgroundColor = UIColor.orange
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.view.backgroundColor = originalColor
+            }
+        }
+
+        let errorCallback: ((Error) -> Void) = {error in
+            self.showErrorAlert("\(error)")
+        }
+
+        do {
+            if language == "en" {
+                porcupineManager = try PorcupineManager(
+                    accessKey: accessKey,
+                    keyword: Porcupine.BuiltInKeyword.init(rawValue: wakeWord)!,
+                    onDetection: keywordCallback,
+                    errorCallback: errorCallback)
+            } else {
+                let bundle = Bundle(for: type(of: self))
+                let keywordUrl: URL = bundle.url(
+                    forResource: "\(wakeWord.lowercased())_ios",
+                    withExtension: "ppn",
+                    subdirectory: "keywords")!
+                let modelUrl: URL = bundle.url(
+                    forResource: "porcupine_params_\(language)",
+                    withExtension: "pv",
+                    subdirectory: "models")!
+                porcupineManager = try PorcupineManager(
+                    accessKey: accessKey,
+                    keywordPath: keywordUrl.path,
+                    modelPath: modelUrl.path,
+                    onDetection: keywordCallback,
+                    errorCallback: errorCallback)
+            }
+
+            try porcupineManager.start()
+
+            wakeWordPicker.isUserInteractionEnabled = false
+            isListening = true
+            startButton.setTitle("STOP", for: UIControl.State.normal)
+        } catch let error as PorcupineInvalidArgumentError {
+            showErrorAlert("\(error.localizedDescription)\nEnsure your accessKey '\(accessKey)' is valid")
+        } catch is PorcupineActivationError {
+            showErrorAlert("AccessKey activation error")
+        } catch is PorcupineActivationRefusedError {
+            showErrorAlert("AccessKey activation refused")
+        } catch is PorcupineActivationLimitError {
+            showErrorAlert("AccessKey reached its limit")
+        } catch is PorcupineActivationThrottledError {
+            showErrorAlert("AccessKey is throttled")
+        } catch {
+            showErrorAlert("\(error)")
+        }
+    }
+
+    func stopListening() {
+        do {
+            try porcupineManager.stop()
+        } catch {
+            showErrorAlert("\(error)")
+            return
+        }
+        wakeWordPicker.isUserInteractionEnabled = true
+        isListening = false
+        startButton.setTitle("START", for: UIControl.State.normal)
     }
 }
