@@ -2,5 +2,5 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '11.0'
 
 target 'PorcupineForegroundAppDemo' do
-    pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/ios-vp-update/binding/ios/Porcupine-iOS.podspec'
+    pod 'Porcupine-iOS', '~> 2.2.1'
 end
