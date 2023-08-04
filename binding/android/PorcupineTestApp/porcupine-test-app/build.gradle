@@ -1,0 +1,123 @@
+apply plugin: 'com.android.application'
+
+Properties properties = new Properties()
+if (rootProject.file("local.properties").exists()) {
+    properties.load(rootProject.file("local.properties").newDataInputStream())
+    if (project.hasProperty("pvTestingAccessKey")) {
+        properties.put("pvTestingAccessKey", project.getProperty("pvTestingAccessKey"))
+    }
+    if (project.hasProperty("numTestIterations")) {
+        properties.put("numTestIterations", project.getProperty("numTestIterations"))
+    }
+    if (project.hasProperty("performanceThresholdSec")) {
+        properties.put("performanceThresholdSec", project.getProperty("performanceThresholdSec"))
+    }
+}
+
+android {
+    compileSdkVersion defaultTargetSdkVersion
+
+    defaultConfig {
+        applicationId "ai.picovoice.porcupine.demo"
+        minSdkVersion 21
+        targetSdkVersion defaultTargetSdkVersion
+        versionCode 7
+        versionName "2.2.0"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        resValue 'string', 'pvTestingAccessKey', properties.getProperty("pvTestingAccessKey", "")
+        resValue 'string', 'numTestIterations', properties.getProperty("numTestIterations", "")
+        resValue 'string', 'performanceThresholdSec', properties.getProperty("performanceThresholdSec", "")
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    def testDataFile = file('../../../../resources/.test/test_data.json')
+    def parsedJson = new groovy.json.JsonSlurper().parseText(testDataFile.text)
+    def languages = []
+    parsedJson.tests.singleKeyword.each { a ->
+        languages.add(a.language)
+    }
+
+    flavorDimensions "language"
+    productFlavors {
+        en {
+            getIsDefault().set(true)
+        }
+
+        languages.each { language ->
+            "$language" {
+                applicationIdSuffix ".$language"
+
+            }
+        }
+
+        all { flavor ->
+            delete fileTree("$projectDir/src/main/assets") {
+                exclude '**/.gitkeep'
+            }
+            task("${flavor.name}CopyParams", type: Copy) {
+                if (flavor.name != 'en') {
+                    from("$projectDir/../../../../lib/common/")
+                    include("porcupine_params_${flavor.name}.pv")
+                    into("$projectDir/src/main/assets/models")
+                }
+            }
+            task("${flavor.name}CopyKeywords", type: Copy) {
+                description = "Copy ${flavor.name} resources"
+                if (flavor.name != 'en') {
+                    from("$projectDir/../../../../resources/keyword_files_${flavor.name}/android")
+                    include('*.ppn')
+                    into("$projectDir/src/main/assets/keywords")
+                    rename { String fileName ->
+                        fileName.replace("_android", "").replace(" ", "_")
+                    }
+                }
+            }
+        }
+    }
+    sourceSets {
+        androidTest {
+            java {
+                if (properties.getProperty("performanceThresholdSec", "").length() == 0) {
+                    exclude "**/PerformanceTest.java"
+                } else {
+                    exclude "**/PorcupineTest.java"
+                }
+            }
+        }
+    }
+    lint {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'ai.picovoice:porcupine-android:2.2.2'
+
+    // Espresso UI Testing
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
+}
+
+
+afterEvaluate {
+    android.productFlavors.all {
+        flavor ->
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyParams"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyParams"
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyKeywords"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyKeywords"
+    }
+}
