@@ -46,7 +46,7 @@ jobs:
           -configuration Debug
           -workspace PorcupineForegroundAppDemo.xcworkspace
           -sdk iphoneos
-          -scheme enDemo
+          -scheme _enDemo
           -derivedDataPath ddp
           CODE_SIGNING_ALLOWED=NO
 
