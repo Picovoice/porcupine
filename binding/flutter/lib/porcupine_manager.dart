@@ -48,6 +48,8 @@ class PorcupineManager {
   /// [errorCallback] is an optional callback that triggers if Porcupine
   /// experiences a problem while processing audio
   ///
+  /// Throws a `PorcupineException` if not successfully initialized.
+  ///
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromBuiltInKeywords(String accessKey,
       List<BuiltInKeyword> keywords, WakeWordCallback wakeWordCallback,
@@ -77,9 +79,9 @@ class PorcupineManager {
   /// Sensitivity should be a floating-point number within 0 and 1.
   ///
   /// [errorCallback] is an optional callback that triggers if Porcupine
-  /// experiences a problem while processing audio
+  /// experiences a problem while processing audio.
   ///
-  /// Throws a `PvError` if not initialized correctly
+  /// Throws a `PorcupineException` if not successfully initialized.
   ///
   /// returns an instance of PorcupineManager
   static Future<PorcupineManager> fromKeywordPaths(String accessKey,
@@ -121,8 +123,8 @@ class PorcupineManager {
     };
   }
 
-  /// Opens audio input stream and sends audio frames to Porcupine
-  /// Throws a `PorcupineRuntimeException` if there was a problem starting the audio engine
+  /// Starts audio recording and processing with the Porcupine engine
+  /// Throws a `PorcupineRuntimeException` if there was a problem starting audio recording
   Future<void> start() async {
     if (_isListening) {
       return;
@@ -150,7 +152,7 @@ class PorcupineManager {
     _isListening = true;
   }
 
-  /// Closes audio stream
+  /// Stops audio recording and processing
   Future<void> stop() async {
     if (!_isListening) {
       return;
@@ -172,6 +174,7 @@ class PorcupineManager {
   }
 
   /// Releases Porcupine and audio resources
+  /// Throws a `PorcupineException` if there was a problem stopping audio recording.
   Future<void> delete() async {
     await stop();
     _voiceProcessor = null;
