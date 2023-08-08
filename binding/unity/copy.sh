@@ -27,6 +27,13 @@ cp -rp ../../resources/keyword_files/linux/* ./Assets/StreamingAssets/keyword_fi
 cp -rp ../../resources/keyword_files/mac/* ./Assets/StreamingAssets/keyword_files/mac
 cp -rp ../../resources/keyword_files/windows/* ./Assets/StreamingAssets/keyword_files/windows
 
+echo "Copying Voice Processor files..."
+if [ ! -d "./Assets/Porcupine/VoiceProcessor" ]
+then
+    mkdir -p ./Assets/Porcupine/VoiceProcessor
+fi
+cp -rp VoiceProcessor/Assets/UnityVoiceProcessor/*.cs ./Assets/Porcupine/VoiceProcessor
+
 echo "Copying demo files..."
 if [ ! -d "./Assets/Porcupine/Demo" ]
 then

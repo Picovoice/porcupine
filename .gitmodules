@@ -1,5 +1,5 @@
-[submodule "binding/unity/Assets/Porcupine/VoiceProcessor"]
-	path = binding/unity/Assets/Porcupine/VoiceProcessor
+[submodule "binding/unity/VoiceProcessor"]
+	path = binding/unity/VoiceProcessor
 	url = ../unity-voice-processor.git
 [submodule "demo/c/dr_libs"]
 	path = demo/c/dr_libs
