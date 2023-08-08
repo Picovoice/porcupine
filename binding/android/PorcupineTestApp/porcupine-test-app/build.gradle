@@ -45,10 +45,6 @@ android {
 
     flavorDimensions "language"
     productFlavors {
-        en {
-            getIsDefault().set(true)
-        }
-
         languages.each { language ->
             "$language" {
                 applicationIdSuffix ".$language"
@@ -60,23 +56,26 @@ android {
             delete fileTree("$projectDir/src/main/assets") {
                 exclude '**/.gitkeep'
             }
+            String suffix = (flavor.name != "en") ? "_${flavor.name}" : ""
             task("${flavor.name}CopyParams", type: Copy) {
-                if (flavor.name != 'en') {
-                    from("$projectDir/../../../../lib/common/")
-                    include("porcupine_params_${flavor.name}.pv")
-                    into("$projectDir/src/main/assets/models")
-                }
+                from("$projectDir/../../../../lib/common/")
+                include("porcupine_params${suffix}.pv")
+                into("$projectDir/src/main/assets/models")
             }
             task("${flavor.name}CopyKeywords", type: Copy) {
                 description = "Copy ${flavor.name} resources"
-                if (flavor.name != 'en') {
-                    from("$projectDir/../../../../resources/keyword_files_${flavor.name}/android")
-                    include('*.ppn')
-                    into("$projectDir/src/main/assets/keywords")
-                    rename { String fileName ->
-                        fileName.replace("_android", "").replace(" ", "_")
-                    }
+                from("$projectDir/../../../../resources/keyword_files${suffix}/android")
+                include('*.ppn')
+                into("$projectDir/src/main/assets/keywords")
+                rename { String fileName ->
+                    fileName.replace("_android", "").replace(" ", "_")
                 }
+            }
+            task("${flavor.name}CopyAudio", type: Copy) {
+                description = "Copy ${flavor.name} audio resources"
+                from("$projectDir/../../../../resources/audio_samples/")
+                include("multiple_keywords${suffix}.pv")
+                into("$projectDir/src/main/assets/audio_samples")
             }
         }
     }
@@ -103,12 +102,12 @@ dependencies {
     implementation 'ai.picovoice:porcupine-android:2.2.2'
 
     // Espresso UI Testing
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
+    androidTestImplementation('androidx.test.espresso:espresso-intents:3.5.1')
 }
 
 

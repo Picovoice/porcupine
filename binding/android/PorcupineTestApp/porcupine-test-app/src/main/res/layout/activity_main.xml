@@ -22,64 +22,27 @@
     android:id="@+id/layout"
     tools:context="ai.picovoice.porcupine.testapp.MainActivity">
 
-    <TextView
-        android:id="@+id/keyword_spinner_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/keyword_spinner"
-        android:layout_alignBottom="@+id/keyword_spinner"
-        android:layout_marginBottom="50dp"
-        android:text="@string/keyword_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-    <Spinner
-        android:id="@+id/keyword_spinner"
-        style="@android:style/Widget.Holo.Light.Spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="15dp"
-        android:spinnerMode="dialog" />
-
-    <ToggleButton
-        android:id="@+id/record_button"
+    <Button
+        android:id="@+id/test_button"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:background="@drawable/button_background"
         android:textColor="@android:color/white"
-        android:textOff="@string/start"
-        android:textOn="@string/stop"
-        android:onClick="process"
+        android:text="@string/test"
+        android:onClick="startTest"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="20dp" />
 
-    <TextView
-        android:id="@+id/errorMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20sp"
-        android:text=""
-        android:textSize="18sp"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:background="@drawable/error_view"
-        android:padding="10sp"
-        android:layout_above="@id/footer"
-        android:visibility="invisible"/>
-
-    <TextView
-        android:id="@+id/footer"
+    <ListView
+        android:id="@+id/test_results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:text="@string/footer" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp" />
 
 </RelativeLayout>

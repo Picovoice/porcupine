@@ -1,7 +1,4 @@
 <resources>
     <string name="app_name">Porcupine Android Test App</string>
-    <string name="keyword_label">Keyword</string>
-    <string name="start">Start</string>
-    <string name="stop">Stop</string>
-    <string name="footer">Made in Vancouver, Canada by Picovoice</string>
+    <string name="test">Test</string>
 </resources>
