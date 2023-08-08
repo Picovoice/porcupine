@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -23,9 +23,10 @@ class PorcupineManager {
   VoiceProcessor? _voiceProcessor;
   Porcupine? _porcupine;
 
-  final WakeWordCallback _wakeWordCallback;
-  RemoveListener? _removeVoiceProcessorListener;
-  RemoveListener? _removeErrorListener;
+  final VoiceProcessorFrameListener _frameListener;
+  final VoiceProcessorErrorListener _errorListener;
+
+  bool _isListening = false;
 
   /// Static creator for initializing PorcupineManager from a selection of built-in keywords
   ///
@@ -93,77 +94,81 @@ class PorcupineManager {
   }
 
   // private constructor
-  PorcupineManager._(
-      this._porcupine, this._wakeWordCallback, ErrorCallback? errorCallback)
-      : _voiceProcessor = VoiceProcessor.getVoiceProcessor(
-            _porcupine!.frameLength, _porcupine.sampleRate) {
-    _removeVoiceProcessorListener =
-        _voiceProcessor?.addListener((buffer) async {
-      // cast from dynamic to int array
-      List<int> porcupineFrame;
-      try {
-        porcupineFrame = (buffer as List<dynamic>).cast<int>();
-      } on Error {
-        PorcupineException castError = PorcupineException(
-            "flutter_voice_processor sent an unexpected data type.");
-        errorCallback == null
-            ? print(castError.message)
-            : errorCallback(castError);
-        return;
-      }
-
-      // process frame with Porcupine
-      try {
-        int? keywordIndex = await _porcupine?.process(porcupineFrame);
-        if (keywordIndex != null && keywordIndex >= 0) {
-          _wakeWordCallback(keywordIndex);
-        }
-      } on PorcupineException catch (error) {
-        errorCallback == null ? print(error.message) : errorCallback(error);
-      }
-    });
-
-    _removeErrorListener = _voiceProcessor?.addErrorListener((errorMsg) {
-      PorcupineException nativeRecorderError =
-          PorcupineException(errorMsg as String);
-      errorCallback == null
-          ? print(nativeRecorderError.message)
-          : errorCallback(nativeRecorderError);
-    });
-  }
+  PorcupineManager._(this._porcupine, WakeWordCallback wakeWordCallback,
+      ErrorCallback? errorCallback)
+      : _voiceProcessor = VoiceProcessor.instance,
+        _frameListener = ((List<int> frame) async {
+          // process frame with Porcupine
+          try {
+            int? keywordIndex = await _porcupine?.process(frame);
+            if (keywordIndex != null && keywordIndex >= 0) {
+              wakeWordCallback(keywordIndex);
+            }
+          } on PorcupineException catch (error) {
+            errorCallback == null
+                ? print("PorcupineException: ${error.message}")
+                : errorCallback(error);
+          }
+        }),
+        _errorListener = ((VoiceProcessorException error) {
+          errorCallback == null
+              ? print("PorcupineException: ${error.message}")
+              : errorCallback(PorcupineException(error.message));
+        });
 
   /// Opens audio input stream and sends audio frames to Porcupine
-  /// Throws a `PvAudioException` if there was a problem starting the audio engine
+  /// Throws a `PorcupineRuntimeException` if there was a problem starting the audio engine
   Future<void> start() async {
+    if (_isListening) {
+      return;
+    }
     if (_porcupine == null || _voiceProcessor == null) {
       throw PorcupineInvalidStateException(
           "Cannot start Porcupine - resources have already been released");
     }
 
-    var ret = await _voiceProcessor?.hasRecordAudioPermission();
-    if (ret ?? false) {
+    if (await _voiceProcessor?.hasRecordAudioPermission() ?? false) {
+      _voiceProcessor?.addFrameListener(_frameListener);
+      _voiceProcessor?.addErrorListener(_errorListener);
       try {
-        await _voiceProcessor?.start();
-      } on PlatformException {
+        await _voiceProcessor?.start(
+            _porcupine!.frameLength, _porcupine!.sampleRate);
+      } on PlatformException catch (e) {
         throw PorcupineRuntimeException(
-            "Audio engine failed to start. Hardware may not be supported.");
+            "Failed to start audio recording: ${e.message}");
       }
     } else {
       throw PorcupineRuntimeException(
           "User did not give permission to record audio.");
     }
+
+    _isListening = true;
   }
 
   /// Closes audio stream
-  Future<void> stop() async => await _voiceProcessor?.stop();
+  Future<void> stop() async {
+    if (!_isListening) {
+      return;
+    }
+
+    _voiceProcessor?.removeErrorListener(_errorListener);
+    _voiceProcessor?.removeFrameListener(_frameListener);
+
+    if (_voiceProcessor?.numFrameListeners == 0) {
+      try {
+        await _voiceProcessor?.stop();
+      } on PlatformException catch (e) {
+        throw PorcupineRuntimeException(
+            "Failed to stop audio recording: ${e.message}");
+      }
+    }
+
+    _isListening = false;
+  }
 
   /// Releases Porcupine and audio resources
   Future<void> delete() async {
-    if (_voiceProcessor?.isRecording ?? false) {
-      await _voiceProcessor?.stop();
-    }
-    _removeVoiceProcessorListener?.call();
-    _removeErrorListener?.call();
+    await stop();
     _voiceProcessor = null;
 
     _porcupine?.delete();
