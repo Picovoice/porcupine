@@ -23,8 +23,8 @@ class PorcupineManager {
   VoiceProcessor? _voiceProcessor;
   Porcupine? _porcupine;
 
-  final VoiceProcessorFrameListener _frameListener;
-  final VoiceProcessorErrorListener _errorListener;
+  late VoiceProcessorFrameListener _frameListener;
+  late VoiceProcessorErrorListener _errorListener;
 
   bool _isListening = false;
 
@@ -96,25 +96,30 @@ class PorcupineManager {
   // private constructor
   PorcupineManager._(this._porcupine, WakeWordCallback wakeWordCallback,
       ErrorCallback? errorCallback)
-      : _voiceProcessor = VoiceProcessor.instance,
-        _frameListener = ((List<int> frame) async {
-          // process frame with Porcupine
-          try {
-            int? keywordIndex = await _porcupine?.process(frame);
-            if (keywordIndex != null && keywordIndex >= 0) {
-              wakeWordCallback(keywordIndex);
-            }
-          } on PorcupineException catch (error) {
-            errorCallback == null
-                ? print("PorcupineException: ${error.message}")
-                : errorCallback(error);
-          }
-        }),
-        _errorListener = ((VoiceProcessorException error) {
-          errorCallback == null
-              ? print("PorcupineException: ${error.message}")
-              : errorCallback(PorcupineException(error.message));
-        });
+      : _voiceProcessor = VoiceProcessor.instance {
+    _frameListener = (List<int> frame) async {
+      if (!_isListening) {
+        return;
+      }
+
+      try {
+        int? keywordIndex = await _porcupine?.process(frame);
+        if (keywordIndex != null && keywordIndex >= 0) {
+          wakeWordCallback(keywordIndex);
+        }
+      } on PorcupineException catch (error) {
+        errorCallback == null
+            ? print("PorcupineException: ${error.message}")
+            : errorCallback(error);
+      }
+    };
+
+    _errorListener = (VoiceProcessorException error) {
+      errorCallback == null
+          ? print("PorcupineException: ${error.message}")
+          : errorCallback(PorcupineException(error.message));
+    };
+  }
 
   /// Opens audio input stream and sends audio frames to Porcupine
   /// Throws a `PorcupineRuntimeException` if there was a problem starting the audio engine
