@@ -73,7 +73,7 @@ namespace Pv.Unity
             _porcupine = porcupine;
             _wakeWordCallback = wakeWordCallback;
             _processErrorCallback = processErrorCallback;
-            
+
             VoiceProcessor.Instance.AddFrameListener(OnFrameCaptured);
         }
 
