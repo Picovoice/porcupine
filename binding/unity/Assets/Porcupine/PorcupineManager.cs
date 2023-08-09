@@ -73,8 +73,6 @@ namespace Pv.Unity
             _porcupine = porcupine;
             _wakeWordCallback = wakeWordCallback;
             _processErrorCallback = processErrorCallback;
-
-            VoiceProcessor.Instance.AddFrameListener(OnFrameCaptured);
         }
 
         /// <summary>
@@ -126,6 +124,7 @@ namespace Pv.Unity
             {
                 throw new ObjectDisposedException("Porcupine", "Cannot start PorcupineManager - resources have already been released");
             }
+            VoiceProcessor.Instance.AddFrameListener(OnFrameCaptured);
             VoiceProcessor.Instance.StartRecording(_porcupine.FrameLength, _porcupine.SampleRate);
         }
 
@@ -138,7 +137,10 @@ namespace Pv.Unity
             {
                 throw new ObjectDisposedException("Porcupine", "Stop called after PorcupineManager resources were released.");
             }
-            VoiceProcessor.Instance.StopRecording();
+            VoiceProcessor.Instance.RemoveFrameListener(OnFrameCaptured);
+            if (VoiceProcessor.Instance.NumFrameListeners == 0) {
+                VoiceProcessor.Instance.StopRecording();
+            }
         }
 
         /// <summary>
@@ -146,14 +148,9 @@ namespace Pv.Unity
         /// </summary>
         public void Delete()
         {
-            VoiceProcessor.Instance.RemoveFrameListener(OnFrameCaptured);
-            if (VoiceProcessor.Instance.IsRecording)
-            {
-                VoiceProcessor.Instance.StopRecording();
-            }
-
             if (_porcupine != null)
             {
+                Stop();
                 _porcupine.Dispose();
                 _porcupine = null;
             }
