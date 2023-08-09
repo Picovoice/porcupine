@@ -124,7 +124,7 @@ class PorcupineManager {
   }
 
   /// Starts audio recording and processing with the Porcupine engine
-  /// Throws a `PorcupineRuntimeException` if there was a problem starting audio recording
+  /// Throws a `PorcupineException` if there was a problem starting audio recording
   Future<void> start() async {
     if (_isListening) {
       return;
@@ -153,6 +153,7 @@ class PorcupineManager {
   }
 
   /// Stops audio recording and processing
+  /// Throws a `PorcupineException` if there was a problem stopping audio recording.
   Future<void> stop() async {
     if (!_isListening) {
       return;
