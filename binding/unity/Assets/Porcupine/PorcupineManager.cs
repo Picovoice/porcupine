@@ -138,7 +138,8 @@ namespace Pv.Unity
                 throw new ObjectDisposedException("Porcupine", "Stop called after PorcupineManager resources were released.");
             }
             VoiceProcessor.Instance.RemoveFrameListener(OnFrameCaptured);
-            if (VoiceProcessor.Instance.NumFrameListeners == 0) {
+            if (VoiceProcessor.Instance.NumFrameListeners == 0)
+            {
                 VoiceProcessor.Instance.StopRecording();
             }
         }
