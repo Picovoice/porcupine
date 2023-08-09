@@ -20,7 +20,6 @@ namespace Pv.Unity
 
     public class PorcupineManager
     {
-        private VoiceProcessor _voiceProcessor;
         private Porcupine _porcupine;
         private Action<int> _wakeWordCallback;
         private Action<PorcupineException> _processErrorCallback;
@@ -74,20 +73,17 @@ namespace Pv.Unity
             _porcupine = porcupine;
             _wakeWordCallback = wakeWordCallback;
             _processErrorCallback = processErrorCallback;
-
-            _voiceProcessor = VoiceProcessor.Instance;
-            _voiceProcessor.OnFrameCaptured += OnFrameCaptured;
         }
 
         /// <summary>
         /// Action to catch audio frames as voice processor produces them
         /// </summary>
-        /// <param name="pcm">Frame of pcm audio</param>
-        private void OnFrameCaptured(short[] pcm)
+        /// <param name="frame">Frame of audio</param>
+        private void OnFrameCaptured(short[] frame)
         {
             try
             {
-                int keywordIndex = _porcupine.Process(pcm);
+                int keywordIndex = _porcupine.Process(frame);
                 if (keywordIndex >= 0)
                 {
                     if (_wakeWordCallback != null)
@@ -107,7 +103,7 @@ namespace Pv.Unity
         /// Checks to see whether PorcupineManager is capturing audio or not
         /// </summary>
         /// <returns>whether PorcupineManager  is capturing audio or not</returns>
-        public bool IsRecording => _voiceProcessor.IsRecording;
+        public bool IsRecording => VoiceProcessor.Instance.IsRecording;
 
         /// <summary>
         /// Checks to see whether there are any audio capture devices available
@@ -115,8 +111,8 @@ namespace Pv.Unity
         /// <returns>whether there are any audio capture devices available</returns>
         public bool IsAudioDeviceAvailable()
         {
-            _voiceProcessor.UpdateDevices();
-            return _voiceProcessor.CurrentDeviceIndex >= 0;
+            VoiceProcessor.Instance.UpdateDevices();
+            return VoiceProcessor.Instance.CurrentDeviceIndex >= 0;
         }
 
         /// <summary>
@@ -124,11 +120,12 @@ namespace Pv.Unity
         /// </summary>
         public void Start()
         {
-            if (_porcupine == null || _voiceProcessor == null)
+            if (_porcupine == null)
             {
                 throw new ObjectDisposedException("Porcupine", "Cannot start PorcupineManager - resources have already been released");
             }
-            _voiceProcessor.StartRecording(_porcupine.SampleRate, _porcupine.FrameLength);
+            VoiceProcessor.Instance.AddFrameListener(OnFrameCaptured);
+            VoiceProcessor.Instance.StartRecording(_porcupine.FrameLength, _porcupine.SampleRate);
         }
 
         /// <summary>
@@ -136,11 +133,15 @@ namespace Pv.Unity
         /// </summary>
         public void Stop()
         {
-            if (_porcupine == null || _voiceProcessor == null)
+            if (_porcupine == null)
             {
                 throw new ObjectDisposedException("Porcupine", "Stop called after PorcupineManager resources were released.");
             }
-            _voiceProcessor.StopRecording();
+            VoiceProcessor.Instance.RemoveFrameListener(OnFrameCaptured);
+            if (VoiceProcessor.Instance.NumFrameListeners == 0)
+            {
+                VoiceProcessor.Instance.StopRecording();
+            }
         }
 
         /// <summary>
@@ -148,19 +149,9 @@ namespace Pv.Unity
         /// </summary>
         public void Delete()
         {
-            if (_voiceProcessor != null)
-            {
-                if (_voiceProcessor.IsRecording)
-                {
-                    _voiceProcessor.StopRecording();
-                }
-
-                _voiceProcessor.OnFrameCaptured -= OnFrameCaptured;
-                _voiceProcessor = null;
-            }
-
             if (_porcupine != null)
             {
+                Stop();
                 _porcupine.Dispose();
                 _porcupine = null;
             }
