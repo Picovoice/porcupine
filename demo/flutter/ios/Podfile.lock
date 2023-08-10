@@ -1,15 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_voice_processor (1.0.6):
+  - flutter_voice_processor (1.1.0):
     - Flutter
+    - ios-voice-processor (~> 1.1.0)
   - integration_test (0.0.1):
     - Flutter
-  - ios-voice-processor (1.0.3)
-  - path_provider_foundation (0.0.1):
+  - ios-voice-processor (1.1.0)
+  - path_provider_ios (0.0.1):
     - Flutter
-    - FlutterMacOS
-  - Porcupine-iOS (2.2.0):
-    - ios-voice-processor (~> 1.0.2)
+  - Porcupine-iOS (2.2.1):
+    - ios-voice-processor (~> 1.1.0)
   - porcupine_flutter (2.2.0):
     - Flutter
     - Porcupine-iOS (~> 2.2.0)
@@ -18,7 +18,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
 
 SPEC REPOS:
@@ -33,18 +33,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_voice_processor/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
-  path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/ios"
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
   porcupine_flutter:
     :path: ".symlinks/plugins/porcupine_flutter/ios"
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_voice_processor: afb59b604d99397a1ccf15c935ac8f2c2327f09f
+  flutter_voice_processor: 53afbf59ad3feb82f4a379fea9ed8dc98495210f
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
-  ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
-  Porcupine-iOS: 34f7b77fbd5f999eb9c4daa94acbb6c90c08ad1e
+  ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
+  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  Porcupine-iOS: df8e4a63d787b6c16bd5f988fd0f2c29a249a4bd
   porcupine_flutter: bb07c08c1a5c504732ea0b1eb7cb3be4916858be
 
 PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
