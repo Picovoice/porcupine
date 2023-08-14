@@ -18,61 +18,6 @@ android {
         }
     }
 
-    def testDataFile = file('../../../../resources/.test/test_data.json')
-    def parsedJson = new groovy.json.JsonSlurper().parseText(testDataFile.text)
-    def languages = []
-    parsedJson.tests.singleKeyword.each { a ->
-        languages.add(a.language)
-    }
-
-    flavorDimensions "language"
-    productFlavors {
-        en {
-            getIsDefault().set(true)
-        }
-
-        languages.each { language ->
-            "$language" {
-                applicationIdSuffix ".$language"
-
-            }
-        }
-
-        all { flavor ->
-            delete fileTree("$projectDir/src/main/assets") {
-                exclude '**/.gitkeep'
-            }
-            task("${flavor.name}CopyParams", type: Copy) {
-                if (flavor.name != 'en') {
-                    from("$projectDir/../../../../lib/common/")
-                    include("porcupine_params_${flavor.name}.pv")
-                    into("$projectDir/src/main/assets/models")
-                }
-            }
-            task("${flavor.name}CopyKeywords", type: Copy) {
-                description = "Copy ${flavor.name} resources"
-                if (flavor.name != 'en') {
-                    from("$projectDir/../../../../resources/keyword_files_${flavor.name}/android")
-                    include('*.ppn')
-                    into("$projectDir/src/main/assets/keywords")
-                    rename { String fileName ->
-                        fileName.replace("_android", "").replace(" ", "_")
-                    }
-                }
-            }
-        }
-    }
-    sourceSets {
-        androidTest {
-            java {
-                if (properties.getProperty("performanceThresholdSec", "").length() == 0) {
-                    exclude "**/PerformanceTest.java"
-                } else {
-                    exclude "**/PorcupineTest.java"
-                }
-            }
-        }
-    }
     lint {
         abortOnError false
     }
