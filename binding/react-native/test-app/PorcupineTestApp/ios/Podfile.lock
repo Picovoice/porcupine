@@ -303,7 +303,8 @@ PODS:
   - React-jsinspector (0.71.0)
   - React-logger (0.71.0):
     - glog
-  - react-native-voice-processor (1.1.0):
+  - react-native-voice-processor (1.2.0):
+    - ios-voice-processor (~> 1.1.0)
     - React-Core
   - React-perflogger (0.71.0)
   - React-RCTActionSheet (0.71.0):
@@ -590,7 +591,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 060dd495f1e2af3d87216f7ca8a94c55ec885b4f
   React-jsinspector: 5061fcbec93fd672183dfb39cc2f65e55a0835db
   React-logger: a6c0b3a807a8e81f6d7fea2e72660766f55daa50
-  react-native-voice-processor: 3d396bfd42d11ee270bf292ce7cc935ea62d4cae
+  react-native-voice-processor: aefb0845641c7d67dd47e69606ba7ebb38aab5cd
   React-perflogger: e5fc4149e9bbb972b8520277f3b23141faa47a36
   React-RCTActionSheet: 991de88216bf03ab9bb1d213d73c62ecbe64ade7
   React-RCTAnimation: b74e3d1bf5280891a573e447b487fa1db0713b5b
