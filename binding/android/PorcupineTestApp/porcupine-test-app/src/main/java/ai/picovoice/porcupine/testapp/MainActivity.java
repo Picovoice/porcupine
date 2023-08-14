@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         result.testName = "Test Init";
         Porcupine porcupine = null;
         try {
-             porcupine = new Porcupine.Builder()
+            porcupine = new Porcupine.Builder()
                     .setAccessKey(accessKey)
                     .setModelPath(modelFile)
                     .setKeywordPaths(keywordPaths)

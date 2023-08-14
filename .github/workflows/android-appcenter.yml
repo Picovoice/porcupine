@@ -67,3 +67,49 @@ jobs:
         --test-series "porcupine-android"
         --locale "en_US"
         --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
+
+  build-instrum:
+    name: Run Android Tests on AppCenter
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+
+    - name: Install AppCenter CLI
+      run: npm install -g appcenter-cli
+
+    - name: set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Copy test_resources
+      run: ./copy_test_resources.sh
+
+    - name: Inject AccessKey
+      run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build app
+      run: ./gradlew assembleEnDebug
+
+    - name: Build androidTest
+      run: ./gradlew assembleEnDebugAndroidTest -DtestBuildType=instrum
+
+    - name: Run tests on AppCenter
+      run: appcenter test run espresso
+        --token ${{secrets.APPCENTERAPITOKEN}}
+        --app "Picovoice/Porcupine-Android"
+        --devices "Picovoice/android-min-max"
+        --app-path porcupine-test-app/build/outputs/apk/en/debug/porcupine-test-app-en-debug.apk
+        --test-series "porcupine-android"
+        --locale "en_US"
+        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug

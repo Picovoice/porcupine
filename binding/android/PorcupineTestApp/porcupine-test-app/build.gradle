@@ -12,6 +12,19 @@ if (rootProject.file("local.properties").exists()) {
     if (project.hasProperty("performanceThresholdSec")) {
         properties.put("performanceThresholdSec", project.getProperty("performanceThresholdSec"))
     }
+
+    if (project.hasProperty("storePassword")) {
+        properties.put("storePassword", project.getProperty("storePassword"))
+    }
+    if (project.hasProperty("storeFile")) {
+        properties.put("storeFile", project.getProperty("storeFile"))
+    }
+    if (project.hasProperty("keyAlias")) {
+        properties.put("keyAlias", project.getProperty("keyAlias"))
+    }
+    if (project.hasProperty("keyPassword")) {
+        properties.put("keyPassword", project.getProperty("keyPassword"))
+    }
 }
 
 android {
@@ -29,6 +42,18 @@ android {
         resValue 'string', 'numTestIterations', properties.getProperty("numTestIterations", "")
         resValue 'string', 'performanceThresholdSec', properties.getProperty("performanceThresholdSec", "")
     }
+
+    signingConfigs {
+        androidTest {
+            if (System.getProperty("testBuildType", "debug") == "instrum") {
+                storePassword properties.getProperty("storePassword")
+                storeFile file(properties.getProperty("storeFile", ".dummy.jks"))
+                keyAlias properties.getProperty("keyAlias")
+                keyPassword properties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -82,10 +107,15 @@ android {
     sourceSets {
         androidTest {
             java {
-                if (properties.getProperty("performanceThresholdSec", "").length() == 0) {
+                if (System.getProperty("testBuildType", "debug") == "perf") {
+                    exclude "**/PorcupineTest.java"
+                    exclude "**/IntegrationTest.java"
+                } else if (System.getProperty("testBuildType", "debug") == "instrum") {
+                    exclude "**/PorcupineTest.java"
                     exclude "**/PerformanceTest.java"
                 } else {
-                    exclude "**/PorcupineTest.java"
+                    exclude "**/IntegrationTest.java"
+                    exclude "**/PerformanceTest.java"
                 }
             }
         }

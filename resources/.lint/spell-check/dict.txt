@@ -5,6 +5,7 @@ alexa
 alsa
 americano
 ananas
+androidx
 annyeong
 Appcenter
 armeabi
@@ -146,6 +147,7 @@ pvporcupinedemo
 pvrecorder
 rcurly
 reactnative
+Readables
 readi
 realtek
 renderless
@@ -178,6 +180,7 @@ suppressionfilter
 suppressionxpathfilter
 supression
 swifty
+testapp
 testcase
 testcases
 timecode
