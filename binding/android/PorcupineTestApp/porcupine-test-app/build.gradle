@@ -45,7 +45,7 @@ android {
 
     signingConfigs {
         androidTest {
-            if (System.getProperty("testBuildType", "debug") == "instrum") {
+            if (System.getProperty("testBuildType", "debug") == "integ") {
                 storePassword properties.getProperty("storePassword")
                 storeFile file(properties.getProperty("storeFile", ".dummy.jks"))
                 keyAlias properties.getProperty("keyAlias")
@@ -110,7 +110,7 @@ android {
                 if (System.getProperty("testBuildType", "debug") == "perf") {
                     exclude "**/PorcupineTest.java"
                     exclude "**/IntegrationTest.java"
-                } else if (System.getProperty("testBuildType", "debug") == "instrum") {
+                } else if (System.getProperty("testBuildType", "debug") == "integ") {
                     exclude "**/PorcupineTest.java"
                     exclude "**/PerformanceTest.java"
                 } else {

@@ -69,7 +69,7 @@ jobs:
         --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
 
   build-instrum:
-    name: Run Android Tests on AppCenter
+    name: Run Android Integration Tests on AppCenter
     runs-on: ubuntu-latest
 
     steps:
@@ -102,7 +102,7 @@ jobs:
       run: ./gradlew assembleEnDebug
 
     - name: Build androidTest
-      run: ./gradlew assembleEnDebugAndroidTest -DtestBuildType=instrum
+      run: ./gradlew assembleEnDebugAndroidTest -DtestBuildType=integ
 
     - name: Run tests on AppCenter
       run: appcenter test run espresso
