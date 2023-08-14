@@ -1685,15 +1685,14 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-react-native@~2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.2.0.tgz#03de43372d7e2624b7ae8f756c0cebee9d636dcf"
-  integrity sha512-5zTrS5OA6NJNjtPKny+B2nPMuVk9FgYIgyko1Kjbho/XtV5vXapyB8vdfe7ISy6Qp5jJl6iVS6CTy3YLF1py/w==
+"@picovoice/porcupine-react-native@../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz":
+  version "2.2.1"
+  resolved "../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz#853c59c94aa6862204cc31ce3942d35ab97e3857"
 
-"@picovoice/react-native-voice-processor@~1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.1.0.tgz#fe469f990c3b031411b585f28fc80fc0a9b9de41"
-  integrity sha512-TzIYL/34VbYhIcKH/LbivZwRpxUiKr4+XW5Gcp8vFdZKGP431SP4Lob2hLhSIu+E/yo1z4xwCELCznMpHyWNhg==
+"@picovoice/react-native-voice-processor@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.2.0.tgz#82a98b41d9236ababe330dae873062ee0e1b24c3"
+  integrity sha512-zolTEo3qsqeUwY7JRslV/yhiA+oBrkeogOTxjHIEJ//yEsr7YKlI1PcqTbU5/xjmUiukh62gmwTXhosnQYdasQ==
 
 "@react-native-community/cli-debugger-ui@^7.0.3":
   version "7.0.3"

@@ -10,8 +10,7 @@
 //
 
 import React, {Component} from 'react';
-import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
   PorcupineManager,
   BuiltInKeywords,
@@ -58,12 +57,12 @@ export default class App extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    this._loadNewKeyword(this.state.currentKeyword);
+    await this._loadNewKeyword(this.state.currentKeyword);
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     if (this.state.isListening) {
-      this._stopProcessing();
+      await this._stopProcessing();
     }
     this._porcupineManager?.delete();
   }
@@ -73,65 +72,52 @@ export default class App extends Component<Props, State> {
       buttonDisabled: true,
     });
 
-    let recordAudioRequest;
-    if (Platform.OS === 'android') {
-      recordAudioRequest = this._requestRecordAudioPermission();
-    } else {
-      recordAudioRequest = new Promise(function (resolve, _) {
-        resolve(true);
+    try {
+      await this._porcupineManager?.start();
+      this.setState({
+        buttonText: 'Stop',
+        buttonDisabled: false,
+        isListening: true,
+      });
+    } catch (e: any) {
+      this.setState({
+        isError: true,
+        errorMessage: e.message,
       });
     }
-
-    recordAudioRequest.then((hasPermission) => {
-      if (!hasPermission) {
-        console.error(
-          "Required permissions (Microphone) we're not found. Please add to platform code.",
-        );
-        this.setState({
-          buttonDisabled: false,
-        });
-        return;
-      }
-
-      this._porcupineManager?.start().then((didStart) => {
-        if (didStart) {
-          this.setState({
-            buttonText: 'Stop',
-            buttonDisabled: false,
-            isListening: true,
-          });
-        }
-      });
-    });
   }
 
-  _stopProcessing() {
+  async _stopProcessing() {
     this.setState({
       buttonDisabled: true,
     });
 
-    this._porcupineManager?.stop().then((didStop) => {
-      if (didStop) {
-        this.setState({
-          buttonText: 'Start',
-          buttonDisabled: false,
-          isListening: false,
-        });
-      }
-    });
+    try {
+      await this._porcupineManager?.stop();
+      this.setState({
+        buttonText: 'Start',
+        buttonDisabled: false,
+        isListening: false,
+      });
+    } catch (e: any) {
+      this.setState({
+        isError: true,
+        errorMessage: e.message,
+      });
+    }
   }
 
-  _toggleListening() {
+  async _toggleListening() {
     if (this.state.isListening) {
-      this._stopProcessing();
+      await this._stopProcessing();
     } else {
-      this._startProcessing();
+      await this._startProcessing();
     }
   }
 
   async _loadNewKeyword(keyword: string | BuiltInKeywords) {
     if (this.state.isListening) {
-      this._stopProcessing();
+      await this._stopProcessing();
     }
     this._porcupineManager?.delete();
 
@@ -180,7 +166,7 @@ export default class App extends Component<Props, State> {
         );
       }
     } catch (err: any) {
-      let errorMessage = '';
+      let errorMessage: string;
       if (err instanceof PorcupineErrors.PorcupineInvalidArgumentError) {
         errorMessage = `${err.message}\nPlease make sure accessKey ${this._accessKey} is a valid access key.`;
       } else if (err instanceof PorcupineErrors.PorcupineActivationError) {
@@ -203,29 +189,6 @@ export default class App extends Component<Props, State> {
         isError: true,
         errorMessage: errorMessage,
       });
-    }
-  }
-
-  async _requestRecordAudioPermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        {
-          title: 'Microphone Permission',
-          message:
-            'Porcupine needs access to your microphone to listen for wake words.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (err: any) {
-      this.setState({
-        isError: true,
-        errorMessage: err.toString(),
-      });
-      return false;
     }
   }
 
