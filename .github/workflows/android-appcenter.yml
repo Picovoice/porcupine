@@ -95,11 +95,21 @@ jobs:
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
+    - name: Inject Android keystore variables
+      run: |
+        echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyPassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyAlias=picovoice >> local.properties
+        echo storeFile=../picovoice.jks >> local.properties
+
+    - name: Setup Android keystore file
+      run: echo "${{secrets.ANDROID_RELEASE_KEYSTORE_FILE_B64}}" | base64 -d > picovoice.jks
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
     - name: Build app
-      run: ./gradlew assembleEnDebug
+      run: ./gradlew assembleEnRelease
 
     - name: Build androidTest
       run: ./gradlew assembleEnDebugAndroidTest -DtestBuildType=integ
@@ -109,7 +119,7 @@ jobs:
         --token ${{secrets.APPCENTERAPITOKEN}}
         --app "Picovoice/Porcupine-Android"
         --devices "Picovoice/android-min-max"
-        --app-path porcupine-test-app/build/outputs/apk/en/debug/porcupine-test-app-en-debug.apk
+        --app-path porcupine-test-app/build/outputs/apk/en/release/porcupine-test-app-en-release.apk
         --test-series "porcupine-android"
         --locale "en_US"
-        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
+        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/release
