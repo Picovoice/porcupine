@@ -1685,10 +1685,6 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-react-native@../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz":
-  version "2.2.1"
-  resolved "../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz#0ed3c42fd642ab5e6b15fc802fddfb7ef5b27b27"
-
 "@picovoice/react-native-voice-processor@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.2.0.tgz#82a98b41d9236ababe330dae873062ee0e1b24c3"

@@ -47,7 +47,7 @@ jobs:
       working-directory: binding/react-native
 
     - name: tmp3
-      run: yarn add ../../binding/react-native
+      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz
 
     - name: Install dependencies
       run: yarn android-install
@@ -86,7 +86,7 @@ jobs:
       working-directory: binding/react-native
 
     - name: tmp3
-      run: yarn add ../../binding/react-native
+      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz
 
     - name: Install dependencies
       run: yarn ios-install
