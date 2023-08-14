@@ -122,4 +122,4 @@ jobs:
         --app-path porcupine-test-app/build/outputs/apk/en/release/porcupine-test-app-en-release.apk
         --test-series "porcupine-android"
         --locale "en_US"
-        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/release
+        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
