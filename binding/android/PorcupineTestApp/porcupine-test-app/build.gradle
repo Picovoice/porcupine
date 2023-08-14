@@ -44,13 +44,11 @@ android {
     }
 
     signingConfigs {
-        androidTest {
-            if (System.getProperty("testBuildType", "debug") == "integ") {
-                storePassword properties.getProperty("storePassword")
-                storeFile file(properties.getProperty("storeFile", ".dummy.jks"))
-                keyAlias properties.getProperty("keyAlias")
-                keyPassword properties.getProperty("keyPassword")
-            }
+        release {
+            storePassword properties.getProperty("storePassword")
+            storeFile file(properties.getProperty("storeFile", ".dummy.jks"))
+            keyAlias properties.getProperty("keyAlias")
+            keyPassword properties.getProperty("keyPassword")
         }
     }
 
@@ -58,6 +56,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
