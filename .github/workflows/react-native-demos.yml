@@ -38,17 +38,6 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: tmp1
-      run: yarn install
-      working-directory: binding/react-native
-
-    - name: tmp2
-      run: yarn pkg
-      working-directory: binding/react-native
-
-    - name: tmp3
-      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz
-
     - name: Install dependencies
       run: yarn android-install
 
@@ -76,17 +65,6 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-
-    - name: tmp1
-      run: yarn install
-      working-directory: binding/react-native
-
-    - name: tmp2
-      run: yarn pkg
-      working-directory: binding/react-native
-
-    - name: tmp3
-      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-2.2.1.tgz
 
     - name: Install dependencies
       run: yarn ios-install
