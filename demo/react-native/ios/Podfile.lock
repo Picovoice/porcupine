@@ -11,10 +11,10 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.68.7)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - ios-voice-processor (1.0.3)
-  - Porcupine-iOS (2.2.0):
-    - ios-voice-processor (~> 1.0.2)
-  - porcupine-react-native (2.2.0):
+  - ios-voice-processor (1.1.0)
+  - Porcupine-iOS (2.2.1):
+    - ios-voice-processor (~> 1.1.0)
+  - porcupine-react-native (2.2.1):
     - Porcupine-iOS (~> 2.2.0)
     - React
   - RCT-Folly (2021.06.28.00-v2):
@@ -224,7 +224,8 @@ PODS:
   - React-jsinspector (0.68.7)
   - React-logger (0.68.7):
     - glog
-  - react-native-voice-processor (1.1.0):
+  - react-native-voice-processor (1.2.0):
+    - ios-voice-processor (~> 1.1.0)
     - React-Core
   - React-perflogger (0.68.7)
   - React-RCTActionSheet (0.68.7):
@@ -416,9 +417,9 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 1fa200a9862d9369a53b6fddbbfcdc22bab24062
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
-  ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Porcupine-iOS: 34f7b77fbd5f999eb9c4daa94acbb6c90c08ad1e
-  porcupine-react-native: 0cda03f9099df747be460629b5dc058eee6c94db
+  ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
+  Porcupine-iOS: df8e4a63d787b6c16bd5f988fd0f2c29a249a4bd
+  porcupine-react-native: aa9eedf280df1a5de7a3c598607be31c519f273e
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 530916cd48c5f7cf1fc16966ad5ea01638ca4799
   RCTTypeSafety: 5fb4cb3080efd582e5563c3e9a0e459fc51396c5
@@ -432,7 +433,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 7c0bd030a84f2ec446fb104b7735af2f5ed11eea
   React-jsinspector: cab4d37ebde480f84c79ac89568abbf76b916c3e
   React-logger: b75b80500ea80457b2cf169427d66de986cdcb29
-  react-native-voice-processor: 3d396bfd42d11ee270bf292ce7cc935ea62d4cae
+  react-native-voice-processor: aefb0845641c7d67dd47e69606ba7ebb38aab5cd
   React-perflogger: 44436b315d757100a53dfb1ab6b77c58cb646d7d
   React-RCTActionSheet: 1888a229684762c40cc96c7ff4716f809655dc09
   React-RCTAnimation: f05da175751867521d14b02ab4d3994a7b96f131
@@ -450,4 +451,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 853e3dcc8afbd54d559edf35fc8dcaab2a813897
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.11.3
