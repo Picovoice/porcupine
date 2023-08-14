@@ -76,13 +76,13 @@ PODS:
   - hermes-engine (0.71.0):
     - hermes-engine/Pre-built (= 0.71.0)
   - hermes-engine/Pre-built (0.71.0)
-  - ios-voice-processor (1.0.3)
+  - ios-voice-processor (1.1.0)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
-  - Porcupine-iOS (2.2.0):
-    - ios-voice-processor (~> 1.0.2)
-  - porcupine-react-native (2.2.0):
-    - Porcupine-iOS (~> 2.2.0)
+  - Porcupine-iOS (2.2.1):
+    - ios-voice-processor (~> 1.1.0)
+  - porcupine-react-native (2.2.1):
+    - Porcupine-iOS (~> 2.2.1)
     - React
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -388,7 +388,7 @@ PODS:
     - React-perflogger (= 0.71.0)
   - RNFS (2.20.0):
     - React-Core
-  - SocketRocket (0.6.0)
+  - SocketRocket (0.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -571,11 +571,11 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: f6e715aa6c8bd38de6c13bc85e07b0a337edaa89
-  ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
+  ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Porcupine-iOS: 34f7b77fbd5f999eb9c4daa94acbb6c90c08ad1e
-  porcupine-react-native: 0cda03f9099df747be460629b5dc058eee6c94db
+  Porcupine-iOS: df8e4a63d787b6c16bd5f988fd0f2c29a249a4bd
+  porcupine-react-native: c0ca3b5112d55af5aa2c2ca0267e082e2dfb4dda
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: dea3e4163184ea57c50288c15c32c1529265c58f
   RCTTypeSafety: a0834ab89159a346731e8aae55ad6e2cce61c327
@@ -605,7 +605,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: ac80782d9d76ba2b0f709f4de0c427fe33c352dc
   ReactCommon: 20e38a9be5fe1341b5e422220877cc94034776ba
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
