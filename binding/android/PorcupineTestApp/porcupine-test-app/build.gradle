@@ -145,7 +145,6 @@ dependencies {
     })
     androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
     androidTestImplementation('androidx.test.espresso:espresso-intents:3.5.1')
-    androidTestImplementation('com.google.code.gson:gson:2.10')
 }
 
 
