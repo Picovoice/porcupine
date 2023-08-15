@@ -122,14 +122,14 @@ jobs:
       run: ./gradlew assembleEnRelease
 
     - name: Build androidTest
-      run: ./gradlew assembleEnDebugAndroidTest -DtestBuildType=integ
+      run: ./gradlew assembleEnReleaseAndroidTest -DtestBuildType=integ
 
     - name: Run tests on AppCenter
       run: appcenter test run espresso
         --token ${{secrets.APPCENTERAPITOKEN}}
         --app "Picovoice/Porcupine-Android"
-        --devices "Picovoice/single-android"
+        --devices "Picovoice/android-min-max"
         --app-path porcupine-test-app/build/outputs/apk/en/release/porcupine-test-app-en-release.apk
         --test-series "porcupine-android"
         --locale "en_US"
-        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
+        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/release

@@ -63,6 +63,12 @@ android {
         }
     }
 
+    if (System.getProperty("testBuildType", "debug") == "integ") {
+        testBuildType "release"
+    } else {
+        testBuildType "debug"
+    }
+
     def testDataFile = file('../../../../resources/.test/test_data.json')
     def parsedJson = new groovy.json.JsonSlurper().parseText(testDataFile.text)
     def languages = []
