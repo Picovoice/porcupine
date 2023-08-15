@@ -69,7 +69,7 @@ class WaitForTextAction implements ViewAction {
 }
 
 @RunWith(AndroidJUnit4.class)
-public class IntegrationTest {
+public class IntegrationTest extends BaseTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityScenarioRule =
