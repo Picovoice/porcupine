@@ -79,10 +79,7 @@ afterEvaluate {
         flavor ->
             tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyParams"
             tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyParams"
-            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyContext"
-            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyContext"
-            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}ContextName"
-            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}ContextName"
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyKeywords"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyKeywords"
     }
 }
-
