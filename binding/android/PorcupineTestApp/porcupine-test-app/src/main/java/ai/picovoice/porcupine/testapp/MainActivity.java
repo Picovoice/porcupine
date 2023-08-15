@@ -13,27 +13,15 @@
 package ai.picovoice.porcupine.testapp;
 
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.BufferedInputStream;
@@ -48,17 +36,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import ai.picovoice.porcupine.Porcupine;
-import ai.picovoice.porcupine.PorcupineActivationException;
-import ai.picovoice.porcupine.PorcupineActivationLimitException;
-import ai.picovoice.porcupine.PorcupineActivationRefusedException;
-import ai.picovoice.porcupine.PorcupineActivationThrottledException;
 import ai.picovoice.porcupine.PorcupineException;
-import ai.picovoice.porcupine.PorcupineInvalidArgumentException;
-import ai.picovoice.porcupine.PorcupineManager;
-import ai.picovoice.porcupine.PorcupineManagerCallback;
 
 
 public class MainActivity extends AppCompatActivity {
