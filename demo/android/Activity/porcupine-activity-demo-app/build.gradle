@@ -74,3 +74,15 @@ dependencies {
     implementation 'ai.picovoice:porcupine-android:2.2.2'
 }
 
+afterEvaluate {
+    android.productFlavors.all {
+        flavor ->
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyParams"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyParams"
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyContext"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyContext"
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}ContextName"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}ContextName"
+    }
+}
+

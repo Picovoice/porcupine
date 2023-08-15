@@ -78,7 +78,7 @@ jobs:
         --locale "en_US"
         --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
 
-  build-instrum:
+  build-integ:
     name: Run Android Integration Tests on AppCenter
     runs-on: ubuntu-latest
 
