@@ -85,6 +85,10 @@ public class IntegrationTest extends BaseTest {
         Intents.release();
     }
 
+    @Before
+    @Override
+    public void Setup() { }
+
     @Test
     public void testPorcupine() {
         onView(withId(R.id.testButton)).perform(click());

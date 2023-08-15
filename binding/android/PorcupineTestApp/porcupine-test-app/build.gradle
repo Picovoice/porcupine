@@ -63,10 +63,8 @@ android {
         }
     }
 
-    if (System.getProperty("testBuildType", "debug") != "integ") {
-        testBuildType "debug"
-    } else {
-        testBuildType "release"
+    if (System.getProperty("testBuildType", "debug") == "integ") {
+        testBuildType("release")
     }
 
     def testDataFile = file('../../../../resources/.test/test_data.json')
