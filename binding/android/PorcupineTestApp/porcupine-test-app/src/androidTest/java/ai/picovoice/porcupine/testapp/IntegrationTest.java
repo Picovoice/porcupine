@@ -26,8 +26,8 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.TimeoutException;
 
 class WaitForTextAction implements ViewAction {
-    private String text;
-    private long timeout;
+    private final String text;
+    private final long timeout;
 
     public WaitForTextAction(String text, long timeout) {
         this.text = text;
