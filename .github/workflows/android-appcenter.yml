@@ -6,22 +6,20 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/android-appcenter.yml'
-      - 'demo/android/Activity/**'
-      - '!demo/android/Activity/README.md'
+      - 'binding/android/PorcupineTestApp/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/android-appcenter.yml'
-      - 'demo/android/Activity/**'
-      - '!demo/android/Activity/README.md'
+      - 'binding/android/PorcupineTestApp/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
 
 defaults:
   run:
-    working-directory: demo/android/Activity
+    working-directory: binding/android/PorcupineTestApp
 
 jobs:
   build:
@@ -51,6 +49,16 @@ jobs:
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
+    - name: Inject Android keystore variables
+      run: |
+        echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyPassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyAlias=picovoice >> local.properties
+        echo storeFile=../picovoice.jks >> local.properties
+
+    - name: Setup Android keystore file
+      run: echo "${{secrets.ANDROID_RELEASE_KEYSTORE_FILE_B64}}" | base64 -d > picovoice.jks
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
@@ -65,7 +73,63 @@ jobs:
         --token ${{secrets.APPCENTERAPITOKEN}}
         --app "Picovoice/Porcupine-Android"
         --devices "Picovoice/android-min-max"
-        --app-path porcupine-activity-demo-app/build/outputs/apk/en/debug/porcupine-activity-demo-app-en-debug.apk
+        --app-path porcupine-test-app/build/outputs/apk/en/debug/porcupine-test-app-en-debug.apk
         --test-series "porcupine-android"
         --locale "en_US"
-        --build-dir porcupine-activity-demo-app/build/outputs/apk/androidTest/en/debug
+        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
+
+  build-integ:
+    name: Run Android Integration Tests on AppCenter
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+
+    - name: Install AppCenter CLI
+      run: npm install -g appcenter-cli
+
+    - name: set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Copy test_resources
+      run: ./copy_test_resources.sh
+
+    - name: Inject AccessKey
+      run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
+
+    - name: Inject Android keystore variables
+      run: |
+        echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyPassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyAlias=picovoice >> local.properties
+        echo storeFile=../picovoice.jks >> local.properties
+
+    - name: Setup Android keystore file
+      run: echo "${{secrets.ANDROID_RELEASE_KEYSTORE_FILE_B64}}" | base64 -d > picovoice.jks
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build app
+      run: ./gradlew assembleEnRelease
+
+    - name: Build androidTest
+      run: ./gradlew assembleEnReleaseAndroidTest -DtestBuildType=integ
+
+    - name: Run tests on AppCenter
+      run: appcenter test run espresso
+        --token ${{secrets.APPCENTERAPITOKEN}}
+        --app "Picovoice/Porcupine-Android"
+        --devices "Picovoice/android-min-max"
+        --app-path porcupine-test-app/build/outputs/apk/en/release/porcupine-test-app-en-release.apk
+        --test-series "porcupine-android"
+        --locale "en_US"
+        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/release

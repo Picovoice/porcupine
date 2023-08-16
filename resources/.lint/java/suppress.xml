@@ -14,4 +14,5 @@
     <suppress files=".*generated-sources.*" checks="[a-zA-Z0-9]*"/>
     <suppress files=".*build.*" checks="[a-zA-Z0-9]*"/>
     <suppress files=".*" checks="CustomImportOrder"/>
+    <suppress files=".*\/testapp\/.*\.java" checks="MissingJavadocMethod"/>
 </suppressions>

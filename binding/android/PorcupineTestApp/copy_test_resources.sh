@@ -1,6 +1,6 @@
 LIB_DIR="../../../lib"
 RESOURCE_DIR="../../../resources"
-ASSETS_DIR="./porcupine-activity-demo-app/src/androidTest/assets/test_resources"
+ASSETS_DIR="./porcupine-test-app/src/androidTest/assets/test_resources"
 
 if [ ! -d "${ASSETS_DIR}/audio_samples" ]
 then

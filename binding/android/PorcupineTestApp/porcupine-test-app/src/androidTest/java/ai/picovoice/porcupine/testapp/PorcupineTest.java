@@ -10,7 +10,7 @@
     limitations under the License.
 */
 
-package ai.picovoice.porcupine.demo;
+package ai.picovoice.porcupine.testapp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;

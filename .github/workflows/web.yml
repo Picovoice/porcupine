@@ -9,8 +9,8 @@ on:
       - '!binding/web/README.md'
       - 'lib/common/**'
       - 'lib/wasm/**'
-      - 'resources/**'
-      - '!resources/lint/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
       - '.github/workflows/web.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
@@ -19,8 +19,8 @@ on:
       - '!binding/web/README.md'
       - 'lib/common/**'
       - 'lib/wasm/**'
-      - 'resources/**'
-      - '!resources/lint/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
       - '.github/workflows/web.yml'
 
 defaults:

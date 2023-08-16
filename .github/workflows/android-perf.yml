@@ -6,16 +6,16 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/android-perf.yml'
-      - 'demo/android/Activity/**/build.gradle'
+      - 'binding/android/PorcupineTestApp/**/build.gradle'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/android-perf.yml'
-      - 'demo/android/Activity/**/build.gradle'
+      - 'binding/android/PorcupineTestApp/**/build.gradle'
 
 defaults:
   run:
-    working-directory: demo/android/Activity
+    working-directory: binding/android/PorcupineTestApp/
 
 jobs:
   build:
@@ -54,6 +54,16 @@ jobs:
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
+    - name: Inject Android keystore variables
+      run: |
+        echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyPassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyAlias=picovoice >> local.properties
+        echo storeFile=../picovoice.jks >> local.properties
+
+    - name: Setup Android keystore file
+      run: echo "${{secrets.ANDROID_RELEASE_KEYSTORE_FILE_B64}}" | base64 -d > picovoice.jks
+
     - name: Inject Number of Iterations
       run: echo numTestIterations="100" >> local.properties
 
@@ -67,14 +77,14 @@ jobs:
       run: ./gradlew assembleEnDebug
 
     - name: Build androidTest
-      run: ./gradlew assembleEnDebugAndroidTest
+      run: ./gradlew assembleEnDebugAndroidTest -DtestBuildType=perf
 
     - name: Run tests on AppCenter
       run: appcenter test run espresso
         --token ${{secrets.APPCENTERAPITOKEN}}
         --app "Picovoice/Porcupine-Android"
         --devices "Picovoice/${{ matrix.device }}"
-        --app-path porcupine-activity-demo-app/build/outputs/apk/en/debug/porcupine-activity-demo-app-en-debug.apk
+        --app-path porcupine-test-app/build/outputs/apk/en/debug/porcupine-test-app-en-debug.apk
         --test-series "porcupine-android"
         --locale "en_US"
-        --build-dir porcupine-activity-demo-app/build/outputs/apk/androidTest/en/debug
+        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
