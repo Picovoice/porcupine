@@ -119,6 +119,22 @@ public class MainActivity extends AppCompatActivity {
             results.add(result);
         }
 
+        result = new TestResult();
+        result.testName = "Test Exception";
+        try {
+            new Porcupine.Builder()
+                    .setAccessKey("")
+                    .setModelPath(modelFile)
+                    .setKeywordPaths(keywordPaths)
+                    .build(getApplicationContext());
+            result.success = false;
+            result.errorMessage = "Init should have throw an exception";
+        } catch (PorcupineException e) {
+            result.success = true;
+        } finally {
+            results.add(result);
+        }
+
         displayTestResults(results);
     }
 
