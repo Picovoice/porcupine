@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -49,63 +49,67 @@ namespace PorcupineDemo
             string outputPath = null)
         {
             // init porcupine wake word engine
-            using Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities);
-
-            // get keyword names for labeling detection results                
-            List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
-
-            // create recorder
-            using PvRecorder recorder = PvRecorder.Create(frameLength: porcupine.FrameLength, deviceIndex: audioDeviceIndex);
-            Console.WriteLine($"Using device: {recorder.SelectedDevice}");
-            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
+            using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
             {
-                e.Cancel = true;
-                recorder.Stop();
-                Console.WriteLine("Stopping...");
-            };
 
-            // open stream to output file
-            BinaryWriter outputFileWriter = null;
-            int totalSamplesWritten = 0;
-            if (!string.IsNullOrWhiteSpace(outputPath))
-            {
-                outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
-                WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, 0);
-            }
+                // get keyword names for labeling detection results                
+                List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
-            // start recording
-            Console.Write($"Listening for [{string.Join(' ', keywordNames.Select(k => $"'{k}'"))}]...\n");
-            recorder.Start();
-
-            while (recorder.IsRecording)
-            {
-                short[] frame = recorder.Read();
-
-                int result = porcupine.Process(frame);
-                if (result >= 0)
+                // create recorder
+                using (PvRecorder recorder = PvRecorder.Create(frameLength: porcupine.FrameLength, deviceIndex: audioDeviceIndex))
                 {
-                    Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
-                }
-
-                if (outputFileWriter != null)
-                {
-                    foreach (short sample in frame)
+                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+                    Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
                     {
-                        outputFileWriter.Write(sample);
+                        e.Cancel = true;
+                        recorder.Stop();
+                        Console.WriteLine("Stopping...");
+                    };
+
+                    // open stream to output file
+                    BinaryWriter outputFileWriter = null;
+                    int totalSamplesWritten = 0;
+                    if (!string.IsNullOrWhiteSpace(outputPath))
+                    {
+                        outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
+                        WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, 0);
                     }
-                    totalSamplesWritten += frame.Length;
+
+                    // start recording
+                    Console.Write($"Listening for [{string.Join(' ', keywordNames.Select(k => $"'{k}'"))}]...\n");
+                    recorder.Start();
+
+                    while (recorder.IsRecording)
+                    {
+                        short[] frame = recorder.Read();
+
+                        int result = porcupine.Process(frame);
+                        if (result >= 0)
+                        {
+                            Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Detected '{keywordNames[result]}'");
+                        }
+
+                        if (outputFileWriter != null)
+                        {
+                            foreach (short sample in frame)
+                            {
+                                outputFileWriter.Write(sample);
+                            }
+                            totalSamplesWritten += frame.Length;
+                        }
+
+                        Thread.Yield();
+                    }
+
+                    if (outputFileWriter != null)
+                    {
+                        // write size to header and clean up
+                        WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, totalSamplesWritten);
+                        outputFileWriter.Flush();
+                        outputFileWriter.Dispose();
+                        Console.Write($"Wrote audio to '{outputPath}'");
+                    }
                 }
-
-                Thread.Yield();
-            }
-
-            if (outputFileWriter != null)
-            {
-                // write size to header and clean up
-                WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, totalSamplesWritten);
-                outputFileWriter.Flush();
-                outputFileWriter.Dispose();
-                Console.Write($"Wrote audio to '{outputPath}'");
             }
         }
 
@@ -280,7 +284,7 @@ namespace PorcupineDemo
                     if (!Enum.TryParse(typeof(BuiltInKeyword), k.ToUpper().Replace(" ", "_"), out object builtin))
                     {
                         throw new ArgumentException($"Keyword '{k}' is not a valid built-in keyword. Available built-ins are: " +
-                            $"{string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(k => k.ToLower().Replace("_", " ")))}");
+                            $"{string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(x => x.ToLower().Replace("_", " ")))}");
                     }
                     else
                     {

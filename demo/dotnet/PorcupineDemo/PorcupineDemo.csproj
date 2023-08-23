@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<Configurations>FileDemo.Debug;FileDemo.Release;MicDemo.Debug;MicDemo.Release</Configurations>
 	</PropertyGroup>
 
@@ -19,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Porcupine" Version="2.2.1" />
+		<PackageReference Include="Porcupine" Version="2.2.2" />
         <PackageReference Include="PvRecorder" Version="1.2.1" />
 	</ItemGroup>
 </Project>
