@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -50,59 +50,50 @@ namespace PorcupineDemo
             List<string> keywords,
             List<float> sensitivities)
         {
-            Porcupine porcupine = null;
-            try
+            // init porcupine wake word engine
+            using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
             {
-                // init porcupine wake word engine
-                porcupine = Porcupine.FromKeywordPaths(
-                    accessKey,
-                    keywordPaths,
-                    modelPath,
-                    sensitivities);
-
                 // get keyword names for labeling detection results                
                 List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
-                using BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open));
-                ValidateWavFile(reader, porcupine.SampleRate, 16, out short numChannels);
-
-                // read audio and send frames to porcupine                
-                short[] porcupineFrame = new short[porcupine.FrameLength];
-                int frameIndex = 0;
-                long totalSamplesRead = 0;
-
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
-                while (reader.BaseStream.Position != reader.BaseStream.Length)
+                using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
                 {
-                    totalSamplesRead++;
-                    porcupineFrame[frameIndex++] = reader.ReadInt16();
+                    ValidateWavFile(reader, porcupine.SampleRate, 16, out short numChannels);
 
-                    if (frameIndex == porcupineFrame.Length)
+                    // read audio and send frames to porcupine                
+                    short[] porcupineFrame = new short[porcupine.FrameLength];
+                    int frameIndex = 0;
+                    long totalSamplesRead = 0;
+
+                    Stopwatch stopWatch = new Stopwatch();
+                    stopWatch.Start();
+                    while (reader.BaseStream.Position != reader.BaseStream.Length)
                     {
-                        int result = porcupine.Process(porcupineFrame);
-                        if (result >= 0)
+                        totalSamplesRead++;
+                        porcupineFrame[frameIndex++] = reader.ReadInt16();
+
+                        if (frameIndex == porcupineFrame.Length)
                         {
-                            Console.WriteLine($"Detected {keywords[result]} at " +
-                                $"{Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2)} sec");
+                            int result = porcupine.Process(porcupineFrame);
+                            if (result >= 0)
+                            {
+                                Console.WriteLine($"Detected {keywords[result]} at " +
+                                    $"{Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2)} sec");
+                            }
+                            frameIndex = 0;
                         }
-                        frameIndex = 0;
-                    }
 
-                    // skip right channel
-                    if (numChannels == 2)
-                    {
-                        _ = reader.ReadInt16();
+                        // skip right channel
+                        if (numChannels == 2)
+                        {
+                            _ = reader.ReadInt16();
+                        }
                     }
+                    stopWatch.Stop();
+                    double audioLen = Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2);
+                    double realtimeFactor = Math.Round(audioLen / stopWatch.Elapsed.TotalSeconds, 2);
+                    Console.WriteLine($"Realtime factor: {realtimeFactor}x");
                 }
-                stopWatch.Stop();
-                double audioLen = Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2);
-                double realtimeFactor = Math.Round(audioLen / stopWatch.Elapsed.TotalSeconds, 2);
-                Console.WriteLine($"Realtime factor: {realtimeFactor}x");
-            }
-            finally
-            {
-                porcupine?.Dispose();
             }
         }
 
@@ -254,7 +245,7 @@ namespace PorcupineDemo
                     if (!Enum.TryParse(typeof(BuiltInKeyword), k.ToUpper().Replace(" ", "_"), out object builtin))
                     {
                         throw new ArgumentException($"Keyword '{k}' is not a valid built-in keyword. Available built-ins are: " +
-                            $"{string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(k => k.ToLower().Replace("_", " ")))}");
+                            $"{string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(x => x.ToLower().Replace("_", " ")))}");
                     }
                     else
                     {
