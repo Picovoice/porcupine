@@ -50,16 +50,9 @@ namespace PorcupineDemo
             List<string> keywords,
             List<float> sensitivities)
         {
-            Porcupine porcupine = null;
-            try
+            // init porcupine wake word engine
+            using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
             {
-                // init porcupine wake word engine
-                porcupine = Porcupine.FromKeywordPaths(
-                    accessKey,
-                    keywordPaths,
-                    modelPath,
-                    sensitivities);
-
                 // get keyword names for labeling detection results                
                 List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
@@ -101,10 +94,6 @@ namespace PorcupineDemo
                     double realtimeFactor = Math.Round(audioLen / stopWatch.Elapsed.TotalSeconds, 2);
                     Console.WriteLine($"Realtime factor: {realtimeFactor}x");
                 }
-            }
-            finally
-            {
-                porcupine?.Dispose();
             }
         }
 

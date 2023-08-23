@@ -47,11 +47,9 @@ namespace PorcupineDemo
             List<float> sensitivities,
             int audioDeviceIndex,
             string outputPath = null)
-        {
-            // init porcupine wake word engine
+        {            
             using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
             {
-
                 // get keyword names for labeling detection results                
                 List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
