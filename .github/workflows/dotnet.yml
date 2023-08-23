@@ -88,7 +88,7 @@ jobs:
       run: dotnet build Porcupine/Porcupine.csproj --framework ${{ matrix.binding-framework }}
 
     - name: Test
-      run: dotnet test --framework ${{ matrix.test-framework }} -v d
+      run: dotnet test --framework ${{ matrix.test-framework }} -v n
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -106,4 +106,4 @@ jobs:
       run: dotnet build Porcupine/Porcupine.csproj --framework net6.0
 
     - name: Test
-      run: dotnet test --framework net6.0 -v d
+      run: dotnet test --framework net6.0 -v n
