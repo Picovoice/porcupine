@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Pv;
