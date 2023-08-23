@@ -47,7 +47,7 @@ namespace PorcupineDemo
             List<float> sensitivities,
             int audioDeviceIndex,
             string outputPath = null)
-        {            
+        {
             using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
             {
                 // get keyword names for labeling detection results                
