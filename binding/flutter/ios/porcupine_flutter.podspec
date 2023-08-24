@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'porcupine_flutter'
-  s.version          = '2.2.0'
+  s.version          = '2.2.2'
   s.summary          = 'A Flutter package plugin for Picovoice\'s Porcupine wake word engine'
   s.description      = <<-DESC
   A Flutter package plugin for Picovoice\'s Porcupine wake word engine.
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Classes/**/*'
   s.platform = :ios, '11.0'
   s.dependency 'Flutter'
-  s.dependency 'Porcupine-iOS', '~> 2.2.0'
+  s.dependency 'Porcupine-iOS', '~> 2.2.1'
 
   s.swift_version = '5.0'
 end

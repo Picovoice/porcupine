@@ -43,5 +43,5 @@ android {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-android:2.2.0'
+    implementation 'ai.picovoice:porcupine-android:2.2.2'
 }
