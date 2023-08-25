@@ -28,7 +28,7 @@ namespace PorcupineTest
     public class MainTest
     {
         private static readonly string ROOT_DIR = Path.Combine(
-            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+            AppContext.BaseDirectory,
             "../../../../../..");
 
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;

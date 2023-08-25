@@ -31,12 +31,12 @@ namespace Pv
 
         public static string PvModelPath()
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lib/common/porcupine_params.pv");
+            return Path.Combine(AppContext.BaseDirectory, "lib/common/porcupine_params.pv");
         }
 
         public static Dictionary<BuiltInKeyword, string> PvKeywordPaths()
         {
-            string keywordFilesDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/keyword_files", _env);
+            string keywordFilesDir = Path.Combine(AppContext.BaseDirectory, "resources/keyword_files", _env);
 
             Dictionary<BuiltInKeyword, string> keywordPaths = new Dictionary<BuiltInKeyword, string>();
             foreach (string keywordFile in Directory.GetFiles(keywordFilesDir))
@@ -53,19 +53,19 @@ namespace Pv
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && _arch == Architecture.X64)
             {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/amd64/{libName}.dll");
+                return Path.Combine(AppContext.BaseDirectory, $"lib/{_env}/amd64/{libName}.dll");
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _arch == Architecture.X64)
             {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/x86_64/{libName}.dylib");
+                return Path.Combine(AppContext.BaseDirectory, $"lib/{_env}/x86_64/{libName}.dylib");
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _isArm)
             {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/arm64/{libName}.dylib");
+                return Path.Combine(AppContext.BaseDirectory, $"lib/{_env}/arm64/{libName}.dylib");
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"lib/{_env}/{PvLinuxMachine()}/{libName}.so");
+                return Path.Combine(AppContext.BaseDirectory, $"lib/{_env}/{PvLinuxMachine()}/{libName}.so");
             }
             throw new PlatformNotSupportedException($"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture}) is not currently supported.\n" +
                                                     "Visit https://picovoice.ai/docs/api/porcupine-dotnet/ to see a list of supported platforms.");
