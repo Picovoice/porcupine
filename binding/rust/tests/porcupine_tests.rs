@@ -13,9 +13,9 @@
 mod tests {
     use itertools::Itertools;
     use rodio::{source::Source, Decoder};
-    use serde_json::{Value};
+    use serde_json::Value;
     use std::env;
-    use std::fs::{File, read_to_string};
+    use std::fs::{read_to_string, File};
     use std::io::BufReader;
 
     use porcupine::util::pv_platform;
@@ -35,8 +35,10 @@ mod tests {
             env!("CARGO_MANIFEST_DIR"),
             "/../../resources/.test/test_data.json"
         );
-        let contents: String = read_to_string(test_json_path).expect("Unable to read test_data.json");
-        let test_json: Value = serde_json::from_str(&contents).expect("Unable to parse test_data.json");
+        let contents: String =
+            read_to_string(test_json_path).expect("Unable to read test_data.json");
+        let test_json: Value =
+            serde_json::from_str(&contents).expect("Unable to parse test_data.json");
         test_json
     }
 
@@ -65,7 +67,7 @@ mod tests {
         keywords: Vec<&str>,
         ground_truth: Vec<i32>,
         audio_file_name: &str,
-    ) -> Result<(), String>{
+    ) -> Result<(), String> {
         let access_key = env::var("PV_ACCESS_KEY")
             .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
 
@@ -110,7 +112,6 @@ mod tests {
             Ok(())
         }
     }
-
 
     #[test]
     fn test_process_single_builtin() {
@@ -206,7 +207,7 @@ mod tests {
     }
 
     #[test]
-    fn test_single_keyword() -> Result<(), String>  {
+    fn test_single_keyword() -> Result<(), String> {
         let test_json: Value = load_test_data();
 
         for t in test_json["tests"]["singleKeyword"].as_array().unwrap() {
