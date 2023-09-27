@@ -151,11 +151,9 @@ type PvPorcupineProcessFn = unsafe extern "C" fn(
 type PvSampleRateFn = unsafe extern "C" fn() -> i32;
 type PvPorcupineFrameLengthFn = unsafe extern "C" fn() -> i32;
 type PvPorcupineVersionFn = unsafe extern "C" fn() -> *mut c_char;
-type PvGetErrorStackFn = unsafe extern "C" fn(
-    object: *mut CPorcupine,
-    message_stack: *mut *const *const c_char,
-    message_stack_depth: *mut i32,
-);
+type PvGetErrorStackFn =
+    unsafe extern "C" fn(message_stack: *mut *mut *mut c_char, message_stack_depth: *mut i32);
+type PvFreeErrorStackFn = unsafe extern "C" fn(message_stack: *mut *mut c_char);
 type PvSetSdkFn = unsafe extern "C" fn(sdk: *const c_char);
 
 #[derive(Clone, Debug)]
@@ -330,18 +328,16 @@ unsafe fn load_library_fn<T>(
 
 fn check_fn_call_status(
     vtable: &PorcupineInnerVTable,
-    cporcupine: *mut CPorcupine,
     status: PvStatus,
     function_name: &str,
 ) -> Result<(), PorcupineError> {
     match status {
         PvStatus::SUCCESS => Ok(()),
         _ => {
-            let mut message_stack: *const *const c_char = std::ptr::null();
+            let mut message_stack: *mut *mut c_char = std::ptr::null_mut();
             let mut message_stack_depth: i32 = 0;
             unsafe {
                 (vtable.pv_get_error_stack)(
-                    cporcupine,
                     addr_of_mut!(message_stack),
                     addr_of_mut!(message_stack_depth),
                 );
@@ -370,6 +366,10 @@ fn check_fn_call_status(
                 "Function '{function_name}' in the porcupine library failed"
             ));
 
+            unsafe {
+                (vtable.pv_free_error_stack)(message_stack);
+            }
+
             Err(PorcupineError::new_with_stack(
                 PorcupineErrorStatus::LibraryError(status),
                 messages,
@@ -386,6 +386,7 @@ struct PorcupineInnerVTable {
     pv_porcupine_frame_length: RawSymbol<PvPorcupineFrameLengthFn>,
     pv_porcupine_version: RawSymbol<PvPorcupineVersionFn>,
     pv_get_error_stack: RawSymbol<PvGetErrorStackFn>,
+    pv_free_error_stack: RawSymbol<PvFreeErrorStackFn>,
     pv_set_sdk: RawSymbol<PvSetSdkFn>,
 
     _lib_guard: Library,
@@ -403,6 +404,7 @@ impl PorcupineInnerVTable {
                 pv_porcupine_frame_length: load_library_fn(&lib, b"pv_porcupine_frame_length")?,
                 pv_porcupine_version: load_library_fn(&lib, b"pv_porcupine_version")?,
                 pv_get_error_stack: load_library_fn(&lib, b"pv_get_error_stack")?,
+                pv_free_error_stack: load_library_fn(&lib, b"pv_free_error_stack")?,
                 pv_set_sdk: load_library_fn(&lib, b"pv_set_sdk")?,
 
                 _lib_guard: lib,
@@ -542,7 +544,7 @@ impl PorcupineInner {
                 sensitivities.as_ptr(),
                 addr_of_mut!(cporcupine),
             );
-            check_fn_call_status(&vtable, cporcupine, status, "pv_porcupine_init")?;
+            check_fn_call_status(&vtable, status, "pv_porcupine_init")?;
 
             let version = match CStr::from_ptr((vtable.pv_porcupine_version)()).to_str() {
                 Ok(string) => string.to_string(),
@@ -586,12 +588,7 @@ impl PorcupineInner {
         let status = unsafe {
             (self.vtable.pv_porcupine_process)(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
         };
-        check_fn_call_status(
-            &self.vtable,
-            self.cporcupine,
-            status,
-            "pv_porcupine_process",
-        )?;
+        check_fn_call_status(&self.vtable, status, "pv_porcupine_process")?;
 
         Ok(result)
     }
