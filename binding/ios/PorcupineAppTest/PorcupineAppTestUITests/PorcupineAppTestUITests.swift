@@ -245,4 +245,22 @@ class PorcupineAppTestUITests: BaseTest {
             XCTAssert(expectedKeyword == keywordDetected)
         }
     }
+    
+    func testMessageStack() throws {
+        var first_error: String = ""
+        do {
+            let p = try Porcupine.init(accessKey: "invalid", keyword: Porcupine.BuiltInKeyword.porcupine)
+            XCTAssertNil(p)
+        } catch {
+            first_error = "\(error.localizedDescription)"
+            XCTAssert(first_error.count < 1024)
+        }
+        
+        do {
+            let p = try Porcupine.init(accessKey: "invalid", keyword: Porcupine.BuiltInKeyword.porcupine)
+            XCTAssertNil(p)
+        } catch {
+            XCTAssert("\(error.localizedDescription)".count == first_error.count)
+        }
+    }
 }
