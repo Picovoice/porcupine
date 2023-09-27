@@ -333,48 +333,33 @@ fn check_fn_call_status(
 ) -> Result<(), PorcupineError> {
     match status {
         PvStatus::SUCCESS => Ok(()),
-        _ => {
-            let mut message_stack: *mut *mut c_char = std::ptr::null_mut();
-            let mut message_stack_depth: i32 = 0;
-            unsafe {
-                (vtable.pv_get_error_stack)(
-                    addr_of_mut!(message_stack),
-                    addr_of_mut!(message_stack_depth),
-                );
-            }
+        _ => unsafe {
+            let mut message_stack_ptr: *mut c_char = std::ptr::null_mut();
+            let mut message_stack_ptr_ptr = addr_of_mut!(message_stack_ptr);
 
-            let cmessages =
-                unsafe { std::slice::from_raw_parts(message_stack, message_stack_depth as usize) };
+            let mut message_stack_depth: i32 = 0;
+            (vtable.pv_get_error_stack)(
+                addr_of_mut!(message_stack_ptr_ptr),
+                addr_of_mut!(message_stack_depth),
+            );
 
             let mut messages = Vec::new();
-            for x in 0..message_stack_depth {
-                let message = unsafe {
-                    match CStr::from_ptr(cmessages[x as usize]).to_str() {
-                        Ok(string) => string.to_string(),
-                        Err(err) => {
-                            return Err(PorcupineError::new(
-                                PorcupineErrorStatus::LibraryLoadError,
-                                format!("Failed to get error string from Porcupine Library: {err}"),
-                            ))
-                        }
-                    }
-                };
-
+            for i in 0..message_stack_depth as usize {
+                let message = CStr::from_ptr(*message_stack_ptr_ptr.add(i));
+                let message = message.to_string_lossy().to_string();
                 messages.push(message);
             }
             messages.push(format!(
                 "Function '{function_name}' in the porcupine library failed"
             ));
 
-            unsafe {
-                (vtable.pv_free_error_stack)(message_stack);
-            }
+            (vtable.pv_free_error_stack)(message_stack_ptr_ptr);
 
             Err(PorcupineError::new_with_stack(
                 PorcupineErrorStatus::LibraryError(status),
                 messages,
             ))
-        }
+        },
     }
 }
 
