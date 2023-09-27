@@ -56,12 +56,23 @@ const (
 )
 
 type PorcupineError struct {
-	StatusCode PvStatus
-	Message    string
+	StatusCode   PvStatus
+	Message      string
+	MessageStack []string
 }
 
 func (e *PorcupineError) Error() string {
-	return fmt.Sprintf("%s: %s", pvStatusToString(e.StatusCode), e.Message)
+	var message strings.Builder
+	message.WriteString(fmt.Sprintf("%s: %s", pvStatusToString(e.StatusCode), e.Message))
+
+	if len(e.MessageStack) > 0 {
+		message.WriteString(":")
+	}
+
+	for i, value := range e.MessageStack {
+		message.WriteString(fmt.Sprintf("\n  [%d] %s", i, value))
+	}
+	return message.String()
 }
 
 func pvStatusToString(status PvStatus) string {
@@ -183,8 +194,8 @@ var (
 func (porcupine *Porcupine) Init() error {
 	if porcupine.AccessKey == "" {
 		return &PorcupineError{
-			INVALID_ARGUMENT,
-			"No AccessKey provided to Porcupine"}
+			StatusCode: INVALID_ARGUMENT,
+			Message:    "No AccessKey provided to Porcupine"}
 	}
 
 	if porcupine.LibraryPath == "" {
@@ -193,8 +204,8 @@ func (porcupine *Porcupine) Init() error {
 
 	if _, err := os.Stat(porcupine.LibraryPath); os.IsNotExist(err) {
 		return &PorcupineError{
-			INVALID_ARGUMENT,
-			fmt.Sprintf("Specified library file could not be found at %s", porcupine.LibraryPath)}
+			StatusCode: INVALID_ARGUMENT,
+			Message:    fmt.Sprintf("Specified library file could not be found at %s", porcupine.LibraryPath)}
 	}
 
 	if porcupine.ModelPath == "" {
@@ -203,16 +214,16 @@ func (porcupine *Porcupine) Init() error {
 
 	if _, err := os.Stat(porcupine.ModelPath); os.IsNotExist(err) {
 		return &PorcupineError{
-			INVALID_ARGUMENT,
-			fmt.Sprintf("Specified model file could not be found at %s", porcupine.ModelPath)}
+			StatusCode: INVALID_ARGUMENT,
+			Message:    fmt.Sprintf("Specified model file could not be found at %s", porcupine.ModelPath)}
 	}
 
 	if porcupine.BuiltInKeywords != nil && len(porcupine.BuiltInKeywords) > 0 {
 		for _, keyword := range porcupine.BuiltInKeywords {
 			if !keyword.IsValid() {
 				return &PorcupineError{
-					INVALID_ARGUMENT,
-					fmt.Sprintf("'%s' is not a valid built-in keyword", keyword)}
+					StatusCode: INVALID_ARGUMENT,
+					Message:    fmt.Sprintf("'%s' is not a valid built-in keyword", keyword)}
 			}
 			keywordStr := string(keyword)
 			porcupine.KeywordPaths = append(porcupine.KeywordPaths, builtinKeywords[keywordStr])
@@ -221,15 +232,15 @@ func (porcupine *Porcupine) Init() error {
 
 	if porcupine.KeywordPaths == nil || len(porcupine.KeywordPaths) == 0 {
 		return &PorcupineError{
-			INVALID_ARGUMENT,
-			"No valid keywords were provided"}
+			StatusCode: INVALID_ARGUMENT,
+			Message:    "No valid keywords were provided"}
 	}
 
 	for _, k := range porcupine.KeywordPaths {
 		if _, err := os.Stat(k); os.IsNotExist(err) {
 			return &PorcupineError{
-				INVALID_ARGUMENT,
-				fmt.Sprintf("Keyword file could not be found at %s", k)}
+				StatusCode: INVALID_ARGUMENT,
+				Message:    fmt.Sprintf("Keyword file could not be found at %s", k)}
 		}
 	}
 
@@ -242,25 +253,27 @@ func (porcupine *Porcupine) Init() error {
 		for _, s := range porcupine.Sensitivities {
 			if s < 0 || s > 1 {
 				return &PorcupineError{
-					INVALID_ARGUMENT,
-					fmt.Sprintf("Sensitivity value of %f is invalid. Must be between [0, 1]", s)}
+					StatusCode: INVALID_ARGUMENT,
+					Message:    fmt.Sprintf("Sensitivity value of %f is invalid. Must be between [0, 1]", s)}
 			}
 		}
 	}
 
 	if len(porcupine.KeywordPaths) != len(porcupine.Sensitivities) {
 		return &PorcupineError{
-			INVALID_ARGUMENT,
-			fmt.Sprintf("Number of keywords (%d) is not the same as number of sensitivities (%d)",
+			StatusCode: INVALID_ARGUMENT,
+			Message: fmt.Sprintf("Number of keywords (%d) is not the same as number of sensitivities (%d)",
 				len(porcupine.KeywordPaths),
 				len(porcupine.Sensitivities))}
 	}
 
 	ret := nativePorcupine.nativeInit(porcupine)
-	if PvStatus(ret) != SUCCESS {
+	if ret != SUCCESS {
 		return &PorcupineError{
-			PvStatus(ret),
-			"Porcupine init failed."}
+			StatusCode:   ret,
+			Message:      "Porcupine init failed",
+			MessageStack: nativePorcupine.nativeGetErrorStack(porcupine),
+		}
 	}
 
 	FrameLength = nativePorcupine.nativeFrameLength()
@@ -274,8 +287,8 @@ func (porcupine *Porcupine) Init() error {
 func (porcupine *Porcupine) Delete() error {
 	if porcupine.handle == nil {
 		return &PorcupineError{
-			INVALID_STATE,
-			"Porcupine has not been initialized or has already been deleted."}
+			StatusCode: INVALID_STATE,
+			Message:    "Porcupine has not been initialized or has already been deleted"}
 	}
 
 	nativePorcupine.nativeDelete(porcupine)
@@ -291,22 +304,24 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 
 	if porcupine.handle == nil {
 		return -1, &PorcupineError{
-			INVALID_STATE,
-			"Porcupine has not been initialized or has already been deleted."}
+			StatusCode: INVALID_STATE,
+			Message:    "Porcupine has not been initialized or has already been deleted"}
 	}
 
 	if len(pcm) != FrameLength {
 		return -1, &PorcupineError{
-			INVALID_ARGUMENT,
-			fmt.Sprintf("Input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)}
+			StatusCode: INVALID_ARGUMENT,
+			Message:    fmt.Sprintf("Input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)}
 	}
 
 	// call process
 	ret, index := nativePorcupine.nativeProcess(porcupine, pcm)
-	if PvStatus(ret) != SUCCESS {
+	if ret != SUCCESS {
 		return -1, &PorcupineError{
-			PvStatus(ret),
-			"Porcupine process failed."}
+			StatusCode:   ret,
+			Message:      "Porcupine process failed",
+			MessageStack: nativePorcupine.nativeGetErrorStack(porcupine),
+		}
 	}
 
 	return index, nil

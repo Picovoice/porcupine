@@ -287,3 +287,23 @@ func TestWithNonAsciiModelName(t *testing.T) {
 		t.Fatalf("%v", delErr)
 	}
 }
+
+func TestMessageStack(t *testing.T) {
+	language := "en"
+	keywords := []string{"porcupine"}
+	porcupine = Porcupine{
+		AccessKey:    "invalid access key",
+		ModelPath:    getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+
+	err := porcupine.Init()
+	err2 := porcupine.Init()
+
+	if len(err.Error()) > 512 {
+		t.Fatalf("length of error is full: '%d'", len(err.Error()))
+	}
+
+	if len(err2.Error()) >= len(err.Error())*2 {
+		t.Fatalf("length of 1st init '%d' does not match 2nd init '%d'", len(err.Error()), len(err2.Error()))
+	}
+}
