@@ -17,6 +17,7 @@ import {
   PorcupineWorkerRequest,
   PorcupineDetection,
 } from './types';
+import { PorcupineError } from "./porcupine_errors";
 
 let porcupine: Porcupine | null = null;
 
@@ -27,9 +28,10 @@ const keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void 
   });
 };
 
-const processErrorCallback = (error: Error): void => {
+const processErrorCallback = (error: PorcupineError): void => {
   self.postMessage({
     command: 'error',
+    status: error.status,
     message: error.message,
   });
 };

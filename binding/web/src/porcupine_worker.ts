@@ -15,7 +15,7 @@ import {
 
 import PvWorker from 'web-worker:./porcupine_worker_handler.ts';
 
-import { keywordsProcess } from './utils';
+import { keywordsProcess, PvStatus, pvStatusToException } from './utils';
 
 import {
   DetectionCallback,
@@ -126,7 +126,7 @@ export class PorcupineWorker {
                   break;
                 case 'failed':
                 case 'error':
-                  const error = new Error(ev.data.message);
+                  const error = pvStatusToException(ev.data.status, ev.data.message);
                   if (processErrorCallback) {
                     processErrorCallback(error);
                   } else {
@@ -136,18 +136,19 @@ export class PorcupineWorker {
                   break;
                 default:
                   // @ts-ignore
-                  processErrorCallback(new Error(`Unrecognized command: ${event.data.command}`));
+                  processErrorCallback(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
               }
             };
             resolve(new PorcupineWorker(worker, event.data.version, event.data.frameLength, event.data.sampleRate));
             break;
           case 'failed':
           case 'error':
-            reject(event.data.message);
+            const error = pvStatusToException(event.data.status, event.data.message);
+            reject(error);
             break;
           default:
             // @ts-ignore
-            reject(`Unrecognized command: ${event.data.command}`);
+            reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
         }
       };
     });

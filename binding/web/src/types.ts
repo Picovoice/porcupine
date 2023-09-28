@@ -11,10 +11,12 @@
 
 import { BuiltInKeyword } from './built_in_keywords';
 import { PvModel } from "@picovoice/web-utils";
+import { PorcupineError } from "./porcupine_errors";
+import { PvStatus } from "./utils";
 
 export type PorcupineOptions = {
   /** @defaultValue '(error) => {}' */
-  processErrorCallback?: (error: Error) => void
+  processErrorCallback?: (error: PorcupineError) => void
 };
 
 export type PorcupineKeywordCustom = PvModel & {
@@ -74,6 +76,7 @@ export type PorcupineWorkerRequest =
 
 export type PorcupineWorkerFailureResponse = {
   command: 'failed' | 'error';
+  status: PvStatus;
   message: string;
 };
 
