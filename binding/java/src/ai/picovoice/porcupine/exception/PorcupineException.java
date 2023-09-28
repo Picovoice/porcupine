@@ -38,8 +38,6 @@ public class PorcupineException extends Exception {
             for (int i = 0; i < messageStack.length; i++) {
                 sb.append(String.format("\n  [%d] %s", i, messageStack[i]));
             }
-        } else {
-            sb.append(".");
         }
         return sb.toString();
     }
