@@ -29,7 +29,7 @@ namespace Pv.Unity
         {
             string message_string = "";
             for(int i = 0; i < messages.Length; i++) {
-                message_string += String.Format("[{0}] {1}\n" i, messages[i]);
+                message_string += String.Format("[{0}] {1}\n", i, messages[i]);
             }
             return message_string;
         }
