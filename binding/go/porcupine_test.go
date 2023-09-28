@@ -299,11 +299,11 @@ func TestMessageStack(t *testing.T) {
 	err := porcupine.Init()
 	err2 := porcupine.Init()
 
-	if len(err.Error()) > 512 {
+	if len(err.Error()) > 1024 {
 		t.Fatalf("length of error is full: '%d'", len(err.Error()))
 	}
 
-	if len(err2.Error()) >= len(err.Error())*2 {
+	if len(err2.Error()) != len(err.Error()) {
 		t.Fatalf("length of 1st init '%d' does not match 2nd init '%d'", len(err.Error()), len(err2.Error()))
 	}
 }

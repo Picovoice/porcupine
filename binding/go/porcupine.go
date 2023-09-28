@@ -272,7 +272,7 @@ func (porcupine *Porcupine) Init() error {
 		return &PorcupineError{
 			StatusCode:   ret,
 			Message:      "Porcupine init failed",
-			MessageStack: nativePorcupine.nativeGetErrorStack(porcupine),
+			MessageStack: nativePorcupine.nativeGetErrorStack(),
 		}
 	}
 
@@ -320,7 +320,7 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 		return -1, &PorcupineError{
 			StatusCode:   ret,
 			Message:      "Porcupine process failed",
-			MessageStack: nativePorcupine.nativeGetErrorStack(porcupine),
+			MessageStack: nativePorcupine.nativeGetErrorStack(),
 		}
 	}
 
