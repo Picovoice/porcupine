@@ -83,16 +83,18 @@ function testPorcupineDetection(
 
 describe("error message stack", () => {
   test("message stack cleared after read", () => {
-    let firstError = "";
+    let error: string[] = [];
     try {
       new Porcupine(
         "invalid access key",
         [BuiltinKeyword.PORCUPINE],
         [0.5]);
     } catch (e: any) {
-      firstError = e.message;
-      expect(firstError.length).toBeLessThan(1024);
+      error = e.messageStack;
     }
+
+    expect(error.length).toBeGreaterThan(0);
+    expect(error.length).toBeLessThanOrEqual(8);
 
     try {
       new Porcupine(
@@ -100,7 +102,9 @@ describe("error message stack", () => {
         [BuiltinKeyword.PORCUPINE],
         [0.5]);
     } catch (e: any) {
-      expect(firstError.length).toEqual(e.message.length);
+      for (let i = 0; i < error.length; i++) {
+        expect(error[i]).toEqual(e.messageStack[i]);
+      }
     }
   });
 });
