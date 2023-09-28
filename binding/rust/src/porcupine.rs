@@ -346,7 +346,7 @@ fn check_fn_call_status(
             let mut messages = Vec::new();
             for i in 0..message_stack_depth as usize {
                 let message = CStr::from_ptr(*message_stack_ptr_ptr.add(i));
-                let message = message.to_string_lossy().to_string();
+                let message = message.to_string_lossy().into_owned();
                 messages.push(message);
             }
             messages.push(format!(
@@ -531,15 +531,9 @@ impl PorcupineInner {
             );
             check_fn_call_status(&vtable, status, "pv_porcupine_init")?;
 
-            let version = match CStr::from_ptr((vtable.pv_porcupine_version)()).to_str() {
-                Ok(string) => string.to_string(),
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        format!("Failed to get version info from Porcupine Library: {err}"),
-                    ))
-                }
-            };
+            let version = CStr::from_ptr((vtable.pv_porcupine_version)())
+                .to_string_lossy()
+                .into_owned();
 
             (
                 (vtable.pv_sample_rate)(),
