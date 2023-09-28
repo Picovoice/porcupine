@@ -137,7 +137,7 @@ describe('Porcupine Binding', function () {
   for (const instance of [Porcupine, PorcupineWorker]) {
     const instanceString = instance === PorcupineWorker ? 'worker' : 'main';
 
-    it.only(`should return correct error message stack (${instanceString})`, async () => {
+    it(`should return correct error message stack (${instanceString})`, async () => {
       let firstError = "";
       try {
         const porcupine = await instance.create(
