@@ -1,5 +1,5 @@
 /*
-    Copyright 2022 Picovoice Inc.
+    Copyright 2022-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -20,6 +20,10 @@ class PorcupineNative {
 
     static native int getSampleRate();
 
+    static native String[] getErrorStack();
+
+    static native void setSdk(String sdk);
+
     static native long init(
             String accessKey,
             String modelPath,
@@ -31,5 +35,4 @@ class PorcupineNative {
     static native int process(
             long object,
             short[] pcm) throws PorcupineException;
-
 }
