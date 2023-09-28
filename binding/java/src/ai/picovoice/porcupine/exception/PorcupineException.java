@@ -16,7 +16,7 @@ public class PorcupineException extends Exception {
 
     public PorcupineException(Throwable cause) {
         super(cause);
-        this.message = "";
+        this.message = cause.getMessage();
         this.messageStack = PorcupineNative.getErrorStack();
     }
 
