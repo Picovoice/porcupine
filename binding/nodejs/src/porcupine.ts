@@ -132,9 +132,10 @@ export default class Porcupine {
     }
 
     const pvPorcupine = require(libraryPath); // eslint-disable-line
-
     let porcupineHandleAndStatus: PorcupineHandleAndStatus | null = null;
     try {
+      pvPorcupine.set_sdk("node");
+
       porcupineHandleAndStatus = pvPorcupine.init(
         accessKey,
         modelPath,
@@ -143,7 +144,7 @@ export default class Porcupine {
         sensitivities
       );
     } catch (err: any) {
-      pvStatusToException(<PvStatus>err.code, err);
+      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err, pvPorcupine.get_error_stack());
     }
 
     const status = porcupineHandleAndStatus!.status;
@@ -223,7 +224,7 @@ export default class Porcupine {
     try {
       keywordAndStatus = this._pvPorcupine.process(this._handle, frameBuffer);
     } catch (err: any) {
-      pvStatusToException(<PvStatus>err.code, err);
+      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err, this._pvPorcupine.get_error_stack());
     }
 
     const status = keywordAndStatus!.status;
