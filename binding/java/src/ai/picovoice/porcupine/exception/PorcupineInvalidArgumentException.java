@@ -18,4 +18,8 @@ public class PorcupineInvalidArgumentException extends PorcupineException {
     public PorcupineInvalidArgumentException(String message) {
         super(message);
     }
+
+    public PorcupineInvalidArgumentException(String message, String[] messageStack) {
+        super(message, messageStack);
+    }
 }

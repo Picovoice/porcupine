@@ -18,4 +18,8 @@ public class PorcupineMemoryException extends PorcupineException {
     public PorcupineMemoryException(String message) {
         super(message);
     }
+
+    public PorcupineMemoryException(String message, String[] messageStack) {
+        super(message, messageStack);
+    }
 }

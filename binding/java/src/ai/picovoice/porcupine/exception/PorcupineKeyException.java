@@ -18,4 +18,8 @@ public class PorcupineKeyException extends PorcupineException {
     public PorcupineKeyException(String message) {
         super(message);
     }
+
+    public PorcupineKeyException(String message, String[] messageStack) {
+        super(message, messageStack);
+    }
 }

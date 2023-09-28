@@ -18,4 +18,8 @@ public class PorcupineActivationThrottledException extends PorcupineException {
     public PorcupineActivationThrottledException(String message) {
         super(message);
     }
+
+    public PorcupineActivationThrottledException(String message, String[] messageStack) {
+        super(message, messageStack);
+    }
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright 2023 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
     Unless required by applicable law or agreed to in writing, software distributed under the
@@ -17,13 +17,19 @@ public class PorcupineException extends Exception {
     public PorcupineException(Throwable cause) {
         super(cause);
         this.message = cause.getMessage();
-        this.messageStack = PorcupineNative.getErrorStack();
+        this.messageStack = null;
     }
 
     public PorcupineException(String message) {
         super(message);
         this.message = message;
-        this.messageStack = PorcupineNative.getErrorStack();
+        this.messageStack = null;
+    }
+
+    public PorcupineException(String message, String[] messageStack) {
+        super(message);
+        this.message = message;
+        this.messageStack = messageStack;
     }
 
     public String[] getMessageStack() {
@@ -32,11 +38,15 @@ public class PorcupineException extends Exception {
 
     @Override
     public String getMessage() {
-        StringBuilder sb = new StringBuilder(this.message);
-        if (messageStack.length > 0) {
-            sb.append(":");
-            for (int i = 0; i < messageStack.length; i++) {
-                sb.append(String.format("\n  [%d] %s", i, messageStack[i]));
+        StringBuilder sb = new StringBuilder(message);
+        if (messageStack != null) {
+            if (messageStack.length > 0) {
+                sb.append(":");
+                for (int i = 0; i < messageStack.length; i++) {
+                    sb.append(String.format("\n  [%d] %s", i, messageStack[i]));
+                }
+            } else {
+                sb.append(".");
             }
         }
         return sb.toString();

@@ -18,4 +18,8 @@ public class PorcupineActivationLimitException extends PorcupineException {
     public PorcupineActivationLimitException(String message) {
         super(message);
     }
+
+    public PorcupineActivationLimitException(String message, String[] messageStack) {
+        super(message, messageStack);
+    }
 }

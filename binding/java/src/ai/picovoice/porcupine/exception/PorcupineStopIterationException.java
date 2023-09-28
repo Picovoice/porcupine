@@ -18,4 +18,8 @@ public class PorcupineStopIterationException extends PorcupineException {
     public PorcupineStopIterationException(String message) {
         super(message);
     }
+
+    public PorcupineStopIterationException(String message, String[] messageStack) {
+        super(message, messageStack);
+    }
 }
