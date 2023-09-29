@@ -15,23 +15,34 @@ namespace Pv.Unity
 {
     public class PorcupineException : Exception
     {
-        public string[] messages;
+        private string[] _messageStack;
 
         public PorcupineException() { }
 
         public PorcupineException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(ModifyMessages(messages)) {
-            this.messages = messages;
+        public PorcupineException(string message, string[] messageStack) : base(ModifyMessages(message, messageStack))
+        {
+            this._messageStack = messageStack;
         }
 
-        private static string ModifyMessages(string[] messages)
+        public string[] messageStack 
         {
-            string message_string = "";
-            for(int i = 0; i < messages.Length; i++) {
-                message_string += String.Format("[{0}] {1}\n", i, messages[i]);
+            get => _messageStack;
+        }
+
+        private static string ModifyMessages(string message, string[] messageStack)
+        {
+            string messageString = message;
+            if (messageStack.Length > 0) {
+                messageString += ":";
+                for(int i = 0; i < messageStack.Length; i++) {
+                    messageString += String.Format("\n  [{0}] {1}", i, messageStack[i]);
+                }
+            } else {
+                messageString += ".";
             }
-            return message_string;
+            return messageString;
         }
     }
 
@@ -41,7 +52,7 @@ namespace Pv.Unity
 
         public PorcupineMemoryException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineMemoryException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineIOException : PorcupineException
@@ -50,7 +61,7 @@ namespace Pv.Unity
 
         public PorcupineIOException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineIOException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineInvalidArgumentException : PorcupineException
@@ -59,7 +70,7 @@ namespace Pv.Unity
 
         public PorcupineInvalidArgumentException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineInvalidArgumentException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineStopIterationException : PorcupineException
@@ -68,7 +79,7 @@ namespace Pv.Unity
 
         public PorcupineStopIterationException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineStopIterationException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineKeyException : PorcupineException
@@ -77,7 +88,7 @@ namespace Pv.Unity
 
         public PorcupineKeyException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineKeyException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineInvalidStateException : PorcupineException
@@ -86,7 +97,7 @@ namespace Pv.Unity
 
         public PorcupineInvalidStateException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineInvalidStateException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineRuntimeException : PorcupineException
@@ -95,7 +106,7 @@ namespace Pv.Unity
 
         public PorcupineRuntimeException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineRuntimeException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineActivationException : PorcupineException
@@ -104,7 +115,7 @@ namespace Pv.Unity
 
         public PorcupineActivationException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineActivationException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineActivationLimitException : PorcupineException
@@ -113,7 +124,7 @@ namespace Pv.Unity
 
         public PorcupineActivationLimitException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineActivationLimitException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineActivationThrottledException : PorcupineException
@@ -122,7 +133,7 @@ namespace Pv.Unity
 
         public PorcupineActivationThrottledException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineActivationThrottledException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 
     public class PorcupineActivationRefusedException : PorcupineException
@@ -131,6 +142,6 @@ namespace Pv.Unity
 
         public PorcupineActivationRefusedException(string message) : base(message) { }
 
-        public PorcupineException(string[] messages) : base(messages) { }
+        public PorcupineActivationRefusedException(string message, string[] messageStack) : base(message, messageStack) { }
     }
 }
