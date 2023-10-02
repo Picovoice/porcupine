@@ -407,5 +407,32 @@ public class PorcupineTest {
 
             p.delete();
         }
+
+        @Test
+        void getErrorStack() {
+            String[] error = {};
+            try {
+                new Porcupine.Builder()
+                        .setAccessKey("invalid")
+                        .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                        .build(appContext);
+            } catch (PorcupineException e) {
+                error = e.getMessageStack();
+            }
+
+            assertTrue(0 < error.length);
+            assertTrue(error.length <= 8);
+
+            try {
+                new Porcupine.Builder()
+                        .setAccessKey("invalid")
+                        .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                        .build(appContext);
+            } catch (PorcupineException e) {
+                for (int i = 0; i < error.length; i++) {
+                    assertEquals(e.getMessageStack()[i], error[i]);
+                }
+            }
+        }
     }
 }

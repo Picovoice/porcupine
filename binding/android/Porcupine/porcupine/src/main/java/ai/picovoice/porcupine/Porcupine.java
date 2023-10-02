@@ -43,12 +43,17 @@ public class Porcupine {
 
     private static String DEFAULT_MODEL_PATH;
     private static boolean isExtracted;
+    private static String _sdk = "android";
 
     static {
         System.loadLibrary("pv_porcupine");
     }
 
     private long handle;
+
+    public static void setSdk(string sdk) {
+        Porcupine._sdk = sdk;
+    }
 
     /**
      * Constructor.
@@ -66,6 +71,8 @@ public class Porcupine {
             String modelPath,
             String[] keywordPaths,
             float[] sensitivities) throws PorcupineException {
+        PorcupineNative.setSdk(Porcupine._sdk);
+
         handle = PorcupineNative.init(
                 accessKey,
                 modelPath,
