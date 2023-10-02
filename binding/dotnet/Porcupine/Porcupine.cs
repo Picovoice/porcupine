@@ -272,7 +272,7 @@ namespace Pv
             if (status != PorcupineStatus.SUCCESS)
             {
                 string[] messageStack = GetMessageStack();
-                throw PorcupineStatusToException(status, "Porcupine init failed.", messageStack);
+                throw PorcupineStatusToException(status, "Porcupine init failed", messageStack);
             }
 
             Version = Marshal.PtrToStringAnsi(pv_porcupine_version());
@@ -304,7 +304,7 @@ namespace Pv
             if (status != PorcupineStatus.SUCCESS)
             {
                 string[] messageStack = GetMessageStack();
-                throw PorcupineStatusToException(status, "Porcupine process failed.", messageStack);
+                throw PorcupineStatusToException(status, "Porcupine process failed", messageStack);
             }
 
             return keywordIndex;
