@@ -14,7 +14,7 @@ import unittest
 
 from parameterized import parameterized
 
-from _porcupine import Porcupine
+from _porcupine import Porcupine, PorcupineError
 from test_util import *
 
 
@@ -73,6 +73,28 @@ class PorcupineTestCase(unittest.TestCase):
             keywords=['murciélago'],
             ground_truth=[0, 0],
             audio_file_name='murciélago.wav')
+
+    def test_message_stack(self):
+        error = None
+        try:
+            self.run_porcupine(
+                language='en',
+                keywords=['porcupine'],
+                ground_truth=[0])
+        except PorcupineError as e:
+            error = e.message_stack
+
+        self.assertIsNotNone(error)
+        self.assertGreater(len(error), 0)
+
+        try:
+            self.run_porcupine(
+                language='en',
+                keywords=['porcupine'],
+                ground_truth=[0])
+        except PorcupineError as e:
+            self.assertEqual(len(error), len(e.message_stack))
+            self.assertListEqual(list(error), list(e.message_stack))
 
 
 if __name__ == '__main__':
