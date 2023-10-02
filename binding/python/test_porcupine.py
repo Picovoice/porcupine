@@ -75,12 +75,17 @@ class PorcupineTestCase(unittest.TestCase):
             audio_file_name='murciélago.wav')
 
     def test_message_stack(self):
+        relative_path = '../..'
+
         error = None
         try:
-            self.run_porcupine(
-                language='en',
-                keywords=['porcupine'],
-                ground_truth=[0])
+            p = Porcupine(
+                access_key='invalid',
+                library_path=pv_library_path(relative_path),
+                model_path=get_model_path_by_language(relative_path, 'en'),
+                keyword_paths=get_keyword_paths_by_language(relative_path, 'en', ['porcupine']),
+                sensitivities=[0.5])
+            self.assertIsNone(p)
         except PorcupineError as e:
             error = e.message_stack
 
@@ -88,10 +93,13 @@ class PorcupineTestCase(unittest.TestCase):
         self.assertGreater(len(error), 0)
 
         try:
-            self.run_porcupine(
-                language='en',
-                keywords=['porcupine'],
-                ground_truth=[0])
+            p = Porcupine(
+                access_key='invalid',
+                library_path=pv_library_path(relative_path),
+                model_path=get_model_path_by_language(relative_path, 'en'),
+                keyword_paths=get_keyword_paths_by_language(relative_path, 'en', ['porcupine']),
+                sensitivities=[0.5])
+            self.assertIsNone(p)
         except PorcupineError as e:
             self.assertEqual(len(error), len(e.message_stack))
             self.assertListEqual(list(error), list(e.message_stack))
