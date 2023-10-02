@@ -173,6 +173,10 @@ class Porcupine(object):
         self._get_error_stack_func.argtypes = [POINTER(POINTER(c_char_p)), POINTER(c_int)]
         self._get_error_stack_func.restype = None
 
+        self._free_error_stack_func = library.pv_free_error_stack
+        self._free_error_stack_func.argtypes = [POINTER(c_char_p)]
+        self._free_error_stack_func.restype = None
+
         init_func = library.pv_porcupine_init
         init_func.argtypes = [
             c_char_p,
@@ -268,6 +272,8 @@ class Porcupine(object):
         message_stack = list()
         for i in range(message_stack_depth.value):
             message_stack.append(message_stack_ref[i].decode('utf-8'))
+
+        self._free_error_stack_func(message_stack_ref)
 
         return message_stack
 
