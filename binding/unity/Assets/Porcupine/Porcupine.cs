@@ -268,8 +268,7 @@ namespace Pv.Unity
                 out _libraryPointer);
             if (status != PorcupineStatus.SUCCESS)
             {
-                string[] messageStack = getMessageStack();
-
+                string[] messageStack = GetMessageStack();
                 throw PorcupineStatusToException(status, "Porcupine init failed", messageStack);
             }
 
@@ -301,7 +300,8 @@ namespace Pv.Unity
             PorcupineStatus status = pv_porcupine_process(_libraryPointer, pcm, out keywordIndex);
             if (status != PorcupineStatus.SUCCESS)
             {
-                throw PorcupineStatusToException(status, "Porcupine process failed.");
+                string[] messageStack = GetMessageStack();
+                throw PorcupineStatusToException(status, "Porcupine process failed.", messageStack);
             }
 
             return keywordIndex;
@@ -386,7 +386,7 @@ namespace Pv.Unity
             Dispose();
         }
 
-        private string[] getMessageStack() {
+        private string[] GetMessageStack() {
             int messageStackDepth;
             IntPtr messageStackRef;
 
