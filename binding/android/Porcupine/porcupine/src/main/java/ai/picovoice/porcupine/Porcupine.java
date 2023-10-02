@@ -51,7 +51,7 @@ public class Porcupine {
 
     private long handle;
 
-    public static void setSdk(string sdk) {
+    public static void setSdk(String sdk) {
         Porcupine._sdk = sdk;
     }
 
