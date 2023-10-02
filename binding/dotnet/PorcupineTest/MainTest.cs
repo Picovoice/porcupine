@@ -291,6 +291,39 @@ namespace PorcupineTest
                 "murciélago.wav",
                 new List<int>() { 0, 0 });
         }
+        
+        [TestMethod]
+        public void TestMessageStack()
+        {
+            List<BuiltInKeyword> keywords = new List<Pv.BuiltInKeyword>() { BuiltInKeyword.PORCUPINE };
+            Porcupine p;
+            string[] messageList = {};
+
+            try {
+                p = Porcupine.FromBuiltInKeywords(
+                    "invalid",
+                    keywords,
+                    GetModelPath("en"));
+                p.Dispose();
+            } catch (PorcupineException e) {
+                messageList = e.messageStack;
+            }
+
+            Assert.IsTrue(0 < messageList.Length);
+            Assert.IsTrue(messageList.Length < 8);
+
+            try {
+                p = Porcupine.FromBuiltInKeywords(
+                    "invalid",
+                    keywords,
+                    GetModelPath("en"));
+                p.Dispose();
+            } catch (PorcupineException e) {
+                for (int i = 0; i < messageList.Length; i++) {
+                    Assert.AreEqual(messageList[i], e.messageStack[i]);
+                }
+            }
+        }
 
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
