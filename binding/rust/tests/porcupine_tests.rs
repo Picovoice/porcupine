@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -110,6 +110,26 @@ mod tests {
             ))
         } else {
             Ok(())
+        }
+    }
+
+    #[test]
+    fn test_error_stack() {
+        let mut error_stack = Vec::new();
+
+        let res = PorcupineBuilder::new_with_keywords("invalid", &[BuiltinKeywords::Porcupine]).init();
+        if let Err(err) = res {
+            error_stack = err.message_stack
+        }
+
+        assert!(0 < error_stack.len() && error_stack.len() <= 8);
+        
+        let res = PorcupineBuilder::new_with_keywords("invalid", &[BuiltinKeywords::Porcupine]).init();
+        if let Err(err) = res {
+            assert_eq!(error_stack.len(), err.message_stack.len());
+            for i in 0..error_stack.len() {
+                assert_eq!(error_stack[i], err.message_stack[i])
+            }
         }
     }
 

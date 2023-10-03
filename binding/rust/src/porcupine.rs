@@ -167,21 +167,28 @@ pub enum PorcupineErrorStatus {
 #[derive(Clone, Debug)]
 pub struct PorcupineError {
     pub status: PorcupineErrorStatus,
-    pub messages: Vec<String>,
+    pub message: String,
+    pub message_stack: Vec<String>,
 }
 
 impl PorcupineError {
     pub fn new(status: PorcupineErrorStatus, message: impl Into<String>) -> Self {
         Self {
             status,
-            messages: vec![message.into()],
+            message: message.into(),
+            message_stack: Vec::new()
         }
     }
 
-    pub fn new_with_stack(status: PorcupineErrorStatus, messages: impl Into<Vec<String>>) -> Self {
+    pub fn new_with_stack(
+        status: PorcupineErrorStatus,
+        message: impl Into<String>,
+        message_stack: impl Into<Vec<String>>
+    ) -> Self {
         Self {
             status,
-            messages: messages.into(),
+            message: message.into(),
+            message_stack: message_stack.into(),
         }
     }
 }
@@ -189,10 +196,18 @@ impl PorcupineError {
 impl std::fmt::Display for PorcupineError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut message_string = String::new();
-        for x in 0..self.messages.len() {
-            message_string.push_str(&format!("[{}] {}\n", x, self.messages[x]))
+        message_string.push_str(&format!("{} with status '{:?}'", self.message, self.status));
+
+        if self.message_stack.len() == 0 {
+            message_string.push_str(".");
+            write!(f, "{}", message_string)
+        } else {
+            message_string.push_str(":");
+            for x in 0..self.message_stack.len() {
+                message_string.push_str(&format!("  [{}] {}\n", x, self.message_stack[x]))
+            }
+            write!(f, "{}", message_string)
         }
-        write!(f, "Error status {:?}:\n{}", self.status, message_string)
     }
 }
 
@@ -343,21 +358,19 @@ fn check_fn_call_status(
                 addr_of_mut!(message_stack_depth),
             );
 
-            let mut messages = Vec::new();
+            let mut message_stack = Vec::new();
             for i in 0..message_stack_depth as usize {
                 let message = CStr::from_ptr(*message_stack_ptr_ptr.add(i));
                 let message = message.to_string_lossy().into_owned();
-                messages.push(message);
+                message_stack.push(message);
             }
-            messages.push(format!(
-                "Function '{function_name}' in the porcupine library failed"
-            ));
 
             (vtable.pv_free_error_stack)(message_stack_ptr_ptr);
 
             Err(PorcupineError::new_with_stack(
                 PorcupineErrorStatus::LibraryError(status),
-                messages,
+                format!("'{function_name}' failed"),
+                message_stack,
             ))
         },
     }
