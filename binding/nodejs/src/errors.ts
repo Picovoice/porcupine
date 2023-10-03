@@ -13,17 +13,17 @@
 import PvStatus from "./pv_status_t";
 
 export class PorcupineError extends Error {
-  private readonly _shortMessage: string;
+  private readonly _message: string;
   private readonly _messageStack: string[];
 
   constructor(message: string, messageStack: string[] = []) {
     super(PorcupineError.errorToString(message, messageStack));
-    this._shortMessage = message;
+    this._message = message;
     this._messageStack = messageStack;
   }
 
-  get shortMessage(): string {
-    return this._shortMessage;
+  get message(): string {
+    return this._message;
   }
 
   get messageStack(): string[] {
