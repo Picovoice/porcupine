@@ -144,12 +144,12 @@ export default class Porcupine {
         sensitivities
       );
     } catch (err: any) {
-      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err, pvPorcupine.get_error_stack());
+      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err);
     }
 
     const status = porcupineHandleAndStatus!.status;
     if (status !== PvStatus.SUCCESS) {
-      pvStatusToException(status, "Porcupine failed to initialize");
+      pvStatusToException(status, "Porcupine failed to initialize", pvPorcupine.get_error_stack());
     }
 
     this._handle = porcupineHandleAndStatus!.handle;
@@ -224,12 +224,12 @@ export default class Porcupine {
     try {
       keywordAndStatus = this._pvPorcupine.process(this._handle, frameBuffer);
     } catch (err: any) {
-      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err, this._pvPorcupine.get_error_stack());
+      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err);
     }
 
     const status = keywordAndStatus!.status;
     if (status !== PvStatus.SUCCESS) {
-      pvStatusToException(status, "Porcupine failed to process the frame");
+      pvStatusToException(status, "Porcupine failed to process the frame", this._pvPorcupine.get_error_stack());
     }
     const keywordIndex = keywordAndStatus!.keyword_index;
 
