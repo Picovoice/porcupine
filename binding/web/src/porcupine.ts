@@ -75,8 +75,8 @@ type PorcupineWasmOutput = {
   pvFree: pv_free_type;
   pvPorcupineDelete: pv_porcupine_delete_type;
   pvPorcupineProcess: pv_porcupine_process_type;
-  pvGetErrorStack: pv_get_error_stack_type;
   pvStatusToString: pv_status_to_string_type;
+  pvGetErrorStack: pv_get_error_stack_type;
   sampleRate: number;
   version: string;
 };
