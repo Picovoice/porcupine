@@ -365,7 +365,7 @@ namespace Pv
                 case PorcupineStatus.ACTIVATION_REFUSED:
                     return new PorcupineActivationRefusedException(message, messageStack);
                 default:
-                    return new PorcupineException("Unmapped error code returned from Porcupine.");
+                    return new PorcupineException("Unmapped error code returned from Porcupine.", messageStack);
             }
         }
 

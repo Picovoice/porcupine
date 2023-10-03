@@ -304,6 +304,7 @@ namespace PorcupineTest
                     "invalid",
                     keywords,
                     GetModelPath("en"));
+                Assert.IsNull(p);
                 p.Dispose();
             } catch (PorcupineException e) {
                 messageList = e.messageStack;
@@ -317,6 +318,7 @@ namespace PorcupineTest
                     "invalid",
                     keywords,
                     GetModelPath("en"));
+                Assert.IsNull(p);
                 p.Dispose();
             } catch (PorcupineException e) {
                 for (int i = 0; i < messageList.Length; i++) {
