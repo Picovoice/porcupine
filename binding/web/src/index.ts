@@ -23,7 +23,7 @@ import porcupineWasmSimd from '../lib/pv_porcupine_simd.wasm';
 
 import { BuiltInKeyword } from './built_in_keywords';
 
-import { keywordsProcess, PvStatus } from './utils';
+import { keywordsProcess } from './utils';
 import * as PorcupineErrors from './porcupine_errors';
 
 Porcupine.setWasm(porcupineWasm);
@@ -51,5 +51,4 @@ export {
   PorcupineWorkerRequest,
   PorcupineWorkerResponse,
   PorcupineErrors,
-  PvStatus,
 };

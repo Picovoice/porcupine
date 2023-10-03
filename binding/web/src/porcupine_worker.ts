@@ -15,7 +15,7 @@ import {
 
 import PvWorker from 'web-worker:./porcupine_worker_handler.ts';
 
-import { keywordsProcess, PvStatus, pvStatusToException } from './utils';
+import { keywordsProcess } from './utils';
 
 import {
   DetectionCallback,
@@ -25,8 +25,11 @@ import {
   PorcupineWorkerInitResponse,
   PorcupineWorkerProcessResponse,
   PorcupineWorkerReleaseResponse,
+  PvStatus
 } from './types';
 import { BuiltInKeyword } from './built_in_keywords';
+
+import { pvStatusToException } from './porcupine_errors';
 
 export class PorcupineWorker {
   private readonly _worker: Worker;
@@ -215,11 +218,12 @@ export class PorcupineWorker {
             break;
           case 'failed':
           case 'error':
-            reject(event.data.message);
+            const error = pvStatusToException(event.data.status, event.data.message);
+            reject(error);
             break;
           default:
             // @ts-ignore
-            reject(`Unrecognized command: ${event.data.command}`);
+            reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
         }
       };
     });

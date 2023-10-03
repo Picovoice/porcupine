@@ -12,7 +12,21 @@
 import { BuiltInKeyword } from './built_in_keywords';
 import { PvModel } from "@picovoice/web-utils";
 import { PorcupineError } from "./porcupine_errors";
-import { PvStatus } from "./utils";
+
+export enum PvStatus {
+  SUCCESS = 10000,
+  OUT_OF_MEMORY,
+  IO_ERROR,
+  INVALID_ARGUMENT,
+  STOP_ITERATION,
+  KEY_ERROR,
+  INVALID_STATE,
+  RUNTIME_ERROR,
+  ACTIVATION_ERROR,
+  ACTIVATION_LIMIT_REACHED,
+  ACTIVATION_THROTTLED,
+  ACTIVATION_REFUSED,
+}
 
 export type PorcupineOptions = {
   /** @defaultValue '(error) => {}' */

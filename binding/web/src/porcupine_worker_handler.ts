@@ -16,6 +16,7 @@ import { Porcupine } from './porcupine';
 import {
   PorcupineWorkerRequest,
   PorcupineDetection,
+  PvStatus
 } from './types';
 import { PorcupineError } from "./porcupine_errors";
 
@@ -48,6 +49,7 @@ self.onmessage = async function(
       if (porcupine !== null) {
         self.postMessage({
           command: 'error',
+          status: PvStatus.INVALID_STATE,
           message: 'Porcupine already initialized',
         });
         return;
@@ -72,6 +74,7 @@ self.onmessage = async function(
       } catch (e: any) {
         self.postMessage({
           command: 'error',
+          status: PvStatus.RUNTIME_ERROR,
           message: e.message,
         });
       }
@@ -80,6 +83,7 @@ self.onmessage = async function(
       if (porcupine === null) {
         self.postMessage({
           command: 'error',
+          status: PvStatus.INVALID_STATE,
           message: 'Porcupine not initialized',
         });
         return;
@@ -99,6 +103,7 @@ self.onmessage = async function(
     default:
       self.postMessage({
         command: 'failed',
+        status: PvStatus.RUNTIME_ERROR,
         // @ts-ignore
         message: `Unrecognized command: ${event.data.command}`,
       });

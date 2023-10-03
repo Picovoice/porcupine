@@ -25,11 +25,12 @@ import {
 
 import { simd } from 'wasm-feature-detect';
 
-import { DetectionCallback, PorcupineKeyword, PorcupineModel, PorcupineOptions } from './types';
+import { DetectionCallback, PorcupineKeyword, PorcupineModel, PorcupineOptions, PvStatus } from './types';
 
-import { keywordsProcess, PvStatus, pvStatusToException } from './utils';
+import { keywordsProcess } from './utils';
 import { BuiltInKeyword } from './built_in_keywords';
-import * as PorcupineErrors from "./porcupine_errors";
+import * as PorcupineErrors from "./porcupine_errors"
+import { pvStatusToException } from './porcupine_errors';
 
 /**
  * WebAssembly function types
@@ -54,7 +55,7 @@ type pv_sample_rate_type = () => Promise<number>;
 type pv_porcupine_frame_length_type = () => Promise<number>;
 type pv_porcupine_version_type = () => Promise<number>;
 type pv_set_sdk_type = (sdk: number) => Promise<void>;
-type pv_get_error_stack_type = (object: number, messageStack: number, messageStackDepth: number) => Promise<void>;
+type pv_get_error_stack_type = (messageStack: number, messageStackDepth: number) => Promise<void>;
 
 /**
  * JavaScript/WebAssembly Binding for the Picovoice Porcupine wake word engine.
@@ -338,7 +339,6 @@ export class Porcupine {
 
         if (status !== PvStatus.SUCCESS) {
           const messageStack = await Porcupine.getMessageStack(
-            0,
             this._pvGetErrorStack,
             this._messageStackAddressAddressAddress,
             this._messageStackDepthAddress,
@@ -562,7 +562,6 @@ export class Porcupine {
 
     if (status !== PvStatus.SUCCESS) {
       const messageStack = await Porcupine.getMessageStack(
-        0,
         pv_get_error_stack,
         messageStackAddressAddressAddress,
         messageStackDepthAddress,
@@ -613,14 +612,13 @@ export class Porcupine {
   }
 
   private static async getMessageStack(
-    object: number,
     pv_get_error_stack: pv_get_error_stack_type,
     messageStackAddressAddressAddress: number,
     messageStackDepthAddress: number,
     memoryBufferView: DataView,
     memoryBufferUint8: Uint8Array,
   ): Promise<string[]> {
-    await pv_get_error_stack(object, messageStackAddressAddressAddress, messageStackDepthAddress);
+    await pv_get_error_stack(messageStackAddressAddressAddress, messageStackDepthAddress);
     const messageStackAddressAddress = memoryBufferView.getInt32(messageStackAddressAddressAddress, true);
 
     const messageStackDepth = memoryBufferView.getInt32(messageStackDepthAddress, true);

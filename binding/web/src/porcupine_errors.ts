@@ -10,7 +10,7 @@
 //
 
 import { PvError } from "@picovoice/web-utils";
-import { PvStatus } from "./utils";
+import { PvStatus } from "./types";
 
 class PorcupineError extends Error {
   private readonly _status: PvStatus;
@@ -151,3 +151,41 @@ export {
   PorcupineActivationThrottledError,
   PorcupineActivationRefusedError,
 };
+
+
+
+export function pvStatusToException(
+  pvStatus: PvStatus,
+  errorMessage: string,
+  messageStack: string[] = [],
+  pvError: PvError | null = null
+): PorcupineError {
+  switch (pvStatus) {
+    case PvStatus.OUT_OF_MEMORY:
+      return new PorcupineOutOfMemoryError(errorMessage, messageStack, pvError);
+    case PvStatus.IO_ERROR:
+      return new PorcupineIOError(errorMessage, messageStack, pvError);
+    case PvStatus.INVALID_ARGUMENT:
+      return new PorcupineInvalidArgumentError(errorMessage, messageStack, pvError);
+    case PvStatus.STOP_ITERATION:
+      return new PorcupineStopIterationError(errorMessage, messageStack, pvError);
+    case PvStatus.KEY_ERROR:
+      return new PorcupineKeyError(errorMessage, messageStack, pvError);
+    case PvStatus.INVALID_STATE:
+      return new PorcupineInvalidStateError(errorMessage, messageStack, pvError);
+    case PvStatus.RUNTIME_ERROR:
+      return new PorcupineRuntimeError(errorMessage, messageStack, pvError);
+    case PvStatus.ACTIVATION_ERROR:
+      return new PorcupineActivationError(errorMessage, messageStack, pvError);
+    case PvStatus.ACTIVATION_LIMIT_REACHED:
+      return new PorcupineActivationLimitReachedError(errorMessage, messageStack, pvError);
+    case PvStatus.ACTIVATION_THROTTLED:
+      return new PorcupineActivationThrottledError(errorMessage, messageStack, pvError);
+    case PvStatus.ACTIVATION_REFUSED:
+      return new PorcupineActivationRefusedError(errorMessage, messageStack, pvError);
+    default:
+      // eslint-disable-next-line no-console
+      console.warn(`Unmapped error code: ${pvStatus}`);
+      return new PorcupineError(pvStatus, errorMessage);
+  }
+}
