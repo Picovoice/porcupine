@@ -58,7 +58,7 @@ export class PorcupineActivationThrottled extends PorcupineError {}
 export class PorcupineActivationRefused extends PorcupineError {}
 
 
-export function pvStatusToException(pvStatus: PvStatus, errorMessage: string, messageStack: string[] = [],): PorcupineError {
+export function pvStatusToException(pvStatus: PvStatus, errorMessage: string, messageStack: string[] = []): PorcupineError {
   switch (pvStatus) {
     case PvStatus.OUT_OF_MEMORY:
       throw new PorcupineOutOfMemoryError(errorMessage, messageStack);
@@ -85,6 +85,6 @@ export function pvStatusToException(pvStatus: PvStatus, errorMessage: string, me
     default:
       // eslint-disable-next-line no-console
       console.warn(`Unmapped error code: ${pvStatus}`);
-      throw new PorcupineError(errorMessage, messageStack);
+      throw new PorcupineError(errorMessage);
   }
 }
