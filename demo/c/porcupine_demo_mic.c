@@ -126,7 +126,7 @@ void show_audio_devices(void) {
 
 void print_error_message(char **message_stack, int32_t message_stack_depth) {
     for (int32_t i = 0; i < message_stack_depth; i++) {
-        fprintf(stdout, "  [%d] %s\n", i, message_stack[i]);
+        fprintf(stderr, "  [%d] %s\n", i, message_stack[i]);
     }
 }
 
