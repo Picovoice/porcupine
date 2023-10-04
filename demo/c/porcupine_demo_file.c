@@ -259,7 +259,7 @@ int picovoice_main(int argc, char *argv[]) {
             print_error_message(message_stack, message_stack_depth);
             pv_free_error_stack_func(message_stack);
         } else {
-            fprintf(stderr, ".");
+            fprintf(stderr, ".\n");
         }
 
         exit(1);
@@ -286,7 +286,7 @@ int picovoice_main(int argc, char *argv[]) {
                 print_error_message(message_stack, message_stack_depth);
                 pv_free_error_stack_func(message_stack);
             } else {
-                fprintf(stderr, ".");
+                fprintf(stderr, ".\n");
             }
             exit(1);
         }
