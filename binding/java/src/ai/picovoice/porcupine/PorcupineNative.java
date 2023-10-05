@@ -22,8 +22,6 @@ class PorcupineNative {
 
     static native void setSdk(String sdk);
 
-    static native String[] getErrorStack();
-
     static native long init(
             String accessKey,
             String modelPath,
