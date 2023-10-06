@@ -204,9 +204,6 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
-    char **message_stack = NULL;
-    int32_t message_stack_depth = 0;
-
     drwav f;
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -248,13 +245,17 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
+    char **message_stack = NULL;
+    int32_t message_stack_depth = 0;
+    pv_status_t error_status;
+
     pv_porcupine_t *porcupine = NULL;
     pv_status_t status = pv_porcupine_init_func(access_key, model_path, 1, &keyword_path, &sensitivity, &porcupine);
     if (status != PV_STATUS_SUCCESS) {
         fprintf(stderr, "'pv_porcupine_init' failed with '%s'", pv_status_to_string_func(status));
         status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
-        if (status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, "Unable to get Porcupine error state with '%s'", pv_status_to_string_func(status));
+        if (error_status != PV_STATUS_SUCCESS) {
+            fprintf(stderr, ".\nUnable to get Porcupine error stack with '%s'.\n", pv_status_to_string_func(error_status));
             exit(1);
         }
 
@@ -285,8 +286,8 @@ int picovoice_main(int argc, char *argv[]) {
             fprintf(stderr, "'pv_porcupine_process' failed with '%s'", pv_status_to_string_func(status));
             pv_get_error_stack_func(&message_stack, &message_stack_depth);
             status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
-            if (status != PV_STATUS_SUCCESS) {
-                fprintf(stderr, "Unable to get Porcupine error state with '%s'", pv_status_to_string_func(status));
+            if (error_status != PV_STATUS_SUCCESS) {
+                fprintf(stderr, ".\nUnable to get Porcupine error stack with '%s'.\n", pv_status_to_string_func(error_status));
                 exit(1);
             }
 
