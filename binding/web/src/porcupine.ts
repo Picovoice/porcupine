@@ -55,7 +55,7 @@ type pv_sample_rate_type = () => Promise<number>;
 type pv_porcupine_frame_length_type = () => Promise<number>;
 type pv_porcupine_version_type = () => Promise<number>;
 type pv_set_sdk_type = (sdk: number) => Promise<void>;
-type pv_get_error_stack_type = (messageStack: number, messageStackDepth: number) => Promise<void>;
+type pv_get_error_stack_type = (messageStack: number, messageStackDepth: number) => Promise<number>;
 
 /**
  * JavaScript/WebAssembly Binding for the Picovoice Porcupine wake word engine.
@@ -618,7 +618,11 @@ export class Porcupine {
     memoryBufferView: DataView,
     memoryBufferUint8: Uint8Array,
   ): Promise<string[]> {
-    await pv_get_error_stack(messageStackAddressAddressAddress, messageStackDepthAddress);
+    const status = await pv_get_error_stack(messageStackAddressAddressAddress, messageStackDepthAddress);
+    if (status != PvStatus.SUCCESS) {
+      throw pvStatusToException(status, "Unable to get Porcupine error state");
+    }
+
     const messageStackAddressAddress = memoryBufferView.getInt32(messageStackAddressAddressAddress, true);
 
     const messageStackDepth = memoryBufferView.getInt32(messageStackDepthAddress, true);
