@@ -15,7 +15,7 @@ from typing import Sequence
 
 
 class PorcupineError(Exception):
-    def __init__(self, message: str = '', message_stack: Sequence[str]=None):
+    def __init__(self, message: str = '', message_stack: Sequence[str] = None):
         super().__init__(message)
 
         self._message = message
