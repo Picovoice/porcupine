@@ -10,6 +10,8 @@
 
 package ai.picovoice.porcupine;
 
+import android.annotation.SuppressLint;
+
 public class PorcupineException extends Exception {
     private final String message;
     private final String[] messageStack;
@@ -36,6 +38,7 @@ public class PorcupineException extends Exception {
         return this.messageStack;
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public String getMessage() {
         StringBuilder sb = new StringBuilder(message);

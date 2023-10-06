@@ -10,7 +10,7 @@
     <suppress files=".*(Test|Exception|Callback|demo|Module|Plugin).*\.java" checks="MissingJavadocType"/>
     <suppress files=".*(Test|Exception|Error|demo).*\.java" checks="OneTopLevelClass"/>
     <suppress files=".*(Test).*\.java" checks="MethodName"/>
-    <suppress files=".*(demo|Module|Plugin).*\.java" checks="MissingJavadocMethod"/>
+    <suppress files=".*(demo|Module|Plugin|Exception).*\.java" checks="MissingJavadocMethod"/>
     <suppress files=".*generated-sources.*" checks="[a-zA-Z0-9]*"/>
     <suppress files=".*build.*" checks="[a-zA-Z0-9]*"/>
     <suppress files=".*" checks="CustomImportOrder"/>
