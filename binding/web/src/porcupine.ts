@@ -103,7 +103,7 @@ export class Porcupine {
   private static _version: string;
   private static _wasm: string;
   private static _wasmSimd: string;
-  private static _sdk: string = "wasm";
+  private static _sdk: string = "web";
 
   private static _porcupineMutex = new Mutex();
 
