@@ -138,30 +138,32 @@ describe('Porcupine Binding', function () {
     const instanceString = instance === PorcupineWorker ? 'worker' : 'main';
 
     it(`should return correct error message stack (${instanceString})`, async () => {
-      let firstError = "";
+      let messageStack = [];
       try {
         const porcupine = await instance.create(
-          "jbklasdfjbas",
+          "invalidAccessKey",
           BuiltInKeyword.Porcupine,
           () => { },
           { publicPath: '/test/porcupine_params.pv', forceWrite: true }
         );
         expect(porcupine).to.be.undefined;
       } catch (e: any) {
-        firstError = e.message;
-        expect(firstError.length).to.be.lt(1024);
+        messageStack = e.messageStack;
       }
+
+      expect(messageStack.length).to.be.gt(0);
+      expect(messageStack.length).to.be.lte(8);
 
       try {
         const porcupine = await instance.create(
-          "jbklasdfjbas",
+          "invalidAccessKey",
           BuiltInKeyword.Porcupine,
           () => { },
           { publicPath: '/test/porcupine_params.pv', forceWrite: true }
         );
         expect(porcupine).to.be.undefined;
       } catch (e: any) {
-        expect(firstError.length).to.be.eq(e.message.length);
+        expect(messageStack.length).to.be.eq(e.messageStack.length);
       }
     });
 

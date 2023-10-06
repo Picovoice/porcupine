@@ -91,7 +91,8 @@ export type PorcupineWorkerRequest =
 export type PorcupineWorkerFailureResponse = {
   command: 'failed' | 'error';
   status: PvStatus;
-  message: string;
+  shortMessage: string;
+  messageStack: string[];
 };
 
 export type PorcupineWorkerInitResponse = PorcupineWorkerFailureResponse | {
