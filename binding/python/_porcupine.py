@@ -24,11 +24,11 @@ class PorcupineError(Exception):
     def __str__(self):
         message = self._message
         if len(self._message_stack) == 0:
-            return f'{message}.'
+            return '%s.' % message
         else:
             message += ':'
             for i in range(len(self._message_stack)):
-                message += f'\n  [{i}] {self._message_stack[i]}'
+                message += '\n  [%d] %s' % (i, self._message_stack[i])
             return message
 
     @property
@@ -171,7 +171,7 @@ class Porcupine(object):
 
         self._get_error_stack_func = library.pv_get_error_stack
         self._get_error_stack_func.argtypes = [POINTER(POINTER(c_char_p)), POINTER(c_int)]
-        self._get_error_stack_func.restype = None
+        self._get_error_stack_func.restype = self.PicovoiceStatuses
 
         self._free_error_stack_func = library.pv_free_error_stack
         self._free_error_stack_func.argtypes = [POINTER(c_char_p)]
@@ -267,7 +267,9 @@ class Porcupine(object):
     def _get_error_stack(self) -> Sequence[str]:
         message_stack_ref = POINTER(c_char_p)()
         message_stack_depth = c_int()
-        self._get_error_stack_func(byref(message_stack_ref), byref(message_stack_depth))
+        status = self._get_error_stack_func(byref(message_stack_ref), byref(message_stack_depth))
+        if status is not self.PicovoiceStatuses.SUCCESS:
+            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status](message='Unable to get Porcupine error state')
 
         message_stack = list()
         for i in range(message_stack_depth.value):
