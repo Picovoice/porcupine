@@ -83,9 +83,7 @@ public class PorcupineService extends Service {
             porcupineManager.start();
 
         } catch (PorcupineInvalidArgumentException e) {
-            onPorcupineInitError(
-                    String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
-            );
+            onPorcupineInitError(e.getMessage());
         } catch (PorcupineActivationException e) {
             onPorcupineInitError("AccessKey activation error");
         } catch (PorcupineActivationLimitException e) {
@@ -95,12 +93,12 @@ public class PorcupineService extends Service {
         } catch (PorcupineActivationThrottledException e) {
             onPorcupineInitError("AccessKey has been throttled");
         } catch (PorcupineException e) {
-            onPorcupineInitError("Failed to initialize Porcupine " + e.getMessage());
+            onPorcupineInitError("Failed to initialize Porcupine: " + e.getMessage());
         }
 
         Notification notification = porcupineManager == null ?
                 getNotification("Porcupine init failed", "Service will be shut down") :
-                getNotification("Wake word", "Service running");
+                getNotification("Wake word service", "Say 'Porcupine'!");
         startForeground(1234, notification);
 
         return super.onStartCommand(intent, flags, startId);
