@@ -32,6 +32,7 @@ extern "C" {
  */
 typedef struct pv_porcupine pv_porcupine_t;
 
+
 /**
  * Constructor.
  *
@@ -56,6 +57,7 @@ PV_API pv_status_t pv_porcupine_init(
         const float *sensitivities,
         pv_porcupine_t **object);
 
+
 /**
  * Destructor.
  *
@@ -75,6 +77,7 @@ PV_API void pv_porcupine_delete(pv_porcupine_t *object);
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT' or 'PV_STATUS_OUT_OF_MEMORY' on failure.
  */
 PV_API pv_status_t pv_porcupine_process(pv_porcupine_t *object, const int16_t *pcm, int32_t *keyword_index);
+
 
 /**
  * Computes the minimum required memory buffer size, in bytes, for the given keyword model.
