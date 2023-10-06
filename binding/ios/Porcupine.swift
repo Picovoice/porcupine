@@ -1,5 +1,5 @@
 //
-//  Copyright 2021-2022 Picovoice Inc.
+//  Copyright 2021-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -58,7 +58,7 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. 
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
     public init(
@@ -243,7 +243,7 @@ public class Porcupine {
             "If this is a packaged asset, ensure you have added it to your xcode project.")
     }
 
-    private func pvStatusToPorcupineError(_ status: pv_status_t, _ message: String, _ messageStack: [String]? = []) throws {
+    private func pvStatusToPorcupineError(_ status: pv_status_t, _ message: String, _ messageStack: [String] = []) throws {
         switch status {
         case PV_STATUS_OUT_OF_MEMORY:
             return PorcupineMemoryError(message, messageStack)
@@ -273,18 +273,21 @@ public class Porcupine {
         }
     }
 
-    private func getMessageStack() -> [String] {
+    private func getErrorStack() -> [String] {
         var messageStackRef: UnsafeMutablePointer<UnsafePointer<CChar>?>?
         var messageStackDepth: Int32 = 0
+        let status = pv_get_error_stack(self.handle, &messageStackRef, &messageStackDepth)
+        if status != PV_STATUS_SUCCESS {
+            throw pvStatusToPorcupineError(status, "Unable to get Porcupine error state")
+        }
 
-        let object = UnsafeRawPointer(self.handle)
-        pv_get_error_stack(object, &messageStackRef, &messageStackDepth)
-        
         var messageStack: [String] = []
         while let s = messageStackRef?.pointee {
             messageStack.append(String(cString: s))
             messageStackRef = messageStackRef?.advanced(by: 1)
         }
+
+        pv_free_error_stack(messageStackRef)
 
         return messageStack
     }

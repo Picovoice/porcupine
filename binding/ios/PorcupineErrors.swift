@@ -1,5 +1,5 @@
 //
-//  Copyright 2021 Picovoice Inc.
+//  Copyright 2021-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -17,16 +17,14 @@ public class PorcupineError: LocalizedError {
     }
 
     public var errorDescription: String? {
+        var messageString = message
         if messageStack.count > 0 {
-            var i = 0
-            let messageString = messageStack.reduce(message) { partial, current in
-                let reduced = partial + "\n  [\(i)] \(current)"
-                i += 1
-                return reduced
+            messageString += ":"
+            for i in 0..<messageStack.count {
+                messageString += "\n  [\(i)] \(messageStack[i])"
             }
-            return messageString
         }
-        return message
+        return messageString
     }
 
     public var name: String {
