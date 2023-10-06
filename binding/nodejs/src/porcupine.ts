@@ -132,6 +132,8 @@ export default class Porcupine {
     }
 
     const pvPorcupine = require(libraryPath); // eslint-disable-line
+    this._pvPorcupine = pvPorcupine;
+
     let porcupineHandleAndStatus: PorcupineHandleAndStatus | null = null;
     try {
       pvPorcupine.set_sdk("node");
@@ -149,11 +151,10 @@ export default class Porcupine {
 
     const status = porcupineHandleAndStatus!.status;
     if (status !== PvStatus.SUCCESS) {
-      pvStatusToException(status, "Porcupine failed to initialize", pvPorcupine.get_error_stack());
+      this.handlePvStatus(status, "Porcupine failed to initialize");
     }
 
     this._handle = porcupineHandleAndStatus!.handle;
-    this._pvPorcupine = pvPorcupine;
     this._frameLength = pvPorcupine.frame_length();
     this._sampleRate = pvPorcupine.sample_rate();
     this._version = pvPorcupine.version();
@@ -229,7 +230,7 @@ export default class Porcupine {
 
     const status = keywordAndStatus!.status;
     if (status !== PvStatus.SUCCESS) {
-      pvStatusToException(status, "Porcupine failed to process the frame", this._pvPorcupine.get_error_stack());
+      this.handlePvStatus(status, "Porcupine failed to process");
     }
     const keywordIndex = keywordAndStatus!.keyword_index;
 
@@ -249,6 +250,15 @@ export default class Porcupine {
     } else {
       // eslint-disable-next-line no-console
       console.warn("Porcupine is not initialized; nothing to destroy");
+    }
+  }
+ 
+  private handlePvStatus(status: PvStatus, message: string) {
+    const errorObject = this._pvPorcupine.get_error_stack();
+    if (errorObject.status === PvStatus.SUCCESS) {
+      pvStatusToException(status, message, errorObject.message_stack);
+    } else {
+      pvStatusToException(status, "Unable to get Porcupine error state");
     }
   }
 }
