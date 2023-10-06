@@ -105,7 +105,6 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 -a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 
-
 #### BeagleBone
 
 ```console
