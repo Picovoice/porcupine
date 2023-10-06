@@ -255,7 +255,7 @@ int picovoice_main(int argc, char *argv[]) {
         fprintf(stderr, "'pv_porcupine_init' failed with '%s'", pv_status_to_string_func(status));
         status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
         if (error_status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, ".\nUnable to get Porcupine error stack with '%s'.\n", pv_status_to_string_func(error_status));
+            fprintf(stderr, ".\nUnable to get Porcupine error state with '%s'.\n", pv_status_to_string_func(error_status));
             exit(1);
         }
 
@@ -287,7 +287,7 @@ int picovoice_main(int argc, char *argv[]) {
             pv_get_error_stack_func(&message_stack, &message_stack_depth);
             status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
             if (error_status != PV_STATUS_SUCCESS) {
-                fprintf(stderr, ".\nUnable to get Porcupine error stack with '%s'.\n", pv_status_to_string_func(error_status));
+                fprintf(stderr, ".\nUnable to get Porcupine error state with '%s'.\n", pv_status_to_string_func(error_status));
                 exit(1);
             }
 
