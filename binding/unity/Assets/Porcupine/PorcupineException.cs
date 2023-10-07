@@ -26,7 +26,7 @@ namespace Pv.Unity
             this._messageStack = messageStack;
         }
 
-        public string[] messageStack 
+        public string[] messageStack
         {
             get => _messageStack;
         }
@@ -34,12 +34,16 @@ namespace Pv.Unity
         private static string ModifyMessages(string message, string[] messageStack)
         {
             string messageString = message;
-            if (messageStack.Length > 0) {
+            if (messageStack.Length > 0)
+            {
                 messageString += ":";
-                for(int i = 0; i < messageStack.Length; i++) {
+                for (int i = 0; i < messageStack.Length; i++)
+                {
                     messageString += String.Format("\n  [{0}] {1}", i, messageStack[i]);
                 }
-            } else {
+            }
+            else
+            {
                 messageString += ".";
             }
             return messageString;

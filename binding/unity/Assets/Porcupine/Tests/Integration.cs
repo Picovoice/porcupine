@@ -50,7 +50,7 @@ namespace Tests
 
     public class Integration
     {
-        private static string ACCESS_KEY = "{TESTING_ACCESS_KEY_HERE}";
+        private static string ACCESS_KEY = "Tw4jothrMMLyRYQ793yD/XF3DeithcbeNVsYlNN0Dc1vY26suWNOkg==";
         private Porcupine porcupine;
 
 #if !UNITY_EDITOR && UNITY_ANDROID
@@ -228,29 +228,36 @@ namespace Tests
         {
             List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>() { Porcupine.BuiltInKeyword.PORCUPINE };
             Porcupine p;
-            string[] messageList = new string[]{};
+            string[] messageList = new string[] { };
 
-            try {
+            try
+            {
                 p = Porcupine.FromBuiltInKeywords(
                     "invalid",
                     keywords,
                     GetModelPath("en"));
                 p.Dispose();
-            } catch (PorcupineException e) {
+            }
+            catch (PorcupineException e)
+            {
                 messageList = e.messageStack;
             }
 
             Assert.IsTrue(0 < messageList.Length);
             Assert.IsTrue(messageList.Length < 8);
 
-            try {
+            try
+            {
                 p = Porcupine.FromBuiltInKeywords(
                     "invalid",
                     keywords,
                     GetModelPath("en"));
                 p.Dispose();
-            } catch (PorcupineException e) {
-                for (int i = 0; i < messageList.Length; i++) {
+            }
+            catch (PorcupineException e)
+            {
+                for (int i = 0; i < messageList.Length; i++)
+                {
                     Assert.AreEqual(messageList[i], e.messageStack[i]);
                 }
             }
