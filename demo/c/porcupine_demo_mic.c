@@ -237,7 +237,7 @@ int picovoice_main(int argc, char *argv[]) {
 
     char **message_stack = NULL;
     int32_t message_stack_depth = 0;
-    pv_status_t error_status;
+    pv_status_t error_status = PV_STATUS_RUNTIME_ERROR;
 
     pv_porcupine_t *porcupine = NULL;
     pv_status_t porcupine_status = pv_porcupine_init_func(access_key, model_path, 1, &keyword_path, &sensitivity, &porcupine);
