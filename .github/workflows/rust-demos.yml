@@ -43,6 +43,10 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
+    
+    - name: Rust build binding
+      run: cargo build
+      working-directory: binding/rust
 
     - name: Rust build micdemo
       run: cargo build --verbose
