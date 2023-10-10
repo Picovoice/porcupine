@@ -65,8 +65,7 @@ jobs:
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Run tests
-      run: xvfb-run --auto-servernum --server-args='-screen 0 640x480x24'
-        /home/picovoice/Unity/Hub/Editor/2021.3.31f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneLinux64 -logFile -
+      run: xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /home/picovoice/Unity/Hub/Editor/2021.3.31f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneLinux64 -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
