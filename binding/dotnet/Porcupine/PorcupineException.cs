@@ -16,17 +16,17 @@ namespace Pv
     public class PorcupineException : Exception
     {
         private readonly string[] _messageStack;
-        
+
         public PorcupineException() { }
 
         public PorcupineException(string message) : base(message) { }
-        
+
         public PorcupineException(string message, string[] messageStack) : base(ModifyMessages(message, messageStack))
         {
             this._messageStack = messageStack;
         }
 
-        public string[] messageStack 
+        public string[] MessageStack
         {
             get => _messageStack;
         }
@@ -39,8 +39,6 @@ namespace Pv
                 for(int i = 0; i < messageStack.Length; i++) {
                     messageString += $"\n  [{i}] {messageStack[i]}";
                 }
-            } else {
-                messageString += ".";
             }
             return messageString;
         }

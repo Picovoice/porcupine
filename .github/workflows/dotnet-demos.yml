@@ -39,6 +39,15 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
+    # *********** REMOVE AFTER RELEASE **********************
+    - name: Pack binding for local ref
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+
+    - name: Add binding to demo
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/x64/Release Porcupine
+    # ******************************************************
+
     - name: Package restore
       run: dotnet restore
 
@@ -90,6 +99,15 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+
+  # *********** REMOVE AFTER RELEASE **********************
+    - name: Pack binding for local ref
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+
+    - name: Add binding to demo
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/x64/Release Porcupine
+    # ******************************************************
 
     - name: Package restore
       run: dotnet restore

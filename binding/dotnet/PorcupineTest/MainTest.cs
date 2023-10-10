@@ -29,7 +29,7 @@ namespace PorcupineTest
     {
         private static readonly string ROOT_DIR = Path.Combine(
             AppContext.BaseDirectory,
-            "../../../../../..");
+            "../../../../../../..");
 
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
@@ -291,13 +291,13 @@ namespace PorcupineTest
                 "murciélago.wav",
                 new List<int>() { 0, 0 });
         }
-        
+
         [TestMethod]
         public void TestMessageStack()
         {
             List<BuiltInKeyword> keywords = new List<Pv.BuiltInKeyword>() { BuiltInKeyword.PORCUPINE };
             Porcupine p;
-            string[] messageList = {};
+            string[] messageList = new string[] { };
 
             try {
                 p = Porcupine.FromBuiltInKeywords(

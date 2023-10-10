@@ -127,14 +127,14 @@ namespace Pv
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern int pv_sample_rate();
-        
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void pv_set_sdk(string sdk);
-        
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void pv_get_error_stack(out IntPtr messageStack, out int messageStackDepth);
 
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void pv_set_sdk(string sdk);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern PorcupineStatus pv_get_error_stack(out IntPtr messageStack, out int messageStackDepth);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern void pv_free_error_stack(IntPtr messageStack);
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Pv
             {
                 keywordPathsPtr[i] = Utils.GetPtrFromUtf8String(keywordPathsArray[i]);
             }
-            
+
             pv_set_sdk(".net");
 
             PorcupineStatus status = pv_porcupine_init(
@@ -341,7 +341,11 @@ namespace Pv
             string message = "",
             string[] messageStack = null)
         {
-            messageStack = messageStack ?? new string[]{};
+            if (messageStack == null)
+            {
+                messageStack = new string[] { };
+            }
+
             switch (status)
             {
                 case PorcupineStatus.OUT_OF_MEMORY:
@@ -395,7 +399,11 @@ namespace Pv
             int messageStackDepth;
             IntPtr messageStackRef;
 
-            pv_get_error_stack(out messageStackRef, out messageStackDepth);
+            PorcupineStatus status = pv_get_error_stack(out messageStackRef, out messageStackDepth);
+            if (status != PorcupineStatus.SUCCESS)
+            {
+                throw PorcupineStatusToException(status, "Unable to get Porcupine error state");
+            }
 
             int elementSize = Marshal.SizeOf(typeof(IntPtr));
             string[] messageStack = new string[messageStackDepth];

@@ -25,6 +25,7 @@
         </Description>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageIcon>pv_circle_512.png</PackageIcon>
+        <Platforms>x64</Platforms>
     </PropertyGroup>
 
     <!--Target files-->
