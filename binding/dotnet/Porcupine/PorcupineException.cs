@@ -34,9 +34,11 @@ namespace Pv
         private static string ModifyMessages(string message, string[] messageStack)
         {
             string messageString = message;
-            if (messageStack.Length > 0) {
+            if (messageStack.Length > 0)
+            {
                 messageString += ":";
-                for(int i = 0; i < messageStack.Length; i++) {
+                for (int i = 0; i < messageStack.Length; i++)
+                {
                     messageString += $"\n  [{i}] {messageStack[i]}";
                 }
             }

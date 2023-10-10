@@ -44,12 +44,12 @@ jobs:
       run: dotnet pack -c Release
       working-directory: binding/dotnet
 
+    - name: Package restore
+      run: dotnet restore
+
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/x64/Release Porcupine
     # ******************************************************
-
-    - name: Package restore
-      run: dotnet restore
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
@@ -86,7 +86,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        working-directory: demo/dotnet-vui/
+        working-directory: demo/dotnet-vui/AvaloniaVUI
 
     strategy:
       matrix:
@@ -100,17 +100,17 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-  # *********** REMOVE AFTER RELEASE **********************
+    # *********** REMOVE AFTER RELEASE **********************
     - name: Pack binding for local ref
       run: dotnet pack -c Release
       working-directory: binding/dotnet
 
+    - name: Package restore
+      run: dotnet restore
+
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/x64/Release Porcupine
     # ******************************************************
-
-    - name: Package restore
-      run: dotnet restore
 
     - name: Dotnet build
       run: dotnet build

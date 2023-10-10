@@ -395,7 +395,8 @@ namespace Pv
             Dispose();
         }
 
-        private string[] GetMessageStack() {
+        private string[] GetMessageStack()
+        {
             int messageStackDepth;
             IntPtr messageStackRef;
 
@@ -408,7 +409,8 @@ namespace Pv
             int elementSize = Marshal.SizeOf(typeof(IntPtr));
             string[] messageStack = new string[messageStackDepth];
 
-            for (int i = 0; i < messageStackDepth; i++) {
+            for (int i = 0; i < messageStackDepth; i++)
+            {
                 messageStack[i] = Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(messageStackRef, i * elementSize));
             }
 

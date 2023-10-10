@@ -1,26 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30517.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorcupineDemo", "PorcupineDemo\PorcupineDemo.csproj", "{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		FileDemo.Debug|AnyCPU = FileDemo.Debug|AnyCPU
-		FileDemo.Release|AnyCPU = FileDemo.Release|AnyCPU
-		MicDemo.Debug|AnyCPU = MicDemo.Debug|AnyCPU
-		MicDemo.Release|AnyCPU = MicDemo.Release|AnyCPU
+		FileDemo.Debug|x64 = FileDemo.Debug|x64
+		FileDemo.Release|x64 = FileDemo.Release|x64
+		MicDemo.Debug|x64 = MicDemo.Debug|x64
+		MicDemo.Release|x64 = MicDemo.Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Debug|AnyCPU.ActiveCfg = FileDemo.Debug|Any CPU
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Debug|AnyCPU.Build.0 = FileDemo.Debug|Any CPU
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Release|AnyCPU.ActiveCfg = FileDemo.Release|Any CPU
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Release|AnyCPU.Build.0 = FileDemo.Release|Any CPU
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Debug|AnyCPU.ActiveCfg = MicDemo.Debug|Any CPU
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Debug|AnyCPU.Build.0 = MicDemo.Debug|Any CPU
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Release|AnyCPU.ActiveCfg = MicDemo.Release|Any CPU
-		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Release|AnyCPU.Build.0 = MicDemo.Release|Any CPU
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Debug|x64.ActiveCfg = FileDemo.Debug|x64
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Debug|x64.Build.0 = FileDemo.Debug|x64
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Release|x64.ActiveCfg = FileDemo.Release|x64
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.FileDemo.Release|x64.Build.0 = FileDemo.Release|x64
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Debug|x64.ActiveCfg = MicDemo.Debug|x64
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Debug|x64.Build.0 = MicDemo.Debug|x64
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Release|x64.ActiveCfg = MicDemo.Release|x64
+		{5AE5D341-BE0B-4E35-A4F0-CBCD339C844E}.MicDemo.Release|x64.Build.0 = MicDemo.Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

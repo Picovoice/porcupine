@@ -4,6 +4,7 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <Configurations>FileDemo.Debug;FileDemo.Release;MicDemo.Debug;MicDemo.Release</Configurations>
+        <Platforms>x64</Platforms>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'FileDemo.Debug' Or '$(Configuration)' == 'FileDemo.Release'">
@@ -19,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Porcupine" Version="2.2.3" />
+        <PackageReference Include="Porcupine" Version="3.0.0" />
         <PackageReference Include="PvRecorder" Version="1.2.4" />
     </ItemGroup>
 </Project>
