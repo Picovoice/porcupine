@@ -40,6 +40,12 @@ static void error_handler(void) {
     while (true) {}
 }
 
+void print_error_message(char **message_stack, int32_t message_stack_depth) {
+    for (int32_t i = 0; i < message_stack_depth; i++) {
+        printf("[%ld] %s\n", i, message_stack[i]);
+    }
+}
+
 int main(void) {
 
     pv_status_t status = pv_board_init();
@@ -68,10 +74,24 @@ int main(void) {
 
     pv_porcupine_t *handle = NULL;
 
+    char **message_stack = NULL;
+    int32_t message_stack_depth = 0;
+    pv_status_t error_status;
+
     status = pv_porcupine_init(ACCESS_KEY, MEMORY_BUFFER_SIZE, memory_buffer, 1, &KEYWORD_MODEL_SIZES, &KEYWORD_MODELS, &SENSITIVITY, &handle);
 
     if (status != PV_STATUS_SUCCESS) {
-        printf("Porcupine init failed with '%s'", pv_status_to_string(status));
+        printf("Porcupine init failed with '%s':\n", pv_status_to_string(status));
+
+        error_status = pv_get_error_stack(&message_stack, &message_stack_depth);
+        if (error_status != PV_STATUS_SUCCESS) {
+            printf("Unable to get Porcupine error state with '%s':\n", pv_status_to_string(error_status));
+            error_handler();
+        }
+
+        print_error_message(message_stack, message_stack_depth);
+        pv_free_error_stack(message_stack);
+
         error_handler();
     }
 
