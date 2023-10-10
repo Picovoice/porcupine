@@ -45,7 +45,7 @@ jobs:
         override: true
     
     - name: Rust build binding
-      run: cargo build
+      run: cargo build --verbose
       working-directory: binding/rust
 
     - name: Rust build micdemo
