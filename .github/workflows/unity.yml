@@ -66,7 +66,7 @@ jobs:
 
     - name: Run tests
       run: xvfb-run --auto-servernum --server-args='-screen 0 640x480x24'
-        /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneLinux64 -logFile -
+        /home/picovoice/Unity/Hub/Editor/2021.3.31f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneLinux64 -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
@@ -85,15 +85,12 @@ jobs:
         ./copy.sh
         ./copy_test_resources.sh
 
-    - name: Clean conflicting dylib
-      run: rm -rf Assets/Porcupine/Plugins/mac/arm64
-
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
+      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
@@ -120,7 +117,7 @@ jobs:
 
     - name: Run tests
       run: >
-        & "C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe" -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile - | Out-Host
+        & "C:\Program Files\Unity\Hub\Editor\2021.3.31f1\Editor\Unity.exe" -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile - | Out-Host
 
     - name: Check Results
       run: bash -c "sed -n 2p unityresults.xml | grep Passed"
@@ -150,7 +147,7 @@ jobs:
       run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform Android -logFile -
+      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform Android -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
