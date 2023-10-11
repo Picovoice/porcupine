@@ -44,12 +44,12 @@ jobs:
       run: dotnet pack -c Release
       working-directory: binding/dotnet
 
-    - name: Package restore
-      run: dotnet restore
-
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
     # ******************************************************
+
+    - name: Package restore
+      run: dotnet restore
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
@@ -105,12 +105,12 @@ jobs:
       run: dotnet pack -c Release
       working-directory: binding/dotnet
 
-    - name: Package restore
-      run: dotnet restore
-
     - name: Add binding to demo
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
     # ******************************************************
+
+    - name: Package restore
+      run: dotnet restore
 
     - name: Dotnet build
       run: dotnet build
