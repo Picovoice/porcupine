@@ -66,6 +66,9 @@ jobs:
       with:
         go-version: ${{ matrix.go }}
 
+    - name: Check version
+      run: gcc --version
+
     - name: Pre-build dependencies
       run: ./copy.sh
 
