@@ -9,19 +9,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorcupineTest", "PorcupineT
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Release|x64 = Release|x64
+		Debug|AnyCPU = Debug|AnyCPU
+		Release|AnyCPU = Release|AnyCPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Debug|x64.ActiveCfg = Debug|x64
-		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Debug|x64.Build.0 = Debug|x64
-		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Release|x64.ActiveCfg = Release|x64
-		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Release|x64.Build.0 = Release|x64
-		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Debug|x64.ActiveCfg = Debug|x64
-		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Debug|x64.Build.0 = Debug|x64
-		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Release|x64.ActiveCfg = Release|x64
-		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Release|x64.Build.0 = Release|x64
-	EndGlobalSection
+		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Release|AnyCPU.Build.0 = Release|Any CPU
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

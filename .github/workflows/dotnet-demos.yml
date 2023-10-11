@@ -48,7 +48,7 @@ jobs:
       run: dotnet restore
 
     - name: Add binding to demo
-      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/x64/Release Porcupine
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
     # ******************************************************
 
     - name: Dotnet build micdemo
@@ -109,7 +109,7 @@ jobs:
       run: dotnet restore
 
     - name: Add binding to demo
-      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/x64/Release Porcupine
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
     # ******************************************************
 
     - name: Dotnet build

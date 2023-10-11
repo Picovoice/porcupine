@@ -2,7 +2,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />

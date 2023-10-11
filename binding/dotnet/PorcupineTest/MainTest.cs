@@ -29,7 +29,7 @@ namespace PorcupineTest
     {
         private static readonly string ROOT_DIR = Path.Combine(
             AppContext.BaseDirectory,
-            "../../../../../../..");
+            "../../../../../..");
 
         private static Architecture _arch => RuntimeInformation.ProcessArchitecture;
         private static string _env => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
