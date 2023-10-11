@@ -98,6 +98,12 @@ void print_usage(const char *program_name) {
     fprintf(stderr, "Usage : %s -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSITIVITY -a ACCESS_KEY -w WAV_PATH\n", program_name);
 }
 
+void print_error_message(char **message_stack, int32_t message_stack_depth) {
+    for (int32_t i = 0; i < message_stack_depth; i++) {
+        fprintf(stderr, "\n  [%d] %s", i, message_stack[i]);
+    }
+}
+
 int picovoice_main(int argc, char *argv[]) {
     const char *library_path = NULL;
     const char *model_path = NULL;
@@ -186,6 +192,18 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
+    pv_status_t (*pv_get_error_stack_func)(char ***, int32_t *) = load_symbol(porcupine_library, "pv_get_error_stack");
+    if (!pv_get_error_stack_func) {
+        print_dl_error("failed to load 'pv_get_error_stack_func'");
+        exit(1);
+    }
+
+    void (*pv_free_error_stack_func)(char **) = load_symbol(porcupine_library, "pv_free_error_stack");
+    if (!pv_free_error_stack_func) {
+        print_dl_error("failed to load 'pv_free_error_stack_func'");
+        exit(1);
+    }
+
     drwav f;
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -227,10 +245,28 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
+    char **message_stack = NULL;
+    int32_t message_stack_depth = 0;
+    pv_status_t error_status = PV_STATUS_RUNTIME_ERROR;
+
     pv_porcupine_t *porcupine = NULL;
     pv_status_t status = pv_porcupine_init_func(access_key, model_path, 1, &keyword_path, &sensitivity, &porcupine);
     if (status != PV_STATUS_SUCCESS) {
-        fprintf(stderr, "'pv_porcupine_init' failed with '%s'\n", pv_status_to_string_func(status));
+        fprintf(stderr, "'pv_porcupine_init' failed with '%s'", pv_status_to_string_func(status));
+        error_status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
+        if (error_status != PV_STATUS_SUCCESS) {
+            fprintf(stderr, ".\nUnable to get Porcupine error state with '%s'.\n", pv_status_to_string_func(error_status));
+            exit(1);
+        }
+
+        if (message_stack_depth > 0) {
+            fprintf(stderr, ":\n");
+            print_error_message(message_stack, message_stack_depth);
+        } else {
+            fprintf(stderr, ".\n");
+        }
+
+        pv_free_error_stack_func(message_stack);
         exit(1);
     }
 
@@ -247,7 +283,22 @@ int picovoice_main(int argc, char *argv[]) {
         int32_t keyword_index = -1;
         status = pv_porcupine_process_func(porcupine, pcm, &keyword_index);
         if (status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, "'pv_porcupine_process' failed with '%s'\n", pv_status_to_string_func(status));
+            fprintf(stderr, "'pv_porcupine_process' failed with '%s'", pv_status_to_string_func(status));
+            pv_get_error_stack_func(&message_stack, &message_stack_depth);
+            error_status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
+            if (error_status != PV_STATUS_SUCCESS) {
+                fprintf(stderr, ".\nUnable to get Porcupine error state with '%s'.\n", pv_status_to_string_func(error_status));
+                exit(1);
+            }
+
+            if (message_stack_depth > 0) {
+                fprintf(stderr, ":\n");
+                print_error_message(message_stack, message_stack_depth);
+            } else {
+                fprintf(stderr, ".\n");
+            }
+
+            pv_free_error_stack_func(message_stack);
             exit(1);
         }
 
