@@ -56,10 +56,16 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        go: [ '1.16', '1.17', '1.18' ]
+        go: [ '1.16', '1.17', '1.18', '1.19', '1.20', 'stable' ]
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Set up MinGW
+      if: matrix.os == 'windows-latest' && matrix.go != 'stable' && martix.go < 1.20
+      uses: egor-tensin/setup-mingw@v2
+      with:
+        version: 11
 
     - name: Set up go
       uses: actions/setup-go@v4
