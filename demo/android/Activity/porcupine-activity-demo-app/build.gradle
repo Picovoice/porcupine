@@ -7,9 +7,8 @@ android {
         applicationId "ai.picovoice.porcupine.demo"
         minSdkVersion 21
         targetSdkVersion defaultTargetSdkVersion
-        versionCode 7
-        versionName "2.2.0"
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        versionCode 8
+        versionName "3.0.0"
     }
     buildTypes {
         release {
