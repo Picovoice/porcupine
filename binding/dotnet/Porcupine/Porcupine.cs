@@ -252,7 +252,7 @@ namespace Pv
                 keywordPathsPtr[i] = Utils.GetPtrFromUtf8String(keywordPathsArray[i]);
             }
 
-            pv_set_sdk(".net");
+            pv_set_sdk("dotnet");
 
             PorcupineStatus status = pv_porcupine_init(
                 accessKeyPtr,
