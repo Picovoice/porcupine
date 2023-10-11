@@ -320,7 +320,7 @@ public class PorcupineTest {
         }
 
         @Test
-        public void getErrorStack() {
+        public void testErrorStack() {
             String[] error = {};
             try {
                 new Porcupine.Builder()
