@@ -218,10 +218,10 @@ packages:
   porcupine_flutter:
     dependency: "direct main"
     description:
-      name: porcupine_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.2"
+      path: "../../binding/flutter"
+      relative: true
+    source: path
+    version: "3.0.0"
   process:
     dependency: transitive
     description:
