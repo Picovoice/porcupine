@@ -45,6 +45,8 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
         flutterContext = flutterPluginBinding.getApplicationContext();
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "porcupine");
         channel.setMethodCallHandler(this);
+
+        Porcupine.setSdk("flutter");
     }
 
     @Override
