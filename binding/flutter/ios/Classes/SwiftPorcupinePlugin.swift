@@ -29,7 +29,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
         let methodChannel = FlutterMethodChannel(name: "porcupine", binaryMessenger: registrar.messenger())
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
 
-        Porcupine.setSdk("flutter")
+        Porcupine.setSdk(sdk: "flutter")
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {

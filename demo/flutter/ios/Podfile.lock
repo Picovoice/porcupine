@@ -8,23 +8,23 @@ PODS:
   - ios-voice-processor (1.1.0)
   - path_provider_ios (0.0.1):
     - Flutter
-  - Porcupine-iOS (2.2.1):
+  - Porcupine-iOS (3.0.0):
     - ios-voice-processor (~> 1.1.0)
-  - porcupine_flutter (2.2.2):
+  - porcupine_flutter (3.0.0):
     - Flutter
-    - Porcupine-iOS (~> 2.2.1)
+    - Porcupine-iOS (~> 3.0.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v3.0-ios/binding/ios/Porcupine-iOS.podspec`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
-    - Porcupine-iOS
 
 EXTERNAL SOURCES:
   Flutter:
@@ -35,6 +35,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/integration_test/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
+  Porcupine-iOS:
+    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v3.0-ios/binding/ios/Porcupine-iOS.podspec
   porcupine_flutter:
     :path: ".symlinks/plugins/porcupine_flutter/ios"
 
@@ -44,9 +46,9 @@ SPEC CHECKSUMS:
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
-  Porcupine-iOS: df8e4a63d787b6c16bd5f988fd0f2c29a249a4bd
-  porcupine_flutter: a86c481fed82437d972a9b04bffc1396316f24cd
+  Porcupine-iOS: 517158e02ac294dda15b713a3c6f74a9e877090c
+  porcupine_flutter: f01557d2a5fe6618ffa1707a2b94573bd16a78b6
 
-PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
+PODFILE CHECKSUM: 9607a34b5e5a1e197fecb5b23445061aa81dfd8f
 
 COCOAPODS: 1.11.3
