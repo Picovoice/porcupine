@@ -61,11 +61,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up env variables
+    - name: Set Mingw
       uses: egor-tensin/setup-mingw@v2
       if: ${{ (matrix.os == 'windows-latest') && (matrix.go != 'stable') && (matrix.go < 1.20) }}
       with:
-        version: 10.0.0
+        version: 11.2.0
 
     - name: Set up go
       uses: actions/setup-go@v4
