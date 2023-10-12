@@ -61,7 +61,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set Mingw
+    - name: Set up Mingw
       uses: egor-tensin/setup-mingw@v2
       if: ${{ (matrix.os == 'windows-latest') && (matrix.go != 'stable') && (matrix.go < 1.20) }}
       with:
@@ -71,9 +71,6 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
-
-    - name: Check version
-      run: gcc --version
 
     - name: Pre-build dependencies
       run: ./copy.sh
