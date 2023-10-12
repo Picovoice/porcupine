@@ -252,8 +252,8 @@ export default class Porcupine {
       console.warn("Porcupine is not initialized; nothing to destroy");
     }
   }
- 
-  private handlePvStatus(status: PvStatus, message: string) {
+
+  private handlePvStatus(status: PvStatus, message: string): void {
     const errorObject = this._pvPorcupine.get_error_stack();
     if (errorObject.status === PvStatus.SUCCESS) {
       pvStatusToException(status, message, errorObject.message_stack);
