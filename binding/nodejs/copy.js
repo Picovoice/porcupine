@@ -10,7 +10,7 @@
 //
 "use strict";
 
-const mkdirp = require("mkdirp");
+const { mkdirp } = require("mkdirp");
 const ncp = require("ncp").ncp;
 
 console.log("Copying library files...");
