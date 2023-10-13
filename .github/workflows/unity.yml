@@ -89,7 +89,7 @@ jobs:
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -buildTarget Standalone -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
+      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
@@ -143,7 +143,7 @@ jobs:
       run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -buildTarget Standalone -projectPath . -testResults unityresults.xml -testPlatform Android -logFile -
+      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -buildTarget Android -projectPath . -testResults unityresults.xml -testPlatform Android -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
