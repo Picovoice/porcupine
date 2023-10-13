@@ -12,7 +12,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Classes/**/*'
   s.platform = :ios, '11.0'
   s.dependency 'Flutter'
-  s.dependency 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v3.0-ios/binding/ios/Porcupine-iOS.podspec'
-
+  s.dependency 'Porcupine-iOS', '~> 3.0.0'
   s.swift_version = '5.0'
 end
