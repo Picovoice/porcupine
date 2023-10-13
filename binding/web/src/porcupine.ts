@@ -648,7 +648,7 @@ export class Porcupine {
       messageStack.push(message);
     }
 
-    pv_free_error_stack(messageStackAddressAddressAddress);
+    pv_free_error_stack(messageStackAddressAddress);
 
     return messageStack;
   }
