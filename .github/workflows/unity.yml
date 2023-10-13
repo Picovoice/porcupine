@@ -116,7 +116,7 @@ jobs:
 
     - name: Run tests
       run: >
-        & "C:\Program Files\Unity\Hub\Editor\2021.3.31f1\Editor\Unity.exe" -runTests -batchmode -buildTarget Android -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile - | Out-Host
+        & "C:\Program Files\Unity\Hub\Editor\2021.3.31f1\Editor\Unity.exe" -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile - | Out-Host
 
     - name: Check Results
       run: bash -c "sed -n 2p unityresults.xml | grep Passed"
@@ -136,14 +136,14 @@ jobs:
         ./copy_test_resources.sh
 
     - name: Inject AppID
-      run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+      run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Start Emulator
-      run: /home/picovoice/Android/Sdk/emulator/emulator -avd Pixel_5_API_30_x86_64 &
+      run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
 
     - name: Run tests
-      run: /home/picovoice/Unity/Hub/Editor/2021.3.31f1/Editor/Unity -runTests -batchmode -nographics -projectPath . -testResults unityresults.xml -buildTarget Android -testPlatform Android -logFile -
+      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -buildTarget Android -projectPath . -testResults unityresults.xml -testPlatform Android -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
