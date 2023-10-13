@@ -89,7 +89,7 @@ jobs:
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -buildTarget OSXUniversal -testPlatform StandaloneOSX -logFile -
+      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
@@ -116,14 +116,14 @@ jobs:
 
     - name: Run tests
       run: >
-        & "C:\Program Files\Unity\Hub\Editor\2021.3.31f1\Editor\Unity.exe" -runTests -batchmode -projectPath . -testResults unityresults.xml -buildTarget Win64 -testPlatform StandaloneWindows64 -logFile - | Out-Host
+        & "C:\Program Files\Unity\Hub\Editor\2021.3.31f1\Editor\Unity.exe" -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneWindows64 -logFile - | Out-Host
 
     - name: Check Results
       run: bash -c "sed -n 2p unityresults.xml | grep Passed"
 
   playtest-android:
     name: Run PlayTest unit tests on Android
-    runs-on: pv-ios
+    runs-on: pv-android
 
     steps:
     - uses: actions/checkout@v3
@@ -140,10 +140,10 @@ jobs:
         Assets/Porcupine/Tests/Integration.cs
 
     - name: Start Emulator
-      run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
+      run: /home/picovoice/Android/Sdk/emulator/emulator -avd Pixel_5_API_30_X86_64 &
 
     - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -buildTarget Android -testPlatform Android -logFile -
+      run: /home/picovoice/Unity/Hub/Editor/2021.3.31f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -buildTarget Android -testPlatform Android -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
