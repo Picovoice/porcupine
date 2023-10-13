@@ -25,7 +25,13 @@ import {
 
 import { simd } from 'wasm-feature-detect';
 
-import { DetectionCallback, PorcupineKeyword, PorcupineModel, PorcupineOptions, PvStatus } from './types';
+import { 
+  DetectionCallback,
+  PorcupineKeyword,
+  PorcupineModel,
+  PorcupineOptions,
+  PvStatus
+} from './types';
 
 import { keywordsProcess } from './utils';
 import { BuiltInKeyword } from './built_in_keywords';
@@ -56,6 +62,7 @@ type pv_porcupine_frame_length_type = () => Promise<number>;
 type pv_porcupine_version_type = () => Promise<number>;
 type pv_set_sdk_type = (sdk: number) => Promise<void>;
 type pv_get_error_stack_type = (messageStack: number, messageStackDepth: number) => Promise<number>;
+type pv_free_error_stack_type = (messageStack: number) => Promise<void>;
 
 /**
  * JavaScript/WebAssembly Binding for the Picovoice Porcupine wake word engine.
@@ -78,6 +85,7 @@ type PorcupineWasmOutput = {
   pvPorcupineProcess: pv_porcupine_process_type;
   pvStatusToString: pv_status_to_string_type;
   pvGetErrorStack: pv_get_error_stack_type;
+  pvFreeErrorStack: pv_free_error_stack_type;
   sampleRate: number;
   version: string;
 };
@@ -86,6 +94,7 @@ export class Porcupine {
   private readonly _pvPorcupineDelete: pv_porcupine_delete_type;
   private readonly _pvPorcupineProcess: pv_porcupine_process_type;
   private readonly _pvGetErrorStack: pv_get_error_stack_type;
+  private readonly _pvFreeErrorStack: pv_free_error_stack_type;
 
   private _wasmMemory: WebAssembly.Memory | undefined;
   private readonly _pvFree: pv_free_type;
@@ -123,6 +132,7 @@ export class Porcupine {
     this._pvPorcupineDelete = handleWasm.pvPorcupineDelete;
     this._pvPorcupineProcess = handleWasm.pvPorcupineProcess;
     this._pvGetErrorStack = handleWasm.pvGetErrorStack;
+    this._pvFreeErrorStack = handleWasm.pvFreeErrorStack;
 
     this._wasmMemory = handleWasm.memory;
     this._pvFree = handleWasm.pvFree;
@@ -340,6 +350,7 @@ export class Porcupine {
         if (status !== PvStatus.SUCCESS) {
           const messageStack = await Porcupine.getMessageStack(
             this._pvGetErrorStack,
+            this._pvFreeErrorStack,
             this._messageStackAddressAddressAddress,
             this._messageStackDepthAddress,
             memoryBufferView,
@@ -433,6 +444,7 @@ export class Porcupine {
     const pv_sample_rate = exports.pv_sample_rate as pv_sample_rate_type;
     const pv_set_sdk = exports.pv_set_sdk as pv_set_sdk_type;
     const pv_get_error_stack = exports.pv_get_error_stack as pv_get_error_stack_type;
+    const pv_free_error_stack = exports.pv_free_error_stack as pv_free_error_stack_type;
 
     // acquire and init memory for c_object
     const objectAddressAddress = await aligned_alloc(
@@ -563,6 +575,7 @@ export class Porcupine {
     if (status !== PvStatus.SUCCESS) {
       const messageStack = await Porcupine.getMessageStack(
         pv_get_error_stack,
+        pv_free_error_stack,
         messageStackAddressAddressAddress,
         messageStackDepthAddress,
         memoryBufferView,
@@ -613,6 +626,7 @@ export class Porcupine {
 
   private static async getMessageStack(
     pv_get_error_stack: pv_get_error_stack_type,
+    pv_free_error_stack: pv_free_error_stack_type,
     messageStackAddressAddressAddress: number,
     messageStackDepthAddress: number,
     memoryBufferView: DataView,
@@ -633,6 +647,8 @@ export class Porcupine {
       const message = arrayBufferToStringAtIndex(memoryBufferUint8, messageStackAddress);
       messageStack.push(message);
     }
+
+    pv_free_error_stack(messageStackAddressAddressAddress);
 
     return messageStack;
   }
