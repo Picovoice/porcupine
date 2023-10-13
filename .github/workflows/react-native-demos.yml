@@ -38,6 +38,12 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
+    # ************ REMOVE AFTER RELEASE *****************
+    - name: Build and package binding
+      working-directory: binding/react-native
+      run: yarn && yarn pkg
+    # ***************************************************
+
     - name: Install dependencies
       run: yarn android-install
 
@@ -65,6 +71,12 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
+
+    # ************ REMOVE AFTER RELEASE *****************
+    - name: Build and package binding
+      working-directory: binding/react-native
+      run: yarn && yarn pkg
+    # ***************************************************
 
     - name: Install dependencies
       run: yarn ios-install

@@ -72,7 +72,7 @@ jobs:
 
     - name: Cocoapods install
       working-directory: binding/react-native/test-app/PorcupineTestApp/ios
-      run: pod install
+      run: pod install --repo-update
 
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
