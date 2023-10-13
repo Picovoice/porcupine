@@ -143,7 +143,7 @@ jobs:
       run: /home/picovoice/Android/Sdk/emulator/emulator -avd Pixel_5_API_30_X86_64 &
 
     - name: Run tests
-      run: /home/picovoice/Unity/Hub/Editor/2021.3.31f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -buildTarget Android -testPlatform Android -logFile -
+      run: xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /home/picovoice/Unity/Hub/Editor/2021.3.31f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -buildTarget Android -testPlatform Android -logFile -
 
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
