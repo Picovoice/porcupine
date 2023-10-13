@@ -2,6 +2,6 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '11.0'
 
 target 'PorcupineBackgroundServiceDemo' do
-    pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v3.0-ios/binding/ios/Porcupine-iOS.podspec'
+    pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec'
     pod 'SwiftySound'
 end
