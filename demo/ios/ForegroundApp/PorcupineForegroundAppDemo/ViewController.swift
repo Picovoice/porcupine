@@ -164,7 +164,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             isListening = true
             startButton.setTitle("STOP", for: UIControl.State.normal)
         } catch let error as PorcupineInvalidArgumentError {
-            showErrorAlert("\(error.localizedDescription)\nEnsure your accessKey '\(accessKey)' is valid")
+            showErrorAlert("\(error.localizedDescription)")
         } catch is PorcupineActivationError {
             showErrorAlert("AccessKey activation error")
         } catch is PorcupineActivationRefusedError {
