@@ -20,10 +20,6 @@ class BaseTest: XCTestCase {
         continueAfterFailure = false
     }
 
-    override func tearDown() {
-        super.tearDown()
-    }
-
     func processFile(p: Porcupine, testAudioURL: URL) throws -> [Int32] {
         let data = try Data(contentsOf: testAudioURL)
         let frameLengthBytes = Int(Porcupine.frameLength) * 2
