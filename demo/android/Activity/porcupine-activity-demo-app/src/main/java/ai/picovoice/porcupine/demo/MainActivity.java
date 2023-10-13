@@ -107,9 +107,7 @@ public class MainActivity extends AppCompatActivity {
             porcupineManager = builder.build(getApplicationContext(), porcupineManagerCallback);
             porcupineManager.start();
         } catch (PorcupineInvalidArgumentException e) {
-            onPorcupineInitError(
-                    String.format("%s\nEnsure your accessKey '%s' is a valid access key.", e.getMessage(), ACCESS_KEY)
-            );
+            onPorcupineInitError(e.getMessage());
         } catch (PorcupineActivationException e) {
             onPorcupineInitError("AccessKey activation error");
         } catch (PorcupineActivationLimitException e) {

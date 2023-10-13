@@ -1,5 +1,5 @@
 /*
-    Copyright 2021-2022 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -43,12 +43,17 @@ public class Porcupine {
 
     private static String DEFAULT_MODEL_PATH;
     private static boolean isExtracted;
+    private static String _sdk = "android";
 
     static {
         System.loadLibrary("pv_porcupine");
     }
 
     private long handle;
+
+    public static void setSdk(String sdk) {
+        Porcupine._sdk = sdk;
+    }
 
     /**
      * Constructor.
@@ -66,6 +71,8 @@ public class Porcupine {
             String modelPath,
             String[] keywordPaths,
             float[] sensitivities) throws PorcupineException {
+        PorcupineNative.setSdk(Porcupine._sdk);
+
         handle = PorcupineNative.init(
                 accessKey,
                 modelPath,
