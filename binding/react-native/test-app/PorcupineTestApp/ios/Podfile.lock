@@ -79,10 +79,10 @@ PODS:
   - ios-voice-processor (1.1.0)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
-  - Porcupine-iOS (2.2.1):
+  - Porcupine-iOS (3.0.0):
     - ios-voice-processor (~> 1.1.0)
-  - porcupine-react-native (2.2.1):
-    - Porcupine-iOS (~> 2.2.1)
+  - porcupine-react-native (3.0.0):
+    - Porcupine-iOS (~> 3.0.0)
     - React
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -424,6 +424,7 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
+  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec`)
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -474,7 +475,6 @@ SPEC REPOS:
     - ios-voice-processor
     - libevent
     - OpenSSL-Universal
-    - Porcupine-iOS
     - SocketRocket
     - YogaKit
 
@@ -491,6 +491,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
+  Porcupine-iOS:
+    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec
   porcupine-react-native:
     :path: "../node_modules/@picovoice/porcupine-react-native"
   RCT-Folly:
@@ -575,8 +577,8 @@ SPEC CHECKSUMS:
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Porcupine-iOS: df8e4a63d787b6c16bd5f988fd0f2c29a249a4bd
-  porcupine-react-native: c0ca3b5112d55af5aa2c2ca0267e082e2dfb4dda
+  Porcupine-iOS: 517158e02ac294dda15b713a3c6f74a9e877090c
+  porcupine-react-native: e74ff3c50f8a1ec956b8aa7a8797821b0f9e8b85
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: dea3e4163184ea57c50288c15c32c1529265c58f
   RCTTypeSafety: a0834ab89159a346731e8aae55ad6e2cce61c327
@@ -610,6 +612,6 @@ SPEC CHECKSUMS:
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: fb1d50a66017a3c342cb20b8a61e6ff53757e3ba
+PODFILE CHECKSUM: 60f1c170cfe3fe441d7bce04cb482de95a039da7
 
 COCOAPODS: 1.11.3
