@@ -3,7 +3,7 @@ buildscript {
         google()
         jcenter()
         maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1263/'
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1266/'
         }
     }
 
@@ -17,7 +17,7 @@ allprojects {
         google()
         jcenter()
         maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1263/'
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1266/'
         }
     }
 }
