@@ -131,9 +131,9 @@ void pv_set_sdk_wrapper(void *f, const char *sdk) {
 	return ((pv_set_sdk_func) f)(sdk);
 }
 
-typedef void (*pv_get_error_stack_func)(char ***, int32_t *);
+typedef int32_t (*pv_get_error_stack_func)(char ***, int32_t *);
 
-void pv_get_error_stack_wrapper(
+int32_t pv_get_error_stack_wrapper(
 	void *f,
 	char ***message_stack,
 	int32_t *message_stack_depth) {
@@ -251,13 +251,18 @@ func (np *nativePorcupineType) nativeVersion() (version string) {
 	return C.GoString(C.pv_porcupine_version_wrapper(np.pv_porcupine_version_ptr))
 }
 
-func (np *nativePorcupineType) nativeGetErrorStack() (messageStack []string) {
+func (np *nativePorcupineType) nativeGetErrorStack() (status PvStatus, messageStack []string) {
 	var messageStackDepthRef C.int32_t
 	var messageStackRef **C.char
 
-	C.pv_get_error_stack_wrapper(np.pv_get_error_stack_ptr,
+	var ret = C.pv_get_error_stack_wrapper(np.pv_get_error_stack_ptr,
 		&messageStackRef,
 		&messageStackDepthRef)
+
+	if PvStatus(ret) != SUCCESS {
+		return PvStatus(ret), []string{}
+	}
+		
 	defer C.pv_free_error_stack_wrapper(
 		np.pv_free_error_stack_ptr,
 		messageStackRef)
@@ -266,9 +271,10 @@ func (np *nativePorcupineType) nativeGetErrorStack() (messageStack []string) {
 	messageStackSlice := (*[1 << 28]*C.char)(unsafe.Pointer(messageStackRef))[:messageStackDepth:messageStackDepth]
 
 	messageStack = make([]string, messageStackDepth)
+
 	for i := 0; i < messageStackDepth; i++ {
 		messageStack[i] = C.GoString(messageStackSlice[i])
 	}
 
-	return messageStack
+	return PvStatus(ret), messageStack
 }

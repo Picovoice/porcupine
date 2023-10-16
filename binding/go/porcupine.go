@@ -269,10 +269,18 @@ func (porcupine *Porcupine) Init() error {
 
 	ret := nativePorcupine.nativeInit(porcupine)
 	if ret != SUCCESS {
+		errorStatus, messageStack := nativePorcupine.nativeGetErrorStack()
+		if errorStatus != SUCCESS {
+			return &PorcupineError{
+				StatusCode:   errorStatus,
+				Message:      "Unable to get Porcupine error state",
+			}
+		}
+
 		return &PorcupineError{
 			StatusCode:   ret,
 			Message:      "Porcupine init failed",
-			MessageStack: nativePorcupine.nativeGetErrorStack(),
+			MessageStack: messageStack,
 		}
 	}
 
@@ -317,10 +325,18 @@ func (porcupine *Porcupine) Process(pcm []int16) (keywordIndex int, err error) {
 	// call process
 	ret, index := nativePorcupine.nativeProcess(porcupine, pcm)
 	if ret != SUCCESS {
+		errorStatus, messageStack := nativePorcupine.nativeGetErrorStack()
+		if errorStatus != SUCCESS {
+			return -1, &PorcupineError{
+				StatusCode:   errorStatus,
+				Message:      "Unable to get Porcupine error state",
+			}
+		}
+
 		return -1, &PorcupineError{
 			StatusCode:   ret,
 			Message:      "Porcupine process failed",
-			MessageStack: nativePorcupine.nativeGetErrorStack(),
+			MessageStack: messageStack,
 		}
 	}
 
