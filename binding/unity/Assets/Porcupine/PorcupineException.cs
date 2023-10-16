@@ -42,10 +42,6 @@ namespace Pv.Unity
                     messageString += String.Format("\n  [{0}] {1}", i, messageStack[i]);
                 }
             }
-            else
-            {
-                messageString += ".";
-            }
             return messageString;
         }
     }
