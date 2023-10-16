@@ -621,6 +621,7 @@ export class Porcupine {
       pvPorcupineDelete: pv_porcupine_delete,
       pvPorcupineProcess: pv_porcupine_process,
       pvGetErrorStack: pv_get_error_stack,
+      pvFreeErrorStack: pv_free_error_stack,
     };
   }
 
