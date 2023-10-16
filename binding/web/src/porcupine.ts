@@ -25,10 +25,18 @@ import {
 
 import { simd } from 'wasm-feature-detect';
 
-import { DetectionCallback, PorcupineKeyword, PorcupineModel, PorcupineOptions } from './types';
+import { 
+  DetectionCallback,
+  PorcupineKeyword,
+  PorcupineModel,
+  PorcupineOptions,
+  PvStatus
+} from './types';
 
 import { keywordsProcess } from './utils';
 import { BuiltInKeyword } from './built_in_keywords';
+import * as PorcupineErrors from "./porcupine_errors"
+import { pvStatusToException } from './porcupine_errors';
 
 /**
  * WebAssembly function types
@@ -52,6 +60,9 @@ type pv_status_to_string_type = (status: number) => Promise<number>;
 type pv_sample_rate_type = () => Promise<number>;
 type pv_porcupine_frame_length_type = () => Promise<number>;
 type pv_porcupine_version_type = () => Promise<number>;
+type pv_set_sdk_type = (sdk: number) => Promise<void>;
+type pv_get_error_stack_type = (messageStack: number, messageStackDepth: number) => Promise<number>;
+type pv_free_error_stack_type = (messageStack: number) => Promise<void>;
 
 /**
  * JavaScript/WebAssembly Binding for the Picovoice Porcupine wake word engine.
@@ -67,20 +78,23 @@ type PorcupineWasmOutput = {
   keywordIndexAddress: number;
   memory: WebAssembly.Memory;
   objectAddress: number;
+  messageStackAddressAddressAddress: number;
+  messageStackDepthAddress: number;
   pvFree: pv_free_type;
   pvPorcupineDelete: pv_porcupine_delete_type;
   pvPorcupineProcess: pv_porcupine_process_type;
   pvStatusToString: pv_status_to_string_type;
+  pvGetErrorStack: pv_get_error_stack_type;
+  pvFreeErrorStack: pv_free_error_stack_type;
   sampleRate: number;
   version: string;
 };
 
-const PV_STATUS_SUCCESS = 10000;
-
 export class Porcupine {
   private readonly _pvPorcupineDelete: pv_porcupine_delete_type;
   private readonly _pvPorcupineProcess: pv_porcupine_process_type;
-  private readonly _pvStatusToString: pv_status_to_string_type;
+  private readonly _pvGetErrorStack: pv_get_error_stack_type;
+  private readonly _pvFreeErrorStack: pv_free_error_stack_type;
 
   private _wasmMemory: WebAssembly.Memory | undefined;
   private readonly _pvFree: pv_free_type;
@@ -88,26 +102,28 @@ export class Porcupine {
 
   private readonly _objectAddress: number;
   private readonly _inputBufferAddress: number;
-  private readonly _alignedAlloc: aligned_alloc_type;
   private readonly _keywordIndexAddress: number;
   private readonly _keywordLabels: Map<number, string>;
+  private readonly _messageStackAddressAddressAddress: number;
+  private readonly _messageStackDepthAddress: number;
 
   private static _frameLength: number;
   private static _sampleRate: number;
   private static _version: string;
   private static _wasm: string;
   private static _wasmSimd: string;
+  private static _sdk: string = "web";
 
   private static _porcupineMutex = new Mutex();
 
   private readonly _keywordDetectionCallback: DetectionCallback;
-  private readonly _processErrorCallback?: (error: Error) => void;
+  private readonly _processErrorCallback?: (error: PorcupineErrors.PorcupineError) => void;
 
   private constructor(
     handleWasm: PorcupineWasmOutput,
     keywordLabels: ArrayLike<string>,
     keywordDetectionCallback: DetectionCallback,
-    processErrorCallback?: (error: Error) => void
+    processErrorCallback?: (error: PorcupineErrors.PorcupineError) => void
   ) {
     Porcupine._frameLength = handleWasm.frameLength;
     Porcupine._sampleRate = handleWasm.sampleRate;
@@ -115,14 +131,16 @@ export class Porcupine {
 
     this._pvPorcupineDelete = handleWasm.pvPorcupineDelete;
     this._pvPorcupineProcess = handleWasm.pvPorcupineProcess;
-    this._pvStatusToString = handleWasm.pvStatusToString;
+    this._pvGetErrorStack = handleWasm.pvGetErrorStack;
+    this._pvFreeErrorStack = handleWasm.pvFreeErrorStack;
 
     this._wasmMemory = handleWasm.memory;
     this._pvFree = handleWasm.pvFree;
     this._objectAddress = handleWasm.objectAddress;
     this._inputBufferAddress = handleWasm.inputBufferAddress;
-    this._alignedAlloc = handleWasm.aligned_alloc;
     this._keywordIndexAddress = handleWasm.keywordIndexAddress;
+    this._messageStackAddressAddressAddress = handleWasm.messageStackDepthAddress;
+    this._messageStackDepthAddress = handleWasm.messageStackDepthAddress;
 
     this._keywordLabels = new Map();
     for (let i = 0; i < keywordLabels.length; i++) {
@@ -233,6 +251,10 @@ export class Porcupine {
     }
   }
 
+  public static setSdk(sdk: string): void {
+    Porcupine._sdk = sdk;
+  }
+
   public static async _init(
     accessKey: string,
     keywordPaths: Array<string>,
@@ -243,14 +265,14 @@ export class Porcupine {
     options: PorcupineOptions = {}
   ): Promise<Porcupine> {
     if (!isAccessKeyValid(accessKey)) {
-      throw new Error('Invalid AccessKey');
+      throw new PorcupineErrors.PorcupineInvalidArgumentError('Invalid AccessKey');
     }
 
     if (
       keywordPaths.length !== keywordLabels.length ||
       keywordPaths.length !== sensitivities.length
     ) {
-      throw new Error(`Number of keyword paths given (${keywordPaths.length}) does not match number of 
+      throw new PorcupineErrors.PorcupineInvalidArgumentError(`Number of keyword paths given (${keywordPaths.length}) does not match number of 
           keyword labels (${keywordLabels.length}) or sensitivities (${sensitivities.length})`);
     }
 
@@ -292,7 +314,7 @@ export class Porcupine {
    */
   public async process(pcm: Int16Array): Promise<void> {
     if (!(pcm instanceof Int16Array)) {
-      const error = new Error(
+      const error = new PorcupineErrors.PorcupineInvalidArgumentError(
         "The argument 'pcm' must be provided as an Int16Array"
       );
       if (this._processErrorCallback) {
@@ -306,7 +328,7 @@ export class Porcupine {
     this._processMutex
       .runExclusive(async () => {
         if (this._wasmMemory === undefined) {
-          throw new Error('Attempted to call Porcupine process after release.');
+          throw new PorcupineErrors.PorcupineInvalidStateError('Attempted to call Porcupine process after release.');
         }
 
         const memoryBuffer = new Int16Array(this._wasmMemory.buffer);
@@ -325,13 +347,23 @@ export class Porcupine {
         const memoryBufferUint8 = new Uint8Array(this._wasmMemory.buffer);
         const memoryBufferView = new DataView(this._wasmMemory.buffer);
 
-        if (status !== PV_STATUS_SUCCESS) {
-          throw new Error(
-            `process failed with status ${arrayBufferToStringAtIndex(
-              memoryBufferUint8,
-              await this._pvStatusToString(status)
-            )}`
+        if (status !== PvStatus.SUCCESS) {
+          const messageStack = await Porcupine.getMessageStack(
+            this._pvGetErrorStack,
+            this._pvFreeErrorStack,
+            this._messageStackAddressAddressAddress,
+            this._messageStackDepthAddress,
+            memoryBufferView,
+            memoryBufferUint8
           );
+
+          const error = pvStatusToException(status, "Processing failed", messageStack);
+          if (this._processErrorCallback) {
+            this._processErrorCallback(error);
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(error);
+          }
         }
 
         const keywordIndex = memoryBufferView.getInt32(
@@ -409,9 +441,10 @@ export class Porcupine {
       exports.pv_porcupine_delete as pv_porcupine_delete_type;
     const pv_porcupine_init =
       exports.pv_porcupine_init as pv_porcupine_init_type;
-    const pv_status_to_string =
-      exports.pv_status_to_string as pv_status_to_string_type;
     const pv_sample_rate = exports.pv_sample_rate as pv_sample_rate_type;
+    const pv_set_sdk = exports.pv_set_sdk as pv_set_sdk_type;
+    const pv_get_error_stack = exports.pv_get_error_stack as pv_get_error_stack_type;
+    const pv_free_error_stack = exports.pv_free_error_stack as pv_free_error_stack_type;
 
     // acquire and init memory for c_object
     const objectAddressAddress = await aligned_alloc(
@@ -419,7 +452,7 @@ export class Porcupine {
       Int32Array.BYTES_PER_ELEMENT
     );
     if (objectAddressAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
     }
 
     // acquire and init memory for c_access_key
@@ -428,7 +461,7 @@ export class Porcupine {
       (accessKey.length + 1) * Uint8Array.BYTES_PER_ELEMENT
     );
     if (accessKeyAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
     }
     for (let i = 0; i < accessKey.length; i++) {
       memoryBufferUint8[accessKeyAddress + i] = accessKey.charCodeAt(i);
@@ -442,7 +475,7 @@ export class Porcupine {
       (modelPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT
     );
     if (modelPathAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
     }
     memoryBufferUint8.set(modelPathEncoded, modelPathAddress);
     memoryBufferUint8[modelPathAddress + modelPathEncoded.length] = 0;
@@ -453,7 +486,7 @@ export class Porcupine {
       keywordPaths.length * Int32Array.BYTES_PER_ELEMENT
     );
     if (keywordPathsAddressAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
     }
 
     const keywordPathsAddressList = [];
@@ -464,7 +497,7 @@ export class Porcupine {
         (keywordPathEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT
       );
       if (keywordPathAddress === 0) {
-        throw new Error('malloc failed: Cannot allocate memory');
+        throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
       }
       memoryBufferUint8.set(keywordPathEncoded, keywordPathAddress);
       memoryBufferUint8[keywordPathAddress + keywordPathEncoded.length] = 0;
@@ -480,7 +513,7 @@ export class Porcupine {
       keywordPaths.length * Float32Array.BYTES_PER_ELEMENT
     );
     if (sensitivityAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
     }
     memoryBufferFloat32.set(
       sensitivities,
@@ -492,10 +525,38 @@ export class Porcupine {
       Int32Array.BYTES_PER_ELEMENT
     );
     if (keywordIndexAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
     }
 
-    const status = await pv_porcupine_init(
+    const sdkEncoded = new TextEncoder().encode(this._sdk);
+    const sdkAddress = await aligned_alloc(
+      Uint8Array.BYTES_PER_ELEMENT,
+      (sdkEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT
+    );
+    if (!sdkAddress) {
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
+    }
+    memoryBufferUint8.set(sdkEncoded, sdkAddress);
+    memoryBufferUint8[sdkAddress + sdkEncoded.length] = 0;
+    await pv_set_sdk(sdkAddress);
+
+    const messageStackDepthAddress = await aligned_alloc(
+      Int32Array.BYTES_PER_ELEMENT,
+      Int32Array.BYTES_PER_ELEMENT
+    );
+    if (!messageStackDepthAddress) {
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
+    }
+
+    const messageStackAddressAddressAddress = await aligned_alloc(
+      Int32Array.BYTES_PER_ELEMENT,
+      Int32Array.BYTES_PER_ELEMENT
+    );
+    if (!messageStackAddressAddressAddress) {
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
+    }
+
+    const status: PvStatus = await pv_porcupine_init(
       accessKeyAddress,
       modelPathAddress,
       keywordPaths.length,
@@ -509,17 +570,20 @@ export class Porcupine {
     await pv_free(keywordPathsAddressAddress);
     await pv_free(sensitivityAddress);
 
-    if (status !== PV_STATUS_SUCCESS) {
-      const msg = `'pv_porcupine_init' failed with status ${arrayBufferToStringAtIndex(
-        memoryBufferUint8,
-        await pv_status_to_string(status)
-      )}`;
-
-      throw new Error(
-        `${msg}\nDetails: ${pvError.getErrorString()}`
-      );
-    }
     const memoryBufferView = new DataView(memory.buffer);
+
+    if (status !== PvStatus.SUCCESS) {
+      const messageStack = await Porcupine.getMessageStack(
+        pv_get_error_stack,
+        pv_free_error_stack,
+        messageStackAddressAddressAddress,
+        messageStackDepthAddress,
+        memoryBufferView,
+        memoryBufferUint8
+      );
+
+      throw pvStatusToException(status, "Initialization failed", messageStack, pvError);
+    }
     const objectAddress = memoryBufferView.getInt32(objectAddressAddress, true);
     await pv_free(objectAddressAddress);
 
@@ -536,7 +600,7 @@ export class Porcupine {
       frameLength * Int16Array.BYTES_PER_ELEMENT
     );
     if (inputBufferAddress === 0) {
-      throw new Error('malloc failed: Cannot allocate memory');
+      throw new PorcupineErrors.PorcupineOutOfMemoryError('malloc failed: Cannot allocate memory');
     }
 
     return {
@@ -551,10 +615,41 @@ export class Porcupine {
       inputBufferAddress: inputBufferAddress,
       keywordIndexAddress: keywordIndexAddress,
       objectAddress: objectAddress,
+      messageStackAddressAddressAddress: messageStackAddressAddressAddress,
+      messageStackDepthAddress: messageStackDepthAddress,
 
       pvPorcupineDelete: pv_porcupine_delete,
       pvPorcupineProcess: pv_porcupine_process,
-      pvStatusToString: pv_status_to_string,
+      pvGetErrorStack: pv_get_error_stack,
     };
+  }
+
+  private static async getMessageStack(
+    pv_get_error_stack: pv_get_error_stack_type,
+    pv_free_error_stack: pv_free_error_stack_type,
+    messageStackAddressAddressAddress: number,
+    messageStackDepthAddress: number,
+    memoryBufferView: DataView,
+    memoryBufferUint8: Uint8Array,
+  ): Promise<string[]> {
+    const status = await pv_get_error_stack(messageStackAddressAddressAddress, messageStackDepthAddress);
+    if (status != PvStatus.SUCCESS) {
+      throw pvStatusToException(status, "Unable to get Porcupine error state");
+    }
+
+    const messageStackAddressAddress = memoryBufferView.getInt32(messageStackAddressAddressAddress, true);
+
+    const messageStackDepth = memoryBufferView.getInt32(messageStackDepthAddress, true);
+    const messageStack: string[] = [];
+    for (let i = 0; i < messageStackDepth; i++) {
+      const messageStackAddress = memoryBufferView.getInt32(
+        messageStackAddressAddress + (i * Int32Array.BYTES_PER_ELEMENT), true);
+      const message = arrayBufferToStringAtIndex(memoryBufferUint8, messageStackAddress);
+      messageStack.push(message);
+    }
+
+    pv_free_error_stack(messageStackAddressAddress);
+
+    return messageStack;
   }
 }

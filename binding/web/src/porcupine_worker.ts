@@ -25,8 +25,11 @@ import {
   PorcupineWorkerInitResponse,
   PorcupineWorkerProcessResponse,
   PorcupineWorkerReleaseResponse,
+  PvStatus
 } from './types';
 import { BuiltInKeyword } from './built_in_keywords';
+
+import { pvStatusToException } from './porcupine_errors';
 
 export class PorcupineWorker {
   private readonly _worker: Worker;
@@ -126,7 +129,7 @@ export class PorcupineWorker {
                   break;
                 case 'failed':
                 case 'error':
-                  const error = new Error(ev.data.message);
+                  const error = pvStatusToException(ev.data.status, ev.data.shortMessage, ev.data.messageStack);
                   if (processErrorCallback) {
                     processErrorCallback(error);
                   } else {
@@ -136,18 +139,19 @@ export class PorcupineWorker {
                   break;
                 default:
                   // @ts-ignore
-                  processErrorCallback(new Error(`Unrecognized command: ${event.data.command}`));
+                  processErrorCallback(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
               }
             };
             resolve(new PorcupineWorker(worker, event.data.version, event.data.frameLength, event.data.sampleRate));
             break;
           case 'failed':
           case 'error':
-            reject(event.data.message);
+            const error = pvStatusToException(event.data.status, event.data.shortMessage, event.data.messageStack);
+            reject(error);
             break;
           default:
             // @ts-ignore
-            reject(`Unrecognized command: ${event.data.command}`);
+            reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
         }
       };
     });
@@ -214,11 +218,12 @@ export class PorcupineWorker {
             break;
           case 'failed':
           case 'error':
-            reject(event.data.message);
+            const error = pvStatusToException(event.data.status, event.data.shortMessage, event.data.messageStack);
+            reject(error);
             break;
           default:
             // @ts-ignore
-            reject(`Unrecognized command: ${event.data.command}`);
+            reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
         }
       };
     });

@@ -25,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x, 20.x]
+        node-version: [16.x, 18.x, 20.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -34,6 +34,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Build Web SDK
+      run: yarn && yarn copywasm && yarn copyppn && yarn build
+      working-directory: binding/web
 
     - name: Pre-build dependencies
       run: npm install yarn

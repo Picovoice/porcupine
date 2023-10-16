@@ -102,7 +102,7 @@ const runProcTest = async (
         },
         model,
         {
-          processErrorCallback: (error: string) => {
+          processErrorCallback: (error: Error) => {
             reject(error);
           },
         }
@@ -136,6 +136,36 @@ const runProcTest = async (
 describe('Porcupine Binding', function () {
   for (const instance of [Porcupine, PorcupineWorker]) {
     const instanceString = instance === PorcupineWorker ? 'worker' : 'main';
+
+    it(`should return correct error message stack (${instanceString})`, async () => {
+      let messageStack = [];
+      try {
+        const porcupine = await instance.create(
+          "invalidAccessKey",
+          BuiltInKeyword.Porcupine,
+          () => { },
+          { publicPath: '/test/porcupine_params.pv', forceWrite: true }
+        );
+        expect(porcupine).to.be.undefined;
+      } catch (e: any) {
+        messageStack = e.messageStack;
+      }
+
+      expect(messageStack.length).to.be.gt(0);
+      expect(messageStack.length).to.be.lte(8);
+
+      try {
+        const porcupine = await instance.create(
+          "invalidAccessKey",
+          BuiltInKeyword.Porcupine,
+          () => { },
+          { publicPath: '/test/porcupine_params.pv', forceWrite: true }
+        );
+        expect(porcupine).to.be.undefined;
+      } catch (e: any) {
+        expect(messageStack.length).to.be.eq(e.messageStack.length);
+      }
+    });
 
     it(`should be able to init with public path (${instanceString})`, () => {
       cy.wrap(null).then(async () => {

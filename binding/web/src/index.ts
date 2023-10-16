@@ -24,6 +24,7 @@ import porcupineWasmSimd from '../lib/pv_porcupine_simd.wasm';
 import { BuiltInKeyword } from './built_in_keywords';
 
 import { keywordsProcess } from './utils';
+import * as PorcupineErrors from './porcupine_errors';
 
 Porcupine.setWasm(porcupineWasm);
 Porcupine.setWasmSimd(porcupineWasmSimd);
@@ -49,4 +50,5 @@ export {
   PorcupineWorkerReleaseResponse,
   PorcupineWorkerRequest,
   PorcupineWorkerResponse,
+  PorcupineErrors,
 };
