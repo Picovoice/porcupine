@@ -1,6 +1,6 @@
 [package]
 name = "pv_porcupine"
-version = "2.2.1"
+version = "3.0.0"
 edition = "2018"
 description = "The Rust bindings for Picovoice's Porcupine library"
 license = "Apache-2.0"
@@ -31,9 +31,9 @@ crate_type = ["lib"]
 
 [dependencies]
 libc = "0.2"
-libloading = "0.7"
+libloading = "0.8"
 
 [dev-dependencies]
-rodio = "0.14"
-itertools = "0.10.1"
-serde_json = "1.0.91"
+rodio = "0.17"
+itertools = "0.11"
+serde_json = "1.0"

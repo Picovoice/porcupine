@@ -183,16 +183,6 @@ checksum = "b4668fb0ea861c1df094127ac5f1da3409a82116a4ba74fca2e58ef927159bb3"
 
 [[package]]
 name = "libloading"
-version = "0.7.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b67380fd3b2fbe7527a606e18729d21c6f3951633d0500574c4dc22d2d638b9f"
-dependencies = [
- "cfg-if",
- "winapi",
-]
-
-[[package]]
-name = "libloading"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d580318f95776505201b28cf98eb1fa5e4be3b689633ba6a3e6cd880ff22d8cb"
@@ -245,12 +235,10 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "2.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae7af04db856a9c23f9f35f5b4b3a224dc4d16555a0f1079f3573127f429d102"
+version = "3.0.0"
 dependencies = [
  "libc",
- "libloading 0.7.4",
+ "libloading",
 ]
 
 [[package]]
@@ -273,7 +261,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "40be1d15bef993d0b923720589479d4d2e93e9fb6286328e2551f0fdbf45de31"
 dependencies = [
  "libc",
- "libloading 0.8.0",
+ "libloading",
 ]
 
 [[package]]

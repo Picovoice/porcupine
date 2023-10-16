@@ -157,6 +157,7 @@ rgbo
 rmsd
 rodio
 rtld
+Rustonomicon
 salut
 sameline
 seeed

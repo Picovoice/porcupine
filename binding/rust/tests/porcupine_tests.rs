@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -13,9 +13,9 @@
 mod tests {
     use itertools::Itertools;
     use rodio::{source::Source, Decoder};
-    use serde_json::{Value};
+    use serde_json::Value;
     use std::env;
-    use std::fs::{File, read_to_string};
+    use std::fs::{read_to_string, File};
     use std::io::BufReader;
 
     use porcupine::util::pv_platform;
@@ -35,8 +35,10 @@ mod tests {
             env!("CARGO_MANIFEST_DIR"),
             "/../../resources/.test/test_data.json"
         );
-        let contents: String = read_to_string(test_json_path).expect("Unable to read test_data.json");
-        let test_json: Value = serde_json::from_str(&contents).expect("Unable to parse test_data.json");
+        let contents: String =
+            read_to_string(test_json_path).expect("Unable to read test_data.json");
+        let test_json: Value =
+            serde_json::from_str(&contents).expect("Unable to parse test_data.json");
         test_json
     }
 
@@ -65,7 +67,7 @@ mod tests {
         keywords: Vec<&str>,
         ground_truth: Vec<i32>,
         audio_file_name: &str,
-    ) -> Result<(), String>{
+    ) -> Result<(), String> {
         let access_key = env::var("PV_ACCESS_KEY")
             .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
 
@@ -111,6 +113,25 @@ mod tests {
         }
     }
 
+    #[test]
+    fn test_error_stack() {
+        let mut error_stack = Vec::new();
+
+        let res = PorcupineBuilder::new_with_keywords("invalid", &[BuiltinKeywords::Porcupine]).init();
+        if let Err(err) = res {
+            error_stack = err.message_stack
+        }
+
+        assert!(0 < error_stack.len() && error_stack.len() <= 8);
+        
+        let res = PorcupineBuilder::new_with_keywords("invalid", &[BuiltinKeywords::Porcupine]).init();
+        if let Err(err) = res {
+            assert_eq!(error_stack.len(), err.message_stack.len());
+            for i in 0..error_stack.len() {
+                assert_eq!(error_stack[i], err.message_stack[i])
+            }
+        }
+    }
 
     #[test]
     fn test_process_single_builtin() {
@@ -206,7 +227,7 @@ mod tests {
     }
 
     #[test]
-    fn test_single_keyword() -> Result<(), String>  {
+    fn test_single_keyword() -> Result<(), String> {
         let test_json: Value = load_test_data();
 
         for t in test_json["tests"]["singleKeyword"].as_array().unwrap() {

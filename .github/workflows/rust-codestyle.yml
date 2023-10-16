@@ -64,6 +64,10 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
+    
+    - name: Rust build binding
+      run: bash copy.sh && cargo build --verbose
+      working-directory: binding/rust
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
@@ -85,6 +89,10 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
+    
+    - name: Rust build binding
+      run: bash copy.sh && cargo build --verbose
+      working-directory: binding/rust
 
     - name: Run clippy
       run: cargo clippy -- -D warnings

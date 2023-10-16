@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -110,7 +110,11 @@ impl BuiltinKeywords {
 }
 
 #[repr(C)]
-struct CPorcupine {}
+struct CPorcupine {
+    // Fields suggested by the Rustonomicon: https://doc.rust-lang.org/nomicon/ffi.html#representing-opaque-structs
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 #[repr(C)]
 #[derive(PartialEq, Eq, Clone, Debug)]
@@ -138,15 +142,19 @@ type PvPorcupineInitFn = unsafe extern "C" fn(
     sensitivities: *const c_float,
     object: *mut *mut CPorcupine,
 ) -> PvStatus;
-type PvSampleRateFn = unsafe extern "C" fn() -> i32;
-type PvPorcupineFrameLengthFn = unsafe extern "C" fn() -> i32;
-type PvPorcupineVersionFn = unsafe extern "C" fn() -> *mut c_char;
+type PvPorcupineDeleteFn = unsafe extern "C" fn(object: *mut CPorcupine);
 type PvPorcupineProcessFn = unsafe extern "C" fn(
     object: *mut CPorcupine,
     pcm: *const i16,
     keyword_index: *mut i32,
 ) -> PvStatus;
-type PvPorcupineDeleteFn = unsafe extern "C" fn(object: *mut CPorcupine);
+type PvSampleRateFn = unsafe extern "C" fn() -> i32;
+type PvPorcupineFrameLengthFn = unsafe extern "C" fn() -> i32;
+type PvPorcupineVersionFn = unsafe extern "C" fn() -> *mut c_char;
+type PvGetErrorStackFn =
+    unsafe extern "C" fn(message_stack: *mut *mut *mut c_char, message_stack_depth: *mut i32);
+type PvFreeErrorStackFn = unsafe extern "C" fn(message_stack: *mut *mut c_char);
+type PvSetSdkFn = unsafe extern "C" fn(sdk: *const c_char);
 
 #[derive(Clone, Debug)]
 pub enum PorcupineErrorStatus {
@@ -158,8 +166,9 @@ pub enum PorcupineErrorStatus {
 
 #[derive(Clone, Debug)]
 pub struct PorcupineError {
-    status: PorcupineErrorStatus,
-    message: String,
+    pub status: PorcupineErrorStatus,
+    pub message: String,
+    pub message_stack: Vec<String>,
 }
 
 impl PorcupineError {
@@ -167,13 +176,35 @@ impl PorcupineError {
         Self {
             status,
             message: message.into(),
+            message_stack: Vec::new()
+        }
+    }
+
+    pub fn new_with_stack(
+        status: PorcupineErrorStatus,
+        message: impl Into<String>,
+        message_stack: impl Into<Vec<String>>
+    ) -> Self {
+        Self {
+            status,
+            message: message.into(),
+            message_stack: message_stack.into(),
         }
     }
 }
 
 impl std::fmt::Display for PorcupineError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}: {:?}", self.message, self.status)
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        let mut message_string = String::new();
+        message_string.push_str(&format!("{} with status '{:?}'", self.message, self.status));
+
+        if !self.message_stack.is_empty() {
+            message_string.push(':');
+            for x in 0..self.message_stack.len() {
+                message_string.push_str(&format!("  [{}] {}\n", x, self.message_stack[x]))
+            };
+        }
+        write!(f, "{}", message_string)
     }
 }
 
@@ -302,28 +333,56 @@ unsafe fn load_library_fn<T>(
         .map_err(|err| {
             PorcupineError::new(
                 PorcupineErrorStatus::LibraryLoadError,
-                format!(
-                    "Failed to load function symbol from porcupine library: {err}"
-                ),
+                format!("Failed to load function symbol from porcupine library: {err}"),
             )
         })
 }
 
-fn check_fn_call_status(status: PvStatus, function_name: &str) -> Result<(), PorcupineError> {
+fn check_fn_call_status(
+    vtable: &PorcupineInnerVTable,
+    status: PvStatus,
+    function_name: &str,
+) -> Result<(), PorcupineError> {
     match status {
         PvStatus::SUCCESS => Ok(()),
-        _ => Err(PorcupineError::new(
-            PorcupineErrorStatus::LibraryError(status),
-            format!(
-                "Function '{function_name}' in the porcupine library failed"
-            ),
-        )),
+        _ => unsafe {
+            let mut message_stack_ptr: *mut c_char = std::ptr::null_mut();
+            let mut message_stack_ptr_ptr = addr_of_mut!(message_stack_ptr);
+
+            let mut message_stack_depth: i32 = 0;
+            (vtable.pv_get_error_stack)(
+                addr_of_mut!(message_stack_ptr_ptr),
+                addr_of_mut!(message_stack_depth),
+            );
+
+            let mut message_stack = Vec::new();
+            for i in 0..message_stack_depth as usize {
+                let message = CStr::from_ptr(*message_stack_ptr_ptr.add(i));
+                let message = message.to_string_lossy().into_owned();
+                message_stack.push(message);
+            }
+
+            (vtable.pv_free_error_stack)(message_stack_ptr_ptr);
+
+            Err(PorcupineError::new_with_stack(
+                PorcupineErrorStatus::LibraryError(status),
+                format!("'{function_name}' failed"),
+                message_stack,
+            ))
+        },
     }
 }
 
 struct PorcupineInnerVTable {
-    pv_porcupine_process: RawSymbol<PvPorcupineProcessFn>,
+    pv_porcupine_init: RawSymbol<PvPorcupineInitFn>,
     pv_porcupine_delete: RawSymbol<PvPorcupineDeleteFn>,
+    pv_porcupine_process: RawSymbol<PvPorcupineProcessFn>,
+    pv_sample_rate: RawSymbol<PvSampleRateFn>,
+    pv_porcupine_frame_length: RawSymbol<PvPorcupineFrameLengthFn>,
+    pv_porcupine_version: RawSymbol<PvPorcupineVersionFn>,
+    pv_get_error_stack: RawSymbol<PvGetErrorStackFn>,
+    pv_free_error_stack: RawSymbol<PvFreeErrorStackFn>,
+    pv_set_sdk: RawSymbol<PvSetSdkFn>,
 
     _lib_guard: Library,
 }
@@ -333,8 +392,15 @@ impl PorcupineInnerVTable {
         // SAFETY: the library will be hold by this struct and therefore the symbols can't outlive the library
         unsafe {
             Ok(Self {
-                pv_porcupine_process: load_library_fn(&lib, b"pv_porcupine_process")?,
+                pv_porcupine_init: load_library_fn(&lib, b"pv_porcupine_init")?,
                 pv_porcupine_delete: load_library_fn(&lib, b"pv_porcupine_delete")?,
+                pv_porcupine_process: load_library_fn(&lib, b"pv_porcupine_process")?,
+                pv_sample_rate: load_library_fn(&lib, b"pv_sample_rate")?,
+                pv_porcupine_frame_length: load_library_fn(&lib, b"pv_porcupine_frame_length")?,
+                pv_porcupine_version: load_library_fn(&lib, b"pv_porcupine_version")?,
+                pv_get_error_stack: load_library_fn(&lib, b"pv_get_error_stack")?,
+                pv_free_error_stack: load_library_fn(&lib, b"pv_free_error_stack")?,
+                pv_set_sdk: load_library_fn(&lib, b"pv_set_sdk")?,
 
                 _lib_guard: lib,
             })
@@ -427,6 +493,17 @@ impl PorcupineInner {
                 format!("Failed to load porcupine dynamic library: {err}"),
             )
         })?;
+        let vtable = PorcupineInnerVTable::new(lib)?;
+
+        let sdk_string = match CString::new("rust") {
+            Ok(sdk_string) => sdk_string,
+            Err(err) => {
+                return Err(PorcupineError::new(
+                    PorcupineErrorStatus::ArgumentError,
+                    format!("sdk_string is not a valid C string {err}"),
+                ))
+            }
+        };
 
         let access_key = match CString::new(access_key) {
             Ok(access_key) => access_key,
@@ -452,15 +529,9 @@ impl PorcupineInner {
         // safe, because we don't use the raw symbols after this function
         // anymore.
         let (sample_rate, frame_length, version) = unsafe {
-            let pv_porcupine_init =
-                load_library_fn::<PvPorcupineInitFn>(&lib, b"pv_porcupine_init")?;
-            let pv_sample_rate = load_library_fn::<PvSampleRateFn>(&lib, b"pv_sample_rate")?;
-            let pv_porcupine_frame_length =
-                load_library_fn::<PvPorcupineFrameLengthFn>(&lib, b"pv_porcupine_frame_length")?;
-            let pv_porcupine_version =
-                load_library_fn::<PvPorcupineVersionFn>(&lib, b"pv_porcupine_version")?;
+            (vtable.pv_set_sdk)(sdk_string.as_ptr());
 
-            let status = pv_porcupine_init(
+            let status = (vtable.pv_porcupine_init)(
                 access_key.as_ptr(),
                 pv_model_path.as_ptr(),
                 pv_keyword_paths.len() as i32,
@@ -468,19 +539,17 @@ impl PorcupineInner {
                 sensitivities.as_ptr(),
                 addr_of_mut!(cporcupine),
             );
-            check_fn_call_status(status, "pv_porcupine_init")?;
+            check_fn_call_status(&vtable, status, "pv_porcupine_init")?;
 
-            let version = match CStr::from_ptr(pv_porcupine_version()).to_str() {
-                Ok(string) => string.to_string(),
-                Err(err) => {
-                    return Err(PorcupineError::new(
-                        PorcupineErrorStatus::LibraryLoadError,
-                        format!("Failed to get version info from Porcupine Library: {err}"),
-                    ))
-                }
-            };
+            let version = CStr::from_ptr((vtable.pv_porcupine_version)())
+                .to_string_lossy()
+                .into_owned();
 
-            (pv_sample_rate(), pv_porcupine_frame_length(), version)
+            (
+                (vtable.pv_sample_rate)(),
+                (vtable.pv_porcupine_frame_length)(),
+                version,
+            )
         };
 
         Ok(Self {
@@ -488,7 +557,7 @@ impl PorcupineInner {
             sample_rate,
             frame_length,
             version,
-            vtable: PorcupineInnerVTable::new(lib)?,
+            vtable,
         })
     }
 
@@ -508,7 +577,7 @@ impl PorcupineInner {
         let status = unsafe {
             (self.vtable.pv_porcupine_process)(self.cporcupine, pcm.as_ptr(), addr_of_mut!(result))
         };
-        check_fn_call_status(status, "pv_porcupine_process")?;
+        check_fn_call_status(&self.vtable, status, "pv_porcupine_process")?;
 
         Ok(result)
     }
