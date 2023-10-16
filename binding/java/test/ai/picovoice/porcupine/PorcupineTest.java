@@ -34,8 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class PorcupineTest {
@@ -94,7 +93,9 @@ public class PorcupineTest {
 
     @AfterEach
     void tearDown() {
-        porcupine.delete();
+        if (porcupine != null) {
+            porcupine.delete();
+        }
     }
 
     @Test
@@ -115,13 +116,40 @@ public class PorcupineTest {
         assertTrue(porcupine.getFrameLength() > 0);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getSampleRate() throws PorcupineException {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
         assertTrue(porcupine.getSampleRate() > 0);
+    }
+
+    @Test
+    void getErrorStack() {
+        String[] error = {};
+        try {
+            new Porcupine.Builder()
+                    .setAccessKey("invalid")
+                    .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                    .build();
+        } catch (PorcupineException e) {
+            error = e.getMessageStack();
+        }
+
+        assertTrue(0 < error.length);
+        assertTrue(error.length <= 8);
+
+        try {
+            new Porcupine.Builder()
+                    .setAccessKey("invalid")
+                    .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                    .build();
+        } catch (PorcupineException e) {
+            for (int i = 0; i < error.length; i++) {
+                assertEquals(e.getMessageStack()[i], error[i]);
+            }
+        }
     }
 
     private void runTestCase(String audioFileName, ArrayList<Integer> expectedResults)
