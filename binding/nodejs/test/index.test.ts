@@ -81,6 +81,34 @@ function testPorcupineDetection(
   engineInstance.release();
 }
 
+describe("error message stack", () => {
+  test("message stack cleared after read", () => {
+    let error: string[] = [];
+    try {
+      new Porcupine(
+        "invalid access key",
+        [BuiltinKeyword.PORCUPINE],
+        [0.5]);
+    } catch (e: any) {
+      error = e.messageStack;
+    }
+
+    expect(error.length).toBeGreaterThan(0);
+    expect(error.length).toBeLessThanOrEqual(8);
+
+    try {
+      new Porcupine(
+        "invalid access key",
+        [BuiltinKeyword.PORCUPINE],
+        [0.5]);
+    } catch (e: any) {
+      for (let i = 0; i < error.length; i++) {
+        expect(error[i]).toEqual(e.messageStack[i]);
+      }
+    }
+  });
+});
+
 describe("successful keyword detections", () => {
   it.each(SINGLE_KEYWORD_PARAMETERS)(
     'testing single keyword for %p with %p', (language: string, keyword: string, filename: string) => {

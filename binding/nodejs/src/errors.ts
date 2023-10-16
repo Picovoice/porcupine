@@ -12,7 +12,38 @@
 
 import PvStatus from "./pv_status_t";
 
-export class PorcupineError extends Error {}
+export class PorcupineError extends Error {
+  private readonly _message: string;
+  private readonly _messageStack: string[];
+
+  constructor(message: string, messageStack: string[] = []) {
+    super(PorcupineError.errorToString(message, messageStack));
+    this._message = message;
+    this._messageStack = messageStack;
+  }
+
+  get message(): string {
+    return this._message;
+  }
+
+  get messageStack(): string[] {
+    return this._messageStack;
+  }
+
+  private static errorToString(
+    initial: string,
+    messageStack: string[]
+  ): string {
+    let msg = initial;
+
+    if (messageStack.length > 0) {
+      msg += `: ${messageStack.reduce((acc, value, index) =>
+        acc + '\n  [' + index + '] ' + value, '')}`;
+    }
+
+    return msg;
+  }
+}
 
 export class PorcupineOutOfMemoryError extends PorcupineError {}
 export class PorcupineIoError extends PorcupineError {}
@@ -27,30 +58,30 @@ export class PorcupineActivationThrottled extends PorcupineError {}
 export class PorcupineActivationRefused extends PorcupineError {}
 
 
-export function pvStatusToException(pvStatus: PvStatus, errorMessage: string): PorcupineError {
+export function pvStatusToException(pvStatus: PvStatus, errorMessage: string, messageStack: string[] = []): PorcupineError {
   switch (pvStatus) {
     case PvStatus.OUT_OF_MEMORY:
-      throw new PorcupineOutOfMemoryError(errorMessage);
+      throw new PorcupineOutOfMemoryError(errorMessage, messageStack);
     case PvStatus.IO_ERROR:
-      throw new PorcupineIoError(errorMessage);
+      throw new PorcupineIoError(errorMessage, messageStack);
     case PvStatus.INVALID_ARGUMENT:
-      throw new PorcupineInvalidArgumentError(errorMessage);
+      throw new PorcupineInvalidArgumentError(errorMessage, messageStack);
     case PvStatus.STOP_ITERATION:
-      throw new PorcupineStopIterationError(errorMessage);
+      throw new PorcupineStopIterationError(errorMessage, messageStack);
     case PvStatus.KEY_ERROR:
-      throw new PorcupineKeyError(errorMessage);
+      throw new PorcupineKeyError(errorMessage, messageStack);
     case PvStatus.INVALID_STATE:
-      throw new PorcupineInvalidStateError(errorMessage);
+      throw new PorcupineInvalidStateError(errorMessage, messageStack);
     case PvStatus.RUNTIME_ERROR:
-      throw new PorcupineRuntimeError(errorMessage);
+      throw new PorcupineRuntimeError(errorMessage, messageStack);
     case PvStatus.ACTIVATION_ERROR:
-      throw new PorcupineActivationError(errorMessage);
+      throw new PorcupineActivationError(errorMessage, messageStack);
     case PvStatus.ACTIVATION_LIMIT_REACHED:
-      throw new PorcupineActivationLimitReached(errorMessage);
+      throw new PorcupineActivationLimitReached(errorMessage, messageStack);
     case PvStatus.ACTIVATION_THROTTLED:
-      throw new PorcupineActivationThrottled(errorMessage);
+      throw new PorcupineActivationThrottled(errorMessage, messageStack);
     case PvStatus.ACTIVATION_REFUSED:
-      throw new PorcupineActivationRefused(errorMessage);
+      throw new PorcupineActivationRefused(errorMessage, messageStack);
     default:
       // eslint-disable-next-line no-console
       console.warn(`Unmapped error code: ${pvStatus}`);

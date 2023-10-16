@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2022 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -13,5 +13,6 @@
 import { BuiltinKeyword, getBuiltinKeywordPath } from "./builtin_keywords";
 import Porcupine from "./porcupine";
 import { getInt16Frames, checkWaveFile } from "./wave_util";
+import * as PorcupineErrors from "./errors";
 
-export { Porcupine, BuiltinKeyword, getBuiltinKeywordPath, getInt16Frames, checkWaveFile };
+export { Porcupine, BuiltinKeyword, getBuiltinKeywordPath, getInt16Frames, checkWaveFile, PorcupineErrors };
