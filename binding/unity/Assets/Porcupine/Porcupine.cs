@@ -327,6 +327,8 @@ namespace Pv.Unity
         /// Coverts status codes to relevant .NET exceptions
         /// </summary>
         /// <param name="status">Picovoice library status code.</param>
+        /// <param name="message">Default error message.</param>
+        /// <param name="messageStack">Error stack returned from Picovoice library.</param>
         /// <returns>.NET exception</returns>
         private static PorcupineException PorcupineStatusToException(
             PorcupineStatus status,
@@ -388,7 +390,11 @@ namespace Pv.Unity
             int messageStackDepth;
             IntPtr messageStackRef;
 
-            pv_get_error_stack(out messageStackRef, out messageStackDepth);
+            PorcupineStatus status = pv_get_error_stack(out messageStackRef, out messageStackDepth);
+            if (status != PorcupineStatus.SUCCESS)
+            {
+                throw PorcupineStatusToException(status, "Unable to get Porcupine error state");
+            }
 
             int elementSize = Marshal.SizeOf(typeof(IntPtr));
             string[] messageStack = new string[messageStackDepth];
