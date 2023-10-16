@@ -194,20 +194,17 @@ impl PorcupineError {
 }
 
 impl std::fmt::Display for PorcupineError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         let mut message_string = String::new();
         message_string.push_str(&format!("{} with status '{:?}'", self.message, self.status));
 
-        if self.message_stack.is_empty() {
-            message_string.push('.');
-            write!(f, "{}", message_string)
-        } else {
+        if !self.message_stack.is_empty() {
             message_string.push(':');
             for x in 0..self.message_stack.len() {
                 message_string.push_str(&format!("  [{}] {}\n", x, self.message_stack[x]))
-            }
-            write!(f, "{}", message_string)
+            };
         }
+        write!(f, "{}", message_string)
     }
 }
 
