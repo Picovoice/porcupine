@@ -103,6 +103,7 @@
     "**/*.unity",
     "**/manifest.json",
     "../../../demo/unity/images/image_attribution.md",
+    "**/binding/unity/ProjectSettings/**/*",
 
     // 3rd party
     "../../../demo/respeaker/ppnrespeakerdemo/apa102.py",
