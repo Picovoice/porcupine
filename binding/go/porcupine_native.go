@@ -1,4 +1,4 @@
-// Copyright 2021-2022 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -125,6 +125,29 @@ void pv_porcupine_delete_wrapper(void *f, void *object) {
 	return ((pv_porcupine_delete_func) f)(object);
 }
 
+typedef void (*pv_set_sdk_func)(const char *);
+
+void pv_set_sdk_wrapper(void *f, const char *sdk) {
+	return ((pv_set_sdk_func) f)(sdk);
+}
+
+typedef int32_t (*pv_get_error_stack_func)(char ***, int32_t *);
+
+int32_t pv_get_error_stack_wrapper(
+	void *f,
+	char ***message_stack,
+	int32_t *message_stack_depth) {
+	return ((pv_get_error_stack_func) f)(message_stack, message_stack_depth);
+}
+
+typedef void (*pv_free_error_stack_func)(char **);
+
+void pv_free_error_stack_wrapper(
+	void *f,
+	char **message_stack) {
+	return ((pv_free_error_stack_func) f)(message_stack);
+}
+
 */
 import "C"
 
@@ -140,6 +163,7 @@ type nativePorcupineInterface interface {
 	nativeSampleRate()
 	nativeFrameLength()
 	nativeVersion()
+	nativeGetErrorStack()
 }
 
 type nativePorcupineType struct {
@@ -150,6 +174,9 @@ type nativePorcupineType struct {
 	pv_porcupine_version_ptr      unsafe.Pointer
 	pv_porcupine_frame_length_ptr unsafe.Pointer
 	pv_porcupine_delete_ptr       unsafe.Pointer
+	pv_set_sdk_ptr                unsafe.Pointer
+	pv_get_error_stack_ptr        unsafe.Pointer
+	pv_free_error_stack_ptr       unsafe.Pointer
 }
 
 func (np *nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus) {
@@ -172,11 +199,18 @@ func (np *nativePorcupineType) nativeInit(porcupine *Porcupine) (status PvStatus
 	np.pv_porcupine_version_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_version"))
 	np.pv_porcupine_frame_length_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_frame_length"))
 	np.pv_porcupine_delete_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_porcupine_delete"))
+	np.pv_set_sdk_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_set_sdk"))
+	np.pv_get_error_stack_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_get_error_stack"))
+	np.pv_free_error_stack_ptr = C.load_symbol(np.libraryHandle, C.CString("pv_free_error_stack"))
 
 	for i, s := range porcupine.KeywordPaths {
 		keywordsC[i] = C.CString(s)
 		defer C.free(unsafe.Pointer(keywordsC[i]))
 	}
+
+	C.pv_set_sdk_wrapper(
+		np.pv_set_sdk_ptr,
+		C.CString("go"))
 
 	var ret = C.pv_porcupine_init_wrapper(
 		np.pv_porcupine_init_ptr,
@@ -215,4 +249,32 @@ func (np *nativePorcupineType) nativeFrameLength() (frameLength int) {
 
 func (np *nativePorcupineType) nativeVersion() (version string) {
 	return C.GoString(C.pv_porcupine_version_wrapper(np.pv_porcupine_version_ptr))
+}
+
+func (np *nativePorcupineType) nativeGetErrorStack() (status PvStatus, messageStack []string) {
+	var messageStackDepthRef C.int32_t
+	var messageStackRef **C.char
+
+	var ret = C.pv_get_error_stack_wrapper(np.pv_get_error_stack_ptr,
+		&messageStackRef,
+		&messageStackDepthRef)
+
+	if PvStatus(ret) != SUCCESS {
+		return PvStatus(ret), []string{}
+	}
+		
+	defer C.pv_free_error_stack_wrapper(
+		np.pv_free_error_stack_ptr,
+		messageStackRef)
+
+	messageStackDepth := int(messageStackDepthRef)
+	messageStackSlice := (*[1 << 28]*C.char)(unsafe.Pointer(messageStackRef))[:messageStackDepth:messageStackDepth]
+
+	messageStack = make([]string, messageStackDepth)
+
+	for i := 0; i < messageStackDepth; i++ {
+		messageStack[i] = C.GoString(messageStackSlice[i])
+	}
+
+	return PvStatus(ret), messageStack
 }
