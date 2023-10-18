@@ -70,29 +70,30 @@ jobs:
     - name: Check Results
       run: sed -n 2p unityresults.xml | grep 'result="Passed"'
 
-  playtest-mac:
-    name: Run PlayTest unit tests on macOS
-    runs-on: pv-ios
+  # NOTE: fix later as mac runner halts unity test app in between runs. Running locally works fine as well as first try after restarting runner.
+  # playtest-mac:
+  #   name: Run PlayTest unit tests on macOS
+  #   runs-on: pv-ios
 
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: 'recursive'
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       submodules: 'recursive'
 
-    - name: Pre-build dependencies
-      run: |
-        ./copy.sh
-        ./copy_test_resources.sh
+  #   - name: Pre-build dependencies
+  #     run: |
+  #       ./copy.sh
+  #       ./copy_test_resources.sh
 
-    - name: Inject AppID
-      run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
-        Assets/Porcupine/Tests/Integration.cs
+  #   - name: Inject AppID
+  #     run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+  #       Assets/Porcupine/Tests/Integration.cs
 
-    - name: Run tests
-      run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
+  #   - name: Run tests
+  #     run: /Applications/Unity/Hub/Editor/2021.3.31f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform StandaloneOSX -logFile -
 
-    - name: Check Results
-      run: sed -n 2p unityresults.xml | grep 'result="Passed"'
+  #   - name: Check Results
+  #     run: sed -n 2p unityresults.xml | grep 'result="Passed"'
 
   playtest-windows:
     name: Run PlayTest unit tests on Windows
