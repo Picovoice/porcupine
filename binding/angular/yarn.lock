@@ -1783,10 +1783,8 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/porcupine-web@~2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.2.0.tgz#d02fe8dc3ef7fd4baa8516dd45703f40c09adc8a"
-  integrity sha512-Sd6dK0fkNbZ/+XTm05vLN5E6LHHPY4vvHLSzdTF5nKDD52JBtd6g9WKpBjuHmfoF3YxqdyxqjeBFNdLtMFjZsQ==
+"@picovoice/porcupine-web@file:../web":
+  version "3.0.0"
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
@@ -1797,10 +1795,12 @@
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.6.tgz#4769283b82f64d3625794f7290d47c6d477a3f41"
-  integrity sha512-Ykfy6hrWFpOklfeN7rSJb5CGim8wDu7J+l8imRYyQxWHWVV1Wu5S8FW69zkJmwiDG2Wx+M2+h0SCMS+hNM5qow==
+"@picovoice/web-voice-processor@~4.0.8":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.8.tgz#95247a5393cac4d16490a53feb0f413c902ee5fa"
+  integrity sha512-/OSHn8YKniMo0jP5EwGimLOxvLQl/Yx4Hs+LydNmoSu4hfBrDdzhhfhB79118uDiK4aUUKx2A/RAD9TG0mQ/ng==
+  dependencies:
+    "@picovoice/web-utils" "=1.3.1"
 
 "@rollup/plugin-json@^4.1.0":
   version "4.1.0"
@@ -1956,15 +1956,15 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
   integrity sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==
 
-"@types/node@^12.11.1":
-  version "12.20.55"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.55.tgz#c329cbd434c42164f846b909bd6f85b5537f6240"
-  integrity sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==
-
 "@types/node@^14.14.31":
   version "14.18.36"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.36.tgz#c414052cb9d43fab67d679d5f3c641be911f5835"
   integrity sha512-FXKWbsJ6a1hIrRxv+FoukuHnGTgEzKYGi7kilfMae96AL9UNkPFNWJEEYWzdRI9ooIkbr4AKldyuSTLql06vLQ==
+
+"@types/node@^18.11.9":
+  version "18.18.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.18.6.tgz#26da694f75cdb057750f49d099da5e3f3824cb3e"
+  integrity sha512-wf3Vz+jCmOQ2HV1YUJuCWdL64adYxumkrxtc+H1VUQlnQI04+5HtH+qZCOE21lBE7gIrt+CwX2Wv8Acrw5Ak6w==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
