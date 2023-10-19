@@ -4,6 +4,9 @@ buildscript {
     google()
     jcenter()
     mavenCentral()
+    maven {
+      url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1266'
+    }
   }
 
   dependencies {
@@ -120,5 +123,5 @@ repositories {
 dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
-  implementation 'ai.picovoice:porcupine-android:2.2.2'
+  implementation 'ai.picovoice:porcupine-android:3.0.0'
 }

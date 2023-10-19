@@ -35,8 +35,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
+    # ************ REMOVE AFTER RELEASE *****************
+    - name: Build and package binding
+      working-directory: binding/react-native
+      run: yarn && yarn pkg
+
+    - name: Add to demo
+      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.0.tgz
+    # ***************************************************
 
     - name: Install dependencies
       run: yarn android-install
@@ -63,8 +69,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
+    # ************ REMOVE AFTER RELEASE *****************
+    - name: Build and package binding
+      working-directory: binding/react-native
+      run: yarn && yarn pkg
+
+    - name: Add to demo
+      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.0.tgz
+    # ***************************************************
 
     - name: Install dependencies
       run: yarn ios-install
