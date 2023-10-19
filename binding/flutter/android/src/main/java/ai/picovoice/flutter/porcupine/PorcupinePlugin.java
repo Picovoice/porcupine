@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -45,6 +45,8 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
         flutterContext = flutterPluginBinding.getApplicationContext();
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "porcupine");
         channel.setMethodCallHandler(this);
+
+        Porcupine.setSdk("flutter");
     }
 
     @Override

@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -28,6 +28,8 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
 
         let methodChannel = FlutterMethodChannel(name: "porcupine", binaryMessenger: registrar.messenger())
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
+
+        Porcupine.setSdk(sdk: "flutter")
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
