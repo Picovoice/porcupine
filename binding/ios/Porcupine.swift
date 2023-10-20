@@ -101,6 +101,8 @@ public class Porcupine {
             keywordPathsArgs[i] = try getResourcePath(keywordPathsArgs[i])
         }
 
+        pv_set_sdk(self.sdk)
+
         let status = pv_porcupine_init(
             accessKey,
             modelPathArg,
