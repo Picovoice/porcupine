@@ -39,6 +39,7 @@ export class PorcupineWorker {
 
   private static _wasm: string;
   private static _wasmSimd: string;
+  private static _sdk: string = "web";
 
   private constructor(worker: Worker, version: string, frameLength: number, sampleRate: number) {
     this._worker = worker;
@@ -165,6 +166,7 @@ export class PorcupineWorker {
       sensitivities: sensitivities,
       wasm: this._wasm,
       wasmSimd: this._wasmSimd,
+      sdk: this._sdk,
       options: workerOptions,
     });
 
@@ -189,6 +191,10 @@ export class PorcupineWorker {
     if (this._wasmSimd === undefined) {
       this._wasmSimd = wasmSimd;
     }
+  }
+
+  public static setSdk(sdk: string): void {
+    PorcupineWorker._sdk = sdk;
   }
 
   /**

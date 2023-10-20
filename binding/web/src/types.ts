@@ -71,6 +71,7 @@ export type PorcupineWorkerInitRequest = {
   sensitivities: Float32Array;
   wasm: string;
   wasmSimd: string;
+  sdk: string;
   options: PorcupineOptions;
 };
 

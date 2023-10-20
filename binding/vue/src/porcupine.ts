@@ -102,6 +102,7 @@ export function usePorcupine(): PorcupineVue {
 
     try {
       if (!porcupineRef.value) {
+        PorcupineWorker.setSdk('vue');
         porcupineRef.value = await PorcupineWorker.create(
           accessKey,
           keywords,
