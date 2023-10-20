@@ -77,7 +77,7 @@ PV_API pv_status_t pv_get_error_stack(
  */
 PV_API void pv_free_error_stack(char **message_stack);
 
-PV_API void PV_MOCKABLE(pv_set_sdk)(const char *sdk);
+PV_API void pv_set_sdk(const char *sdk);
 
 #ifdef __cplusplus
 }
