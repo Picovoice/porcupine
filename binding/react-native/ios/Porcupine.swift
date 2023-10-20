@@ -17,7 +17,7 @@ class PvPorcupine: NSObject {
 
     override init() {
         super.init()
-        Porcupine.setSdk(sdk: "flutter")
+        Porcupine.setSdk(sdk: "react-native")
     }
 
     @objc(fromBuiltInKeywords:modelPath:keywords:sensitivities:resolver:rejecter:)
