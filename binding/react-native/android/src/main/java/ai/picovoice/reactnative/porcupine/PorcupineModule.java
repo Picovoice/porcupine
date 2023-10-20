@@ -37,6 +37,8 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     public PorcupineModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+
+        Porcupine.setSdk("react-native");
     }
 
     @Override
