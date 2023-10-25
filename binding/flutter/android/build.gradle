@@ -5,9 +5,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1266/'
-        }
     }
 
     dependencies {
@@ -19,9 +16,6 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
-        maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1266/'
-        }
     }
 }
 
