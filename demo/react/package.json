@@ -4,7 +4,7 @@
   "private": true,
   "description": "Porcupine React demo (made with Create React App)",
   "dependencies": {
-    "@picovoice/porcupine-react": "file:../../binding/react",
+    "@picovoice/porcupine-react": "~3.0.0",
     "@picovoice/web-voice-processor": "~4.0.8",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.17",

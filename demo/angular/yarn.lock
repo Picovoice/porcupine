@@ -1610,14 +1610,18 @@
     read-package-json-fast "^3.0.0"
     which "^3.0.0"
 
-"@picovoice/porcupine-angular@file:../../binding/angular/dist/porcupine-angular":
+"@picovoice/porcupine-angular@~3.0.0":
   version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-3.0.0.tgz#b5d98d6c2c842d750ae4d901d55424382524fe7c"
+  integrity sha512-6Deve06puL8litKur+GkFsWMSzQy9KLxYVkMxQ5zxwamDxN79uEkro3W6C0Q7ClJbrmwjcGYW3FDY2RPP15xOQ==
   dependencies:
-    "@picovoice/porcupine-web" "file:../../../../../.cache/yarn/v6/npm-@picovoice-porcupine-angular-3.0.0-8be923e1-11ef-42b8-8368-9d3f20970fe3-1697751966841/web"
+    "@picovoice/porcupine-web" "=3.0.0"
     tslib "^2.3.0"
 
-"@picovoice/porcupine-web@file:../../binding/web":
+"@picovoice/porcupine-web@=3.0.0":
   version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.0.tgz#e97e5e90b37af2b4938637efcaaf3cedc9fad6a3"
+  integrity sha512-zwhdh2YHy867wwp6G9YQU0q94VCveOQAAjeeDNFK/poJVtCaVc56kFH7wW0odkJ6s49ob8rQwOBdg7iPpZD0Fw==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 

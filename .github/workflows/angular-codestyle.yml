@@ -30,14 +30,6 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Build Local Web SDK
-      run: yarn && yarn copywasm && yarn copyppn && yarn build
-      working-directory: binding/web
-
-    - name: Build Local Angular SDK
-      run: yarn && yarn build
-      working-directory: binding/angular
-
     - name: Run Binding Linter
       run: yarn && yarn lint
       working-directory: binding/angular
