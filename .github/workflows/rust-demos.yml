@@ -43,10 +43,6 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
-    
-    - name: Rust build binding
-      run: bash copy.sh && cargo build --verbose
-      working-directory: binding/rust
 
     - name: Rust build micdemo
       run: cargo build --verbose
@@ -75,10 +71,6 @@ jobs:
       with:
         toolchain: nightly
         override: true
-    
-    - name: Rust build binding
-      run: bash copy.sh && cargo build --verbose
-      working-directory: binding/rust
 
     - name: Rust build micdemo
       run: cargo build --verbose
