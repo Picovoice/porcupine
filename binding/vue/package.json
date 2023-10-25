@@ -20,7 +20,7 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "file:../web"
+    "@picovoice/porcupine-web": "=3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
