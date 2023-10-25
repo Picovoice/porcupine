@@ -50,6 +50,6 @@
 ## [2.2.2] - 2023-08-24
 * Update native packages
 
-## [3.0.0] - 2023-10-11
+## [3.0.0] - 2023-10-25
 * Engine improvements
 * Improved error reporting
