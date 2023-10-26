@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "React component for Porcupine Web SDK",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -36,7 +36,7 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=3.0.0"
+    "@picovoice/porcupine-web": "=3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
