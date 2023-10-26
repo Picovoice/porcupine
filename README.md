@@ -1797,71 +1797,71 @@ pv_porcupine_delete(handle);
 
 ### v2.0.0 - Nov 25th, 2021
 
-- Improved accuracy.
-- Added Rust SDK.
-- macOS arm64 support.
-- Added NodeJS support for Windows, NVIDIA Jetson Nano, and BeagleBone.
-- Added .NET support for NVIDIA Jetson Nano and BeagleBone.
-- Runtime optimization.
+- Improved accuracy
+- Added Rust SDK
+- macOS arm64 support
+- Added NodeJS support for Windows, NVIDIA Jetson Nano, and BeagleBone
+- Added .NET support for NVIDIA Jetson Nano and BeagleBone
+- Runtime optimization
 
 ### v1.9.0 - December 2nd, 2020
 
-- Added React Native SDK.
-- Added Java SDK.
-- Added .NET SDK.
-- Added NodeJS SDK.
-- Improved accuracy.
-- Runtime optimization.
+- Added React Native SDK
+- Added Java SDK
+- Added .NET SDK
+- Added NodeJS SDK
+- Improved accuracy
+- Runtime optimization
 
 ### v1.8.0 - May 27th, 2020
 
-- Improved accuracy.
-- Runtime optimization.
+- Improved accuracy
+- Runtime optimization
 
 ### v1.7.0 - Feb 13th, 2020
 
-- Improved accuracy.
-- Runtime optimization.
-- Added support for Raspberry Pi 4.
-- Added service-based Android demo application.
-- Added C demo applications.
-- Updated documentation.
+- Improved accuracy
+- Runtime optimization
+- Added support for Raspberry Pi 4
+- Added service-based Android demo application
+- Added C demo applications
+- Updated documentation
 
 ### v1.6.0 - April 25th, 2019
 
-- Improved accuracy.
-- Runtime optimization.
-- Added support for BeagleBone.
-- iOS build can run on simulator now.
+- Improved accuracy
+- Runtime optimization
+- Added support for BeagleBone
+- iOS build can run on simulator now
 
 ### v1.5.0 - November 13, 2018
 
-- Improved accuracy.
-- Runtime optimization.
-- Added support for running within web browsers (WebAssembly).
+- Improved accuracy
+- Runtime optimization
+- Added support for running within web browsers (WebAssembly)
 
 ### v1.4.0 - July 20, 2018
 
-- Improved accuracy.
+- Improved accuracy
 - Runtime optimizations.
-- Updated documentation.
+- Updated documentation
 
 ### v1.3.0 - June 19, 2018
 
-- Improved accuracy.
+- Improved accuracy
 - Runtime optimizations
 
 ### v1.2.0 - April 21, 2018
 
-- Runtime optimizations.
+- Runtime optimizations
 
 ### v1.1.0 - April 11, 2018
 
-- Added multiple command detection capability.
+- Added multiple command detection capability
 
 ### v1.0.0 - March 13, 2018
 
-- Initial release.
+- Initial release
 
 ## FAQ
 
