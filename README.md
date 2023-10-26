@@ -1773,6 +1773,16 @@ pv_porcupine_delete(handle);
 
 ## Releases
 
+### v3.0.0 - October 26th, 2023
+
+- Improvements to error reporting
+- Upgrades to authorization and authentication system
+- Various bug fixes and improvements
+- Added Farsi support for microcontrollers
+- Node min support bumped to 16
+- Unity editor min support bumped to 2021
+- Patches to .NET support
+
 ### v2.2.0 - April 12th, 2023
 
 - Added language support for Arabic, Dutch, Hindi, Mandarin, Polish, Russian, Swedish and Vietnamese
