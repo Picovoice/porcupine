@@ -77,7 +77,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        working-directory: demo/dotnet-vui/
+        working-directory: demo/dotnet-vui/AvaloniaVUI
 
     strategy:
       matrix:

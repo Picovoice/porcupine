@@ -1,6 +1,6 @@
 {
   "name": "porcupine-web-vue-demo",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "private": true,
@@ -12,7 +12,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@picovoice/porcupine-vue": "~2.2.1",
+    "@picovoice/porcupine-vue": "~3.0.0",
     "@picovoice/web-voice-processor": "~4.0.8",
     "vue": "^3.2.45"
   },

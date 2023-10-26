@@ -12,10 +12,10 @@ PODS:
   - fmt (6.2.1)
   - glog (0.3.5)
   - ios-voice-processor (1.1.0)
-  - Porcupine-iOS (2.2.1):
+  - Porcupine-iOS (3.0.0):
     - ios-voice-processor (~> 1.1.0)
-  - porcupine-react-native (2.2.1):
-    - Porcupine-iOS (~> 2.2.1)
+  - porcupine-react-native (3.0.0):
+    - Porcupine-iOS (~> 3.0.0)
     - React
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -418,8 +418,8 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
-  Porcupine-iOS: df8e4a63d787b6c16bd5f988fd0f2c29a249a4bd
-  porcupine-react-native: c0ca3b5112d55af5aa2c2ca0267e082e2dfb4dda
+  Porcupine-iOS: 517158e02ac294dda15b713a3c6f74a9e877090c
+  porcupine-react-native: e74ff3c50f8a1ec956b8aa7a8797821b0f9e8b85
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 530916cd48c5f7cf1fc16966ad5ea01638ca4799
   RCTTypeSafety: 5fb4cb3080efd582e5563c3e9a0e459fc51396c5

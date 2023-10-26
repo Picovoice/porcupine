@@ -1,4 +1,4 @@
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	porcupine "github.com/Picovoice/porcupine/binding/go/v2"
+	porcupine "github.com/Picovoice/porcupine/binding/go/v3"
 	"github.com/go-audio/audio"
 	"github.com/go-audio/wav"
 )

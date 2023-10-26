@@ -1,6 +1,6 @@
 [package]
 name = "pv_porcupine_micdemo"
-version = "0.1.1"
+version = "3.0.0"
 edition = "2018"
 
 [dependencies]
@@ -9,5 +9,5 @@ clap = "2.33.3"
 ctrlc = "3.1.9"
 hound = "3.4.0"
 itertools = "0.10.1"
-pv_porcupine = "=2.2.1"
+pv_porcupine = "=3.0.0"
 pv_recorder = "=1.2.1"

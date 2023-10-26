@@ -111,9 +111,6 @@ namespace Pv
             out IntPtr handle);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int pv_sample_rate();
-
-        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern void pv_porcupine_delete(IntPtr handle);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
@@ -127,6 +124,18 @@ namespace Pv
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern int pv_porcupine_frame_length();
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int pv_sample_rate();
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void pv_set_sdk(string sdk);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern PorcupineStatus pv_get_error_stack(out IntPtr messageStack, out int messageStackDepth);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void pv_free_error_stack(IntPtr messageStack);
 
         /// <summary>
         /// Creates an instance of the Porcupine wake word engine from built-in keywords.
@@ -243,6 +252,8 @@ namespace Pv
                 keywordPathsPtr[i] = Utils.GetPtrFromUtf8String(keywordPathsArray[i]);
             }
 
+            pv_set_sdk("dotnet");
+
             PorcupineStatus status = pv_porcupine_init(
                 accessKeyPtr,
                 modelPathPtr,
@@ -260,7 +271,8 @@ namespace Pv
 
             if (status != PorcupineStatus.SUCCESS)
             {
-                throw PorcupineStatusToException(status, "Porcupine init failed.");
+                string[] messageStack = GetMessageStack();
+                throw PorcupineStatusToException(status, "Porcupine init failed", messageStack);
             }
 
             Version = Marshal.PtrToStringAnsi(pv_porcupine_version());
@@ -291,7 +303,8 @@ namespace Pv
             PorcupineStatus status = pv_porcupine_process(_libraryPointer, pcm, out keywordIndex);
             if (status != PorcupineStatus.SUCCESS)
             {
-                throw PorcupineStatusToException(status, "Porcupine process failed.");
+                string[] messageStack = GetMessageStack();
+                throw PorcupineStatusToException(status, "Porcupine process failed", messageStack);
             }
 
             return keywordIndex;
@@ -320,37 +333,45 @@ namespace Pv
         /// Coverts status codes to relevant .NET exceptions
         /// </summary>
         /// <param name="status">Picovoice library status code.</param>
+        /// <param name="message">Default error message.</param>
+        /// <param name="messageStack">Error stack returned from Picovoice library.</param>
         /// <returns>.NET exception</returns>
         private static PorcupineException PorcupineStatusToException(
             PorcupineStatus status,
-            string message = "")
+            string message = "",
+            string[] messageStack = null)
         {
+            if (messageStack == null)
+            {
+                messageStack = new string[] { };
+            }
+
             switch (status)
             {
                 case PorcupineStatus.OUT_OF_MEMORY:
-                    return new PorcupineMemoryException(message);
+                    return new PorcupineMemoryException(message, messageStack);
                 case PorcupineStatus.IO_ERROR:
-                    return new PorcupineIOException(message);
+                    return new PorcupineIOException(message, messageStack);
                 case PorcupineStatus.INVALID_ARGUMENT:
-                    return new PorcupineInvalidArgumentException(message);
+                    return new PorcupineInvalidArgumentException(message, messageStack);
                 case PorcupineStatus.STOP_ITERATION:
-                    return new PorcupineStopIterationException(message);
+                    return new PorcupineStopIterationException(message, messageStack);
                 case PorcupineStatus.KEY_ERROR:
-                    return new PorcupineKeyException(message);
+                    return new PorcupineKeyException(message, messageStack);
                 case PorcupineStatus.INVALID_STATE:
-                    return new PorcupineInvalidStateException(message);
+                    return new PorcupineInvalidStateException(message, messageStack);
                 case PorcupineStatus.RUNTIME_ERROR:
-                    return new PorcupineRuntimeException(message);
+                    return new PorcupineRuntimeException(message, messageStack);
                 case PorcupineStatus.ACTIVATION_ERROR:
-                    return new PorcupineActivationException(message);
+                    return new PorcupineActivationException(message, messageStack);
                 case PorcupineStatus.ACTIVATION_LIMIT_REACHED:
-                    return new PorcupineActivationLimitException(message);
+                    return new PorcupineActivationLimitException(message, messageStack);
                 case PorcupineStatus.ACTIVATION_THROTTLED:
-                    return new PorcupineActivationThrottledException(message);
+                    return new PorcupineActivationThrottledException(message, messageStack);
                 case PorcupineStatus.ACTIVATION_REFUSED:
-                    return new PorcupineActivationRefusedException(message);
+                    return new PorcupineActivationRefusedException(message, messageStack);
                 default:
-                    return new PorcupineException("Unmapped error code returned from Porcupine.");
+                    return new PorcupineException("Unmapped error code returned from Porcupine.", messageStack);
             }
         }
 
@@ -372,6 +393,30 @@ namespace Pv
         ~Porcupine()
         {
             Dispose();
+        }
+
+        private string[] GetMessageStack()
+        {
+            int messageStackDepth;
+            IntPtr messageStackRef;
+
+            PorcupineStatus status = pv_get_error_stack(out messageStackRef, out messageStackDepth);
+            if (status != PorcupineStatus.SUCCESS)
+            {
+                throw PorcupineStatusToException(status, "Unable to get Porcupine error state");
+            }
+
+            int elementSize = Marshal.SizeOf(typeof(IntPtr));
+            string[] messageStack = new string[messageStackDepth];
+
+            for (int i = 0; i < messageStackDepth; i++)
+            {
+                messageStack[i] = Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(messageStackRef, i * elementSize));
+            }
+
+            pv_free_error_stack(messageStackRef);
+
+            return messageStack;
         }
     }
 }

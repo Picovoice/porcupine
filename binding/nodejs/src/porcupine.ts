@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2022 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -132,9 +132,12 @@ export default class Porcupine {
     }
 
     const pvPorcupine = require(libraryPath); // eslint-disable-line
+    this._pvPorcupine = pvPorcupine;
 
     let porcupineHandleAndStatus: PorcupineHandleAndStatus | null = null;
     try {
+      pvPorcupine.set_sdk("nodejs");
+
       porcupineHandleAndStatus = pvPorcupine.init(
         accessKey,
         modelPath,
@@ -143,16 +146,15 @@ export default class Porcupine {
         sensitivities
       );
     } catch (err: any) {
-      pvStatusToException(<PvStatus>err.code, err);
+      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err);
     }
 
     const status = porcupineHandleAndStatus!.status;
     if (status !== PvStatus.SUCCESS) {
-      pvStatusToException(status, "Porcupine failed to initialize");
+      this.handlePvStatus(status, "Porcupine failed to initialize");
     }
 
     this._handle = porcupineHandleAndStatus!.handle;
-    this._pvPorcupine = pvPorcupine;
     this._frameLength = pvPorcupine.frame_length();
     this._sampleRate = pvPorcupine.sample_rate();
     this._version = pvPorcupine.version();
@@ -223,12 +225,12 @@ export default class Porcupine {
     try {
       keywordAndStatus = this._pvPorcupine.process(this._handle, frameBuffer);
     } catch (err: any) {
-      pvStatusToException(<PvStatus>err.code, err);
+      pvStatusToException(PvStatus[err.code as keyof typeof PvStatus], err);
     }
 
     const status = keywordAndStatus!.status;
     if (status !== PvStatus.SUCCESS) {
-      pvStatusToException(status, "Porcupine failed to process the frame");
+      this.handlePvStatus(status, "Porcupine failed to process");
     }
     const keywordIndex = keywordAndStatus!.keyword_index;
 
@@ -248,6 +250,15 @@ export default class Porcupine {
     } else {
       // eslint-disable-next-line no-console
       console.warn("Porcupine is not initialized; nothing to destroy");
+    }
+  }
+
+  private handlePvStatus(status: PvStatus, message: string): void {
+    const errorObject = this._pvPorcupine.get_error_stack();
+    if (errorObject.status === PvStatus.SUCCESS) {
+      pvStatusToException(status, message, errorObject.message_stack);
+    } else {
+      pvStatusToException(status, "Unable to get Porcupine error state");
     }
   }
 }

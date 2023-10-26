@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2022 Picovoice Inc.
+    Copyright 2018-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -31,6 +31,8 @@ public class Porcupine {
     public static final String MODEL_PATH;
     public static final HashMap<BuiltInKeyword, String> BUILT_IN_KEYWORD_PATHS;
 
+    private static String sdk = "java";
+
     static {
         LIBRARY_PATH = Utils.getPackagedLibraryPath();
         MODEL_PATH = Utils.getPackagedModelPath();
@@ -38,6 +40,10 @@ public class Porcupine {
     }
 
     private long handle;
+
+    public static void setSdk(String sdk) {
+        Porcupine.sdk = sdk;
+    }
 
     /**
      * Constructor.
@@ -62,6 +68,8 @@ public class Porcupine {
         } catch (Exception exception) {
             throw new PorcupineException(exception);
         }
+        PorcupineNative.setSdk(Porcupine.sdk);
+
         handle = PorcupineNative.init(
                 accessKey,
                 modelPath,

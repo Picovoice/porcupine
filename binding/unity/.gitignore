@@ -72,3 +72,4 @@ UserSettings
 .vsconfig
 Assets/StreamingAssets/test/
 Assets/InitTestScene*
+.vscode

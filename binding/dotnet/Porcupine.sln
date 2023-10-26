@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30517.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Porcupine", "Porcupine\Porcupine.csproj", "{C7DD584F-DF0B-4FD4-B7BD-F64483C72F79}"
 EndProject
@@ -21,7 +21,6 @@ Global
 		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Debug|AnyCPU.Build.0 = Debug|Any CPU
 		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Release|AnyCPU.ActiveCfg = Release|Any CPU
 		{3179843B-9F5B-4BDB-88BA-602C50A5F7DF}.Release|AnyCPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

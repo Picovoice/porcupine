@@ -160,6 +160,8 @@ button {
   border-left: 5px solid red;
   font-family: monospace;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  white-space: pre;
+  overflow-wrap: break-word;
 }
 </style>

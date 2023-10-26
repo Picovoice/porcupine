@@ -54,6 +54,7 @@ export class PorcupineService implements OnDestroy {
 
     try {
       if (!this.porcupine) {
+        PorcupineWorker.setSdk('angular');
         this.porcupine = await PorcupineWorker.create(
           accessKey,
           keywords,

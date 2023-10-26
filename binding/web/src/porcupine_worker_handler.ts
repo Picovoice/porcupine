@@ -16,7 +16,9 @@ import { Porcupine } from './porcupine';
 import {
   PorcupineWorkerRequest,
   PorcupineDetection,
+  PvStatus
 } from './types';
+import { PorcupineError } from "./porcupine_errors";
 
 let porcupine: Porcupine | null = null;
 
@@ -27,10 +29,12 @@ const keywordDetectionCallback = (porcupineDetection: PorcupineDetection): void 
   });
 };
 
-const processErrorCallback = (error: Error): void => {
+const processErrorCallback = (error: PorcupineError): void => {
   self.postMessage({
     command: 'error',
-    message: error.message,
+    status: error.status,
+    shortMessage: error.shortMessage,
+    messageStack: error.messageStack
   });
 };
 
@@ -46,13 +50,15 @@ self.onmessage = async function(
       if (porcupine !== null) {
         self.postMessage({
           command: 'error',
-          message: 'Porcupine already initialized',
+          status: PvStatus.INVALID_STATE,
+          shortMessage: 'Porcupine already initialized',
         });
         return;
       }
       try {
         Porcupine.setWasm(event.data.wasm);
         Porcupine.setWasmSimd(event.data.wasmSimd);
+        Porcupine.setSdk(event.data.sdk);
         porcupine = await Porcupine._init(
           event.data.accessKey,
           event.data.keywordPaths,
@@ -70,7 +76,9 @@ self.onmessage = async function(
       } catch (e: any) {
         self.postMessage({
           command: 'error',
-          message: e.message,
+          status: PvStatus.RUNTIME_ERROR,
+          shortMessage: e.shortMessage,
+          messageStack: e.messageStack
         });
       }
       break;
@@ -78,7 +86,8 @@ self.onmessage = async function(
       if (porcupine === null) {
         self.postMessage({
           command: 'error',
-          message: 'Porcupine not initialized',
+          status: PvStatus.INVALID_STATE,
+          shortMessage: 'Porcupine not initialized',
         });
         return;
       }
@@ -97,8 +106,9 @@ self.onmessage = async function(
     default:
       self.postMessage({
         command: 'failed',
+        status: PvStatus.RUNTIME_ERROR,
         // @ts-ignore
-        message: `Unrecognized command: ${event.data.command}`,
+        shortMessage: `Unrecognized command: ${event.data.command}`,
       });
   }
 };

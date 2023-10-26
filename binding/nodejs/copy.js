@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,7 +10,7 @@
 //
 "use strict";
 
-const mkdirp = require("mkdirp");
+const { mkdirp } = require("mkdirp");
 const ncp = require("ncp").ncp;
 
 console.log("Copying library files...");

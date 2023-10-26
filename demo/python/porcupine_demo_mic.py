@@ -93,7 +93,7 @@ def main():
             sensitivities=args.sensitivities)
     except pvporcupine.PorcupineInvalidArgumentError as e:
         print("One or more arguments provided to Porcupine is invalid: ", args)
-        print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % args.access_key)
+        print(e)
         raise e
     except pvporcupine.PorcupineActivationError as e:
         print("AccessKey activation error")

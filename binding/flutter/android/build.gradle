@@ -1,5 +1,5 @@
 group 'ai.picovoice.flutter.porcupine'
-version '2.2.2'
+version '3.0.0'
 
 buildscript {
     repositories {
@@ -43,5 +43,5 @@ android {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-android:2.2.2'
+    implementation 'ai.picovoice:porcupine-android:3.0.0'
 }

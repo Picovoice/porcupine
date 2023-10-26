@@ -15,7 +15,27 @@ from typing import Sequence
 
 
 class PorcupineError(Exception):
-    pass
+    def __init__(self, message: str = '', message_stack: Sequence[str] = None):
+        super().__init__(message)
+
+        self._message = message
+        self._message_stack = list() if message_stack is None else message_stack
+
+    def __str__(self):
+        message = self._message
+        if len(self._message_stack) > 0:
+            message += ':'
+            for i in range(len(self._message_stack)):
+                message += '\n  [%d] %s' % (i, self._message_stack[i])
+        return message
+
+    @property
+    def message(self) -> str:
+        return self._message
+
+    @property
+    def message_stack(self) -> Sequence[str]:
+        return self._message_stack
 
 
 class PorcupineMemoryError(PorcupineError):
@@ -141,6 +161,20 @@ class Porcupine(object):
             if not (0 <= x <= 1):
                 raise ValueError('A sensitivity value should be within [0, 1].')
 
+        set_sdk_func = library.pv_set_sdk
+        set_sdk_func.argtypes = [c_char_p]
+        set_sdk_func.restype = None
+
+        set_sdk_func('python'.encode('utf-8'))
+
+        self._get_error_stack_func = library.pv_get_error_stack
+        self._get_error_stack_func.argtypes = [POINTER(POINTER(c_char_p)), POINTER(c_int)]
+        self._get_error_stack_func.restype = self.PicovoiceStatuses
+
+        self._free_error_stack_func = library.pv_free_error_stack
+        self._free_error_stack_func.argtypes = [POINTER(c_char_p)]
+        self._free_error_stack_func.restype = None
+
         init_func = library.pv_porcupine_init
         init_func.argtypes = [
             c_char_p,
@@ -161,15 +195,17 @@ class Porcupine(object):
             (c_float * len(keyword_paths))(*sensitivities),
             byref(self._handle))
         if status is not self.PicovoiceStatuses.SUCCESS:
-            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]()
+            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status](
+                message='Initialization failed',
+                message_stack=self._get_error_stack())
 
         self._delete_func = library.pv_porcupine_delete
         self._delete_func.argtypes = [POINTER(self.CPorcupine)]
         self._delete_func.restype = None
 
-        self.process_func = library.pv_porcupine_process
-        self.process_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_short), POINTER(c_int)]
-        self.process_func.restype = self.PicovoiceStatuses
+        self._process_func = library.pv_porcupine_process
+        self._process_func.argtypes = [POINTER(self.CPorcupine), POINTER(c_short), POINTER(c_int)]
+        self._process_func.restype = self.PicovoiceStatuses
 
         version_func = library.pv_porcupine_version
         version_func.argtypes = []
@@ -200,9 +236,11 @@ class Porcupine(object):
             raise ValueError("Invalid frame length. expected %d but received %d" % (self.frame_length, len(pcm)))
 
         result = c_int()
-        status = self.process_func(self._handle, (c_short * len(pcm))(*pcm), byref(result))
+        status = self._process_func(self._handle, (c_short * len(pcm))(*pcm), byref(result))
         if status is not self.PicovoiceStatuses.SUCCESS:
-            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status]()
+            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status](
+                message='Processing failed',
+                message_stack=self._get_error_stack())
 
         return result.value
 
@@ -223,6 +261,21 @@ class Porcupine(object):
         """Audio sample rate accepted by Picovoice."""
 
         return self._sample_rate
+
+    def _get_error_stack(self) -> Sequence[str]:
+        message_stack_ref = POINTER(c_char_p)()
+        message_stack_depth = c_int()
+        status = self._get_error_stack_func(byref(message_stack_ref), byref(message_stack_depth))
+        if status is not self.PicovoiceStatuses.SUCCESS:
+            raise self._PICOVOICE_STATUS_TO_EXCEPTION[status](message='Unable to get Porcupine error state')
+
+        message_stack = list()
+        for i in range(message_stack_depth.value):
+            message_stack.append(message_stack_ref[i].decode('utf-8'))
+
+        self._free_error_stack_func(message_stack_ref)
+
+        return message_stack
 
 
 __all__ = [

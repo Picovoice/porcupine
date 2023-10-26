@@ -25,8 +25,11 @@ import {
   PorcupineWorkerInitResponse,
   PorcupineWorkerProcessResponse,
   PorcupineWorkerReleaseResponse,
+  PvStatus
 } from './types';
 import { BuiltInKeyword } from './built_in_keywords';
+
+import { pvStatusToException } from './porcupine_errors';
 
 export class PorcupineWorker {
   private readonly _worker: Worker;
@@ -36,6 +39,7 @@ export class PorcupineWorker {
 
   private static _wasm: string;
   private static _wasmSimd: string;
+  private static _sdk: string = "web";
 
   private constructor(worker: Worker, version: string, frameLength: number, sampleRate: number) {
     this._worker = worker;
@@ -126,7 +130,7 @@ export class PorcupineWorker {
                   break;
                 case 'failed':
                 case 'error':
-                  const error = new Error(ev.data.message);
+                  const error = pvStatusToException(ev.data.status, ev.data.shortMessage, ev.data.messageStack);
                   if (processErrorCallback) {
                     processErrorCallback(error);
                   } else {
@@ -136,18 +140,19 @@ export class PorcupineWorker {
                   break;
                 default:
                   // @ts-ignore
-                  processErrorCallback(new Error(`Unrecognized command: ${event.data.command}`));
+                  processErrorCallback(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
               }
             };
             resolve(new PorcupineWorker(worker, event.data.version, event.data.frameLength, event.data.sampleRate));
             break;
           case 'failed':
           case 'error':
-            reject(event.data.message);
+            const error = pvStatusToException(event.data.status, event.data.shortMessage, event.data.messageStack);
+            reject(error);
             break;
           default:
             // @ts-ignore
-            reject(`Unrecognized command: ${event.data.command}`);
+            reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
         }
       };
     });
@@ -161,6 +166,7 @@ export class PorcupineWorker {
       sensitivities: sensitivities,
       wasm: this._wasm,
       wasmSimd: this._wasmSimd,
+      sdk: this._sdk,
       options: workerOptions,
     });
 
@@ -185,6 +191,10 @@ export class PorcupineWorker {
     if (this._wasmSimd === undefined) {
       this._wasmSimd = wasmSimd;
     }
+  }
+
+  public static setSdk(sdk: string): void {
+    PorcupineWorker._sdk = sdk;
   }
 
   /**
@@ -214,11 +224,12 @@ export class PorcupineWorker {
             break;
           case 'failed':
           case 'error':
-            reject(event.data.message);
+            const error = pvStatusToException(event.data.status, event.data.shortMessage, event.data.messageStack);
+            reject(error);
             break;
           default:
             // @ts-ignore
-            reject(`Unrecognized command: ${event.data.command}`);
+            reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
         }
       };
     });

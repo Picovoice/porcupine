@@ -65,6 +65,7 @@ export const usePorcupine = (): {
 
     try {
       if (!porcupineRef.current) {
+        PorcupineWorker.setSdk('react');
         porcupineRef.current = await PorcupineWorker.create(
           accessKey,
           keywords,

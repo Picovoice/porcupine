@@ -292,6 +292,48 @@ namespace PorcupineTest
                 new List<int>() { 0, 0 });
         }
 
+        [TestMethod]
+        public void TestMessageStack()
+        {
+            List<BuiltInKeyword> keywords = new List<Pv.BuiltInKeyword>() { BuiltInKeyword.PORCUPINE };
+            Porcupine p;
+            string[] messageList = new string[] { };
+
+            try
+            {
+                p = Porcupine.FromBuiltInKeywords(
+                    "invalid",
+                    keywords,
+                    GetModelPath("en"));
+                Assert.IsNull(p);
+                p.Dispose();
+            }
+            catch (PorcupineException e)
+            {
+                messageList = e.MessageStack;
+            }
+
+            Assert.IsTrue(0 < messageList.Length);
+            Assert.IsTrue(messageList.Length < 8);
+
+            try
+            {
+                p = Porcupine.FromBuiltInKeywords(
+                    "invalid",
+                    keywords,
+                    GetModelPath("en"));
+                Assert.IsNull(p);
+                p.Dispose();
+            }
+            catch (PorcupineException e)
+            {
+                for (int i = 0; i < messageList.Length; i++)
+                {
+                    Assert.AreEqual(messageList[i], e.MessageStack[i]);
+                }
+            }
+        }
+
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
             List<short> data = new List<short>();

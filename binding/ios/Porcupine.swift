@@ -1,5 +1,5 @@
 //
-//  Copyright 2021-2022 Picovoice Inc.
+//  Copyright 2021-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -46,6 +46,11 @@ public class Porcupine {
     public static let frameLength = UInt32(pv_porcupine_frame_length())
     public static let sampleRate = UInt32(pv_sample_rate())
     public static let version = String(cString: pv_porcupine_version())
+    private static var sdk = "ios"
+
+    public static func setSdk(sdk: String) {
+        self.sdk = sdk
+    }
 
     /// Constructor.
     ///
@@ -53,7 +58,7 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
-    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. 
+    ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
     public init(
@@ -96,6 +101,8 @@ public class Porcupine {
             keywordPathsArgs[i] = try getResourcePath(keywordPathsArgs[i])
         }
 
+        pv_set_sdk(Porcupine.sdk)
+
         let status = pv_porcupine_init(
             accessKey,
             modelPathArg,
@@ -103,7 +110,11 @@ public class Porcupine {
             keywordPathsArgs.map { UnsafePointer(strdup($0)) },
             sensitivitiesArg,
             &handle)
-        try checkStatus(status, "Porcupine init failed")
+
+        if status != PV_STATUS_SUCCESS {
+            let messageStack = try getMessageStack()
+            throw pvStatusToPorcupineError(status, "Porcupine init failed", messageStack)
+        }
     }
 
     /// Constructor.
@@ -210,7 +221,10 @@ public class Porcupine {
 
         var result: Int32 = -1
         let status = pv_porcupine_process(self.handle, pcm, &result)
-        try checkStatus(status, "Porcupine process failed")
+        if status != PV_STATUS_SUCCESS {
+            let messageStack = try getMessageStack()
+            throw pvStatusToPorcupineError(status, "Porcupine process failed", messageStack)
+        }
         return result
     }
 
@@ -231,37 +245,54 @@ public class Porcupine {
             "If this is a packaged asset, ensure you have added it to your xcode project.")
     }
 
-    private func checkStatus(_ status: pv_status_t, _ message: String) throws {
-        if status == PV_STATUS_SUCCESS {
-            return
-        }
-
+    private func pvStatusToPorcupineError(
+        _ status: pv_status_t,
+        _ message: String,
+        _ messageStack: [String] = []) -> PorcupineError {
         switch status {
         case PV_STATUS_OUT_OF_MEMORY:
-            throw PorcupineMemoryError(message)
+            return PorcupineMemoryError(message, messageStack)
         case PV_STATUS_IO_ERROR:
-            throw PorcupineIOError(message)
+            return PorcupineIOError(message, messageStack)
         case PV_STATUS_INVALID_ARGUMENT:
-            throw PorcupineInvalidArgumentError(message)
+            return PorcupineInvalidArgumentError(message, messageStack)
         case PV_STATUS_STOP_ITERATION:
-            throw PorcupineStopIterationError(message)
+            return PorcupineStopIterationError(message, messageStack)
         case PV_STATUS_KEY_ERROR:
-            throw PorcupineKeyError(message)
+            return PorcupineKeyError(message, messageStack)
         case PV_STATUS_INVALID_STATE:
-            throw PorcupineInvalidStateError(message)
+            return PorcupineInvalidStateError(message, messageStack)
         case PV_STATUS_RUNTIME_ERROR:
-            throw PorcupineRuntimeError(message)
+            return PorcupineRuntimeError(message, messageStack)
         case PV_STATUS_ACTIVATION_ERROR:
-            throw PorcupineActivationError(message)
+            return PorcupineActivationError(message, messageStack)
         case PV_STATUS_ACTIVATION_LIMIT_REACHED:
-            throw PorcupineActivationLimitError(message)
+            return PorcupineActivationLimitError(message, messageStack)
         case PV_STATUS_ACTIVATION_THROTTLED:
-            throw PorcupineActivationThrottledError(message)
+            return PorcupineActivationThrottledError(message, messageStack)
         case PV_STATUS_ACTIVATION_REFUSED:
-            throw PorcupineActivationRefusedError(message)
+            return PorcupineActivationRefusedError(message, messageStack)
         default:
             let pvStatusString = String(cString: pv_status_to_string(status))
-            throw PorcupineError("\(pvStatusString): \(message)")
+            return PorcupineError("\(pvStatusString): \(message)", messageStack)
         }
+    }
+
+    private func getMessageStack() throws -> [String] {
+        var messageStackRef: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?
+        var messageStackDepth: Int32 = 0
+        let status = pv_get_error_stack(&messageStackRef, &messageStackDepth)
+        if status != PV_STATUS_SUCCESS {
+            throw pvStatusToPorcupineError(status, "Unable to get Porcupine error state")
+        }
+
+        var messageStack: [String] = []
+        for i in 0..<messageStackDepth {
+            messageStack.append(String(cString: messageStackRef!.advanced(by: Int(i)).pointee!))
+        }
+
+        pv_free_error_stack(messageStackRef)
+
+        return messageStack
     }
 }
