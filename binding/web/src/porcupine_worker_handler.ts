@@ -74,12 +74,20 @@ self.onmessage = async function(
           sampleRate: porcupine.sampleRate,
         });
       } catch (e: any) {
-        self.postMessage({
-          command: 'error',
-          status: PvStatus.RUNTIME_ERROR,
-          shortMessage: e.shortMessage,
-          messageStack: e.messageStack
-        });
+        if (e instanceof PorcupineError) {
+          self.postMessage({
+            command: 'error',
+            status: e.status,
+            shortMessage: e.shortMessage,
+            messageStack: e.messageStack
+          });
+        } else {
+          self.postMessage({
+            command: 'error',
+            status: PvStatus.RUNTIME_ERROR,
+            shortMessage: e.message
+          });
+        }
       }
       break;
     case 'process':
