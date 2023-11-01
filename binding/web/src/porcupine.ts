@@ -25,7 +25,7 @@ import {
 
 import { simd } from 'wasm-feature-detect';
 
-import { 
+import {
   DetectionCallback,
   PorcupineKeyword,
   PorcupineModel,
@@ -139,7 +139,7 @@ export class Porcupine {
     this._objectAddress = handleWasm.objectAddress;
     this._inputBufferAddress = handleWasm.inputBufferAddress;
     this._keywordIndexAddress = handleWasm.keywordIndexAddress;
-    this._messageStackAddressAddressAddress = handleWasm.messageStackDepthAddress;
+    this._messageStackAddressAddressAddress = handleWasm.messageStackAddressAddressAddress;
     this._messageStackDepthAddress = handleWasm.messageStackDepthAddress;
 
     this._keywordLabels = new Map();
@@ -210,7 +210,7 @@ export class Porcupine {
       | BuiltInKeyword,
     keywordDetectionCallback: DetectionCallback,
     model: PorcupineModel,
-    options: PorcupineOptions = {} // eslint-disable-line
+    options: PorcupineOptions = {}
   ): Promise<Porcupine> {
     const [keywordPaths, keywordLabels, sensitivities] = await keywordsProcess(
       keywords
@@ -227,7 +227,8 @@ export class Porcupine {
       keywordLabels,
       keywordDetectionCallback,
       sensitivities,
-      modelPath
+      modelPath,
+      options
     );
   }
 
@@ -634,7 +635,7 @@ export class Porcupine {
     memoryBufferUint8: Uint8Array,
   ): Promise<string[]> {
     const status = await pv_get_error_stack(messageStackAddressAddressAddress, messageStackDepthAddress);
-    if (status != PvStatus.SUCCESS) {
+    if (status !== PvStatus.SUCCESS) {
       throw pvStatusToException(status, "Unable to get Porcupine error state");
     }
 
