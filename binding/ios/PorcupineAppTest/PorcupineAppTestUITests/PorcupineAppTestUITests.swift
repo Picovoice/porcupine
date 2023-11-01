@@ -263,4 +263,19 @@ class PorcupineAppTestUITests: BaseTest {
             XCTAssert("\(error.localizedDescription)".count == first_error.count)
         }
     }
+
+    func testProcessMessageStack() throws {
+        let p = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
+        p.delete()
+
+        var testPcm: [Int16] = []
+        testPcm.reserveCapacity(p.frameLength)
+
+        do {
+            let res = p.process(testPcm)
+            XCTAssert(res == 100)
+        } catch {
+            XCTAssert("\(error.localizedDescription)".count > 0)
+        }
+    }
 }

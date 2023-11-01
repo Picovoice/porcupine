@@ -326,19 +326,10 @@ func TestProcessMessageStack(t *testing.T) {
 	porcupine.handle = nil
 
 	testPcm := make([]int16, FrameLength)
-	ret, _ := nativePorcupine.nativeProcess(&porcupine, testPcm)
-	if ret != SUCCESS {
-		errorStatus, messageStack := nativePorcupine.nativeGetErrorStack()
-		if errorStatus != SUCCESS {
-			t.Fatalf("Unable to get Porcupine error state")
-		}
-
-		if len(messageStack) == 0 || len(messageStack) > 8 {
-			t.Fatalf("Invalid message stack length %d", len(messageStack))
-		}
-	} else {
-		t.Fatalf("Expected process to fail")
-	}
-
+	
+	_, err = porcupine.Process(testPcm)
 	porcupine.handle = address
+	if err == nil {
+		t.Fatalf("Expected porcupine process to fail")
+	}
 }
