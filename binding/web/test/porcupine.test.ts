@@ -3,10 +3,10 @@ import { createHash } from 'crypto';
 import {
   BuiltInKeyword,
   Porcupine,
-  PorcupineErrors,
   PorcupineKeyword,
   PorcupineWorker,
 } from '../';
+import { PorcupineError } from "../dist/types/porcupine_errors";
 
 import testData from './test_data.json';
 
@@ -137,7 +137,7 @@ const runProcTest = async (
 
 describe('Porcupine Binding', function () {
   it(`should return process error message stack`, async () => {
-    let error: PorcupineErrors.PorcupineError | null = null;
+    let error: PorcupineError | null = null;
 
     const runProcess = () => new Promise<void>(async resolve => {
       const porcupine = await Porcupine.create(
@@ -146,7 +146,7 @@ describe('Porcupine Binding', function () {
         () => { },
         { publicPath: '/test/porcupine_params.pv', forceWrite: true },
         {
-          processErrorCallback: (e: PorcupineErrors.PorcupineError) => {
+          processErrorCallback: (e: PorcupineError) => {
             error = e;
             resolve();
           }
@@ -170,8 +170,8 @@ describe('Porcupine Binding', function () {
     await runProcess();
     expect(error).to.not.be.null;
     if (error) {
-      expect((error as PorcupineErrors.PorcupineError).messageStack.length).to.be.gt(0);
-      expect((error as PorcupineErrors.PorcupineError).messageStack.length).to.be.lte(8);
+      expect((error as PorcupineError).messageStack.length).to.be.gt(0);
+      expect((error as PorcupineError).messageStack.length).to.be.lte(8);
     }
   });
 
