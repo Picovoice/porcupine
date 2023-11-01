@@ -240,7 +240,7 @@ namespace Tests
             }
             catch (PorcupineException e)
             {
-                messageList = e.messageStack;
+                messageList = e.MessageStack;
             }
 
             Assert.IsTrue(0 < messageList.Length);
@@ -258,7 +258,7 @@ namespace Tests
             {
                 for (int i = 0; i < messageList.Length; i++)
                 {
-                    Assert.AreEqual(messageList[i], e.messageStack[i]);
+                    Assert.AreEqual(messageList[i], e.MessageStack[i]);
                 }
             }
         }
