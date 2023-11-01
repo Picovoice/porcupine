@@ -269,10 +269,10 @@ class PorcupineAppTestUITests: BaseTest {
         p.delete()
 
         var testPcm: [Int16] = []
-        testPcm.reserveCapacity(p.frameLength)
+        testPcm.reserveCapacity(Int(Porcupine.frameLength))
 
         do {
-            let res = p.process(testPcm)
+            let res = try p.process(pcm: testPcm)
             XCTAssert(res == 100)
         } catch {
             XCTAssert("\(error.localizedDescription)".count > 0)

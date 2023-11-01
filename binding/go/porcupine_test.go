@@ -320,7 +320,6 @@ func TestProcessMessageStack(t *testing.T) {
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
-	defer porcupine.Delete()
 
 	address := porcupine.handle
 	porcupine.handle = nil
@@ -331,5 +330,10 @@ func TestProcessMessageStack(t *testing.T) {
 	porcupine.handle = address
 	if err == nil {
 		t.Fatalf("Expected porcupine process to fail")
+	}
+
+	delErr := porcupine.Delete()
+	if delErr != nil {
+		t.Fatalf("%v", delErr)
 	}
 }

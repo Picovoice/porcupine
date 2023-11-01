@@ -275,7 +275,7 @@ namespace Tests
             short[] testPcm = new short[p.FrameLength];
 
             var obj = typeof(Porcupine).GetField("_libraryPointer", BindingFlags.NonPublic | BindingFlags.Instance);
-            IntPtr address = (IntPtr) obj.GetValue(p);
+            IntPtr address = (IntPtr)obj.GetValue(p);
             obj.SetValue(p, IntPtr.Zero);
 
             try

@@ -338,14 +338,14 @@ namespace PorcupineTest
         public void TestProcessMessageStack()
         {
             List<BuiltInKeyword> keywords = new List<Pv.BuiltInKeyword>() { BuiltInKeyword.PORCUPINE };
-            Porcupine p =  Porcupine.FromBuiltInKeywords(
+            Porcupine p = Porcupine.FromBuiltInKeywords(
                 _accessKey,
                 keywords,
                 GetModelPath("en"));
             short[] testPcm = new short[p.FrameLength];
 
             var obj = typeof(Porcupine).GetField("_libraryPointer", BindingFlags.NonPublic | BindingFlags.Instance);
-            IntPtr address = (IntPtr) obj.GetValue(p);
+            IntPtr address = (IntPtr)obj.GetValue(p);
             obj.SetValue(p, IntPtr.Zero);
 
             try
