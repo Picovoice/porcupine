@@ -136,7 +136,7 @@ const runProcTest = async (
 };
 
 describe('Porcupine Binding', function () {
-  it.only(`should return process error message stack`, async () => {
+  it(`should return process error message stack`, async () => {
     let error: PorcupineErrors.PorcupineError | null = null;
 
     const runProcess = () => new Promise<void>(async resolve => {
