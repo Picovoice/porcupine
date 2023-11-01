@@ -334,6 +334,35 @@ namespace PorcupineTest
             }
         }
 
+        [TestMethod]
+        public void TestProcessMessageStack()
+        {
+            List<BuiltInKeyword> keywords = new List<Pv.BuiltInKeyword>() { BuiltInKeyword.PORCUPINE };
+            Porcupine p =  Porcupine.FromBuiltInKeywords(
+                _accessKey,
+                keywords,
+                GetModelPath("en"));
+            short[] testPcm = new short[p.FrameLength];
+
+            var obj = typeof(Porcupine).GetField("_libraryPointer", BindingFlags.NonPublic | BindingFlags.Instance);
+            IntPtr address = (IntPtr) obj.GetValue(p);
+            obj.SetValue(p, IntPtr.Zero);
+
+            try
+            {
+                int res = p.Process(testPcm);
+                Assert.IsTrue(res == 100);
+            }
+            catch (PorcupineException e)
+            {
+                Assert.IsTrue(0 < e.MessageStack.Length);
+                Assert.IsTrue(e.MessageStack.Length < 8);
+            }
+
+            obj.SetValue(p, address);
+            p.Dispose();
+        }
+
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
             List<short> data = new List<short>();

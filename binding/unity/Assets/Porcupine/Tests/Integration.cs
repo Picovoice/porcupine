@@ -264,6 +264,36 @@ namespace Tests
         }
 
         [Test]
+        public void TestProcessMessageStack()
+        {
+            List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>() { Porcupine.BuiltInKeyword.PORCUPINE };
+            Porcupine p = Porcupine.FromBuiltInKeywords(
+                    ACCESS_KEY,
+                    keywords,
+                    GetModelPath("en"));
+
+            short[] testPcm = new short[p.FrameLength];
+
+            var obj = typeof(Porcupine).GetField("_libraryPointer", BindingFlags.NonPublic | BindingFlags.Instance);
+            IntPtr address = (IntPtr) obj.GetValue(p);
+            obj.SetValue(p, IntPtr.Zero);
+
+            try
+            {
+                int res = p.Process(testPcm);
+                Assert.IsTrue(res == 100);
+            }
+            catch (PorcupineException e)
+            {
+                Assert.IsTrue(0 < e.MessageStack.Length);
+                Assert.IsTrue(e.MessageStack.Length < 8);
+            }
+
+            obj.SetValue(p, address);
+            p.Dispose();
+        }
+
+        [Test]
         public void SingleKeyword([ValueSource("SingleKeywordTestData")] SingleKeywordTest testCase)
         {
             List<string> keywords = new List<string>() { testCase.wakeword };
