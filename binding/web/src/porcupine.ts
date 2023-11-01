@@ -35,7 +35,7 @@ import {
 
 import { keywordsProcess } from './utils';
 import { BuiltInKeyword } from './built_in_keywords';
-import * as PorcupineErrors from "./porcupine_errors"
+import * as PorcupineErrors from "./porcupine_errors";
 import { pvStatusToException } from './porcupine_errors';
 
 /**
