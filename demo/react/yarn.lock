@@ -1522,17 +1522,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-react@~3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-3.0.1.tgz#f9ee90122de757dd9317e364223b3bd424d41655"
-  integrity sha512-7tD86xHlqcJpBkcaWBrOy078XgrgWyHZgtq5x9EzOJv7xGh/eY0fl2LuRAUMUKfK37iQnEH5bCut51cqprFpzA==
+"@picovoice/porcupine-react@~3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-3.0.2.tgz#fdab09b85d02bed950821a3b9b73f18b34e4d2fd"
+  integrity sha512-DqEKf9wvBTOozzeSKWkja27iZ11RBWK9BJ+QVOq2qHbI2lrfmG1QPvMRLF4llk+IfUB+znwH404SInpaU2BE7w==
   dependencies:
-    "@picovoice/porcupine-web" "=3.0.1"
+    "@picovoice/porcupine-web" "=3.0.2"
 
-"@picovoice/porcupine-web@=3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.1.tgz#2c37779d4670cb60c4f1c59fe2f719e8be0668ae"
-  integrity sha512-Fv0besxrygjfk2H6TOPfFAD5fFebSy/kIDtjrNFGJdYlgGz9/IXgoYp+baFwIOAjMNOyQwebwy13fjb7Ba3EzQ==
+"@picovoice/porcupine-web@=3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.2.tgz#ad023df0fdd9f09b1b87b68e2bfa4ebd7b69974f"
+  integrity sha512-AlcrQD4pF1OgYKyUSNf/RREwH+UZJhjHCGam6F+Vd7w8625oM2/uGDaM605/0rEQz5yG9DcrVMxBSX5MwFpjEQ==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
