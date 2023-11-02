@@ -593,3 +593,44 @@ impl Drop for PorcupineInner {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::env;
+    use std::path::PathBuf;
+
+    use crate::util::{pv_keyword_paths, pv_library_path, pv_model_path};
+    use crate::porcupine::{BuiltinKeywords, PorcupineInner};
+
+    #[test]
+    fn test_process_error_stack() {
+        let access_key = env::var("PV_ACCESS_KEY")
+            .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
+
+        let default_keyword_paths = pv_keyword_paths();
+        let keyword_path = default_keyword_paths.get(BuiltinKeywords::Porcupine.to_str())
+            .expect("Unable to find keyword file for specified keyword");
+        
+        let mut inner = PorcupineInner::init(
+            &access_key.as_str(),
+            pv_library_path(),
+            pv_model_path(),
+            &[PathBuf::from(keyword_path)],
+            &[0.5],
+        ).expect("Unable to create Porcupine");
+
+        let test_pcm = vec![0; inner.frame_length as usize];
+        let address = inner.cporcupine;
+        inner.cporcupine = std::ptr::null_mut();
+
+        let res = inner.process(&test_pcm);
+
+        inner.cporcupine = address;
+        if let Err(err) = res {
+            assert!(err.message_stack.len() > 0);
+            assert!(err.message_stack.len() < 8);
+        } else {
+            assert!(res.unwrap() == 100);
+        }
+    }
+}

@@ -26,7 +26,7 @@ namespace Pv.Unity
             this._messageStack = messageStack;
         }
 
-        public string[] messageStack
+        public string[] MessageStack
         {
             get => _messageStack;
         }

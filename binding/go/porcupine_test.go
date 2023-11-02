@@ -307,3 +307,33 @@ func TestMessageStack(t *testing.T) {
 		t.Fatalf("length of 1st init '%d' does not match 2nd init '%d'", len(err.Error()), len(err2.Error()))
 	}
 }
+
+func TestProcessMessageStack(t *testing.T) {
+	language := "en"
+	keywords := []string{"porcupine"}
+	porcupine = Porcupine{
+		AccessKey:    testAccessKey,
+		ModelPath:    getTestModelPath(language),
+		KeywordPaths: getTestKeywordPaths(language, keywords)}
+
+	err := porcupine.Init()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	address := porcupine.handle
+	porcupine.handle = nil
+
+	testPcm := make([]int16, FrameLength)
+	
+	_, err = porcupine.Process(testPcm)
+	porcupine.handle = address
+	if err == nil {
+		t.Fatalf("Expected porcupine process to fail")
+	}
+
+	delErr := porcupine.Delete()
+	if delErr != nil {
+		t.Fatalf("%v", delErr)
+	}
+}
