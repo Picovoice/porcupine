@@ -6,6 +6,8 @@ import {
   PorcupineKeyword,
   PorcupineWorker,
 } from '../';
+import { PorcupineError } from "../dist/types/porcupine_errors";
+
 import testData from './test_data.json';
 
 // @ts-ignore
@@ -134,6 +136,45 @@ const runProcTest = async (
 };
 
 describe('Porcupine Binding', function () {
+  it(`should return process error message stack`, async () => {
+    let error: PorcupineError | null = null;
+
+    const runProcess = () => new Promise<void>(async resolve => {
+      const porcupine = await Porcupine.create(
+        ACCESS_KEY,
+        BuiltInKeyword.Porcupine,
+        () => { },
+        { publicPath: '/test/porcupine_params.pv', forceWrite: true },
+        {
+          processErrorCallback: (e: PorcupineError) => {
+            error = e;
+            resolve();
+          }
+        }
+      );
+      const testPcm = new Int16Array(porcupine.frameLength);
+      // @ts-ignore
+      const objectAddress = porcupine._objectAddress;
+
+      // @ts-ignore
+      porcupine._objectAddress = 0;
+      await porcupine.process(testPcm);
+
+      await delay(1000);
+
+      // @ts-ignore
+      porcupine._objectAddress = objectAddress;
+      await porcupine.release();
+    });
+
+    await runProcess();
+    expect(error).to.not.be.null;
+    if (error) {
+      expect((error as PorcupineError).messageStack.length).to.be.gt(0);
+      expect((error as PorcupineError).messageStack.length).to.be.lte(8);
+    }
+  });
+
   for (const instance of [Porcupine, PorcupineWorker]) {
     const instanceString = instance === PorcupineWorker ? 'worker' : 'main';
 
