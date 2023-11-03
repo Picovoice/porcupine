@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "React component for Porcupine Web SDK",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -36,14 +36,14 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=3.0.1"
+    "@picovoice/porcupine-web": "=3.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
     "@babel/plugin-transform-runtime": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/runtime": "^7.21.0",
-    "@picovoice/web-voice-processor": "~4.0.6",
+    "@picovoice/web-voice-processor": "~4.0.8",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
