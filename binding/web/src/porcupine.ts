@@ -393,11 +393,11 @@ export class Porcupine {
    * Releases resources acquired by WebAssembly module.
    */
   public async release(): Promise<void> {
+    await this._pvPorcupineDelete(this._objectAddress);
     await this._pvFree(this._messageStackAddressAddressAddress);
     await this._pvFree(this._messageStackDepthAddress);
     await this._pvFree(this._inputBufferAddress);
     await this._pvFree(this._keywordIndexAddress);
-    await this._pvPorcupineDelete(this._objectAddress);
     delete this._wasmMemory;
     this._wasmMemory = undefined;
   }
