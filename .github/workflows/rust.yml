@@ -28,6 +28,7 @@ on:
     paths:
       - '.github/workflows/rust.yml'
       - 'binding/rust/**'
+      - 'binding/rust/**/*.rs'
       - '!binding/rust/README.md'
       - 'lib/beaglebone/**'
       - 'lib/common/**'
