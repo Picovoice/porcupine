@@ -3,8 +3,8 @@
 The Porcupine demo for Unity is a multi-platform demo that runs on:
 
 - Desktop Standalone (Windows, macOS and Linux x86_64)
-- iOS 9.0+
-- Android 4.1+
+- iOS 13.0+
+- Android 5.0+
 
 Additionally, you will need a version of Unity that is 2017.4 or higher.
 

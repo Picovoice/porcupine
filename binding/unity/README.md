@@ -20,7 +20,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 [Porcupine unity package](porcupine-3.0.0.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
 
 - Android 5.0+ (API 21+) (ARM only)
-- iOS 11.0+
+- iOS 13.0+
 - Windows (x86_64)
 - macOS (x86_64)
 - Linux (x86_64)
