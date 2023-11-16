@@ -1476,10 +1476,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-react-native@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-3.0.0.tgz#f9e670d317b42de53984338d86350ffd1d2ac6a0"
-  integrity sha512-sMw4UwwzCnWyXpqlRYTiWaPlLoHoK/RqW4t+wUBAg8GxAlSD9JkRv6hWc1B5i2FPqWD0Txqm7nFDoDL6EEvNsw==
+"@picovoice/porcupine-react-native@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-3.0.1.tgz#2c71a61b074f34fece517a884fb0ec2f6eacc7cc"
+  integrity sha512-TGP7l1SVNOMuqyocvRqyf7X08VYkr3gc4eucw8M81QLzWzJ8Mpz64BQb2iifNUR6Oaia0XQ1tHP3ffrdIHY2rg==
 
 "@picovoice/react-native-voice-processor@1.2.0":
   version "1.2.0"
