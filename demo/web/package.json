@@ -17,7 +17,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web": "~3.0.2",
+    "@picovoice/porcupine-web": "~3.0.3",
     "@picovoice/web-voice-processor": "~4.0.8"
   },
   "devDependencies": {
