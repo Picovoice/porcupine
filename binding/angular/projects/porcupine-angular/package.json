@@ -1,7 +1,7 @@
 {
   "name": "@picovoice/porcupine-angular",
   "description": "Angular service for Porcupine Web SDK",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "peerDependencies": {
     "@angular/common": ">=13.0.0",
     "@angular/core": ">=13.0.0",
@@ -20,7 +20,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/porcupine-web": "=3.0.2",
+    "@picovoice/porcupine-web": "=3.0.3",
     "tslib": "^2.3.0"
   }
 }
