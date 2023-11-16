@@ -1872,10 +1872,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/porcupine-web@=3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.2.tgz#ad023df0fdd9f09b1b87b68e2bfa4ebd7b69974f"
-  integrity sha512-AlcrQD4pF1OgYKyUSNf/RREwH+UZJhjHCGam6F+Vd7w8625oM2/uGDaM605/0rEQz5yG9DcrVMxBSX5MwFpjEQ==
+"@picovoice/porcupine-web@=3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.3.tgz#c89a53653fa4331bcd30911f4c1fe68b6c040a56"
+  integrity sha512-xVFR0TO0FwM/pumxMxevP550yj9JFlmJuaFgT0CHXjtsInqBrBTZHdJDoj8f5qTHZ4khffh1lW4kiPYf2g8dBQ==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
@@ -2715,9 +2715,9 @@ aws4@^1.8.0:
   integrity sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==
 
 axios@^1.0.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.2.0.tgz#1cb65bd75162c70e9f8d118a905126c4a201d383"
-  integrity sha512-zT7wZyNYu3N5Bu0wuZ6QccIf93Qk1eV8LOewxgjOZFd2DenOs98cJ7+Y6703d0wkaXGY6/nZd4EweJaHz9uzQw==
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.1.tgz#76550d644bf0a2d469a01f9244db6753208397d7"
+  integrity sha512-vfBmhDpKafglh0EldBEbVuoe7DyAavGSLWhuSm5ZSEKQnHhBf0xAAwybbNH1IkrJNGnS/VG4I5yxig1pCEXE4g==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"

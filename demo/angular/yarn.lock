@@ -1610,18 +1610,18 @@
     read-package-json-fast "^3.0.0"
     which "^3.0.0"
 
-"@picovoice/porcupine-angular@~3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-3.0.2.tgz#6af1800f04742ed17a22653039c10d5361fbeb05"
-  integrity sha512-tmsGxiel1zHGgkk5xOW9GREGAHGOY3JZ0HxYuaK9dTaA7YmQlaFfF9B7ZiqDizLpYIys7IzAOJ6iNbRBJiczHg==
+"@picovoice/porcupine-angular@~3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-angular/-/porcupine-angular-3.0.3.tgz#eb5c47bf68e0870cfa32f9ba020a1bd3fd0b6f07"
+  integrity sha512-UmRCe1EN3BNHsqDOrzZZHgDj1+KFiF0vlm2bgBVXysBHlM15nBy/eGw0ilMaJGNL7LYMtVTBQ9JVsL8Al3YcTg==
   dependencies:
-    "@picovoice/porcupine-web" "=3.0.2"
+    "@picovoice/porcupine-web" "=3.0.3"
     tslib "^2.3.0"
 
-"@picovoice/porcupine-web@=3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.2.tgz#ad023df0fdd9f09b1b87b68e2bfa4ebd7b69974f"
-  integrity sha512-AlcrQD4pF1OgYKyUSNf/RREwH+UZJhjHCGam6F+Vd7w8625oM2/uGDaM605/0rEQz5yG9DcrVMxBSX5MwFpjEQ==
+"@picovoice/porcupine-web@=3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.3.tgz#c89a53653fa4331bcd30911f4c1fe68b6c040a56"
+  integrity sha512-xVFR0TO0FwM/pumxMxevP550yj9JFlmJuaFgT0CHXjtsInqBrBTZHdJDoj8f5qTHZ4khffh1lW4kiPYf2g8dBQ==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
