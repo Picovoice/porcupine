@@ -22,7 +22,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 - Android 5.0+ (API 21+) (ARM only)
 - iOS 13.0+
 - Windows (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Linux (x86_64)
 
 ## Installation
