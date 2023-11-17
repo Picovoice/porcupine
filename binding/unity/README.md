@@ -17,17 +17,17 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 
 ## Compatibility
 
-[Porcupine unity package](porcupine-3.0.0.unitypackage) is for running Porcupine on **Unity 2017.4+** on the following platforms:
+[Porcupine unity package](porcupine-3.0.1.unitypackage) is for running Porcupine on **Unity 2021.3+** on the following platforms:
 
 - Android 5.0+ (API 21+) (ARM only)
 - iOS 13.0+
 - Windows (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Linux (x86_64)
 
 ## Installation
 
-The easiest way to install the Porcupine Unity SDK is to import [porcupine-3.0.0.unitypackage](porcupine-3.0.0.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Porcupine Unity SDK is to import [porcupine-3.0.1.unitypackage](porcupine-3.0.1.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 **NOTE:** On macOS, the Porcupine library may get flagged as having come from an unverified source if you've downloaded the  `.unitypackage` directly from GitHub. This should only come up when running your project in the Editor. To disable this warning, go to Security & Preferences and choose to allow pv_porcupine.dylib to run.
 
