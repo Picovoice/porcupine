@@ -79,10 +79,10 @@ PODS:
   - ios-voice-processor (1.1.0)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
-  - Porcupine-iOS (3.0.0):
+  - Porcupine-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
-  - porcupine-react-native (3.0.0):
-    - Porcupine-iOS (~> 3.0.0)
+  - porcupine-react-native (3.0.1):
+    - Porcupine-iOS (~> 3.0.1)
     - React
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -575,8 +575,8 @@ SPEC CHECKSUMS:
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Porcupine-iOS: 517158e02ac294dda15b713a3c6f74a9e877090c
-  porcupine-react-native: e74ff3c50f8a1ec956b8aa7a8797821b0f9e8b85
+  Porcupine-iOS: 6d69509fa587f3ac0be1adfefb48e0c6ce029fff
+  porcupine-react-native: f6650a418ba767c210eeb416d4e0bdbb93a209ca
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: dea3e4163184ea57c50288c15c32c1529265c58f
   RCTTypeSafety: a0834ab89159a346731e8aae55ad6e2cce61c327
@@ -610,6 +610,6 @@ SPEC CHECKSUMS:
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: c175f5594aacce158a6c9dfa12548975fd078ac6
+PODFILE CHECKSUM: 9fac28778c14bed4eb7a3cc813cae619223e179f
 
 COCOAPODS: 1.11.3
