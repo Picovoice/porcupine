@@ -778,7 +778,7 @@ porcupine.Delete()
 
 ### Unity
 
-Import the [Porcupine Unity Package](binding/unity/porcupine-3.0.0.unitypackage) into your Unity project.
+Import the [Porcupine Unity Package](binding/unity/porcupine-3.0.1.unitypackage) into your Unity project.
 
 The SDK provides two APIs:
 
