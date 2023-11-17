@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Porcupine" Version="3.0.0" />
+        <PackageReference Include="Porcupine" Version="3.0.1" />
         <PackageReference Include="PvRecorder" Version="1.2.4" />
     </ItemGroup>
 </Project>
