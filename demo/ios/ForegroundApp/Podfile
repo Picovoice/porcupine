@@ -1,6 +1,6 @@
 source 'https://cdn.cocoapods.org/'
-platform :ios, '11.0'
+platform :ios, '13.0'
 
 target 'PorcupineForegroundAppDemo' do
-    pod 'Porcupine-iOS', '~> 3.0.0'
+    pod 'Porcupine-iOS', '~> 3.0.1'
 end
