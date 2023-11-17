@@ -1,4 +1,4 @@
-# Porcupine Unity Demo 
+# Porcupine Unity Demo
 
 The Porcupine demo for Unity is a multi-platform demo that runs on:
 
@@ -9,7 +9,7 @@ The Porcupine demo for Unity is a multi-platform demo that runs on:
 Additionally, you will need a version of Unity that is 2017.4 or higher.
 
 ## Usage
-The easiest way to run the demo is to simply import the [Porcupine Unity package](../../binding/unity/porcupine-3.0.0.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+The easiest way to run the demo is to simply import the [Porcupine Unity package](../../binding/unity/porcupine-3.0.1.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 Once the demo launches, press the `Start Listening` button and try out any of the listed wake words.
 
