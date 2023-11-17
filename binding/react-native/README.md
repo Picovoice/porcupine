@@ -20,7 +20,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 This binding is for running Porcupine on **React Native 0.62.2+** on the following platforms:
 
 - Android 5.0+ (API 21+)
-- iOS 11.0+
+- iOS 13.0+
 
 ## Installation
 

@@ -55,4 +55,4 @@ jobs:
       run: yarn install
 
     - name: Build
-      run: yarn
+      run: yarn prepare
