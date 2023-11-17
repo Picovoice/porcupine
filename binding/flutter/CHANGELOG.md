@@ -53,3 +53,6 @@
 ## [3.0.0] - 2023-10-25
 * Engine improvements
 * Improved error reporting
+
+## [3.0.1] - 2023-11-17
+* Update native packages
