@@ -27,12 +27,12 @@ This package contains a demo project for the STM32F407 Discovery kit using Porcu
 ## Installation
 
 For this demo, you need to:
-
+<!-- markdown-link-check-disable -->
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an
    all-in-one multi-OS development tool for STM32 microcontrollers.
 2. Download [STM32Cube MCU Package for STM32F4 series](https://www.st.com/en/embedded-software/stm32cubef4.html) and
    extract it somewhere on your computer.
-
+<!-- markdown-link-check-enable -->
 ## AccessKey
 
 Porcupine requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using
@@ -63,11 +63,11 @@ Then, to compile and run the demo project on a STM32f407 discovery board, perfor
 7. Connect the board to the computer and press `Run` > `Debug`
 8. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one
    of them in the `Qualifier` window and press `ok`
-
+<!-- markdown-link-check-disable -->
 > :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer
 > to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf)
 > , Chapter 7.
-
+<!-- markdown-link-check-enable -->
 For single wake-word demos, you can identify the default keyword for each language by referring to the [pv_params.h](./stm32f407g-disc1/Inc/pv_params.h) file. Within this file, locate the language section enclosed by:
 
 ```c

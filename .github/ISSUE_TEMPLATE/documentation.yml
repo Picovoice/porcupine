@@ -1,0 +1,18 @@
+name: Documentation
+description: Issues around documentation of Porcupine
+title: "Porcupine Documentation Issue: "
+labels: ["documentation"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: What is the URL of the doc?
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What is the nature of the issue?
+      description: e.g. steps do not work, typos/grammar/spelling, out of date, etc.
+    validations:
+      required: true
