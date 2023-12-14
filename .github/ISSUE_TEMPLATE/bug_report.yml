@@ -30,6 +30,7 @@ body:
         - Go
         - iOS
         - Java
+        - MCU
         - Node.js
         - Python
         - React Native
