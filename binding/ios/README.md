@@ -16,8 +16,9 @@ Porcupine is:
 To learn more about Porcupine, see the [product](https://picovoice.ai/products/porcupine/), [documentation](https://picovoice.ai/docs/), and [GitHub](https://github.com/Picovoice/porcupine/) pages.
 
 ## Installation
-
+<!-- markdown-link-check-disable -->
 The Porcupine iOS binding is available via [CocoaPods](https://cocoapods.org/pods/Porcupine-iOS). To import it into your iOS project, add the following line to your Podfile:
+<!-- markdown-link-check-enable -->
 
 ```ruby
 pod 'Porcupine-iOS'

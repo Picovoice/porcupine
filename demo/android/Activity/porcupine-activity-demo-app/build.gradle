@@ -1,7 +1,9 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion defaultTargetSdkVersion
+    compileSdk defaultTargetSdkVersion
 
     defaultConfig {
         applicationId "ai.picovoice.porcupine.demo"
@@ -18,7 +20,7 @@ android {
     }
 
     def testDataFile = file('../../../../resources/.test/test_data.json')
-    def parsedJson = new groovy.json.JsonSlurper().parseText(testDataFile.text)
+    def parsedJson = new JsonSlurper().parseText(testDataFile.text)
     def languages = []
     parsedJson.tests.singleKeyword.each { a ->
         languages.add(a.language)
@@ -64,6 +66,7 @@ android {
     lint {
         abortOnError false
     }
+    namespace 'ai.picovoice.porcupine.demo'
 }
 
 dependencies {
