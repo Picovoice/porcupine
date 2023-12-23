@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion defaultTargetSdkVersion
+    compileSdk defaultTargetSdkVersion
     defaultConfig {
         applicationId "ai.picovoice.porcupine.sttdemo"
         minSdkVersion 21
@@ -22,6 +22,7 @@ android {
     lint {
         abortOnError false
     }
+    namespace 'ai.picovoice.porcupine.sttdemo'
 }
 
 dependencies {
