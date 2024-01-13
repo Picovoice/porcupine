@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2024 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -33,7 +33,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        guard let method = Method(rawValue: call.method.uppercased()) else {
+        guard let method = Method(rawValue: call.method) else {
             result(errorToFlutterError(
                 PorcupineRuntimeError("Porcupine method '\(call.method)' is not a valid function")))
             return
