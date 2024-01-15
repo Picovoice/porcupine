@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2024 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -46,6 +46,17 @@ enum BuiltInKeyword {
   PORCUPINE,
   // ignore:constant_identifier_names
   TERMINATOR
+}
+
+enum _NativeFunctions {
+  // ignore:constant_identifier_names
+  FROM_BUILTIN_KEYWORDS,
+  // ignore:constant_identifier_names
+  FROM_KEYWORD_PATHS,
+  // ignore:constant_identifier_names
+  PROCESS,
+  // ignore:constant_identifier_names
+  DELETE
 }
 
 class Porcupine {
@@ -101,7 +112,7 @@ class Porcupine {
 
     try {
       Map<String, dynamic> result = Map<String, dynamic>.from(
-          await _channel.invokeMethod('from_builtin_keywords', {
+          await _channel.invokeMethod(_NativeFunctions.FROM_BUILTIN_KEYWORDS.name, {
         'accessKey': accessKey,
         'modelPath': modelPath,
         'keywords': keywordValues,
@@ -146,7 +157,7 @@ class Porcupine {
 
     try {
       Map<String, dynamic> result = Map<String, dynamic>.from(
-          await _channel.invokeMethod('from_keyword_paths', {
+          await _channel.invokeMethod(_NativeFunctions.FROM_KEYWORD_PATHS.name, {
         'accessKey': accessKey,
         'modelPath': modelPath,
         'keywordPaths': keywordPaths,
@@ -175,7 +186,7 @@ class Porcupine {
   Future<int> process(List<int>? frame) async {
     try {
       int keywordIndex = await _channel
-          .invokeMethod('process', {'handle': _handle, 'frame': frame});
+          .invokeMethod(_NativeFunctions.PROCESS.name, {'handle': _handle, 'frame': frame});
 
       return keywordIndex;
     } on PlatformException catch (error) {
@@ -188,7 +199,7 @@ class Porcupine {
   /// Frees memory that was allocated for Porcupine
   Future<void> delete() async {
     if (_handle != null) {
-      await _channel.invokeMethod('delete', {'handle': _handle});
+      await _channel.invokeMethod(_NativeFunctions.DELETE.name, {'handle': _handle});
       _handle = null;
     }
   }
