@@ -14,7 +14,6 @@ import os
 import platform
 import subprocess
 
-
 log = logging.getLogger('PPN')
 log.setLevel(logging.WARNING)
 
@@ -22,6 +21,10 @@ log.setLevel(logging.WARNING)
 def _is_64bit():
     return '64bit' in platform.architecture()[0]
 
+# >> lookdeep
+def _is_pv_arch(cpu_part, machine):
+    return cpu_part in ['0xb76', '0xc07', '0xd03', '0xd07', '0xd08', '0xc08', '0xd0b'] or machine == 'armv7l'
+# << lookdeep
 
 def _pv_linux_machine(machine):
     if machine == 'x86_64':
@@ -35,7 +38,15 @@ def _pv_linux_machine(machine):
     try:
         cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
         cpu_part_list = [x for x in cpu_info.split('\n') if 'CPU part' in x]
+        # >> lookdeep
+        # RK 3588 has multiple CPU types, check until we find one that is supported
         cpu_part = cpu_part_list[0].split(' ')[-1].lower()
+        for part in cpu_part_list:
+            part = part.split(' ')[-1].lower()
+            if _is_pv_arch(part, machine):
+                cpu_part = part
+                break
+        # << lookdeep
     except Exception as error:
         raise RuntimeError("Failed to identify the CPU with '%s'\nCPU info: %s" % (error, cpu_info))
 
@@ -47,7 +58,11 @@ def _pv_linux_machine(machine):
         return 'cortex-a53' + arch_info
     elif '0xd07' == cpu_part:
         return 'cortex-a57' + arch_info
-    elif '0xd08' == cpu_part:
+    # << lookdeep
+    # elif '0xd08' == cpu_part:
+    # treat a76 (RK 3588) as a72
+    elif '0xd08' == cpu_part or '0xd0b' == cpu_part:
+    # >> lookdeep
         return 'cortex-a72' + arch_info
     elif '0xc08' == cpu_part:
         return 'beaglebone' + arch_info
