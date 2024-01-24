@@ -1,4 +1,4 @@
-name: Flutter
+name: Flutter Tests
 
 on:
   workflow_dispatch:
