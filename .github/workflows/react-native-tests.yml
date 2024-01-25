@@ -51,10 +51,10 @@ jobs:
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
 
     - name: Build tests
-      run: detox build --configuration android.emu.release
+      run: detox build --configuration android.att.release
 
     - name: Run tests
-      run: detox test --configuration android.emu.release
+      run: detox test --configuration android.att.release
 
   test-ios:
     name: Run tests on iOS

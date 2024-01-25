@@ -28,11 +28,12 @@ This package contains a demo project for the STM32F769 Discovery kit using Porcu
 For this demo, you need to:
 <!-- markdown-link-check-disable -->
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an
-   all-in-one multi-OS development tool for STM32 microcontrollers. <!-- markdown-link-check-enable -->
+   all-in-one multi-OS development tool for STM32 microcontrollers.
 2. Install a serial port monitor on your system to be able to communicate with the
    board. [Arduino environment's built-in serial monitor](https://www.arduino.cc/en/software)
    and [Coolterm](https://freeware.the-meiers.org/) are two free options available on all platforms (Windows, Linux, and
    macOS).
+<!-- markdown-link-check-enable -->
 
 ## AccessKey
 
