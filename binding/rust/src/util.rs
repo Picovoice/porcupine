@@ -19,7 +19,7 @@ const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "lib/";
 const DEFAULT_RELATIVE_MODEL_PATH: &str = "lib/common/porcupine_params.pv";
 
 #[allow(dead_code)]
-const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+const RPI_MACHINES: [&str; 5] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72", "cortex-a76"];
 #[allow(dead_code)]
 const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
 
@@ -54,6 +54,7 @@ fn find_machine_type() -> String {
         "0xd03" => "cortex-a53",
         "0xd07" => "cortex-a57",
         "0xd08" => "cortex-a72",
+        "0xd0b" => "cortex-a76",
         "0xc08" => "beaglebone",
         _ => "unsupported",
     };
