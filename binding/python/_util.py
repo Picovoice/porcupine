@@ -77,9 +77,14 @@ def _pv_platform():
 
 _PV_SYSTEM, _PV_MACHINE = _pv_platform()
 
+_RASPBERRY_PI_MACHINES = {'arm11', 'cortex-a7', 'cortex-a53', 'cortex-a72', 'cortex-a53-aarch64', 'cortex-a72-aarch64'}
+
 _RASPBERRY_PI_MACHINES = {
+    "arm11",
+    "cortex-a7",
     "cortex-a53",
     "cortex-a72",
+    "cortex-a76-aarch64",
     "cortex-a53-aarch64",
     "cortex-a72-aarch64",
     "cortex-a76-aarch64"}
