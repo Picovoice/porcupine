@@ -84,7 +84,7 @@ _RASPBERRY_PI_MACHINES = {
     "cortex-a7",
     "cortex-a53",
     "cortex-a72",
-    "cortex-a76-aarch64",
+    "cortex-a76",
     "cortex-a53-aarch64",
     "cortex-a72-aarch64",
     "cortex-a76-aarch64"}
