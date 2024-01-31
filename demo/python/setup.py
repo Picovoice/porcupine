@@ -52,6 +52,6 @@ setuptools.setup(
             'porcupine_demo_mic=pvporcupinedemo.porcupine_demo_mic:main',
         ],
     ),
-    python_requires='>=3.5',
+    python_requires='>=3.7',
     keywords="wake word engine, hotword detection, keyword spotting, wake word detection, voice commands",
 )
