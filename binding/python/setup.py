@@ -69,7 +69,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="3.0.1",
+    version="3.0.2",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",
@@ -86,6 +86,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Sound/Audio :: Speech"
     ],
-    python_requires='>=3.5',
+    python_requires='>=3.7',
     keywords="wake word engine, hotword detection, keyword spotting, wake word detection, voice commands",
 )

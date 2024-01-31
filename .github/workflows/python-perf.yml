@@ -94,6 +94,9 @@ jobs:
         - machine: rpi4-64
           num_test_iterations: 50
           performance_threshold_sec: 1.5
+        - machine: rpi5-64
+          num_test_iterations: 50
+          performance_threshold_sec: 0.5
         - machine: jetson
           num_test_iterations: 50
           performance_threshold_sec: 2.0

@@ -18,7 +18,7 @@ applications. It is
 
 ## Compatibility
 
-- Python 3.5+
+- Python 3.7+
 - Runs on Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone.
 
 ## Installation
