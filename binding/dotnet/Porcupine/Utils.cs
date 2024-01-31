@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2024 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -91,6 +91,7 @@ namespace Pv
                 case "0xd03": return "cortex-a53" + archInfo;
                 case "0xd07": return "cortex-a57" + archInfo;
                 case "0xd08": return "cortex-a72" + archInfo;
+                case "0xd0b": return "cortex-a76" + archInfo;
                 case "0xc08": return "";
                 default:
                     throw new PlatformNotSupportedException($"This device (CPU part = {cpuPart}) is not supported by Picovoice.");
