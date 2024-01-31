@@ -110,7 +110,7 @@ namespace Pv
                 case "0xd07": return "jetson";
                 case "0xc08": return "beaglebone";
                 default:
-                    throw new PlatformNotSupportedException($"This device (CPU part = {cpuPart}) is not supported by Picovoice.");
+                    throw new PlatformNotSupportedException($"This platform (CPU part = {cpuPart}) is not supported by Picovoice.");
             }
         }
 
