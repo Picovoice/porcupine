@@ -39,12 +39,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    # ************** REMOVE AFTER RELEASE ********************
-    - name: Build Node.js SDK
-      run: yarn && yarn build
-      working-directory: binding/nodejs
-    # ********************************************************
-
     - name: Install dependencies
       run: yarn install
 
@@ -60,12 +54,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    # ************** REMOVE AFTER RELEASE ********************
-    - name: Build Node.js SDK
-      run: yarn && yarn build
-      working-directory: binding/nodejs
-    # ********************************************************
 
     - name: Install dependencies
       run: yarn install
