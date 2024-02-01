@@ -23,11 +23,29 @@ class PorcupinePerformanceTestCase(unittest.TestCase):
     ACCESS_KEY = sys.argv[1]
     NUM_TEST_ITERATIONS = int(sys.argv[2])
     PERFORMANCE_THRESHOLD_SEC = float(sys.argv[3])
+    INIT_THRESHOLD_SEC = 0.01
 
     def test_performance(self):
         relative = '../../'
         language = 'en'
         keyword_paths = get_keyword_paths_by_language(relative, language, ['porcupine'])
+
+        init_results = []
+        for _ in range(self.NUM_TEST_ITERATIONS):
+            start = time.time()
+            p = Porcupine(
+            access_key=self.ACCESS_KEY,
+            library_path=pv_library_path(relative),
+            model_path=get_model_path_by_language(relative, language),
+            keyword_paths=keyword_paths,
+            sensitivities=[0.5] * len(keyword_paths))
+            init_time = time.time() - start
+            init_results.append(init_time)
+            p.delete()
+
+        avg_init = sum(init_results) / self.NUM_TEST_ITERATIONS
+        print("Average init: %s" % avg_init)
+
 
         porcupine = Porcupine(
             access_key=self.ACCESS_KEY,
