@@ -5,7 +5,7 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
 ## Requirements
 
 - go 1.16+
-- **Windows**: The demo requires `cgo`, which means that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/) to build it properly. 
+- **Windows**: The demo requires `cgo`, which means that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/) to build it properly.
   - Go versions less than `1.20` requires `gcc` version `11` or lower.
 
 ## Compatibility
@@ -18,6 +18,7 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
   - 2
   - 3 (32 and 64 bit)
   - 4 (32 and 64 bit)
+  - 5 (32 and 64 bit)
 - NVIDIA Jetson Nano
 - BeagleBone
 
@@ -37,8 +38,8 @@ porcupine/demo/go
 
 ### File Demo
 
-The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
-Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
+The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data.
+Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel.
 The following processes a file looking for instances of the phrase "Picovoice":
 
 ```console
@@ -132,7 +133,7 @@ It provides information about various audio input devices on the box. Here is an
 ```console
 index: 0, device name: USB Audio Device
 index: 1, device name: MacBook Air Microphone
-``` 
+```
 
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device
 in the above example, you can invoke the demo application as below:

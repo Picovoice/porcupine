@@ -1,4 +1,4 @@
-// Copyright 2021-2023 Picovoice Inc.
+// Copyright 2021-2024 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -402,6 +402,8 @@ func getLinuxDetails() (string, string) {
 		return "jetson", "cortex-a57" + archInfo
 	case "0xd08":
 		return "raspberry-pi", "cortex-a72" + archInfo
+	case "0xd0b":
+		return "raspberry-pi", "cortex-a76" + archInfo
 	case "0xc08":
 		return "beaglebone", ""
 	default:
