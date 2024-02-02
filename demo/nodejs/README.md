@@ -24,7 +24,7 @@ These demos run Porcupine on **Node.js 12+** on the following platforms:
 - Windows (x86_64)
 - Linux (x86_64)
 - macOS (x86_64, arm64)
-- Raspberry Pi (2,3,4)
+- Raspberry Pi (2, 3, 4, 5)
 - NVIDIA Jetson (Nano)
 - BeagleBone
 
@@ -40,7 +40,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ### Microphone demo
 
-The microphone demo allows you monitor microphone input for keywords using Porcupine. 
+The microphone demo allows you monitor microphone input for keywords using Porcupine.
 
 ## Install NPM package
 
@@ -71,7 +71,7 @@ index: 0, device name: USB Audio Device
 index: 1, device name: MacBook Air Microphone
 ```
 
-Specify the input audio device with `--audio_device_index` and either built-in 
+Specify the input audio device with `--audio_device_index` and either built-in
 keywords with `--keywords` or paths to Porcupine `.ppn` files with `--keyword_file_paths`.
 Provide your Picovoice AccessKey with `--access_key`.
 
