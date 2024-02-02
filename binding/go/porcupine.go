@@ -402,6 +402,8 @@ func getLinuxDetails() (string, string) {
 		return "jetson", "cortex-a57" + archInfo
 	case "0xd08":
 		return "raspberry-pi", "cortex-a72" + archInfo
+	case "0xd0b":
+		return "raspberry-pi", "cortex-a76" + archInfo
 	case "0xc08":
 		return "beaglebone", ""
 	default:

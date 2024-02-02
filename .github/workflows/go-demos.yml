@@ -26,7 +26,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
         go: [ '1.16', '1.17', '1.18', '1.19', '1.20', 'stable' ]
 
     steps:
@@ -45,7 +45,7 @@ jobs:
 
     - name: Build micdemo
       run: go build micdemo/porcupine_mic_demo.go
-      
+
     - name: Build filedemo
       run: go build filedemo/porcupine_file_demo.go
 
@@ -57,14 +57,14 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson ]
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Build micdemo
       run: go build micdemo/porcupine_mic_demo.go
-      
+
     - name: Build filedemo
       run: go build filedemo/porcupine_file_demo.go
 
