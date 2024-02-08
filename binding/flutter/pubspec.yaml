@@ -1,12 +1,12 @@
 name: porcupine_flutter
 description: A Flutter plugin for Picovoice's Porcupine offline wake word engine.
-version: 3.0.2
+version: 3.0.3
 homepage: https://picovoice.ai/
 repository: https://github.com/Picovoice/porcupine/
 documentation: https://picovoice.ai/docs/porcupine/
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.15.0 <4.0.0"
   flutter: ">=2.8.1"
 
 dependencies:
@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_voice_processor: ^1.1.0
+  flutter_voice_processor: ^1.1.1
 
 dev_dependencies:
   flutter_test:

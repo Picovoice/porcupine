@@ -59,3 +59,6 @@
 
 ## [3.0.2] - 2024-01-15
 * Address locale issue
+
+## [3.0.3] - 2024-02-08
+* Additional gradle plugin build support
