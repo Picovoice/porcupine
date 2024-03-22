@@ -102,8 +102,6 @@ Porcupine is the right product if you need to detect one or a few static (always
 
 - [Interactive Web Demo](https://picovoice.ai/demos/lamp/)
 
-- [Android Demo Application](https://play.google.com/store/apps/details?id=ai.picovoice.porcupine.demo&hl=en)
-
 - Porcupine on a Raspberry Pi Zero
 
 [![Porcupine in Action](https://img.youtube.com/vi/Fi_IJEcNr3I/0.jpg)](https://www.youtube.com/watch?v=Fi_IJEcNr3I)
