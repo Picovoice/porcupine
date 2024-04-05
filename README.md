@@ -2,7 +2,6 @@
 
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
 [![GitHub](https://img.shields.io/github/license/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
-[![GitHub language count](https://img.shields.io/github/languages/count/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
 
 [![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)<!-- markdown-link-check-disable-line -->
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
