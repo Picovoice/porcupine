@@ -13,7 +13,7 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web?label=npm%20%5Bweb%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web)
 [![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
-[![npm](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://cocoapods.org/pods/Porcupine-iOS)
+[![CocoaPods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://cocoapods.org/pods/Porcupine-iOS)
 [![Pub Version](https://img.shields.io/pub/v/porcupine_flutter)](https://pub.dev/packages/porcupine_flutter)
 [![PyPI](https://img.shields.io/pypi/v/pvporcupine)](https://pypi.org/project/pvporcupine/)
 [![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/porcupine/binding/go.svg)](https://pkg.go.dev/github.com/Picovoice/porcupine/binding/go)
