@@ -2,27 +2,25 @@
 
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
 [![GitHub](https://img.shields.io/github/license/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
-[![GitHub language count](https://img.shields.io/github/languages/count/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
 
-[![PyPI](https://img.shields.io/pypi/v/pvporcupine)](https://pypi.org/project/pvporcupine/)
-[![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
-[![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/porcupine/binding/go.svg)](https://pkg.go.dev/github.com/Picovoice/porcupine/binding/go)
-[![Pub Version](https://img.shields.io/pub/v/porcupine_flutter)](https://pub.dev/packages/porcupine_flutter)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)
+[![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)<!-- markdown-link-check-disable-line -->
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-angular)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/porcupine-node)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
-<!-- markdown-link-check-disable -->
-[![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)
-<!-- markdown-link-check-enable -->
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web?label=npm%20%5Bweb%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web)
+[![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
+[![CocoaPods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://cocoapods.org/pods/Porcupine-iOS)<!-- markdown-link-check-disable-line -->
+[![Pub Version](https://img.shields.io/pub/v/porcupine_flutter)](https://pub.dev/packages/porcupine_flutter)
+[![PyPI](https://img.shields.io/pypi/v/pvporcupine)](https://pypi.org/project/pvporcupine/)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/porcupine/binding/go.svg)](https://pkg.go.dev/github.com/Picovoice/porcupine/binding/go)
+
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-<!-- markdown-link-check-disable -->
-[![Twitter URL](https://img.shields.io/twitter/url?label=%40AiPicovoice&style=social&url=https%3A%2F%2Ftwitter.com%2FAiPicovoice)](https://twitter.com/AiPicovoice)
-<!-- markdown-link-check-enable -->
+[![Twitter URL](https://img.shields.io/twitter/url?label=%40AiPicovoice&style=social&url=https%3A%2F%2Ftwitter.com%2FAiPicovoice)](https://twitter.com/AiPicovoice)<!-- markdown-link-check-disable-line -->
 [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCAdi9sTCXLosG1XeqDwLx7w?label=YouTube&style=social)](https://www.youtube.com/channel/UCAdi9sTCXLosG1XeqDwLx7w)
 
 Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
