@@ -76,7 +76,7 @@ public class PorcupineService extends Service {
         try {
             porcupineManager = new PorcupineManager.Builder()
                     .setAccessKey(ACCESS_KEY)
-                    .setKeyword(Porcupine.BuiltInKeyword.COMPUTER)
+                    .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .setSensitivity(0.7f).build(
                             getApplicationContext(),
                             porcupineManagerCallback);
