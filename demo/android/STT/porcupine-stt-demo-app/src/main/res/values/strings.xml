@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Porcupine STT Android Demo</string>
-    <string name="start">Start</string>
-    <string name="stop">Stop</string>
-    <string name="footer">Made in Vancouver, Canada by Picovoice</string>
-</resources>

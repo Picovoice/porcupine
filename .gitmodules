@@ -1,9 +1,0 @@
-[submodule "binding/unity/VoiceProcessor"]
-	path = binding/unity/VoiceProcessor
-	url = ../unity-voice-processor.git
-[submodule "demo/c/dr_libs"]
-	path = demo/c/dr_libs
-	url = ../../mackron/dr_libs.git
-[submodule "demo/c/pvrecorder"]
-	path = demo/c/pvrecorder
-	url = ../pvrecorder.git

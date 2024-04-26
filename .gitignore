@@ -1,12 +1,6 @@
-*.DS_Store
-.idea/
-*.pyc
-/binding/dotnet/*/bin/
-/binding/dotnet/*/obj/
-demo/ios/PorcupineDemoNoWatch.xcodeproj/xcshareddata/
-.vs/
-_ReSharper.Caches/
 build
 dist
+MANIFEST.in
+pvporcupine
 pvporcupine.egg-info
-demo/c/cmake-build-debug/
+.idea

@@ -1,8 +1,0 @@
-.vscode
-.vs
-*.user
-Porcupine/bin/**
-Porcupine/obj/**
-Porcupine/Properties/**
-PorcupineTest/bin/**
-PorcupineTest/obj/**

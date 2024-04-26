@@ -1,9 +1,0 @@
-node_modules
-dist
-lib/pv_porcupine*.wasm
-keywords
-test/keywords/*.ppn
-cypress/fixtures/audio_samples/*
-test/porcupine_params*.js
-test/porcupine_params*.pv
-test/test_data.json
