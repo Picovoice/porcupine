@@ -48,6 +48,6 @@ setuptools.setup(
             'porcupine_respeaker_demo=ppnrespeakerdemo.porcupine_demo:main',
         ],
     ),
-    python_requires='>=3.5',
+    python_requires='>=3.8',
     keywords="wake word, voice control, speech recognition, voice recognition, picovoice, porcupine, respeaker",
 )
