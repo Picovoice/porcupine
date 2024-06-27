@@ -334,6 +334,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             fontWeight: FontWeight.bold,
             fontSize:  15)),
         titleAlignment: Alignment.topCenter,
+        gradientColors: [
+          picoBlue, picoBlue
+        ],
         items: _keywords.toList().map((x) => Center(
           child: Text(x)
         )).toList(),
