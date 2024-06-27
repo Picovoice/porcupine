@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_picker_plus/flutter_picker_plus.dart';
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:porcupine_flutter/porcupine.dart';
 import 'package:porcupine_flutter/porcupine_manager.dart';
 import 'package:porcupine_flutter/porcupine_error.dart';
@@ -327,14 +327,20 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           )));
 
   showPicker(BuildContext context) {
-    Picker picker = Picker(
-        adapter: PickerDataAdapter<String>(pickerData: _keywords.toList()),
-        changeToFirst: true,
-        textAlign: TextAlign.left,
-        columnPadding: const EdgeInsets.all(8.0),
-        onConfirm: (Picker picker, List value) {
-          loadNewKeyword(picker.getSelectedValues()[0]);
-        });
-    picker.show(_scaffoldKey.currentState!);
+    BottomPicker picker = BottomPicker(
+        pickerTitle: Text(
+          "Choose a keyword",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize:  15)),
+        titleAlignment: Alignment.topCenter,
+        items: _keywords.toList().map((x) => Center(
+          child: Text(x)
+        )).toList(),
+        onSubmit: (index) {
+          loadNewKeyword(_keywords[index]);
+        },
+    );
+    picker.show(_scaffoldKey.currentContext!);
   }
 }
