@@ -43,9 +43,9 @@ void main() {
         String keyword = testData['tests']['singleKeyword'][t]['wakeword'];
 
         String keywordPath =
-            "assets/test_resources/keyword_files/${keyword}_${platform}.ppn";
+            "assets/test_resources/keyword_files/${keyword}_$platform.ppn";
         String modelPath =
-            "assets/test_resources/model_files/porcupine_params${language != "en" ? "_${language}" : ""}.pv";
+            "assets/test_resources/model_files/porcupine_params${language != "en" ? "_$language" : ""}.pv";
 
         Porcupine porcupine;
         try {
@@ -53,7 +53,7 @@ void main() {
               modelPath: modelPath);
         } on PorcupineException catch (ex) {
           expect(ex, equals(null),
-              reason: "Failed to initialize Porcupine for ${language}: ${ex}");
+              reason: "Failed to initialize Porcupine for $language: $ex");
           return;
         }
 
@@ -74,10 +74,10 @@ void main() {
         porcupine.delete();
         expect(detections.length, equals(1),
             reason:
-                "Number of detections for ${language} ${keyword} was incorrect");
+                "Number of detections for $language $keyword was incorrect");
         expect(detections[0], equals(0),
             reason:
-                "Porcupine returned wrong keyword index for ${language} ${keyword}");
+                "Porcupine returned wrong keyword index for $language $keyword");
       }
     });
 
@@ -90,10 +90,10 @@ void main() {
             testData['tests']['multipleKeyword'][t]['groundTruth']);
 
         List<String> keywordPaths = keywords.map((keyword) {
-          return "assets/test_resources/keyword_files/${keyword}_${platform}.ppn";
+          return "assets/test_resources/keyword_files/${keyword}_$platform.ppn";
         }).toList();
         String modelPath =
-            "assets/test_resources/model_files/porcupine_params${language != "en" ? "_${language}" : ""}.pv";
+            "assets/test_resources/model_files/porcupine_params${language != "en" ? "_$language" : ""}.pv";
 
         Porcupine porcupine;
         try {
@@ -101,12 +101,12 @@ void main() {
               modelPath: modelPath);
         } on PorcupineException catch (ex) {
           expect(ex, equals(null),
-              reason: "Failed to initialize Porcupine for ${language}: ${ex}");
+              reason: "Failed to initialize Porcupine for $language: $ex");
           return;
         }
 
         String audioPath =
-            "assets/test_resources/audio_samples/multiple_keywords${language != "en" ? "_${language}" : ""}.wav";
+            "assets/test_resources/audio_samples/multiple_keywords${language != "en" ? "_$language" : ""}.wav";
         List<int> pcm = await loadAudioFile(audioPath);
 
         List<int> detections = [];
@@ -121,9 +121,9 @@ void main() {
 
         porcupine.delete();
         expect(detections.length, equals(groundTruth.length),
-            reason: "Number of detections for ${language} was incorrect");
+            reason: "Number of detections for $language was incorrect");
         expect(detections, equals(groundTruth),
-            reason: "Porcupine detections don't match truth for ${language}");
+            reason: "Porcupine detections don't match truth for $language");
       }
     });
   });

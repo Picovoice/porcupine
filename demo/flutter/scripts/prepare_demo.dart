@@ -62,7 +62,7 @@ void main(List<String> arguments) async {
   }
   modelDir.createSync(recursive: true);
 
-  var params = Map();
+  var params = {};
   params["language"] = language;
   params["keywords"] = [];
 

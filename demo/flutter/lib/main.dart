@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter_picker_plus/flutter_picker_plus.dart';
 import 'package:porcupine_flutter/porcupine.dart';
 import 'package:porcupine_flutter/porcupine_manager.dart';
 import 'package:porcupine_flutter/porcupine_error.dart';
@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       isButtonDisabled = true;
       backgroundColour = defaultColour;
     });
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     _initializeKeywordMap();
     _loadParams();
@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -278,7 +278,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   buildStartButton(BuildContext context) {
     final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
-        primary: picoBlue,
+        backgroundColor: picoBlue,
         shape: CircleBorder(),
         textStyle: TextStyle(color: Colors.white));
 
