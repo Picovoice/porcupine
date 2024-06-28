@@ -20,10 +20,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install Flutter 2.8.1
+    - name: Install Flutter 3.22.2
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: 2.8.1
+        flutter-version: 3.22.2
 
     - name: Run Binding Analyzer
       run: flutter analyze --no-fatal-infos --no-fatal-warnings
