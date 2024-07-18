@@ -30,7 +30,7 @@ applications. It is
 - compact and computationally-efficient. It is perfect for IoT.
 - cross-platform:
   - Arm Cortex-M, STM32, Arduino, and i.MX RT
-  - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
+  - Raspberry Pi
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
@@ -427,7 +427,7 @@ At the root of the repository, build with:
 cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_mic
 ```
 
-#### Linux (x86_64), macOS (x86_64), Raspberry Pi, BeagleBone, and Jetson
+#### Linux (x86_64), macOS (x86_64), and Raspberry Pi
 
 List input audio devices with:
 
@@ -444,7 +444,7 @@ Run the demo using:
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`), `${AUDIO_DEVICE_INDEX}` with
+name of the platform you are running on (`linux`, `raspberry-pi`, or `mac`), `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device and `${ACCESS_KEY}` with your `AccessKey`.
 
 #### Windows
@@ -479,7 +479,7 @@ At the root of the repository, build with:
 cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_file
 ```
 
-#### Linux (x86_64), macOS (x86_64), Raspberry Pi, BeagleBone, and Jetson
+#### Linux (x86_64), macOS (x86_64), and Raspberry Pi
 
 Run the demo using:
 
@@ -490,7 +490,7 @@ Run the demo using:
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, `beaglebone`, or `jetson`) and `${ACCESS_KEY}` with your `AccessKey`.
+name of the platform you are running on (`linux`, `raspberry-pi`, or `mac`) and `${ACCESS_KEY}` with your `AccessKey`.
 
 #### Windows
 
