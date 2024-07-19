@@ -39,7 +39,7 @@ ncp(
   }
 );
 
-let platforms = ["beaglebone", "jetson", "linux", "mac", "raspberry-pi",  "windows"];
+let platforms = ["linux", "mac", "raspberry-pi",  "windows"];
 
 // Keywords (resources)
 // Only ship keywords that work on every platform (LCD)

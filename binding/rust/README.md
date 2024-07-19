@@ -9,7 +9,7 @@ applications. It is
 - compact and computationally-efficient. It is perfect for IoT.
 - cross-platform:
   - Arm Cortex-M, STM32, Arduino, and i.MX RT 
-  - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
+  - Raspberry Pi
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
@@ -19,7 +19,7 @@ applications. It is
 ## Compatibility
 
 - Rust 1.54+
-- Runs on Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
+- Runs on Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), and Raspberry Pi
 
 ## Installation
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.

@@ -26,7 +26,7 @@ shutil.copy(os.path.join(os.path.dirname(__file__), '_porcupine.py'), os.path.jo
 shutil.copy(os.path.join(os.path.dirname(__file__), '_factory.py'), os.path.join(package_folder, '_factory.py'))
 shutil.copy(os.path.join(os.path.dirname(__file__), '_util.py'), os.path.join(package_folder, '_util.py'))
 
-platforms = ('beaglebone', 'jetson', 'linux', 'mac', 'raspberry-pi', 'windows')
+platforms = ('linux', 'mac', 'raspberry-pi', 'windows')
 
 os.mkdir(os.path.join(package_folder, 'lib'))
 for platform in ('common',) + platforms:
@@ -46,15 +46,11 @@ include pvporcupine/_porcupine.py
 include pvporcupine/_factory.py
 include pvporcupine/_util.py
 include pvporcupine/lib/common/porcupine_params.pv
-include pvporcupine/lib/beaglebone/libpv_porcupine.so
-recursive-include pvporcupine/lib/jetson *
 include pvporcupine/lib/linux/x86_64/libpv_porcupine.so
 include pvporcupine/lib/mac/x86_64/libpv_porcupine.dylib
 include pvporcupine/lib/mac/arm64/libpv_porcupine.dylib
 recursive-include pvporcupine/lib/raspberry-pi *
 include pvporcupine/lib/windows/amd64/libpv_porcupine.dll
-recursive-include pvporcupine/resources/keyword_files/beaglebone *
-recursive-include pvporcupine/resources/keyword_files/jetson *
 recursive-include pvporcupine/resources/keyword_files/linux *
 recursive-include pvporcupine/resources/keyword_files/mac/ *
 recursive-include pvporcupine/resources/keyword_files/raspberry-pi *

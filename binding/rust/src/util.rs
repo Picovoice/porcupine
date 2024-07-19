@@ -19,9 +19,7 @@ const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "lib/";
 const DEFAULT_RELATIVE_MODEL_PATH: &str = "lib/common/porcupine_params.pv";
 
 #[allow(dead_code)]
-const RPI_MACHINES: [&str; 5] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72", "cortex-a76"];
-#[allow(dead_code)]
-const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+const RPI_MACHINES: [&str; 5] = ["arm11", "cortex-a53", "cortex-a72", "cortex-a76"];
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn find_machine_type() -> String {
@@ -50,12 +48,9 @@ fn find_machine_type() -> String {
 
     let machine = match cpu_part.as_str() {
         "0xb76" => "arm11",
-        "0xc07" => "cortex-a7",
         "0xd03" => "cortex-a53",
-        "0xd07" => "cortex-a57",
         "0xd08" => "cortex-a72",
         "0xd0b" => "cortex-a76",
-        "0xc08" => "beaglebone",
         _ => "unsupported",
     };
 
@@ -96,10 +91,6 @@ fn base_library_path() -> PathBuf {
                 PathBuf::from(format!("raspberry-pi/{}/libpv_porcupine.so", &machine))
             }
         }
-        machine if JETSON_MACHINES.contains(&machine) => {
-            PathBuf::from("jetson/cortex-a57-aarch64/libpv_porcupine.so")
-        }
-        "beaglebone" => PathBuf::from("beaglebone/libpv_porcupine.so"),
         _ => {
             eprintln!("WARNING: Please be advised that this device is not officially supported by Picovoice.\nFalling back to the armv6-based (Raspberry Pi Zero) library. This is not tested nor optimal.\nFor the model, use Raspberry Pi's models");
             PathBuf::from("raspberry-pi/arm11/libpv_porcupine.so")
@@ -140,8 +131,6 @@ pub fn pv_platform() -> String {
     let machine = find_machine_type();
     match machine.as_str() {
         machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),
-        machine if JETSON_MACHINES.contains(&machine) => String::from("jetson"),
-        "beaglebone" => String::from("beaglebone"),
         _ => {
             panic!("ERROR: Please be advised that this device is not officially supported by Picovoice");
         }

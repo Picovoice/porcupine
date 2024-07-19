@@ -110,42 +110,6 @@ task copyRPiKeywordResources(type: Copy) {
             'terminator_raspberry-pi.ppn')
     into("${outputDir}/porcupine/resources/keyword_files/raspberry-pi/")
 }
-task copyJetsonKeywordResources(type: Copy) {
-    from('../../resources/keyword_files/jetson')
-    include('alexa_jetson.ppn',
-            'americano_jetson.ppn',
-            'blueberry_jetson.ppn',
-            'bumblebee_jetson.ppn',
-            'computer_jetson.ppn',
-            'grapefruit_jetson.ppn',
-            'grasshopper_jetson.ppn',
-            'hey google_jetson.ppn',
-            'hey siri_jetson.ppn',
-            'jarvis_jetson.ppn',
-            'ok google_jetson.ppn',
-            'picovoice_jetson.ppn',
-            'porcupine_jetson.ppn',
-            'terminator_jetson.ppn')
-    into("${outputDir}/porcupine/resources/keyword_files/jetson/")
-}
-task copyBeagleboneKeywordResources(type: Copy) {
-    from('../../resources/keyword_files/beaglebone')
-    include('alexa_beaglebone.ppn',
-            'americano_beaglebone.ppn',
-            'blueberry_beaglebone.ppn',
-            'bumblebee_beaglebone.ppn',
-            'computer_beaglebone.ppn',
-            'grapefruit_beaglebone.ppn',
-            'grasshopper_beaglebone.ppn',
-            'hey google_beaglebone.ppn',
-            'hey siri_beaglebone.ppn',
-            'jarvis_beaglebone.ppn',
-            'ok google_beaglebone.ppn',
-            'picovoice_beaglebone.ppn',
-            'porcupine_beaglebone.ppn',
-            'terminator_beaglebone.ppn')
-    into("${outputDir}/porcupine/resources/keyword_files/beaglebone/")
-}
 
 task copyDefaultModel(type: Copy) {
     from('../../lib/common/porcupine_params.pv') into "${outputDir}/porcupine/lib/common/"
@@ -173,27 +137,17 @@ task copyRPiLib(type: Copy) {
             'cortex-a76-aarch64/libpv_porcupine_jni.so')
     into("${outputDir}/porcupine/lib/java/raspberry-pi/")
 }
-task copyJetsonLib(type: Copy) {
-    from('../../lib/java/jetson/cortex-a57-aarch64/libpv_porcupine_jni.so') into "${outputDir}/porcupine/lib/java/jetson/cortex-a57-aarch64/"
-}
-task copyBeagleboneLib(type: Copy) {
-    from('../../lib/java/beaglebone/libpv_porcupine_jni.so') into "${outputDir}/porcupine/lib/java/beaglebone/"
-}
 
 task copyTasks(type: GradleBuild) {
     tasks = ['copyLinuxKeywordResources',
              'copyMacKeywordResources',
              'copyWindowsKeywordResources',
              'copyRPiKeywordResources',
-             'copyJetsonKeywordResources',
-             'copyBeagleboneKeywordResources',
              'copyDefaultModel',
              'copyLinuxLib',
              'copyMacLib',
              'copyWindowsLib',
-             'copyRPiLib',
-             'copyJetsonLib',
-             'copyBeagleboneLib']
+             'copyRPiLib']
 }
 
 jar {

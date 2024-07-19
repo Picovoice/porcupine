@@ -394,18 +394,12 @@ func getLinuxDetails() (string, string) {
 	switch cpuPart {
 	case "0xb76":
 		return "raspberry-pi", "arm11" + archInfo
-	case "0xc07":
-		return "raspberry-pi", "cortex-a7" + archInfo
 	case "0xd03":
 		return "raspberry-pi", "cortex-a53" + archInfo
-	case "0xd07":
-		return "jetson", "cortex-a57" + archInfo
 	case "0xd08":
 		return "raspberry-pi", "cortex-a72" + archInfo
 	case "0xd0b":
 		return "raspberry-pi", "cortex-a76" + archInfo
-	case "0xc08":
-		return "beaglebone", ""
 	default:
 		log.Fatalf("Unsupported CPU:\n%s", cpuPart)
 		return "", ""

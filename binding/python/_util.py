@@ -41,18 +41,12 @@ def _pv_linux_machine(machine):
 
     if '0xb76' == cpu_part:
         return 'arm11' + arch_info
-    elif '0xc07' == cpu_part:
-        return 'cortex-a7' + arch_info
     elif '0xd03' == cpu_part:
         return 'cortex-a53' + arch_info
-    elif '0xd07' == cpu_part:
-        return 'cortex-a57' + arch_info
     elif '0xd08' == cpu_part:
         return 'cortex-a72' + arch_info
     elif "0xd0b" == cpu_part:
         return "cortex-a76" + arch_info
-    elif '0xc08' == cpu_part:
-        return 'beaglebone' + arch_info
     elif machine == 'armv7l':
         log.warning(
             'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
@@ -79,14 +73,12 @@ _PV_SYSTEM, _PV_MACHINE = _pv_platform()
 
 _RASPBERRY_PI_MACHINES = {
     "arm11",
-    "cortex-a7",
     "cortex-a53",
     "cortex-a72",
     "cortex-a76",
     "cortex-a53-aarch64",
     "cortex-a72-aarch64",
     "cortex-a76-aarch64"}
-_JETSON_MACHINES = {'cortex-a57-aarch64'}
 
 
 def pv_library_path(relative):
@@ -98,18 +90,11 @@ def pv_library_path(relative):
     elif _PV_SYSTEM == 'Linux':
         if _PV_MACHINE == 'x86_64':
             return os.path.join(os.path.dirname(__file__), relative, 'lib/linux/x86_64/libpv_porcupine.so')
-        elif _PV_MACHINE in _JETSON_MACHINES:
-            return os.path.join(
-                os.path.dirname(__file__),
-                relative,
-                'lib/jetson/%s/libpv_porcupine.so' % _PV_MACHINE)
         elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
             return os.path.join(
                 os.path.dirname(__file__),
                 relative,
                 'lib/raspberry-pi/%s/libpv_porcupine.so' % _PV_MACHINE)
-        elif _PV_MACHINE == 'beaglebone':
-            return os.path.join(os.path.dirname(__file__), relative, 'lib/beaglebone/libpv_porcupine.so')
     elif _PV_SYSTEM == 'Windows':
         return os.path.join(os.path.dirname(__file__), relative, 'lib/windows/amd64/libpv_porcupine.dll')
 
@@ -126,12 +111,8 @@ def pv_keyword_files_subdir():
     elif _PV_SYSTEM == 'Linux':
         if _PV_MACHINE == 'x86_64':
             return 'linux'
-        elif _PV_MACHINE in _JETSON_MACHINES:
-            return 'jetson'
         elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
             return 'raspberry-pi'
-        elif _PV_MACHINE == 'beaglebone':
-            return 'beaglebone'
     elif _PV_SYSTEM == 'Windows':
         return 'windows'
 
