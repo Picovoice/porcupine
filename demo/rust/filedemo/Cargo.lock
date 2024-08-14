@@ -135,9 +135,7 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "3.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6e6218ff1a325195f04a009398566e9eb343ccbfccce203b31ba3b82eb3cac63"
+version = "3.0.3"
 dependencies = [
  "libc",
  "libloading",
@@ -145,7 +143,7 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine_filedemo"
-version = "3.0.2"
+version = "3.0.3"
 dependencies = [
  "chrono",
  "clap",

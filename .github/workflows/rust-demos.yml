@@ -44,6 +44,12 @@ jobs:
         toolchain: stable
         override: true
 
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Rust SDK
+      run: ./copy.sh
+      working-directory: binding/rust
+      # ********************************************************
+
     - name: Rust build micdemo
       run: cargo build --verbose
       working-directory: demo/rust/micdemo
@@ -71,6 +77,12 @@ jobs:
       with:
         toolchain: nightly
         override: true
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Rust SDK
+      run: ./copy.sh
+      working-directory: binding/rust
+      # ********************************************************
 
     - name: Rust build micdemo
       run: cargo build --verbose

@@ -68,7 +68,7 @@ jobs:
       run: ./copy.sh
 
     - name: Install dependencies
-      run: go get
+      run: go install
 
     - name: Build
       run: go build
@@ -90,7 +90,7 @@ jobs:
       run: ./copy.sh
 
     - name: Install dependencies
-      run: go get
+      run: go install
 
     - name: Build
       run: go build

@@ -19,7 +19,7 @@ const DEFAULT_RELATIVE_LIBRARY_DIR: &str = "lib/";
 const DEFAULT_RELATIVE_MODEL_PATH: &str = "lib/common/porcupine_params.pv";
 
 #[allow(dead_code)]
-const RPI_MACHINES: [&str; 5] = ["arm11", "cortex-a53", "cortex-a72", "cortex-a76"];
+const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a53", "cortex-a72", "cortex-a76"];
 
 #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
 fn find_machine_type() -> String {

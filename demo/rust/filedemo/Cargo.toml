@@ -1,6 +1,6 @@
 [package]
 name = "pv_porcupine_filedemo"
-version = "3.0.2"
+version = "3.0.3"
 edition = "2018"
 
 [dependencies]
@@ -8,4 +8,4 @@ chrono = "0.4.19"
 clap = "2.33.3"
 hound = "3.4.0"
 itertools = "0.10.1"
-pv_porcupine = "=3.0.2"
+pv_porcupine = { path = "../../../binding/rust" }

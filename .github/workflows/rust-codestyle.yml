@@ -44,6 +44,12 @@ jobs:
         toolchain: stable
         override: true
 
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Rust SDK
+      run: ./copy.sh
+      working-directory: binding/rust
+      # ********************************************************
+
     - name: Run clippy
       run: cargo clippy -- -D warnings
       working-directory: binding/rust
@@ -85,6 +91,12 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Rust SDK
+      run: ./copy.sh
+      working-directory: binding/rust
+      # ********************************************************
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
