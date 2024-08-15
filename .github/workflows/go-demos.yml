@@ -45,7 +45,7 @@ jobs:
 
       # ************** REMOVE AFTER RELEASE ********************
     - name: Install Go SDK from branch
-      run: go get github.com/Picovoice/porcupine/binding/go/v3/@d7a0b3ff1b171cd4e1f84bc2da10dc7fa88a8dbe
+      run: go get github.com/Picovoice/porcupine/binding/go/v3/@c9e201a16322b65a603e74e9b772a3a35d72ec47
       # ********************************************************
 
     - name: Build micdemo
@@ -69,7 +69,7 @@ jobs:
 
       # ************** REMOVE AFTER RELEASE ********************
     - name: Install Go SDK from branch
-      run: go get github.com/Picovoice/porcupine/binding/go/v3/@d7a0b3ff1b171cd4e1f84bc2da10dc7fa88a8dbe
+      run: go get github.com/Picovoice/porcupine/binding/go/v3/@c9e201a16322b65a603e74e9b772a3a35d72ec47
       # ********************************************************
 
     - name: Build micdemo
