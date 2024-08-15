@@ -13,6 +13,7 @@ armv
 atclause
 avalonia
 avares
+beaglebone
 behaviour
 bigseubi
 bushi
@@ -82,6 +83,7 @@ itertools
 jarvis
 javadoc
 javax
+jetson
 keompyuteo
 konnichiwa
 konpyūtā

@@ -21,6 +21,7 @@ env:
 defaults:
   run:
     working-directory: demo/rust
+    shell: bash
 
 jobs:
   build-github-hosted:
