@@ -102,7 +102,7 @@ export default porcupineModel;
 
 const command = (process.platform === "win32") ? "npx.cmd" : "npx";
 
-child_process.execSync(`${command} vite ${args}`, {
+child_process.execSync(`${command} vite ${args.join(" ")}`, {
   shell: true,
   stdio: 'inherit'
 });

@@ -106,7 +106,7 @@ fs.writeFileSync(
 
 const command = (process.platform === "win32") ? "npx.cmd" : "npx";
 
-child_process.execSync(`${command} ng ${args}`, {
+child_process.execSync(`${command} ng ${args.join(" ")}`, {
   shell: true,
   stdio: 'inherit'
 });
