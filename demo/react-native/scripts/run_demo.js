@@ -5,7 +5,7 @@ const testData = require('../../../resources/.test/test_data.json');
 
 const availableLanguages = testData.tests.singleKeyword.map((x) => x.language);
 
-const commands = process.argv.slice(2, -1);
+const args = process.argv.slice(2, -1);
 const language = process.argv.slice(-1)[0];
 
 if (!availableLanguages.includes(language)) {
@@ -95,7 +95,7 @@ fs.writeFileSync(
 
 const command = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 
-child_process.spawn("react-native", commands, {
-  execPath: command,
-  shell: true
+child_process.execSync(`${command} react-native ${args}`, {
+  shell: true,
+  stdio: 'inherit'
 });

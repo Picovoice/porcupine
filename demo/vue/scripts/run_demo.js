@@ -7,7 +7,7 @@ const availableLanguages = testData["tests"]["singleKeyword"].map(
   x => x["language"]
 );
 
-const commands = process.argv.slice(2, -1);
+const args = process.argv.slice(2, -1);
 const language = process.argv.slice(-1)[0];
 
 if (!availableLanguages.includes(language)) {
@@ -102,7 +102,7 @@ export default porcupineModel;
 
 const command = (process.platform === "win32") ? "npx.cmd" : "npx";
 
-child_process.spawn("vite", commands, {
-  execPath: command,
-  shell: true
+child_process.execSync(`${command} vite ${args}`, {
+  shell: true,
+  stdio: 'inherit'
 });

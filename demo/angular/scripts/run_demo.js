@@ -7,7 +7,7 @@ const availableLanguages = testData["tests"]["singleKeyword"].map(
   (x) => x["language"]
 );
 
-const commands = process.argv.slice(2, -1);
+const args = process.argv.slice(2, -1);
 const language = process.argv.slice(-1)[0];
 
 if (!availableLanguages.includes(language)) {
@@ -106,7 +106,7 @@ fs.writeFileSync(
 
 const command = (process.platform === "win32") ? "npx.cmd" : "npx";
 
-child_process.spawn("ng", commands, {
-  execPath: command,
-  shell: true
+child_process.execSync(`${command} ng ${args}`, {
+  shell: true,
+  stdio: 'inherit'
 });
