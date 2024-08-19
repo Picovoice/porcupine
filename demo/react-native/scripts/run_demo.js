@@ -95,6 +95,7 @@ fs.writeFileSync(
 
 const command = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 
-child_process.fork('react-native', commands, {
+child_process.spawn("react-native", commands, {
   execPath: command,
+  shell: true
 });

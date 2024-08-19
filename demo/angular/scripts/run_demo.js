@@ -106,6 +106,7 @@ fs.writeFileSync(
 
 const command = (process.platform === "win32") ? "npx.cmd" : "npx";
 
-child_process.fork("ng", commands, {
+child_process.spawn("ng", commands, {
   execPath: command,
+  shell: true
 });
