@@ -14,7 +14,7 @@ PODS:
   - ios-voice-processor (1.1.0)
   - Porcupine-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
-  - porcupine-react-native (3.0.1):
+  - porcupine-react-native (3.0.2):
     - Porcupine-iOS (~> 3.0.1)
     - React
   - RCT-Folly (2021.06.28.00-v2):
@@ -224,7 +224,7 @@ PODS:
   - React-jsinspector (0.68.7)
   - React-logger (0.68.7):
     - glog
-  - react-native-voice-processor (1.2.0):
+  - react-native-voice-processor (1.2.2):
     - ios-voice-processor (~> 1.1.0)
     - React-Core
   - React-perflogger (0.68.7)
@@ -419,7 +419,7 @@ SPEC CHECKSUMS:
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
   Porcupine-iOS: 6d69509fa587f3ac0be1adfefb48e0c6ce029fff
-  porcupine-react-native: f6650a418ba767c210eeb416d4e0bdbb93a209ca
+  porcupine-react-native: 8d7374c0fea2fa6ad645139f33150290a56f574e
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 530916cd48c5f7cf1fc16966ad5ea01638ca4799
   RCTTypeSafety: 5fb4cb3080efd582e5563c3e9a0e459fc51396c5
@@ -433,7 +433,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 7c0bd030a84f2ec446fb104b7735af2f5ed11eea
   React-jsinspector: cab4d37ebde480f84c79ac89568abbf76b916c3e
   React-logger: b75b80500ea80457b2cf169427d66de986cdcb29
-  react-native-voice-processor: aefb0845641c7d67dd47e69606ba7ebb38aab5cd
+  react-native-voice-processor: 6f8e5236d1a370be02aa87da8e34aa26506678df
   React-perflogger: 44436b315d757100a53dfb1ab6b77c58cb646d7d
   React-RCTActionSheet: 1888a229684762c40cc96c7ff4716f809655dc09
   React-RCTAnimation: f05da175751867521d14b02ab4d3994a7b96f131
@@ -449,6 +449,6 @@ SPEC CHECKSUMS:
   RNCPicker: 0991c56da7815c0cf946d6f63cf920b25296e5f6
   Yoga: 0bc4b37c3b8a345336ff601e2cf7d9704bab7e93
 
-PODFILE CHECKSUM: 8921bb939d724a5ead76bd00f8a96af2bfb18432
+PODFILE CHECKSUM: 0052e6a10d8424d84416b8090efd0354fc489666
 
 COCOAPODS: 1.11.3
