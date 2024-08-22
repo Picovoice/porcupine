@@ -30,7 +30,7 @@ applications. It is
 - compact and computationally-efficient. It is perfect for IoT.
 - cross-platform:
   - Arm Cortex-M, STM32, Arduino, and i.MX RT
-  - Raspberry Pi
+  - Raspberry Pi (Zero, 3, 4, 5)
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
@@ -427,7 +427,7 @@ At the root of the repository, build with:
 cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_mic
 ```
 
-#### Linux (x86_64), macOS (x86_64), and Raspberry Pi
+#### Linux (x86_64), macOS (x86_64, arm64), and Raspberry Pi (Zero, 3, 4, 5)
 
 List input audio devices with:
 
@@ -479,7 +479,7 @@ At the root of the repository, build with:
 cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_file
 ```
 
-#### Linux (x86_64), macOS (x86_64), and Raspberry Pi
+#### Linux (x86_64), macOS (x86_64, arm64), and Raspberry Pi (Zero, 3, 4, 5)
 
 Run the demo using:
 

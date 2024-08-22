@@ -185,7 +185,7 @@ ppn-file-demo \
 
 You may override the porcupine model and dynamic libraries by specifying their absolute paths with `--model_file_path` and `--library_file_path`, respectively. As with keyword files, the dynamic library is specific to the platform.
 
-e.g. for macOS (x86_64):
+e.g. for macOS (x86_64, arm64):
 
 ```console
 ppn-file-demo \
