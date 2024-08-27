@@ -1,5 +1,5 @@
 #
-# Copyright 2019-2023 Picovoice Inc.
+# Copyright 2019-2024 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -26,7 +26,7 @@ shutil.copy(os.path.join(os.path.dirname(__file__), '_porcupine.py'), os.path.jo
 shutil.copy(os.path.join(os.path.dirname(__file__), '_factory.py'), os.path.join(package_folder, '_factory.py'))
 shutil.copy(os.path.join(os.path.dirname(__file__), '_util.py'), os.path.join(package_folder, '_util.py'))
 
-platforms = ('beaglebone', 'jetson', 'linux', 'mac', 'raspberry-pi', 'windows')
+platforms = ('linux', 'mac', 'raspberry-pi', 'windows')
 
 os.mkdir(os.path.join(package_folder, 'lib'))
 for platform in ('common',) + platforms:
@@ -46,15 +46,11 @@ include pvporcupine/_porcupine.py
 include pvporcupine/_factory.py
 include pvporcupine/_util.py
 include pvporcupine/lib/common/porcupine_params.pv
-include pvporcupine/lib/beaglebone/libpv_porcupine.so
-recursive-include pvporcupine/lib/jetson *
 include pvporcupine/lib/linux/x86_64/libpv_porcupine.so
 include pvporcupine/lib/mac/x86_64/libpv_porcupine.dylib
 include pvporcupine/lib/mac/arm64/libpv_porcupine.dylib
 recursive-include pvporcupine/lib/raspberry-pi *
 include pvporcupine/lib/windows/amd64/libpv_porcupine.dll
-recursive-include pvporcupine/resources/keyword_files/beaglebone *
-recursive-include pvporcupine/resources/keyword_files/jetson *
 recursive-include pvporcupine/resources/keyword_files/linux *
 recursive-include pvporcupine/resources/keyword_files/mac/ *
 recursive-include pvporcupine/resources/keyword_files/raspberry-pi *
@@ -69,7 +65,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="3.0.2",
+    version="3.0.3",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",

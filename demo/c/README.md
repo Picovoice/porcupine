@@ -32,7 +32,7 @@ cmake -S demo/c/. -B demo/c/build -G "MinGW Makefiles" && cmake --build demo/c/b
 
 Running the executable without any commandline arguments prints the usage info to the console.
 
-#### Linux, macOS, Raspberry Pi, BeagleBone, Jetson
+#### Linux, macOS, Raspberry Pi
 
 ```console
 ./demo/c/build/porcupine_demo_mic 
@@ -52,7 +52,7 @@ Usage : .\\demo\\c\\build\\porcupine_demo_mic.exe -l LIBRARY_PATH -m MODEL_PATH 
 
 The following commands shows the available audio input devices to the console.
 
-#### Linux, macOS, Raspberry Pi, BeagleBone, Jetson
+#### Linux, macOS, Raspberry Pi
 
 ```console
 ./demo/c/build/porcupine_demo_mic --show_audio_devices
@@ -105,27 +105,6 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 -a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
 ```
 
-#### BeagleBone
-
-```console
-./demo/c/build/porcupine_demo_mic lib/beaglebone/libpv_porcupine.so lib/common/porcupine_params.pv \
-resources/keyword_files/beaglebone/porcupine_beaglebone.ppn 0.5 ${AUDIO_DEVICE_INDEX}
-
-./demo/c/build/porcupine_demo_mic \
--l lib/beaglebone/libpv_porcupine.so -m lib/common/porcupine_params.pv \
--k resources/keyword_files/beaglebone/porcupine_beaglebone.ppn -t 0.5 \
--a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
-```
-
-#### Jetson
-
-```console
-./demo/c/build/porcupine_demo_mic \
--l lib/jetson/cortex-a57-aarch64/libpv_porcupine.so -m lib/common/porcupine_params.pv \
--k resources/keyword_files/jetson/porcupine_jetson.ppn -t 0.5 \
--a ${ACCESS_KEY} -d ${AUDIO_DEVICE_INDEX}
-```
-
 #### Windows
 
 ```console
@@ -146,7 +125,7 @@ cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupi
 
 Running the executable without any commandline arguments prints the usage info to the console.
 
-#### Linux, macOS, Raspberry Pi, BeagleBone, Jetson
+#### Linux, macOS, Raspberry Pi
 
 ```console
 ./demo/c/build/porcupine_demo_file 
@@ -196,22 +175,6 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 ```console
 ./demo/c/build/porcupine_demo_file -l lib/raspberry-pi/${PROCESSOR}/libpv_porcupine.so -m lib/common/porcupine_params.pv \
 -k resources/keyword_files/raspberry-pi/americano_raspberry-pi.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
--a ${ACCESS_KEY}
-```
-
-#### BeagleBone
-
-```console
-./demo/c/build/porcupine_demo_file -l lib/beaglebone/libpv_porcupine.so -m lib/common/porcupine_params.pv \
--k resources/keyword_files/beaglebone/americano_beaglebone.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
--a ${ACCESS_KEY}
-```
-
-#### Jetson
-
-```console
-./demo/c/build/porcupine_demo_file -l lib/jetson/cortex-a57-aarch64/libpv_porcupine.so -m lib/common/porcupine_params.pv \
--k resources/keyword_files/jetson/americano_jetson.ppn -t 0.5 -w resources/audio_samples/multiple_keywords.wav \
 -a ${ACCESS_KEY}
 ```
 

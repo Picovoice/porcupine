@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net6.0;netcoreapp3.0;netstandard2.0</TargetFrameworks>
-        <Version>3.0.2</Version>
+        <Version>3.0.3</Version>
         <Authors>Picovoice</Authors>
         <Company />
         <Product>Porcupine Wake Word Engine</Product>
@@ -87,24 +87,6 @@
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <Visible>false</Visible>
-        </Content>
-        <Content Include="..\..\..\lib\jetson\cortex-a57-aarch64\libpv_porcupine.so">
-            <PackagePath>
-                build/netcoreapp3.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
-                build/net6.0/lib/jetson/cortex-a57-aarch64/libpv_porcupine.so;
-            </PackagePath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Link>lib\jetson\cortex-a57-aarch64\libpv_porcupine.so</Link>
-            <Visible>false</Visible>
-        </Content>
-        <Content Include="..\..\..\lib\beaglebone\libpv_porcupine.so">
-            <PackagePath>
-                build/netcoreapp3.0/lib/beaglebone/libpv_porcupine.so;
-                build/net6.0/lib/beaglebone/libpv_porcupine.so;
-            </PackagePath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Link>lib\beaglebone\libpv_porcupine.so</Link>
             <Visible>false</Visible>
         </Content>
     </ItemGroup>
@@ -209,50 +191,6 @@
                 build/net6.0/resources/keyword_files/raspberry-pi;
             </PackagePath>
             <Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\..\..\resources\keyword_files\jetson\alexa_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\americano_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\blueberry_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\bumblebee_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\computer_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\grapefruit_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\grasshopper_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\hey google_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\hey siri_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\jarvis_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\ok google_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\picovoice_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\porcupine_jetson.ppn;
-                          ..\..\..\resources\keyword_files\jetson\terminator_jetson.ppn;">
-            <PackagePath>
-                build/netstandard2.0/resources/keyword_files/jetson;
-                build/netcoreapp3.0/resources/keyword_files/jetson;
-                build/net6.0/resources/keyword_files/jetson;
-            </PackagePath>
-            <Link>resources\keyword_files\jetson\%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\..\..\resources\keyword_files\beaglebone\alexa_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\americano_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\blueberry_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\bumblebee_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\computer_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\grapefruit_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\grasshopper_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\hey google_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\hey siri_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\jarvis_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\ok google_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\picovoice_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\porcupine_beaglebone.ppn;
-                          ..\..\..\resources\keyword_files\beaglebone\terminator_beaglebone.ppn;">
-            <PackagePath>
-                build/netstandard2.0/resources/keyword_files/beaglebone;
-                build/netcoreapp3.0/resources/keyword_files/beaglebone;
-                build/net6.0/resources/keyword_files/beaglebone;
-            </PackagePath>
-            <Link>resources\keyword_files\beaglebone\%(Filename)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Include="..\..\..\lib\common\porcupine_params.pv">

@@ -21,6 +21,7 @@ env:
 defaults:
   run:
     working-directory: demo/rust
+    shell: bash
 
 jobs:
   build-github-hosted:
@@ -61,7 +62,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64]
 
     steps:
     - uses: actions/checkout@v3

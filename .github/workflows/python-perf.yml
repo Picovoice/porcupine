@@ -7,15 +7,11 @@ on:
     paths:
       - '.github/workflows/python-perf.yml'
       - 'binding/python/test_porcupine_perf.py'
-      - 'lib/beaglebone/**'
       - 'lib/common/**'
-      - 'lib/jetson/**'
       - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
-      - 'resources/keyword_files/beaglebone/**'
-      - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
@@ -25,15 +21,11 @@ on:
     paths:
       - '.github/workflows/python-perf.yml'
       - 'binding/python/test_porcupine_perf.py'
-      - 'lib/beaglebone/**'
       - 'lib/common/**'
-      - 'lib/jetson/**'
       - 'lib/linux/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
-      - 'resources/keyword_files/beaglebone/**'
-      - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
@@ -77,11 +69,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64]
         include:
-        - machine: rpi2
-          num_test_iterations: 20
-          performance_threshold_sec: 7.6
         - machine: rpi3-32
           num_test_iterations: 50
           performance_threshold_sec: 3.2
@@ -97,12 +86,6 @@ jobs:
         - machine: rpi5-64
           num_test_iterations: 50
           performance_threshold_sec: 0.5
-        - machine: jetson
-          num_test_iterations: 50
-          performance_threshold_sec: 2.0
-        - machine: beaglebone
-          num_test_iterations: 10
-          performance_threshold_sec: 12.0
 
     steps:
     - uses: actions/checkout@v3

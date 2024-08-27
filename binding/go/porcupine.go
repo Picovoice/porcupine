@@ -218,7 +218,7 @@ func (porcupine *Porcupine) Init() error {
 			Message:    fmt.Sprintf("Specified model file could not be found at %s", porcupine.ModelPath)}
 	}
 
-	if porcupine.BuiltInKeywords != nil && len(porcupine.BuiltInKeywords) > 0 {
+	if len(porcupine.BuiltInKeywords) > 0 {
 		for _, keyword := range porcupine.BuiltInKeywords {
 			if !keyword.IsValid() {
 				return &PorcupineError{
@@ -230,7 +230,7 @@ func (porcupine *Porcupine) Init() error {
 		}
 	}
 
-	if porcupine.KeywordPaths == nil || len(porcupine.KeywordPaths) == 0 {
+	if len(porcupine.KeywordPaths) == 0 {
 		return &PorcupineError{
 			StatusCode: INVALID_ARGUMENT,
 			Message:    "No valid keywords were provided"}
@@ -394,18 +394,12 @@ func getLinuxDetails() (string, string) {
 	switch cpuPart {
 	case "0xb76":
 		return "raspberry-pi", "arm11" + archInfo
-	case "0xc07":
-		return "raspberry-pi", "cortex-a7" + archInfo
 	case "0xd03":
 		return "raspberry-pi", "cortex-a53" + archInfo
-	case "0xd07":
-		return "jetson", "cortex-a57" + archInfo
 	case "0xd08":
 		return "raspberry-pi", "cortex-a72" + archInfo
 	case "0xd0b":
 		return "raspberry-pi", "cortex-a76" + archInfo
-	case "0xc08":
-		return "beaglebone", ""
 	default:
 		log.Fatalf("Unsupported CPU:\n%s", cpuPart)
 		return "", ""

@@ -9,8 +9,6 @@ on:
       - 'binding/java/**/PorcupinePerformanceTest.java'
       - 'lib/common/**'
       - 'lib/java/**'
-      - 'resources/keyword_files/beaglebone/**'
-      - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
@@ -21,8 +19,6 @@ on:
       - '.github/workflows/java-perf.yml'
       - 'lib/common/**'
       - 'lib/java/**'
-      - 'resources/keyword_files/beaglebone/**'
-      - 'resources/keyword_files/jetson/**'
       - 'resources/keyword_files/linux/**'
       - 'resources/keyword_files/mac/**'
       - 'resources/keyword_files/raspberry-pi/**'
@@ -69,11 +65,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson, beaglebone]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64]
         include:
-        - machine: rpi2
-          num_test_iterations: 20
-          performance_threshold_sec: 5.5
         - machine: rpi3-32
           num_test_iterations: 50
           performance_threshold_sec: 2.0
@@ -89,12 +82,6 @@ jobs:
         - machine: rpi5-64
           num_test_iterations: 50
           performance_threshold_sec: 1.0
-        - machine: jetson
-          num_test_iterations: 50
-          performance_threshold_sec: 2.0
-        - machine: beaglebone
-          num_test_iterations: 10
-          performance_threshold_sec: 20.0
 
     steps:
     - uses: actions/checkout@v3

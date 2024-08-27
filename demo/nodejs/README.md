@@ -24,9 +24,7 @@ These demos run Porcupine on **Node.js 12+** on the following platforms:
 - Windows (x86_64)
 - Linux (x86_64)
 - macOS (x86_64, arm64)
-- Raspberry Pi (2, 3, 4, 5)
-- NVIDIA Jetson (Nano)
-- BeagleBone
+- Raspberry Pi (3, 4, 5)
 
 ### Web Browsers
 
@@ -187,7 +185,7 @@ ppn-file-demo \
 
 You may override the porcupine model and dynamic libraries by specifying their absolute paths with `--model_file_path` and `--library_file_path`, respectively. As with keyword files, the dynamic library is specific to the platform.
 
-e.g. for macOS (x86_64):
+e.g. for macOS (x86_64, arm64):
 
 ```console
 ppn-file-demo \

@@ -33,12 +33,9 @@ Platforms compatible with .NET Core 2.0+:
 Platforms compatible with .NET Core 3.0+:
 
 - Raspberry Pi:
-  - 2
   - 3 (32 and 64 bit)
   - 4 (32 and 64 bit)
   - 5 (32 and 64 bit)
-- NVIDIA Jetson Nano
-- BeagleBone
 
 Platform compatible with .NET 6.0+:
 

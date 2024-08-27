@@ -7,17 +7,13 @@ on:
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'
-      - 'lib/beaglebone/**'
       - 'lib/common/**'
       - 'lib/linux/**'
-      - 'lib/jetson/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
-      - 'resources/keyword_files*/beaglebone/**'
-      - 'resources/keyword_files*/jetson/**'
       - 'resources/keyword_files*/linux/**'
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
@@ -28,17 +24,13 @@ on:
     paths:
       - 'binding/go/**'
       - '!binding/go/README.md'
-      - 'lib/beaglebone/**'
       - 'lib/common/**'
       - 'lib/linux/**'
-      - 'lib/jetson/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
-      - 'resources/keyword_files*/beaglebone/**'
-      - 'resources/keyword_files*/jetson/**'
       - 'resources/keyword_files*/linux/**'
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
@@ -56,14 +48,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        go: [ '1.16', '1.17', '1.18', '1.19', '1.20', 'stable' ]
+        go: [ '1.16', '1.17', '1.18', '1.19', '1.20' ]
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Set up Mingw
       uses: egor-tensin/setup-mingw@v2
-      if: ${{ (matrix.os == 'windows-latest') && (matrix.go != 'stable') && (matrix.go < 1.20) }}
+      if: ${{ (matrix.os == 'windows-latest') && (matrix.go < 1.20) }}
       with:
         version: 11.2.0
 
@@ -76,7 +68,7 @@ jobs:
       run: ./copy.sh
 
     - name: Install dependencies
-      run: go get
+      run: go install
 
     - name: Build
       run: go build
@@ -89,7 +81,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson, beaglebone]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64]
 
     steps:
     - uses: actions/checkout@v3
@@ -98,7 +90,7 @@ jobs:
       run: ./copy.sh
 
     - name: Install dependencies
-      run: go get
+      run: go install
 
     - name: Build
       run: go build

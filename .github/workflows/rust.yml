@@ -9,16 +9,12 @@ on:
       - 'binding/rust/**'
       - 'binding/rust/**/*.rs'
       - '!binding/rust/README.md'
-      - 'lib/beaglebone/**'
       - 'lib/common/**'
       - 'lib/linux/**'
-      - 'lib/jetson/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
       - 'resources/audio_samples/**'
-      - 'resources/keyword_files*/beaglebone/**'
-      - 'resources/keyword_files*/jetson/**'
       - 'resources/keyword_files*/linux/**'
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
@@ -31,16 +27,12 @@ on:
       - 'binding/rust/**'
       - 'binding/rust/**/*.rs'
       - '!binding/rust/README.md'
-      - 'lib/beaglebone/**'
       - 'lib/common/**'
       - 'lib/linux/**'
-      - 'lib/jetson/**'
       - 'lib/mac/**'
       - 'lib/raspberry-pi/**'
       - 'lib/windows/**'
       - 'resources/audio_samples/**'
-      - 'resources/keyword_files*/beaglebone/**'
-      - 'resources/keyword_files*/jetson/**'
       - 'resources/keyword_files*/linux/**'
       - 'resources/keyword_files*/mac/**'
       - 'resources/keyword_files*/raspberry-pi/**'
@@ -91,7 +83,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64]
 
     steps:
     - uses: actions/checkout@v3
