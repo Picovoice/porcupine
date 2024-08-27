@@ -43,11 +43,6 @@ jobs:
       with:
         go-version: ${{ matrix.go }}
 
-      # ************** REMOVE AFTER RELEASE ********************
-    - name: Install Go SDK from branch
-      run: go get github.com/Picovoice/porcupine/binding/go/v3/@c9e201a16322b65a603e74e9b772a3a35d72ec47
-      # ********************************************************
-
     - name: Build micdemo
       run: go build micdemo/porcupine_mic_demo.go
 
@@ -66,11 +61,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-      # ************** REMOVE AFTER RELEASE ********************
-    - name: Install Go SDK from branch
-      run: go get github.com/Picovoice/porcupine/binding/go/v3/@c9e201a16322b65a603e74e9b772a3a35d72ec47
-      # ********************************************************
 
     - name: Build micdemo
       run: go build micdemo/porcupine_mic_demo.go
