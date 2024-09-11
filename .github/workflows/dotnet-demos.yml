@@ -34,10 +34,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up .NET 6.0
+    - name: Set up .NET 8.0
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Pack .NET SDK
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+
+    - name: Add local NuGet package file
+      continue-on-error: true
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
+      # ********************************************************
 
     - name: Package restore
       run: dotnet restore
@@ -60,6 +70,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Pack .NET SDK
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+
+    - name: Add local NuGet package file
+      continue-on-error: true
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
+      # ********************************************************
 
     - name: Package restore
       run: dotnet restore
@@ -86,10 +106,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up .NET 6.0
+    - name: Set up .NET 8.0
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Pack .NET SDK
+      run: dotnet pack -c Release
+      working-directory: binding/dotnet
+
+    - name: Add local NuGet package file
+      continue-on-error: true
+      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
+      # ********************************************************
 
     - name: Package restore
       run: dotnet restore
