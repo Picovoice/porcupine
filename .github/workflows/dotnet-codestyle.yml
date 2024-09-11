@@ -39,6 +39,7 @@ jobs:
       working-directory: binding/dotnet
 
     - name: Add local NuGet package file
+      continue-on-error: true
       run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
       working-directory: demo/dotnet/PorcupineDemo
       # ********************************************************
