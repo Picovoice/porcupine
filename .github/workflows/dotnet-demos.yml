@@ -34,10 +34,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up .NET 6.0
+    - name: Set up .NET 8.0
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
 
     - name: Package restore
       run: dotnet restore
@@ -86,10 +86,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up .NET 6.0
+    - name: Set up .NET 8.0
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
 
     - name: Package restore
       run: dotnet restore
