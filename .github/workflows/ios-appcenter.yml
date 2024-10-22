@@ -72,7 +72,7 @@ jobs:
         run: appcenter test run xcuitest
           --token ${{secrets.APPCENTERAPITOKEN}}
           --app "Picovoice/Porcupine-iOS"
-          --devices "Picovoice/iOS-14.5"
+          --devices "Picovoice/ios-min-max"
           --test-series "porcupine-ios"
           --locale "en_US"
           --build-dir ddp/Build/Products/Debug-iphoneos
