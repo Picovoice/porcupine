@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2024 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -28,17 +29,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ServiceBroadcastReceiver receiver;
 
     private boolean hasRecordPermission() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == 
-            PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void requestRecordPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+    private boolean hasNotificationPermission() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestRecordPermissions(String[] permissions) {
+        ActivityCompat.requestPermissions(
+                this,
+                permissions,
+                0);
     }
 
     @Override
@@ -48,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            onPorcupineInitError("Microphone permission is required for this demo");
+            onPorcupineInitError("Microphone/notification permissions are required for this demo");
         } else {
             startService();
         }
@@ -75,10 +89,18 @@ public class MainActivity extends AppCompatActivity {
 
         recordButton.setOnClickListener(v -> {
             if (recordButton.isChecked()) {
-                if (hasRecordPermission()) {
+                ArrayList<String> permissionsToRequest  = new ArrayList<>();
+                if (!hasNotificationPermission()) {
+                    permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS);
+                }
+                if (!hasRecordPermission()) {
+                    permissionsToRequest.add(Manifest.permission.RECORD_AUDIO);
+                }
+
+                if (permissionsToRequest.size() == 0) {
                     startService();
                 } else {
-                    requestRecordPermission();
+                    requestRecordPermissions(permissionsToRequest.toArray(new String[0]));
                 }
             } else {
                 stopService();
