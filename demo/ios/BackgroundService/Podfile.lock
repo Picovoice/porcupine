@@ -5,23 +5,20 @@ PODS:
   - SwiftySound (1.3.0)
 
 DEPENDENCIES:
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/update-ios-pm/binding/ios/Porcupine-iOS.podspec`)
+  - Porcupine-iOS (~> 3.0.2)
   - SwiftySound
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
+    - Porcupine-iOS
     - SwiftySound
-
-EXTERNAL SOURCES:
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/update-ios-pm/binding/ios/Porcupine-iOS.podspec
 
 SPEC CHECKSUMS:
   ios-voice-processor: 4035132542c7ae07f1e459c6d276b6da000302bb
   Porcupine-iOS: b8408a28fe3df81ea8d8f3cf1e5a04823ffb71d3
   SwiftySound: b6d7355bc15f5eef1a52695ad40e9ac5597d907b
 
-PODFILE CHECKSUM: 98c7190d66525caa2ea6da2acaed397f3497e52a
+PODFILE CHECKSUM: fe9f74fb8c7d7929fb05201fb255db81d7e59a57
 
 COCOAPODS: 1.11.3

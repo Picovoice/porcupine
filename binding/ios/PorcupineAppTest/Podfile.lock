@@ -4,20 +4,17 @@ PODS:
     - ios-voice-processor (~> 1.1.1)
 
 DEPENDENCIES:
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/update-ios-pm/binding/ios/Porcupine-iOS.podspec`)
+  - Porcupine-iOS (~> 3.0.2)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
-
-EXTERNAL SOURCES:
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/update-ios-pm/binding/ios/Porcupine-iOS.podspec
+    - Porcupine-iOS
 
 SPEC CHECKSUMS:
   ios-voice-processor: 4035132542c7ae07f1e459c6d276b6da000302bb
   Porcupine-iOS: b8408a28fe3df81ea8d8f3cf1e5a04823ffb71d3
 
-PODFILE CHECKSUM: 974b77491059f8ac8e0558503ac70ca2682ef957
+PODFILE CHECKSUM: d8426d3e6ec4d9a1538d6a8c22a573e309be57cf
 
 COCOAPODS: 1.11.3
