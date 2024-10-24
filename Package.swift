@@ -9,7 +9,8 @@ let package = Package(
     products: [
         .library(
             name: "Porcupine",
-            targets: ["Porcupine"])
+            targets: ["Porcupine"]
+        )
     ],
     dependencies: [
         .package(
@@ -18,10 +19,15 @@ let package = Package(
         )
     ],
     targets: [
+        .binaryTarget(
+            name: "PvPorcupine",
+            path: "lib/ios/PvPorcupine.xcframework"
+        ),
         .target(
             name: "Porcupine",
             dependencies: [
-                .product(name: "ios_voice_processor", package: "ios-voice-processor")
+                .product(name: "ios_voice_processor", package: "ios-voice-processor"),
+                "PvPorcupine"
             ],
             path: "binding/ios",
             exclude: ["PorcupineAppTest"],
@@ -41,11 +47,6 @@ let package = Package(
                 .process("resources/keyword_files/ios/porcupine_ios.ppn"),
                 .process("resources/keyword_files/ios/terminator_ios.ppn"),
                 .process("lib/common/porcupine_params.pv")
-            ],
-            linkerSettings: [
-                .linkedFramework("PvPorcupine.xcframework", .path("lib/ios"))
             ]
         )
     ],
-    swiftLanguageVersions: [.v5]
-)
