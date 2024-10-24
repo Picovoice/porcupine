@@ -15,7 +15,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/Picovoice/ios-voice-processor.git",
-            .upToNextMajor(from: "1.1.2")
+            .upToNextMajor(from: "1.2.0")
         )
     ],
     targets: [

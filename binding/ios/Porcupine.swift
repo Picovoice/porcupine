@@ -7,6 +7,8 @@
 //  specific language governing permissions and limitations under the License.
 //
 
+import Foundation
+
 import PvPorcupine
 
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.

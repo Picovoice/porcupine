@@ -10,3 +10,6 @@ build
 dist
 pvporcupine.egg-info
 demo/c/cmake-build-debug/
+.build
+Package.resolved
+.swiftpm

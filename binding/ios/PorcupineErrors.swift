@@ -7,6 +7,8 @@
 //  specific language governing permissions and limitations under the License.
 //
 
+import Foundation
+
 public class PorcupineError: LocalizedError {
     private let message: String
     private let messageStack: [String]
