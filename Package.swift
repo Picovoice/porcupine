@@ -29,24 +29,35 @@ let package = Package(
                 "PvPorcupine",
                 .product(name: "ios_voice_processor", package: "ios-voice-processor")
             ],
-            path: "binding/ios",
-            exclude: ["PorcupineAppTest"],
+            path: ".",
+            exclude: [
+                "binding/ios/PorcupineAppTest",
+                "binding/flutter",
+                "binding/react-native",
+                "binding/unity",
+                "demo"
+            ],
+            sources: [
+                "binding/ios/Porcupine.swift",
+                "binding/ios/PorcupineErrors.swift",
+                "binding/ios/PorcupineManager.swift"
+            ],
             resources: [
-                .copy("resources/keyword_files/ios/alexa_ios.ppn"),
-                .copy("resources/keyword_files/ios/americano_ios.ppn"),
-                .copy("resources/keyword_files/ios/blueberry_ios.ppn"),
-                .copy("resources/keyword_files/ios/bumblebee_ios.ppn"),
-                .copy("resources/keyword_files/ios/computer_ios.ppn"),
-                .copy("resources/keyword_files/ios/grapefruit_ios.ppn"),
-                .copy("resources/keyword_files/ios/grasshopper_ios.ppn"),
-                .copy("resources/keyword_files/ios/hey google_ios.ppn"),
-                .copy("resources/keyword_files/ios/hey siri_ios.ppn"),
-                .copy("resources/keyword_files/ios/jarvis_ios.ppn"),
-                .copy("resources/keyword_files/ios/ok google_ios.ppn"),
-                .copy("resources/keyword_files/ios/picovoice_ios.ppn"),
-                .copy("resources/keyword_files/ios/porcupine_ios.ppn"),
-                .copy("resources/keyword_files/ios/terminator_ios.ppn"),
-                .copy("lib/common/porcupine_params.pv")
+               .copy("resources/keyword_files/ios/alexa_ios.ppn"),
+               .copy("resources/keyword_files/ios/americano_ios.ppn"),
+               .copy("resources/keyword_files/ios/blueberry_ios.ppn"),
+               .copy("resources/keyword_files/ios/bumblebee_ios.ppn"),
+               .copy("resources/keyword_files/ios/computer_ios.ppn"),
+               .copy("resources/keyword_files/ios/grapefruit_ios.ppn"),
+               .copy("resources/keyword_files/ios/grasshopper_ios.ppn"),
+               .copy("resources/keyword_files/ios/hey google_ios.ppn"),
+               .copy("resources/keyword_files/ios/hey siri_ios.ppn"),
+               .copy("resources/keyword_files/ios/jarvis_ios.ppn"),
+               .copy("resources/keyword_files/ios/ok google_ios.ppn"),
+               .copy("resources/keyword_files/ios/picovoice_ios.ppn"),
+               .copy("resources/keyword_files/ios/porcupine_ios.ppn"),
+               .copy("resources/keyword_files/ios/terminator_ios.ppn"),
+               .copy("lib/common/porcupine_params.pv")
             ]
         )
     ]

@@ -16,7 +16,7 @@ public class Porcupine {
 
 #if SWIFT_PACKAGE
 
-    static let resourceBundle = Bundle(for: Porcupine.self)
+    static let resourceBundle = Bundle.module
 
 #else
 
