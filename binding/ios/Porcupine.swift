@@ -14,6 +14,12 @@ import PvPorcupine
 /// Low-level iOS binding for Porcupine wake word engine. Provides a Swift interface to the Porcupine library.
 public class Porcupine {
 
+#if SWIFT_PACKAGE
+
+    static let resourceBundle = Bundle.module
+
+#else
+
     static let resourceBundle: Bundle = {
         let myBundle = Bundle(for: Porcupine.self)
 
@@ -26,6 +32,8 @@ public class Porcupine {
 
         return resourceBundle
     }()
+
+#endif
 
     public enum BuiltInKeyword: String, CaseIterable {
         case alexa = "Alexa"
