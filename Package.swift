@@ -46,7 +46,7 @@ let package = Package(
                 // .process("resources/keyword_files/ios/picovoice_ios.ppn"),
                 // .process("resources/keyword_files/ios/porcupine_ios.ppn"),
                 // .process("resources/keyword_files/ios/terminator_ios.ppn"),
-                .process("lib/common/porcupine_params.pv")
+                // .process("lib/common/porcupine_params.pv")
             ]
         )
     ]
