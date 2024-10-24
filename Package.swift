@@ -30,7 +30,7 @@ let package = Package(
             //     "PvPorcupine"
             // ],
             path: "binding/ios",
-            // exclude: ["PorcupineAppTest"],
+            exclude: ["PorcupineAppTest"],
             // resources: [
             //     .process("resources/keyword_files/ios/alexa_ios.ppn"),
             //     .process("resources/keyword_files/ios/americano_ios.ppn"),
@@ -50,3 +50,5 @@ let package = Package(
             // ]
         )
     ],
+    swiftLanguageVersions: [.v5]
+)
