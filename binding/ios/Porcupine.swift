@@ -16,11 +16,11 @@ public class Porcupine {
 
 #if SWIFT_PACKAGE
 
-    static let resourceBundle = Bundle.module
+    let resourceBundle = Bundle.module
 
 #else
 
-    static let resourceBundle: Bundle = {
+    let resourceBundle: Bundle = {
         let myBundle = Bundle(for: Porcupine.self)
 
         guard let resourceBundleURL = myBundle.url(
@@ -80,7 +80,7 @@ public class Porcupine {
 
         var modelPathArg = modelPath
         if modelPath == nil {
-            modelPathArg  = Porcupine.resourceBundle.path(forResource: "porcupine_params", ofType: "pv")
+            modelPathArg  = self.resourceBundle.path(forResource: "porcupine_params", ofType: "pv")
             if modelPathArg == nil {
                 throw PorcupineIOError("Unable to find the default model path")
             }
@@ -167,7 +167,7 @@ public class Porcupine {
 
         var keywordPaths = [String]()
         for k in keywords {
-            let keywordPath = Porcupine.resourceBundle.path(
+            let keywordPath = self.resourceBundle.path(
                 forResource: k.rawValue.lowercased() + "_ios",
                 ofType: "ppn")
             if keywordPath == nil {
