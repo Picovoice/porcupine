@@ -1,6 +1,0 @@
-source 'https://cdn.cocoapods.org/'
-platform :ios, '13.0'
-
-target 'PorcupineForegroundAppDemo' do
-    pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/rm-bitcode/binding/ios/Porcupine-iOS.podspec'
-end
