@@ -14,7 +14,7 @@
     "@picovoice/react-native-voice-processor": "^1.2.3",
     "base-64": "^1.0.0",
     "react": "18.2.0",
-    "react-native": "0.71.0",
+    "react-native": "0.71.18",
     "react-native-fs": "^2.20.0"
   },
   "devDependencies": {

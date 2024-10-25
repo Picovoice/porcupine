@@ -183,7 +183,7 @@ In order to detect non-English wake words you need to use the corresponding mode
 
 ## Running Unit Tests
 
-Open [`PorcupineAppTest.xcworkspace`](PorcupineAppTest/PorcupineAppTest.xcworkspace) with XCode and run the tests with `Product > Test`.
+Open [`PorcupineAppTest.xcodeproj`](PorcupineAppTest/PorcupineAppTest.xcodeproj) with XCode and run the tests with `Product > Test`.
 
 ## Demo App
 
