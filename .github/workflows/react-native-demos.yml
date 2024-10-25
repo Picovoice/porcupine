@@ -60,6 +60,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+# REMOVE
+    - name: Build binding
+      run: yarn && yarn pkg
+      working-directory: binding/react-native
+
+    - name: Build binding
+      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.3.tgz
+# REMOVE
+
     - name: Install dependencies
       run: yarn ios-install
 
