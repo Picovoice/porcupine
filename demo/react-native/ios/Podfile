@@ -6,6 +6,9 @@ platform :ios, '13.0'
 target 'PorcupineDemo' do
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])
+
+  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/rm-bitcode/binding/ios/Porcupine-iOS.podspec'
+
 end
 
 post_install do |installer|

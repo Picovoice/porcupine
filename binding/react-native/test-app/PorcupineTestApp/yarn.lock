@@ -1512,12 +1512,12 @@
     fastq "^1.6.0"
 
 "@picovoice/porcupine-react-native@file:../..":
-  version "3.0.2"
+  version "3.0.3"
 
-"@picovoice/react-native-voice-processor@^1.1.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.2.0.tgz#82a98b41d9236ababe330dae873062ee0e1b24c3"
-  integrity sha512-zolTEo3qsqeUwY7JRslV/yhiA+oBrkeogOTxjHIEJ//yEsr7YKlI1PcqTbU5/xjmUiukh62gmwTXhosnQYdasQ==
+"@picovoice/react-native-voice-processor@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.2.3.tgz#f07a2b526922bba1c2b542bbcd842897aab4c241"
+  integrity sha512-GFnuKXWIOrDTPumcFkwfGaGUt2X1Vq31cU0sM4CZ9o/SomZQxJml12nr8d4uxjG03Z/eouWGN/0AcxZPdqihlw==
 
 "@react-native-community/cli-clean@^10.0.0":
   version "10.1.1"
