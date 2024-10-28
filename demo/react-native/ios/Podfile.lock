@@ -302,7 +302,6 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/rm-bitcode/binding/ios/Porcupine-iOS.podspec`)
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -339,6 +338,7 @@ SPEC REPOS:
   trunk:
     - fmt
     - ios-voice-processor
+    - Porcupine-iOS
 
 EXTERNAL SOURCES:
   boost:
@@ -351,8 +351,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/rm-bitcode/binding/ios/Porcupine-iOS.podspec
   porcupine-react-native:
     :path: "../node_modules/@picovoice/porcupine-react-native"
   RCT-Folly:
@@ -451,6 +449,6 @@ SPEC CHECKSUMS:
   RNCPicker: 0991c56da7815c0cf946d6f63cf920b25296e5f6
   Yoga: 0bc4b37c3b8a345336ff601e2cf7d9704bab7e93
 
-PODFILE CHECKSUM: 7a71a7798d8640c0086f183ae92abf42f10f352d
+PODFILE CHECKSUM: 0052e6a10d8424d84416b8090efd0354fc489666
 
 COCOAPODS: 1.11.3

@@ -38,8 +38,6 @@ target 'PorcupineTestApp' do
     # Pods for testing
   end
 
-  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/rm-bitcode/binding/ios/Porcupine-iOS.podspec'
-
   post_install do |installer|
     react_native_post_install(
       installer,

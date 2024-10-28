@@ -19,12 +19,12 @@ DEPENDENCIES:
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/rm-bitcode/binding/ios/Porcupine-iOS.podspec`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
+    - Porcupine-iOS
 
 EXTERNAL SOURCES:
   Flutter:
@@ -35,8 +35,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/integration_test/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/rm-bitcode/binding/ios/Porcupine-iOS.podspec
   porcupine_flutter:
     :path: ".symlinks/plugins/porcupine_flutter/ios"
 
@@ -49,6 +47,6 @@ SPEC CHECKSUMS:
   Porcupine-iOS: da103a8848ce6b36acd4a5e42bb811d4532dd515
   porcupine_flutter: f903f397e6ea55a5c627432b0cdfcad84b68fbd1
 
-PODFILE CHECKSUM: f08551e38ec23b8a2b8eda08d65763fa8a23bee7
+PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
 COCOAPODS: 1.11.3
