@@ -17,9 +17,15 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 
 ## Installation
 <!-- markdown-link-check-disable -->
-The Porcupine iOS binding is available via [CocoaPods](https://cocoapods.org/pods/Porcupine-iOS). To import it into your iOS project, add the following line to your Podfile:
+The Porcupine iOS binding is available via [Swift Package Manger](https://www.swift.org/documentation/package-manager/) or [CocoaPods](https://cocoapods.org/pods/Porcupine-iOS).
 <!-- markdown-link-check-enable -->
 
+To import the package using SPM, open up your project's Package Dependencies in XCode and add:
+```
+https://github.com/Picovoice/porcupine.git
+```
+
+To import it into your iOS project using CocoaPods, add the following line to your Podfile:
 ```ruby
 pod 'Porcupine-iOS'
 ```
@@ -183,7 +189,7 @@ In order to detect non-English wake words you need to use the corresponding mode
 
 ## Running Unit Tests
 
-Open [`PorcupineAppTest.xcworkspace`](PorcupineAppTest/PorcupineAppTest.xcworkspace) with XCode and run the tests with `Product > Test`.
+Open [`PorcupineAppTest.xcodeproj`](PorcupineAppTest/PorcupineAppTest.xcodeproj) with XCode and run the tests with `Product > Test`.
 
 ## Demo App
 

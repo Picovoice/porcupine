@@ -79,10 +79,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_voice_processor
-      sha256: "3c91d8ab34b33016643ae7586a305b81c47c1b66a95b489807c34f127537fcbc"
+      sha256: "8ae3fc196d6060a13392e4ca557f7a2f4a6b87898ae519787f6929f986538572"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   lints:
     dependency: "direct dev"
     description:

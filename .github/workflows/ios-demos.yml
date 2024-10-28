@@ -24,27 +24,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node.js LTS
-        uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-
-      - name: Install Cocoapods
-        run: gem install cocoapods
-
-      - name: Install AppCenter CLI
-        run: npm install -g appcenter-cli
-
-      - name: Make build dir
-        run: mkdir ddp
-
-      - name: Run Cocoapods
-        run: pod install
-
       - name: Build English
         run: xcrun xcodebuild build
           -configuration Debug
-          -workspace PorcupineForegroundAppDemo.xcworkspace
+          -project PorcupineForegroundAppDemo.xcodeproj
           -sdk iphoneos
           -scheme _enDemo
           -derivedDataPath ddp
@@ -53,7 +36,7 @@ jobs:
       - name: Build Other Language
         run: xcrun xcodebuild build
           -configuration Debug
-          -workspace PorcupineForegroundAppDemo.xcworkspace
+          -project PorcupineForegroundAppDemo.xcodeproj
           -sdk iphoneos
           -scheme deDemo
           -derivedDataPath ddp
@@ -69,19 +52,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node.js LTS
-        uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-
       - name: Install Cocoapods
         run: gem install cocoapods
-
-      - name: Install AppCenter CLI
-        run: npm install -g appcenter-cli
-
-      - name: Make build dir
-        run: mkdir ddp
 
       - name: Run Cocoapods
         run: pod install
