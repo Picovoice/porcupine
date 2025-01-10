@@ -8,7 +8,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '3.0.3'
+    PUBLISH_VERSION = '3.0.4'
     PUBLISH_ARTIFACT_ID = 'porcupine-java'
 }
 
@@ -124,7 +124,10 @@ task copyMacLib(type: Copy) {
     into "${outputDir}/porcupine/lib/java/mac/"
 }
 task copyWindowsLib(type: Copy) {
-    from('../../lib/java/windows/amd64/pv_porcupine_jni.dll') into "${outputDir}/porcupine/lib/java/windows/amd64/"
+    from('../../lib/java/windows/')
+    include('amd64/pv_porcupine_jni.dll',
+            'arm64/pv_porcupine_jni.dll')
+    into "${outputDir}/porcupine/lib/java/windows/"
 }
 task copyRPiLib(type: Copy) {
     from('../../lib/java/raspberry-pi/')

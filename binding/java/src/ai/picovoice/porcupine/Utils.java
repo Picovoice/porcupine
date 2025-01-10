@@ -163,6 +163,8 @@ class Utils {
         } else if (ENVIRONMENT_NAME.equals("windows")) {
             if (isX86_64) {
                 return "amd64";
+            } else if (isArm) {
+                return "arm64";
             }
         } else if (ENVIRONMENT_NAME.equals("linux")) {
             if (isX86_64) {
@@ -242,7 +244,9 @@ class Utils {
         switch (ENVIRONMENT_NAME) {
             case "windows":
                 return RESOURCE_DIRECTORY
-                        .resolve("lib/java/windows/amd64/pv_porcupine_jni.dll")
+                        .resolve("lib/java/windows")
+                        .resolve(ARCHITECTURE)
+                        .resolve("pv_porcupine_jni.dll")
                         .toString();
             case "mac":
                 return RESOURCE_DIRECTORY.resolve("lib/java/mac")

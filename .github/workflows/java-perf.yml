@@ -99,3 +99,24 @@ jobs:
     - name: Machine state after
       working-directory: resources/scripts
       run: bash machine-state.sh
+
+  perf-windows-arm64:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        machine: [pv-windows-arm64]
+        include:
+        - machine: pv-windws-arm64
+          num_test_iterations: 50
+          performance_threshold_sec: 0.5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: ./gradlew assemble
+
+    - name: Test
+      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DnumTestIterations="${{matrix.num_test_iterations}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"

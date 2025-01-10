@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Porcupine" Version="3.0.4" />
+        <ProjectReference Include="..\..\..\binding\dotnet\Porcupine\Porcupine.csproj" />
         <PackageReference Include="PvRecorder" Version="1.2.6" />
     </ItemGroup>
 </Project>

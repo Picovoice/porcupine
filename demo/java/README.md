@@ -25,7 +25,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 
 - Linux (x86_64)
 - macOS (x86_64, arm64)
-- Windows (x86_64)
+- Windows (x86_64, arm64)
 - Raspberry Pi 3 (32 and 64 bit), Raspberry Pi 4 (32 and 64 bit), Raspberry Pi 5 (32 and 64 bit)
 
 ## Installation

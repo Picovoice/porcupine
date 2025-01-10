@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net8.0;net6.0;netcoreapp3.0;netstandard2.0</TargetFrameworks>
-        <Version>3.0.4</Version>
+        <Version>3.0.5</Version>
         <Authors>Picovoice</Authors>
         <Company />
         <Product>Porcupine Wake Word Engine</Product>
@@ -56,6 +56,16 @@
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\windows\amd64\libpv_porcupine.dll</Link>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="..\..\..\lib\windows\arm64\libpv_porcupine.dll">
+            <PackagePath>
+                build/netcoreapp3.0/lib/windows/arm64/libpv_porcupine.dll;
+                build/net6.0/lib/windows/arm64/libpv_porcupine.dll;
+                build/net8.0/lib/windows/arm64/libpv_porcupine.dll;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\windows\arm64\libpv_porcupine.dll</Link>
             <Visible>false</Visible>
         </Content>
         <Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">

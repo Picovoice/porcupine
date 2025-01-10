@@ -51,6 +51,7 @@ include pvporcupine/lib/mac/x86_64/libpv_porcupine.dylib
 include pvporcupine/lib/mac/arm64/libpv_porcupine.dylib
 recursive-include pvporcupine/lib/raspberry-pi *
 include pvporcupine/lib/windows/amd64/libpv_porcupine.dll
+include pvporcupine/lib/windows/arm64/libpv_porcupine.dll
 recursive-include pvporcupine/resources/keyword_files/linux *
 recursive-include pvporcupine/resources/keyword_files/mac/ *
 recursive-include pvporcupine/resources/keyword_files/raspberry-pi *
@@ -65,7 +66,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="3.0.3",
+    version="3.0.4",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",
