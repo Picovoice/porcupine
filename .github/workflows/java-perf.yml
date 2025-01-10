@@ -108,7 +108,7 @@ jobs:
       matrix:
         machine: [pv-windows-arm64]
         include:
-        - machine: pv-windws-arm64
+        - machine: pv-windows-arm64
           num_test_iterations: 50
           performance_threshold_sec: 0.5
 
