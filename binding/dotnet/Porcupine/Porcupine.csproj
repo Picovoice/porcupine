@@ -60,7 +60,6 @@
         </Content>
         <Content Include="..\..\..\lib\windows\arm64\libpv_porcupine.dll">
             <PackagePath>
-                build/netcoreapp3.0/lib/windows/arm64/libpv_porcupine.dll;
                 build/net6.0/lib/windows/arm64/libpv_porcupine.dll;
                 build/net8.0/lib/windows/arm64/libpv_porcupine.dll;
             </PackagePath>
@@ -70,8 +69,6 @@
         </Content>
         <Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">
             <PackagePath>
-                build/netstandard2.0/libpv_porcupine.so;
-                build/netcoreapp3.0/lib/linux/x86_64/libpv_porcupine.so;
                 build/net6.0/lib/linux/x86_64/libpv_porcupine.so;
                 build/net8.0/lib/linux/x86_64/libpv_porcupine.so;
             </PackagePath>
@@ -96,7 +93,6 @@
     <ItemGroup>
         <Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
             <PackagePath>
-                build/netcoreapp3.0/lib/raspberry-pi;
                 build/net6.0/lib/raspberry-pi;
                 build/net8.0/lib/raspberry-pi;
             </PackagePath>

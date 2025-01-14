@@ -22,24 +22,23 @@ Porcupine is:
 
 Platform compatible with .NET Framework 4.6.1+:
 
-- Windows (x86_64, arm64)
+- Windows (x86_64)
 
 Platforms compatible with .NET Core 2.0+:
 
-- Linux (x86_64)
 - macOS (x86_64)
-- Windows (x86_64, arm64)
+- Windows (x86_64)
 
-Platforms compatible with .NET Core 3.0+:
+Platform compatible with .NET 6.0+:
 
 - Raspberry Pi:
   - 3 (32 and 64 bit)
   - 4 (32 and 64 bit)
   - 5 (32 and 64 bit)
 
-Platform compatible with .NET 6.0+:
-
+- Linux (x86_64)
 - macOS (arm64)
+- Windows (arm64)
 
 ## Installation
 

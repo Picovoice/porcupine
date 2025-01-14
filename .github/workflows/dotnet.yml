@@ -71,6 +71,14 @@ jobs:
             binding-framework: net8.0
             test-framework: net8.0
         exclude:
+          - os: ubuntu-latest
+            dotnet-version: 2.1.x
+          - os: ubuntu-latest
+            dotnet-version: 3.0.x
+          - os: ubuntu-latest
+            dotnet-version: 3.1.x
+          - os: ubuntu-latest
+            dotnet-version: 5.0.x
           - os: macos-latest
             dotnet-version: 2.1.x
           - os: macos-latest
