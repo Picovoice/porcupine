@@ -5,7 +5,7 @@ plugins {
 repositories {
     mavenCentral()
     maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1360/'
+        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1362/'
     }
 }
 
