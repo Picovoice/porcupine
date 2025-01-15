@@ -58,6 +58,30 @@
             <Link>lib\windows\amd64\libpv_porcupine.dll</Link>
             <Visible>false</Visible>
         </Content>
+        <Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
+            <PackagePath>
+                build/netstandard2.0/libpv_porcupine.dylib;
+                build/netcoreapp3.0/lib/mac/x86_64/libpv_porcupine.dylib;
+                build/net6.0/lib/mac/x86_64/libpv_porcupine.dylib;
+                build/net8.0/lib/mac/x86_64/libpv_porcupine.dylib;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
+            <Visible>false</Visible>
+        </Content>
+    </ItemGroup>
+
+    <!--.NET 6.0+ libs-->
+    <ItemGroup>
+        <Content Include="..\..\..\lib\mac\arm64\libpv_porcupine.dylib">
+            <PackagePath>
+                build/net6.0/lib/mac/arm64/libpv_porcupine.dylib;
+                build/net8.0/lib/mac/arm64/libpv_porcupine.dylib;
+            </PackagePath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>lib\mac\arm64\libpv_porcupine.dylib</Link>
+            <Visible>false</Visible>
+        </Content>
         <Content Include="..\..\..\lib\windows\arm64\libpv_porcupine.dll">
             <PackagePath>
                 build/net6.0/lib/windows/arm64/libpv_porcupine.dll;
@@ -76,21 +100,6 @@
             <Link>lib\linux\x86_64\libpv_porcupine.so</Link>
             <Visible>false</Visible>
         </Content>
-        <Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
-            <PackagePath>
-                build/netstandard2.0/libpv_porcupine.dylib;
-                build/netcoreapp3.0/lib/mac/x86_64/libpv_porcupine.dylib;
-                build/net6.0/lib/mac/x86_64/libpv_porcupine.dylib;
-                build/net8.0/lib/mac/x86_64/libpv_porcupine.dylib;
-            </PackagePath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
-            <Visible>false</Visible>
-        </Content>
-    </ItemGroup>
-
-    <!--.NET Core 3.0+ libs-->
-    <ItemGroup>
         <Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
             <PackagePath>
                 build/net6.0/lib/raspberry-pi;
@@ -102,18 +111,6 @@
         </Content>
     </ItemGroup>
 
-    <!--.NET 6.0+ libs-->
-    <ItemGroup>
-        <Content Include="..\..\..\lib\mac\arm64\libpv_porcupine.dylib">
-            <PackagePath>
-                build/net6.0/lib/mac/arm64/libpv_porcupine.dylib;
-                build/net8.0/lib/mac/arm64/libpv_porcupine.dylib;
-            </PackagePath>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Link>lib\mac\arm64\libpv_porcupine.dylib</Link>
-            <Visible>false</Visible>
-        </Content>
-    </ItemGroup>
 
     <!--Resources-->
     <ItemGroup>
