@@ -23,12 +23,12 @@ defaults:
 
 jobs:
   build:
-    name: Run iOS Tests on AppCenter
+    name: Run iOS Tests on BrowserStack
     runs-on: macos-latest
 
     strategy:
       matrix:
-        device: [ios-perf]
+        device: [ ios-perf ]
         include:
         - device: ios-perf
           performanceThresholdSec: 0.5
@@ -37,16 +37,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node.js LTS
-        uses: actions/setup-node@v3
+      - name: Installing Python
+        uses: actions/setup-python@v5
         with:
-          node-version: lts/*
+          python-version: '3.10'
+      - run:
+          pip3 install requests
 
       - name: Install Cocoapods
         run: gem install cocoapods
-
-      - name: Install AppCenter CLI
-        run: npm install -g appcenter-cli
 
       - name: Make build dir
         run: mkdir ddp
@@ -62,7 +61,7 @@ jobs:
       - name: Run Cocoapods
         run: pod install
 
-      - name: Inject AppID
+      - name: Inject AccessKey
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
           PerformanceTest/PerformanceTest.swift
 
@@ -83,11 +82,23 @@ jobs:
           -derivedDataPath ddp
           CODE_SIGNING_ALLOWED=NO
 
-      - name: Run Tests on AppCenter
-        run: appcenter test run xcuitest
-          --token ${{secrets.APPCENTERAPITOKEN}}
-          --app "Picovoice/Porcupine-iOS"
-          --devices "Picovoice/${{ matrix.device }}"
-          --test-series "porcupine-ios"
-          --locale "en_US"
-          --build-dir ddp/Build/Products/Debug-iphoneos
+      - name: Generating ipa
+        run: cd ddp/Build/Products/Debug-iphoneos/ &&
+          mkdir Payload &&
+          cp -r PorcupineAppTest.app Payload &&
+          zip --symlinks -r PorcupineAppTest.ipa Payload &&
+          rm -r Payload
+
+      - name: Zipping Tests
+        run: cd ddp/Build/Products/Debug-iphoneos/ &&
+          zip --symlinks -r PerformanceTest.zip PerformanceTest-Runner.app
+
+      - name: Run tests on BrowserStack
+        run: python3 ../../../script/automation/browserstack.py
+          --type xcuitest
+          --username "${{secrets.BROWSERSTACK_USERNAME}}"
+          --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
+          --project_name "Porcupine-iOS-Performance"
+          --devices "${{ matrix.device }}"
+          --app_path "ddp/Build/Products/Debug-iphoneos/PorcupineAppTest.ipa"
+          --test_path "ddp/Build/Products/Debug-iphoneos/PerformanceTest.zip"
