@@ -42,6 +42,9 @@ jobs:
         with:
           node-version: lts/*
 
+      - name: Install Cocoapods
+        run: gem install cocoapods
+
       - name: Install AppCenter CLI
         run: npm install -g appcenter-cli
 
@@ -55,6 +58,9 @@ jobs:
 
       - name: Copy test_resources
         run: ./copy_test_resources.sh
+
+      - name: Run Cocoapods
+        run: pod install
 
       - name: Inject AppID
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
@@ -71,7 +77,7 @@ jobs:
       - name: XCode Build
         run: xcrun xcodebuild build-for-testing
           -configuration Debug
-          -project PorcupineAppTest.xcodeproj
+          -workspace PorcupineAppTest.xcworkspace
           -sdk iphoneos
           -scheme PerformanceTest
           -derivedDataPath ddp
