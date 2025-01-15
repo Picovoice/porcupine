@@ -52,16 +52,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Cocoapods
-        run: gem install cocoapods
-
-      - name: Run Cocoapods
-        run: pod install
-
       - name: Build
         run: xcrun xcodebuild build
           -configuration Debug
-          -workspace PorcupineBackgroundServiceDemo.xcworkspace
+          -project PorcupineBackgroundServiceDemo.xcodeproj
           -sdk iphoneos
           -scheme PorcupineBackgroundServiceDemo
           -derivedDataPath ddp

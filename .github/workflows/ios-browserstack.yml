@@ -1,0 +1,78 @@
+name: iOS BrowserStack Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '.github/workflows/ios-browserstack.yml'
+      - 'binding/ios/PorcupineAppTest/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
+  pull_request:
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    paths:
+      - '.github/workflows/ios-browserstack.yml'
+      - 'binding/ios/PorcupineAppTest/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
+
+defaults:
+  run:
+    working-directory: binding/ios/PorcupineAppTest
+
+jobs:
+  build:
+    name: Run iOS Tests on BrowserStack
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Installing Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run:
+          pip3 install requests
+
+      - name: Make build dir
+        run: mkdir ddp
+
+      - name: Copy test_resources
+        run: ./copy_test_resources.sh
+
+      - name: Inject AccessKey
+        run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+          PorcupineAppTestUITests/BaseTest.swift
+
+      - name: XCode Build
+        run: xcrun xcodebuild build-for-testing
+          -configuration Debug
+          -project PorcupineAppTest.xcodeproj
+          -sdk iphoneos
+          -scheme PorcupineAppTest
+          -derivedDataPath ddp
+          CODE_SIGNING_ALLOWED=NO
+
+      - name: Generating ipa
+        run: cd ddp/Build/Products/Debug-iphoneos/ &&
+          mkdir Payload &&
+          cp -r PorcupineAppTest.app Payload &&
+          zip --symlinks -r PorcupineAppTest.ipa Payload &&
+          rm -r Payload
+
+      - name: Zipping Tests
+        run: cd ddp/Build/Products/Debug-iphoneos/ &&
+          zip --symlinks -r PorcupineAppTestUITests.zip PorcupineAppTestUITests-Runner.app
+
+      - name: Run tests on BrowserStack
+        run: python3 ../../../script/automation/browserstack.py
+          --type xcuitest
+          --username "${{secrets.BROWSERSTACK_USERNAME}}"
+          --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
+          --project_name "Porcupine-iOS"
+          --devices "ios-min-max"
+          --app_path "ddp/Build/Products/Debug-iphoneos/PorcupineAppTest.ipa"
+          --test_path "ddp/Build/Products/Debug-iphoneos/PorcupineAppTestUITests.zip"
