@@ -40,6 +40,11 @@ jobs:
       - name: Make build dir
         run: mkdir ddp
 
+      - name: Install resource script dependency
+        run: |
+          brew update
+          brew install convmv
+
       - name: Copy test_resources
         run: ./copy_test_resources.sh
 
