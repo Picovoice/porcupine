@@ -1,2 +1,2 @@
-../../binding/python/dist/pvporcupine-3.0.4-py3-none-any.whl
-pvrecorder==1.2.2
+pvporcupine==3.0.4
+pvrecorder==1.2.4
