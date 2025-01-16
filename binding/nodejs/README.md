@@ -25,7 +25,7 @@ Unlike the built-in keywords, custom PPN files generated with the Picovoice Cons
 
 This binding is for running Porcupine on **Node.js 16+** on the following platforms:
 
-- Windows (x86_64)
+- Windows (x86_64, arm64)
 - Linux (x86_64)
 - macOS (x86_64, arm64)
 - Raspberry Pi (3, 4, 5)

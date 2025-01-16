@@ -100,3 +100,21 @@ jobs:
     - name: Machine state after
       working-directory: resources/scripts
       run: bash machine-state.sh
+
+  perf-windows-arm64:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        machine: [pv-windows-arm64]
+        include:
+        - machine: pv-windows-arm64
+          num_test_iterations: 50
+          performance_threshold_sec: 0.5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Test
+      run: python3 test_porcupine_perf.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{matrix.num_test_iterations}} ${{matrix.performance_threshold_sec}}

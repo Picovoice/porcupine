@@ -55,6 +55,10 @@ namespace Pv
             {
                 return Path.Combine(AppContext.BaseDirectory, $"lib/{_env}/amd64/{libName}.dll");
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && _arch == Architecture.Arm64)
+            {
+                return Path.Combine(AppContext.BaseDirectory, $"lib/{_env}/arm64/{libName}.dll");
+            }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _arch == Architecture.X64)
             {
                 return Path.Combine(AppContext.BaseDirectory, $"lib/{_env}/x86_64/{libName}.dylib");

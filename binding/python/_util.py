@@ -96,7 +96,10 @@ def pv_library_path(relative):
                 relative,
                 'lib/raspberry-pi/%s/libpv_porcupine.so' % _PV_MACHINE)
     elif _PV_SYSTEM == 'Windows':
-        return os.path.join(os.path.dirname(__file__), relative, 'lib/windows/amd64/libpv_porcupine.dll')
+        if _PV_MACHINE.lower() == 'amd64':
+            return os.path.join(os.path.dirname(__file__), relative, 'lib/windows/amd64/libpv_porcupine.dll')
+        elif _PV_MACHINE.lower() == 'arm64':
+            return os.path.join(os.path.dirname(__file__), relative, 'lib/windows/arm64/libpv_porcupine.dll')
 
     raise NotImplementedError('Unsupported platform.')
 
