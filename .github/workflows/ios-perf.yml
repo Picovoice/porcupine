@@ -70,7 +70,7 @@ jobs:
           PerformanceTest/PerformanceTest.swift
 
       - name: Inject Performance Threshold
-        run: sed -i '.bak' 's:{PERFORMANCE_THRESHOLD_SEC}:${{ matrix.performanceThresholdSec }}:'
+        run: sed -i '.bak' '1,/{PERFORMANCE_THRESHOLD_SEC}/s/{PERFORMANCE_THRESHOLD_SEC}/${{ matrix.performanceThresholdSec }}/'
           PerformanceTest/PerformanceTest.swift
 
       - name: XCode Build
