@@ -1,46 +1,45 @@
-name: Android AppCenter Tests
+name: Android BrowserStack Tests
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/android-appcenter.yml'
+      - '.github/workflows/android-browserstack.yml'
       - 'binding/android/PorcupineTestApp/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '.github/workflows/android-appcenter.yml'
+      - '.github/workflows/android-browserstack.yml'
       - 'binding/android/PorcupineTestApp/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
 
 defaults:
   run:
-    working-directory: binding/android/PorcupineTestApp
+    working-directory: binding/android/PorcupineTestApp/
 
 jobs:
   build:
-    name: Run Android Tests on AppCenter
+    name: Run Android Tests on BrowserStack
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Node.js LTS
-      uses: actions/setup-node@v3
+    - name: Installing Python
+      uses: actions/setup-python@v5
       with:
-        node-version: lts/*
+        python-version: '3.10'
+    - run:
+        pip3 install requests
 
-    - name: Install AppCenter CLI
-      run: npm install -g appcenter-cli
-
-    - name: set up JDK 11
+    - name: set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
 
     - name: Copy test_resources
@@ -68,35 +67,34 @@ jobs:
     - name: Build androidTest
       run: ./gradlew assembleEnDebugAndroidTest
 
-    - name: Run tests on AppCenter
-      run: appcenter test run espresso
-        --token ${{secrets.APPCENTERAPITOKEN}}
-        --app "Picovoice/Porcupine-Android"
-        --devices "Picovoice/android-min-max"
-        --app-path porcupine-test-app/build/outputs/apk/en/debug/porcupine-test-app-en-debug.apk
-        --test-series "porcupine-android"
-        --locale "en_US"
-        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/debug
+    - name: Run tests on BrowserStack
+      run: python3 ../../../script/automation/browserstack.py
+        --type espresso
+        --username "${{secrets.BROWSERSTACK_USERNAME}}"
+        --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
+        --project_name "Porcupine-Android"
+        --devices "android-min-max"
+        --app_path "porcupine-test-app/build/outputs/apk/en/debug/porcupine-test-app-en-debug.apk"
+        --test_path "porcupine-test-app/build/outputs/apk/androidTest/en/debug/porcupine-test-app-en-debug-androidTest.apk"
 
   build-integ:
-    name: Run Android Integration Tests on AppCenter
+    name: Run Android Integration Tests on BrowserStack
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Node.js LTS
-      uses: actions/setup-node@v3
+    - name: Installing Python
+      uses: actions/setup-python@v5
       with:
-        node-version: lts/*
+        python-version: '3.10'
+    - run:
+        pip3 install requests
 
-    - name: Install AppCenter CLI
-      run: npm install -g appcenter-cli
-
-    - name: set up JDK 11
+    - name: set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
 
     - name: Copy test_resources
@@ -124,12 +122,12 @@ jobs:
     - name: Build androidTest
       run: ./gradlew assembleEnReleaseAndroidTest -DtestBuildType=integ
 
-    - name: Run tests on AppCenter
-      run: appcenter test run espresso
-        --token ${{secrets.APPCENTERAPITOKEN}}
-        --app "Picovoice/Porcupine-Android"
-        --devices "Picovoice/android-min-max"
-        --app-path porcupine-test-app/build/outputs/apk/en/release/porcupine-test-app-en-release.apk
-        --test-series "porcupine-android"
-        --locale "en_US"
-        --build-dir porcupine-test-app/build/outputs/apk/androidTest/en/release
+    - name: Run tests on BrowserStack
+      run: python3 ../../../script/automation/browserstack.py
+        --type espresso
+        --username "${{secrets.BROWSERSTACK_USERNAME}}"
+        --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
+        --project_name "Porcupine-Android-Integration"
+        --devices "android-min-max"
+        --app_path "porcupine-test-app/build/outputs/apk/en/release/porcupine-test-app-en-release.apk"
+        --test_path "porcupine-test-app/build/outputs/apk/androidTest/en/release/porcupine-test-app-en-release-androidTest.apk"

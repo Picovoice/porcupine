@@ -114,10 +114,12 @@ android {
         androidTest {
             java {
                 if (System.getProperty("testBuildType", "debug") == "perf") {
-                    exclude "**/PorcupineTest.java"
+                    exclude "**/StandardTests.java"
+                    exclude "**/LanguageTests.java"
                     exclude "**/IntegrationTest.java"
                 } else if (System.getProperty("testBuildType", "debug") == "integ") {
-                    exclude "**/PorcupineTest.java"
+                    exclude "**/StandardTests.java"
+                    exclude "**/LanguageTests.java"
                     exclude "**/PerformanceTest.java"
                 } else {
                     exclude "**/IntegrationTest.java"
@@ -143,7 +145,6 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
     androidTestImplementation('androidx.test.espresso:espresso-intents:3.5.1')
 }
 

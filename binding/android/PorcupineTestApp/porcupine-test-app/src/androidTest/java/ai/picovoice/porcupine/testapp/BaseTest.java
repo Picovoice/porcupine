@@ -1,5 +1,5 @@
 /*
-    Copyright 2022 Picovoice Inc.
+    Copyright 2022-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -18,12 +18,7 @@ import android.content.res.AssetManager;
 import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.microsoft.appcenter.espresso.Factory;
-import com.microsoft.appcenter.espresso.ReportHelper;
-
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -42,19 +37,11 @@ import ai.picovoice.porcupine.Porcupine;
 
 public class BaseTest {
 
-    @Rule
-    public ReportHelper reportHelper = Factory.getReportHelper();
-
     Context testContext;
     Context appContext;
     AssetManager assetManager;
     String testResourcesPath;
     String accessKey;
-
-    @After
-    public void TearDown() {
-        reportHelper.label("Stopping App");
-    }
 
     @Before
     public void Setup() throws IOException {

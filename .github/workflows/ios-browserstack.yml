@@ -1,21 +1,21 @@
-name: iOS Performance
+name: iOS BrowserStack Tests
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - 'lib/ios/**'
-      - 'lib/common/**'
-      - 'resources/keyword_files/ios/**'
-      - '.github/workflows/ios-perf.yml'
+      - '.github/workflows/ios-browserstack.yml'
+      - 'binding/ios/PorcupineAppTest/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - 'lib/ios/**'
-      - 'lib/common/**'
-      - 'resources/keyword_files/ios/**'
-      - '.github/workflows/ios-perf.yml'
+      - '.github/workflows/ios-browserstack.yml'
+      - 'binding/ios/PorcupineAppTest/**'
+      - 'resources/.test/**'
+      - 'resources/audio_samples/**'
 
 defaults:
   run:
@@ -25,13 +25,6 @@ jobs:
   build:
     name: Run iOS Tests on BrowserStack
     runs-on: macos-latest
-
-    strategy:
-      matrix:
-        device: [ ios-perf ]
-        include:
-        - device: ios-perf
-          performanceThresholdSec: 0.5
 
     steps:
       - name: Checkout
@@ -57,22 +50,14 @@ jobs:
 
       - name: Inject AccessKey
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
-          PerformanceTest/PerformanceTest.swift
-
-      - name: Inject Number of Iterations
-        run: sed -i '.bak' 's:{NUM_TEST_ITERATIONS}:100:'
-          PerformanceTest/PerformanceTest.swift
-
-      - name: Inject Performance Threshold
-        run: sed -i '.bak' '1,/{PERFORMANCE_THRESHOLD_SEC}/s/{PERFORMANCE_THRESHOLD_SEC}/${{ matrix.performanceThresholdSec }}/'
-          PerformanceTest/PerformanceTest.swift
+          PorcupineAppTestUITests/BaseTest.swift
 
       - name: XCode Build
         run: xcrun xcodebuild build-for-testing
           -configuration Debug
           -project PorcupineAppTest.xcodeproj
           -sdk iphoneos
-          -scheme PerformanceTest
+          -scheme PorcupineAppTest
           -derivedDataPath ddp
           CODE_SIGNING_ALLOWED=NO
 
@@ -85,14 +70,14 @@ jobs:
 
       - name: Zipping Tests
         run: cd ddp/Build/Products/Debug-iphoneos/ &&
-          zip --symlinks -r PerformanceTest.zip PerformanceTest-Runner.app
+          zip --symlinks -r PorcupineAppTestUITests.zip PorcupineAppTestUITests-Runner.app
 
       - name: Run tests on BrowserStack
         run: python3 ../../../script/automation/browserstack.py
           --type xcuitest
           --username "${{secrets.BROWSERSTACK_USERNAME}}"
           --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
-          --project_name "Porcupine-iOS-Performance"
-          --devices "${{ matrix.device }}"
+          --project_name "Porcupine-iOS"
+          --devices "ios-min-max"
           --app_path "ddp/Build/Products/Debug-iphoneos/PorcupineAppTest.ipa"
-          --test_path "ddp/Build/Products/Debug-iphoneos/PerformanceTest.zip"
+          --test_path "ddp/Build/Products/Debug-iphoneos/PorcupineAppTestUITests.zip"

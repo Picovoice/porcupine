@@ -205,3 +205,4 @@ xcschemes
 xcshareddata
 xcworkspace
 xpresso
+xcuitest

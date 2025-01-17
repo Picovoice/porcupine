@@ -1,3 +1,15 @@
+/*
+    Copyright 2025 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is
+    located in the "LICENSE" file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+    express or implied. See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
 package ai.picovoice.porcupine.testapp;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -15,9 +27,6 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.util.HumanReadables;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.microsoft.appcenter.espresso.Factory;
-import com.microsoft.appcenter.espresso.ReportHelper;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -75,9 +84,6 @@ class WaitForTextAction implements ViewAction {
 public class IntegrationTest {
 
     @Rule
-    public ReportHelper reportHelper = Factory.getReportHelper();
-
-    @Rule
     public ActivityScenarioRule<MainActivity> activityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
@@ -89,11 +95,6 @@ public class IntegrationTest {
     @After
     public void intentsTeardown() {
         Intents.release();
-    }
-
-    @After
-    public void TearDown() {
-        reportHelper.label("Stopping App");
     }
 
     @Test
