@@ -23,7 +23,6 @@ body:
       label: SDK
       options:
         - Android
-        - Angular
         - C
         - .NET
         - Flutter
@@ -91,7 +90,7 @@ body:
       description: Steps to reproduce the behavior.
       placeholder: |
         1.
-        2. 
+        2.
         3.
     validations:
       required: true

@@ -39,12 +39,6 @@
     "**/AndroidManifest.xml",
     "**/activity_main.xml",
 
-    // angular
-    "**/angular.json",
-    "**/karma.conf.js",
-    "**/ng-package.json",
-    "**/tsconfig.lib.json",
-
     // ios
     "**/*.xcconfig",
     "**/*.podspec",
