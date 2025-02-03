@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
 
 namespace AvaloniaVUI
@@ -20,7 +19,7 @@ namespace AvaloniaVUI
         {
             return AppBuilder.Configure<App>()
                         .UsePlatformDetect()
-                        .LogToDebug()
+                        .LogToTrace()
                         .UseReactiveUI();
         }
     }
