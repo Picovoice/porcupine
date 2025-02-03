@@ -19,7 +19,7 @@ To learn more about Porcupine, see the [product](https://picovoice.ai/products/p
 
 ## Compatibility
 
-These demos run Porcupine on **Node.js 12+** on the following platforms:
+These demos run Porcupine on **Node.js 18+** on the following platforms:
 
 - Windows (x86_64, arm64)
 - Linux (x86_64)
