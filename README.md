@@ -1363,6 +1363,66 @@ function App(props) {
 }
 ```
 
+### NodeJS
+
+Install NodeJS SDK:
+
+```console
+yarn add @picovoice/porcupine-node
+```
+
+Create instances of the Porcupine class by specifying which keywords you want it to listen for:
+
+```javascript
+const {
+  Porcupine,
+  BuiltinKeyword,
+}= require("@picovoice/porcupine-node");
+
+ // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+const accessKey = "${ACCESS_KEY}";
+
+let handle = new Porcupine(
+    accessKey,
+    [BuiltinKeyword.GRASSHOPPER, BuiltinKeyword.BUMBLEBEE],
+    [0.5, 0.65]);
+```
+
+`GRASSHOPPER` and `BUMBLEBEE` are built-in keywords. If you wish to use a custom keyword file, you need to identify its path:
+
+```javascript
+const Porcupine = require("@picovoice/porcupine-node");
+
+ // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+const accessKey = "${ACCESS_KEY}";
+
+let handle = new Porcupine(
+    accessKey,
+    ["/path/to/custom/keyword/file"],
+    [0.5]);
+```
+
+When instantiated, `handle` can process audio via its `.process` method.
+
+```javascript
+let getNextAudioFrame = function() {
+    ...
+};
+
+while (true) {
+  let keywordIndex = handle.process(getNextAudioFrame());
+  if (keywordIndex !== -1) {
+    // detection event callback
+  }
+}
+```
+
+When done be sure to release resources acquired by WebAssembly using `release()`:
+
+```javascript
+handle.release();
+```
+
 ### Rust
 
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.
