@@ -6,11 +6,9 @@
 [![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)<!-- markdown-link-check-disable-line -->
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/porcupine-angular)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/porcupine-node)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web?label=npm%20%5Bweb%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web)
 [![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
 [![CocoaPods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://cocoapods.org/pods/Porcupine-iOS)<!-- markdown-link-check-disable-line -->
@@ -55,9 +53,7 @@ applications. It is
     - [iOS](#ios-demos)
     - [Web](#web-demos)
       - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
-      - [Angular](#angular-demos)
       - [React](#react-demos)
-      - [Vue](#vue-demos)
     - [NodeJS](#nodejs-demos)
     - [Rust](#rust-demos)
     - [C](#c-demos)
@@ -74,9 +70,7 @@ applications. It is
     - [Web](#web)
       - [Vanilla JavaScript and HTML (CDN Script Tag)](#vanilla-javascript-and-html-cdn-script-tag)
       - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
-      - [Angular](#angular)
       - [React](#react)
-      - [Vue](#vue)
     - [NodeJS](#nodejs)
     - [Rust](#rust)
     - [C](#c)
@@ -309,24 +303,6 @@ npm run start ${LANGUAGE}
 
 Open `http://localhost:5000` in your browser to try the demo.
 
-#### Angular Demos
-
-From [demo/angular](demo/angular) run the following in the terminal:
-
-```console
-yarn
-yarn start ${LANGUAGE}
-```
-
-(or)
-
-```console
-npm install
-npm run start ${LANGUAGE}
-```
-
-Open `http://localhost:4200` in your browser to try the demo.
-
 #### React Demos
 
 From [demo/react](demo/react) run the following in the terminal:
@@ -344,24 +320,6 @@ npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:3000` in your browser to try the demo.
-
-#### Vue Demos
-
-From [demo/vue](demo/vue) run the following in the terminal:
-
-```console
-yarn
-yarn start ${LANGUAGE}
-```
-
-(or)
-
-```console
-npm install
-npm run start ${LANGUAGE}
-```
-
-Open `http://localhost:8080` in your browser to try the demo.
 
 ### NodeJS Demos
 
@@ -1198,8 +1156,6 @@ porcupine.delete();
 
 Porcupine is available on modern web browsers (i.e. not Internet Explorer) via [WebAssembly](https://webassembly.org/). Microphone audio is handled via the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) and is abstracted by the WebVoiceProcessor, which also handles downsampling to the correct format. Porcupine is provided pre-packaged as a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers).
 
-Each spoken language is available as a dedicated npm package (e.g. @picovoice/porcupine-web-en-worker). These packages can be used with the @picovoice/web-voice-processor. They can also be used with the Angular, React, and Vue bindings, which abstract and hide the web worker communication details.
-
 #### Vanilla JavaScript and HTML (CDN Script Tag)
 
 ```html
@@ -1290,63 +1246,6 @@ if (done) {
 }
 ```
 
-#### Angular
-
-```console
-yarn add @picovoice/porcupine-angular @picovoice/web-voice-processor
-```
-
-(or)
-
-```console
-npm install @picovoice/porcupine-angular @picovoice/web-voice-processor
-```
-
-```typescript
-import { Subscription } from "rxjs";
-import { PorcupineService } from "@picovoice/porcupine-web-angular";
-import {BuiltInKeyword} from '@picovoice/porcupine-web';
-import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}";
-
-constructor(private porcupineService: PorcupineService) {
-  this.keywordSubscription = porcupineService.keyword$.subscribe(
-    porcupineDetection => {
-      console.log(`Porcupine Detected "${porcupineDetection.label}"`)
-    });
-  this.isLoadedSubscription = porcupineService.isLoaded$.subscribe(
-    isLoaded => {
-      console.log(isLoaded);
-    });
-  this.isListeningSubscription = porcupineService.isListening$.subscribe(
-    isListening => {
-      console.log(isListening);
-    });
-  this.errorSubscription = porcupineService.error$.subscribe(
-    error => {
-      console.error(error);
-    });
-}
-
-async ngOnInit() {
-  await this.porcupineService.init(
-    ${ACCESS_KEY},
-    [BuiltInKeyword.Porcupine],
-    porcupineModel,
-    options
-  ).then(() => {
-    this.porcupineService.start();
-  });
-}
-
-ngOnDestroy() {
-  this.keywordSubscription.unsubscribe();
-  this.isLoadedSubscription.unsubscribe();
-  this.isListeningSubscription.unsubscribe();
-  this.errorSubscription.unsubscribe();
-  this.porcupineService.release();
-}
-```
-
 #### React
 
 ```console
@@ -1390,72 +1289,6 @@ function App(props) {
     }
   }, [wakeWordDetection])
 }
-```
-
-#### Vue
-
-```console
-yarn add @picovoice/porcupine-vue @picovoice/web-voice-processor
-```
-
-(or)
-
-```console
-npm install @picovoice/porcupine-vue @picovoice/web-voice-processor
-```
-
-```vue
-<script lang='ts'>
-import { BuiltInKeyword } from '@picovoice/porcupine-web';
-import { usePorcupine } from '@picovoice/porcupine-vue';
-
-import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
-
-// Use Vue.extend for JavaScript
-export default {
-  data() {
-    const {
-      state,
-      init,
-      start,
-      stop,
-      release
-    } = usePorcupine();
-
-    init(
-      ${ACCESS_KEY},
-      [BuiltInKeyword.Porcupine],
-      { base64: porcupineParams }, // porcupine model
-    );
-
-    return {
-      state,
-      start,
-      stop,
-      release
-    }
-  },
-  watch: {
-    "state.keywordDetection": function (keyword) {
-      if (keyword !== null) {
-        console.log(keyword.label);
-      }
-    },
-    "state.isLoaded": function (isLoaded) {
-      console.log(isLoaded)
-    },
-    "state.isListening": function (isListening) {
-      console.log(isListening)
-    },
-    "state.error": function (error) {
-      console.error(error)
-    },
-  },
-  onBeforeDestroy() {
-    this.release();
-  },
-};
-</script>
 ```
 
 ### NodeJS
