@@ -1,8 +1,0 @@
-.idea
-node_modules
-.DS_Store
-cypress
-cypress.config.ts
-scripts
-test
-vite.config.ts
