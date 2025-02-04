@@ -144,10 +144,7 @@ if __name__ == "__main__":
         "zh": ("你好电脑",),
     }
     include_folders = [
-        "imxrt1050/imxrt1050-evkb/inc",
-        "stm32f407/stm32f407g-disc1/Inc/",
         "stm32f411/stm32f411e-disco/Inc/",
-        "stm32f769/stm32f769i-disco/Inc/",
     ]
 
     generate_pv_params(wake_words, include_folders)
