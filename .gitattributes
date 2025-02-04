@@ -3,7 +3,6 @@ lib/** linguist-detectable=false
 resources/** linguist-detectable=false
 
 binding/android/** linguist-detectable=false
-binding/angular/** linguist-detectable=false
 binding/dotnet/PorcupineTest/** linguist-detectable=false
 binding/flutter/android/** linguist-detectable=false
 binding/flutter/ios/** linguist-detectable=false
@@ -16,7 +15,6 @@ binding/react/** linguist-detectable=false
 binding/react-native/** linguist-detectable=false
 binding/rust/tests/** linguist-detectable=false
 binding/unity/** linguist-detectable=false
-binding/vue/** linguist-detectable=false
 binding/web/** linguist-detectable=false
 
 *.py linguist-detectable=true

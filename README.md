@@ -9,7 +9,6 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/porcupine-node)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/porcupine-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web?label=npm%20%5Bweb%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web)
 [![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
 [![CocoaPods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://cocoapods.org/pods/Porcupine-iOS)<!-- markdown-link-check-disable-line -->
@@ -57,7 +56,6 @@ applications. It is
     - [Web](#web-demos)
       - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
       - [React](#react-demos)
-      - [Vue](#vue-demos)
     - [NodeJS](#nodejs-demos)
     - [Rust](#rust-demos)
     - [C](#c-demos)
@@ -76,7 +74,6 @@ applications. It is
       - [Vanilla JavaScript and HTML (CDN Script Tag)](#vanilla-javascript-and-html-cdn-script-tag)
       - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
       - [React](#react)
-      - [Vue](#vue)
     - [NodeJS](#nodejs)
     - [Rust](#rust)
     - [C](#c)
@@ -341,24 +338,6 @@ npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:3000` in your browser to try the demo.
-
-#### Vue Demos
-
-From [demo/vue](demo/vue) run the following in the terminal:
-
-```console
-yarn
-yarn start ${LANGUAGE}
-```
-
-(or)
-
-```console
-npm install
-npm run start ${LANGUAGE}
-```
-
-Open `http://localhost:8080` in your browser to try the demo.
 
 ### NodeJS Demos
 
@@ -1382,132 +1361,6 @@ function App(props) {
     }
   }, [wakeWordDetection])
 }
-```
-
-#### Vue
-
-```console
-yarn add @picovoice/porcupine-vue @picovoice/web-voice-processor
-```
-
-(or)
-
-```console
-npm install @picovoice/porcupine-vue @picovoice/web-voice-processor
-```
-
-```vue
-<script lang='ts'>
-import { BuiltInKeyword } from '@picovoice/porcupine-web';
-import { usePorcupine } from '@picovoice/porcupine-vue';
-
-import porcupineParams from "${PATH_TO_PORCUPINE_PARAMS_BASE64}"
-
-// Use Vue.extend for JavaScript
-export default {
-  data() {
-    const {
-      state,
-      init,
-      start,
-      stop,
-      release
-    } = usePorcupine();
-
-    init(
-      ${ACCESS_KEY},
-      [BuiltInKeyword.Porcupine],
-      { base64: porcupineParams }, // porcupine model
-    );
-
-    return {
-      state,
-      start,
-      stop,
-      release
-    }
-  },
-  watch: {
-    "state.keywordDetection": function (keyword) {
-      if (keyword !== null) {
-        console.log(keyword.label);
-      }
-    },
-    "state.isLoaded": function (isLoaded) {
-      console.log(isLoaded)
-    },
-    "state.isListening": function (isListening) {
-      console.log(isListening)
-    },
-    "state.error": function (error) {
-      console.error(error)
-    },
-  },
-  onBeforeDestroy() {
-    this.release();
-  },
-};
-</script>
-```
-
-### NodeJS
-
-Install NodeJS SDK:
-
-```console
-yarn add @picovoice/porcupine-node
-```
-
-Create instances of the Porcupine class by specifying which keywords you want it to listen for:
-
-```javascript
-const {
-  Porcupine,
-  BuiltinKeyword,
-}= require("@picovoice/porcupine-node");
-
- // Obtained from the Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "${ACCESS_KEY}";
-
-let handle = new Porcupine(
-    accessKey,
-    [BuiltinKeyword.GRASSHOPPER, BuiltinKeyword.BUMBLEBEE],
-    [0.5, 0.65]);
-```
-
-`GRASSHOPPER` and `BUMBLEBEE` are built-in keywords. If you wish to use a custom keyword file, you need to identify its path:
-
-```javascript
-const Porcupine = require("@picovoice/porcupine-node");
-
- // Obtained from the Picovoice Console (https://console.picovoice.ai/)
-const accessKey = "${ACCESS_KEY}";
-
-let handle = new Porcupine(
-    accessKey,
-    ["/path/to/custom/keyword/file"],
-    [0.5]);
-```
-
-When instantiated, `handle` can process audio via its `.process` method.
-
-```javascript
-let getNextAudioFrame = function() {
-    ...
-};
-
-while (true) {
-  let keywordIndex = handle.process(getNextAudioFrame());
-  if (keywordIndex !== -1) {
-    // detection event callback
-  }
-}
-```
-
-When done be sure to release resources acquired by WebAssembly using `release()`:
-
-```javascript
-handle.release();
 ```
 
 ### Rust
