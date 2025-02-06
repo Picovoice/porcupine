@@ -4,22 +4,14 @@ This package contains a demo project for the STM32F411 Discovery kit using Porcu
 
 ## Supported Languages
 
-1. Arabic
-2. Dutch
-3. English
-4. French
-5. German
-6. Hindi
-7. Italian
-8. Japanese
-9. Korean
-10. Mandarin
-11. Polish
-12. Portuguese
-13. Russian
-14. Spanish
-15. Swedish
-16. Vietnamese
+1. English
+2. French
+3. German
+4. Italian
+5. Japanese
+6. Korean
+7. Portuguese
+8. Spanish
 
 - Support for additional languages is available for commercial customers on a case-by-case basis.
 
