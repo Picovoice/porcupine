@@ -37,23 +37,14 @@ FOOTER = """
 """
 
 LANGUAGE_CODE_TO_NAME = {
-    "ar": "arabic",
     "de": "german",
     "en": "english",
     "es": "spanish",
-    "fa": "farsi",
     "fr": "french",
-    "hi": "hindi",
     "it": "italian",
     "ja": "japanese",
     "ko": "korean",
-    "nl": "dutch",
-    "pl": "polish",
     "pt": "portuguese",
-    "ru": "russian",
-    "sv": "swedish",
-    "vn": "vietnamese",
-    "zh": "mandarin",
 }
 
 
@@ -120,7 +111,6 @@ def ppn_to_c_array(ppn_file_path):
 
 if __name__ == "__main__":
     wake_words = {
-        "ar": ("مرحبا الكمبيوتر",),
         "de": ("hey computer",),
         "en": (
             "porcupine",
@@ -129,19 +119,11 @@ if __name__ == "__main__":
             "alexa",
         ),
         "es": ("hola computadora",),
-        "fa": ("سلام رایانه",),
         "fr": ("bonjour ordinateur",),
-        "hi": ("नमस्ते कंप्यूटर",),
         "it": ("ciao computer",),
         "ja": ("こんにちは コンピューター",),
         "ko": ("안녕 컴퓨터",),
-        "nl": ("hallo computer",),
-        "pl": ("cześć komputer",),
         "pt": ("olá computador",),
-        "ru": ("привет компьютер",),
-        "sv": ("hej dator",),
-        "vn": ("xin chào máy tính",),
-        "zh": ("你好电脑",),
     }
     include_folders = [
         "stm32f411/stm32f411e-disco/Inc/",

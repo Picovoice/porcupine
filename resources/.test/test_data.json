@@ -2,14 +2,6 @@
 	"tests": {
 		"singleKeyword": [
 			{
-				"language": "ar",
-				"wakeword": "الحمص"
-			},
-			{
-				"language": "nl",
-				"wakeword": "stekelvarken"
-			},
-			{
 				"language": "en",
 				"wakeword": "porcupine"
 			},
@@ -20,10 +12,6 @@
 			{
 				"language": "de",
 				"wakeword": "heuschrecke"
-			},
-			{
-				"language": "hi",
-				"wakeword": "नमस्ते"
 			},
 			{
 				"language": "it",
@@ -38,49 +26,15 @@
 				"wakeword": "빅스비"
 			},
 			{
-				"language": "zh",
-				"wakeword": "豪猪"
-			},
-			{
-				"language": "pl",
-				"wakeword": "jeżozwierz"
-			},
-			{
 				"language": "pt",
 				"wakeword": "fenômeno"
 			},
 			{
-				"language": "ru",
-				"wakeword": "помогите"
-			},
-			{
 				"language": "es",
 				"wakeword": "manzana"
-			},
-			{
-				"language": "sv",
-				"wakeword": "piggsvin"
-			},
-			{
-				"language": "vn",
-				"wakeword": "chào chị"
-			},
-			{
-				"language": "fa",
-				"wakeword": "جوجه تیغی"
 			}
 		],
 		"multipleKeyword": [
-			{
-				"language": "ar",
-				"wakewords": ["الحمص", "قهوة", "أخطبوط", "محمصة"],
-				"groundTruth": [0, 1, 2, 3]
-			},
-			{
-				"language": "nl",
-				"wakewords": ["stekelvarken", "hoi lotte", "koffie", "broodrooster"],
-				"groundTruth": [0, 1, 2, 3]
-			},
 			{
 				"language": "en",
 				"wakewords": ["americano", "blueberry", "bumblebee", "grapefruit", "grasshopper", "picovoice", "porcupine", "terminator"],
@@ -94,11 +48,6 @@
 			{
 				"language": "de",
 				"wakewords": ["ananas", "heuschrecke", "leguan", "stachelschwein"],
-				"groundTruth": [0, 1, 2, 3]
-			},
-			{
-				"language": "hi",
-				"wakewords": ["नमस्ते", "विदाई", "मोहब्बत", "सुभग"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
@@ -117,43 +66,13 @@
 				"groundTruth": [1, 2, 0]
 			},
 			{
-				"language": "zh",
-				"wakewords": ["豪猪", "咖啡", "你好", "水饺"],
-				"groundTruth": [0, 1, 2, 3]
-			},
-			{
-				"language": "pl",
-				"wakewords": ["jeżozwierz", "kawa", "żubrówka", "pierogi"],
-				"groundTruth": [0, 1, 2, 3]
-			},
-			{
 				"language": "pt",
 				"wakewords": ["abacaxi", "fenômeno", "formiga"],
 				"groundTruth": [0, 2, 1]
 			},
 			{
-				"language": "ru",
-				"wakewords": ["помогите", "внимание", "осторожный", "открыто"],
-				"groundTruth": [0, 1, 2, 3]
-			},
-			{
 				"language": "es",
 				"wakewords": ["emparedado", "leopardo", "manzana"],
-				"groundTruth": [0, 1, 2]
-			},
-			{
-				"language": "sv",
-				"wakewords": ["piggsvin", "kaffe", "köttbullar", "hygge"],
-				"groundTruth": [0, 1, 2, 3]
-			},
-			{
-				"language": "vn",
-				"wakewords": ["con nhím", "chào chị", "máy pha cà phê", "máy nướng bánh mì"],
-				"groundTruth": [0, 1, 2, 3]
-			},
-			{
-				"language": "fa",
-				"wakewords": ["جوجه تیغی", "صبح بخیر", "خداحافظ"],
 				"groundTruth": [0, 1, 2]
 			}
 		]

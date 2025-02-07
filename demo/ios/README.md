@@ -40,9 +40,8 @@ pod install
 
 3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
 
-4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `arDemo` -> Arabic Demo, `deDemo` -> German Demo)
+4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `esDemo` -> Spanish Demo, `deDemo` -> German Demo)
 
 5) Run the demo with a simulator or connected iOS device
 
 The demo allows you to select any of the pre-built keywords for detection. Press start and say the selected keyword.
-
