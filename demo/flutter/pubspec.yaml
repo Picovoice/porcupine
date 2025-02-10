@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  bottom_picker: ^2.7.0
+  bottom_picker: 2.8.0
   porcupine_flutter: ^3.0.4
   path: ^1.8.0
 
