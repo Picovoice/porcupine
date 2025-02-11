@@ -15,11 +15,6 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Visible>false</Visible>
         </Content>
-        <Content Include="$(MSBuildThisFileDirectory)libpv_porcupine.so">
-            <Link>libpv_porcupine.so</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Visible>false</Visible>
-        </Content>
     </ItemGroup>
     <ItemGroup>
         <Content Include="$(MSBuildThisFileDirectory)resources/**">
@@ -27,7 +22,14 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Include="$(MSBuildThisFileDirectory)lib/**">
+            <PackagePath>content/picovoice/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
             <Link>lib/%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Visible>false</Visible>
+        </Content>
+        <Content Include="$(MSBuildThisFileDirectory)/../common/porcupine_params.pv">
+            <Link>lib/common/porcupine_params.pv</Link>
+            <PackagePath>content/picovoice/common/porcupine_params.pv</PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Visible>false</Visible>
         </Content>

@@ -17,6 +17,6 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.12" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.12" />
     <PackageReference Include="PvRecorder" Version="1.2.5" />
-    <PackageReference Include="Porcupine" Version="3.0.4" />
+    <PackageReference Include="Porcupine" Version="3.0.6" />
   </ItemGroup>
 </Project>
