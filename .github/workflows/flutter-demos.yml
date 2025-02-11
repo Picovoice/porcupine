@@ -52,7 +52,7 @@ jobs:
 
   build-ios:
     name: Build iOS demo
-    runs-on: macos-12
+    runs-on: macos-14
     strategy:
       matrix:
         flutter-version: ['3.3.0', '3.22.2']

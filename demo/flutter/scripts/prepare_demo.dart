@@ -4,12 +4,12 @@ import "dart:convert";
 import "dart:io";
 
 final String resourcePath =
-    join(dirname(Platform.script.path), "..", "..", "..", "resources");
+    join(dirname(Platform.script.toFilePath()), "..", "..", "..", "resources");
 final String libPath =
-    join(dirname(Platform.script.path), "..", "..", "..", "lib");
+    join(dirname(Platform.script.toFilePath()), "..", "..", "..", "lib");
 final String testDataPath = join(resourcePath, ".test", "test_data.json");
 
-final String assetsPath = join(dirname(Platform.script.path), "..", "assets");
+final String assetsPath = join(dirname(Platform.script.toFilePath()), "..", "assets");
 final String keywordsPath = join(assetsPath, "keywords");
 final String modelsPath = join(assetsPath, "models");
 
