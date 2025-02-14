@@ -21,6 +21,7 @@
     "@picovoice/web-voice-processor": "~4.0.8"
   },
   "devDependencies": {
-    "http-server": "^14.0.0"
+    "http-server": "^14.0.0",
+    "prettier": "3.5.1"
   }
 }

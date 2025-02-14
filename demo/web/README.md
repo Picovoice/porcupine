@@ -14,8 +14,8 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Install & run
 
-Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code 
-to start a local web server hosting the demo in the language of your choice (e.g. `de` -> German, `ko` -> Korean). 
+Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
+to start a local web server hosting the demo in the language of your choice (e.g. `de` -> German, `ko` -> Korean).
 To see a list of available languages, run `start` without a language code.
 
 ```console
