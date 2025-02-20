@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2023 Picovoice Inc.
+    Copyright 2020-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -24,7 +24,7 @@ namespace PorcupineDemo
     /// Microphone Demo for Porcupine wake word engine. It creates an input audio stream from a microphone, monitors it, and
     /// upon detecting the specified wake word(s) prints the detection time and wake word on console. It optionally saves
     /// the recorded audio into a file for further debugging.
-    /// </summary>                
+    /// </summary>
     public class MicDemo
     {
         /// <summary>
@@ -33,13 +33,13 @@ namespace PorcupineDemo
         /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
-        /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>     
+        /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>
         /// <param name="sensitivities">
-        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
+        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
-        /// </param>        
-        /// <param name="audioDeviceIndex">Optional argument. If provided, audio is recorded from this input device. Otherwise, the default audio input device is used.</param>        
-        /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>        
+        /// </param>
+        /// <param name="audioDeviceIndex">Optional argument. If provided, audio is recorded from this input device. Otherwise, the default audio input device is used.</param>
+        /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>
         public static void RunDemo(
             string accessKey,
             string modelPath,
@@ -50,7 +50,7 @@ namespace PorcupineDemo
         {
             using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
             {
-                // get keyword names for labeling detection results                
+                // get keyword names for labeling detection results
                 List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
                 // create recorder
@@ -115,8 +115,8 @@ namespace PorcupineDemo
         /// Writes the RIFF header for a file in WAV format
         /// </summary>
         /// <param name="writer">Output stream to WAV file</param>
-        /// <param name="channelCount">Number of channels</param>     
-        /// <param name="bitDepth">Number of bits per sample</param>     
+        /// <param name="channelCount">Number of channels</param>
+        /// <param name="bitDepth">Number of bits per sample</param>
         /// <param name="sampleRate">Sampling rate in Hz</param>
         /// <param name="totalSampleCount">Total number of samples written to the file</param>
         private static void WriteWavHeader(BinaryWriter writer, ushort channelCount, ushort bitDepth, int sampleRate, int totalSampleCount)

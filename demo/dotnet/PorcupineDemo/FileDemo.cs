@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2023 Picovoice Inc.
+    Copyright 2020-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -23,44 +23,39 @@ namespace PorcupineDemo
     /// <summary>
     /// File Demo for Porcupine wake word engine. It takes an input audio file and a list of keywords to search for
     /// and prints the where in the file it detects instances of the keywords.
-    /// </summary>                
+    /// </summary>
     public class FileDemo
     {
 
         /// <summary>
         /// Reads through input file and, upon detecting the specified wake word(s), prints the detection timecode and the wake word.
         /// </summary>
-        /// <param name="inputAudioPath">Required argument. Absolute path to input audio file.</param>                
+        /// <param name="inputAudioPath">Required argument. Absolute path to input audio file.</param>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
-        /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>              
+        /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>
         /// <param name="sensitivities">
-        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer 
+        /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer
         /// misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.
-        /// </param>
-        /// <param name="keywords">
-        /// List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved 
-        /// using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
         /// </param>
         public static void RunDemo(
             string inputAudioPath,
             string accessKey,
             string modelPath,
             List<string> keywordPaths,
-            List<string> keywords,
             List<float> sensitivities)
         {
             // init porcupine wake word engine
             using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
             {
-                // get keyword names for labeling detection results                
+                // get keyword names for labeling detection results
                 List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
 
                 using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
                 {
                     ValidateWavFile(reader, porcupine.SampleRate, 16, out short numChannels);
 
-                    // read audio and send frames to porcupine                
+                    // read audio and send frames to porcupine
                     short[] porcupineFrame = new short[porcupine.FrameLength];
                     int frameIndex = 0;
                     long totalSamplesRead = 0;
@@ -77,7 +72,7 @@ namespace PorcupineDemo
                             int result = porcupine.Process(porcupineFrame);
                             if (result >= 0)
                             {
-                                Console.WriteLine($"Detected {keywords[result]} at " +
+                                Console.WriteLine($"Detected {keywordNames[result]} at " +
                                     $"{Math.Round(totalSamplesRead / (double)porcupine.SampleRate, 2)} sec");
                             }
                             frameIndex = 0;
@@ -102,8 +97,8 @@ namespace PorcupineDemo
         ///  Reads RIFF header of a WAV file and validates its properties against Picovoice audio processing requirements
         /// </summary>
         /// <param name="reader">WAV file stream reader</param>
-        /// <param name="requiredSampleRate">Required sample rate in Hz</param>     
-        /// <param name="requiredBitDepth">Required number of bits per sample</param>             
+        /// <param name="requiredSampleRate">Required sample rate in Hz</param>
+        /// <param name="requiredBitDepth">Required number of bits per sample</param>
         /// <param name="numChannels">Number of channels can be returned by function</param>
         public static void ValidateWavFile(BinaryReader reader, int requiredSampleRate, short requiredBitDepth, out short numChannels)
         {
@@ -255,7 +250,7 @@ namespace PorcupineDemo
             }
 
             // run demo with validated arguments
-            RunDemo(inputAudioPath, accessKey, modelPath, keywordPaths, keywords, sensitivities);
+            RunDemo(inputAudioPath, accessKey, modelPath, keywordPaths, sensitivities);
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
