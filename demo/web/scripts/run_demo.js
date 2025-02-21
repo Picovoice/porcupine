@@ -4,15 +4,15 @@ const path = require("path");
 const testData = require("../../../resources/.test/test_data.json");
 
 availableLanguages = testData["tests"]["singleKeyword"].map(
-  (x) => x["language"]
+  (x) => x["language"],
 );
 
 const language = process.argv.slice(2)[0];
 if (!language) {
   console.error(
     `Choose the language you would like to run the demo in with "yarn start [language]".\nAvailable languages are ${availableLanguages.join(
-      ", "
-    )}`
+      ", ",
+    )}`,
   );
   process.exit(1);
 }
@@ -20,8 +20,8 @@ if (!language) {
 if (!availableLanguages.includes(language)) {
   console.error(
     `'${language}' is not an available demo language.\nAvailable languages are ${availableLanguages.join(
-      ", "
-    )}`
+      ", ",
+    )}`,
   );
   process.exit(1);
 }
@@ -34,7 +34,7 @@ const keywordDir = path.join(
   rootDir,
   "resources",
   `keyword_files${suffix}`,
-  "wasm"
+  "wasm",
 );
 
 let outputDirectory = path.join(__dirname, "..", "keywords");
@@ -77,7 +77,7 @@ ${keywordJS.join("\n")}
 (function () {
   if (typeof module !== "undefined" && typeof module.exports !== "undefined")
     module.exports = porcupineKeywords;
-})();`
+})();`,
 );
 
 const modelDir = path.join(rootDir, "lib", "common");
@@ -94,7 +94,7 @@ if (fs.existsSync(outputDirectory)) {
 const modelName = `porcupine_params${suffix}.pv`;
 fs.copyFileSync(
   path.join(modelDir, modelName),
-  path.join(outputDirectory, modelName)
+  path.join(outputDirectory, modelName),
 );
 
 fs.writeFileSync(
@@ -107,12 +107,12 @@ fs.writeFileSync(
 (function () {
   if (typeof module !== "undefined" && typeof module.exports !== "undefined")
     module.exports = porcupineModel;
-})();`
+})();`,
 );
 
-const command = (process.platform === "win32") ? "npx.cmd" : "npx";
+const command = process.platform === "win32" ? "npx.cmd" : "npx";
 
-child_process.execSync(`${command} http-server -a localhost -p 5000`, {  
+child_process.execSync(`${command} http-server -a localhost -p 5000`, {
   shell: true,
-  stdio: 'inherit'
+  stdio: "inherit",
 });
