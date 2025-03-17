@@ -58,11 +58,8 @@ jobs:
         gradle-version: ${{ matrix.gradle-version }}
 
 
-    - name: Build English
-      run: gradle assembleEnDebug
-
-    - name: Build Other Language
-      run: gradle assembleArDebug
+    - name: Build
+      run: gradle assembleDebug
 
   build-service-demo:
     runs-on: ubuntu-latest
