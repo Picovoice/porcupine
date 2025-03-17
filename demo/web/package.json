@@ -21,6 +21,10 @@
     "@picovoice/web-voice-processor": "~4.0.8"
   },
   "devDependencies": {
-    "http-server": "^14.0.0"
+    "@eslint/js": "^9.22.0",
+    "eslint": "^9.22.0",
+    "globals": "^16.0.0",
+    "http-server": "^14.0.0",
+    "prettier": "3.5.1"
   }
 }
