@@ -3,6 +3,7 @@ import groovy.json.JsonSlurper
 apply plugin: 'com.android.application'
 
 android {
+    def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
     compileSdk defaultTargetSdkVersion
 
     defaultConfig {
@@ -11,6 +12,13 @@ android {
         targetSdkVersion defaultTargetSdkVersion
         versionCode 8
         versionName "3.0.0"
+    }
+    buildFeatures {
+        buildConfig true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -28,8 +36,10 @@ android {
 
     flavorDimensions "language"
     productFlavors {
-        en {
-            getIsDefault().set(true)
+        if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
+            en {
+                getIsDefault().set(true)
+            }
         }
 
         languages.each { language ->
@@ -47,7 +57,7 @@ android {
                 if (flavor.name != 'en') {
                     from("$projectDir/../../../../lib/common/")
                     include("porcupine_params_${flavor.name}.pv")
-                    into("$projectDir/src/main/assets/models")
+                    into("$projectDir/src/${flavor.name}/assets/models")
                 }
             }
             task("${flavor.name}CopyKeywords", type: Copy) {
@@ -55,7 +65,7 @@ android {
                 if (flavor.name != 'en') {
                     from("$projectDir/../../../../resources/keyword_files_${flavor.name}/android")
                     include('*.ppn')
-                    into("$projectDir/src/main/assets/keywords")
+                    into("$projectDir/src/${flavor.name}/assets/keywords")
                     rename { String fileName ->
                         fileName.replace("_android", "").replace(" ", "_")
                     }
@@ -63,10 +73,12 @@ android {
             }
         }
     }
-    lint {
+    lintOptions {
         abortOnError false
     }
-    namespace 'ai.picovoice.porcupine.demo'
+    if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
+        namespace 'ai.picovoice.porcupine.demo'
+    }
 }
 
 dependencies {
