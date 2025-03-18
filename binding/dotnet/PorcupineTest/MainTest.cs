@@ -240,9 +240,9 @@ namespace PorcupineTest
         }
 
         [TestMethod]
-        public void TestSingleKeywordBuiltinNonExistant()
+        public void TestSingleKeywordBuiltinNonExistent()
         {
-            Assert.ThrowsException<PorcupineIOException>(() => Porcupine.FromBuiltInKeywords(_accessKey, new List<BuiltInKeyword> { (BuiltInKeyword) 666 }));
+            Assert.ThrowsException<PorcupineIOException>(() => Porcupine.FromBuiltInKeywords(_accessKey, new List<BuiltInKeyword> { (BuiltInKeyword)666 }));
         }
 
         [TestMethod]
