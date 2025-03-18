@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2024 Picovoice Inc.
+    Copyright 2020-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -237,6 +237,12 @@ namespace PorcupineTest
             RunTestCase(
                 "multiple_keywords.wav",
                 new List<int>() { 7, 0, 1, 2, 3, 4, 5, 6, 7, 8 });
+        }
+
+        [TestMethod]
+        public void TestSingleKeywordBuiltinNonExistant()
+        {
+            Assert.ThrowsException<PorcupineIOException>(() => Porcupine.FromBuiltInKeywords(_accessKey, new List<BuiltInKeyword> { (BuiltInKeyword) 666 }));
         }
 
         [TestMethod]
