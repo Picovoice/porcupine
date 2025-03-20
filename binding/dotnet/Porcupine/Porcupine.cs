@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2023 Picovoice Inc.
+    Copyright 2020-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -159,9 +159,18 @@ namespace Pv
                 throw new PorcupineInvalidArgumentException("No built-in keywords were specified.");
             }
 
-            IEnumerable<string> keywordPaths = keywords
-                .Where(k => BUILT_IN_KEYWORD_PATHS.ContainsKey(k))
-                .Select(k => BUILT_IN_KEYWORD_PATHS[k]);
+            List<string> keywordPaths = new List<string>();
+            foreach (BuiltInKeyword k in keywords)
+            {
+                if (BUILT_IN_KEYWORD_PATHS.ContainsKey(k))
+                {
+                    keywordPaths.Add(BUILT_IN_KEYWORD_PATHS[k]);
+                }
+                else
+                {
+                    throw new PorcupineIOException($"Couldn't find path to built-in keyword `{k}`");
+                }
+            }
 
             return new Porcupine(accessKey, keywordPaths, modelPath, sensitivities);
         }

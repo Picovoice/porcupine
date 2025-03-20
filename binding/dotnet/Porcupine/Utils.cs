@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2024 Picovoice Inc.
+    Copyright 2020-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -36,14 +36,17 @@ namespace Pv
 
         public static Dictionary<BuiltInKeyword, string> PvKeywordPaths()
         {
-            string keywordFilesDir = Path.Combine(AppContext.BaseDirectory, "resources/keyword_files", _env);
-
             Dictionary<BuiltInKeyword, string> keywordPaths = new Dictionary<BuiltInKeyword, string>();
-            foreach (string keywordFile in Directory.GetFiles(keywordFilesDir))
+
+            string keywordFilesDir = Path.Combine(AppContext.BaseDirectory, "resources/keyword_files", _env);
+            if (Directory.Exists(keywordFilesDir))
             {
-                string enumName = Path.GetFileName(keywordFile).Split('_')[0].Replace(" ", "_").ToUpper();
-                BuiltInKeyword builtin = (BuiltInKeyword)Enum.Parse(typeof(BuiltInKeyword), enumName);
-                keywordPaths.Add(builtin, Path.Combine(keywordFilesDir, keywordFile));
+                foreach (string keywordFile in Directory.GetFiles(keywordFilesDir))
+                {
+                    string enumName = Path.GetFileName(keywordFile).Split('_')[0].Replace(" ", "_").ToUpper();
+                    BuiltInKeyword builtin = (BuiltInKeyword)Enum.Parse(typeof(BuiltInKeyword), enumName);
+                    keywordPaths.Add(builtin, Path.Combine(keywordFilesDir, keywordFile));
+                }
             }
 
             return keywordPaths;
