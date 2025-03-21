@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <ItemGroup>
-        <Content Include="$(MSBuildThisFileDirectory)../../lib/netstandard2.0/Porcupine.dll">
+        <Content Include="$(MSBuildThisFileDirectory)..\..\lib\netstandard2.0\Porcupine.dll">
             <Link>Porcupine.dll</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Visible>False</Visible>
@@ -17,19 +17,19 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="$(MSBuildThisFileDirectory)resources/**">
-            <Link>resources/%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <Content Include="$(MSBuildThisFileDirectory)resources\**">
+            <Link>resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Include="$(MSBuildThisFileDirectory)lib/**">
-            <PackagePath>content/picovoice/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
-            <Link>lib/%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <Content Include="$(MSBuildThisFileDirectory)lib\**">
+            <PackagePath>content\picovoice\%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
+            <Link>lib\%(RecursiveDir)%(Filename)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Visible>false</Visible>
         </Content>
-        <Content Include="$(MSBuildThisFileDirectory)/../common/porcupine_params.pv">
-            <Link>lib/common/porcupine_params.pv</Link>
-            <PackagePath>content/picovoice/common/porcupine_params.pv</PackagePath>
+        <Content Include="$(MSBuildThisFileDirectory)\..\common\porcupine_params.pv">
+            <Link>lib\common\porcupine_params.pv</Link>
+            <PackagePath>content\picovoice\common\porcupine_params.pv</PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Visible>false</Visible>
         </Content>
