@@ -180,6 +180,8 @@ For more information about Java demos go to [demo/java](demo/java).
 
 ### Unity Demos
 
+> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Porcupine Wake Word Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
+
 To run the Porcupine Unity demo, import the [Porcupine Unity package](binding/unity/porcupine-3.0.1.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 To browse the demo source go to [demo/unity](demo/unity).
@@ -341,6 +343,8 @@ utterances of `Porcupine`.
 For more information about NodeJS demos go to [demo/nodejs](demo/nodejs).
 
 ### Rust Demos
+
+> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Porcupine Wake Word Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
 
 This demo opens an audio stream from a microphone and detects utterances of a given wake word.
 From [demo/rust/micdemo](demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
@@ -659,6 +663,8 @@ handle.delete();
 ```
 
 ### Unity
+
+> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Porcupine Wake Word Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
 
 Import the [Porcupine Unity Package](binding/unity/porcupine-3.0.1.unitypackage) into your Unity project.
 
@@ -1352,6 +1358,8 @@ handle.release();
 ```
 
 ### Rust
+
+> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Porcupine Wake Word Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
 
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.
 
