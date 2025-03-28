@@ -1,5 +1,7 @@
 # Porcupine Rust Demos
 
+> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Porcupine Wake Word Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
+
 This Rust module contains demos for processing real-time audio (i.e. microphone) and audio files using the Porcupine wake word engine.
 
 ## Usage

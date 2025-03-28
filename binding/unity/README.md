@@ -1,5 +1,7 @@
 # Porcupine Binding for Unity
 
+> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Porcupine Wake Word Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
+
 ## Porcupine
 
 Porcupine is a highly accurate and lightweight wake word engine. It enables building always-listening voice-enabled applications using cutting edge voice AI.
