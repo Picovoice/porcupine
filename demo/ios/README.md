@@ -10,7 +10,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 This demo runs microphone recording in the background and detects the wake word while the application is **not** in focus. The wake word will be detected as long as the application remains running in the background.
 
-**The minimum iOS version required is 10.0.**
+**The minimum iOS version required is 15.6.**
 
 To run the background service demo, go to [BackgroundService](./BackgroundService) directory. Then run:
 
