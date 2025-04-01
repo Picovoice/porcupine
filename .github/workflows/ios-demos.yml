@@ -27,16 +27,16 @@ jobs:
       - name: Build English
         run: xcrun xcodebuild build
           -configuration Debug
-          -project PorcupineForegroundAppDemo.xcodeproj
+          -project ForegroundApp.xcodeproj
           -sdk iphoneos
-          -scheme _enDemo
+          -scheme enDemo
           -derivedDataPath ddp
           CODE_SIGNING_ALLOWED=NO
 
       - name: Build Other Language
         run: xcrun xcodebuild build
           -configuration Debug
-          -project PorcupineForegroundAppDemo.xcodeproj
+          -project ForegroundApp.xcodeproj
           -sdk iphoneos
           -scheme deDemo
           -derivedDataPath ddp
@@ -52,17 +52,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Cocoapods
-        run: gem install cocoapods
-
-      - name: Run Cocoapods
-        run: pod install
-
       - name: Build
         run: xcrun xcodebuild build
           -configuration Debug
-          -workspace PorcupineBackgroundServiceDemo.xcworkspace
+          -workspace BackgroundService.xcodeproj
           -sdk iphoneos
-          -scheme PorcupineBackgroundServiceDemo
+          -scheme BackgroundService
           -derivedDataPath ddp
           CODE_SIGNING_ALLOWED=NO
