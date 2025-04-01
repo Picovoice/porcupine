@@ -18,7 +18,7 @@ To run the background service demo, go to [BackgroundService](./BackgroundServic
 pod install
 ```
 
-Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./BackgroundService/PorcupineBackgroundServiceDemo/ViewController.swift) with your `AccessKey`.
+Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./BackgroundService/BackgroundService/ViewModel.swift) with your `AccessKey`.
 
 Open `PorcupineBackgroundServiceDemo.xcworkspace` and run the demo.
 
@@ -38,7 +38,7 @@ pod install
 
 2) Open the `PorcupineForegroundAppDemo.xcworkspace` in XCode
 
-3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./ForegroundApp/ForegroundApp/ViewModel.swift) with your `AccessKey`.
 
 4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `esDemo` -> Spanish Demo, `deDemo` -> German Demo)
 
