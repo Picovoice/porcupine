@@ -7,7 +7,6 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-
 import Foundation
 import ios_voice_processor
 import Porcupine
@@ -16,14 +15,14 @@ import Combine
 
 class PorcupineViewModel: ObservableObject {
     @Published var isListening = false
-    @Published var errorMessage: String? = nil
+    @Published var errorMessage: String?
     @Published var hasError = false
-    
+
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let wakeWord = Porcupine.BuiltInKeyword.porcupine
-    
+
     var porcupineManager: PorcupineManager?
-    
+
     func toggleListening() {
         if !isListening {
             startListening()
@@ -31,7 +30,7 @@ class PorcupineViewModel: ObservableObject {
             stopListening()
         }
     }
-    
+
     func startListening() {
         guard VoiceProcessor.hasRecordAudioPermission else {
             VoiceProcessor.requestRecordAudioPermission { [weak self] isGranted in
@@ -41,36 +40,36 @@ class PorcupineViewModel: ObservableObject {
                     }
                     return
                 }
-                
+
                 DispatchQueue.main.async {
                     self?.startListening()
                 }
             }
             return
         }
-        
+
         NotificationManager.shared.requestNotificationAuthorization()
-        
+
         let errorCallback: ((Error) -> Void) = { [weak self] error in
             self?.showError(message: "\(error)")
         }
-        
+
         do {
             Sound.category = .playAndRecord
             let keywordCallback: ((Int32) -> Void) = { _ in
                 NotificationManager.shared.sendNotification()
                 Sound.play(file: "beep.wav")
             }
-            
+
             self.porcupineManager = try PorcupineManager(
                 accessKey: accessKey,
                 keyword: wakeWord,
                 onDetection: keywordCallback,
                 errorCallback: errorCallback)
-            
+
             try porcupineManager?.start()
             isListening = true
-            
+
         } catch let error as PorcupineInvalidArgumentError {
             showError(message: "\(error.localizedDescription)")
         } catch is PorcupineActivationError {
@@ -85,7 +84,7 @@ class PorcupineViewModel: ObservableObject {
             showError(message: "\(error)")
         }
     }
-    
+
     func stopListening() {
         do {
             try porcupineManager?.stop()
@@ -94,12 +93,12 @@ class PorcupineViewModel: ObservableObject {
             showError(message: "\(error)")
         }
     }
-    
+
     private func showError(message: String) {
         errorMessage = message
         hasError = true
     }
-    
+
     func clearError() {
         errorMessage = nil
         hasError = false

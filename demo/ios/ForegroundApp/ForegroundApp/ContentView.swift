@@ -7,7 +7,6 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-
 import SwiftUI
 
 struct ContentView: View {
@@ -16,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             viewModel.backgroundColor.ignoresSafeArea()
-            
+
             VStack {
                 Picker("Wake Word", selection: $viewModel.selectedWakeWord) {
                     ForEach(viewModel.wakeWordKeys, id: \.self) { word in

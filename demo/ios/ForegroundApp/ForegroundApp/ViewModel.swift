@@ -7,7 +7,6 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-
 import Foundation
 import ios_voice_processor
 import Porcupine
@@ -17,14 +16,14 @@ class ViewModel: ObservableObject {
     @Published var isListening = false
     @Published var wakeWordKeys: [String] = []
     @Published var selectedWakeWord: String = ""
-    @Published var errorMessage: String? = nil
+    @Published var errorMessage: String?
     @Published var showError = false
     @Published var backgroundColor: Color = .white
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Replace with your actual access key
     let language: String = ProcessInfo.processInfo.environment["LANGUAGE"] ?? "en"
 
-    private var porcupineManager: PorcupineManager? = nil
+    private var porcupineManager: PorcupineManager?
 
     func setupWakeWords() {
         if language == "en" {
@@ -90,8 +89,15 @@ class ViewModel: ObservableObject {
                     errorCallback: errorCallback
                 )
             } else {
-                guard let keywordUrl = Bundle.main.url(forResource: "\(selectedWakeWord.lowercased())_ios", withExtension: "ppn", subdirectory: "keywords"),
-                      let modelUrl = Bundle.main.url(forResource: "porcupine_params_\(language)", withExtension: "pv", subdirectory: "models") else {
+                guard let keywordUrl = Bundle.main.url(
+                        forResource: "\(selectedWakeWord.lowercased())_ios",
+                        withExtension: "ppn",
+                        subdirectory: "keywords"),
+                      let modelUrl = Bundle.main.url(
+                        forResource: "porcupine_params_\(language)",
+                        withExtension: "pv",
+                        subdirectory: "models")
+                else {
                     showError("Keyword or model not found")
                     return
                 }

@@ -7,19 +7,18 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-
 import SwiftUI
 import UserNotifications
 import Combine
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     public static let shared = NotificationManager()
-    
+
     private override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
     }
-    
+
     public func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -27,7 +26,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     ) {
         completionHandler()
     }
-    
+
     public func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -39,7 +38,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             completionHandler([.badge, .alert, .sound])
         }
     }
-    
+
     public func requestNotificationAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.badge, .alert, .sound]
@@ -49,19 +48,19 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             }
         }
     }
-    
+
     public func sendNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Porcupine"
         content.body = "Wake word detected"
         content.sound = UNNotificationSound.default
-        
+
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,
             content: content,
             trigger: nil
         )
-        
+
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Notification Error: ", error)
