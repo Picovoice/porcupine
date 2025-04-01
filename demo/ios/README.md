@@ -12,17 +12,17 @@ This demo runs microphone recording in the background and detects the wake word 
 
 **The minimum iOS version required is 15.6.**
 
-To run the background service demo, go to [BackgroundService](./BackgroundService) directory. Then run:
+1) To run the demo, go to [demo/ios/BackgroundService](demo/ios/BackgroundService).
 
-```console
-pod install
-```
+2) Open the `BackgroundService.xcodeproj` in XCode
 
-Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./BackgroundService/BackgroundService/ViewModel.swift) with your `AccessKey`.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./demo/ios/BackgroundService/BackgroundService/ViewModel.swift) with your `AccessKey`.
 
-Open `PorcupineBackgroundServiceDemo.xcworkspace` and run the demo.
+4) Run the demo with a simulator or connected iOS device
 
 Open up the demo and press start. The demo listens for the wake word "Porcupine". You may leave the application but the application must be running in the background to be able to continuously be detecting for the wake word.
+
+The demo uses Swift Package Manager to manage dependencies. The SPM will use `git clone --mirror` to clone the repository and result in a ~5GB download size. Please be patient with the downloading process.
 
 ## ForegroundApp Demo
 
@@ -30,18 +30,16 @@ This demo runs wake word detection while the application is in focus.
 
 To run the foreground application demo:
 
-1) Go to [ForegroundApp](./ForegroundApp) directory. Then run:
+1) Go to [ForegroundApp](./demo/ios/ForegroundApp) directory.
 
-```console
-pod install
-```
+2) Open the `ForegroundApp.xcodeproj` in XCode
 
-2) Open the `PorcupineForegroundAppDemo.xcworkspace` in XCode
-
-3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./ForegroundApp/ForegroundApp/ViewModel.swift) with your `AccessKey`.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./demo/ios/ForegroundApp/ForegroundApp/ViewModel.swift) with your `AccessKey`.
 
 4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `esDemo` -> Spanish Demo, `deDemo` -> German Demo)
 
 5) Run the demo with a simulator or connected iOS device
 
 The demo allows you to select any of the pre-built keywords for detection. Press start and say the selected keyword.
+
+The demo uses Swift Package Manager to manage dependencies. The SPM will use `git clone --mirror` to clone the repository and result in a ~5GB download size. Please be patient with the downloading process.
