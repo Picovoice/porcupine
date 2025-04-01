@@ -65,7 +65,7 @@ jobs:
       - name: Build
         run: xcrun xcodebuild build
           -configuration Debug
-          -workspace BackgroundService.xcodeproj
+          -project BackgroundService.xcodeproj
           -sdk iphoneos
           -scheme BackgroundService
           -derivedDataPath ddp
