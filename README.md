@@ -264,7 +264,7 @@ The ForegroundApp demo runs wake word detection **only** when the application is
 
 To run the foreground application demo:
 
-1) Go to [ForegroundApp](./demo/ios/ForegroundApp) directory.
+1) Go to [demo/ios/ForegroundApp](./demo/ios/ForegroundApp) directory.
 
 2) Open the `ForegroundApp.xcodeproj` in XCode
 

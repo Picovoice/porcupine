@@ -12,11 +12,11 @@ This demo runs microphone recording in the background and detects the wake word 
 
 **The minimum iOS version required is 15.6.**
 
-1) To run the demo, go to [demo/ios/BackgroundService](demo/ios/BackgroundService).
+1) To run the demo, go to [BackgroundService](BackgroundService).
 
 2) Open the `BackgroundService.xcodeproj` in XCode
 
-3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./demo/ios/BackgroundService/BackgroundService/ViewModel.swift) with your `AccessKey`.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./BackgroundService/BackgroundService/ViewModel.swift) with your `AccessKey`.
 
 4) Run the demo with a simulator or connected iOS device
 
@@ -30,11 +30,11 @@ This demo runs wake word detection while the application is in focus.
 
 To run the foreground application demo:
 
-1) Go to [ForegroundApp](./demo/ios/ForegroundApp) directory.
+1) Go to [ForegroundApp](./ForegroundApp) directory.
 
 2) Open the `ForegroundApp.xcodeproj` in XCode
 
-3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./demo/ios/ForegroundApp/ForegroundApp/ViewModel.swift) with your `AccessKey`.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./ForegroundApp/ForegroundApp/ViewModel.swift) with your `AccessKey`.
 
 4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `esDemo` -> Spanish Demo, `deDemo` -> German Demo)
 
