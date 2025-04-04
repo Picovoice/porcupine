@@ -15,9 +15,22 @@
 		5AD8B45B2D9C5BB60077FA19 /* BackgroundService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BackgroundService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5AA868CB2DA0906B00DCBAEC /* Exceptions for "BackgroundService" folder in "BackgroundService" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5AD8B45A2D9C5BB60077FA19 /* BackgroundService */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5AD8B45D2D9C5BB60077FA19 /* BackgroundService */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5AA868CB2DA0906B00DCBAEC /* Exceptions for "BackgroundService" folder in "BackgroundService" target */,
+			);
 			path = BackgroundService;
 			sourceTree = "<group>";
 		};
@@ -267,6 +280,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"BackgroundService/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BackgroundService/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porcupine Demo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -297,6 +311,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"BackgroundService/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BackgroundService/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porcupine Demo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
