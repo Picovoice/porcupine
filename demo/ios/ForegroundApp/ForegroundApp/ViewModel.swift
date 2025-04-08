@@ -20,7 +20,7 @@ class ViewModel: ObservableObject {
     @Published var showError = false
     @Published var backgroundColor: Color = .white
 
-    let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Replace with your actual access key
+    let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let language: String = ProcessInfo.processInfo.environment["LANGUAGE"] ?? "en"
 
     private var porcupineManager: PorcupineManager?
