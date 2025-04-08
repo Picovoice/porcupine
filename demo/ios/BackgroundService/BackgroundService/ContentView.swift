@@ -33,17 +33,20 @@ struct ContentView: View {
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(width: 100, height: 100)
-                        .background(Circle().fill(Color.blue))
+                        .background(
+                            viewModel.errorMessage != nil
+                             ? Color.gray
+                             : Color(red: 55.0/255, green: 125.0/255, blue: 255.0/255)
+                        )
+                        .clipShape(Circle())
                 })
-                .disabled(viewModel.hasError)
+                .disabled(viewModel.errorMessage != nil)
                 .padding(.bottom, 40)
             }
             .padding()
 
-            if viewModel.hasError {
+            if viewModel.errorMessage != nil {
                 VStack {
-                    Spacer()
-
                     Text(viewModel.errorMessage ?? "Unknown error")
                         .padding()
                         .frame(maxWidth: .infinity)

@@ -25,7 +25,8 @@ struct ContentView: View {
                 .pickerStyle(WheelPickerStyle())
                 .disabled(viewModel.isListening)
 
-                if let message = viewModel.errorMessage, viewModel.showError {
+                if let message = viewModel.errorMessage,
+                   viewModel.errorMessage != nil {
                     Text(message)
                         .foregroundColor(.white)
                         .padding()
@@ -38,12 +39,16 @@ struct ContentView: View {
                     Text(viewModel.isListening ? "STOP" : "START")
                         .font(.system(size: 30, weight: .bold))
                         .frame(width: 120, height: 120)
-                        .background(Color(red: 55/255, green: 125/255, blue: 255/255))
+                        .background(
+                            viewModel.errorMessage != nil
+                             ? Color.gray
+                             : Color(red: 55.0/255, green: 125.0/255, blue: 255.0/255)
+                        )
                         .foregroundColor(.white)
                         .clipShape(Circle())
                 }
                 .padding(.top, 30)
-                .disabled(viewModel.showError)
+                .disabled(viewModel.errorMessage != nil)
             }
         }
         .onAppear(perform: viewModel.setupWakeWords)

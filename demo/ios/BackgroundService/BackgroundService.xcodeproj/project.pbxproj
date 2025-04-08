@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,7 +16,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5AA868CB2DA0906B00DCBAEC /* Exceptions for "BackgroundService" folder in "BackgroundService" target */ = {
+		5AA868CB2DA0906B00DCBAEC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -26,14 +26,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5AD8B45D2D9C5BB60077FA19 /* BackgroundService */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				5AA868CB2DA0906B00DCBAEC /* Exceptions for "BackgroundService" folder in "BackgroundService" target */,
-			);
-			path = BackgroundService;
-			sourceTree = "<group>";
-		};
+		5AD8B45D2D9C5BB60077FA19 /* BackgroundService */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5AA868CB2DA0906B00DCBAEC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = BackgroundService; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +101,7 @@
 				};
 			};
 			buildConfigurationList = 5AD8B4562D9C5BB60077FA19 /* Build configuration list for PBXProject "BackgroundService" */;
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -120,7 +114,6 @@
 				5AD8B4722D9C5C910077FA19 /* XCRemoteSwiftPackageReference "porcupine" */,
 				5AD8B4752D9C5C9D0077FA19 /* XCRemoteSwiftPackageReference "SwiftySound" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AD8B45C2D9C5BB60077FA19 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -287,7 +280,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -318,7 +311,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -7,9 +7,9 @@
 //  specific language governing permissions and limitations under the License.
 //
 
+import Combine
 import SwiftUI
 import UserNotifications
-import Combine
 
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     public static let shared = NotificationManager()

@@ -3,8 +3,8 @@
 mkdir -p "${SRCROOT}/keywords/"
 mkdir -p "${SRCROOT}/models/"
 
-rm "${SRCROOT}/ForegroundApp/keywords/"*
-rm "${SRCROOT}/ForegroundApp/models/"*
+rm "${SRCROOT}/keywords/"*
+rm "${SRCROOT}/models/"*
 
 if [ $1 != 'en' ];
 then

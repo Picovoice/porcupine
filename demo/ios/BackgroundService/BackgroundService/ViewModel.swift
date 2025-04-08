@@ -7,16 +7,15 @@
 //  specific language governing permissions and limitations under the License.
 //
 
+import Combine
 import Foundation
 import ios_voice_processor
 import Porcupine
 import SwiftySound
-import Combine
 
 class PorcupineViewModel: ObservableObject {
     @Published var isListening = false
     @Published var errorMessage: String?
-    @Published var hasError = false
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let wakeWord = Porcupine.BuiltInKeyword.porcupine
@@ -96,11 +95,5 @@ class PorcupineViewModel: ObservableObject {
 
     private func showError(message: String) {
         errorMessage = message
-        hasError = true
-    }
-
-    func clearError() {
-        errorMessage = nil
-        hasError = false
     }
 }

@@ -17,7 +17,6 @@ class ViewModel: ObservableObject {
     @Published var wakeWordKeys: [String] = []
     @Published var selectedWakeWord: String = ""
     @Published var errorMessage: String?
-    @Published var showError = false
     @Published var backgroundColor: Color = Color(UIColor.systemBackground)
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
@@ -148,6 +147,5 @@ class ViewModel: ObservableObject {
 
     func showError(_ message: String) {
         errorMessage = message
-        showError = true
     }
 }
