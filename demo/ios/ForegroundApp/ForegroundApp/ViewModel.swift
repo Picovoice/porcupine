@@ -18,7 +18,7 @@ class ViewModel: ObservableObject {
     @Published var selectedWakeWord: String = ""
     @Published var errorMessage: String?
     @Published var showError = false
-    @Published var backgroundColor: Color = .white
+    @Published var backgroundColor: Color = Color(UIColor.systemBackground)
 
     let accessKey = "${YOUR_ACCESS_KEY_HERE}" // Obtained from Picovoice Console (https://console.picovoice.ai)
     let language: String = ProcessInfo.processInfo.environment["LANGUAGE"] ?? "en"
@@ -68,7 +68,7 @@ class ViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.backgroundColor = .orange
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.backgroundColor = .white
+                    self.backgroundColor = Color(UIColor.systemBackground)
                 }
             }
         }
@@ -81,7 +81,11 @@ class ViewModel: ObservableObject {
 
         do {
             if language == "en" {
-                guard let keyword = Porcupine.BuiltInKeyword(rawValue: selectedWakeWord) else { return }
+                guard let keyword = Porcupine.BuiltInKeyword(rawValue: selectedWakeWord)
+                else {
+                    showError("Keyword not found")
+                    return
+                }
                 porcupineManager = try PorcupineManager(
                     accessKey: accessKey,
                     keyword: keyword,
@@ -92,13 +96,18 @@ class ViewModel: ObservableObject {
                 guard let keywordUrl = Bundle.main.url(
                         forResource: "\(selectedWakeWord.lowercased())_ios",
                         withExtension: "ppn",
-                        subdirectory: "keywords"),
-                      let modelUrl = Bundle.main.url(
+                        subdirectory: "keywords")
+                else {
+                    showError("Keyword not found")
+                    return
+                }
+
+                guard let modelUrl = Bundle.main.url(
                         forResource: "porcupine_params_\(language)",
                         withExtension: "pv",
                         subdirectory: "models")
                 else {
-                    showError("Keyword or model not found")
+                    showError("Model not found")
                     return
                 }
 

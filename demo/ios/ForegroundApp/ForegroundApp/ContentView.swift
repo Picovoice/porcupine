@@ -38,11 +38,12 @@ struct ContentView: View {
                     Text(viewModel.isListening ? "STOP" : "START")
                         .font(.system(size: 30, weight: .bold))
                         .frame(width: 120, height: 120)
-                        .background(Color.blue)
+                        .background(Color(red: 55/255, green: 125/255, blue: 255/255))
                         .foregroundColor(.white)
                         .clipShape(Circle())
                 }
                 .padding(.top, 30)
+                .disabled(viewModel.showError)
             }
         }
         .onAppear(perform: viewModel.setupWakeWords)

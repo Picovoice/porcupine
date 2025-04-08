@@ -3,23 +3,25 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A210BF92DA5CB4D00FC64D6 /* pre-build.sh in Resources */ = {isa = PBXBuildFile; fileRef = 5A210BF82DA5CB4D00FC64D6 /* pre-build.sh */; };
+		5A210C132DA5CEA100FC64D6 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C112DA5CEA100FC64D6 /* models */; };
+		5A210C142DA5CEA100FC64D6 /* keywords in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C122DA5CEA100FC64D6 /* keywords */; };
 		5AD8B4412D95C6C60077FA19 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD8B4402D95C6C60077FA19 /* Porcupine */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A210BF82DA5CB4D00FC64D6 /* pre-build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "pre-build.sh"; sourceTree = "<group>"; };
+		5A210C112DA5CEA100FC64D6 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
+		5A210C122DA5CEA100FC64D6 /* keywords */ = {isa = PBXFileReference; lastKnownFileType = folder; path = keywords; sourceTree = "<group>"; };
 		5AD8B4282D95C6340077FA19 /* ForegroundApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ForegroundApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5AD8B42A2D95C6340077FA19 /* ForegroundApp */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ForegroundApp;
-			sourceTree = "<group>";
-		};
+		5AD8B42A2D95C6340077FA19 /* ForegroundApp */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ForegroundApp; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +39,9 @@
 		5AD8B41F2D95C6340077FA19 = {
 			isa = PBXGroup;
 			children = (
+				5A210C122DA5CEA100FC64D6 /* keywords */,
+				5A210C112DA5CEA100FC64D6 /* models */,
+				5A210BF82DA5CB4D00FC64D6 /* pre-build.sh */,
 				5AD8B42A2D95C6340077FA19 /* ForegroundApp */,
 				5AD8B4292D95C6340077FA19 /* Products */,
 			);
@@ -85,6 +90,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
+				ORGANIZATIONNAME = Picovoice;
 				TargetAttributes = {
 					5AD8B4272D95C6340077FA19 = {
 						CreatedOnToolsVersion = 16.2;
@@ -92,6 +98,7 @@
 				};
 			};
 			buildConfigurationList = 5AD8B4232D95C6340077FA19 /* Build configuration list for PBXProject "ForegroundApp" */;
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -103,7 +110,6 @@
 			packageReferences = (
 				5AD8B43F2D95C6C60077FA19 /* XCRemoteSwiftPackageReference "porcupine" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AD8B4292D95C6340077FA19 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -118,6 +124,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A210C132DA5CEA100FC64D6 /* models in Resources */,
+				5A210C142DA5CEA100FC64D6 /* keywords in Resources */,
+				5A210BF92DA5CB4D00FC64D6 /* pre-build.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,7 +180,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -234,7 +243,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -269,7 +278,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -299,7 +308,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

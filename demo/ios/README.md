@@ -10,7 +10,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 This demo runs microphone recording in the background and detects the wake word while the application is **not** in focus. The wake word will be detected as long as the application remains running in the background.
 
-**The minimum iOS version required is 15.6.**
+**The minimum iOS version required is 14.**
 
 1) To run the demo, go to [BackgroundService](BackgroundService).
 
@@ -21,8 +21,6 @@ This demo runs microphone recording in the background and detects the wake word 
 4) Run the demo with a simulator or connected iOS device
 
 Open up the demo and press start. The demo listens for the wake word "Porcupine". You may leave the application but the application must be running in the background to be able to continuously be detecting for the wake word.
-
-The demo uses Swift Package Manager to manage dependencies. The SPM will use `git clone --mirror` to clone the repository and result in a ~5GB download size. Please be patient with the downloading process.
 
 ## ForegroundApp Demo
 
@@ -41,5 +39,3 @@ To run the foreground application demo:
 5) Run the demo with a simulator or connected iOS device
 
 The demo allows you to select any of the pre-built keywords for detection. Press start and say the selected keyword.
-
-The demo uses Swift Package Manager to manage dependencies. The SPM will use `git clone --mirror` to clone the repository and result in a ~5GB download size. Please be patient with the downloading process.
