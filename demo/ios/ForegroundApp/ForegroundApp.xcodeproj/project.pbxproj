@@ -3,13 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		5A210BF92DA5CB4D00FC64D6 /* pre-build.sh in Resources */ = {isa = PBXBuildFile; fileRef = 5A210BF82DA5CB4D00FC64D6 /* pre-build.sh */; };
 		5A210C132DA5CEA100FC64D6 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C112DA5CEA100FC64D6 /* models */; };
 		5A210C142DA5CEA100FC64D6 /* keywords in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C122DA5CEA100FC64D6 /* keywords */; };
+		5A210C712DA6E7FF00FC64D6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C6D2DA6E7FF00FC64D6 /* ContentView.swift */; };
+		5A210C722DA6E7FF00FC64D6 /* ForegroundAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C6E2DA6E7FF00FC64D6 /* ForegroundAppApp.swift */; };
+		5A210C732DA6E7FF00FC64D6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C6F2DA6E7FF00FC64D6 /* ViewModel.swift */; };
+		5A210C742DA6E7FF00FC64D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C6A2DA6E7FF00FC64D6 /* Preview Assets.xcassets */; };
+		5A210C752DA6E7FF00FC64D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C6C2DA6E7FF00FC64D6 /* Assets.xcassets */; };
 		5AD8B4412D95C6C60077FA19 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD8B4402D95C6C60077FA19 /* Porcupine */; };
 /* End PBXBuildFile section */
 
@@ -17,12 +22,13 @@
 		5A210BF82DA5CB4D00FC64D6 /* pre-build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "pre-build.sh"; sourceTree = "<group>"; };
 		5A210C112DA5CEA100FC64D6 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
 		5A210C122DA5CEA100FC64D6 /* keywords */ = {isa = PBXFileReference; lastKnownFileType = folder; path = keywords; sourceTree = "<group>"; };
+		5A210C6A2DA6E7FF00FC64D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5A210C6C2DA6E7FF00FC64D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5A210C6D2DA6E7FF00FC64D6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5A210C6E2DA6E7FF00FC64D6 /* ForegroundAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundAppApp.swift; sourceTree = "<group>"; };
+		5A210C6F2DA6E7FF00FC64D6 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5AD8B4282D95C6340077FA19 /* ForegroundApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ForegroundApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		5AD8B42A2D95C6340077FA19 /* ForegroundApp */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ForegroundApp; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5AD8B4252D95C6340077FA19 /* Frameworks */ = {
@@ -36,13 +42,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A210C6B2DA6E7FF00FC64D6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				5A210C6A2DA6E7FF00FC64D6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5A210C702DA6E7FF00FC64D6 /* ForegroundApp */ = {
+			isa = PBXGroup;
+			children = (
+				5A210C6B2DA6E7FF00FC64D6 /* Preview Content */,
+				5A210C6C2DA6E7FF00FC64D6 /* Assets.xcassets */,
+				5A210C6D2DA6E7FF00FC64D6 /* ContentView.swift */,
+				5A210C6E2DA6E7FF00FC64D6 /* ForegroundAppApp.swift */,
+				5A210C6F2DA6E7FF00FC64D6 /* ViewModel.swift */,
+			);
+			path = ForegroundApp;
+			sourceTree = "<group>";
+		};
 		5AD8B41F2D95C6340077FA19 = {
 			isa = PBXGroup;
 			children = (
 				5A210C122DA5CEA100FC64D6 /* keywords */,
 				5A210C112DA5CEA100FC64D6 /* models */,
 				5A210BF82DA5CB4D00FC64D6 /* pre-build.sh */,
-				5AD8B42A2D95C6340077FA19 /* ForegroundApp */,
+				5A210C702DA6E7FF00FC64D6 /* ForegroundApp */,
 				5AD8B4292D95C6340077FA19 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,9 +96,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				5AD8B42A2D95C6340077FA19 /* ForegroundApp */,
-			);
 			name = ForegroundApp;
 			packageProductDependencies = (
 				5AD8B4402D95C6C60077FA19 /* Porcupine */,
@@ -87,7 +110,6 @@
 		5AD8B4202D95C6340077FA19 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				ORGANIZATIONNAME = Picovoice;
@@ -98,7 +120,7 @@
 				};
 			};
 			buildConfigurationList = 5AD8B4232D95C6340077FA19 /* Build configuration list for PBXProject "ForegroundApp" */;
-			compatibilityVersion = "Xcode 10.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -126,6 +148,8 @@
 			files = (
 				5A210C132DA5CEA100FC64D6 /* models in Resources */,
 				5A210C142DA5CEA100FC64D6 /* keywords in Resources */,
+				5A210C742DA6E7FF00FC64D6 /* Preview Assets.xcassets in Resources */,
+				5A210C752DA6E7FF00FC64D6 /* Assets.xcassets in Resources */,
 				5A210BF92DA5CB4D00FC64D6 /* pre-build.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,6 +161,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A210C712DA6E7FF00FC64D6 /* ContentView.swift in Sources */,
+				5A210C722DA6E7FF00FC64D6 /* ForegroundAppApp.swift in Sources */,
+				5A210C732DA6E7FF00FC64D6 /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,31 +3,30 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A210C632DA6E77C00FC64D6 /* BackgroundServiceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C5D2DA6E77C00FC64D6 /* BackgroundServiceApp.swift */; };
+		5A210C642DA6E77C00FC64D6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C5E2DA6E77C00FC64D6 /* ContentView.swift */; };
+		5A210C652DA6E77C00FC64D6 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C602DA6E77C00FC64D6 /* NotificationManager.swift */; };
+		5A210C662DA6E77C00FC64D6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C612DA6E77C00FC64D6 /* ViewModel.swift */; };
+		5A210C672DA6E77C00FC64D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C5A2DA6E77C00FC64D6 /* Preview Assets.xcassets */; };
+		5A210C682DA6E77C00FC64D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C5C2DA6E77C00FC64D6 /* Assets.xcassets */; };
 		5AD8B4742D9C5C910077FA19 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD8B4732D9C5C910077FA19 /* Porcupine */; };
 		5AD8B4772D9C5C9D0077FA19 /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD8B4762D9C5C9D0077FA19 /* SwiftySound */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A210C5A2DA6E77C00FC64D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5A210C5C2DA6E77C00FC64D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5A210C5D2DA6E77C00FC64D6 /* BackgroundServiceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundServiceApp.swift; sourceTree = "<group>"; };
+		5A210C5E2DA6E77C00FC64D6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5A210C5F2DA6E77C00FC64D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5A210C602DA6E77C00FC64D6 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		5A210C612DA6E77C00FC64D6 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5AD8B45B2D9C5BB60077FA19 /* BackgroundService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BackgroundService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5AA868CB2DA0906B00DCBAEC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 5AD8B45A2D9C5BB60077FA19 /* BackgroundService */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		5AD8B45D2D9C5BB60077FA19 /* BackgroundService */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5AA868CB2DA0906B00DCBAEC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = BackgroundService; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5AD8B4582D9C5BB60077FA19 /* Frameworks */ = {
@@ -42,10 +41,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A210C5B2DA6E77C00FC64D6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				5A210C5A2DA6E77C00FC64D6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5A210C622DA6E77C00FC64D6 /* BackgroundService */ = {
+			isa = PBXGroup;
+			children = (
+				5A210C5B2DA6E77C00FC64D6 /* Preview Content */,
+				5A210C5C2DA6E77C00FC64D6 /* Assets.xcassets */,
+				5A210C5D2DA6E77C00FC64D6 /* BackgroundServiceApp.swift */,
+				5A210C5E2DA6E77C00FC64D6 /* ContentView.swift */,
+				5A210C5F2DA6E77C00FC64D6 /* Info.plist */,
+				5A210C602DA6E77C00FC64D6 /* NotificationManager.swift */,
+				5A210C612DA6E77C00FC64D6 /* ViewModel.swift */,
+			);
+			path = BackgroundService;
+			sourceTree = "<group>";
+		};
 		5AD8B4522D9C5BB60077FA19 = {
 			isa = PBXGroup;
 			children = (
-				5AD8B45D2D9C5BB60077FA19 /* BackgroundService */,
+				5A210C622DA6E77C00FC64D6 /* BackgroundService */,
 				5AD8B45C2D9C5BB60077FA19 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,9 +94,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				5AD8B45D2D9C5BB60077FA19 /* BackgroundService */,
-			);
 			name = BackgroundService;
 			packageProductDependencies = (
 				5AD8B4732D9C5C910077FA19 /* Porcupine */,
@@ -91,7 +109,6 @@
 		5AD8B4532D9C5BB60077FA19 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				ORGANIZATIONNAME = Picovoice;
@@ -102,7 +119,7 @@
 				};
 			};
 			buildConfigurationList = 5AD8B4562D9C5BB60077FA19 /* Build configuration list for PBXProject "BackgroundService" */;
-			compatibilityVersion = "Xcode 10.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -129,6 +146,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A210C672DA6E77C00FC64D6 /* Preview Assets.xcassets in Resources */,
+				5A210C682DA6E77C00FC64D6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +158,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A210C632DA6E77C00FC64D6 /* BackgroundServiceApp.swift in Sources */,
+				5A210C642DA6E77C00FC64D6 /* ContentView.swift in Sources */,
+				5A210C652DA6E77C00FC64D6 /* NotificationManager.swift in Sources */,
+				5A210C662DA6E77C00FC64D6 /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
