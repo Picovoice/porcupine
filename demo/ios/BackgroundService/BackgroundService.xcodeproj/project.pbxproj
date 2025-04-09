@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -94,6 +94,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
+				ORGANIZATIONNAME = Picovoice;
 				TargetAttributes = {
 					5AD8B45A2D9C5BB60077FA19 = {
 						CreatedOnToolsVersion = 16.2;
@@ -101,7 +102,7 @@
 				};
 			};
 			buildConfigurationList = 5AD8B4562D9C5BB60077FA19 /* Build configuration list for PBXProject "BackgroundService" */;
-			compatibilityVersion = "Xcode 12.0";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
