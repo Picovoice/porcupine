@@ -27,7 +27,7 @@ jobs:
       - name: Setup XCode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: 12
+          xcode-version: 14.1
 
       - name: Build English
         run: xcrun xcodebuild build
@@ -60,7 +60,7 @@ jobs:
       - name: Setup XCode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: 12
+          xcode-version: 14.1
 
       - name: Build
         run: xcrun xcodebuild build
