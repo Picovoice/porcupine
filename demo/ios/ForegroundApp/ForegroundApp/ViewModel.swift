@@ -97,7 +97,7 @@ class ViewModel: ObservableObject {
                         withExtension: "ppn",
                         subdirectory: "keywords")
                 else {
-                    showError("Keyword not found")
+                    showError("Keyword file keywords/\(selectedWakeWord.lowercased())_ios.ppn not found")
                     return
                 }
 
@@ -106,7 +106,7 @@ class ViewModel: ObservableObject {
                         withExtension: "pv",
                         subdirectory: "models")
                 else {
-                    showError("Model not found")
+                    showError("Model file models/porcupine_params_\(language).pv not found")
                     return
                 }
 
