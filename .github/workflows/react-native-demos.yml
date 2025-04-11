@@ -64,7 +64,7 @@ jobs:
       run: yarn ios-install
 
     - name: Build bundle
-      run: yarn ios-bundle nl
+      run: yarn ios-bundle en
 
     - name: Build
       run: xcrun xcodebuild build

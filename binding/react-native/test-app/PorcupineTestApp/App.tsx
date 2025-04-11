@@ -11,7 +11,6 @@
 
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
   Button,
   ScrollView,
   StatusBar,
@@ -41,11 +40,23 @@ function printResults(results: Result[]) {
   });
 }
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1,
   };
+
+  /*
+   * To keep the template simple and small we're adding padding to prevent view
+   * from rendering under the System UI.
+   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
+   * https://github.com/AppAndFlow/react-native-safe-area-context
+   *
+   * You can read more about it here:
+   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
+   */
+  const safePadding = '5%';
 
   const [running, setRunning] = useState(false);
   const [results, setResults] = useState([]);
@@ -58,7 +69,7 @@ function App(): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <View style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
@@ -79,7 +90,7 @@ function App(): JSX.Element {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

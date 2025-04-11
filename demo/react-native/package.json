@@ -10,7 +10,7 @@
     "android-install": "yarn",
     "android-bundle": "node scripts/run_demo.js bundle --dev false --platform android --entry-file index.js --bundle-output ./android/porcupine-rn-demo-app/src/main/assets/app.jsbundle --assets-dest ./android/porcupine-rn-demo-app/src/main/res/",
     "ios-run": "node scripts/run_demo.js run-ios",
-    "ios-link": "cd ios && pod install && cd ..",
+    "ios-link": "sed -i '' 's|https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2|https://archives.boost.io/release/1.76.0/source/boost_1_76_0.tar.bz2|g' node_modules/react-native/third-party-podspecs/boost.podspec && cd ios && pod install && cd ..",
     "ios-install": "yarn && yarn ios-link",
     "ios-bundle": "node scripts/run_demo.js bundle --dev false --platform ios --entry-file index.js --bundle-output ios/app.jsbundle"
   },
