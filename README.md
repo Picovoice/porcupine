@@ -254,29 +254,23 @@ The ForegroundApp demo runs wake word detection **only** when the application is
 
 #### BackgroundService Demo
 
-To run the demo, go to [demo/ios/BackgroundService](demo/ios/BackgroundService) and run:
+1) To run the demo, go to [demo/ios/BackgroundService](demo/ios/BackgroundService).
 
-```console
-pod install
-```
+2) Open the `BackgroundService.xcodeproj` in XCode
 
-Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](demo/ios/BackgroundService/PorcupineBackgroundServiceDemo/ViewController.swift) with your `AccessKey`.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./demo/ios/BackgroundService/BackgroundService/ViewModel.swift) with your `AccessKey`.
 
-Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PorcupineBackgroundServiceDemo.xcworkspace` and run the application.
+4) Run the demo with a simulator or connected iOS device
 
 #### ForegroundApp Demo
 
 To run the foreground application demo:
 
-1) Go to [ForegroundApp](./demo/ios/ForegroundApp) directory. Then run:
+1) Go to [demo/ios/ForegroundApp](./demo/ios/ForegroundApp) directory.
 
-```console
-pod install
-```
+2) Open the `ForegroundApp.xcodeproj` in XCode
 
-2) Open the `PorcupineForegroundAppDemo.xcworkspace` in XCode
-
-3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewController.swift](./demo/ios/ForegroundApp/PorcupineForegroundAppDemo/ViewController.swift) with your `AccessKey`.
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ViewModel.swift](./demo/ios/ForegroundApp/ForegroundApp/ViewModel.swift) with your `AccessKey`.
 
 4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `esDemo` -> Spanish Demo, `deDemo` -> German Demo)
 
