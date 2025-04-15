@@ -84,6 +84,7 @@ jarvis
 javadoc
 javax
 jetson
+jsbundle
 keompyuteo
 konnichiwa
 konpyūtā
@@ -167,6 +168,7 @@ silenzio
 siri
 slist
 snowboy
+soloader
 soundfile
 spidev
 SRCROOT
