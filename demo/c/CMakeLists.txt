@@ -3,7 +3,7 @@ project(porcupine_demo_c)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_BUILD_TYPE Release)
-add_subdirectory(pvrecorder)
+add_subdirectory(pvrecorder/project)
 
 set(COMMON_LIBS dl)
 set(MIC_LIBS pthread m)
@@ -14,7 +14,7 @@ add_executable(
         porcupine_demo_mic
         porcupine_demo_mic.c
         $<TARGET_OBJECTS:pv_recorder_object>)
-target_include_directories(porcupine_demo_mic PRIVATE pvrecorder/include)
+target_include_directories(porcupine_demo_mic PRIVATE pvrecorder/project/include)
 
 add_executable(
         porcupine_demo_file
