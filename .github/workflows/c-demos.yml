@@ -49,6 +49,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            pv_recorder_platform: "linux"
+          - os: windows-latest
+            pv_recorder_platform: "windows-amd64"
+          - os: macos-latest
+            pv_recorder_platform: "mac-arm64"
 
     steps:
     - uses: actions/checkout@v3
@@ -56,7 +63,7 @@ jobs:
         submodules: recursive
 
     - name: Create build directory
-      run: cmake -B ./build
+      run: cmake -B ./build -DPV_RECORDER_PLATFORM="${{ matrix.pv_recorder_platform }}"
 
     - name: Build micdemo
       run: cmake --build ./build --target porcupine_demo_mic
@@ -66,11 +73,26 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64]
-        make_file: ["Unix Makefiles"]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
         include:
-        - machine: pv-windows-arm64
-          make_file: "MinGW Makefiles"
+          - machine: rpi3-32
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi3"
+          - machine: rpi3-64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi3-64"
+          - machine: rpi4-32
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi4"
+          - machine: rpi4-64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi4-64"
+          - machine: rpi5-64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi5-64"
+          - machine: pv-windows-arm64
+            make_file: "MinGW Makefiles"
+            pv_recorder_platform: "windows-arm64"
 
     steps:
     - uses: actions/checkout@v3
@@ -78,7 +100,7 @@ jobs:
         submodules: recursive
 
     - name: Create build directory
-      run: cmake -G "${{ matrix.make_file }}" -B ./build
+      run: cmake -G "${{ matrix.make_file }}" -B ./build -DPV_RECORDER_PLATFORM="${{ matrix.pv_recorder_platform }}"
 
     - name: Build micdemo
       run: cmake --build ./build --target porcupine_demo_mic
@@ -93,12 +115,15 @@ jobs:
         - os: ubuntu-latest
           platform: linux
           arch: x86_64
+          pv_recorder_platform: "linux"
         - os: windows-latest
           platform: windows
           arch: amd64
+          pv_recorder_platform: "windows-amd64"
         - os: macos-latest
           platform: mac
           arch: arm64
+          pv_recorder_platform: "mac-arm64"
 
     steps:
     - uses: actions/checkout@v3
@@ -111,7 +136,7 @@ jobs:
         python-version: '3.10'
 
     - name: Create build directory
-      run: cmake -B ./build
+      run: cmake -B ./build -DPV_RECORDER_PLATFORM="${{ matrix.pv_recorder_platform }}"
 
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file
@@ -127,28 +152,38 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64]
-        make_file: ["Unix Makefiles"]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
         include:
         - machine: rpi3-32
           platform: raspberry-pi
           arch: cortex-a53
+          make_file: "Unix Makefiles"
+          pv_recorder_platform: "raspberry-pi3"
         - machine: rpi3-64
           platform: raspberry-pi
           arch: cortex-a53-aarch64
+          make_file: "Unix Makefiles"
+          pv_recorder_platform: "raspberry-pi3-64"
         - machine: rpi4-32
           platform: raspberry-pi
           arch: cortex-a72
+          make_file: "Unix Makefiles"
+          pv_recorder_platform: "raspberry-pi4"
         - machine: rpi4-64
           platform: raspberry-pi
           arch: cortex-a72-aarch64
+          make_file: "Unix Makefiles"
+          pv_recorder_platform: "raspberry-pi4-64"
         - machine: rpi5-64
           platform: raspberry-pi
           arch: cortex-a76-aarch64
+          make_file: "Unix Makefiles"
+          pv_recorder_platform: "raspberry-pi5-64"
         - machine: pv-windows-arm64
           platform: windows
           arch: arm64
           make_file: "MinGW Makefiles"
+          pv_recorder_platform: "windows-arm64"
 
     steps:
     - uses: actions/checkout@v3
@@ -156,7 +191,7 @@ jobs:
         submodules: recursive
 
     - name: Create build directory
-      run: cmake -G "${{ matrix.make_file }}" -B ./build
+      run: cmake -G "${{ matrix.make_file }}" -B ./build -DPV_RECORDER_PLATFORM="${{ matrix.pv_recorder_platform }}"
 
     - name: Build filedemo
       run: cmake --build ./build --target porcupine_demo_file

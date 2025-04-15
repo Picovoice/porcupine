@@ -17,14 +17,20 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 ## Build Linux/MacOS
 
 ```console
-cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_mic
+cmake -S demo/c/. -B demo/c/build -DPV_RECORDER_PLATFORM={PV_RECORDER_PLATFORM}
+cmake --build demo/c/build --target porcupine_demo_mic
 ```
+
+The {PV_RECORDER_PLATFORM} variable will set the compilation flags for the given platform. Exclude this variable to get a list of possible values.
 
 ## Build Windows
 
 ```console
-cmake -S demo/c/. -B demo/c/build -G "MinGW Makefiles" && cmake --build demo/c/build --target porcupine_demo_mic
+cmake -S demo/c/. -B demo/c/build -DPV_RECORDER_PLATFORM={PV_RECORDER_PLATFORM} -G "MinGW Makefiles"
+cmake --build demo/c/build --target porcupine_demo_mic
 ```
+
+The {PV_RECORDER_PLATFORM} variable will set the compilation flags for the given platform. Exclude this variable to get a list of possible values.
 
 ## Run
 
@@ -116,8 +122,11 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 ## Build
 
 ```console
-cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target porcupine_demo_file
+cmake -S demo/c/. -B demo/c/build -DPV_RECORDER_PLATFORM={PV_RECORDER_PLATFORM}
+cmake --build demo/c/build --target porcupine_demo_file
 ```
+
+The {PV_RECORDER_PLATFORM} variable will set the compilation flags for the given platform. Exclude this variable to get a list of possible values.
 
 ## Run
 
