@@ -52,8 +52,8 @@ jobs:
 
     - name: Inject Android keystore variables
       run: |
-        echo storePassword=${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}} >> local.properties
-        echo keyPassword=${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}} >> local.properties
+        echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyPassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
         echo keyAlias=picovoice >> local.properties
         echo storeFile=../picovoice.jks >> local.properties
 
