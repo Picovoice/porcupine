@@ -61,7 +61,7 @@ jobs:
       run: echo "${{secrets.ANDROID_RELEASE_KEYSTORE_FILE_B64}}" | base64 -d > picovoice.jks
 
     - name: Build
-      run: gradle assembleRelease
+      run: ./gradlew assembleRelease
 
     - name: Upload to Google Play
       run: fastlane supply --json_key ./service-account.json --package_name ai.picovoice.porcupine.demo.en --aab porcupine-activity-demo-app/build/outputs/bundle/enRelease/porcupine-activity-demo-app-en-release.aab --track internal --skip_upload_metadata --skip_upload_images --skip_upload_screenshots --release_status draft
