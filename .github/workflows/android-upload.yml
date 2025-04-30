@@ -36,7 +36,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Set up service json
-      run: echo -E ${{secrets.GOOGLE_PLAY_SERVICE_JSON}} > ./service-account.json
+      run: echo -E "${{secrets.GOOGLE_PLAY_SERVICE_JSON}}" > ./service-account.json
 
     - name: Get version code
       run: |
