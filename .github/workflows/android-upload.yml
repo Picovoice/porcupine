@@ -21,7 +21,7 @@ on:
 
 jobs:
   build-activity-demo:
-    runs-on: ubuntu-latest
+    runs-on: linux-android
     defaults:
       run:
         working-directory: demo/android/Activity
@@ -36,7 +36,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Set up service json
-      run: echo ${{secrets.GOOGLE_PLAY_SERVICE_JSON}} > service-account.json
+      run: echo ${{secrets.GOOGLE_PLAY_SERVICE_JSON}} > ./service-account.json
 
     - name: Get version code
       run: |
