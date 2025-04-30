@@ -36,9 +36,9 @@ jobs:
         distribution: 'temurin'
 
     - name: Set up service json
-      run: echo "${{secrets.GOOGLE_PLAY_SERVICE_JSON}}" > service-account.json
+      run: echo ${{secrets.GOOGLE_PLAY_SERVICE_JSON}} > service-account.json
 
-    - name: Sed version code
+    - name: Get version code
       run: |
         VC=`fastlane run google_play_track_version_codes \
           json_key:"./service-account.json" \
@@ -52,8 +52,8 @@ jobs:
 
     - name: Inject Android keystore variables
       run: |
-        echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
-        echo keyPassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo storePassword=${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}} >> local.properties
+        echo keyPassword=${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}} >> local.properties
         echo keyAlias=picovoice >> local.properties
         echo storeFile=../picovoice.jks >> local.properties
 
