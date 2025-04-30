@@ -20,7 +20,7 @@ on:
       - '!binding/android/README.md'
 
 jobs:
-  build-activity-demo:
+  upload-activity-demo:
     runs-on: ubuntu-latest
     defaults:
       run:
