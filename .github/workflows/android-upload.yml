@@ -48,7 +48,7 @@ jobs:
         | awk '{print $1+1}'`
 
     - name: Override version code
-      run: sed -i "s/versionCode [0-9]*/versionCode $VC/g" porcupine-activity-demo/build.gradle
+      run: sed -i "s/versionCode [0-9]*/versionCode $VC/g" porcupine-activity-demo-app/build.gradle
 
     - name: Inject Android keystore variables
       run: |
