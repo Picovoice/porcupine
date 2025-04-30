@@ -38,7 +38,7 @@ jobs:
     - name: Set up service json
       run: echo ${{secrets.GOOGLE_PLAY_SERVICE_JSON}} | base64 -d > ./service-account.json
 
-    - name: Get version code
+    - name: Override version code
       run: |
         VC=`fastlane run google_play_track_version_codes \
           json_key:"./service-account.json" \
@@ -46,9 +46,7 @@ jobs:
           track:"internal" \
         | grep -oP '(?<=Result: \[)\d+(?=\])' \
         | awk '{print $1+1}'`
-
-    - name: Override version code
-      run: sed -i "s/versionCode [0-9]*/versionCode $VC/g" porcupine-activity-demo-app/build.gradle
+        sed -i "s/versionCode [0-9]*/versionCode $VC/g" porcupine-activity-demo-app/build.gradle
 
     - name: Inject Android keystore variables
       run: |
