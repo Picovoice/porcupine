@@ -39,7 +39,13 @@ jobs:
       run: echo "${{secrets.GOOGLE_PLAY_SERVICE_JSON}}" > service-account.json
 
     - name: Sed version code
-      run: VC=`fastlane run google_play_track_version_codes json_key:"./service-account.json" package_name:"ai.picovoice.porcupine.demo.en" track:"internal" | grep -oP '(?<=Result: \[)\d+(?=\])' | awk '{print $1+1}'`
+      run: |
+        VC=`fastlane run google_play_track_version_codes \
+          json_key:"./service-account.json" \
+          package_name:"ai.picovoice.porcupine.demo.en" \
+          track:"internal" \
+        | grep -oP '(?<=Result: \[)\d+(?=\])' \
+        | awk '{print $1+1}'`
 
     - name: Override version code
       run: sed -i "s/versionCode [0-9]*/versionCode $VC/g" porcupine-activity-demo/build.gradle
