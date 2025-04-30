@@ -21,7 +21,7 @@ on:
 
 jobs:
   build-activity-demo:
-    runs-on: linux-android
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: demo/android/Activity
