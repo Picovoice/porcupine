@@ -6,18 +6,12 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/android-upload.yml'
-      - 'demo/android/Activity/**'
-      - 'binding/android/**'
-      - '!demo/android/Activity/README.md'
-      - '!binding/android/README.md'
+      - 'demo/android/Activity/**/build.gradle'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/android-upload.yml'
-      - 'demo/android/Activity/**'
-      - 'binding/android/**'
-      - '!demo/android/Activity/README.md'
-      - '!binding/android/README.md'
+      - 'demo/android/Activity/**/build.gradle'
 
 jobs:
   upload-activity-demo:
