@@ -1,0 +1,61 @@
+name: Android Upload
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - '.github/workflows/android-upload.yml'
+      - 'demo/android/Activity/**/build.gradle'
+  pull_request:
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    paths:
+      - '.github/workflows/android-upload.yml'
+      - 'demo/android/Activity/**/build.gradle'
+
+jobs:
+  upload-activity-demo:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/android/Activity
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+
+    - name: Set up service json
+      run: echo ${{secrets.GOOGLE_PLAY_SERVICE_JSON}} | base64 -d > ./service-account.json
+
+    - name: Override version code
+      run: |
+        VC=`fastlane run google_play_track_version_codes \
+          json_key:"./service-account.json" \
+          package_name:"ai.picovoice.porcupine.demo.en" \
+          track:"internal" \
+        | grep -oP '(?<=Result: \[)\d+(?=\])' \
+        | awk '{print $1+1}'`
+        sed -i "s/versionCode [0-9]*/versionCode $VC/g" porcupine-activity-demo-app/build.gradle
+
+    - name: Inject Android keystore variables
+      run: |
+        echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyPassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties
+        echo keyAlias=picovoice >> local.properties
+        echo storeFile=../picovoice.jks >> local.properties
+
+    - name: Setup Android keystore file
+      run: echo "${{secrets.ANDROID_RELEASE_KEYSTORE_FILE_B64}}" | base64 -d > picovoice.jks
+
+    - name: Build
+      run: ./gradlew bundleRelease
+
+    - name: Upload to Google Play
+      run: fastlane supply --json_key ./service-account.json --package_name ai.picovoice.porcupine.demo.en --aab porcupine-activity-demo-app/build/outputs/bundle/enRelease/porcupine-activity-demo-app-en-release.aab --track internal --skip_upload_metadata --skip_upload_images --skip_upload_screenshots --release_status draft
+
+
