@@ -27,7 +27,7 @@
 			},
 			{
 				"language": "zh",
-				"wakeword": "è±ªçŒª"
+				"wakeword": "豪猪"
 			},
 			{
 				"language": "pt",
@@ -71,7 +71,7 @@
 			},
 			{
 				"language": "zh",
-				"wakewords": ["è±ªçŒª", "å’–å•¡", "ä½ å¥½", "æ°´é¥º"],
+				"wakewords": ["豪猪", "咖啡", "你好", "水饺"],
 				"groundTruth": [0, 1, 2, 3]
 			},
 			{
