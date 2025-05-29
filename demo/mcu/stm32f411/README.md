@@ -10,8 +10,9 @@ This package contains a demo project for the STM32F411 Discovery kit using Porcu
 4. Italian
 5. Japanese
 6. Korean
-7. Portuguese
-8. Spanish
+7. Mandarin
+8. Portuguese
+9. Spanish
 
 - Support for additional languages is available for commercial customers on a case-by-case basis.
 
@@ -51,7 +52,7 @@ Then, to compile and run the demo project on a STM32f411 discovery board, perfor
 5. Replace `ACCESS_KEY` in both `main.c` and `main_multi.c` with your AccessKey obtained
    from [Picovoice Console](https://console.picovoice.ai/)
 6. Click `Project` > `Build Project`
-7. Connect the board to the computer and press `Run` > `Debug`
+7. Connect the board to the computer and press `Run` > `Run`
 8. There are two build configurations in this project: Single wake word demo, and Multiple wake words demo; choose one
    of them in the `Qualifier` window and press `ok`
 <!-- markdown-link-check-disable -->

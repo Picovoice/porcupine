@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2022 Picovoice Inc.
+# Copyright 2020-2025 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -14,7 +14,7 @@ import struct
 
 HEADER = """
 /*
-    Copyright 2020-2023 Picovoice Inc.
+    Copyright 2020-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -45,6 +45,7 @@ LANGUAGE_CODE_TO_NAME = {
     "ja": "japanese",
     "ko": "korean",
     "pt": "portuguese",
+    "zh": "mandarin",
 }
 
 
@@ -124,6 +125,7 @@ if __name__ == "__main__":
         "ja": ("こんにちは コンピューター",),
         "ko": ("안녕 컴퓨터",),
         "pt": ("olá computador",),
+        "zh": ("你好电脑",),
     }
     include_folders = [
         "stm32f411/stm32f411e-disco/Inc/",

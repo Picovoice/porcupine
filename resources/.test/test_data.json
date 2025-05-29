@@ -26,6 +26,10 @@
 				"wakeword": "빅스비"
 			},
 			{
+				"language": "zh",
+				"wakeword": "豪猪"
+			},
+			{
 				"language": "pt",
 				"wakeword": "fenômeno"
 			},
@@ -64,6 +68,11 @@
 				"language": "ko",
 				"wakewords": ["아이스크림", "빅스비", "코뿔소"],
 				"groundTruth": [1, 2, 0]
+			},
+			{
+				"language": "zh",
+				"wakewords": ["豪猪", "咖啡", "你好", "水饺"],
+				"groundTruth": [0, 1, 2, 3]
 			},
 			{
 				"language": "pt",
