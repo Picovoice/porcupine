@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.io.IOException;
 
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
@@ -67,9 +68,9 @@ public class StandardTests extends BaseTest {
     }
 
     @Test
-    public void testInitSuccessWithCustomArguments() throws PorcupineException {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/hey_barista_android.ppn");
-        File modelPath = new File(testResourcesPath, "model_files/porcupine_params.pv");
+    public void testInitSuccessWithCustomArguments() throws PorcupineException, IOException {
+        File keywordPath = new File(getKeywordFilepath("en/hey_barista_android.ppn"));
+        File modelPath = new File(getModelFilepath("porcupine_params.pv"));
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(modelPath.getAbsolutePath())
@@ -85,9 +86,9 @@ public class StandardTests extends BaseTest {
     }
 
     @Test
-    public void testInitSuccessWithMultipleCustomKeywordsAndSensitivities() throws PorcupineException {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/hey_barista_android.ppn");
-        File keywordPath2 = new File(testResourcesPath, "keyword_files/en/pico_clock_android.ppn");
+    public void testInitSuccessWithMultipleCustomKeywordsAndSensitivities() throws PorcupineException, IOException {
+        File keywordPath = new File(getKeywordFilepath("en/hey_barista_android.ppn"));
+        File keywordPath2 = new File(getKeywordFilepath("en/pico_clock_android.ppn"));
         String[] keywordPaths = new String[]{keywordPath.getAbsolutePath(), keywordPath2.getAbsolutePath()};
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
@@ -103,10 +104,10 @@ public class StandardTests extends BaseTest {
     }
 
     @Test
-    public void testInitFailWithMismatchedLanguage() {
+    public void testInitFailWithMismatchedLanguage() throws IOException {
         boolean didFail = false;
-        File keywordPath = new File(testResourcesPath, "keyword_files/de/ananas_android.ppn");
-        File modelPath = new File(testResourcesPath, "model_files/porcupine_params.pv");
+        File keywordPath = new File(getKeywordFilepath("de/ananas_android.ppn"));
+        File modelPath = new File(getModelFilepath("porcupine_params.pv"));
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
@@ -200,8 +201,8 @@ public class StandardTests extends BaseTest {
     }
 
     @Test
-    public void testInitFailWithBuiltInAndCustom() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/hey_barista_android.ppn");
+    public void testInitFailWithBuiltInAndCustom() throws IOException {
+        File keywordPath = new File(getKeywordFilepath("en/hey_barista_android.ppn"));
         boolean didFail = false;
         try {
             new Porcupine.Builder()
@@ -217,9 +218,9 @@ public class StandardTests extends BaseTest {
     }
 
     @Test
-    public void testInitFailWithWrongKeywordPlatform() {
+    public void testInitFailWithWrongKeywordPlatform() throws IOException {
         boolean didFail = false;
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/alexa_linux.ppn");
+        File keywordPath = new File(getKeywordFilepath("en/alexa_linux.ppn"));
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
@@ -239,7 +240,7 @@ public class StandardTests extends BaseTest {
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
-        File testAudio = new File(testResourcesPath, "audio_samples/porcupine.wav");
+        File testAudio = new File(getAudioFilepath("porcupine.wav"));
         ArrayList<Integer> detectionResults = processTestAudio(p, testAudio);
         p.delete();
 
@@ -279,7 +280,7 @@ public class StandardTests extends BaseTest {
                 .setKeywords(inputBuiltInKeywords)
                 .build(appContext);
 
-        File testAudio = new File(testResourcesPath, "audio_samples/multiple_keywords.wav");
+        File testAudio = new File(getAudioFilepath("multiple_keywords.wav"));
         ArrayList<Integer> detectionResults = processTestAudio(p, testAudio);
         p.delete();
 
@@ -293,9 +294,9 @@ public class StandardTests extends BaseTest {
     }
 
     @Test
-    public void testInitWithNonAsciiModelName() throws PorcupineException {
-        File keywordPath = new File(testResourcesPath, "keyword_files/es/murciélago_android.ppn");
-        File modelPath = new File(testResourcesPath, "model_files/porcupine_params_es.pv");
+    public void testInitWithNonAsciiModelName() throws PorcupineException, IOException {
+        File keywordPath = new File(getKeywordFilepath("es/murciélago_android.ppn"));
+        File modelPath = new File(getModelFilepath("porcupine_params_es.pv"));
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())

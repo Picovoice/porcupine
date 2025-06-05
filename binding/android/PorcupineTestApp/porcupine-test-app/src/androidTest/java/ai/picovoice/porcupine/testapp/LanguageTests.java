@@ -62,21 +62,21 @@ public class LanguageTests extends BaseTest {
             JsonArray keywords = testData.getAsJsonArray("wakewords");
             JsonArray groundTruthJson = testData.getAsJsonArray("groundTruth");
 
-            String modelFile = String.format("model_files/porcupine_params_%s.pv", language);
+            String modelFile = String.format("porcupine_params_%s.pv", language);
             String[] keywordFiles = new String[keywords.size()];
             for (int j = 0; j < keywords.size(); j++) {
                 String keyword = keywords.get(j).getAsString();
-                keywordFiles[j] = String.format("keyword_files/%s/%s_android.ppn", language, keyword);
+                keywordFiles[j] = String.format("%s/%s_android.ppn", language, keyword);
             }
-            String audioFile = String.format("audio_samples/multiple_keywords_%s.wav", language);
+            String audioFile = String.format("multiple_keywords_%s.wav", language);
             int[] groundTruth = new int[groundTruthJson.size()];
             for (int j = 0; j < groundTruthJson.size(); j++) {
                 groundTruth[j] = groundTruthJson.get(j).getAsInt();
             }
 
             if (Objects.equals(language, "en")) {
-                modelFile = "model_files/porcupine_params.pv";
-                audioFile = "audio_samples/multiple_keywords.wav";
+                modelFile = "porcupine_params.pv";
+                audioFile = "multiple_keywords.wav";
             }
 
             parameters.add(new Object[] {
@@ -93,10 +93,10 @@ public class LanguageTests extends BaseTest {
 
     @Test
     public void testProcess() throws Exception {
-        String modelPath = new File(testResourcesPath, modelFile).getAbsolutePath();
+        String modelPath = getModelFilepath(modelFile);
         String[] keywordPaths = new String[keywordFiles.length];
         for (int i = 0; i < keywordFiles.length; i++) {
-            keywordPaths[i] = new File(testResourcesPath, keywordFiles[i]).getAbsolutePath();
+            keywordPaths[i] = getKeywordFilepath(keywordFiles[i]);
 
         }
         Porcupine p = new Porcupine.Builder()
@@ -109,7 +109,7 @@ public class LanguageTests extends BaseTest {
         assertTrue(p.getFrameLength() > 0);
         assertTrue(p.getSampleRate() > 0);
 
-        File testAudio = new File(testResourcesPath, testAudioFile);
+        File testAudio = new File(getAudioFilepath(testAudioFile));
         ArrayList<Integer> detectionResults = processTestAudio(p, testAudio);
         p.delete();
 
