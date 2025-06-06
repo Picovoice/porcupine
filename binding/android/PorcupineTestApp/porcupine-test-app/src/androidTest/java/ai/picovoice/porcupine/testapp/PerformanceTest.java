@@ -49,7 +49,7 @@ public class PerformanceTest extends BaseTest {
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
-        File testAudio = new File(testResourcesPath, "audio_samples/multiple_keywords.wav");
+        File testAudio = new File(getAudioFilepath("multiple_keywords.wav"));
 
         long totalNSec = 0;
         for (int i = 0; i < numTestIterations; i++) {
