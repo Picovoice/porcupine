@@ -136,7 +136,6 @@ porcupinedemoservice
 porcupinefiledemo
 porcupinemicdemo
 porcupinetestapp
-ppnrespeakerdemo
 prefs
 println
 pthread
@@ -153,7 +152,6 @@ readi
 realtek
 renderless
 repr
-respeaker
 rgbo
 rmsd
 rodio
