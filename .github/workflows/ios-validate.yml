@@ -1,4 +1,4 @@
-name: App build
+name: Validate iOS Demo
 on:
   workflow_dispatch:
   push:
@@ -14,7 +14,7 @@ on:
 
 
 jobs:
-  build_with_signing:
+  validate-ios-demo:
     runs-on: macos-latest
 
     defaults:
@@ -63,4 +63,4 @@ jobs:
         run: xcodebuild -exportArchive -archivePath ./archive.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ./output/
 
       - name: Validate app
-        run: xcrun altool --validate-app -f ./output/ForegroundApp.ipa -u ${{ secrets.APPLE_ID }} -p ${{ secrets.APPLE_PASSWORD }}
+        run: xcrun altool --validate-app -f ./output/ForegroundApp.ipa -t ios -u ${{ secrets.APPLE_ID }} -p ${{ secrets.APPLE_PASSWORD }}
