@@ -53,11 +53,11 @@ jobs:
       - name: Sed app id
         run: sed -E -i '' 's#(PRODUCT_BUNDLE_IDENTIFIER = )[^;]+;#\1ai.picovoice.validation;#' ForegroundApp.xcodeproj/project.pbxproj
 
+      - name: Create ExportOptions.plist
+        run: echo ${{ secrets.EXPORT_PLIST_BASE64 }} | base64 --decode -o ./ExportOptions.plist
+
       - name: Archive app
         run: xcodebuild -project ForegroundApp.xcodeproj -sdk iphoneos -scheme _enDemo -destination "generic/platform=ios" archive -archivePath "./archive" CODE_SIGNING_ALLOWED=No CODE_SIGNING_REQUIRED=Yes
-
-      - name: Create ExportOptions.plist
-        run: echo ${{ secrets.EXPORT_PLIST }} > ExportOptions.plist
 
       - name: Export App
         run: xcodebuild -exportArchive -archivePath ./archive.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ./output/
