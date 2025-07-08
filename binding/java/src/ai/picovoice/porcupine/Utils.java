@@ -231,7 +231,7 @@ class Utils {
 
         for (File keywordFile : keywordFiles) {
             final String keywordName = keywordFile
-                    .getName().split("_")[0].toUpperCase().replace(' ', '_');
+                    .getName().split("_")[0].toUpperCase(Locale.ENGLISH).replace(' ', '_');
             keywordPaths.put(
                     Porcupine.BuiltInKeyword.valueOf(keywordName),
                     keywordFile.getAbsolutePath());
