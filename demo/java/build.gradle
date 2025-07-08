@@ -15,7 +15,7 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:3.0.4'
+    implementation 'ai.picovoice:porcupine-java:3.0.5'
     implementation 'commons-cli:commons-cli:1.4'
 }
 
