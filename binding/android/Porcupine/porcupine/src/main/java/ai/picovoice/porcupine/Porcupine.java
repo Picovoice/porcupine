@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Android binding for Porcupine wake word engine. It detects utterances of given keywords within an
@@ -226,7 +227,7 @@ public class Porcupine {
                     final String keywordPath = extractResource(context,
                             resources.openRawResource(resourceId),
                             keywordName + ".ppn");
-                    BUILT_IN_KEYWORD_PATHS.put(BuiltInKeyword.valueOf(keywordName.toUpperCase()), keywordPath);
+                    BUILT_IN_KEYWORD_PATHS.put(BuiltInKeyword.valueOf(keywordName.toUpperCase(Locale.ENGLISH)), keywordPath);
                 }
 
                 DEFAULT_MODEL_PATH = extractResource(context,
