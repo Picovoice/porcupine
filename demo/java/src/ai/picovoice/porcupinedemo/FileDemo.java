@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class FileDemo {
 
@@ -197,7 +198,7 @@ public class FileDemo {
 
             keywordPaths = new String[keywords.length];
             for (int i = 0; i < keywords.length; i++) {
-                final String keyword = keywords[i].toUpperCase().replace(" ", "_");
+                final String keyword = keywords[i].toUpperCase(Locale.ENGLISH).replace(" ", "_");
                 try {
                     final Porcupine.BuiltInKeyword builtInKeyword =
                             Porcupine.BuiltInKeyword.valueOf(keyword);

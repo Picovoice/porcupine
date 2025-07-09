@@ -25,6 +25,7 @@ import java.nio.ByteOrder;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Locale;
 
 public class MicDemo {
     public static void runDemo(String accessKey, String libPath, String modelPath,
@@ -280,7 +281,7 @@ public class MicDemo {
 
             keywordPaths = new String[keywords.length];
             for (int i = 0; i < keywords.length; i++) {
-                final String keyword = keywords[i].toUpperCase().replace(" ", "_");
+                final String keyword = keywords[i].toUpperCase(Locale.ENGLISH).replace(" ", "_");
                 try {
                     final Porcupine.BuiltInKeyword builtInKeyword =
                             Porcupine.BuiltInKeyword.valueOf(keyword);
