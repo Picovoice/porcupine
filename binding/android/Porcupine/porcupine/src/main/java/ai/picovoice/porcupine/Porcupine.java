@@ -227,7 +227,9 @@ public class Porcupine {
                     final String keywordPath = extractResource(context,
                             resources.openRawResource(resourceId),
                             keywordName + ".ppn");
-                    BUILT_IN_KEYWORD_PATHS.put(BuiltInKeyword.valueOf(keywordName.toUpperCase(Locale.ENGLISH)), keywordPath);
+                    BUILT_IN_KEYWORD_PATHS.put(
+                        BuiltInKeyword.valueOf(keywordName.toUpperCase(Locale.ENGLISH)), keywordPath
+                    );
                 }
 
                 DEFAULT_MODEL_PATH = extractResource(context,
