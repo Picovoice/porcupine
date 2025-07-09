@@ -35,6 +35,7 @@ import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 import ai.picovoice.porcupine.Porcupine;
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     .setAccessKey(ACCESS_KEY)
                     .setSensitivity(0.7f);
             if (Objects.equals(BuildConfig.FLAVOR, "en")) {
-                String keyword = keywordName.toUpperCase().replace(" ", "_");
+                String keyword = keywordName.toUpperCase(Locale.ENGLISH).replace(" ", "_");
                 builder.setKeyword(Porcupine.BuiltInKeyword.valueOf(keyword));
             } else {
                 String keywordFile = keywordName.toLowerCase().replace(" ", "_") + ".ppn";
