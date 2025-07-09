@@ -45,10 +45,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    - name: Build lib
-      run: ./gradlew assembleRelease
-      working-directory: binding/android/Porcupine
-
     - name: Copy test_resources
       run: ./copy_test_resources.sh
 

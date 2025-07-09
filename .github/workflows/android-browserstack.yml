@@ -38,15 +38,11 @@ jobs:
     - run:
         pip3 install requests
 
-    - name: set up JDK 11
+    - name: set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
-
-    - name: Build lib
-      run: ./gradlew assembleRelease
-      working-directory: binding/android/Porcupine
 
     - name: Copy test_resources
       run: ./copy_test_resources.sh
@@ -97,15 +93,11 @@ jobs:
     - run:
         pip3 install requests
 
-    - name: set up JDK 11
+    - name: set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
-
-    - name: Build lib
-      run: ./gradlew assembleRelease
-      working-directory: binding/android/Porcupine
 
     - name: Copy test_resources
       run: ./copy_test_resources.sh
