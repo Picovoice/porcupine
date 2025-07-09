@@ -228,7 +228,7 @@ public class Porcupine {
                             resources.openRawResource(resourceId),
                             keywordName + ".ppn");
                     BUILT_IN_KEYWORD_PATHS.put(
-                        BuiltInKeyword.valueOf(keywordName.toUpperCase(Locale.ENGLISH)), keywordPath
+                            BuiltInKeyword.valueOf(keywordName.toUpperCase(Locale.ENGLISH)), keywordPath
                     );
                 }
 
