@@ -65,3 +65,6 @@
 
 ## [3.0.4] - 2024-10-28
 * Update native packages
+
+## [3.0.5] - 2024-10-28
+* Explicitly set Locale to ENGLISH for upper casing

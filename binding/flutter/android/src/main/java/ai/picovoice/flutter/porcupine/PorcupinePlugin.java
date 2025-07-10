@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -75,7 +76,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                         keywords = new Porcupine.BuiltInKeyword[keywordsList.size()];
                         for (int i = 0; i < keywordsList.size(); i++) {
                             try {
-                                String keyword = keywordsList.get(i).replace(' ', '_').toUpperCase();
+                                String keyword = keywordsList.get(i).replace(' ', '_').toUpperCase(Locale.ENGLISH);
                                 keywords[i] = Porcupine.BuiltInKeyword.valueOf(keyword);
                             } catch (IllegalArgumentException e) {
                                 result.error(
