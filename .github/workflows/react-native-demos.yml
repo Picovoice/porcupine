@@ -35,6 +35,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Build pkg
+      run: yarn & yarn pkg
+      working-directory: binding/react-native
+
     - name: Install dependencies
       run: yarn android-install
 
