@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 
 
 public class PorcupineModule extends ReactContextBaseJavaModule {
@@ -67,7 +68,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
                 }
 
                 keyword = keyword.replace(' ', '_');
-                keywordsJava[i] = Porcupine.BuiltInKeyword.valueOf(keyword.toUpperCase());
+                keywordsJava[i] = Porcupine.BuiltInKeyword.valueOf(keyword.toUpperCase(Locale.ENGLISH));
             } catch (IllegalArgumentException e) {
                 promise.reject(
                         PorcupineInvalidArgumentException.class.getSimpleName(),
