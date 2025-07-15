@@ -7,11 +7,13 @@ on:
     paths:
       - '.github/workflows/android-perf.yml'
       - 'binding/android/PorcupineTestApp/**/build.gradle'
+      - 'binding/android/PorcupineTestApp/**'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/android-perf.yml'
       - 'binding/android/PorcupineTestApp/**/build.gradle'
+      - 'binding/android/PorcupineTestApp/**'
 
 defaults:
   run:
