@@ -25,15 +25,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: ['3.3.0', '3.22.2']
+        flutter-version: ['3.24.0', '3.32.0']
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up JDK 11
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
 
     - name: Install Flutter ${{ matrix.flutter-version }}
@@ -55,7 +55,7 @@ jobs:
     runs-on: macos-14
     strategy:
       matrix:
-        flutter-version: ['3.3.0', '3.22.2']
+        flutter-version: ['3.24.0', '3.32.0']
 
     steps:
     - uses: actions/checkout@v3

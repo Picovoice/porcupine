@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -24,11 +24,13 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final String accessKey =
       "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
@@ -284,17 +286,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     return Expanded(
       flex: 2,
-      child: Container(
-          child: SizedBox(
-              width: 150,
-              height: 150,
-              child: ElevatedButton(
-                style: buttonStyle,
-                onPressed:
-                    (isButtonDisabled || isError) ? null : _toggleProcessing,
-                child: Text(isProcessing ? "Stop" : "Start",
-                    style: TextStyle(fontSize: 30)),
-              ))),
+      child: SizedBox(
+          width: 150,
+          height: 150,
+          child: ElevatedButton(
+            style: buttonStyle,
+            onPressed: (isButtonDisabled || isError) ? null : _toggleProcessing,
+            child: Text(isProcessing ? "Stop" : "Start",
+                style: TextStyle(fontSize: 30)),
+          )),
     );
   }
 
@@ -328,21 +328,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   showPicker(BuildContext context) {
     BottomPicker picker = BottomPicker(
-        pickerTitle: Text(
-          "Choose a keyword",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize:  15)),
-        titleAlignment: Alignment.topCenter,
-        gradientColors: [
-          picoBlue, picoBlue
-        ],
-        items: _keywords.toList().map((x) => Center(
-          child: Text(x)
-        )).toList(),
-        onSubmit: (index) {
-          loadNewKeyword(_keywords[index]);
-        },
+      pickerTitle: Text("Choose a keyword",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+      titleAlignment: Alignment.topCenter,
+      gradientColors: [picoBlue, picoBlue],
+      items: _keywords.toList().map((x) => Center(child: Text(x))).toList(),
+      onSubmit: (index) {
+        loadNewKeyword(_keywords[index]);
+      },
     );
     picker.show(_scaffoldKey.currentContext!);
   }
