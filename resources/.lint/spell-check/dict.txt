@@ -198,6 +198,7 @@ wchars
 webfonts
 webvp
 werror
+xcassets
 xcframework
 xcodeproj
 xcscheme

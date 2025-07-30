@@ -39,6 +39,9 @@
     "**/AndroidManifest.xml",
     "**/activity_main.xml",
 
+    // flutter
+    "**/build.gradle.kts",
+
     // ios
     "**/*.xcconfig",
     "**/*.podspec",
