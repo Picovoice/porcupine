@@ -12,6 +12,7 @@
 import React, {useState} from 'react';
 import {
   Button,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
@@ -46,6 +47,9 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     flex: 1,
   };
+  const margined = {
+    marginTop: StatusBar.currentHeight,
+  }
 
   /*
    * To keep the template simple and small we're adding padding to prevent view
@@ -69,14 +73,14 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <View style={backgroundStyle}>
+    <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+        style={{...backgroundStyle, ...margined}}>
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
@@ -90,7 +94,7 @@ function App(): React.JSX.Element {
           )}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
