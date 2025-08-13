@@ -3,7 +3,6 @@
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
 [![GitHub](https://img.shields.io/github/license/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
 
-[![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)<!-- markdown-link-check-disable-line -->
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/porcupine-node)
