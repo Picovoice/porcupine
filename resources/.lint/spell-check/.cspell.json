@@ -91,9 +91,6 @@
     "**/binding/react-native/test-app/**/*.xml",
     "**/binding/react-native/test-app/**/*.mm",
 
-    // rust
-    "**/Cargo.toml",
-
     // unity
     "**/*.asset",
     "**/*.meta",

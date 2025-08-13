@@ -3,7 +3,6 @@
 [![GitHub release](https://img.shields.io/github/release/Picovoice/Porcupine.svg)](https://github.com/Picovoice/Porcupine/releases)
 [![GitHub](https://img.shields.io/github/license/Picovoice/porcupine)](https://github.com/Picovoice/porcupine/)
 
-[![Crates.io](https://img.shields.io/crates/v/pv_porcupine)](https://crates.io/crates/pv_porcupine)<!-- markdown-link-check-disable-line -->
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
 [![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/porcupine-node)
@@ -55,7 +54,6 @@ applications. It is
       - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
       - [React](#react-demos)
     - [NodeJS](#nodejs-demos)
-    - [Rust](#rust-demos)
     - [C](#c-demos)
     - [Microcontroller](#microcontroller-demos)
   - [SDKs](#sdks)
@@ -72,7 +70,6 @@ applications. It is
       - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
       - [React](#react)
     - [NodeJS](#nodejs)
-    - [Rust](#rust)
     - [C](#c)
     - [Microcontroller](#microcontroller)
   - [Releases](#releases)
@@ -335,19 +332,6 @@ The engine starts processing the audio input from the microphone in realtime and
 utterances of `Porcupine`.
 
 For more information about NodeJS demos go to [demo/nodejs](demo/nodejs).
-
-### Rust Demos
-
-> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Porcupine Wake Word Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
-
-This demo opens an audio stream from a microphone and detects utterances of a given wake word.
-From [demo/rust/micdemo](demo/rust/micdemo) the following opens the default microphone and detects occurrences of "Picovoice":
-
-```console
-cargo run --release -- --access_key ${ACCESS_KEY} --keywords picovoice
-```
-
-For more information about Rust demos go to [demo/rust](demo/rust).
 
 ### C Demos
 
@@ -1349,65 +1333,6 @@ When done be sure to release resources acquired by WebAssembly using `release()`
 
 ```javascript
 handle.release();
-```
-
-### Rust
-
-> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Porcupine Wake Word Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
-
-First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.
-
-To add the porcupine library into your app, add `pv_porcupine` to your apps `Cargo.toml` manifest:
-```toml
-[dependencies]
-pv_porcupine = "*"
-```
-
-To create an instance of the engine you first create a `PorcupineBuilder` instance with the configuration parameters for the wake word engine and then make a call to `.init()`:
-
-```rust
-use porcupine::{BuiltinKeywords, PorcupineBuilder};
-
-// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-let access_key = "${ACCESS_KEY}";
-
-let porcupine: Porcupine = PorcupineBuilder::new_with_keywords(
-        access_key,
-        &[BuiltinKeywords::Porcupine]
-    )
-    .init()
-    .expect("Unable to create Porcupine");
-```
-In the above example, we've initialized the engine to detect the built-in wake word "Porcupine".
-Built-in keywords are contained in the package with the `BuiltinKeywords` enum type.
-
-To detect custom keywords, use `PorcupineBuilder`'s `new_with_keyword_paths` method to pass in `*.ppn` file paths instead:
-```rust
-let porcupine: Porcupine = PorcupineBuilder::new_with_keyword_paths(
-        &["/absolute/path/to/keyword/one.ppn",
-        "/absolute/path/to/keyword/two.ppn"]
-    )
-    .init()
-    .expect("Unable to create Porcupine");
-```
-
-When initialized, the valid sample rate is given by `sample_rate()`.
-Expected frame length (number of audio samples in an input array) is given by `frame_length()`.
-The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
-
-To feed audio into Porcupine, use the `process` function in your capture loop:
-```rust
-fn next_audio_frame() -> Vec<i16> {
-    // get audio frame
-}
-
-loop {
-    if let Ok(keyword_index) = porcupine.process(&next_audio_frame()) {
-        if keyword_index >= 0 {
-            // wake word detected!
-        }
-    }
-}
 ```
 
 ### C
