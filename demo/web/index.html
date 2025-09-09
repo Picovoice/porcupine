@@ -3,9 +3,17 @@
   <head>
     <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/porcupine-web/dist/iife/index.js"></script>
-    <script src="keywords/porcupineKeywords.js"></script>
-    <script src="models/porcupineModel.js"></script>
     <script type="application/javascript" src="scripts/porcupine.js"></script>
+    <script>
+      const keywordsScript = document.createElement('script');
+      keywordsScript.src = 'keywords/porcupineKeywords.js?t=' + Date.now();
+      document.head.appendChild(keywordsScript);
+    </script>
+    <script>
+      const modelScript = document.createElement('script');
+      modelScript.src = 'models/porcupineModel.js?t=' + Date.now();
+      document.head.appendChild(modelScript);
+    </script>
   </head>
   <body>
     <h1>Porcupine Web Demo</h1>
