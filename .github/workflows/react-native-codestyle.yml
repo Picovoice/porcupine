@@ -35,6 +35,12 @@ jobs:
       run: yarn && yarn lint
       working-directory: binding/react-native
 
+# ************** REMOVE AFTER RELEASE ********************
+    - name: Build Local tarball
+      run: yarn install && yarn pkg
+      working-directory: binding/react-native
+# ************** REMOVE AFTER RELEASE ********************
+
     - name: Run Demo Linter
       run: yarn && yarn lint
       working-directory: demo/react-native/PorcupineDemo

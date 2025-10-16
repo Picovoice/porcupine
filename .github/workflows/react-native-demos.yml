@@ -17,7 +17,7 @@ on:
 
 defaults:
   run:
-    working-directory: demo/react-native
+    working-directory: demo/react-native/PorcupineDemo
 
 jobs:
   build-android:
@@ -48,7 +48,7 @@ jobs:
       run: yarn remove @picovoice/porcupine-react-native
 
     - name: Add new local package
-      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.5.tgz
+      run: yarn add ../../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.5.tgz
 # ************** REMOVE AFTER RELEASE ********************
 
     - name: Install dependencies
@@ -59,7 +59,7 @@ jobs:
 
     - name: Build
       run: ./gradlew assembleDebug
-      working-directory: demo/react-native/android
+      working-directory: demo/react-native/PorcupineDemo/android
 
   build-ios:
     runs-on: macos-latest
@@ -89,7 +89,7 @@ jobs:
       run: yarn remove @picovoice/porcupine-react-native
 
     - name: Add new local package
-      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.5.tgz
+      run: yarn add ../../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.5.tgz
 # ************** REMOVE AFTER RELEASE ********************
 
     - name: Install dependencies
@@ -106,4 +106,4 @@ jobs:
         -scheme PorcupineDemo
         -derivedDataPath ddp
         CODE_SIGNING_ALLOWED=NO
-      working-directory: demo/react-native/ios
+      working-directory: demo/react-native/PorcupineDemo/ios
