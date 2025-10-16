@@ -15,7 +15,8 @@ dependencies:
 
   # newer versions of bottom_picker aren't compatible with older versions of Flutter
   bottom_picker: 2.8.0
-  porcupine_flutter: ^3.0.5
+  porcupine_flutter: #^3.0.6
+    path: ../../binding/flutter
   path: ^1.9.0
 
 dev_dependencies:
