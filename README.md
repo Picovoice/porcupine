@@ -216,7 +216,7 @@ Replace your `AccessKey`, in [`App.tsx`](./demo/react-native/PorcupineDemo/App.t
 _accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```
 
-Navigate to [demo/react-native](demo/react-native) to run the following commands:
+Navigate to [demo/react-native/PorcupineDemo](demo/react-native/PorcupineDemo) to run the following commands:
 
 For Android:
 
