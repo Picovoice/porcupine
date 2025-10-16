@@ -66,5 +66,8 @@
 ## [3.0.4] - 2024-10-28
 * Update native packages
 
-## [3.0.5] - 2024-10-28
+## [3.0.5] - 2025-07-10
 * Explicitly set Locale to ENGLISH for upper casing
+
+## [3.0.6] - 2025-10-17
+* Replaced JCenter with Maven Central in Gradle repository sources
