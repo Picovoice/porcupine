@@ -212,7 +212,7 @@ export default class App extends Component<Props, State> {
             <Picker
               selectedValue={this.state.currentKeyword}
               mode="dropdown"
-              style={{}}
+              style={styles.itemStyle}
               itemStyle={styles.itemStyle}
               onValueChange={(keyword) => this._loadNewKeyword(keyword)}>
               {keywordOptions}
