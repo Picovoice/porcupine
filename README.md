@@ -5,10 +5,10 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-android?label=maven-central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/porcupine-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/porcupine-java/)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/porcupine-node)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)
-[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web?label=npm%20%5Bweb%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web)
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/porcupine-node)<!-- markdown-link-check-disable-line -->
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react)<!-- markdown-link-check-disable-line -->
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/porcupine-react-native)<!-- markdown-link-check-disable-line -->
+[![npm](https://img.shields.io/npm/v/@picovoice/porcupine-web?label=npm%20%5Bweb%5D)](https://www.npmjs.com/package/@picovoice/porcupine-web)<!-- markdown-link-check-disable-line -->
 [![Nuget](https://img.shields.io/nuget/v/porcupine)](https://www.nuget.org/packages/Porcupine/)
 [![CocoaPods](https://img.shields.io/cocoapods/v/Porcupine-iOS)](https://cocoapods.org/pods/Porcupine-iOS)<!-- markdown-link-check-disable-line -->
 [![Pub Version](https://img.shields.io/pub/v/porcupine_flutter)](https://pub.dev/packages/porcupine_flutter)
@@ -878,8 +878,8 @@ _porcupine.delete();
 
 ### React Native
 
-Install [@picovoice/react-native-voice-processor](https://www.npmjs.com/package/@picovoice/react-native-voice-processor)
-and [@picovoice/porcupine-react-native](https://www.npmjs.com/package/@picovoice/porcupine-react-native). The SDK
+Install [@picovoice/react-native-voice-processor](https://www.npmjs.com/package/@picovoice/react-native-voice-processor)<!-- markdown-link-check-disable-line -->
+and [@picovoice/porcupine-react-native](https://www.npmjs.com/package/@picovoice/porcupine-react-native)<!-- markdown-link-check-disable-line -->. The SDK
 provides two APIs:
 
 #### High-Level API
