@@ -1,0 +1,49 @@
+{
+  "name": "porcupine-react-native-demo",
+  "version": "3.0.4",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "start": "react-native start",
+    "test": "jest",
+    "android-run": "node scripts/run_demo.js run-android",
+    "android-install": "yarn",
+    "android-bundle": "node scripts/run_demo.js bundle --dev false --platform android --entry-file index.js --bundle-output ./android/porcupine-rn-demo-app/src/main/assets/app.jsbundle --assets-dest ./android/porcupine-rn-demo-app/src/main/res/",
+    "ios-run": "node scripts/run_demo.js run-ios",
+    "ios-link": "sed -i '' 's|https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2|https://archives.boost.io/release/1.76.0/source/boost_1_76_0.tar.bz2|g' node_modules/react-native/third-party-podspecs/boost.podspec && cd ios && pod install && cd ..",
+    "ios-install": "yarn && yarn ios-link",
+    "ios-bundle": "node scripts/run_demo.js bundle --dev false --platform ios --entry-file index.js --bundle-output ios/app.jsbundle"
+  },
+  "dependencies": {
+    "@picovoice/porcupine-react-native": "../../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.5.tgz",
+    "@picovoice/react-native-voice-processor": "1.2.3",
+    "@react-native-picker/picker": "^2.11.4",
+    "@react-native/new-app-screen": "0.82.0",
+    "react": "19.1.1",
+    "react-native": "0.82.0",
+    "react-native-safe-area-context": "^5.5.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/runtime": "^7.25.0",
+    "@react-native-community/cli": "20.0.0",
+    "@react-native-community/cli-platform-android": "20.0.0",
+    "@react-native-community/cli-platform-ios": "20.0.0",
+    "@react-native/babel-preset": "0.82.0",
+    "@react-native/eslint-config": "0.82.0",
+    "@react-native/metro-config": "0.82.0",
+    "@react-native/typescript-config": "0.82.0",
+    "@types/jest": "^29.5.13",
+    "@types/react": "^19.1.1",
+    "@types/react-test-renderer": "^19.1.0",
+    "eslint": "^8.19.0",
+    "jest": "^29.6.3",
+    "prettier": "2.8.8",
+    "react-test-renderer": "19.1.1",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
