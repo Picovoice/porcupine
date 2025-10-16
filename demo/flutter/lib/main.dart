@@ -81,8 +81,9 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   Future<void> _loadParams() async {
     try {
-      final paramsString =
-          await DefaultAssetBundle.of(context).loadString('assets/params.json');
+      final paramsString = await DefaultAssetBundle.of(
+        context,
+      ).loadString('assets/params.json');
       final params = json.decode(paramsString);
 
       String language = params["language"];
@@ -102,8 +103,11 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       _language = language;
       _keywords = keywords;
     } catch (_) {
-      errorCallback(PorcupineException(
-          "Could not find `params.json`. Ensure 'prepare_demo.dart' script was run before launching the demo."));
+      errorCallback(
+        PorcupineException(
+          "Could not find `params.json`. Ensure 'prepare_demo.dart' script was run before launching the demo.",
+        ),
+      );
     }
   }
 
@@ -129,16 +133,23 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BuiltInKeyword builtIn = _keywordMap[keyword]!;
 
         _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
-            accessKey, [builtIn], wakeWordCallback,
-            errorCallback: errorCallback);
+          accessKey,
+          [builtIn],
+          wakeWordCallback,
+          errorCallback: errorCallback,
+        );
       } else {
         var platform = (Platform.isAndroid) ? "android" : "ios";
         var keywordPath = "assets/keywords/$platform/${keyword}_$platform.ppn";
         var modelPath = "assets/models/porcupine_params_$_language.pv";
 
         _porcupineManager = await PorcupineManager.fromKeywordPaths(
-            accessKey, [keywordPath], wakeWordCallback,
-            modelPath: modelPath, errorCallback: errorCallback);
+          accessKey,
+          [keywordPath],
+          wakeWordCallback,
+          modelPath: modelPath,
+          errorCallback: errorCallback,
+        );
       }
 
       setState(() {
@@ -147,15 +158,20 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       });
     } on PorcupineActivationException {
       errorCallback(
-          PorcupineActivationException("AccessKey activation error."));
+        PorcupineActivationException("AccessKey activation error."),
+      );
     } on PorcupineActivationLimitException {
-      errorCallback(PorcupineActivationLimitException(
-          "AccessKey reached its device limit."));
+      errorCallback(
+        PorcupineActivationLimitException(
+          "AccessKey reached its device limit.",
+        ),
+      );
     } on PorcupineActivationRefusedException {
       errorCallback(PorcupineActivationRefusedException("AccessKey refused."));
     } on PorcupineActivationThrottledException {
-      errorCallback(PorcupineActivationThrottledException(
-          "AccessKey has been throttled."));
+      errorCallback(
+        PorcupineActivationThrottledException("AccessKey has been throttled."),
+      );
     } on PorcupineException catch (ex) {
       errorCallback(ex);
     } finally {
@@ -231,8 +247,12 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _initializeKeywordMap() {
     for (var builtIn in BuiltInKeyword.values) {
-      String keyword =
-          builtIn.toString().split(".").last.replaceAll("_", " ").toLowerCase();
+      String keyword = builtIn
+          .toString()
+          .split(".")
+          .last
+          .replaceAll("_", " ")
+          .toLowerCase();
       _keywordMap[keyword] = builtIn;
     }
   }
@@ -253,7 +273,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
             buildPicker(context),
             buildStartButton(context),
             buildErrorMessage(context),
-            footer
+            footer,
           ],
         ),
       ),
@@ -264,72 +284,88 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return Expanded(
       flex: 1,
       child: Container(
-          alignment: Alignment.bottomCenter,
-          // color: Colors.blue,
-          child: FractionallySizedBox(
-              widthFactor: 0.9,
-              child: OutlinedButton(
-                child: Text(currentKeyword.toString(),
-                    style: TextStyle(fontSize: 20, color: picoBlue)),
-                onPressed: () {
-                  showPicker(context);
-                },
-              ))),
+        alignment: Alignment.bottomCenter,
+        // color: Colors.blue,
+        child: FractionallySizedBox(
+          widthFactor: 0.9,
+          child: OutlinedButton(
+            child: Text(
+              currentKeyword.toString(),
+              style: TextStyle(fontSize: 20, color: picoBlue),
+            ),
+            onPressed: () {
+              showPicker(context);
+            },
+          ),
+        ),
+      ),
     );
   }
 
   buildStartButton(BuildContext context) {
     final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
-        backgroundColor: picoBlue,
-        shape: CircleBorder(),
-        textStyle: TextStyle(color: Colors.white));
+      backgroundColor: picoBlue,
+      shape: CircleBorder(),
+      textStyle: TextStyle(color: Colors.white),
+    );
 
     return Expanded(
       flex: 2,
       child: SizedBox(
-          width: 150,
-          height: 150,
-          child: ElevatedButton(
-            style: buttonStyle,
-            onPressed: (isButtonDisabled || isError) ? null : _toggleProcessing,
-            child: Text(isProcessing ? "Stop" : "Start",
-                style: TextStyle(fontSize: 30)),
-          )),
+        width: 150,
+        height: 150,
+        child: ElevatedButton(
+          style: buttonStyle,
+          onPressed: (isButtonDisabled || isError) ? null : _toggleProcessing,
+          child: Text(
+            isProcessing ? "Stop" : "Start",
+            style: TextStyle(fontSize: 30),
+          ),
+        ),
+      ),
     );
   }
 
   buildErrorMessage(BuildContext context) {
     return Expanded(
-        flex: 1,
-        child: Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(left: 20, right: 20),
-            decoration: !isError
-                ? null
-                : BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
-            child: !isError
-                ? null
-                : Text(
-                    errorMessage,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  )));
+      flex: 1,
+      child: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(left: 20, right: 20),
+        decoration: !isError
+            ? null
+            : BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(5),
+              ),
+        child: !isError
+            ? null
+            : Text(
+                errorMessage,
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+      ),
+    );
   }
 
   Widget footer = Expanded(
-      flex: 1,
-      child: Container(
-          alignment: Alignment.bottomCenter,
-          padding: EdgeInsets.only(bottom: 20),
-          child: const Text(
-            "Made in Vancouver, Canada by Picovoice",
-            style: TextStyle(color: Color(0xff666666)),
-          )));
+    flex: 1,
+    child: Container(
+      alignment: Alignment.bottomCenter,
+      padding: EdgeInsets.only(bottom: 20),
+      child: const Text(
+        "Made in Vancouver, Canada by Picovoice",
+        style: TextStyle(color: Color(0xff666666)),
+      ),
+    ),
+  );
 
   showPicker(BuildContext context) {
     BottomPicker picker = BottomPicker(
-      pickerTitle: Text("Choose a keyword",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+      pickerTitle: Text(
+        "Choose a keyword",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+      ),
       titleAlignment: Alignment.topCenter,
       gradientColors: [picoBlue, picoBlue],
       items: _keywords.toList().map((x) => Center(child: Text(x))).toList(),

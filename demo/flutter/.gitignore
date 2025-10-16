@@ -44,6 +44,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+assets/keywords/*
 assets/models/*
 assets/test_resources/*
 assets/params.json
