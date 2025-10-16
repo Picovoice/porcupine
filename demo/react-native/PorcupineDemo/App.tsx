@@ -278,7 +278,6 @@ const styles = StyleSheet.create({
   picker: {
     width: '90%',
     height: '40%',
-    backgroundColor: '#377DFF',
     alignContent: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
@@ -306,6 +305,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
+    color: 'black',
   },
   footerView: {
     flex: 1,
