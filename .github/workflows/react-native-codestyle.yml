@@ -35,24 +35,6 @@ jobs:
       run: yarn && yarn lint
       working-directory: binding/react-native
 
-# ************** REMOVE AFTER RELEASE ********************
-    - name: Install React Native Binding Dependencies
-      run: yarn install
-      working-directory: binding/react-native
-
-    - name: Build Local tarball
-      run: yarn pkg
-      working-directory: binding/react-native
-
-    - name: Remove old package
-      run: yarn remove @picovoice/porcupine-react-native
-      working-directory: demo/react-native/PorcupineDemo
-
-    - name: Add new local package
-      run: yarn add ../../../binding/react-native/pkg/picovoice-porcupine-react-native-3.0.5.tgz
-      working-directory: demo/react-native/PorcupineDemo
-# ************** REMOVE AFTER RELEASE ********************
-
     - name: Run Demo Linter
       run: yarn && yarn lint
       working-directory: demo/react-native/PorcupineDemo
