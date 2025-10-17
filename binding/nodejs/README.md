@@ -32,7 +32,7 @@ This binding is for running Porcupine on **Node.js 16+** on the following platfo
 
 ### Web Browsers
 
-This npm package is for Node.js and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web), and dedicated package for [React](https://www.npmjs.com/package/@picovoice/porcupine-react).
+This npm package is for Node.js and **does not work in a browser**. Looking to run Porcupine in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/porcupine-web)<!-- markdown-link-check-disable-line -->, and dedicated package for [React](https://www.npmjs.com/package/@picovoice/porcupine-react)<!-- markdown-link-check-disable-line -->.
 
 ## AccessKey
 

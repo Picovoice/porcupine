@@ -28,7 +28,7 @@ These demos run Porcupine on **Node.js 18+** on the following platforms:
 
 ### Web Browsers
 
-These demos and the bindings upon which they are built are for Node.js and **do not work in a browser**. Looking to run Porcupine in-browser? See the [@picovoice/porcupine-web-en-worker](https://www.npmjs.com/package/@picovoice/porcupine-web-en-worker) package.
+These demos and the bindings upon which they are built are for Node.js and **do not work in a browser**. Looking to run Porcupine in-browser? See the [@picovoice/porcupine-web](https://www.npmjs.com/package/@picovoice/porcupine-web)<!-- markdown-link-check-disable-line --> package.
 
 ## AccessKey
 
