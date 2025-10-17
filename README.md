@@ -211,12 +211,12 @@ flutter run
 To run the React Native Porcupine demo app you will first need to set up your React Native environment. For this,
 please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup).
 
-Replace your `AccessKey`, in [`App.tsx`](./demo/react-native/App.tsx) file:
+Replace your `AccessKey`, in [`App.tsx`](./demo/react-native/PorcupineDemo/App.tsx) file:
 ```typescript
 _accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```
 
-Navigate to [demo/react-native](demo/react-native) to run the following commands:
+Navigate to [demo/react-native/PorcupineDemo](demo/react-native/PorcupineDemo) to run the following commands:
 
 For Android:
 

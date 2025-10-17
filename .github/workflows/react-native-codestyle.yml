@@ -37,4 +37,4 @@ jobs:
 
     - name: Run Demo Linter
       run: yarn && yarn lint
-      working-directory: demo/react-native
+      working-directory: demo/react-native/PorcupineDemo

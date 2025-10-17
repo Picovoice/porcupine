@@ -1,4 +1,5 @@
 # Porcupine Demo App
+
 To run the React Native Porcupine demo app you'll first need to set up your React Native environment. For this, 
 please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands from this repo location.
 
@@ -10,7 +11,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Usage
 
-Replace your `AccessKey`, in [`App.tsx`](App.tsx) file:
+Replace your `AccessKey`, in [`App.tsx`](./PorcupineDemo/App.tsx) file:
 
 ```typescript
 _accessKey: string ="${YOUR_ACCESS_KEY_HERE}" // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
@@ -20,6 +21,7 @@ Replace `${LANGUAGE}` with the language code of your choice (e.g. de -> German, 
 To see a list of available languages, run the `android-run` or `ios-run` command without a language code.
 
 ### Running On Android
+
 ```console
 yarn android-install          # sets up environment
 yarn android-run ${LANGUAGE}  # builds and deploys to Android
