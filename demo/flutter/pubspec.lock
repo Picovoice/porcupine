@@ -245,9 +245,10 @@ packages:
   porcupine_flutter:
     dependency: "direct main"
     description:
-      path: "../../binding/flutter"
-      relative: true
-    source: path
+      name: porcupine_flutter
+      sha256: e0fbca497a4a81ee6c8c24955296b7ed040ed575f053ff53706eeec94de1629b
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.6"
   process:
     dependency: transitive
