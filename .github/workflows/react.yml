@@ -49,6 +49,9 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
+    - name: Check tsc version
+      run: yarn tsc --version
+
     - name: Build
       run: yarn build
 
