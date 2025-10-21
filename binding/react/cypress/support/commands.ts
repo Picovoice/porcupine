@@ -1,5 +1,5 @@
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
-import { act } from '@testing-library/react-hooks/dom';
+import { act } from '@testing-library/react';
 
 Cypress.Commands.add("wrapHook", (fn: () => Promise<any>) => {
   return cy.wrap(null).then(async () => {
