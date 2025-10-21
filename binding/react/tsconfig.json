@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "downlevelIteration": true,
     "isolatedModules": false,
-    "lib": ["esnext", "dom"],
+    "lib": ["es2022", "dom"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": false,
