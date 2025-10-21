@@ -9,6 +9,7 @@ import porcupineParams from '@/porcupine_params.js';
 import testData from './test_data.json';
 
 const ACCESS_KEY = Cypress.env('ACCESS_KEY');
+const PUBLIC_DIR = "/__cypress/src"
 
 describe('Porcupine binding', () => {
   it('should be able to init via public path', () => {
@@ -18,7 +19,7 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         ACCESS_KEY,
         BuiltInKeyword.Porcupine,
-        { publicPath: "/test/porcupine_params.pv", forceWrite: true }
+        { publicPath: `${PUBLIC_DIR}/test/porcupine_params.pv`, forceWrite: true }
       )
     ).then(() => {
       expect(result.current.isLoaded, `Failed to load 'porcupine_params.pv' with ${result.current.error}`).to.be.true;
@@ -67,7 +68,7 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         '',
         BuiltInKeyword.Porcupine,
-        { publicPath: "/test/porcupine_params.pv", forceWrite: true }
+        { publicPath: `${PUBLIC_DIR}/test/porcupine_params.pv`, forceWrite: true }
       )
     ).then(() => {
       expect(result.current.isLoaded).to.be.false;
@@ -84,11 +85,11 @@ describe('Porcupine binding', () => {
           ACCESS_KEY,
           {
             label: testInfo.wakeword,
-            publicPath: `/test/keywords/${testInfo.wakeword}_wasm.ppn`,
+            publicPath: `${PUBLIC_DIR}/test/keywords/${testInfo.wakeword}_wasm.ppn`,
             forceWrite: true,
           },
           {
-            publicPath: testInfo.language === 'en' ? "/test/porcupine_params.pv" : `/test/porcupine_params_${testInfo.language}.pv`,
+            publicPath: testInfo.language === 'en' ? `${PUBLIC_DIR}/test/porcupine_params.pv` : `${PUBLIC_DIR}/test/porcupine_params_${testInfo.language}.pv`,
             forceWrite: true,
           }
         )

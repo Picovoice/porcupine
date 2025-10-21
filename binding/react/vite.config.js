@@ -1,9 +1,10 @@
-const { fileURLToPath, URL } = require("node:url");
-
-const { defineConfig } = require('vite')
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { fileURLToPath, URL } from "node:url";
 
 /** @type {import('vite').UserConfig} */
-module.exports = defineConfig({
+export default defineConfig({
+  plugins: [react()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./test", import.meta.url)),
