@@ -1,5 +1,5 @@
 #
-# Copyright 2022-2023 Picovoice Inc.
+# Copyright 2022-2025 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -10,10 +10,11 @@
 #
 
 import json
+import os
 import struct
 import wave
 
-from _util import *
+from _util import pv_keyword_files_subdir
 
 
 def load_test_data():

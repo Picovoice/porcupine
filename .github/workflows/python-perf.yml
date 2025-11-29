@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
         include:
         - os: ubuntu-latest
           performance_threshold_sec: 0.5
@@ -59,8 +59,16 @@ jobs:
       with:
         python-version: '3.10'
 
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
     - name: Test
-      run: python test_porcupine_perf.py ${{secrets.PV_VALID_ACCESS_KEY}} 100 ${{matrix.performance_threshold_sec}}
+      run: >
+        python test_porcupine_perf.py
+        --access-key ${{secrets.PV_VALID_ACCESS_KEY}}
+        --device cpu:1
+        --num-test-iterations 100
+        --performance-threshold-sec ${{matrix.performance_threshold_sec}}
 
 
   perf-self-hosted:
@@ -95,7 +103,12 @@ jobs:
       run: bash machine-state.sh
 
     - name: Test
-      run: python3 test_porcupine_perf.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{matrix.num_test_iterations}} ${{matrix.performance_threshold_sec}}
+      run: >
+        python3 test_porcupine_perf.py
+        --access-key ${{secrets.PV_VALID_ACCESS_KEY}}
+        --device cpu:1
+        --num-test-iterations ${{matrix.num_test_iterations}}
+        --performance-threshold-sec ${{matrix.performance_threshold_sec}}
 
     - name: Machine state after
       working-directory: resources/scripts
@@ -117,4 +130,9 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Test
-      run: python3 test_porcupine_perf.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{matrix.num_test_iterations}} ${{matrix.performance_threshold_sec}}
+      run: >
+        python3 test_porcupine_perf.py
+        --access-key ${{secrets.PV_VALID_ACCESS_KEY}}
+        --device cpu:1
+        --num-test-iterations ${{matrix.num_test_iterations}}
+        --performance-threshold-sec ${{matrix.performance_threshold_sec}}

@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2023 Picovoice Inc.
+# Copyright 2020-2025 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -81,7 +81,7 @@ _RASPBERRY_PI_MACHINES = {
     "cortex-a76-aarch64"}
 
 
-def pv_library_path(relative):
+def pv_library_path(relative: str = "") -> str:
     if _PV_SYSTEM == 'Darwin':
         if _PV_MACHINE == 'x86_64':
             return os.path.join(os.path.dirname(__file__), relative, 'lib/mac/x86_64/libpv_porcupine.dylib')
@@ -104,7 +104,7 @@ def pv_library_path(relative):
     raise NotImplementedError('Unsupported platform.')
 
 
-def pv_model_path(relative):
+def pv_model_path(relative: str = "") -> str:
     return os.path.join(os.path.dirname(__file__), relative, 'lib/common/porcupine_params.pv')
 
 
@@ -122,7 +122,7 @@ def pv_keyword_files_subdir():
     raise NotImplementedError('Unsupported platform')
 
 
-def pv_keyword_paths(relative):
+def pv_keyword_paths(relative: str = "") -> dict:
     keyword_files_dir = \
         os.path.join(os.path.dirname(__file__), relative, 'resources/keyword_files', pv_keyword_files_subdir())
 

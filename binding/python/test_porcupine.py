@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2023 Picovoice Inc.
+# Copyright 2018-2025 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -9,12 +9,19 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import argparse
 import sys
 import unittest
 
 from parameterized import parameterized
 
-from _porcupine import Porcupine, PorcupineError
+from _porcupine import (
+    list_hardware_devices,
+    Porcupine,
+    PorcupineError
+)
+
+from _util import pv_library_path
 from test_util import *
 
 
@@ -23,15 +30,19 @@ single_keyword_parameters, multiple_keywords_parameters = load_test_data()
 
 class PorcupineTestCase(unittest.TestCase):
 
+    access_key: str
+    device: str
+
     def run_porcupine(self, language, keywords, ground_truth, audio_file_name=None):
         relative_path = '../..'
 
         keyword_paths = get_keyword_paths_by_language(relative_path, language, keywords)
 
         porcupine = Porcupine(
-            access_key=sys.argv[1],
+            access_key=self.access_key,
             library_path=pv_library_path(relative_path),
             model_path=get_model_path_by_language(relative_path, language),
+            device=self.device,
             keyword_paths=keyword_paths,
             sensitivities=[0.5] * len(keyword_paths))
 
@@ -83,6 +94,7 @@ class PorcupineTestCase(unittest.TestCase):
                 access_key='invalid',
                 library_path=pv_library_path(relative_path),
                 model_path=get_model_path_by_language(relative_path, 'en'),
+                device=self.device,
                 keyword_paths=get_keyword_paths_by_language(relative_path, 'en', ['porcupine']),
                 sensitivities=[0.5])
             self.assertIsNone(p)
@@ -97,6 +109,7 @@ class PorcupineTestCase(unittest.TestCase):
                 access_key='invalid',
                 library_path=pv_library_path(relative_path),
                 model_path=get_model_path_by_language(relative_path, 'en'),
+                device=self.device,
                 keyword_paths=get_keyword_paths_by_language(relative_path, 'en', ['porcupine']),
                 sensitivities=[0.5])
             self.assertIsNone(p)
@@ -108,9 +121,10 @@ class PorcupineTestCase(unittest.TestCase):
         relative_path = '../..'
 
         p = Porcupine(
-            access_key=sys.argv[1],
+            access_key=self.access_key,
             library_path=pv_library_path(relative_path),
             model_path=get_model_path_by_language(relative_path, 'en'),
+            device=self.device,
             keyword_paths=get_keyword_paths_by_language(relative_path, 'en', ['porcupine']),
             sensitivities=[0.5])
         test_pcm = [0] * p.frame_length
@@ -127,10 +141,20 @@ class PorcupineTestCase(unittest.TestCase):
 
         p._handle = address
 
+    def test_available_devices(self) -> None:
+        res = list_hardware_devices(library_path=pv_library_path("../.."))
+        self.assertGreater(len(res), 0)
+        for x in res:
+            self.assertIsInstance(x, str)
+            self.assertGreater(len(x), 0)
+
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("usage: test_porcupine.py ${AccessKey}")
-        exit(1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--access-key", required=True)
+    parser.add_argument("--device", required=True)
+    args = parser.parse_args()
 
+    PorcupineTestCase.access_key = args.access_key
+    PorcupineTestCase.device = args.device
     unittest.main(argv=sys.argv[:1])

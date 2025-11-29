@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2023 Picovoice Inc.
+# Copyright 2018-2025 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -49,6 +49,11 @@ def main():
              'Default: using the library provided by `pvporcupine`')
 
     parser.add_argument(
+        '--device',
+        help='Device to run inference on (`best`, `cpu:{num_threads}`, `gpu:{gpu_index}`). '
+             'Default: automatically selects best device for `pvporcupine`')
+
+    parser.add_argument(
         '--sensitivities',
         nargs='+',
         help="Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher "
@@ -63,12 +68,24 @@ def main():
 
     parser.add_argument('--show_audio_devices', action='store_true')
 
+    parser.add_argument(
+        '--show_inference_devices',
+        action='store_true',
+        help='Prints the list of available devices for Porcupine inference')
+
     args = parser.parse_args()
+
+    if args.show_inference_devices:
+        print('\n'.join(pvporcupine.available_devices(library_path=args.library_path)))
+        return
 
     if args.show_audio_devices:
         for i, device in enumerate(PvRecorder.get_available_devices()):
             print('Device %d: %s' % (i, device))
         return
+
+    if args.access_key is None:
+        raise ValueError("Argument --access_key is required.")
 
     if args.keyword_paths is None:
         if args.keywords is None:
@@ -89,6 +106,7 @@ def main():
             access_key=args.access_key,
             library_path=args.library_path,
             model_path=args.model_path,
+            device=args.device,
             keyword_paths=keyword_paths,
             sensitivities=args.sensitivities)
     except pvporcupine.PorcupineInvalidArgumentError as e:

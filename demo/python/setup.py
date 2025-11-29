@@ -31,7 +31,7 @@ with open(os.path.join(os.path.dirname(__file__), "requirements.txt"), "r") as f
 
 setuptools.setup(
     name="pvporcupinedemo",
-    version="3.0.5",
+    version="4.0.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine demos",
