@@ -29,9 +29,9 @@ export async function keywordsProcess(keywords: Array<PorcupineKeyword | BuiltIn
   } else if (keywords.length === 0) {
     throw new Error('The keywords argument array is empty');
   }
-  const keywordSensitivities = [];
-  const keywordLabels = [];
-  const keywordPaths = [];
+  const keywordSensitivities: number[] = [];
+  const keywordLabels: string[] = [];
+  const keywordPaths: string[] = [];
 
   for (const keyword of keywords) {
     // normalize keywords to PorcupineKeyword

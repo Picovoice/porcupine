@@ -15,6 +15,7 @@ import porcupineParams from './porcupine_params';
 import { PvModel } from '@picovoice/web-utils';
 
 const ACCESS_KEY: string = Cypress.env('ACCESS_KEY');
+const DEVICE = Cypress.env('DEVICE');
 
 function delay(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
@@ -29,6 +30,7 @@ const runInitTest = async (
       | PorcupineKeyword
       | (BuiltInKeyword | PorcupineKeyword)[];
     model?: PvModel;
+    device?: string,
     expectFailure?: boolean;
   } = {}
 ) => {
@@ -36,6 +38,7 @@ const runInitTest = async (
     accessKey = ACCESS_KEY,
     keyword = BuiltInKeyword.Porcupine,
     model = { publicPath: '/test/porcupine_params.pv', forceWrite: true },
+    device = DEVICE,
     expectFailure = false,
   } = params;
 
@@ -46,7 +49,8 @@ const runInitTest = async (
       accessKey,
       keyword,
       () => {},
-      model
+      model,
+      { device }
     );
     expect(porcupine.sampleRate).to.be.eq(16000);
     expect(typeof porcupine.version).to.eq('string');
@@ -81,12 +85,14 @@ const runProcTest = async (
       | PorcupineKeyword
       | (BuiltInKeyword | PorcupineKeyword)[];
     model?: PvModel;
+    device?: string;
   } = {}
 ) => {
   const {
     accessKey = ACCESS_KEY,
     keyword = BuiltInKeyword.Porcupine,
     model = { publicPath: '/test/porcupine_params.pv', forceWrite: true },
+    device = DEVICE,
   } = params;
 
   const detections: number[] = [];
@@ -104,6 +110,7 @@ const runProcTest = async (
         },
         model,
         {
+          device,
           processErrorCallback: (error: Error) => {
             reject(error);
           },
@@ -146,6 +153,7 @@ describe('Porcupine Binding', function () {
         () => { },
         { publicPath: '/test/porcupine_params.pv', forceWrite: true },
         {
+          device: DEVICE,
           processErrorCallback: (e: PorcupineError) => {
             error = e;
             resolve();
@@ -185,7 +193,8 @@ describe('Porcupine Binding', function () {
           "invalidAccessKey",
           BuiltInKeyword.Porcupine,
           () => { },
-          { publicPath: '/test/porcupine_params.pv', forceWrite: true }
+          { publicPath: '/test/porcupine_params.pv', forceWrite: true },
+          { device: DEVICE }
         );
         expect(porcupine).to.be.undefined;
       } catch (e: any) {
@@ -200,7 +209,8 @@ describe('Porcupine Binding', function () {
           "invalidAccessKey",
           BuiltInKeyword.Porcupine,
           () => { },
-          { publicPath: '/test/porcupine_params.pv', forceWrite: true }
+          { publicPath: '/test/porcupine_params.pv', forceWrite: true },
+          { device: DEVICE }
         );
         expect(porcupine).to.be.undefined;
       } catch (e: any) {
@@ -261,7 +271,7 @@ describe('Porcupine Binding', function () {
       });
     });
 
-    it(`should be able to handle invalid sensitivity(${instanceString})`, () => {
+    it(`should be able to handle invalid sensitivity (${instanceString})`, () => {
       cy.wrap(null).then(async () => {
         await runInitTest(instance, {
           keyword: {
@@ -271,6 +281,15 @@ describe('Porcupine Binding', function () {
             label: 'porcupine',
           },
           expectFailure: true,
+        });
+      });
+    });
+
+    it(`should be able to handle invalid device (${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance, {
+          device: "cloud:9",
+          expectFailure: instance === PorcupineWorker,
         });
       });
     });

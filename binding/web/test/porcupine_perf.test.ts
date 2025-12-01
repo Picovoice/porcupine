@@ -9,6 +9,7 @@ import { PvModel } from '@picovoice/web-utils';
 import { createHash } from 'crypto';
 
 const ACCESS_KEY = Cypress.env('ACCESS_KEY');
+const DEVICE = Cypress.env('DEVICE');
 const NUM_TEST_ITERATIONS = Number(Cypress.env('NUM_TEST_ITERATIONS'));
 const INIT_PERFORMANCE_THRESHOLD_SEC = Number(
   Cypress.env('INIT_PERFORMANCE_THRESHOLD_SEC')
@@ -46,7 +47,8 @@ async function testPerformance(
       () => {
         detected = true;
       },
-      model
+      model,
+      { device: DEVICE }
     );
 
     let end = Date.now();
