@@ -1,5 +1,6 @@
 Appcenter
 Emscripten
+HEAPF
 HEAPU
 Readables
 Rustonomicon
