@@ -57,7 +57,7 @@ jobs:
       run: ./gradlew assemble
 
     - name: Test
-      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DnumTestIterations="100" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
+      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DpvTestingDevice="cpu:1" -DnumTestIterations="100" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
 
   perf-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -94,7 +94,7 @@ jobs:
       run: bash machine-state.sh
 
     - name: Test
-      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DnumTestIterations="${{matrix.num_test_iterations}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
+      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DpvTestingDevice="cpu:1" -DnumTestIterations="${{matrix.num_test_iterations}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
 
     - name: Machine state after
       working-directory: resources/scripts
@@ -119,4 +119,4 @@ jobs:
       run: ./gradlew assemble
 
     - name: Test
-      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DnumTestIterations="${{matrix.num_test_iterations}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
+      run: ./gradlew test --info --tests PorcupinePerformanceTest -DpvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" -DpvTestingDevice="cpu:1" -DnumTestIterations="${{matrix.num_test_iterations}}" -DperformanceThresholdSec="${{matrix.performance_threshold_sec}}"
