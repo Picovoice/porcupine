@@ -8,11 +8,10 @@ const HOST = '127.0.0.1';  // Listen on localhost
 const publicDir = path.join(__dirname);
 
 const server = http.createServer((req, res) => {
-  const url = (req.url === '/') ? '/index.html' : req.url;
+  const urlPath = req.url.split('?')[0];
+  const url = (urlPath === '/') ? '/index.html' : urlPath;
   const filePath = path.join(publicDir, url);
   const contentType = mime.lookup(filePath) || 'application/octet-stream';
-
-  console.log(url)
 
   fs.readFile(filePath, (err, content) => {
     if (err) {

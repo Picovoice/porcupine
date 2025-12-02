@@ -199,7 +199,7 @@ export class Porcupine {
     return this._keywordLabels;
   }
 
-    /**
+  /**
    * Set base64 wasm file with SIMD feature.
    * @param wasmSimd Base64'd wasm file to use to initialize wasm.
    */
@@ -566,8 +566,6 @@ export class Porcupine {
       sensitivities,
       sensitivityAddress / Float32Array.BYTES_PER_ELEMENT
     );
-
-
 
     const sdkEncoded = new TextEncoder().encode(this._sdk);
     const sdkAddress = module._malloc((sdkEncoded.length + 1) * Uint8Array.BYTES_PER_ELEMENT);

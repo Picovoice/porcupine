@@ -189,7 +189,7 @@ export class PorcupineWorker {
     return returnPromise;
   }
 
-/**
+  /**
    * Set base64 wasm file with SIMD feature.
    * @param wasmSimd Base64'd wasm SIMD file to use to initialize wasm.
    */
