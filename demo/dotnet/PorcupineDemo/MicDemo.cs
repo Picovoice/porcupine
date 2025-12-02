@@ -33,6 +33,13 @@ namespace PorcupineDemo
         /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
+        /// <param name="device">
+        /// String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+        /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU device. To select a specific
+        /// GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}` is the index of the target GPU. If set to
+        /// `cpu`, the engine will run on the CPU with the default number of threads. To specify the number of threads, set this
+        /// argument to `cpu:${NUM_THREADS}`, where `${NUM_THREADS}` is the desired number of threads.
+        /// </param>
         /// <param name="keywordPaths">Absolute paths to keyword model files. If not set it will be populated from `keywords` argument.</param>
         /// <param name="sensitivities">
         /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer
@@ -43,12 +50,18 @@ namespace PorcupineDemo
         public static void RunDemo(
             string accessKey,
             string modelPath,
+            string device,
             List<string> keywordPaths,
             List<float> sensitivities,
             int audioDeviceIndex,
             string outputPath = null)
         {
-            using (Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey, keywordPaths, modelPath, sensitivities))
+            using (Porcupine porcupine = Porcupine.FromKeywordPaths(
+                accessKey,
+                keywordPaths,
+                modelPath: modelPath,
+                device: device,
+                sensitivities: sensitivities))
             {
                 // get keyword names for labeling detection results
                 List<string> keywordNames = keywordPaths.Select(k => Path.GetFileNameWithoutExtension(k).Split("_")[0]).ToList();
@@ -169,9 +182,11 @@ namespace PorcupineDemo
             List<float> sensitivities = null;
             string accessKey = null;
             string modelPath = null;
+            string device = null;
             int audioDeviceIndex = -1;
             string outputPath = null;
             bool showAudioDevices = false;
+            bool showInferenceDevices = false;
             bool showHelp = false;
 
             // parse command line arguments
@@ -210,6 +225,13 @@ namespace PorcupineDemo
                         modelPath = args[argIndex++];
                     }
                 }
+                else if (args[argIndex] == "--device")
+                {
+                    if (++argIndex < args.Length)
+                    {
+                        device = args[argIndex++];
+                    }
+                }
                 else if (args[argIndex] == "--sensitivities")
                 {
                     argIndex++;
@@ -224,6 +246,11 @@ namespace PorcupineDemo
                 else if (args[argIndex] == "--show_audio_devices")
                 {
                     showAudioDevices = true;
+                    argIndex++;
+                }
+                else if (args[argIndex] == "--show_inference_devices")
+                {
+                    showInferenceDevices = true;
                     argIndex++;
                 }
                 else if (args[argIndex] == "--audio_device_index")
@@ -260,6 +287,12 @@ namespace PorcupineDemo
                 return;
             }
 
+            if (showAvailableDevices)
+            {
+                Console.WriteLine(string.Join(Environment.NewLine, Porcupine.GetAvailableDevices()));
+                return;
+            }
+
             // print audio device info and exit
             if (showAudioDevices)
             {
@@ -292,7 +325,14 @@ namespace PorcupineDemo
             }
 
             // run demo with validated arguments
-            RunDemo(accessKey, modelPath, keywordPaths, sensitivities, audioDeviceIndex, outputPath);
+            RunDemo(
+                accessKey,
+                modelPath,
+                device,
+                keywordPaths,
+                sensitivities,
+                audioDeviceIndex,
+                outputPath);
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -302,15 +342,17 @@ namespace PorcupineDemo
         }
 
         private static readonly string HELP_STR = "Available options: \n " +
-            $"\t--access_key (required): AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)\n" +
-            $"\t--keywords: List of built-in keywords for detection." +
+            "\t--access_key (required): AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)\n" +
+            "\t--keywords: List of built-in keywords for detection." +
             $"\t\tAvailable keywords: {string.Join(",", Enum.GetNames(typeof(BuiltInKeyword)).Select(k => k.ToLower().Replace("_", " ")))}\n" +
-            $"\t--keyword_paths: Absolute paths to keyword model files. If not set it will be populated from `--keywords` argument\n" +
-            $"\t--model_path: Absolute path to the file containing model parameters.\n" +
-            $"\t--sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher \n" +
-             "\t\tsensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.\n" +
+            "\t--keyword_paths: Absolute paths to keyword model files. If not set it will be populated from `--keywords` argument\n" +
+            "\t--model_path: Absolute path to the file containing model parameters.\n" +
+            "\t--device: Device to run inference on (`best`, `cpu:{num_threads}` or `gpu:{gpu_index}`). Default: automatically selects best device.\n" +
+            "\t--sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher \n" +
+            "\t\tsensitivity results in fewer misses at the cost of increasing the false alarm rate. If not set 0.5 will be used.\n" +
             "\t--audio_device_index: Index of input audio device.\n" +
             "\t--output_path: Absolute path to recorded audio for debugging.\n" +
-            "\t--show_audio_devices: Print available recording devices.\n";
+            "\t--show_audio_devices: Print available recording devices.\n" +
+            "\t--show_inference_devices: Print devices that are available to run Porcupine inference.\n";
     }
 }

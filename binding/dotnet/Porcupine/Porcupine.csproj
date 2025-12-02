@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net6.0;netcoreapp3.0;netstandard2.0</TargetFrameworks>
-        <Version>3.0.10</Version>
+        <TargetFrameworks>net8.0;net6.0;netstandard2.0</TargetFrameworks>
+        <Version>4.0.0</Version>
         <Authors>Picovoice</Authors>
         <Company />
         <Product>Porcupine Wake Word Engine</Product>
@@ -38,7 +37,6 @@
         </Content>
         <Content Include="Porcupine.targets">
             <PackagePath>
-                buildTransitive\netcoreapp3.0\Porcupine.targets;
                 buildTransitive\net6.0\Porcupine.targets;
                 buildTransitive\net8.0\Porcupine.targets;
             </PackagePath>
@@ -51,7 +49,6 @@
         <Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
             <PackagePath>
                 buildTransitive\netstandard2.0\libpv_porcupine.dll;
-                buildTransitive\netcoreapp3.0\lib\windows\amd64\libpv_porcupine.dll;
                 buildTransitive\net6.0\lib\windows\amd64\libpv_porcupine.dll;
                 buildTransitive\net8.0\lib\windows\amd64\libpv_porcupine.dll;
             </PackagePath>
@@ -62,7 +59,6 @@
         <Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
             <PackagePath>
                 buildTransitive\netstandard2.0\libpv_porcupine.dylib;
-                buildTransitive\netcoreapp3.0\lib\mac\x86_64\libpv_porcupine.dylib;
                 buildTransitive\net6.0\lib\mac\x86_64\libpv_porcupine.dylib;
                 buildTransitive\net8.0\lib\mac\x86_64\libpv_porcupine.dylib;
             </PackagePath>
@@ -131,7 +127,6 @@
                           ..\..\..\resources\keyword_files\windows\terminator_windows.ppn;">
             <PackagePath>
                 buildTransitive\netstandard2.0\resources\keyword_files\windows;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\windows;
                 buildTransitive\net6.0\resources\keyword_files\windows;
                 buildTransitive\net8.0\resources\keyword_files\windows;
             </PackagePath>
@@ -154,7 +149,6 @@
                           ..\..\..\resources\keyword_files\mac\terminator_mac.ppn;">
             <PackagePath>
                 buildTransitive\netstandard2.0\resources\keyword_files\mac;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\mac;
                 buildTransitive\net6.0\resources\keyword_files\mac;
                 buildTransitive\net8.0\resources\keyword_files\mac;
             </PackagePath>
@@ -176,8 +170,6 @@
                           ..\..\..\resources\keyword_files\linux\porcupine_linux.ppn;
                           ..\..\..\resources\keyword_files\linux\terminator_linux.ppn;">
             <PackagePath>
-                buildTransitive\netstandard2.0\resources\keyword_files\linux;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\linux;
                 buildTransitive\net6.0\resources\keyword_files\linux;
                 buildTransitive\net8.0\resources\keyword_files\linux;
             </PackagePath>
@@ -199,8 +191,6 @@
                           ..\..\..\resources\keyword_files\raspberry-pi\porcupine_raspberry-pi.ppn;
                           ..\..\..\resources\keyword_files\raspberry-pi\terminator_raspberry-pi.ppn;">
             <PackagePath>
-                buildTransitive\netstandard2.0\resources\keyword_files\raspberry-pi;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\raspberry-pi;
                 buildTransitive\net6.0\resources\keyword_files\raspberry-pi;
                 buildTransitive\net8.0\resources\keyword_files\raspberry-pi;
             </PackagePath>

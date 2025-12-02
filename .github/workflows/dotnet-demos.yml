@@ -29,6 +29,7 @@ jobs:
 
     strategy:
       matrix:
+        device: [cpu, cpu:1]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
@@ -49,13 +50,14 @@ jobs:
       run: dotnet build -c FileDemo.Release
 
     - name: Run Dotnet filedemo
-      run: dotnet run -c FileDemo.Release -- --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --keywords picovoice
+      run: dotnet run -c FileDemo.Release -- --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --device ${{ matrix.device }} --keywords picovoice
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
+        device: [best]
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
 
     steps:
@@ -71,7 +73,7 @@ jobs:
       run: dotnet build -c FileDemo.Release
 
     - name: Run Dotnet filedemo
-      run: dotnet run -c FileDemo.Release -- --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --keywords picovoice
+      run: dotnet run -c FileDemo.Release -- --input_audio_path ../../../resources/audio_samples/multiple_keywords.wav --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --device ${{ matrix.device }} --keywords picovoice
 
   build-vui-demo:
     runs-on: ${{ matrix.os }}
