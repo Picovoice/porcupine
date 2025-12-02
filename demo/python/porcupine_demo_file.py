@@ -71,8 +71,8 @@ def main():
 
     parser.add_argument(
         '--device',
-        help='Device to run inference on (`best`, `cpu:{num_threads}`, `gpu:{gpu_index}`). '
-             'Default: automatically selects best device for `pvporcupine`')
+        help='Device to run inference on (`best`, `cpu:{num_threads}` or `gpu:{gpu_index}`). '
+             'Default: automatically selects best device')
 
     parser.add_argument(
         '--sensitivities',
@@ -86,7 +86,7 @@ def main():
     parser.add_argument(
         '--show_inference_devices',
         action='store_true',
-        help='Prints the list of available devices for Porcupine inference')
+        help='Print devices that are available to run Porcupine inference')
 
     args = parser.parse_args()
 
