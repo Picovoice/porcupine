@@ -1,3 +1,9 @@
+Appcenter
+Emscripten
+HEAPU
+Readables
+Rustonomicon
+SRCROOT
 aarch
 abacaxi
 aiseukeulim
@@ -7,7 +13,6 @@ americano
 ananas
 androidx
 annyeong
-Appcenter
 armeabi
 armv
 atclause
@@ -20,6 +25,7 @@ bushi
 bxor
 camelcase
 cameriere
+ccall
 cdecl
 chans
 checkstyle
@@ -41,6 +47,7 @@ coolterm
 cortexm
 cporcupine
 cstring
+cwrap
 dkgray
 dlfcn
 dlopen
@@ -147,7 +154,6 @@ pvporcupinedemo
 pvrecorder
 rcurly
 reactnative
-Readables
 readi
 realtek
 renderless
@@ -156,7 +162,6 @@ rgbo
 rmsd
 rodio
 rtld
-Rustonomicon
 salut
 sameline
 seeed
@@ -169,7 +174,6 @@ snowboy
 soloader
 soundfile
 spidev
-SRCROOT
 stachelschwein
 stdint
 stdlib
@@ -204,6 +208,6 @@ xcodeproj
 xcscheme
 xcschemes
 xcshareddata
+xcuitest
 xcworkspace
 xpresso
-xcuitest
