@@ -110,6 +110,7 @@ jobs:
 
     strategy:
       matrix:
+        device: [cpu, cpu:1]
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
         - os: ubuntu-latest
@@ -145,13 +146,14 @@ jobs:
       run: pip install -r test/requirements.txt
 
     - name: Test
-      run: python test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}
+      run: python test/test_porcupine_c.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --device ${{ matrix.device }} --platform ${{ matrix.platform }} --arch ${{ matrix.arch }}
 
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
+        device: [best]
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
         include:
         - machine: rpi3-32
@@ -200,4 +202,4 @@ jobs:
       run: pip install -r test/requirements.txt
 
     - name: Test
-      run: python3 test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}
+      run: python3 test/test_porcupine_c.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --device ${{ matrix.device }} --platform ${{ matrix.platform }} --arch ${{ matrix.arch }}
