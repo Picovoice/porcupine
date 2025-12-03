@@ -42,7 +42,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x, 22.x]
+        device: [cpu:1, cpu]
+        node-version: [18.x, 20.x, 22.x, 24.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -59,7 +60,7 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
+      run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --device=${{ matrix.device }}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -67,6 +68,7 @@ jobs:
     strategy:
       matrix:
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
+        device: [cpu:1, cpu]
 
     steps:
     - uses: actions/checkout@v3
@@ -78,4 +80,4 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
+      run: yarn test test/index.test.ts --access_key=${{secrets.PV_VALID_ACCESS_KEY}} --device=${{ matrix.device }}

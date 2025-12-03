@@ -20,7 +20,12 @@ import { WaveFile } from "wavefile";
 const WAV_PATH_MULTIPLE_KEYWORDS =
   "../../../resources/audio_samples/multiple_keywords.wav";
 
-const ACCESS_KEY = process.argv.filter(x => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
+const ACCESS_KEY = process.argv
+  .filter(x => x.startsWith('--access_key='))[0]
+  .split('--access_key=')[1];
+const DEVICE = process.argv
+  .filter(x => x.startsWith('--device='))[0]
+  .split('--device=')[1] ?? 'best';
 const NUM_TEST_ITERATIONS = Number(process.argv.filter(x => x.startsWith('--num_test_iterations='))[0]?.split('--num_test_iterations=')[1] ?? 0);
 const PERFORMANCE_THRESHOLD_SEC = Number(process.argv.filter(x => x.startsWith('--performance_threshold_sec='))[0]?.split('--performance_threshold_sec=')[1] ?? 0);
 
@@ -29,7 +34,8 @@ describe("performance", () => {
     let porcupineEngine = new Porcupine(
       ACCESS_KEY,
       [BuiltinKeyword.PORCUPINE],
-      [0.5]
+      [0.5],
+      { device: DEVICE }
     );
 
     const waveFilePath = path.join(__dirname, WAV_PATH_MULTIPLE_KEYWORDS);

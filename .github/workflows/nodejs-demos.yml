@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [18.x, 20.x, 22.x, 24.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -38,6 +38,12 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+
+# REMOVE AFTER RELEASE
+    - name: Install binding
+      run: yarn install && yarn build
+      working-directory: binding/nodejs
+# REMOVE AFTER RELEASE
 
     - name: Install dependencies
       run: yarn install
@@ -54,6 +60,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+# REMOVE AFTER RELEASE
+    - name: Install binding
+      run: yarn install && yarn build
+      working-directory: binding/nodejs
+# REMOVE AFTER RELEASE
 
     - name: Install dependencies
       run: yarn install
