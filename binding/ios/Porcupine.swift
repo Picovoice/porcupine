@@ -1,5 +1,5 @@
 //
-//  Copyright 2021-2023 Picovoice Inc.
+//  Copyright 2021-2025 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -62,12 +62,42 @@ public class Porcupine {
         self.sdk = sdk
     }
 
+    /// Lists all available devices that Porcupine can use for inference.
+    /// Entries in the list can be used as the `device` argument when initializing Porcupine.
+    ///
+    /// - Throws: PorcupineError
+    /// - Returns: Array of available devices that Porcupine can be used for inference.
+    public static func getAvailableDevices() throws -> [String] {
+        var cHardwareDevices: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?
+        var numHardwareDevices: Int32 = 0
+        let status = pv_porcupine_list_hardware_devices(&cHardwareDevices, &numHardwareDevices)
+        if status != PV_STATUS_SUCCESS {
+            let messageStack = try PorcupineBase.getMessageStack()
+            throw PorcupineBase.pvStatusToPorcupineError(status, "Porcupine getAvailableDevices failed", messageStack)
+        }
+
+        var hardwareDevices: [String] = []
+        for i in 0..<numHardwareDevices {
+            hardwareDevices.append(String(cString: cHardwareDevices!.advanced(by: Int(i)).pointee!))
+        }
+
+        pv_porcupine_free_hardware_devices(cHardwareDevices, numHardwareDevices)
+
+        return hardwareDevices
+    }
+    
     /// Constructor.
     ///
     /// - Parameters:
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
@@ -75,6 +105,7 @@ public class Porcupine {
         accessKey: String,
         keywordPaths: [String],
         modelPath: String? = nil,
+        device: String? = nil,
         sensitivities: [Float32]? = nil
     ) throws {
 
@@ -84,6 +115,11 @@ public class Porcupine {
             if modelPathArg == nil {
                 throw PorcupineIOError("Unable to find the default model path")
             }
+        }
+
+        var deviceArg = device
+        if device == nil {
+            deviceArg = "best"
         }
 
         if accessKey.count == 0 {
@@ -116,14 +152,15 @@ public class Porcupine {
         let status = pv_porcupine_init(
             accessKey,
             modelPathArg,
+            deviceArg,
             Int32(keywordPathsArgs.count),
             keywordPathsArgs.map { UnsafePointer(strdup($0)) },
             sensitivitiesArg,
             &handle)
 
         if status != PV_STATUS_SUCCESS {
-            let messageStack = try getMessageStack()
-            throw pvStatusToPorcupineError(status, "Porcupine init failed", messageStack)
+            let messageStack = try Porcupine.getMessageStack()
+            throw Porcupine.pvStatusToPorcupineError(status, "Porcupine init failed", messageStack)
         }
     }
 
@@ -133,6 +170,12 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPath: Absolute paths to a keyword model file.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
@@ -140,12 +183,14 @@ public class Porcupine {
         accessKey: String,
         keywordPath: String,
         modelPath: String? = nil,
+        device: String? = nil,
         sensitivity: Float32 = 0.5
     ) throws {
         try self.init(
             accessKey: accessKey,
             keywordPaths: [keywordPath],
             modelPath: modelPath,
+            device: device,
             sensitivities: [sensitivity])
     }
 
@@ -155,6 +200,12 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywords: An array of built-in keywords from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
@@ -162,6 +213,7 @@ public class Porcupine {
         accessKey: String,
         keywords: [Porcupine.BuiltInKeyword],
         modelPath: String? = nil,
+        device: String? = nil,
         sensitivities: [Float32]? = nil
     ) throws {
 
@@ -180,6 +232,7 @@ public class Porcupine {
             accessKey: accessKey,
             keywordPaths: keywordPaths,
             modelPath: modelPath,
+            device: device,
             sensitivities: sensitivities)
     }
 
@@ -189,6 +242,12 @@ public class Porcupine {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     /// - Throws: PorcupineError
@@ -196,9 +255,15 @@ public class Porcupine {
         accessKey: String,
         keyword: Porcupine.BuiltInKeyword,
         modelPath: String? = nil,
+        device: String? = nil,
         sensitivity: Float32 = 0.5
     ) throws {
-        try self.init(accessKey: accessKey, keywords: [keyword], modelPath: modelPath, sensitivities: [sensitivity])
+        try self.init(
+            accessKey: accessKey,
+            keywords: [keyword],
+            modelPath: modelPath,
+            device: device,
+            sensitivities: [sensitivity])
     }
 
     deinit {
@@ -232,8 +297,8 @@ public class Porcupine {
         var result: Int32 = -1
         let status = pv_porcupine_process(self.handle, pcm, &result)
         if status != PV_STATUS_SUCCESS {
-            let messageStack = try getMessageStack()
-            throw pvStatusToPorcupineError(status, "Porcupine process failed", messageStack)
+            let messageStack = try Porcupine.getMessageStack()
+            throw Porcupine.pvStatusToPorcupineError(status, "Porcupine process failed", messageStack)
         }
         return result
     }
@@ -255,7 +320,7 @@ public class Porcupine {
             "If this is a packaged asset, ensure you have added it to your xcode project.")
     }
 
-    private func pvStatusToPorcupineError(
+    private static func pvStatusToPorcupineError(
         _ status: pv_status_t,
         _ message: String,
         _ messageStack: [String] = []) -> PorcupineError {
@@ -288,12 +353,12 @@ public class Porcupine {
         }
     }
 
-    private func getMessageStack() throws -> [String] {
+    private static func getMessageStack() throws -> [String] {
         var messageStackRef: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?
         var messageStackDepth: Int32 = 0
         let status = pv_get_error_stack(&messageStackRef, &messageStackDepth)
         if status != PV_STATUS_SUCCESS {
-            throw pvStatusToPorcupineError(status, "Unable to get Porcupine error state")
+            throw Porcupine.pvStatusToPorcupineError(status, "Unable to get Porcupine error state")
         }
 
         var messageStack: [String] = []

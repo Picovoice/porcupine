@@ -129,7 +129,7 @@
 			mainGroup = 5AD8B4522D9C5BB60077FA19;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				5AD8B4722D9C5C910077FA19 /* XCRemoteSwiftPackageReference "porcupine" */,
+				02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */,
 				5AD8B4752D9C5C9D0077FA19 /* XCRemoteSwiftPackageReference "SwiftySound" */,
 			);
 			productRefGroup = 5AD8B45C2D9C5BB60077FA19 /* Products */;
@@ -220,7 +220,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -277,7 +277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -304,7 +304,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,7 +335,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -372,6 +372,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../../porcupine;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		5AD8B4722D9C5C910077FA19 /* XCRemoteSwiftPackageReference "porcupine" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -394,7 +401,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		5AD8B4732D9C5C910077FA19 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5AD8B4722D9C5C910077FA19 /* XCRemoteSwiftPackageReference "porcupine" */;
+			package = 02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */,
 			productName = Porcupine;
 		};
 		5AD8B4762D9C5C9D0077FA19 /* SwiftySound */ = {

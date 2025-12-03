@@ -64,6 +64,12 @@ public class PorcupineManager {
     ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keywordPaths: Absolute paths to keyword model files.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
@@ -74,6 +80,7 @@ public class PorcupineManager {
             accessKey: String,
             keywordPaths: [String],
             modelPath: String? = nil,
+            device: String? = nil,
             sensitivities: [Float32]? = nil,
             onDetection: ((Int32) -> Void)?,
             errorCallback: ((Error) -> Void)? = nil) throws {
@@ -83,6 +90,7 @@ public class PorcupineManager {
                         accessKey: accessKey,
                         keywordPaths: keywordPaths,
                         modelPath: modelPath,
+                        device: device,
                         sensitivities: sensitivities
                 ),
                 onDetection: onDetection,
@@ -95,6 +103,12 @@ public class PorcupineManager {
     ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keywordPath: Absolute paths to a keyword model file.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
@@ -105,6 +119,7 @@ public class PorcupineManager {
             accessKey: String,
             keywordPath: String,
             modelPath: String? = nil,
+            device: String? = nil,
             sensitivity: Float32 = 0.5,
             onDetection: ((Int32) -> Void)?,
             errorCallback: ((Error) -> Void)? = nil) throws {
@@ -114,6 +129,7 @@ public class PorcupineManager {
                         accessKey: accessKey,
                         keywordPath: keywordPath,
                         modelPath: modelPath,
+                        device: device,
                         sensitivity: sensitivity
                 ),
                 onDetection: onDetection,
@@ -126,6 +142,12 @@ public class PorcupineManager {
     ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keywords: An array of built-in keywords from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
@@ -136,6 +158,7 @@ public class PorcupineManager {
             accessKey: String,
             keywords: [Porcupine.BuiltInKeyword],
             modelPath: String? = nil,
+            device: String? = nil,
             sensitivities: [Float32]? = nil,
             onDetection: ((Int32) -> Void)?,
             errorCallback: ((Error) -> Void)? = nil) throws {
@@ -145,6 +168,7 @@ public class PorcupineManager {
                         accessKey: accessKey,
                         keywords: keywords,
                         modelPath: modelPath,
+                        device: device,
                         sensitivities: sensitivities
                 ),
                 onDetection: onDetection,
@@ -157,6 +181,12 @@ public class PorcupineManager {
     ///   - accessKey: The AccessKey obtained from Picovoice console.
     ///   - keyword: A built-in keyword from the Porcupine.BuiltInKeyword enum.
     ///   - modelPath: Absolute path to file containing model parameters.
+    ///   - device: String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+    ///     suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+    ///     device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+    ///     is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+    ///     number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+    ///     where `${NUM_THREADS}` is the desired number of threads.
     ///   - sensitivities: Sensitivities for detecting keywords. Each value should be a number within [0, 1].
     ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     ///   - onDetection: It is invoked upon detection of the keyword.
@@ -167,6 +197,7 @@ public class PorcupineManager {
             accessKey: String,
             keyword: Porcupine.BuiltInKeyword,
             modelPath: String? = nil,
+            device: String? = nil,
             sensitivity: Float32 = 0.5,
             onDetection: ((Int32) -> Void)?,
             errorCallback: ((Error) -> Void)? = nil) throws {
@@ -175,6 +206,7 @@ public class PorcupineManager {
                         accessKey: accessKey,
                         keyword: keyword,
                         modelPath: modelPath,
+                        device: device,
                         sensitivity: sensitivity
                 ),
                 onDetection: onDetection,
