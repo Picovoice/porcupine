@@ -44,11 +44,20 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+############## REMOVE AFTER RELEASE ##########################
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+############## REMOVE AFTER RELEASE ##########################
+
     - name: Copy test_resources
       run: ./copy_test_resources.sh
 
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
+
+    - name: Inject Device
+      run: echo pvTestingDevice="cpu:1" >> local.properties
 
     - name: Inject Android keystore variables
       run: |
@@ -99,11 +108,20 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+############## REMOVE AFTER RELEASE ##########################
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+############## REMOVE AFTER RELEASE ##########################
+
     - name: Copy test_resources
       run: ./copy_test_resources.sh
 
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
+
+    - name: Inject Device
+      run: echo pvTestingDevice="cpu:1" >> local.properties
 
     - name: Inject Android keystore variables
       run: |

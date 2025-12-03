@@ -54,6 +54,7 @@ public class BaseTest {
         testResourcesPath = new File(appContext.getFilesDir(), "test_resources").getAbsolutePath();
 
         accessKey = appContext.getString(R.string.pvTestingAccessKey);
+        device = appContext.getString(R.string.pvTestingDevice);
     }
 
     public static String getTestDataString() throws IOException {

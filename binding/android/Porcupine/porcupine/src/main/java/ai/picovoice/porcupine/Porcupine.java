@@ -1,5 +1,5 @@
 /*
-    Copyright 2021-2023 Picovoice Inc.
+    Copyright 2021-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -57,10 +57,26 @@ public class Porcupine {
     }
 
     /**
+     * Lists all available devices that Porcupine can use for inference.
+     * Each entry in the list can be used as the `device` argument when initializing Porcupine.
+     *
+     * @return Array of all available devices that Porcupine can be used for inference.
+     * @throws PorcupineException if getting available devices fails.
+     */
+    public static String[] getAvailableDevices() throws PorcupineException {
+        return PorcupineNative.listHardwareDevices();
+    }
+    
+    /**
      * Constructor.
      *
      * @param accessKey     AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
      * @param modelPath     Absolute path to the file containing model parameters.
+     * @param device String representation of the device (e.g., CPU or GPU) to use for inference. If set to `best`, the most
+     * suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU device.
+     * To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}` is the index of the
+     * target GPU. If set to `cpu`, the engine will run on the CPU with the default number of threads. To specify the
+     * number of threads, set this argument to `cpu:${NUM_THREADS}`, where `${NUM_THREADS}` is the desired number of threads.
      * @param keywordPaths  Absolute paths to keyword model files.
      * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
      *                      within [0, 1]. A higher sensitivity results in fewer misses at the cost
@@ -70,6 +86,7 @@ public class Porcupine {
     private Porcupine(
             String accessKey,
             String modelPath,
+            String device,
             String[] keywordPaths,
             float[] sensitivities) throws PorcupineException {
         PorcupineNative.setSdk(Porcupine._sdk);
@@ -77,6 +94,7 @@ public class Porcupine {
         handle = PorcupineNative.init(
                 accessKey,
                 modelPath,
+                device,
                 keywordPaths,
                 sensitivities);
     }
@@ -174,6 +192,7 @@ public class Porcupine {
 
         private String accessKey = null;
         private String modelPath = null;
+        private String device = null;
         private String[] keywordPaths = null;
         private BuiltInKeyword[] keywords = null;
         private float[] sensitivities = null;
@@ -185,6 +204,11 @@ public class Porcupine {
 
         public Builder setModelPath(String modelPath) {
             this.modelPath = modelPath;
+            return this;
+        }
+
+        public Builder setDevice(String device) {
+            this.device = device;
             return this;
         }
 
@@ -270,6 +294,10 @@ public class Porcupine {
                 extractPackageResources(context);
             }
 
+            if (this.accessKey == null || this.accessKey.equals("")) {
+                throw new PorcupineInvalidArgumentException("No AccessKey provided to Porcupine.");
+            }
+
             if (modelPath == null) {
                 modelPath = DEFAULT_MODEL_PATH;
             } else {
@@ -286,8 +314,8 @@ public class Porcupine {
                 }
             }
 
-            if (this.accessKey == null || this.accessKey.equals("")) {
-                throw new PorcupineInvalidArgumentException("No AccessKey provided to Porcupine.");
+            if (device == null) {
+                device = "best";
             }
 
             if (this.keywordPaths != null && this.keywords != null) {
@@ -337,7 +365,12 @@ public class Porcupine {
                                 sensitivities.length));
             }
 
-            return new Porcupine(accessKey, modelPath, keywordPaths, sensitivities);
+            return new Porcupine(
+                    accessKey,
+                    modelPath,
+                    device,
+                    keywordPaths,
+                    sensitivities);
         }
     }
 }
