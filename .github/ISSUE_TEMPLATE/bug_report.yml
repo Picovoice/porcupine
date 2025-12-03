@@ -34,7 +34,6 @@ body:
         - Python
         - React Native
         - React
-        - Unity
         - Web
     validations:
       required: true

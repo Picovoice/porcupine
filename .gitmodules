@@ -1,6 +1,3 @@
-[submodule "binding/unity/VoiceProcessor"]
-	path = binding/unity/VoiceProcessor
-	url = https://github.com/Picovoice/unity-voice-processor.git
 [submodule "demo/c/dr_libs"]
 	path = demo/c/dr_libs
 	url = https://github.com/mackron/dr_libs.git
