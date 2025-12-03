@@ -13,6 +13,7 @@
 package ai.picovoice.porcupinedemo;
 
 import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.PorcupineException;
 import org.apache.commons.cli.*;
 
 import javax.sound.sampled.*;
@@ -236,8 +237,16 @@ public class MicDemo {
         }
 
         if (cmd.hasOption("show_inference_devices")) {
-            System.out.println(Porcupine.getAvailableDevices());
-            return;
+            try {
+                String[] devices = Porcupine.getAvailableDevices();
+                for (int i = 0; i < devices.length; i++) {
+                    System.out.println(devices[i]);
+                }
+                return;
+            } catch (PorcupineException e) {
+                System.out.println(e.getMessage());
+                System.exit(1);
+            }
         }
 
         String accessKey = cmd.getOptionValue("access_key");

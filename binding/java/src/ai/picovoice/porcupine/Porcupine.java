@@ -163,7 +163,7 @@ public class Porcupine {
      * @return List of available hardware devices that Porcupine can use to run inference.
      * @throws PorcupineException if the library file cannot be loaded.
      */
-    public static String[] getAvailableDevices(String libraryPath) {
+    public static String[] getAvailableDevices(String libraryPath) throws PorcupineException {
         try {
             System.load(libraryPath);
         } catch (Exception exception) {

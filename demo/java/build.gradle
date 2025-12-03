@@ -4,6 +4,9 @@ plugins {
 
 repositories {
     mavenCentral()
+    flatDir {
+      dirs '../../binding/java/build/libs'
+    }
 }
 
 sourceSets {
@@ -15,7 +18,8 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:4.0.0'
+//     implementation 'ai.picovoice:porcupine-java:4.0.0'
+    implementation name: 'Porcupine'
     implementation 'commons-cli:commons-cli:1.4'
 }
 

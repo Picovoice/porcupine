@@ -132,7 +132,7 @@ public class PorcupineTest {
     @Test
     void getAvailableDevices() throws PorcupineException {
         String[] devices = Porcupine.getAvailableDevices();
-        assertTrue(0 < device.length);
+        assertTrue(0 < devices.length);
     }
 
     @Test
