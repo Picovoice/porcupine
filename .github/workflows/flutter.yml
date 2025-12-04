@@ -38,8 +38,12 @@ jobs:
     - name: Copy test_resources
       run: ./copy_test_resources.sh
 
-    - name: Inject AppID
+    - name: Inject AccessKey
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+        integration_test/app_test.dart
+
+    - name: Inject device
+      run: sed -i 's:{TESTING_DEVICE_HERE}:cpu\:1:'
         integration_test/app_test.dart
 
     - name: Install Flutter 3.35.0
@@ -66,8 +70,12 @@ jobs:
     - name: Copy test_resources
       run: ./copy_test_resources.sh
 
-    - name: Inject AppID
-      run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+    - name: Inject AccessKey
+      run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+        integration_test/app_test.dart
+
+    - name: Inject device
+      run: sed -i 's:{TESTING_DEVICE_HERE}:cpu\:1:'
         integration_test/app_test.dart
 
     - name: Install Flutter 3.35.0

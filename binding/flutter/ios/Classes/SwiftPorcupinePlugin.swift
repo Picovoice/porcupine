@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2024 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -14,6 +14,7 @@ import UIKit
 import Porcupine
 
 enum Method: String {
+    case GET_AVAILABLE_DEVICES
     case FROM_BUILTIN_KEYWORDS
     case FROM_KEYWORD_PATHS
     case PROCESS
@@ -41,6 +42,15 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
         let args = call.arguments as! [String: Any]
 
         switch method {
+        case .GET_AVAILABLE_DEVICES:
+            do {
+                var result: [String] = Porcupine.getAvailableDevices()
+                result(result)
+            } catch let error as PorcupineError {
+                result(errorToFlutterError(error))
+            } catch {
+                result(errorToFlutterError(PorcupineError(error.localizedDescription)))
+            }
         case .FROM_BUILTIN_KEYWORDS:
             do {
                 if let accessKey = args["accessKey"] as? String,

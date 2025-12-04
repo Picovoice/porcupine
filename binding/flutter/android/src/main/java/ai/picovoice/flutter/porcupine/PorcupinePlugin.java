@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2024 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -15,6 +15,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -31,6 +32,7 @@ import ai.picovoice.porcupine.*;
 public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
 
     private enum Method {
+        GET_AVAILABLE_DEVICES,
         FROM_BUILTIN_KEYWORDS,
         FROM_KEYWORD_PATHS,
         PROCESS,
@@ -64,6 +66,18 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
         }
 
         switch (method) {
+            case GET_AVAILABLE_DEVICES:
+                try {
+                    String[] devices = Porcupine.getAvailableDevices();
+                    List<String> result = Arrays.asList(devices);
+                    result.success(result);
+                } catch (PorcupineException e) {
+                    result.error(
+                            e.getClass().getSimpleName(),
+                            e.getMessage(),
+                            null);
+                }
+                break;
             case FROM_BUILTIN_KEYWORDS:
                 try {
                     String accessKey = call.argument("accessKey");
