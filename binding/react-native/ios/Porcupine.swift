@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -20,10 +20,28 @@ class PvPorcupine: NSObject {
         Porcupine.setSdk(sdk: "react-native")
     }
 
+    @objc(getAvailableDevices:rejecter:)
+    func fromBuiltInKeywords(
+        resolver resolve: RCTPromiseResolveBlock,
+        rejecter reject: RCTPromiseRejectBlock
+    ) {
+        do {
+            var result: [String] = Porcupine.getAvailableDevices()
+            resolve(result)
+        } catch let error as PorcupineError {
+            let (code, message) = errorToCodeAndMessage(error)
+            reject(code, message, nil)
+        } catch {
+            let (code, message) = errorToCodeAndMessage(PorcupineError(error.localizedDescription))
+            reject(code, message, nil)
+        }
+    }
+
     @objc(fromBuiltInKeywords:modelPath:keywords:sensitivities:resolver:rejecter:)
     func fromBuiltInKeywords(
         accessKey: String,
         modelPath: String,
+        device: String,
         keywords: [String],
         sensitivities: [Float32],
         resolver resolve: RCTPromiseResolveBlock,
@@ -46,6 +64,7 @@ class PvPorcupine: NSObject {
                 accessKey: accessKey,
                 keywords: keywordValues,
                 modelPath: modelPath.isEmpty ? nil : modelPath,
+                device: device.isEmpty ? nil : device,
                 sensitivities: sensitivities.isEmpty ? nil : sensitivities)
 
             let handle: String = String(describing: porcupine)
@@ -71,6 +90,7 @@ class PvPorcupine: NSObject {
     func fromKeywordPaths(
         accessKey: String,
         modelPath: String,
+        device: String,
         keywordPaths: [String],
         sensitivities: [Float32],
         resolver resolve: RCTPromiseResolveBlock,
@@ -81,6 +101,7 @@ class PvPorcupine: NSObject {
                 accessKey: accessKey,
                 keywordPaths: keywordPaths,
                 modelPath: modelPath.isEmpty ? nil : modelPath,
+                device: device.isEmpty ? nil : device,
                 sensitivities: sensitivities.isEmpty ? nil : sensitivities)
 
             let handle: String = String(describing: porcupine)
