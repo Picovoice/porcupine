@@ -289,7 +289,7 @@ describe('Porcupine Binding', function () {
       cy.wrap(null).then(async () => {
         await runInitTest(instance, {
           device: "cloud:9",
-          expectFailure: instance === PorcupineWorker,
+          expectFailure: true,
         });
       });
     });
