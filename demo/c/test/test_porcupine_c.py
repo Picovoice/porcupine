@@ -32,6 +32,10 @@ class PorcupineCTestCase(unittest.TestCase):
         cls._root_dir = os.path.join(os.path.dirname(__file__), "../../..")
 
     def _get_library_file(self):
+        if self._platform == "windows":
+            if self._arch == "amd64":
+                os.environ["PATH"] += os.pathsep + os.path.join(self._root_dir, "lib", "windows", "amd64")
+
         return os.path.join(
             self._root_dir,
             "lib",
