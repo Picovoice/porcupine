@@ -34,7 +34,6 @@ let package = Package(
                 "binding/ios/PorcupineAppTest",
                 "binding/flutter",
                 "binding/react-native",
-                "binding/unity",
                 "demo"
             ],
             sources: [
