@@ -54,7 +54,7 @@ program
     parseFloat,
     0.5)
   .option(
-    "-sy, --show_inference_devices",
+    "-z, --show_inference_devices",
     "Print devices that are available to run Porcupine inference.",
     false);
 

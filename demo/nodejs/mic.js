@@ -46,18 +46,18 @@ program
     parseFloat,
     0.5
   ).option(
-    "-d, --audio_device_index <number>",
-    "index of audio device to use to record audio",
-    Number,
-    -1
+      "-i, --audio_device_index <number>",
+      "index of audio device to use to record audio",
+      Number,
+      -1
   ).option(
-    "-sd, --show_audio_devices",
-    "show the list of available devices",
-    false
+      "-d, --show_audio_devices",
+      "show the list of available devices",
+      false
   ).option(
-    "-sy, --show_inference_devices",
-    "Print devices that are available to run Porcupine inference.",
-    false);
+      "-z, --show_inference_devices",
+      "Print devices that are available to run Porcupine inference.",
+      false);
 
 if (process.argv.length < 3) {
   program.help();

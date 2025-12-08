@@ -27,9 +27,6 @@ jobs:
       with:
         node-version: lts/*
 
-    - name: Pre-build dependencies
-      run: npm install yarn
-
     - name: Run Binding Linter
       run: yarn && yarn lint
       working-directory: binding/nodejs

@@ -58,7 +58,9 @@ export default class Porcupine {
    * @param {string} accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param {Array} keywords Absolute paths to keyword model files (`.ppn`).
    * @param {Array} sensitivities Sensitivity values for detecting keywords.
-   * Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+   * Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses
+   * at the cost of increasing the false alarm rate.
+   * @param options Optional configuration arguments.
    * @param {string} options.modelPath Path to the Porcupine model (.pv extension)
    * @param {string} options.device String representation of the device (e.g., CPU or GPU) to use for inference.
    * If set to `best`, the most suitable device is selected automatically. If set to `gpu`, the engine uses the

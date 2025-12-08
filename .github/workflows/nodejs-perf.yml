@@ -51,9 +51,6 @@ jobs:
       with:
         node-version: '18.x'
 
-    - name: Pre-build dependencies
-      run: npm install yarn
-
     - name: Install dependencies
       run: yarn install
 
@@ -87,9 +84,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Pre-build dependencies
-      run: npm install --global yarn
-
     - name: Install dependencies
       run: yarn install
 
@@ -118,9 +112,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Pre-build dependencies
-      run: npm install --global yarn
 
     - name: Install dependencies
       run: yarn install
