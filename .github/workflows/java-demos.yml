@@ -36,10 +36,22 @@ jobs:
         - java-version: 21
           gradle-version: 8.5
         - java-version: 25
-          gradle-version: 9.1
+          gradle-version: 9.2.1
 
     steps:
     - uses: actions/checkout@v3
+
+# REMOVE AFTER RELEASE
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Build binding
+      run: gradle assemble
+      working-directory: binding/java
+  # REMOVE AFTER RELEASE
 
     - name: Set up JDK ${{ matrix.java-version }}
       uses: actions/setup-java@v3
@@ -50,12 +62,6 @@ jobs:
     - uses: gradle/actions/setup-gradle@v3
       with:
         gradle-version: ${{ matrix.gradle-version }}
-
-# REMOVE AFTER RELEASE
-    - name: Build binding
-      run: gradle assemble
-      working-directory: binding/java
-# REMOVE AFTER RELEASE
 
     - name: Build
       run: gradle build
@@ -70,6 +76,13 @@ jobs:
       matrix:
         device: [best]
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
+        include:
+          - device: gpu
+            machine: pv-linux
+          - device: gpu
+            machine: pv-windows
+          - device: gpu
+            machine: pv-ios
 
     steps:
     - uses: actions/checkout@v3

@@ -126,6 +126,7 @@ task copyMacLib(type: Copy) {
 task copyWindowsLib(type: Copy) {
     from('../../lib/java/windows/')
     include('amd64/pv_porcupine_jni.dll',
+            'amd64/pv_ypu_impl_cuda.dll',
             'arm64/pv_porcupine_jni.dll')
     into "${outputDir}/porcupine/lib/java/windows/"
 }
