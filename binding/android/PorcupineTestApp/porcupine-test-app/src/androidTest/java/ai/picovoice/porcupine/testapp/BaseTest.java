@@ -44,7 +44,9 @@ public class BaseTest {
     Context appContext;
     AssetManager assetManager;
     String testResourcesPath;
+
     String accessKey;
+    String device;
 
     @Before
     public void Setup() throws IOException {

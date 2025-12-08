@@ -57,7 +57,7 @@ jobs:
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
     - name: Inject Device
-      run: echo pvTestingDevice="cpu:1" >> local.properties
+      run: echo pvTestingDevice="best" >> local.properties
 
     - name: Inject Android keystore variables
       run: |
@@ -121,7 +121,7 @@ jobs:
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
     - name: Inject Device
-      run: echo pvTestingDevice="cpu:1" >> local.properties
+      run: echo pvTestingDevice="best" >> local.properties
 
     - name: Inject Android keystore variables
       run: |

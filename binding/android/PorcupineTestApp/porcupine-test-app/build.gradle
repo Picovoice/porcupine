@@ -38,7 +38,7 @@ android {
         minSdkVersion 21
         targetSdkVersion defaultTargetSdkVersion
         versionCode 7
-        versionName "3.0.0"
+        versionName "4.0.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resValue 'string', 'pvTestingAccessKey', properties.getProperty("pvTestingAccessKey", "")
