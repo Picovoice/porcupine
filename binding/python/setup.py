@@ -50,10 +50,10 @@ include pvporcupine/lib/linux/x86_64/libpv_porcupine.so
 include pvporcupine/lib/mac/x86_64/libpv_porcupine.dylib
 include pvporcupine/lib/mac/arm64/libpv_porcupine.dylib
 recursive-include pvporcupine/lib/raspberry-pi *
-include pvporcupine/lib/windows/amd64/libpv_porcupine.dll
+recursive-include pvporcupine/lib/windows/amd64 *
 include pvporcupine/lib/windows/arm64/libpv_porcupine.dll
 recursive-include pvporcupine/resources/keyword_files/linux *
-recursive-include pvporcupine/resources/keyword_files/mac/ *
+recursive-include pvporcupine/resources/keyword_files/mac *
 recursive-include pvporcupine/resources/keyword_files/raspberry-pi *
 recursive-include pvporcupine/resources/keyword_files/windows *
 """
