@@ -78,7 +78,7 @@ jobs:
     # ************** REMOVE AFTER RELEASE ********************
     - name: Build binding
       run: |
-        pip install wheel setuptools && cd ../../binding/python && python3 setup.py sdist bdist_wheel && pip install dist/pvporcupine-4.0.0-py3-none-any.whl
+        pip install wheel setuptools && cd ../../binding/python && python3 setup.py sdist bdist_wheel && pip install dist/pvporcupine-4.0.0-py3-none-any.whl --force-reinstall
     # ********************************************************
 
     - name: Install dependencies
