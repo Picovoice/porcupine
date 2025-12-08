@@ -40,6 +40,10 @@ jobs:
     - name: Build Web SDK
       run: yarn install && yarn copywasm && yarn copyppn && yarn build
       working-directory: binding/web
+
+    - name: Install dependencies
+      run: yarn install && yarn build
+      working-directory: binding/react
 # ************** REMOVE AFTER RELEASE ********************
 
     - name: Install dependencies
