@@ -315,7 +315,7 @@ export class Porcupine {
       throw new PorcupineErrors.PorcupineInvalidArgumentError('Invalid AccessKey');
     }
 
-    let { device } = options;
+    let { device = "best" } = options;
     const { processErrorCallback } = options;
 
     const isSimd = await simd();
@@ -323,13 +323,20 @@ export class Porcupine {
       throw new PorcupineErrors.PorcupineRuntimeError('Browser not supported.');
     }
 
-    const isWorkerScope = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
-    if (!isWorkerScope) {
-      if (device && device !== "cpu:1") {
-        console.warn("Multi-threading is not supported on main thread.");
-      }
-      device = "cpu:1";
+    const isWorkerScope =
+      typeof WorkerGlobalScope !== 'undefined' &&
+      self instanceof WorkerGlobalScope;
+    if (
+      !isWorkerScope &&
+      (device === 'best' || (device.startsWith('cpu') && device !== 'cpu:1'))
+    ) {
+      // eslint-disable-next-line no-console
+      console.warn('Multi-threading is not supported on main thread.');
+      device = 'cpu:1';
     }
+
+    const sabDefined = typeof SharedArrayBuffer !== 'undefined'
+      && (device !== "cpu:1");
 
     if (
       keywordPaths.length !== keywordLabels.length ||
@@ -339,15 +346,13 @@ export class Porcupine {
           keyword labels (${keywordLabels.length}) or sensitivities (${sensitivities.length})`);
     }
 
-    const sabDefined = (typeof SharedArrayBuffer !== 'undefined') && (device !== "cpu:1");
-
     return new Promise<Porcupine>((resolve, reject) => {
       Porcupine._porcupineMutex
         .runExclusive(async () => {
           const wasmOutput = await Porcupine.initWasm(
             accessKey.trim(),
             modelPath,
-            (device) ? device : "best",
+            device,
             (sabDefined) ? this._wasmPThread : this._wasmSimd,
             (sabDefined) ? this._wasmPThreadLib : this._wasmSimdLib,
             (sabDefined) ? createModulePThread : createModuleSimd,

@@ -12,7 +12,7 @@ export default defineConfig({
     specPattern: "test/*.test.{js,jsx,ts,tsx}",
     video: false,
     screenshotOnRunFailure: false,
-    setupNodeEvents(on, config) {
+    setupNodeEvents(on) {
       on('before:browser:launch', (browser, launchOptions) => {
         if (browser.name === 'chrome') {
           launchOptions.args.push('--enable-features=SharedArrayBuffer');

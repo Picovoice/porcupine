@@ -35,8 +35,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
+# ************** REMOVE AFTER RELEASE ********************
+    - name: Build Web SDK
+      run: yarn install && yarn copywasm && yarn build
+      working-directory: binding/web
+# ************** REMOVE AFTER RELEASE ********************
 
     - name: Install dependencies
       run: yarn install

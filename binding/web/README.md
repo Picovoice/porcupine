@@ -43,6 +43,8 @@ Browsers that don't support `SharedArrayBuffers` or applications that don't incl
 IndexedDB is required to use `Porcupine` in a worker thread. Browsers without IndexedDB support
 (i.e. Firefox Incognito Mode) should use `Porcupine` in the main thread.
 
+Multi-threading is only enabled for Porcupine when using on a web worker.
+
 ## Installation
 
 ### Package
