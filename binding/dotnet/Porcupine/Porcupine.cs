@@ -386,12 +386,12 @@ namespace Pv
         {
             IntPtr hardwareDevicesPtr;
             int numDevices;
-            PvStatus status = pv_porcupine_list_hardware_devices(
+            PorcupineStatus status = pv_porcupine_list_hardware_devices(
                 out hardwareDevicesPtr,
                 out numDevices);
-            if (status != PvStatus.SUCCESS)
+            if (status != PorcupineStatus.SUCCESS)
             {
-                throw PvStatusToException(
+                throw PorcupineStatusToException(
                     status,
                     "Get available devices failed",
                     GetMessageStack());
