@@ -30,14 +30,14 @@ import java.util.Locale;
 
 public class MicDemo {
     public static void runDemo(
-        String accessKey,
-        String libPath,
-        String modelPath,
-        String device,
-        String[] keywordPaths,
-        float[] sensitivities,
-        int audioDeviceIndex,
-        String outputPath) {
+            String accessKey,
+            String libPath,
+            String modelPath,
+            String device,
+            String[] keywordPaths,
+            float[] sensitivities,
+            int audioDeviceIndex,
+            String outputPath) {
 
         // create keywords from keyword_paths
         String[] keywords = new String[keywordPaths.length];

@@ -49,6 +49,7 @@ coolterm
 cortexm
 cporcupine
 cstring
+cuda
 cwrap
 dkgray
 dlfcn

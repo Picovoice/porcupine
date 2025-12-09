@@ -30,13 +30,13 @@ import java.util.Locale;
 public class FileDemo {
 
     public static void runDemo(
-        String accessKey,
-        File inputAudioFile,
-        String libPath,
-        String modelPath,
-        String device,
-        String[] keywordPaths,
-        float[] sensitivities) {
+            String accessKey,
+            File inputAudioFile,
+            String libPath,
+            String modelPath,
+            String device,
+            String[] keywordPaths,
+            float[] sensitivities) {
 
         // create keywords from keyword_paths
         String[] keywords = new String[keywordPaths.length];
@@ -250,13 +250,13 @@ public class FileDemo {
         }
 
         runDemo(
-            accessKey,
-            inputAudioFile,
-            libraryPath,
-            modelPath,
-            device,
-            keywordPaths,
-            sensitivities);
+                accessKey,
+                inputAudioFile,
+                libraryPath,
+                modelPath,
+                device,
+                keywordPaths,
+                sensitivities);
     }
 
     private static Options buildCommandLineOptions() {

@@ -13,6 +13,7 @@
 package ai.picovoice.porcupine;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,6 +73,10 @@ public class Porcupine {
             String[] keywordPaths,
             float[] sensitivities) throws PorcupineException {
         try {
+            ArrayList<String> libraryDependencies = Utils.getLibraryDependencyPaths(libraryPath);
+            for (String dependency : libraryDependencies) {
+                System.load(dependency);
+            }
             System.load(libraryPath);
         } catch (Exception exception) {
             throw new PorcupineException(exception);
