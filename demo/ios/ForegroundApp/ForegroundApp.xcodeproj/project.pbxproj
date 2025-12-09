@@ -130,7 +130,7 @@
 			mainGroup = 5AD8B41F2D95C6340077FA19;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				5AD8B43F2D95C6C60077FA19 /* XCRemoteSwiftPackageReference "porcupine" */,
+				02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */,
 			);
 			productRefGroup = 5AD8B4292D95C6340077FA19 /* Products */;
 			projectDirPath = "";
@@ -222,7 +222,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -279,7 +279,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -305,7 +305,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,7 +335,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -372,6 +372,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../../porcupine;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		5AD8B43F2D95C6C60077FA19 /* XCRemoteSwiftPackageReference "porcupine" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -386,7 +393,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		5AD8B4402D95C6C60077FA19 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5AD8B43F2D95C6C60077FA19 /* XCRemoteSwiftPackageReference "porcupine" */;
+			package = 02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */;
 			productName = Porcupine;
 		};
 /* End XCSwiftPackageProductDependency section */

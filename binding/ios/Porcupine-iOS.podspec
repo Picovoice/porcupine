@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name = 'Porcupine-iOS'
   s.module_name = 'Porcupine'
-  s.version = '3.0.4'
+  s.version = '4.0.0'
   s.license = {:type => 'Apache 2.0'}
   s.summary = 'iOS SDK for Picovoice\'s Porcupine wake word engine'
   s.description =
@@ -12,18 +12,18 @@ Pod::Spec.new do |s|
     - using deep neural networks trained in real-world environments.
     - compact and computationally-efficient. It is perfect for IoT.
     - cross-platform:
-      - Arm Cortex-M, STM32, Arduino, and i.MX RT
+      - Arm Cortex-M, STM32 and Arduino
       - Raspberry Pi (Zero, 3, 4, 5)
       - Android and iOS
       - Chrome, Safari, Firefox, and Edge
-      - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
+      - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64, arm64)
     - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
     - self-service. Developers can train custom wake word models using [Picovoice Console](https://picovoice.ai/console/).
   DESC
   s.homepage = 'https://github.com/Picovoice/porcupine/tree/master/binding/ios'
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }
   s.source = { :git => "https://github.com/Picovoice/porcupine.git", :tag => s.version.to_s }
-  s.ios.deployment_target = '13.0'
+  s.ios.deployment_target = '16.0'
   s.swift_version = '5.0'
   s.vendored_frameworks = 'lib/ios/PvPorcupine.xcframework'
   s.resource_bundles = {
