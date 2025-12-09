@@ -209,7 +209,7 @@ class PorcupineAppTestUITests: BaseTest {
     }
 
     func testProcSuccessWithSingleBuiltIn() throws {
-        let p: Porcupine = try Porcupine.init
+        let p: Porcupine = try Porcupine.init(
             accessKey: accessKey,
             keyword: Porcupine.BuiltInKeyword.porcupine,
             device: device)
