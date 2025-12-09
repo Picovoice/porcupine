@@ -1,5 +1,5 @@
 /*
-    Copyright 2022 Picovoice Inc.
+    Copyright 2022-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PorcupinePerformanceTest {
 
     private final String accessKey = System.getProperty("pvTestingAccessKey");
+    private final String device = System.getProperty("pvTestingDevice");
     private final int numTestIterations = Integer.parseInt(System.getProperty("numTestIterations"));
     private final double performanceThresholdSec =
             Double.parseDouble(System.getProperty("performanceThresholdSec"));
@@ -35,6 +36,7 @@ public class PorcupinePerformanceTest {
         Porcupine porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(PorcupineTestUtils.getTestModelPath("en"))
+                .setDevice(device)
                 .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
 

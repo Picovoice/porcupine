@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2023 Picovoice Inc.
+    Copyright 2018-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -13,6 +13,7 @@
 package ai.picovoice.porcupine;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,6 +52,13 @@ public class Porcupine {
      * @param accessKey     AccessKey obtained from Picovoice Console.
      * @param libraryPath   Absolute path to the native Porcupine library.
      * @param modelPath     Absolute path to the file containing model parameters.
+     * @param device        String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+     *                      suitable device is selected automatically. If set to `gpu`, the engine uses the first
+     *                      available GPU device. To select a specific GPU device, set this argument to
+     *                      `gpu:${GPU_INDEX}`, where `${GPU_INDEX}` is the index of the target GPU. If set to `cpu`,
+     *                      the engine will run on the CPU with the default number of threads. To specify the number
+     *                      of threads, set this argument to `cpu:${NUM_THREADS}`, where `${NUM_THREADS}`
+     *                      is the desired number of threads.
      * @param keywordPaths  Absolute paths to keyword model files.
      * @param sensitivities Sensitivities for detecting keywords. Each value should be a number
      *                      within [0, 1]. A higher sensitivity results in fewer misses at the cost
@@ -61,9 +69,14 @@ public class Porcupine {
             String accessKey,
             String libraryPath,
             String modelPath,
+            String device,
             String[] keywordPaths,
             float[] sensitivities) throws PorcupineException {
         try {
+            ArrayList<String> libraryDependencies = Utils.getLibraryDependencyPaths(libraryPath);
+            for (String dependency : libraryDependencies) {
+                System.load(dependency);
+            }
             System.load(libraryPath);
         } catch (Exception exception) {
             throw new PorcupineException(exception);
@@ -73,6 +86,7 @@ public class Porcupine {
         handle = PorcupineNative.init(
                 accessKey,
                 modelPath,
+                device,
                 keywordPaths,
                 sensitivities);
     }
@@ -147,6 +161,38 @@ public class Porcupine {
     }
 
     /**
+     * Retrieves a list of available hardware devices that Porcupine can use to run inference.
+     *
+     * @param libraryPath Path to a native Porcupine library. Set to `null` to use default library.
+     *
+     * @return List of available hardware devices that Porcupine can use to run inference.
+     * @throws PorcupineException if the library file cannot be loaded.
+     */
+    public static String[] getAvailableDevices(String libraryPath) throws PorcupineException {
+        try {
+            System.load(libraryPath);
+        } catch (Exception exception) {
+            throw new PorcupineException(exception);
+        }
+        return PorcupineNative.listHardwareDevices();
+    }
+
+    /**
+     * Retrieves a list of available hardware devices that Porcupine can use to run inference.
+     *
+     * @return List of available hardware devices that Porcupine can use to run inference.
+     * @throws PorcupineException if the default library file cannot be loaded.
+     */
+    public static String[] getAvailableDevices() throws PorcupineException {
+        if (Utils.isResourcesAvailable()) {
+            return Porcupine.getAvailableDevices(LIBRARY_PATH);
+        } else {
+            throw new PorcupineInvalidArgumentException("Default library unavailable. " +
+                    "Please provide a valid native Porcupine library path.");
+        }
+    }
+
+    /**
      * BuiltInKeyword Enum.
      */
     public enum BuiltInKeyword {
@@ -182,6 +228,7 @@ public class Porcupine {
         private String accessKey = null;
         private String libraryPath = null;
         private String modelPath = null;
+        private String device = null;
         private String[] keywordPaths = null;
         private BuiltInKeyword[] keywords = null;
         private float[] sensitivities = null;
@@ -198,6 +245,11 @@ public class Porcupine {
 
         public Builder setModelPath(String modelPath) {
             this.modelPath = modelPath;
+            return this;
+        }
+
+        public Builder setDevice(String device) {
+            this.device = device;
             return this;
         }
 
@@ -254,7 +306,7 @@ public class Porcupine {
                     libraryPath = LIBRARY_PATH;
                 } else {
                     throw new PorcupineInvalidArgumentException("Default library unavailable. " +
-                            "Please provide a native Porcupine library path (-l <library_path>).");
+                            "Please provide a native Porcupine library path.");
                 }
             }
 
@@ -263,8 +315,12 @@ public class Porcupine {
                     modelPath = MODEL_PATH;
                 } else {
                     throw new PorcupineInvalidArgumentException("Default model unavailable. " +
-                            "Please provide a valid Porcupine model path (-m <model_path>).");
+                            "Please provide a valid Porcupine model path.");
                 }
+            }
+
+            if (device == null) {
+                device = "best";
             }
 
             if (this.keywordPaths != null && this.keywords != null) {
@@ -303,7 +359,13 @@ public class Porcupine {
                                 sensitivities.length));
             }
 
-            return new Porcupine(accessKey, libraryPath, modelPath, keywordPaths, sensitivities);
+            return new Porcupine(
+                accessKey,
+                libraryPath,
+                modelPath,
+                device,
+                keywordPaths,
+                sensitivities);
         }
     }
 }
