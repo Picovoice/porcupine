@@ -287,7 +287,7 @@ namespace PorcupineDemo
                 return;
             }
 
-            if (showAvailableDevices)
+            if (showInferenceDevices)
             {
                 Console.WriteLine(string.Join(Environment.NewLine, Porcupine.GetAvailableDevices()));
                 return;

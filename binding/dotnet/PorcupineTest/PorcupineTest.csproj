@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net10.0;net8.0;net6.0;netcoreapp3.1;netcoreapp2.1;</TargetFrameworks>
+        <TargetFrameworks>net6.0;</TargetFrameworks>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -23,9 +23,9 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
+        <Content Include="..\..\..\lib\windows\amd64\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Link>libpv_porcupine.dll</Link>
+            <Link>%(Filename)%(Extension)</Link>
             <Visible>false</Visible>
         </Content>
         <Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">
