@@ -8,11 +8,11 @@ applications. It is
 - using deep neural networks trained in real-world environments.
 - compact and computationally-efficient. It is perfect for IoT.
 - cross-platform:
-  - Arm Cortex-M, STM32, Arduino, and i.MX RT 
+  - Arm Cortex-M, STM32, and Arduino
   - Raspberry Pi (Zero, 3, 4, 5)
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
-  - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
+  - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64, arm64)
 - scalable. It can detect multiple always-listening voice commands with no added runtime footprint.
 - self-service. Developers can train custom wake word models using [Picovoice Console](https://console.picovoice.ai/).
 

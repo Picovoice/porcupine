@@ -1,5 +1,5 @@
 #
-# Copyright 2019-2024 Picovoice Inc.
+# Copyright 2019-2025 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -50,10 +50,10 @@ include pvporcupine/lib/linux/x86_64/libpv_porcupine.so
 include pvporcupine/lib/mac/x86_64/libpv_porcupine.dylib
 include pvporcupine/lib/mac/arm64/libpv_porcupine.dylib
 recursive-include pvporcupine/lib/raspberry-pi *
-include pvporcupine/lib/windows/amd64/libpv_porcupine.dll
+recursive-include pvporcupine/lib/windows/amd64 *
 include pvporcupine/lib/windows/arm64/libpv_porcupine.dll
 recursive-include pvporcupine/resources/keyword_files/linux *
-recursive-include pvporcupine/resources/keyword_files/mac/ *
+recursive-include pvporcupine/resources/keyword_files/mac *
 recursive-include pvporcupine/resources/keyword_files/raspberry-pi *
 recursive-include pvporcupine/resources/keyword_files/windows *
 """
@@ -66,7 +66,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvporcupine",
-    version="3.0.5",
+    version="4.0.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="Porcupine wake word engine.",
