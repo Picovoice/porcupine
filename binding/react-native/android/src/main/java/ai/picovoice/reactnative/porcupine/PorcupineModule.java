@@ -20,6 +20,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 import java.io.File;
@@ -52,7 +53,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
         try {
             String[] devices = Porcupine.getAvailableDevices();
             WritableArray result = Arguments.createArray();
-            for (int i = 0; i < devices.size(); i++) {
+            for (int i = 0; i < devices.length; i++) {
                 result.pushString(devices[i]);
             }
             promise.resolve(result);

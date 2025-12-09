@@ -1,6 +1,7 @@
 buildscript {
 
   repositories {
+    mavenLocal()
     google()
     mavenCentral()
   }
@@ -57,6 +58,7 @@ android {
 }
 
 repositories {
+  mavenLocal()
   mavenCentral()
   google()
 
@@ -129,5 +131,5 @@ repositories {
 dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
-  implementation 'ai.picovoice:porcupine-android:3.0.3'
+  implementation 'ai.picovoice:porcupine-android:4.0.0'
 }

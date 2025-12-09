@@ -42,6 +42,32 @@ jobs:
       with:
         submodules: 'recursive'
 
+# ************** REMOVE AFTER RELEASE ********************
+    - name: Set up Java 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: 11
+        distribution: 'temurin'
+
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+
+    - name: Install React Native Binding Dependencies
+      run: yarn install
+      working-directory: binding/react-native
+
+    - name: Build Local tarball
+      run: yarn pkg
+      working-directory: binding/react-native
+
+    - name: Remove old package
+      run: yarn remove @picovoice/porcupine-react-native
+
+    - name: Add new local package
+      run: yarn add ../../pkg/picovoice-porcupine-react-native-4.0.0.tgz
+# ************** REMOVE AFTER RELEASE ********************
+
     - name: Pre-build dependencies
       run: |
         yarn install
@@ -67,6 +93,22 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
+
+# ************** REMOVE AFTER RELEASE ********************
+    - name: Install React Native Binding Dependencies
+      run: yarn install
+      working-directory: binding/react-native
+
+    - name: Build Local tarball
+      run: yarn pkg
+      working-directory: binding/react-native
+
+    - name: Remove old package
+      run: yarn remove @picovoice/porcupine-react-native
+
+    - name: Add new local package
+      run: yarn add ../../pkg/picovoice-porcupine-react-native-4.0.0.tgz
+# ************** REMOVE AFTER RELEASE ********************
 
     - name: Pre-build dependencies
       run: |

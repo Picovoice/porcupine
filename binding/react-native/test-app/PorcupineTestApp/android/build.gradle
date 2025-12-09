@@ -10,6 +10,7 @@ buildscript {
         kotlinVersion = "2.0.21"
     }
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
     }
