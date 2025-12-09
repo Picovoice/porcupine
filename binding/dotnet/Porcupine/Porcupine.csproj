@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net6.0;netcoreapp3.0;netstandard2.0</TargetFrameworks>
-        <Version>3.0.10</Version>
+        <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+        <Version>4.0.0</Version>
         <Authors>Picovoice</Authors>
         <Company />
         <Product>Porcupine Wake Word Engine</Product>
@@ -38,9 +37,7 @@
         </Content>
         <Content Include="Porcupine.targets">
             <PackagePath>
-                buildTransitive\netcoreapp3.0\Porcupine.targets;
                 buildTransitive\net6.0\Porcupine.targets;
-                buildTransitive\net8.0\Porcupine.targets;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -48,23 +45,19 @@
 
     <!--.NET Standard 2.0+ libs-->
     <ItemGroup>
-        <Content Include="..\..\..\lib\windows\amd64\libpv_porcupine.dll">
+        <Content Include="..\..\..\lib\windows\amd64\*">
             <PackagePath>
-                buildTransitive\netstandard2.0\libpv_porcupine.dll;
-                buildTransitive\netcoreapp3.0\lib\windows\amd64\libpv_porcupine.dll;
-                buildTransitive\net6.0\lib\windows\amd64\libpv_porcupine.dll;
-                buildTransitive\net8.0\lib\windows\amd64\libpv_porcupine.dll;
+                buildTransitive\netstandard2.0;
+                buildTransitive\net6.0\lib\windows\amd64;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Link>lib\windows\amd64\libpv_porcupine.dll</Link>
+            <Link>lib\windows\amd64\%(Filename)%(Extension)</Link>
             <Visible>false</Visible>
         </Content>
         <Content Include="..\..\..\lib\mac\x86_64\libpv_porcupine.dylib">
             <PackagePath>
                 buildTransitive\netstandard2.0\libpv_porcupine.dylib;
-                buildTransitive\netcoreapp3.0\lib\mac\x86_64\libpv_porcupine.dylib;
                 buildTransitive\net6.0\lib\mac\x86_64\libpv_porcupine.dylib;
-                buildTransitive\net8.0\lib\mac\x86_64\libpv_porcupine.dylib;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\mac\x86_64\libpv_porcupine.dylib</Link>
@@ -77,7 +70,6 @@
         <Content Include="..\..\..\lib\mac\arm64\libpv_porcupine.dylib">
             <PackagePath>
                 buildTransitive\net6.0\lib\mac\arm64\libpv_porcupine.dylib;
-                buildTransitive\net8.0\lib\mac\arm64\libpv_porcupine.dylib;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\mac\arm64\libpv_porcupine.dylib</Link>
@@ -86,7 +78,6 @@
         <Content Include="..\..\..\lib\windows\arm64\libpv_porcupine.dll">
             <PackagePath>
                 buildTransitive\net6.0\lib\windows\arm64\libpv_porcupine.dll;
-                buildTransitive\net8.0\lib\windows\arm64\libpv_porcupine.dll;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\windows\arm64\libpv_porcupine.dll</Link>
@@ -95,7 +86,6 @@
         <Content Include="..\..\..\lib\linux\x86_64\libpv_porcupine.so">
             <PackagePath>
                 buildTransitive\net6.0\lib\linux\x86_64\libpv_porcupine.so;
-                buildTransitive\net8.0\lib\linux\x86_64\libpv_porcupine.so;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\linux\x86_64\libpv_porcupine.so</Link>
@@ -104,7 +94,6 @@
         <Content Include="..\..\..\lib\raspberry-pi\**\*" Exclude="..\..\..\lib\raspberry-pi\arm11\*">
             <PackagePath>
                 buildTransitive\net6.0\lib\raspberry-pi;
-                buildTransitive\net8.0\lib\raspberry-pi;
             </PackagePath>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>lib\raspberry-pi\%(RecursiveDir)%(Filename)%(Extension)</Link>
@@ -131,9 +120,7 @@
                           ..\..\..\resources\keyword_files\windows\terminator_windows.ppn;">
             <PackagePath>
                 buildTransitive\netstandard2.0\resources\keyword_files\windows;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\windows;
                 buildTransitive\net6.0\resources\keyword_files\windows;
-                buildTransitive\net8.0\resources\keyword_files\windows;
             </PackagePath>
             <Link>resources\keyword_files\windows\%(Filename)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -154,9 +141,7 @@
                           ..\..\..\resources\keyword_files\mac\terminator_mac.ppn;">
             <PackagePath>
                 buildTransitive\netstandard2.0\resources\keyword_files\mac;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\mac;
                 buildTransitive\net6.0\resources\keyword_files\mac;
-                buildTransitive\net8.0\resources\keyword_files\mac;
             </PackagePath>
             <Link>resources\keyword_files\mac\%(Filename)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -176,10 +161,7 @@
                           ..\..\..\resources\keyword_files\linux\porcupine_linux.ppn;
                           ..\..\..\resources\keyword_files\linux\terminator_linux.ppn;">
             <PackagePath>
-                buildTransitive\netstandard2.0\resources\keyword_files\linux;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\linux;
                 buildTransitive\net6.0\resources\keyword_files\linux;
-                buildTransitive\net8.0\resources\keyword_files\linux;
             </PackagePath>
             <Link>resources\keyword_files\linux\%(Filename)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -199,10 +181,7 @@
                           ..\..\..\resources\keyword_files\raspberry-pi\porcupine_raspberry-pi.ppn;
                           ..\..\..\resources\keyword_files\raspberry-pi\terminator_raspberry-pi.ppn;">
             <PackagePath>
-                buildTransitive\netstandard2.0\resources\keyword_files\raspberry-pi;
-                buildTransitive\netcoreapp3.0\resources\keyword_files\raspberry-pi;
                 buildTransitive\net6.0\resources\keyword_files\raspberry-pi;
-                buildTransitive\net8.0\resources\keyword_files\raspberry-pi;
             </PackagePath>
             <Link>resources\keyword_files\raspberry-pi\%(Filename)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

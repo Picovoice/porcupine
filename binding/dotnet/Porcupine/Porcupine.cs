@@ -73,7 +73,7 @@ namespace Pv
         static Porcupine()
         {
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NET6_0_OR_GREATER
 
             NativeLibrary.SetDllImportResolver(typeof(Porcupine).Assembly, ImportResolver);
 
@@ -83,7 +83,7 @@ namespace Pv
             BUILT_IN_KEYWORD_PATHS = Utils.PvKeywordPaths();
         }
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NET6_0_OR_GREATER
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
@@ -105,6 +105,7 @@ namespace Pv
         private static extern PorcupineStatus pv_porcupine_init(
             IntPtr accessKey,
             IntPtr modelPath,
+            IntPtr device,
             int numKeywords,
             out IntPtr keywordPaths,
             float[] sensitivities,
@@ -129,6 +130,16 @@ namespace Pv
         private static extern int pv_sample_rate();
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern PorcupineStatus pv_porcupine_list_hardware_devices(
+            out IntPtr hardwareDevices,
+            out int numHardwareDevices);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void pv_porcupine_free_hardware_devices(
+            IntPtr hardwareDevices,
+            int numHardwareDevices);
+
+        [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         private static extern void pv_set_sdk(string sdk);
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
@@ -142,6 +153,13 @@ namespace Pv
         /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to the file containing model parameters. If not set it will be set to the default location.</param>
+        /// <param name="device">
+        /// String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+        /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU device. To select a specific
+        /// GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}` is the index of the target GPU. If set to
+        /// `cpu`, the engine will run on the CPU with the default number of threads. To specify the number of threads, set this
+        /// argument to `cpu:${NUM_THREADS}`, where `${NUM_THREADS}` is the desired number of threads.
+        /// </param>
         /// <param name="keywords">List of built-in keywords for detection.</param>
         /// <param name="sensitivities">
         /// Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer
@@ -152,6 +170,7 @@ namespace Pv
             string accessKey,
             IEnumerable<BuiltInKeyword> keywords,
             string modelPath = null,
+            string device = null,
             IEnumerable<float> sensitivities = null)
         {
             if (keywords == null || keywords.Count() == 0)
@@ -172,7 +191,7 @@ namespace Pv
                 }
             }
 
-            return new Porcupine(accessKey, keywordPaths, modelPath, sensitivities);
+            return new Porcupine(accessKey, keywordPaths, modelPath, device, sensitivities);
         }
 
         /// <summary>
@@ -180,6 +199,13 @@ namespace Pv
         /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to file containing model parameters.</param>
+        /// <param name="device">
+        /// String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+        /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU device. To select a specific
+        /// GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}` is the index of the target GPU. If set to
+        /// `cpu`, the engine will run on the CPU with the default number of threads. To specify the number of threads, set this
+        /// argument to `cpu:${NUM_THREADS}`, where `${NUM_THREADS}` is the desired number of threads.
+        /// </param>
         /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
         /// <param name="sensitivities">
         /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased
@@ -189,9 +215,10 @@ namespace Pv
             string accessKey,
             IEnumerable<string> keywordPaths,
             string modelPath = null,
+            string device = null,
             IEnumerable<float> sensitivities = null)
         {
-            return new Porcupine(accessKey, keywordPaths, modelPath, sensitivities);
+            return new Porcupine(accessKey, keywordPaths, modelPath, device, sensitivities);
         }
 
         /// <summary>
@@ -199,6 +226,13 @@ namespace Pv
         /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="modelPath">Absolute path to file containing model parameters.</param>
+        /// <param name="device">
+        /// String representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+        /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU device. To select a specific
+        /// GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}` is the index of the target GPU. If set to
+        /// `cpu`, the engine will run on the CPU with the default number of threads. To specify the number of threads, set this
+        /// argument to `cpu:${NUM_THREADS}`, where `${NUM_THREADS}` is the desired number of threads.
+        /// </param>
         /// <param name="keywordPaths">A list of absolute paths to keyword model files.</param>
         /// <param name="sensitivities">
         /// A list of sensitivity values for each keyword. A higher sensitivity value lowers miss rate at the cost of increased
@@ -208,6 +242,7 @@ namespace Pv
             string accessKey,
             IEnumerable<string> keywordPaths,
             string modelPath = null,
+            string device = null,
             IEnumerable<float> sensitivities = null)
         {
             if (string.IsNullOrEmpty(accessKey))
@@ -220,6 +255,8 @@ namespace Pv
             {
                 throw new PorcupineIOException($"Couldn't find model file at '{modelPath}'");
             }
+
+            device = device ?? "best";
 
             if (keywordPaths == null || keywordPaths.Count() == 0)
             {
@@ -253,6 +290,7 @@ namespace Pv
 
             IntPtr accessKeyPtr = Utils.GetPtrFromUtf8String(accessKey);
             IntPtr modelPathPtr = Utils.GetPtrFromUtf8String(modelPath);
+            IntPtr devicePtr = Utils.GetPtrFromUtf8String(device);
 
             string[] keywordPathsArray = keywordPaths.ToArray();
             IntPtr[] keywordPathsPtr = new IntPtr[keywordPathsArray.Length];
@@ -266,6 +304,7 @@ namespace Pv
             PorcupineStatus status = pv_porcupine_init(
                 accessKeyPtr,
                 modelPathPtr,
+                devicePtr,
                 keywordPathsPtr.Length,
                 out keywordPathsPtr[0],
                 sensitivities.ToArray(),
@@ -273,6 +312,7 @@ namespace Pv
 
             Marshal.FreeHGlobal(accessKeyPtr);
             Marshal.FreeHGlobal(modelPathPtr);
+            Marshal.FreeHGlobal(devicePtr);
             for (int i = 0; i < keywordPathsPtr.Length; i++)
             {
                 Marshal.FreeHGlobal(keywordPathsPtr[i]);
@@ -337,6 +377,36 @@ namespace Pv
         /// <returns>Version of Porcupine</returns>
         public string Version { get; private set; }
 
+        /// <summary>
+        /// Retrieves a list of hardware devices that can be specified when constructing the model.
+        /// </summary>
+        /// <returns>An array of available hardware devices.</returns>
+        /// <exception cref="PorcupineException">Thrown when an error occurs while retrieving the hardware devices.</exception>
+        public static string[] GetAvailableDevices()
+        {
+            IntPtr hardwareDevicesPtr;
+            int numDevices;
+            PorcupineStatus status = pv_porcupine_list_hardware_devices(
+                out hardwareDevicesPtr,
+                out numDevices);
+            if (status != PorcupineStatus.SUCCESS)
+            {
+                throw PorcupineStatusToException(
+                    status,
+                    "Get available devices failed",
+                    GetMessageStack());
+            }
+
+            string[] devices = new string[numDevices];
+            int elementSize = Marshal.SizeOf(typeof(IntPtr));
+            for (int i = 0; i < numDevices; i++)
+            {
+                devices[i] = Utils.GetUtf8StringFromPtr(Marshal.ReadIntPtr(hardwareDevicesPtr, i * elementSize));
+            }
+
+            pv_porcupine_free_hardware_devices(hardwareDevicesPtr, numDevices);
+            return devices;
+        }
 
         /// <summary>
         /// Coverts status codes to relevant .NET exceptions
@@ -404,7 +474,7 @@ namespace Pv
             Dispose();
         }
 
-        private string[] GetMessageStack()
+        private static string[] GetMessageStack()
         {
             int messageStackDepth;
             IntPtr messageStackRef;

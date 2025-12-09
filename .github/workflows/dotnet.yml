@@ -49,48 +49,29 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
-        dotnet-version: [2.1.818, 3.0.103, 3.1.426, 5.0.408, 6.0.x, 8.0.x]
+        os: [ubuntu-latest, macos-latest, macos-15-intel, windows-latest]
+        device: [cpu, cpu:1]
+        dotnet-version: [2.1.x, 3.1.x, 6.0.x, 8.0.x, 10.0.x]
         include:
-          - dotnet-version: 2.1.818
-            binding-framework: netstandard2.0
+          - dotnet-version: 2.1.x
             test-framework: netcoreapp2.1
-          - dotnet-version: 3.0.103
-            binding-framework: netcoreapp3.0
-            test-framework: netcoreapp3.0
-          - dotnet-version: 3.1.426
-            binding-framework: netcoreapp3.0
+          - dotnet-version: 3.1.x
             test-framework: netcoreapp3.1
-          - dotnet-version: 5.0.408
-            binding-framework: netcoreapp3.0
-            test-framework: net5.0
           - dotnet-version: 6.0.x
-            binding-framework: net6.0
             test-framework: net6.0
           - dotnet-version: 8.0.x
-            binding-framework: net8.0
             test-framework: net8.0
+          - dotnet-version: 10.0.x
+            test-framework: net10.0
         exclude:
           - os: ubuntu-latest
-            dotnet-version: 2.1.818
+            dotnet-version: 2.1.x
           - os: ubuntu-latest
-            dotnet-version: 3.0.103
-          - os: ubuntu-latest
-            dotnet-version: 3.1.426
-          - os: ubuntu-latest
-            dotnet-version: 5.0.408
+            dotnet-version: 3.1.x
           - os: macos-latest
-            dotnet-version: 2.1.818
+            dotnet-version: 2.1.x
           - os: macos-latest
-            dotnet-version: 3.0.103
-          - os: macos-latest
-            dotnet-version: 3.1.426
-          - os: macos-latest
-            dotnet-version: 5.0.408
-          - os: macos-latest
-            dotnet-version: 6.0.x
-          - os: macos-13
-            dotnet-version: 8.0.x
+            dotnet-version: 3.1.x
 
     steps:
     - uses: actions/checkout@v3
@@ -107,10 +88,24 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Build binding
-      run: dotnet build Porcupine/Porcupine.csproj --framework ${{ matrix.binding-framework }}
+      run: dotnet build Porcupine/Porcupine.csproj
+
+    - name: Set test framework version (linux)
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      run: sed -i 's/net6.0/${{matrix.test-framework}}/g' PorcupineTest/PorcupineTest.csproj
+
+    - name: Set test framework version (macos)
+      if: ${{ matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel' }}
+      run: sed -i '.bak' 's/net6.0/${{matrix.test-framework}}/g' PorcupineTest/PorcupineTest.csproj
+
+    - name: Set test framework version (windows)
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: (Get-Content -Path "PorcupineTest/PorcupineTest.csproj") -replace "net6.0", "${{matrix.test-framework}}" | Set-Content -Path "PorcupineTest/PorcupineTest.csproj"
 
     - name: Test
-      run: dotnet test --framework ${{ matrix.test-framework }} -v n
+      run: dotnet test -v n
+      env:
+        DEVICE: ${{ matrix.device }}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -120,12 +115,16 @@ jobs:
     strategy:
       matrix:
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-32, rpi5-64, pv-windows-arm64]
+        device: [best]
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Build binding
-      run: dotnet build Porcupine/Porcupine.csproj --framework net8.0
+      run: dotnet build Porcupine/Porcupine.csproj
 
     - name: Test
-      run: dotnet test --framework net8.0 -v n
+      run: dotnet test -v n
+      env:
+        DEVICE: ${{ matrix.device }}
+        DOTNET_ROLL_FORWARD: LatestMajor
