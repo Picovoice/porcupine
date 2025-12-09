@@ -5,14 +5,14 @@ on:
   push:
     branches: [ master ]
     paths:
-      - '**/web/*.js'
-      - '**/web/*.ts'
+      - 'binding/web/*.js'
+      - 'binding/web/*.ts'
       - '.github/workflows/web-codestyle.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '**/web/*.js'
-      - '**/web/*.ts'
+      - 'binding/web/*.js'
+      - 'binding/web/*.ts'
       - '.github/workflows/web-codestyle.yml'
 
 jobs:
@@ -26,9 +26,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: lts/*
-
-    - name: Pre-build dependencies
-      run: npm install yarn
 
     - name: Run Binding Linter
       run: yarn && yarn lint

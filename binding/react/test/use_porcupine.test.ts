@@ -9,6 +9,7 @@ import porcupineParams from '@/porcupine_params.js';
 import testData from './test_data.json';
 
 const ACCESS_KEY = Cypress.env('ACCESS_KEY');
+const DEVICE = Cypress.env('DEVICE');
 
 describe('Porcupine binding', () => {
   it('should be able to init via public path', () => {
@@ -18,7 +19,8 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         ACCESS_KEY,
         BuiltInKeyword.Porcupine,
-        { publicPath: "/test/porcupine_params.pv", forceWrite: true }
+        { publicPath: "/test/porcupine_params.pv", forceWrite: true },
+        { device: DEVICE }
       )
     ).then(() => {
       expect(result.current.isLoaded, `Failed to load 'porcupine_params.pv' with ${result.current.error}`).to.be.true;
@@ -38,7 +40,8 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         ACCESS_KEY,
         BuiltInKeyword.Porcupine,
-        { base64: porcupineParams, forceWrite: true }
+        { base64: porcupineParams, forceWrite: true },
+        { device: DEVICE }
       )
     ).then(() => {
       expect(result.current.isLoaded, `Failed to load 'porcupine_params.js' with ${result.current.error}`).to.be.true;
@@ -52,7 +55,8 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         ACCESS_KEY,
         BuiltInKeyword.Porcupine,
-        { publicPath: "/porcupine_params_failed.pv", forceWrite: true }
+        { publicPath: "/porcupine_params_failed.pv", forceWrite: true },
+        { device: DEVICE }
       )
     ).then(() => {
       expect(result.current.isLoaded).to.be.false;
@@ -67,7 +71,8 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         '',
         BuiltInKeyword.Porcupine,
-        { publicPath: "/test/porcupine_params.pv", forceWrite: true }
+        { publicPath: "/test/porcupine_params.pv", forceWrite: true },
+        { device: DEVICE }
       )
     ).then(() => {
       expect(result.current.isLoaded).to.be.false;
@@ -90,7 +95,8 @@ describe('Porcupine binding', () => {
           {
             publicPath: testInfo.language === 'en' ? "/test/porcupine_params.pv" : `/test/porcupine_params_${testInfo.language}.pv`,
             forceWrite: true,
-          }
+          },
+          { device: DEVICE }
         )
       ).then(() => {
         expect(result.current.isLoaded, `Failed to load ${testInfo.wakeword} (${testInfo.language}) with ${result.current.error}`).to.be.true;

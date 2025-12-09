@@ -39,9 +39,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
-
     - name: Install dependencies
       run: yarn install
 
@@ -55,4 +52,4 @@ jobs:
       run: yarn setup-test
 
     - name: Test
-      run: yarn test-perf --env ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}},NUM_TEST_ITERATIONS=20,INIT_PERFORMANCE_THRESHOLD_SEC=${{matrix.initPerformanceThresholdSec}},PROC_PERFORMANCE_THRESHOLD_SEC=${{matrix.procPerformanceThresholdSec}}
+      run: yarn test-perf --env ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}},DEVICE=cpu:1,NUM_TEST_ITERATIONS=20,INIT_PERFORMANCE_THRESHOLD_SEC=${{matrix.initPerformanceThresholdSec}},PROC_PERFORMANCE_THRESHOLD_SEC=${{matrix.procPerformanceThresholdSec}}

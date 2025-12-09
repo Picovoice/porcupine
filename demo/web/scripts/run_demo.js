@@ -110,9 +110,7 @@ fs.writeFileSync(
 })();`,
 );
 
-const command = process.platform === "win32" ? "npx.cmd" : "npx";
-
-child_process.execSync(`${command} http-server -a localhost -p 5000`, {
+child_process.execSync(`node server.js -a localhost -p 5000`, {
   shell: true,
   stdio: "inherit",
 });
