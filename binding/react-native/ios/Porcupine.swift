@@ -26,7 +26,7 @@ class PvPorcupine: NSObject {
         rejecter reject: RCTPromiseRejectBlock
     ) {
         do {
-            var result: [String] = Porcupine.getAvailableDevices()
+            var result: [String] = try Porcupine.getAvailableDevices()
             resolve(result)
         } catch let error as PorcupineError {
             let (code, message) = errorToCodeAndMessage(error)
