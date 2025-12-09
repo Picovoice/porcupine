@@ -72,8 +72,8 @@ public class Porcupine {
         var numHardwareDevices: Int32 = 0
         let status = pv_porcupine_list_hardware_devices(&cHardwareDevices, &numHardwareDevices)
         if status != PV_STATUS_SUCCESS {
-            let messageStack = try PorcupineBase.getMessageStack()
-            throw PorcupineBase.pvStatusToPorcupineError(status, "Porcupine getAvailableDevices failed", messageStack)
+            let messageStack = try Porcupine.getMessageStack()
+            throw Porcupine.pvStatusToPorcupineError(status, "Porcupine getAvailableDevices failed", messageStack)
         }
 
         var hardwareDevices: [String] = []
@@ -85,7 +85,7 @@ public class Porcupine {
 
         return hardwareDevices
     }
-    
+
     /// Constructor.
     ///
     /// - Parameters:
