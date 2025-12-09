@@ -66,6 +66,13 @@ jobs:
 
     - name: Add new local package
       run: yarn add ../../pkg/picovoice-porcupine-react-native-4.0.0.tgz
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+
 # ************** REMOVE AFTER RELEASE ********************
 
     - name: Pre-build dependencies

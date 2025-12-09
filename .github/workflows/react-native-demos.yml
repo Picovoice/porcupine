@@ -62,7 +62,14 @@ jobs:
       run: yarn remove @picovoice/porcupine-react-native
 
     - name: Add new local package
-      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-4.0.0.tgz
+      run: yarn add ../../../binding/react-native/pkg/picovoice-porcupine-react-native-4.0.0.tgz
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+
 # ************** REMOVE AFTER RELEASE ********************
 
     - name: Install dependencies
@@ -103,7 +110,7 @@ jobs:
       run: yarn remove @picovoice/porcupine-react-native
 
     - name: Add new local package
-      run: yarn add ../../binding/react-native/pkg/picovoice-porcupine-react-native-4.0.0.tgz
+      run: yarn add ../../../binding/react-native/pkg/picovoice-porcupine-react-native-4.0.0.tgz
 # ************** REMOVE AFTER RELEASE ********************
 
     - name: Install dependencies
