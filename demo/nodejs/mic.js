@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -38,6 +38,9 @@ program
   )
   .option("-m, --model_file_path <string>", "absolute path to porcupine model")
   .option(
+    "-y, --device <string>",
+    "Device to run inference on (`best`, `cpu:{num_threads}` or `gpu:{gpu_index}`). Default: selects best device")
+  .option(
     "-s, --sensitivity <number>",
     "sensitivity value between 0 and 1",
     parseFloat,
@@ -49,8 +52,12 @@ program
       -1
   ).option(
       "-d, --show_audio_devices",
-      "show the list of available devices"
-  );
+      "show the list of available devices",
+      false
+  ).option(
+      "-z, --show_inference_devices",
+      "Print devices that are available to run Porcupine inference.",
+      false);
 
 if (process.argv.length < 3) {
   program.help();
@@ -65,20 +72,33 @@ async function micDemo() {
   let keywords = program["keywords"];
   let libraryFilePath = program["library_file_path"];
   let modelFilePath = program["model_file_path"];
+  let device = program["device"];
   let sensitivity = program["sensitivity"];
   let audioDeviceIndex = program["audio_device_index"];
   let showAudioDevices = program["show_audio_devices"];
 
   let keywordPathsDefined = keywordPaths !== undefined;
   let builtinKeywordsDefined = keywords !== undefined;
-  let showAudioDevicesDefined = showAudioDevices !== undefined;
 
-  if (showAudioDevicesDefined) {
+  const showInferenceDevices = program["show_inference_devices"];
+  if (showInferenceDevices) {
+    console.log(Porcupine.listAvailableDevices().join('\n'));
+    process.exit();
+  }
+
+  if (showAudioDevices) {
       const devices = PvRecorder.getAvailableDevices();
       for (let i = 0; i < devices.length; i++) {
           console.log(`index: ${i}, device name: ${devices[i]}`);
       }
       process.exit();
+  }
+
+  if (accessKey === undefined) {
+    console.error(
+      "`--access_key` is a required argument"
+    );
+    return;
   }
 
   if (
@@ -144,8 +164,11 @@ async function micDemo() {
     accessKey,
     keywordPaths,
     sensitivities,
-    modelFilePath,
-    libraryFilePath
+    {
+      modelPath: modelFilePath,
+      device: device,
+      libraryPath: libraryFilePath
+    }
   );
 
   const frameLength = handle.frameLength;

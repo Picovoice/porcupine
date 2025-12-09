@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -29,8 +29,12 @@ import {
 const SINGLE_KEYWORD_PARAMETERS = getSingleKeywordParameters();
 const MULTIPLE_KEYWORDS_PARAMETERS = getMultipleKeywordParameters();
 
-const ACCESS_KEY = process.argv.filter(x => x.startsWith('--access_key='))[0]?.split('--access_key=')[1] ?? "";
-
+const ACCESS_KEY = process.argv
+  .filter(x => x.startsWith('--access_key='))[0]
+  .split('--access_key=')[1];
+const DEVICE = process.argv
+  .filter(x => x.startsWith('--device='))[0]
+  .split('--device=')[1] ?? 'best';
 
 function testPorcupineDetection(
   language: string,
@@ -45,7 +49,7 @@ function testPorcupineDetection(
     ACCESS_KEY,
     keywordPaths,
     Array(keywordPaths.length).fill(0.5),
-    modelPath,
+    { modelPath, device: DEVICE }
   );
 
   const waveFilePath = getAudioFileByLanguage(language, audioFileName);
@@ -88,7 +92,8 @@ describe("error message stack", () => {
       new Porcupine(
         "invalid access key",
         [BuiltinKeyword.PORCUPINE],
-        [0.5]);
+        [0.5],
+        { device: DEVICE });
     } catch (e: any) {
       error = e.messageStack;
     }
@@ -100,7 +105,8 @@ describe("error message stack", () => {
       new Porcupine(
         "invalid access key",
         [BuiltinKeyword.PORCUPINE],
-        [0.5]);
+        [0.5],
+        { device: DEVICE });
     } catch (e: any) {
       for (let i = 0; i < error.length; i++) {
         expect(error[i]).toEqual(e.messageStack[i]);
@@ -136,18 +142,24 @@ describe("Non ascii characters", () => {
       ACCESS_KEY,
       [getKeywordPathsByLanguage('es', 'murciélago')],
       [0.5],
-      getModelPathByLanguage('es')
+      { modelPath: getModelPathByLanguage('es'), device: DEVICE }
     );
   });
 });
 
 describe("basic parameter validation", () => {
+  test('list hardware devices', () => {
+    const hardwareDevices: string[] = Porcupine.listAvailableDevices();
+    expect(Array.isArray(hardwareDevices)).toBeTruthy();
+    expect(hardwareDevices.length).toBeGreaterThan(0);
+  });
   test("num of keywords does not match num of sensitivities", () => {
     expect(() => {
       new Porcupine(
         ACCESS_KEY,
         [getKeywordPathsByLanguage('en', 'porcupine')],
-        [0.1, 0.2,]);
+        [0.1, 0.2],
+        { device: DEVICE });
     }).toThrow(PorcupineInvalidArgumentError);
   });
 
@@ -166,7 +178,8 @@ describe("basic parameter validation", () => {
       new Porcupine(
         ACCESS_KEY,
         [getKeywordPathsByLanguage('en', 'porcupine')],
-        [4.2]);
+        [4.2],
+        { device: DEVICE });
     }).toThrow(RangeError);
   });
 
@@ -176,7 +189,8 @@ describe("basic parameter validation", () => {
         ACCESS_KEY,
         [getKeywordPathsByLanguage('en', 'porcupine')],
         // @ts-expect-error
-        "porcupine");
+        "porcupine",
+        { device: DEVICE });
     }).toThrow(RangeError);
   });
 
@@ -185,7 +199,17 @@ describe("basic parameter validation", () => {
       new Porcupine(
         ACCESS_KEY,
         ["to be or not to be"],
-        [0.5]);
+        [0.5],
+        { device: DEVICE });
+    }).toThrow(PorcupineInvalidArgumentError);
+  });
+  test("invalid device", () => {
+    expect(() => {
+      new Porcupine(
+        ACCESS_KEY,
+        ["to be or not to be"],
+        [0.5],
+        { device: "cloud:9" });
     }).toThrow(PorcupineInvalidArgumentError);
   });
 });
@@ -195,7 +219,8 @@ describe("frame validation", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
       [getKeywordPathsByLanguage('en', 'porcupine')],
-      [0.5]);
+      [0.5],
+      { device: DEVICE });
     const emptyArray = Array.apply(null, Array(porcupineEngine.frameLength)).map((x, i) => i);
     // @ts-expect-error
     porcupineEngine.process(emptyArray);
@@ -206,7 +231,8 @@ describe("frame validation", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
       [getKeywordPathsByLanguage('en', 'porcupine')],
-      [0.5]);
+      [0.5],
+      { device: DEVICE });
     expect(() => {
       // @ts-expect-error
       porcupineEngine.process([1, 2, 3]);
@@ -218,7 +244,8 @@ describe("frame validation", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
       [getKeywordPathsByLanguage('en', 'porcupine')],
-      [0.5]);
+      [0.5],
+      { device: DEVICE });
     expect(() => {
       // @ts-expect-error
       porcupineEngine.process(null);
@@ -234,7 +261,8 @@ describe("frame validation", () => {
     const porcupineEngine = new Porcupine(
       ACCESS_KEY,
       [getKeywordPathsByLanguage('en', 'porcupine')],
-      [0.5]);
+      [0.5],
+      { device: DEVICE });
     const floatFrames = Array.from({ length: porcupineEngine.frameLength }).map(
       () => 3.1415
     );
