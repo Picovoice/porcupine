@@ -401,7 +401,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		5AD8B4732D9C5C910077FA19 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */,
+			package = 02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */;
 			productName = Porcupine;
 		};
 		5AD8B4762D9C5C9D0077FA19 /* SwiftySound */ = {
