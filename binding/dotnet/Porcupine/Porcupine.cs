@@ -304,7 +304,7 @@ namespace Pv
             PorcupineStatus status = pv_porcupine_init(
                 accessKeyPtr,
                 modelPathPtr,
-                devicePtr
+                devicePtr,
                 keywordPathsPtr.Length,
                 out keywordPathsPtr[0],
                 sensitivities.ToArray(),
