@@ -37,7 +37,7 @@ class PvPorcupine: NSObject {
         }
     }
 
-    @objc(fromBuiltInKeywords:modelPath:keywords:sensitivities:resolver:rejecter:)
+    @objc(fromBuiltInKeywords:modelPath:device:keywords:sensitivities:resolver:rejecter:)
     func fromBuiltInKeywords(
         accessKey: String,
         modelPath: String,
@@ -86,7 +86,7 @@ class PvPorcupine: NSObject {
         }
     }
 
-    @objc(fromKeywordPaths:modelPath:keywordPaths:sensitivities:resolver:rejecter:)
+    @objc(fromKeywordPaths:modelPath:device:keywordPaths:sensitivities:resolver:rejecter:)
     func fromKeywordPaths(
         accessKey: String,
         modelPath: String,

@@ -106,6 +106,12 @@ jobs:
         submodules: 'recursive'
 
 # ************** REMOVE AFTER RELEASE ********************
+    - name: Pod cache clean
+      run: pod cache clean --all
+
+    - name: Yarn cache clean
+      run: yarn cache clean
+
     - name: Install React Native Binding Dependencies
       run: yarn install
       working-directory: binding/react-native

@@ -18,6 +18,7 @@ RCT_EXTERN_METHOD(getAvailableDevices: (RCTPromiseResolveBlock)resolve
 
 RCT_EXTERN_METHOD(fromBuiltInKeywords: (NSString *)accessKey
                   modelPath: (NSString *)modelPath
+                  device: (NSString *)device
                   keywords: (NSArray<NSString *>)keywords
                   sensitivities: (NSArray<NSNumber>)sensitivities
                   resolver: (RCTPromiseResolveBlock)resolve
@@ -25,6 +26,7 @@ RCT_EXTERN_METHOD(fromBuiltInKeywords: (NSString *)accessKey
 
 RCT_EXTERN_METHOD(fromKeywordPaths: (NSString *)accessKey
                   modelPath: (NSString *)modelPath
+                  device: (NSString *)device
                   keywordPaths: (NSArray<NSString *>)keywordPaths
                   sensitivities: (NSArray<NSNumber>)sensitivities
                   resolver: (RCTPromiseResolveBlock)resolve
