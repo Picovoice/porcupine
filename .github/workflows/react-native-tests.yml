@@ -53,6 +53,10 @@ jobs:
       run: ./gradlew assembleRelease --info
       working-directory: binding/android/Porcupine
 
+    - name: Publish to Local Maven
+      run: ./gradlew publishToMavenLocal
+      working-directory: binding/android/Porcupine
+
     - name: Install React Native Binding Dependencies
       run: yarn install
       working-directory: binding/react-native
