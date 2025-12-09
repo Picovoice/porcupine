@@ -1,5 +1,5 @@
 /*
-    Copyright 2022 Picovoice Inc.
+    Copyright 2022-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -46,6 +46,7 @@ public class PerformanceTest extends BaseTest {
 
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 

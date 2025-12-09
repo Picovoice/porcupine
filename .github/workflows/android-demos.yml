@@ -42,7 +42,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
+
+############## REMOVE AFTER RELEASE ##########################
+    - name: Set up Java 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: 11
+        distribution: 'temurin'
+
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+############## REMOVE AFTER RELEASE ##########################
+
     - name: Override gradle settings
       run: sed -i "s/com.android.tools.build:gradle:[0-9]*\.[0-9]*\.[0-9]*/com.android.tools.build:gradle:${{ matrix.agp-version }}/g" build.gradle
 
@@ -83,7 +95,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
- 
+
+      ############## REMOVE AFTER RELEASE ##########################
+    - name: Set up Java 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: 11
+        distribution: 'temurin'
+
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+      ############## REMOVE AFTER RELEASE ##########################
+
     - name: Override gradle settings
       run: sed -i "s/com.android.tools.build:gradle:[0-9]*\.[0-9]*\.[0-9]*/com.android.tools.build:gradle:${{ matrix.agp-version }}/g" build.gradle
       
@@ -123,7 +147,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
- 
+
+      ############## REMOVE AFTER RELEASE ##########################
+    - name: Set up Java 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: 11
+        distribution: 'temurin'
+
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+      ############## REMOVE AFTER RELEASE ##########################
+
     - name: Override gradle settings
       run: sed -i "s/com.android.tools.build:gradle:[0-9]*\.[0-9]*\.[0-9]*/com.android.tools.build:gradle:${{ matrix.agp-version }}/g" build.gradle
 
