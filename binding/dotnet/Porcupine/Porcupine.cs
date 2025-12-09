@@ -474,7 +474,7 @@ namespace Pv
             Dispose();
         }
 
-        private string[] GetMessageStack()
+        private static string[] GetMessageStack()
         {
             int messageStackDepth;
             IntPtr messageStackRef;
