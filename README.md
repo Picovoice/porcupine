@@ -1210,10 +1210,11 @@ Porcupine is implemented in ANSI C and therefore can be directly linked to C app
 object can be constructed as follows.
 
 ```c
-// Available at lib/common/porcupine_params.pv
-const char *model_path = ...
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 const char *access_key = ...
+// Available at lib/common/porcupine_params.pv
+const char *model_path = ...
+const char *device = "best";
 const char *keyword_path = ...
 const float sensitivity = 0.5f;
 
@@ -1221,6 +1222,7 @@ pv_porcupine_t *handle = NULL;
 const pv_status_t status = pv_porcupine_init(
     access_key,
     model_path,
+    device,
     1,
     &keyword_path,
     &sensitivity,

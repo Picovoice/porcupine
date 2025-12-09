@@ -110,6 +110,7 @@ jobs:
 
     strategy:
       matrix:
+        device: [cpu, cpu:1]
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
         - os: ubuntu-latest
@@ -145,45 +146,69 @@ jobs:
       run: pip install -r test/requirements.txt
 
     - name: Test
-      run: python test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}
+      run: python test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.device }} ${{ matrix.platform }} ${{ matrix.arch }}
 
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, pv-windows-arm64, pv-linux, pv-ios, pv-windows]
         include:
-        - machine: rpi3-32
-          platform: raspberry-pi
-          arch: cortex-a53
-          make_file: "Unix Makefiles"
-          pv_recorder_platform: "raspberry-pi3"
-        - machine: rpi3-64
-          platform: raspberry-pi
-          arch: cortex-a53-aarch64
-          make_file: "Unix Makefiles"
-          pv_recorder_platform: "raspberry-pi3-64"
-        - machine: rpi4-32
-          platform: raspberry-pi
-          arch: cortex-a72
-          make_file: "Unix Makefiles"
-          pv_recorder_platform: "raspberry-pi4"
-        - machine: rpi4-64
-          platform: raspberry-pi
-          arch: cortex-a72-aarch64
-          make_file: "Unix Makefiles"
-          pv_recorder_platform: "raspberry-pi4-64"
-        - machine: rpi5-64
-          platform: raspberry-pi
-          arch: cortex-a76-aarch64
-          make_file: "Unix Makefiles"
-          pv_recorder_platform: "raspberry-pi5-64"
-        - machine: pv-windows-arm64
-          platform: windows
-          arch: arm64
-          make_file: "MinGW Makefiles"
-          pv_recorder_platform: "windows-arm64"
+          - machine: rpi3-32
+            platform: raspberry-pi
+            arch: cortex-a53
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi3"
+            device: best
+          - machine: rpi3-64
+            platform: raspberry-pi
+            arch: cortex-a53-aarch64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi3-64"
+            device: best
+          - machine: rpi4-32
+            platform: raspberry-pi
+            arch: cortex-a72
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi4"
+            device: best
+          - machine: rpi4-64
+            platform: raspberry-pi
+            arch: cortex-a72-aarch64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi4-64"
+            device: best
+          - machine: rpi5-64
+            platform: raspberry-pi
+            arch: cortex-a76-aarch64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "raspberry-pi5-64"
+            device: best
+          - machine: pv-windows-arm64
+            platform: windows
+            arch: arm64
+            make_file: "MinGW Makefiles"
+            pv_recorder_platform: "windows-arm64"
+            device: best
+          - machine: pv-linux
+            platform: linux
+            arch: x86_64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "linux"
+            device: gpu
+          - machine: pv-ios
+            platform: mac
+            arch: arm64
+            make_file: "Unix Makefiles"
+            pv_recorder_platform: "mac-arm64"
+            device: gpu
+          - machine: pv-windows
+            platform: windows
+            arch: amd64
+            make_file: "MinGW Makefiles"
+            pv_recorder_platform: "windows-amd64"
+            device: gpu
 
     steps:
     - uses: actions/checkout@v3
@@ -200,4 +225,4 @@ jobs:
       run: pip install -r test/requirements.txt
 
     - name: Test
-      run: python3 test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.platform }} ${{ matrix.arch }}
+      run: python3 test/test_porcupine_c.py ${{secrets.PV_VALID_ACCESS_KEY}} ${{ matrix.device }} ${{ matrix.platform }} ${{ matrix.arch }}
