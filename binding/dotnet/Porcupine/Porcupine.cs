@@ -130,7 +130,7 @@ namespace Pv
         private static extern int pv_sample_rate();
 
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
-        private static extern PvStatus pv_porcupine_list_hardware_devices(
+        private static extern PorcupineStatus pv_porcupine_list_hardware_devices(
             out IntPtr hardwareDevices,
             out int numHardwareDevices);
 
