@@ -1,5 +1,5 @@
 //
-//  Copyright 2022-2023 Picovoice Inc.
+//  Copyright 2022-2025 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -15,7 +15,7 @@ import Porcupine
 class PorcupineAppTestUITests: BaseTest {
 
     func testInitSuccessWithSingleBuiltIn() throws {
-        let p = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
+        let p = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine, device: device)
         XCTAssert(Porcupine.version != "")
         XCTAssert(Porcupine.frameLength > 0)
         XCTAssert(Porcupine.sampleRate > 0)
@@ -30,7 +30,7 @@ class PorcupineAppTestUITests: BaseTest {
             Porcupine.BuiltInKeyword.terminator
         ]
 
-        let p = try Porcupine.init(accessKey: accessKey, keywords: keywords)
+        let p = try Porcupine.init(accessKey: accessKey, keywords: keywords, device: device)
         p.delete()
     }
 
@@ -45,7 +45,11 @@ class PorcupineAppTestUITests: BaseTest {
             ofType: "pv",
             inDirectory: "test_resources/model_files")
 
-        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
+        let p = try Porcupine.init(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            modelPath: modelPath,
+            device: device)
         p.delete()
     }
 
@@ -63,6 +67,7 @@ class PorcupineAppTestUITests: BaseTest {
         let p = try Porcupine.init(
             accessKey: accessKey,
             keywordPaths: [keywordPath, keywordPath2],
+            device: device,
             sensitivities: [0.35, 0.6])
         p.delete()
     }
@@ -80,7 +85,11 @@ class PorcupineAppTestUITests: BaseTest {
 
         var didFail = false
         do {
-            _ = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
+            _ = try Porcupine.init(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                modelPath: modelPath,
+                device: device)
         } catch {
             didFail = true
         }
@@ -95,7 +104,8 @@ class PorcupineAppTestUITests: BaseTest {
             _ = try Porcupine.init(
                 accessKey: accessKey,
                 keyword: Porcupine.BuiltInKeyword.porcupine,
-                modelPath: "bad_path/bad_path.pv")
+                modelPath: "bad_path/bad_path.pv",
+                device: device)
         } catch {
             didFail = true
         }
@@ -107,7 +117,11 @@ class PorcupineAppTestUITests: BaseTest {
 
         var didFail = false
         do {
-            _ = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine, sensitivity: 10)
+            _ = try Porcupine.init(
+                accessKey: accessKey,
+                keyword: Porcupine.BuiltInKeyword.porcupine,
+                device: device,
+                sensitivity: 10)
         } catch {
             didFail = true
         }
@@ -121,7 +135,11 @@ class PorcupineAppTestUITests: BaseTest {
         let sensitivities: [Float32] = [0.3, 0.8, 0.4]
         var didFail = false
         do {
-            _ = try Porcupine.init(accessKey: accessKey, keywords: keywords, sensitivities: sensitivities)
+            _ = try Porcupine.init(
+                accessKey: accessKey,
+                keywords: keywords,
+                device: device,
+                sensitivities: sensitivities)
         } catch {
             didFail = true
         }
@@ -134,7 +152,7 @@ class PorcupineAppTestUITests: BaseTest {
         let keywords: [Porcupine.BuiltInKeyword] = []
         var didFail = false
         do {
-            _ = try Porcupine.init(accessKey: accessKey, keywords: keywords)
+            _ = try Porcupine.init(accessKey: accessKey, keywords: keywords, device: device)
         } catch {
             didFail = true
         }
@@ -146,7 +164,7 @@ class PorcupineAppTestUITests: BaseTest {
 
         var didFail = false
         do {
-            _ = try Porcupine.init(accessKey: accessKey, keywordPath: "bad_path/bad_path.ppn")
+            _ = try Porcupine.init(accessKey: accessKey, keywordPath: "bad_path/bad_path.ppn", device: device)
         } catch {
             didFail = true
         }
@@ -163,7 +181,7 @@ class PorcupineAppTestUITests: BaseTest {
 
         var didFail = false
         do {
-            _ = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath)
+            _ = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, device: device)
         } catch {
             didFail = true
         }
@@ -182,12 +200,19 @@ class PorcupineAppTestUITests: BaseTest {
             ofType: "pv",
             inDirectory: "test_resources/model_files")!
 
-        let p = try Porcupine.init(accessKey: accessKey, keywordPath: keywordPath, modelPath: modelPath)
+        let p = try Porcupine.init(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            modelPath: modelPath,
+            device: device)
         p.delete()
     }
 
     func testProcSuccessWithSingleBuiltIn() throws {
-        let p: Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
+        let p: Porcupine = try Porcupine.init
+            accessKey: accessKey,
+            keyword: Porcupine.BuiltInKeyword.porcupine,
+            device: device)
 
         let bundle = Bundle(for: type(of: self))
         let fileURL: URL = bundle.url(
@@ -214,7 +239,7 @@ class PorcupineAppTestUITests: BaseTest {
             Porcupine.BuiltInKeyword.terminator
         ]
 
-        let p: Porcupine = try Porcupine.init(accessKey: accessKey, keywords: keywords)
+        let p: Porcupine = try Porcupine.init(accessKey: accessKey, keywords: keywords, device: device)
 
         let bundle = Bundle(for: type(of: self))
         let fileURL: URL = bundle.url(
@@ -246,10 +271,21 @@ class PorcupineAppTestUITests: BaseTest {
         }
     }
 
+    func testGetAvailableDevices() throws {
+        let devices = try Porcupine.getAvailableDevices()
+        XCTAssert(!devices.isEmpty)
+        for device in devices {
+            XCTAssert(!device.isEmpty)
+        }
+    }
+
     func testMessageStack() throws {
         var first_error: String = ""
         do {
-            let p = try Porcupine.init(accessKey: "invalid", keyword: Porcupine.BuiltInKeyword.porcupine)
+            let p = try Porcupine.init(
+                accessKey: "invalid",
+                keyword: Porcupine.BuiltInKeyword.porcupine,
+                device: device)
             XCTAssertNil(p)
         } catch {
             first_error = "\(error.localizedDescription)"
@@ -257,7 +293,10 @@ class PorcupineAppTestUITests: BaseTest {
         }
 
         do {
-            let p = try Porcupine.init(accessKey: "invalid", keyword: Porcupine.BuiltInKeyword.porcupine)
+            let p = try Porcupine.init(
+                accessKey: "invalid",
+                keyword: Porcupine.BuiltInKeyword.porcupine,
+                device: device)
             XCTAssertNil(p)
         } catch {
             XCTAssert("\(error.localizedDescription)".count == first_error.count)
@@ -265,7 +304,10 @@ class PorcupineAppTestUITests: BaseTest {
     }
 
     func testProcessMessageStack() throws {
-        let p = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
+        let p = try Porcupine.init(
+            accessKey: accessKey,
+            keyword: Porcupine.BuiltInKeyword.porcupine,
+            device: device)
         p.delete()
 
         var testPcm: [Int16] = []
