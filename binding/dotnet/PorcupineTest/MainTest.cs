@@ -201,7 +201,7 @@ namespace PorcupineTest
             _porcupine = Porcupine.FromBuiltInKeywords(
                 _accessKey,
                 new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE },
-                device: device);
+                device: _device);
             Assert.IsTrue(_porcupine.FrameLength > 0, "Specified frame length was not a valid number.");
             _porcupine.Dispose();
         }
@@ -212,7 +212,7 @@ namespace PorcupineTest
             _porcupine = Porcupine.FromBuiltInKeywords(
                 _accessKey,
                 new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE },
-                device: device);
+                device: _device);
             Assert.IsFalse(string.IsNullOrWhiteSpace(_porcupine.Version), "Porcupine did not return a valid version number.");
             _porcupine.Dispose();
         }
@@ -234,7 +234,7 @@ namespace PorcupineTest
             _porcupine = Porcupine.FromBuiltInKeywords(
                 _accessKey,
                 new List<BuiltInKeyword> { BuiltInKeyword.PORCUPINE },
-                device: device);
+                device: _device);
             RunTestCase(
                 "porcupine.wav",
                 new List<int>() { 0 });
@@ -258,7 +258,7 @@ namespace PorcupineTest
             _porcupine = Porcupine.FromBuiltInKeywords(
                 _accessKey,
                 inputKeywords,
-                device: device);
+                device: _device);
             RunTestCase(
                 "multiple_keywords.wav",
                 new List<int>() { 7, 0, 1, 2, 3, 4, 5, 6, 7, 8 });
@@ -270,7 +270,7 @@ namespace PorcupineTest
             Assert.ThrowsException<PorcupineIOException>(() => Porcupine.FromBuiltInKeywords(
                 _accessKey,
                 new List<BuiltInKeyword> { (BuiltInKeyword)666 },
-                device: device));
+                device: _device));
         }
 
         [TestMethod]
@@ -281,7 +281,7 @@ namespace PorcupineTest
                 _accessKey,
                 GetKeywordPaths(language, new List<string> { keyword }),
                 GetModelPath(language),
-                device: device
+                device: _device
             );
 
             RunTestCase(
@@ -298,7 +298,7 @@ namespace PorcupineTest
                 _accessKey,
                 GetKeywordPaths(language, keywords.ToList()),
                 GetModelPath(language),
-                device: device
+                device: _device
             );
 
             RunTestCase(
@@ -319,7 +319,7 @@ namespace PorcupineTest
                 _accessKey,
                 GetKeywordPaths(language, keywords),
                 GetModelPath(language),
-                device: device
+                device: _device
             );
 
             RunTestCase(
@@ -340,7 +340,7 @@ namespace PorcupineTest
                     "invalid",
                     keywords,
                     GetModelPath("en"),
-                    device: device);
+                    device: _device);
                 Assert.IsNull(p);
                 p.Dispose();
             }
@@ -358,7 +358,7 @@ namespace PorcupineTest
                     "invalid",
                     keywords,
                     GetModelPath("en"),
-                    device: device);
+                    device: _device);
                 Assert.IsNull(p);
                 p.Dispose();
             }
@@ -379,7 +379,7 @@ namespace PorcupineTest
                 _accessKey,
                 keywords,
                 GetModelPath("en"),
-                device: device);
+                device: _device);
             short[] testPcm = new short[p.FrameLength];
 
             var obj = typeof(Porcupine).GetField("_libraryPointer", BindingFlags.NonPublic | BindingFlags.Instance);
