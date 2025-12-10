@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2024 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -50,6 +50,8 @@ enum BuiltInKeyword {
 
 enum _NativeFunctions {
   // ignore:constant_identifier_names
+  GET_AVAILABLE_DEVICES,
+  // ignore:constant_identifier_names
   FROM_BUILTIN_KEYWORDS,
   // ignore:constant_identifier_names
   FROM_KEYWORD_PATHS,
@@ -76,6 +78,25 @@ class Porcupine {
   /// The audio sample rate required by Porcupine
   int get sampleRate => _sampleRate;
 
+  /// Lists all available devices that Porcupine can use for inference.
+  /// Entries in the list can be used as the `device` argument when initializing Porcupine.
+  ///
+  /// Throws a `PorcupineException` if unable to get devices
+  ///
+  /// returns a list of devices Porcupine can run inference on
+  static Future<List<String>> getAvailableDevices() async {
+    try {
+      List<String> devices = (await _channel
+          .invokeMethod(_NativeFunctions.GET_AVAILABLE_DEVICES.name, {}))
+          .cast<String>();
+      return devices;
+    } on PlatformException catch (error) {
+      throw porcupineStatusToException(error.code, error.message);
+    } on Exception catch (error) {
+      throw porcupineStatusToException("PorcupineException", error.toString());
+    }
+  }
+
   /// Static creator for initializing Porcupine from a selection of built-in keywords
   ///
   /// [accessKey] AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
@@ -86,6 +107,13 @@ class Porcupine {
   /// [modelPath] is a path to the file containing model parameters. If not set
   /// it will be set to the default location.
   ///
+  /// [device] is the string representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+  /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+  /// device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+  /// is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+  /// number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+  /// where `${NUM_THREADS}` is the desired number of threads.
+  ///
   /// [sensitivities] sensitivities for each keywords model. A higher sensitivity
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
@@ -94,8 +122,13 @@ class Porcupine {
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromBuiltInKeywords(
-      String accessKey, List<BuiltInKeyword> keywords,
-      {String? modelPath, List<double>? sensitivities}) async {
+      String accessKey,
+      List<BuiltInKeyword> keywords,
+      {
+        String? modelPath,
+        String? device,
+        List<double>? sensitivities
+      }) async {
     if (modelPath != null) {
       modelPath = await _tryExtractFlutterAsset(modelPath);
     }
@@ -115,12 +148,16 @@ class Porcupine {
           await _channel.invokeMethod(_NativeFunctions.FROM_BUILTIN_KEYWORDS.name, {
         'accessKey': accessKey,
         'modelPath': modelPath,
+        'device': device,
         'keywords': keywordValues,
         'sensitivities': sensitivities
       }));
 
-      return Porcupine._(result['handle'], result['frameLength'],
-          result['sampleRate'], result['version']);
+      return Porcupine._(
+        result['handle'],
+        result['frameLength'],
+        result['sampleRate'],
+        result['version']);
     } on PlatformException catch (error) {
       throw porcupineStatusToException(error.code, error.message);
     } on Exception catch (error) {
@@ -137,6 +174,13 @@ class Porcupine {
   /// [modelPath] is a path to the file containing model parameters. If not set
   /// it will be set to the default location.
   ///
+  /// [device] is the string representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+  /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+  /// device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+  /// is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+  /// number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+  /// where `${NUM_THREADS}` is the desired number of threads.
+  ///
   /// [sensitivities] sensitivities for each keywords model. A higher sensitivity
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
@@ -145,8 +189,13 @@ class Porcupine {
   ///
   /// returns an instance of the wake word engine
   static Future<Porcupine> fromKeywordPaths(
-      String accessKey, List<String> keywordPaths,
-      {String? modelPath, List<double>? sensitivities}) async {
+      String accessKey,
+      List<String> keywordPaths,
+      {
+        String? modelPath,
+        String? device,
+        List<double>? sensitivities
+      }) async {
     if (modelPath != null) {
       modelPath = await _tryExtractFlutterAsset(modelPath);
     }
@@ -160,12 +209,16 @@ class Porcupine {
           await _channel.invokeMethod(_NativeFunctions.FROM_KEYWORD_PATHS.name, {
         'accessKey': accessKey,
         'modelPath': modelPath,
+        'device': device,
         'keywordPaths': keywordPaths,
         'sensitivities': sensitivities
       }));
 
-      return Porcupine._(result['handle'], result['frameLength'],
-          result['sampleRate'], result['version']);
+      return Porcupine._(
+        result['handle'],
+        result['frameLength'],
+        result['sampleRate'],
+        result['version']);
     } on PlatformException catch (error) {
       throw porcupineStatusToException(error.code, error.message);
     } on Exception catch (error) {

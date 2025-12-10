@@ -35,11 +35,38 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+# ************** REMOVE AFTER RELEASE ********************
+    - name: Set up Java 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: 11
+        distribution: 'temurin'
+
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+
+    - name: Publish to Local Maven
+      run: ./gradlew publishToMavenLocal
+      working-directory: binding/android/Porcupine
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+
+# ************** REMOVE AFTER RELEASE ********************
+
     - name: Copy test_resources
       run: ./copy_test_resources.sh
 
-    - name: Inject AppID
+    - name: Inject AccessKey
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+        integration_test/app_test.dart
+
+    - name: Inject device
+      run: sed -i 's:{TESTING_DEVICE_HERE}:cpu\:1:'
         integration_test/app_test.dart
 
     - name: Install Flutter 3.35.0
@@ -66,8 +93,12 @@ jobs:
     - name: Copy test_resources
       run: ./copy_test_resources.sh
 
-    - name: Inject AppID
+    - name: Inject AccessKey
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+        integration_test/app_test.dart
+
+    - name: Inject Device
+      run: sed -i '.bak' 's:{TESTING_DEVICE_HERE}:cpu\:1:'
         integration_test/app_test.dart
 
     - name: Install Flutter 3.35.0

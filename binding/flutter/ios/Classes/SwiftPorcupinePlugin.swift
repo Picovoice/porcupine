@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2024 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -14,6 +14,7 @@ import UIKit
 import Porcupine
 
 enum Method: String {
+    case GET_AVAILABLE_DEVICES
     case FROM_BUILTIN_KEYWORDS
     case FROM_KEYWORD_PATHS
     case PROCESS
@@ -41,11 +42,21 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
         let args = call.arguments as! [String: Any]
 
         switch method {
+        case .GET_AVAILABLE_DEVICES:
+            do {
+                var deviceList: [String] = try Porcupine.getAvailableDevices()
+                result(deviceList)
+            } catch let error as PorcupineError {
+                result(errorToFlutterError(error))
+            } catch {
+                result(errorToFlutterError(PorcupineError(error.localizedDescription)))
+            }
         case .FROM_BUILTIN_KEYWORDS:
             do {
                 if let accessKey = args["accessKey"] as? String,
                    let keywords = args["keywords"] as? [String] {
                     let modelPath = args["modelPath"] as? String
+                    let device = args["device"] as? String
                     let sensitivities = args["sensitivities"] as? [Float]
 
                     var keywordValues: [Porcupine.BuiltInKeyword] = []
@@ -63,6 +74,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                         accessKey: accessKey,
                         keywords: keywordValues,
                         modelPath: modelPath,
+                        device: device,
                         sensitivities: sensitivities)
 
                     let handle: String = String(describing: porcupine)
@@ -89,12 +101,14 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                 if let accessKey = args["accessKey"] as? String,
                    let keywordPaths = args["keywordPaths"] as? [String] {
                     let modelPath = args["modelPath"] as? String
+                    let device = args["device"] as? String
                     let sensitivities = args["sensitivities"] as? [Float]
 
                     let porcupine = try Porcupine(
                         accessKey: accessKey,
                         keywordPaths: keywordPaths,
                         modelPath: modelPath,
+                        device: device,
                         sensitivities: sensitivities)
 
                     let handle: String = String(describing: porcupine)
