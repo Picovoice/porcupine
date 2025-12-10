@@ -3,6 +3,7 @@ version '4.0.0'
 
 buildscript {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
     }
@@ -14,6 +15,7 @@ buildscript {
 
 rootProject.allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
     }

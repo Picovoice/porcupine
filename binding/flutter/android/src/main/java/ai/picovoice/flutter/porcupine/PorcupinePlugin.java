@@ -82,6 +82,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                 try {
                     String accessKey = call.argument("accessKey");
                     String modelPath = call.argument("modelPath");
+                    String device = call.argument("device");
                     ArrayList<String> keywordsList = call.argument("keywords");
                     ArrayList<Double> sensitivitiesList = call.argument("sensitivities");
 
@@ -113,6 +114,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                     Porcupine porcupine = new Porcupine.Builder()
                             .setAccessKey(accessKey)
                             .setModelPath(modelPath)
+                            .setDevice(device)
                             .setKeywords(keywords)
                             .setSensitivities(sensitivities)
                             .build(flutterContext);
@@ -136,6 +138,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                 try {
                     String accessKey = call.argument("accessKey");
                     String modelPath = call.argument("modelPath");
+                    String device = call.argument("device");
                     ArrayList<String> keywordPathsList = call.argument("keywordPaths");
                     ArrayList<Double> sensitivitiesList = call.argument("sensitivities");
 
@@ -158,6 +161,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                     Porcupine porcupine = new Porcupine.Builder()
                             .setAccessKey(accessKey)
                             .setModelPath(modelPath)
+                            .setDevice(device)
                             .setKeywordPaths(keywordPaths)
                             .setSensitivities(sensitivities)
                             .build(flutterContext);

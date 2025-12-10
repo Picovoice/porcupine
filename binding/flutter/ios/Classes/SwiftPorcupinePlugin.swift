@@ -44,7 +44,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
         switch method {
         case .GET_AVAILABLE_DEVICES:
             do {
-                var result: [String] = Porcupine.getAvailableDevices()
+                var result: [String] = try Porcupine.getAvailableDevices()
                 result(result)
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
@@ -56,6 +56,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                 if let accessKey = args["accessKey"] as? String,
                    let keywords = args["keywords"] as? [String] {
                     let modelPath = args["modelPath"] as? String
+                    let device = args["device"] as? String
                     let sensitivities = args["sensitivities"] as? [Float]
 
                     var keywordValues: [Porcupine.BuiltInKeyword] = []
@@ -73,6 +74,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                         accessKey: accessKey,
                         keywords: keywordValues,
                         modelPath: modelPath,
+                        device: device,
                         sensitivities: sensitivities)
 
                     let handle: String = String(describing: porcupine)
@@ -99,12 +101,14 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
                 if let accessKey = args["accessKey"] as? String,
                    let keywordPaths = args["keywordPaths"] as? [String] {
                     let modelPath = args["modelPath"] as? String
+                    let device = args["device"] as? String
                     let sensitivities = args["sensitivities"] as? [Float]
 
                     let porcupine = try Porcupine(
                         accessKey: accessKey,
                         keywordPaths: keywordPaths,
                         modelPath: modelPath,
+                        device: device,
                         sensitivities: sensitivities)
 
                     let handle: String = String(describing: porcupine)
