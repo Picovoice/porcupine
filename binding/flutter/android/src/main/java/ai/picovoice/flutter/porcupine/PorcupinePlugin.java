@@ -70,8 +70,8 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
             case GET_AVAILABLE_DEVICES:
                 try {
                     String[] devices = Porcupine.getAvailableDevices();
-                    List<String> result = Arrays.asList(devices);
-                    result.success(result);
+                    List<String> deviceList = Arrays.asList(devices);
+                    result.success(deviceList);
                 } catch (PorcupineException e) {
                     result.error(
                             e.getClass().getSimpleName(),
