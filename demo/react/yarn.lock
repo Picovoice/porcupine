@@ -1564,13 +1564,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-react@file:../../binding/react":
+"@picovoice/porcupine-react@4.0.0":
   version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react/-/porcupine-react-4.0.0.tgz#d4439d2364c0655244115390c0c01c00ee12c680"
+  integrity sha512-uY/bNiO29iiNxSwoYSpiPE8dhIiAk1PPppCF1oghIb79UTNkV+45fy4UQLnAyl1BC42nTcmcvrdoyug5TMceWQ==
   dependencies:
-    "@picovoice/porcupine-web" "file:../../../../../.cache/yarn/v6/npm-@picovoice-porcupine-react-4.0.0-055cf82f-b3f4-40f3-9d1f-fc0c90e24593-1764638527224/node_modules/@picovoice/web"
+    "@picovoice/porcupine-web" "4.0.0"
 
-"@picovoice/porcupine-web@file:../../binding/web":
+"@picovoice/porcupine-web@4.0.0":
   version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-4.0.0.tgz#33946e43a48db84a8c27d6fd4b61a747304af085"
+  integrity sha512-YqXBp6R9od6NTgcm80UyyB71c4eBArxD3BtX1SKQC4/xAvThM2VgwtPj4J7gvjl9yqqlcr+0Mg3T4lbKIOziTw==
   dependencies:
     "@picovoice/web-utils" "=1.4.3"
 
