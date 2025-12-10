@@ -42,6 +42,43 @@ jobs:
       with:
         submodules: 'recursive'
 
+# ************** REMOVE AFTER RELEASE ********************
+    - name: Set up Java 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: 11
+        distribution: 'temurin'
+
+    - name: Build binding
+      run: ./gradlew assembleRelease --info
+      working-directory: binding/android/Porcupine
+
+    - name: Publish to Local Maven
+      run: ./gradlew publishToMavenLocal
+      working-directory: binding/android/Porcupine
+
+    - name: Install React Native Binding Dependencies
+      run: yarn install
+      working-directory: binding/react-native
+
+    - name: Build Local tarball
+      run: yarn pkg
+      working-directory: binding/react-native
+
+    - name: Remove old package
+      run: yarn remove @picovoice/porcupine-react-native
+
+    - name: Add new local package
+      run: yarn add ../../pkg/picovoice-porcupine-react-native-4.0.0.tgz
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+
+# ************** REMOVE AFTER RELEASE ********************
+
     - name: Pre-build dependencies
       run: |
         yarn install
@@ -49,6 +86,9 @@ jobs:
 
     - name: Inject AppID
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
+
+    - name: Inject Device
+      run: sed -i 's:{TESTING_DEVICE_HERE}:cpu\:1:' Tests.ts
 
     - name: Build tests
       run: detox build --configuration android.att.release
@@ -65,6 +105,28 @@ jobs:
       with:
         submodules: 'recursive'
 
+# ************** REMOVE AFTER RELEASE ********************
+    - name: Pod cache clean
+      run: pod cache clean --all
+
+    - name: Yarn cache clean
+      run: yarn cache clean
+
+    - name: Install React Native Binding Dependencies
+      run: yarn install
+      working-directory: binding/react-native
+
+    - name: Build Local tarball
+      run: yarn pkg
+      working-directory: binding/react-native
+
+    - name: Remove old package
+      run: yarn remove @picovoice/porcupine-react-native
+
+    - name: Add new local package
+      run: yarn add ../../pkg/picovoice-porcupine-react-native-4.0.0.tgz
+# ************** REMOVE AFTER RELEASE ********************
+
     - name: Pre-build dependencies
       run: |
         yarn install
@@ -76,6 +138,9 @@ jobs:
 
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
+
+    - name: Inject Device
+      run: sed -i '.bak' 's:{TESTING_DEVICE_HERE}:cpu\:1:' Tests.ts
 
     - name: Build tests
       run: detox build --configuration ios.sim.release

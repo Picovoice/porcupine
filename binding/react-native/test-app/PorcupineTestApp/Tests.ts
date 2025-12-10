@@ -8,6 +8,7 @@ const testData = require('./test_data.json');
 const platform = Platform.OS;
 
 const accessKey: string = '{TESTING_ACCESS_KEY_HERE}';
+const device: string = '{TESTING_DEVICE_HERE}';
 
 export type Result = {
   testName: string;
@@ -111,10 +112,17 @@ async function runTestcase(
       language === 'en'
         ? getPath('model_files/porcupine_params.pv')
         : getPath(`model_files/porcupine_params_${language}.pv`);
+    let availableDevices = await Porcupine.getAvailableDevices();
+    if (availableDevices === undefined || availableDevices.length <= 0) {
+      result.success = false;
+      result.errorString = `Devices ${JSON.stringify(availableDevices)} are not valid`;
+      return result;
+    }
     porcupine = await Porcupine.fromKeywordPaths(
       accessKey,
       keywordPaths,
       modelPath,
+      device
     );
     const detections = await getDetections(porcupine, audioFilePath);
     if (arraysEqual(detections, groundTruth)) {

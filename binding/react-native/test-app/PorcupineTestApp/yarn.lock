@@ -1414,8 +1414,9 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-react-native@file:../..":
-  version "3.0.5"
+"@picovoice/porcupine-react-native@../../pkg/picovoice-porcupine-react-native-4.0.0.tgz":
+  version "4.0.0"
+  resolved "../../pkg/picovoice-porcupine-react-native-4.0.0.tgz#b085488ccefa80b39abfb8d75f4537dbed74d293"
 
 "@picovoice/react-native-voice-processor@^1.2.3":
   version "1.2.3"

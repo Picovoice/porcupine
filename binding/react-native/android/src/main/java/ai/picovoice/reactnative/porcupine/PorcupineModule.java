@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -20,6 +20,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 import java.io.File;
@@ -48,9 +49,24 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getAvailableDevices(Promise promise) {
+        try {
+            String[] devices = Porcupine.getAvailableDevices();
+            WritableArray result = Arguments.createArray();
+            for (int i = 0; i < devices.length; i++) {
+                result.pushString(devices[i]);
+            }
+            promise.resolve(result);
+        } catch (PorcupineException e) {
+            promise.reject(e.getClass().getSimpleName(), e.getMessage());
+        }
+    }
+
+    @ReactMethod
     public void fromBuiltInKeywords(
             String accessKey,
             String modelPath,
+            String device,
             ReadableArray keywords,
             ReadableArray sensitivities,
             Promise promise
@@ -86,6 +102,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
             Porcupine porcupine = new Porcupine.Builder()
                     .setAccessKey(accessKey)
                     .setModelPath(modelPath.isEmpty() ? null : modelPath)
+                    .setDevice(device.isEmpty() ? null : device)
                     .setKeywords(keywordsJava.length == 0 ? null : keywordsJava)
                     .setSensitivities(sensitivitiesJava.length == 0 ? null : sensitivitiesJava)
                     .build(reactContext);
@@ -106,6 +123,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     public void fromKeywordPaths(
             String accessKey,
             String modelPath,
+            String device,
             ReadableArray keywordPaths,
             ReadableArray sensitivities,
             Promise promise) {
@@ -124,6 +142,7 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
             Porcupine porcupine = new Porcupine.Builder()
                     .setAccessKey(accessKey)
                     .setModelPath(modelPath.isEmpty() ? null : modelPath)
+                    .setDevice(device.isEmpty() ? null : device)
                     .setKeywordPaths(keywordPathsJava.length == 0 ? null : keywordPathsJava)
                     .setSensitivities(sensitivitiesJava.length == 0 ? null : sensitivitiesJava)
                     .build(reactContext);
@@ -151,7 +170,6 @@ public class PorcupineModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void process(String handle, ReadableArray pcmArray, Promise promise) {
         try {
-
             if (!porcupinePool.containsKey(handle)) {
                 promise.reject(PorcupineInvalidStateException.class.getSimpleName(),
                         "Invalid Porcupine handle provided to native module.");
