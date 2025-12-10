@@ -235,7 +235,7 @@
 			);
 			mainGroup = 1E7744A727CD9D7E00491D0B;
 			packageReferences = (
-				02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */,
+				02C705512CCB15430002B3E4 /* XCRemoteSwiftPackageReference "porcupine" */,
 			);
 			productRefGroup = 1E7744B127CD9D7E00491D0B /* Products */;
 			projectDirPath = "";
@@ -651,6 +651,17 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		02C705512CCB15430002B3E4 /* XCRemoteSwiftPackageReference "porcupine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Picovoice/porcupine";
+			requirement = {
+				kind = exactVersion;
+				version = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		02C7054A2CCB14450002B3E4 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -662,6 +673,11 @@
 		};
 		02C7054F2CCB14B50002B3E4 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = Porcupine;
+		};
+		02C705522CCB15430002B3E4 /* Porcupine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02C705512CCB15430002B3E4 /* XCRemoteSwiftPackageReference "porcupine" */;
 			productName = Porcupine;
 		};
 		02C705552CCB156D0002B3E4 /* Porcupine */ = {
