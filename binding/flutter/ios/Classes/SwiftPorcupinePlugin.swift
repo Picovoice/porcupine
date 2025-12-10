@@ -44,7 +44,7 @@ public class SwiftPorcupinePlugin: NSObject, FlutterPlugin {
         switch method {
         case .GET_AVAILABLE_DEVICES:
             do {
-                var result: [String] = try Porcupine.getAvailableDevices()
+                var result = try Porcupine.getAvailableDevices()
                 result(result)
             } catch let error as PorcupineError {
                 result(errorToFlutterError(error))
