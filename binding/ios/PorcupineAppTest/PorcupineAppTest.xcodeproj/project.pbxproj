@@ -235,7 +235,7 @@
 			);
 			mainGroup = 1E7744A727CD9D7E00491D0B;
 			packageReferences = (
-				02C705512CCB15430002B3E4 XCRemoteSwiftPackageReference "porcupine",
+				02C705512CCB15430002B3E4 /* XCRemoteSwiftPackageReference "porcupine" */,
 			);
 			productRefGroup = 1E7744B127CD9D7E00491D0B /* Products */;
 			projectDirPath = "";
