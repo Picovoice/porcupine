@@ -1327,6 +1327,15 @@ pv_porcupine_delete(handle);
 
 ## Releases
 
+### v4.0.0 - December 11th, 2025
+- Improved engine performance
+- Added support for running on GPU or multiple CPU cores
+- Node.js min version bumped to Node 18
+- iOS min version bumped to iOS 16
+- Flutter min version bumped to 3.10
+- React Native min version bumped to 0.73
+- Ended support for Unity
+
 ### v3.0.0 - October 26th, 2023
 
 - Improvements to error reporting
