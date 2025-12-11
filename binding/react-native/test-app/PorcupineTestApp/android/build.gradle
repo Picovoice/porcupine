@@ -10,7 +10,6 @@ buildscript {
         kotlinVersion = "2.0.21"
     }
     repositories {
-        mavenLocal()
         google()
         mavenCentral()
     }
@@ -35,7 +34,6 @@ allprojects {
 
 allprojects {
     repositories {
-        mavenLocal()
         maven {
             url("$rootDir/../node_modules/detox/Detox-android")
         }
