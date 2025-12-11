@@ -43,15 +43,6 @@ jobs:
     - name: Package restore
       run: dotnet restore
 
-    # *********** REMOVE AFTER RELEASE **********************
-    - name: Pack binding for local ref
-      run: dotnet pack -c Release
-      working-directory: binding/dotnet
-
-    - name: Add binding to demo
-      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
-    # ******************************************************
-    
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
 
@@ -68,21 +59,19 @@ jobs:
       matrix:
         device: [best]
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
+        include:
+          - device: gpu
+            machine: pv-linux
+          - device: gpu
+            machine: pv-windows
+          - device: gpu
+            machine: pv-ios
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Package restore
       run: dotnet restore
-
-    # *********** REMOVE AFTER RELEASE **********************
-    - name: Pack binding for local ref
-      run: dotnet pack -c Release
-      working-directory: binding/dotnet
-
-    - name: Add binding to demo
-      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
-    # ******************************************************
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
@@ -114,15 +103,6 @@ jobs:
     - name: Package restore
       run: dotnet restore
 
-    # *********** REMOVE AFTER RELEASE **********************
-    - name: Pack binding for local ref
-      run: dotnet pack -c Release
-      working-directory: binding/dotnet
-
-    - name: Add binding to demo
-      run: dotnet add package -s ../../../binding/dotnet/Porcupine/bin/Release Porcupine
-    # ******************************************************
-    
     - name: Dotnet build
       run: dotnet build
 
