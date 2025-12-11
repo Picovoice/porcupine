@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@picovoice/porcupine-react-native": "../../pkg/picovoice-porcupine-react-native-4.0.0.tgz",
+    "@picovoice/porcupine-react-native": "file:../..",
     "@picovoice/react-native-voice-processor": "^1.2.3",
     "base-64": "^1.0.0",
     "react": "19.0.0",
