@@ -1,6 +1,6 @@
 {
   "name": "porcupine-react-native-demo",
-  "version": "3.0.4",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
     "lint": "eslint .",
@@ -15,7 +15,7 @@
     "ios-bundle": "node scripts/run_demo.js bundle --dev false --platform ios --entry-file index.js --bundle-output ios/app.jsbundle"
   },
   "dependencies": {
-    "@picovoice/porcupine-react-native": "3.0.5",
+    "@picovoice/porcupine-react-native": "4.0.0",
     "@picovoice/react-native-voice-processor": "1.2.3",
     "@react-native-picker/picker": "^2.11.4",
     "@react-native/new-app-screen": "0.82.0",

@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -41,6 +41,13 @@ class PorcupineManager {
   /// [modelPath] is a path to the file containing model parameters. If not set
   /// it will be set to the default location.
   ///
+  /// [device] is the string representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+  /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+  /// device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+  /// is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+  /// number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+  /// where `${NUM_THREADS}` is the desired number of threads.
+  ///
   /// [sensitivities] sensitivities for each keywords model. A higher sensitivity
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
@@ -51,14 +58,22 @@ class PorcupineManager {
   /// Throws a `PorcupineException` if not successfully initialized.
   ///
   /// returns an instance of PorcupineManager
-  static Future<PorcupineManager> fromBuiltInKeywords(String accessKey,
-      List<BuiltInKeyword> keywords, WakeWordCallback wakeWordCallback,
-      {String? modelPath,
-      List<double>? sensitivities,
-      ErrorCallback? errorCallback}) async {
+  static Future<PorcupineManager> fromBuiltInKeywords(
+      String accessKey,
+      List<BuiltInKeyword> keywords,
+      WakeWordCallback wakeWordCallback,
+      {
+        String? modelPath,
+        String? device,
+        List<double>? sensitivities,
+        ErrorCallback? errorCallback
+      }) async {
     Porcupine porcupine = await Porcupine.fromBuiltInKeywords(
-        accessKey, keywords,
-        modelPath: modelPath, sensitivities: sensitivities);
+        accessKey,
+        keywords,
+        modelPath: modelPath,
+        device: device,
+        sensitivities: sensitivities);
     return PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
   }
 
@@ -74,6 +89,13 @@ class PorcupineManager {
   /// [modelPath] is a path to the file containing model parameters. If not set
   /// it will be set to the default location.
   ///
+  /// [device] is the string representation of the device (e.g., CPU or GPU) to use. If set to `best`, the most
+  /// suitable device is selected automatically. If set to `gpu`, the engine uses the first available GPU
+  /// device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where `${GPU_INDEX}`
+  /// is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the default
+  /// number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+  /// where `${NUM_THREADS}` is the desired number of threads.
+  ///
   /// [sensitivities] sensitivities for each keywords model. A higher sensitivity
   /// reduces miss rate at the cost of potentially higher false alarm rate.
   /// Sensitivity should be a floating-point number within 0 and 1.
@@ -84,14 +106,22 @@ class PorcupineManager {
   /// Throws a `PorcupineException` if not successfully initialized.
   ///
   /// returns an instance of PorcupineManager
-  static Future<PorcupineManager> fromKeywordPaths(String accessKey,
-      List<String> keywordPaths, WakeWordCallback wakeWordCallback,
-      {String? modelPath,
-      List<double>? sensitivities,
-      ErrorCallback? errorCallback}) async {
+  static Future<PorcupineManager> fromKeywordPaths(
+      String accessKey,
+      List<String> keywordPaths,
+      WakeWordCallback wakeWordCallback,
+      {
+        String? modelPath,
+        String? device,
+        List<double>? sensitivities,
+        ErrorCallback? errorCallback
+      }) async {
     Porcupine porcupine = await Porcupine.fromKeywordPaths(
-        accessKey, keywordPaths,
-        modelPath: modelPath, sensitivities: sensitivities);
+        accessKey,
+        keywordPaths,
+        modelPath: modelPath,
+        device: device,
+        sensitivities: sensitivities);
     return PorcupineManager._(porcupine, wakeWordCallback, errorCallback);
   }
 

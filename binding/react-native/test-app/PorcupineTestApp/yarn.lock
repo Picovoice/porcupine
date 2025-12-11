@@ -1415,7 +1415,7 @@
     fastq "^1.6.0"
 
 "@picovoice/porcupine-react-native@file:../..":
-  version "3.0.5"
+  version "4.0.0"
 
 "@picovoice/react-native-voice-processor@^1.2.3":
   version "1.2.3"

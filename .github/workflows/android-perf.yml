@@ -53,6 +53,9 @@ jobs:
     - name: Inject AccessKey
       run: echo pvTestingAccessKey="${{secrets.PV_VALID_ACCESS_KEY}}" >> local.properties
 
+    - name: Inject Device
+      run: echo pvTestingDevice="best" >> local.properties
+
     - name: Inject Android keystore variables
       run: |
         echo storePassword="${{secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD}}" >> local.properties

@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '3.0.3'
+    PUBLISH_VERSION = '4.0.0'
     PUBLISH_ARTIFACT_ID = 'porcupine-android'
 }
 

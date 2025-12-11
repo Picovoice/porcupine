@@ -44,8 +44,7 @@ applications. It is
   - [Demos](#demos)
     - [Python](#python-demos)
     - [.NET](#net-demos)
-    - [Java](#java-demos)
-    - [Unity](#unity-demos)
+    - [Java](#java-demos) 
     - [Flutter](#flutter-demos)
     - [React Native](#react-native-demos)
     - [Android](#android-demos)
@@ -59,8 +58,7 @@ applications. It is
   - [SDKs](#sdks)
     - [Python](#python)
     - [.NET](#net)
-    - [Java](#java)
-    - [Unity](#unity)
+    - [Java](#java) 
     - [Flutter](#flutter)
     - [React Native](#react-native)
     - [Android](#android)
@@ -174,14 +172,6 @@ The engine starts processing the audio input from the microphone in realtime and
 utterances of `Porcupine`.
 
 For more information about Java demos go to [demo/java](demo/java).
-
-### Unity Demos
-
-> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Porcupine Wake Word Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
-
-To run the Porcupine Unity demo, import the [Porcupine Unity package](binding/unity/porcupine-3.0.1.unitypackage) into your project, open the PorcupineDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
-
-To browse the demo source go to [demo/unity](demo/unity).
 
 ### Flutter Demos
 
@@ -638,128 +628,6 @@ Once you're done with Porcupine, ensure you release its resources explicitly:
 
 ```java
 handle.delete();
-```
-
-### Unity
-
-> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Porcupine Wake Word Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
-
-Import the [Porcupine Unity Package](binding/unity/porcupine-3.0.1.unitypackage) into your Unity project.
-
-The SDK provides two APIs:
-
-#### High-Level API
-
-[PorcupineManager](binding/unity/Assets/Porcupine/PorcupineManager.cs) provides a high-level API that takes care of audio recording. This is the quickest way to get started.
-
-The static constructor `PorcupineManager.FromBuiltInKeywords` will create an instance of the `PorcupineManager` using one or more of the built-in keywords.
-
-```csharp
-using Pv.Unity;
-
-// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-string accessKey = "${ACCESS_KEY}";
-
-try {
-    List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>(){
-        Porcupine.BuiltInKeyword.PICOVOICE,
-        Porcupine.BuiltInKeyword.PORCUPINE
-    };
-    PorcupineManager _porcupineManager = PorcupineManager.FromBuiltInKeywords(
-                                            accessKey,
-                                            keywords,
-                                            OnWakeWordDetected);
-}
-catch (Exception ex)
-{
-    // handle porcupine init error
-}
-```
-
-To create an instance of PorcupineManager that detects custom keywords, you can use the `PorcupineManager.FromKeywordPaths`
-static constructor and provide the paths to the `.ppn` file(s).
-
-```csharp
-// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-string accessKey = "${ACCESS_KEY}";
-
-List<string> keywordPaths = new List<string>(){ "/path/to/keyword.ppn" };
-PorcupineManager _porcupineManager = PorcupineManager.FromKeywordPaths(
-                                        accessKey,
-                                        keywordPaths,
-                                        OnWakeWordDetected);
-```
-
-Once you have instantiated a PorcupineManager, you can start/stop audio capture and wake word detection by calling:
-
-```csharp
-_porcupineManager.Start();
-// .. use porcupine
-_porcupineManager.Stop();
-```
-
-Once the app is done with using PorcupineManager, you can explicitly release the resources allocated to Porcupine:
-
-```csharp
-_porcupineManager.Delete();
-```
-
-There is no need to deal with audio capture to enable wake word detection with PorcupineManager.
-This is because it uses our
-[unity-voice-processor](https://github.com/Picovoice/unity-voice-processor/)
-Unity package to capture frames of audio and automatically pass it to the wake word engine.
-
-#### Low-Level API
-
-[Porcupine](binding/unity/Assets/Porcupine/Porcupine.cs) provides low-level access to the wake word engine for those who want to incorporate wake word detection into an already existing audio processing pipeline. To create an instance of `Porcupine`, use the `.FromBuiltInKeywords` static constructor.
-
-```csharp
-using Pv.Unity;
-
-// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-string accessKey = "${ACCESS_KEY}";
-
-try
-{
-    List<Porcupine.BuiltInKeyword> keywords = new List<Porcupine.BuiltInKeyword>(){
-        Porcupine.BuiltInKeyword.PORCUPINE,
-        Porcupine.BuiltInKeyword.PICOVOICE
-    };
-    Porcupine _porcupine = Porcupine.FromBuiltInKeywords(
-        accessKey: accessKey,
-        keywords: keywords);
-}
-catch (Exception ex)
-{
-    // handle porcupine init error
-}
-```
-
-To search for a keyword in audio, you must pass frames of audio to Porcupine using the `Process` function. The `keywordIndex` returned will either be -1 if no detection was made or an integer specifying which keyword was detected.
-
-```csharp
-short[] frame = getAudioFrame();
-
-try
-{
-    int keywordIndex = _porcupine.Process(frame);
-    if (keywordIndex >= 0)
-    {
-        // detection made!
-    }
-}
-catch (Exception ex)
-{
-    Debug.LogError(ex.ToString());
-}
-```
-
-For `Process` to work correctly, the provided audio must be single-channel and 16-bit linearly-encoded.
-
-Finally, once you no longer need the wake word engine, you can explicitly release the resources allocated to Porcupine:
-
-```csharp
-_porcupine.Dispose();
 ```
 
 ### Flutter
@@ -1342,10 +1210,11 @@ Porcupine is implemented in ANSI C and therefore can be directly linked to C app
 object can be constructed as follows.
 
 ```c
-// Available at lib/common/porcupine_params.pv
-const char *model_path = ...
 // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 const char *access_key = ...
+// Available at lib/common/porcupine_params.pv
+const char *model_path = ...
+const char *device = "best";
 const char *keyword_path = ...
 const float sensitivity = 0.5f;
 
@@ -1353,6 +1222,7 @@ pv_porcupine_t *handle = NULL;
 const pv_status_t status = pv_porcupine_init(
     access_key,
     model_path,
+    device,
     1,
     &keyword_path,
     &sensitivity,

@@ -29,7 +29,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x, 22.x]
+        device: [cpu:1, cpu]
+        node-version: [18.x, 20.x, 22.x, 24.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -39,24 +40,44 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+# REMOVE AFTER RELEASE
+    - name: Install binding
+      run: yarn install && yarn build
+      working-directory: binding/nodejs
+# REMOVE AFTER RELEASE
+
     - name: Install dependencies
       run: yarn install
 
     - name: Test
-      run: yarn file -a ${{secrets.PV_VALID_ACCESS_KEY}} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice
+      run: yarn file -a ${{secrets.PV_VALID_ACCESS_KEY}} -y ${{ matrix.device }} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
+        device: [best]
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
+        include:
+          - device: gpu
+            machine: pv-linux
+          - device: gpu
+            machine: pv-windows
+          - device: gpu
+            machine: pv-ios
 
     steps:
     - uses: actions/checkout@v3
+
+# REMOVE AFTER RELEASE
+    - name: Install binding
+      run: yarn install && yarn build
+      working-directory: binding/nodejs
+# REMOVE AFTER RELEASE
 
     - name: Install dependencies
       run: yarn install
 
     - name: Test
-      run: yarn file -a ${{secrets.PV_VALID_ACCESS_KEY}} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice
+      run: yarn file -a ${{secrets.PV_VALID_ACCESS_KEY}} -y ${{ matrix.device }} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice

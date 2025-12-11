@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -13,25 +13,30 @@
 
 @interface RCT_EXTERN_MODULE(PvPorcupine, NSObject)
 
+RCT_EXTERN_METHOD(getAvailableDevices: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(fromBuiltInKeywords: (NSString *)accessKey
-                  modelPath: (NSString *)modelPath 
+                  modelPath: (NSString *)modelPath
+                  device: (NSString *)device
                   keywords: (NSArray<NSString *>)keywords
-                  sensitivities: (NSArray<NSNumber>)sensitivities 
-                  resolver: (RCTPromiseResolveBlock)resolve 
+                  sensitivities: (NSArray<NSNumber>)sensitivities
+                  resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(fromKeywordPaths: (NSString *)accessKey
-                  modelPath: (NSString *)modelPath 
-                  keywordPaths: (NSArray<NSString *>)keywordPaths 
-                  sensitivities: (NSArray<NSNumber>)sensitivities 
-                  resolver: (RCTPromiseResolveBlock)resolve 
+                  modelPath: (NSString *)modelPath
+                  device: (NSString *)device
+                  keywordPaths: (NSArray<NSString *>)keywordPaths
+                  sensitivities: (NSArray<NSNumber>)sensitivities
+                  resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(delete: (NSString *)handle)
 
-RCT_EXTERN_METHOD(process: (NSString *)handle 
-                  pcm:(NSArray<NSNumber>)pcm 
-                  resolver: (RCTPromiseResolveBlock)resolve 
+RCT_EXTERN_METHOD(process: (NSString *)handle
+                  pcm:(NSArray<NSNumber>)pcm
+                  resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 
 + (BOOL)requiresMainQueueSetup

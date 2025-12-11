@@ -1,5 +1,5 @@
 //
-//  Copyright 2022 Picovoice Inc.
+//  Copyright 2022-2025 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -14,6 +14,7 @@ import Porcupine
 
 class PerformanceTest: XCTestCase {
     let accessKey: String = "{TESTING_ACCESS_KEY_HERE}"
+    let device: String = "{TESTING_DEVICE_HERE}"
     let iterationString: String = "{NUM_TEST_ITERATIONS}"
     let thresholdString: String = "{PERFORMANCE_THRESHOLD_SEC}"
 
@@ -29,7 +30,10 @@ class PerformanceTest: XCTestCase {
         let performanceThresholdSec = Double(thresholdString)
         try XCTSkipIf(performanceThresholdSec == nil)
 
-        let p: Porcupine = try Porcupine.init(accessKey: accessKey, keyword: Porcupine.BuiltInKeyword.porcupine)
+        let p: Porcupine = try Porcupine.init(
+            accessKey: accessKey,
+            keyword: Porcupine.BuiltInKeyword.porcupine,
+            device: device)
 
         let bundle = Bundle(for: type(of: self))
         let fileURL: URL = bundle.url(forResource: "multiple_keywords", withExtension: "wav")!

@@ -13,6 +13,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   final String accessKey = "{TESTING_ACCESS_KEY_HERE}";
+  final String device = "{TESTING_DEVICE_HERE}";
   final String platform = Platform.isAndroid
       ? "android"
       : Platform.isIOS
@@ -49,8 +50,11 @@ void main() {
 
         Porcupine porcupine;
         try {
-          porcupine = await Porcupine.fromKeywordPaths(accessKey, [keywordPath],
-              modelPath: modelPath);
+          porcupine = await Porcupine.fromKeywordPaths(
+              accessKey,
+              [keywordPath],
+              modelPath: modelPath,
+              device: device);
         } on PorcupineException catch (ex) {
           expect(ex, equals(null),
               reason: "Failed to initialize Porcupine for $language: $ex");
@@ -95,10 +99,17 @@ void main() {
         String modelPath =
             "assets/test_resources/model_files/porcupine_params${language != "en" ? "_$language" : ""}.pv";
 
+        List<String> devices = await Porcupine.getAvailableDevices();
+        expect(devices.length, greaterThan(0),
+            reason: "No devices returns from getAvailableDevices");
+
         Porcupine porcupine;
         try {
-          porcupine = await Porcupine.fromKeywordPaths(accessKey, keywordPaths,
-              modelPath: modelPath);
+          porcupine = await Porcupine.fromKeywordPaths(
+              accessKey,
+              keywordPaths,
+              modelPath: modelPath,
+              device: device);
         } on PorcupineException catch (ex) {
           expect(ex, equals(null),
               reason: "Failed to initialize Porcupine for $language: $ex");

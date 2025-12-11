@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -41,6 +41,12 @@ class PorcupineManager {
    * @param detectionCallback A callback for when Porcupine detects the specified keywords.
    * @param processErrorCallback A callback for when Porcupine process function triggers an error.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
+   * @param device String representation of the device (e.g., CPU or GPU) to use for inference.
+   * If set to `best`, the most suitable device is selected automatically. If set to `gpu`, the engine uses the
+   * first available GPU device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where
+   * `${GPU_INDEX}` is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the
+   * default number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+   * where `${NUM_THREADS}` is the desired number of threads.
    * @param sensitivities sensitivities for each keyword model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
    * [0, 1].
@@ -52,12 +58,14 @@ class PorcupineManager {
     detectionCallback: DetectionCallback,
     processErrorCallback?: ProcessErrorCallback,
     modelPath?: string,
+    device?: string,
     sensitivities?: number[]
   ) {
     let porcupine = await Porcupine.fromBuiltInKeywords(
       accessKey,
       keywords,
       modelPath,
+      device,
       sensitivities
     );
     return new PorcupineManager(
@@ -75,6 +83,12 @@ class PorcupineManager {
    * @param detectionCallback A callback for when Porcupine detects the specified keywords.
    * @param processErrorCallback A callback for when Porcupine process function triggers an error.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
+   * @param device String representation of the device (e.g., CPU or GPU) to use for inference.
+   * If set to `best`, the most suitable device is selected automatically. If set to `gpu`, the engine uses the
+   * first available GPU device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where
+   * `${GPU_INDEX}` is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the
+   * default number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+   * where `${NUM_THREADS}` is the desired number of threads.
    * @param sensitivities sensitivities for each keyword model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
    * [0, 1].
@@ -86,12 +100,14 @@ class PorcupineManager {
     detectionCallback: DetectionCallback,
     processErrorCallback?: ProcessErrorCallback,
     modelPath?: string,
+    device?: string,
     sensitivities?: number[]
   ) {
     let porcupine = await Porcupine.fromKeywordPaths(
       accessKey,
       keywordPaths,
       modelPath,
+      device,
       sensitivities
     );
     return new PorcupineManager(

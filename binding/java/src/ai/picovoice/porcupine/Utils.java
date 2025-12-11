@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2024 Picovoice Inc.
+    Copyright 2018-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
@@ -260,6 +261,28 @@ class Utils {
                         .resolve("libpv_porcupine_jni.so").toString();
             default:
                 return null;
+        }
+    }
+
+    public static ArrayList<String> getLibraryDependencyPaths(String libraryPath) {
+        Path libraryDirpath = Paths.get(libraryPath).getParent();
+
+        ArrayList<String> libraryDependencies = new ArrayList();
+
+        switch (ENVIRONMENT_NAME) {
+            case "windows":
+                if (ARCHITECTURE == "amd64") {
+                    String[] dependencies = { "pv_ypu_impl_cuda.dll" };
+                    for (int i = 0; i < dependencies.length; i++) {
+                        Path depPath = libraryDirpath.resolve(dependencies[i]);
+                        if (Files.exists(depPath)) {
+                            libraryDependencies.add(depPath.toString());
+                        }
+                    }
+                }
+                return libraryDependencies;
+            default:
+                return libraryDependencies;
         }
     }
 }

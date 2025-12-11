@@ -12,7 +12,6 @@
   ],
   "ignorePaths": [
     // submodules
-    "../../../binding/unity/Assets/Porcupine/VoiceProcessor/**/*",
     "../../../demo/c/dr_libs/**/*",
     "../../../demo/c/pvrecorder/**/*",
 
@@ -28,7 +27,6 @@
     "**/*.so",
     "**/*.wasm",
     "**/*.wav",
-    "../../../binding/unity/porcupine-*.unitypackage",
     "../../../lib/ios/**/*",
 
     // .NET
@@ -92,15 +90,10 @@
     "**/binding/react-native/test-app/**/*.mm",
     "**/demo/react-native/PorcupineDemo/Gemfile",
 
-    // unity
-    "**/*.asset",
-    "**/*.meta",
-    "**/*.unity",
-    "**/manifest.json",
-    "../../../demo/unity/images/image_attribution.md",
-    "**/binding/unity/ProjectSettings/**/*",
-
     // test
-    "**/test_data.json"
+    "**/test_data.json",
+
+    // wasm
+    "**/lib/wasm/**/*.js"
   ]
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2018-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -13,6 +13,7 @@
 package ai.picovoice.porcupinedemo;
 
 import ai.picovoice.porcupine.Porcupine;
+import ai.picovoice.porcupine.PorcupineException;
 import org.apache.commons.cli.*;
 
 import javax.sound.sampled.AudioFormat;
@@ -28,8 +29,14 @@ import java.util.Locale;
 
 public class FileDemo {
 
-    public static void runDemo(String accessKey, File inputAudioFile, String libPath,
-                               String modelPath, String[] keywordPaths, float[] sensitivities) {
+    public static void runDemo(
+            String accessKey,
+            File inputAudioFile,
+            String libPath,
+            String modelPath,
+            String device,
+            String[] keywordPaths,
+            float[] sensitivities) {
 
         // create keywords from keyword_paths
         String[] keywords = new String[keywordPaths.length];
@@ -60,6 +67,7 @@ public class FileDemo {
                     .setAccessKey(accessKey)
                     .setLibraryPath(libPath)
                     .setModelPath(modelPath)
+                    .setDevice(device)
                     .setKeywordPaths(keywordPaths)
                     .setSensitivities(sensitivities)
                     .build();
@@ -135,10 +143,24 @@ public class FileDemo {
             return;
         }
 
+        if (cmd.hasOption("show_inference_devices")) {
+            try {
+                String[] devices = Porcupine.getAvailableDevices();
+                for (int i = 0; i < devices.length; i++) {
+                    System.out.println(devices[i]);
+                }
+                return;
+            } catch (PorcupineException e) {
+                System.out.println(e.getMessage());
+                System.exit(1);
+            }
+        }
+
         String accessKey = cmd.getOptionValue("access_key");
         String inputAudioPath = cmd.getOptionValue("input_audio_path");
         String libraryPath = cmd.getOptionValue("library_path");
         String modelPath = cmd.getOptionValue("model_path");
+        String device = cmd.getOptionValue("device");
         String[] keywords = cmd.getOptionValues("keywords");
         String[] keywordPaths = cmd.getOptionValues("keyword_paths");
         String[] sensitivitiesStr = cmd.getOptionValues("sensitivities");
@@ -190,6 +212,10 @@ public class FileDemo {
             modelPath = Porcupine.MODEL_PATH;
         }
 
+        if (device == null) {
+            device = "best";
+        }
+
         if (keywordPaths == null || keywordPaths.length == 0) {
             if (keywords == null || keywords.length == 0) {
                 throw new IllegalArgumentException(
@@ -223,7 +249,14 @@ public class FileDemo {
                             sensitivities.length));
         }
 
-        runDemo(accessKey, inputAudioFile, libraryPath, modelPath, keywordPaths, sensitivities);
+        runDemo(
+                accessKey,
+                inputAudioFile,
+                libraryPath,
+                modelPath,
+                device,
+                keywordPaths,
+                sensitivities);
     }
 
     private static Options buildCommandLineOptions() {
@@ -253,6 +286,13 @@ public class FileDemo {
                 .desc("Absolute path to the file containing model parameters.")
                 .build());
 
+        options.addOption(Option.builder("y")
+                .longOpt("device")
+                .hasArg(true)
+                .desc("Device to run inference on (`best`, `cpu:{num_threads}` or `gpu:{gpu_index}`). " +
+                        "Default: automatically selects best device.")
+                .build());
+
         options.addOption(Option.builder("k")
                 .longOpt("keywords")
                 .hasArgs()
@@ -276,7 +316,10 @@ public class FileDemo {
                         "set 0.5 will be used.")
                 .build());
         options.addOption(new Option("h", "help", false, ""));
-
+        options.addOption(new Option("sy",
+                "show_inference_devices",
+                false,
+                "Print devices that are available to run Porcupine inference."));
         return options;
     }
 }

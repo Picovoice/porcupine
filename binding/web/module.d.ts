@@ -3,6 +3,11 @@ declare module "*.wasm" {
   export default content;
 }
 
+declare module "*.txt" {
+  const content: string;
+  export default content;
+}
+
 declare module "*.ppn" {
   const content: string;
   export default content;

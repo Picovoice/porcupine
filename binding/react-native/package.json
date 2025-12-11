@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react-native",
-  "version": "3.0.5",
+  "version": "4.0.0",
   "description": "Picovoice Porcupine React Native binding",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -39,8 +39,7 @@
     "@picovoice/react-native-voice-processor": "^1.2.3",
     "@react-native-community/eslint-config": "^3.2.0",
     "@types/jest": "^26.0.0",
-    "@types/react": "^16.9.19",
-    "@types/react-native": "0.68.5",
+    "@types/react": "^18",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
@@ -49,15 +48,15 @@
     "ncp": "^2.0.0",
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
-    "react": "17.0.2",
-    "react-native": "0.68.7",
+    "react": "^18",
+    "react-native": "^0.73",
     "react-native-builder-bob": "^0.18.3",
     "typescript": "^4.9.3"
   },
   "peerDependencies": {
     "@picovoice/react-native-voice-processor": ">= 1.2.3",
-    "react": ">= 17.0",
-    "react-native": ">= 0.63"
+    "react": ">= 18.0",
+    "react-native": ">= 0.73"
   },
   "jest": {
     "preset": "react-native",

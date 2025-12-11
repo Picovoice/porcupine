@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2023 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -19,6 +19,10 @@ import {
   PorcupineInvalidStateError,
   pvStatusToException,
 } from "./errors";
+import {
+  PorcupineInputOptions,
+  PorcupineOptions,
+} from './types';
 import { getSystemLibraryPath } from "./platforms";
 import {
   BuiltinKeyword,
@@ -27,8 +31,18 @@ import {
 
 const MODEL_PATH_DEFAULT = "../lib/common/porcupine_params.pv";
 
-type PorcupineHandleAndStatus = { handle: any, status: PvStatus };
-type KeywordAndStatus = { keyword_index: number, status: PvStatus }
+type PorcupineHandleAndStatus = {
+    handle: any,
+    status: PvStatus
+};
+type KeywordAndStatus = {
+    keyword_index: number,
+    status: PvStatus
+}
+type PorcupineHardwareDevicesResult = {
+  hardware_devices: string[];
+  status: PvStatus;
+};
 
 export default class Porcupine {
   private _pvPorcupine: any;
@@ -44,16 +58,23 @@ export default class Porcupine {
    * @param {string} accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param {Array} keywords Absolute paths to keyword model files (`.ppn`).
    * @param {Array} sensitivities Sensitivity values for detecting keywords.
-   * Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
-   * @param {string} manualModelPath Absolute path to the file containing model parameters (`.pv`).
-   * @param {string} manualLibraryPath Absolute path to Porcupine's dynamic library (platform-dependent extension).
+   * Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses
+   * at the cost of increasing the false alarm rate.
+   * @param options Optional configuration arguments.
+   * @param {string} options.modelPath Path to the Porcupine model (.pv extension)
+   * @param {string} options.device String representation of the device (e.g., CPU or GPU) to use for inference.
+   * If set to `best`, the most suitable device is selected automatically. If set to `gpu`, the engine uses the
+   * first available GPU device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where
+   * `${GPU_INDEX}` is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the
+   * default number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+   * where `${NUM_THREADS}` is the desired number of threads.
+   * @param {string} options.libraryPath Path to the Porcupine library (.node extension)
    */
   constructor(
     accessKey: string,
     keywords: string[],
     sensitivities: number[],
-    manualModelPath?: string,
-    manualLibraryPath?: string
+    options: PorcupineOptions = {}
   ) {
     if (
       accessKey === null ||
@@ -63,15 +84,11 @@ export default class Porcupine {
       throw new PorcupineInvalidArgumentError(`No AccessKey provided to Porcupine`);
     }
 
-    let modelPath = manualModelPath;
-    if (modelPath === undefined || modelPath === null) {
-      modelPath = path.resolve(__dirname, MODEL_PATH_DEFAULT);
-    }
-
-    let libraryPath = manualLibraryPath;
-    if (libraryPath === undefined || modelPath === null) {
-      libraryPath = getSystemLibraryPath();
-    }
+    const {
+      modelPath = path.resolve(__dirname, MODEL_PATH_DEFAULT),
+      device = 'best',
+      libraryPath = getSystemLibraryPath(),
+    } = options;
 
     if (keywords === null || keywords === undefined || keywords.length === 0) {
       throw new PorcupineInvalidArgumentError(
@@ -141,6 +158,7 @@ export default class Porcupine {
       porcupineHandleAndStatus = pvPorcupine.init(
         accessKey,
         modelPath,
+        device,
         keywordPaths.length,
         keywordPaths,
         sensitivities
@@ -251,6 +269,39 @@ export default class Porcupine {
       // eslint-disable-next-line no-console
       console.warn("Porcupine is not initialized; nothing to destroy");
     }
+  }
+
+  /**
+   * Lists all available devices that Porcupine can use for inference. Each entry in the list can be the `device` argument
+   * of the constructor.
+   *
+   * @returns List of all available devices that Porcupine can use for inference.
+   */
+  static listAvailableDevices(options: PorcupineInputOptions = {}): string[] {
+    const {
+      libraryPath = getSystemLibraryPath(),
+    } = options;
+
+    const pvPorcupine = require(libraryPath); // eslint-disable-line
+
+    let porcupineHardwareDevicesResult: PorcupineHardwareDevicesResult | null = null;
+    try {
+      porcupineHardwareDevicesResult = pvPorcupine.list_hardware_devices();
+    } catch (err: any) {
+      pvStatusToException(<PvStatus>err.code, err);
+    }
+
+    const status = porcupineHardwareDevicesResult!.status;
+    if (status !== PvStatus.SUCCESS) {
+      const errorObject = pvPorcupine.get_error_stack();
+      if (errorObject.status === PvStatus.SUCCESS) {
+        pvStatusToException(status, 'Porcupine failed to get available devices', errorObject.message_stack);
+      } else {
+        pvStatusToException(status, 'Unable to get Porcupine error state');
+      }
+    }
+
+    return porcupineHardwareDevicesResult!.hardware_devices;
   }
 
   private handlePvStatus(status: PvStatus, message: string): void {

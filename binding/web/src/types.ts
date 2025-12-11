@@ -1,5 +1,5 @@
 /*
-  Copyright 2022-2023 Picovoice Inc.
+  Copyright 2022-2025 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -29,8 +29,11 @@ export enum PvStatus {
 }
 
 export type PorcupineOptions = {
+  /** @defaultValue 'best' */
+  device?: string;
+
   /** @defaultValue '(error) => {}' */
-  processErrorCallback?: (error: PorcupineError) => void
+  processErrorCallback?: (error: PorcupineError) => void;
 };
 
 export type PorcupineKeywordCustom = PvModel & {
@@ -66,11 +69,14 @@ export type PorcupineWorkerInitRequest = {
   command: 'init';
   accessKey: string;
   modelPath: string;
+  device?: string;
   keywordLabels: Array<string>;
   keywordPaths: Array<string>;
   sensitivities: Float32Array;
-  wasm: string;
   wasmSimd: string;
+  wasmSimdLib: string;
+  wasmPThread: string;
+  wasmPThreadLib: string;
   sdk: string;
   options: PorcupineOptions;
 };

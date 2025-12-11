@@ -50,6 +50,9 @@ jobs:
     - name: Inject AppID
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
 
+    - name: Inject Device
+      run: sed -i 's:{TESTING_DEVICE_HERE}:cpu\:1:' Tests.ts
+
     - name: Build tests
       run: detox build --configuration android.att.release
 
@@ -76,6 +79,9 @@ jobs:
 
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
+
+    - name: Inject Device
+      run: sed -i '.bak' 's:{TESTING_DEVICE_HERE}:cpu\:1:' Tests.ts
 
     - name: Build tests
       run: detox build --configuration ios.sim.release

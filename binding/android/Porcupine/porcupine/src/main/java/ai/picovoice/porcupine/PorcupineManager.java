@@ -1,5 +1,5 @@
 /*
-    Copyright 2021-2023 Picovoice Inc.
+    Copyright 2021-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -130,6 +130,7 @@ public class PorcupineManager {
 
         private String accessKey = null;
         private String modelPath = null;
+        private String device = null;
         private String[] keywordPaths = null;
         private Porcupine.BuiltInKeyword[] keywords = null;
         private float[] sensitivities = null;
@@ -142,6 +143,11 @@ public class PorcupineManager {
 
         public PorcupineManager.Builder setModelPath(String modelPath) {
             this.modelPath = modelPath;
+            return this;
+        }
+
+        public PorcupineManager.Builder setDevice(String device) {
+            this.device = device;
             return this;
         }
 
@@ -195,6 +201,7 @@ public class PorcupineManager {
             Porcupine porcupine = new Porcupine.Builder()
                     .setAccessKey(accessKey)
                     .setModelPath(modelPath)
+                    .setDevice(device)
                     .setKeywordPaths(keywordPaths)
                     .setKeywords(keywords)
                     .setSensitivities(sensitivities)

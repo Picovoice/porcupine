@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2024 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -15,8 +15,10 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,6 +33,7 @@ import ai.picovoice.porcupine.*;
 public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
 
     private enum Method {
+        GET_AVAILABLE_DEVICES,
         FROM_BUILTIN_KEYWORDS,
         FROM_KEYWORD_PATHS,
         PROCESS,
@@ -64,10 +67,23 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
         }
 
         switch (method) {
+            case GET_AVAILABLE_DEVICES:
+                try {
+                    String[] devices = Porcupine.getAvailableDevices();
+                    List<String> deviceList = Arrays.asList(devices);
+                    result.success(deviceList);
+                } catch (PorcupineException e) {
+                    result.error(
+                            e.getClass().getSimpleName(),
+                            e.getMessage(),
+                            null);
+                }
+                break;
             case FROM_BUILTIN_KEYWORDS:
                 try {
                     String accessKey = call.argument("accessKey");
                     String modelPath = call.argument("modelPath");
+                    String device = call.argument("device");
                     ArrayList<String> keywordsList = call.argument("keywords");
                     ArrayList<Double> sensitivitiesList = call.argument("sensitivities");
 
@@ -99,6 +115,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                     Porcupine porcupine = new Porcupine.Builder()
                             .setAccessKey(accessKey)
                             .setModelPath(modelPath)
+                            .setDevice(device)
                             .setKeywords(keywords)
                             .setSensitivities(sensitivities)
                             .build(flutterContext);
@@ -122,6 +139,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                 try {
                     String accessKey = call.argument("accessKey");
                     String modelPath = call.argument("modelPath");
+                    String device = call.argument("device");
                     ArrayList<String> keywordPathsList = call.argument("keywordPaths");
                     ArrayList<Double> sensitivitiesList = call.argument("sensitivities");
 
@@ -144,6 +162,7 @@ public class PorcupinePlugin implements FlutterPlugin, MethodCallHandler {
                     Porcupine porcupine = new Porcupine.Builder()
                             .setAccessKey(accessKey)
                             .setModelPath(modelPath)
+                            .setDevice(device)
                             .setKeywordPaths(keywordPaths)
                             .setSensitivities(sensitivities)
                             .build(flutterContext);

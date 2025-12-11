@@ -26,7 +26,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java-version: [11, 17, 21]
+        device: [cpu, cpu:1]
+        java-version: [11, 17, 21, 25]
         include:
         - java-version: 11
           gradle-version: 6.5
@@ -34,6 +35,8 @@ jobs:
           gradle-version: 7.3
         - java-version: 21
           gradle-version: 8.5
+        - java-version: 25
+          gradle-version: 9.2.1
 
     steps:
     - uses: actions/checkout@v3
@@ -52,14 +55,22 @@ jobs:
       run: gradle build
 
     - name: Run filedemo
-      run: java -jar build/libs/porcupine-file-demo.jar -a  ${{secrets.PV_VALID_ACCESS_KEY}} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice
+      run: java -jar build/libs/porcupine-file-demo.jar -a ${{ secrets.PV_VALID_ACCESS_KEY }} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice -y ${{ matrix.device }}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
+        device: [best]
         machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
+        include:
+          - device: gpu
+            machine: pv-linux
+          - device: gpu
+            machine: pv-windows
+          - device: gpu
+            machine: pv-ios
 
     steps:
     - uses: actions/checkout@v3
@@ -68,4 +79,4 @@ jobs:
       run: ./gradlew build
 
     - name: Run filedemo
-      run: java -jar build/libs/porcupine-file-demo.jar -a  ${{secrets.PV_VALID_ACCESS_KEY}} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice
+      run: java -jar build/libs/porcupine-file-demo.jar -a  ${{secrets.PV_VALID_ACCESS_KEY}} -i ../../resources/audio_samples/multiple_keywords.wav -k picovoice -y ${{ matrix.device }}

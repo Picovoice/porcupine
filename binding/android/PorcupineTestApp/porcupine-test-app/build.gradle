@@ -6,6 +6,9 @@ if (rootProject.file("local.properties").exists()) {
     if (project.hasProperty("pvTestingAccessKey")) {
         properties.put("pvTestingAccessKey", project.getProperty("pvTestingAccessKey"))
     }
+    if (project.hasProperty("pvTestingDevice")) {
+        properties.put("pvTestingDevice", project.getProperty("pvTestingDevice"))
+    }
     if (project.hasProperty("numTestIterations")) {
         properties.put("numTestIterations", project.getProperty("numTestIterations"))
     }
@@ -35,10 +38,11 @@ android {
         minSdkVersion 21
         targetSdkVersion defaultTargetSdkVersion
         versionCode 7
-        versionName "3.0.0"
+        versionName "4.0.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resValue 'string', 'pvTestingAccessKey', properties.getProperty("pvTestingAccessKey", "")
+        resValue 'string', 'pvTestingDevice', properties.getProperty("pvTestingDevice", "")
         resValue 'string', 'numTestIterations', properties.getProperty("numTestIterations", "")
         resValue 'string', 'performanceThresholdSec', properties.getProperty("performanceThresholdSec", "")
     }
@@ -138,7 +142,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.code.gson:gson:2.10'
-    implementation 'ai.picovoice:porcupine-android:3.0.3'
+    implementation 'ai.picovoice:porcupine-android:4.0.0'
 
     // Espresso UI Testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

@@ -1,5 +1,5 @@
 /*
-  Copyright 2022-2023 Picovoice Inc.
+  Copyright 2022-2025 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -56,7 +56,10 @@ self.onmessage = async function(
         return;
       }
       try {
-        Porcupine.setWasm(event.data.wasm);
+        Porcupine.setWasmSimd(event.data.wasmSimd);
+        Porcupine.setWasmSimdLib(event.data.wasmSimdLib);
+        Porcupine.setWasmPThread(event.data.wasmPThread);
+        Porcupine.setWasmPThreadLib(event.data.wasmPThreadLib);
         Porcupine.setWasmSimd(event.data.wasmSimd);
         Porcupine.setSdk(event.data.sdk);
         porcupine = await Porcupine._init(

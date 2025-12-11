@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2023 Picovoice Inc.
+    Copyright 2018-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PorcupineTest {
 
     private final String accessKey = System.getProperty("pvTestingAccessKey");
+    private final String device = System.getProperty("pvTestingDevice");
     private Porcupine porcupine;
 
     private static Stream<Arguments> singleKeywordProvider() throws IOException {
@@ -102,6 +103,7 @@ public class PorcupineTest {
     void getVersion() throws PorcupineException {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
         assertTrue(porcupine.getVersion() != null && !porcupine.getVersion().equals(""));
@@ -111,6 +113,7 @@ public class PorcupineTest {
     void getFrameLength() throws PorcupineException {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
         assertTrue(porcupine.getFrameLength() > 0);
@@ -120,9 +123,16 @@ public class PorcupineTest {
     void getSampleRate() throws PorcupineException {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build();
         assertTrue(porcupine.getSampleRate() > 0);
+    }
+
+    @Test
+    void getAvailableDevices() throws PorcupineException {
+        String[] devices = Porcupine.getAvailableDevices();
+        assertTrue(0 < devices.length);
     }
 
     @Test
@@ -131,6 +141,7 @@ public class PorcupineTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey("invalid")
+                    .setDevice(device)
                     .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .build();
         } catch (PorcupineException e) {
@@ -143,6 +154,7 @@ public class PorcupineTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey("invalid")
+                    .setDevice(device)
                     .setBuiltInKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .build();
         } catch (PorcupineException e) {
@@ -204,6 +216,7 @@ public class PorcupineTest {
 
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setBuiltInKeywords(keywords)
                 .build();
 
@@ -220,6 +233,7 @@ public class PorcupineTest {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(PorcupineTestUtils.getTestModelPath(language))
+                .setDevice(device)
                 .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
                 .build();
 
@@ -236,6 +250,7 @@ public class PorcupineTest {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(PorcupineTestUtils.getTestModelPath(language))
+                .setDevice(device)
                 .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
                 .build();
         runTestCase(
@@ -254,6 +269,7 @@ public class PorcupineTest {
         porcupine = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(PorcupineTestUtils.getTestModelPath(language))
+                .setDevice(device)
                 .setKeywordPaths(PorcupineTestUtils.getTestKeywordPaths(language, keywords))
                 .build();
         runTestCase(audioFileName, results);

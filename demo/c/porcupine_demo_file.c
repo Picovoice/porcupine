@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2023 Picovoice Inc.
+    Copyright 2018-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -86,16 +86,24 @@ static void print_dl_error(const char *message) {
 }
 
 static struct option long_options[] = {
-        {"library_path", required_argument, NULL, 'l'},
-        {"model_path",   required_argument, NULL, 'm'},
-        {"keyword_path", required_argument, NULL, 'k'},
-        {"sensitivity",  required_argument, NULL, 't'},
-        {"access_key",   required_argument, NULL, 'a'},
-        {"wav_path",     required_argument, NULL, 'w'},
+        {"library_path",            required_argument, NULL, 'l'},
+        {"model_path",              required_argument, NULL, 'm'},
+        {"device",                  required_argument, NULL, 'y'},
+        {"show_inference_devices",  no_argument,       NULL, 'i'},
+        {"keyword_path",            required_argument, NULL, 'k'},
+        {"sensitivity",             required_argument, NULL, 't'},
+        {"access_key",              required_argument, NULL, 'a'},
+        {"wav_path",                required_argument, NULL, 'w'},
 };
 
 void print_usage(const char *program_name) {
-    fprintf(stderr, "Usage : %s -l LIBRARY_PATH -m MODEL_PATH -k KEYWORD_PATH -t SENSITIVITY -a ACCESS_KEY -w WAV_PATH\n", program_name);
+    fprintf(
+        stderr,
+        "Usage : %s -l LIBRARY_PATH -m MODEL_PATH -y DEVICE -k KEYWORD_PATH "
+        "-t SENSITIVITY -a ACCESS_KEY -w WAV_PATH\n"
+        "        %s [-i, --show_inference_devices] -l LIBRARY_PATH\n",
+        program_name,
+        program_name);
 }
 
 void print_error_message(char **message_stack, int32_t message_stack_depth) {
@@ -104,22 +112,107 @@ void print_error_message(char **message_stack, int32_t message_stack_depth) {
     }
 }
 
+void print_inference_devices(const char *library_path) {
+    void *dl_handle = open_dl(library_path);
+    if (!dl_handle) {
+        fprintf(stderr, "Failed to open library at '%s'.\n", library_path);
+        exit(EXIT_FAILURE);
+    }
+
+    const char *(*pv_status_to_string_func)(pv_status_t) = load_symbol(dl_handle, "pv_status_to_string");
+    if (!pv_status_to_string_func) {
+        print_dl_error("Failed to load 'pv_status_to_string'");
+        exit(EXIT_FAILURE);
+    }
+
+    pv_status_t (*pv_porcupine_list_hardware_devices_func)(char ***, int32_t *) =
+    load_symbol(dl_handle, "pv_porcupine_list_hardware_devices");
+    if (!pv_porcupine_list_hardware_devices_func) {
+        print_dl_error("failed to load `pv_porcupine_list_hardware_devices`");
+        exit(EXIT_FAILURE);
+    }
+
+    pv_status_t (*pv_porcupine_free_hardware_devices_func)(char **, int32_t) =
+        load_symbol(dl_handle, "pv_porcupine_free_hardware_devices");
+    if (!pv_porcupine_free_hardware_devices_func) {
+        print_dl_error("failed to load `pv_porcupine_free_hardware_devices`");
+        exit(EXIT_FAILURE);
+    }
+
+    pv_status_t (*pv_get_error_stack_func)(char ***, int32_t *) =
+        load_symbol(dl_handle, "pv_get_error_stack");
+    if (!pv_get_error_stack_func) {
+        print_dl_error("failed to load 'pv_get_error_stack_func'");
+        exit(EXIT_FAILURE);
+    }
+
+    void (*pv_free_error_stack_func)(char **) =
+        load_symbol(dl_handle, "pv_free_error_stack");
+    if (!pv_free_error_stack_func) {
+        print_dl_error("failed to load 'pv_free_error_stack_func'");
+        exit(EXIT_FAILURE);
+    }
+
+    char **message_stack = NULL;
+    int32_t message_stack_depth = 0;
+    pv_status_t error_status = PV_STATUS_RUNTIME_ERROR;
+
+    char **hardware_devices = NULL;
+    int32_t num_hardware_devices = 0;
+    pv_status_t status = pv_porcupine_list_hardware_devices_func(&hardware_devices, &num_hardware_devices);
+    if (status != PV_STATUS_SUCCESS) {
+        fprintf(
+                stderr,
+                "Failed to list hardware devices with `%s`.\n",
+                pv_status_to_string_func(status));
+        error_status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
+        if (error_status != PV_STATUS_SUCCESS) {
+            fprintf(
+                    stderr,
+                    ".\nUnable to get porcupine error state with '%s'.\n",
+                    pv_status_to_string_func(error_status));
+            exit(EXIT_FAILURE);
+        }
+
+        if (message_stack_depth > 0) {
+            fprintf(stderr, ":\n");
+            print_error_message(message_stack, message_stack_depth);
+            pv_free_error_stack_func(message_stack);
+        }
+        exit(EXIT_FAILURE);
+    }
+
+    for (int32_t i = 0; i < num_hardware_devices; i++) {
+        fprintf(stdout, "%s\n", hardware_devices[i]);
+    }
+    pv_porcupine_free_hardware_devices_func(hardware_devices, num_hardware_devices);
+    close_dl(dl_handle);
+}
+
 int picovoice_main(int argc, char *argv[]) {
     const char *library_path = NULL;
     const char *model_path = NULL;
+    char *device = "best";
+    bool show_inference_devices = false;
     const char *keyword_path = NULL;
     float sensitivity = 0.5f;
     const char *access_key = NULL;
     const char *wav_path = NULL;
 
     int c;
-    while ((c = getopt_long(argc, argv, "l:m:k:t:a:w:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "l:m:y:ik:t:a:w:", long_options, NULL)) != -1) {
         switch (c) {
             case 'l':
                 library_path = optarg;
                 break;
             case 'm':
                 model_path = optarg;
+                break;
+            case 'y':
+                device = optarg;
+                break;
+            case 'i':
+                show_inference_devices = true;
                 break;
             case 'k':
                 keyword_path = optarg;
@@ -134,74 +227,85 @@ int picovoice_main(int argc, char *argv[]) {
                 wav_path = optarg;
                 break;
             default:
-                exit(1);
+                exit(EXIT_FAILURE);
         }
+    }
+
+    if (show_inference_devices) {
+        if (!library_path) {
+            fprintf(stderr, "`library_path` is required to view available inference devices.\n");
+            print_usage(argv[0]);
+            exit(EXIT_FAILURE);
+        }
+
+        print_inference_devices(library_path);
+        return EXIT_SUCCESS;
     }
 
     if (!library_path || !model_path || !keyword_path || !access_key) {
         print_usage(argv[0]);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     void *porcupine_library = open_dl(library_path);
     if (!porcupine_library) {
         fprintf(stderr, "failed to open library\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     const char *(*pv_status_to_string_func)(pv_status_t) = load_symbol(porcupine_library, "pv_status_to_string");
     if (!pv_status_to_string_func) {
         print_dl_error("failed to load 'pv_status_to_string' with '%s'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     int32_t (*pv_sample_rate_func)() = load_symbol(porcupine_library, "pv_sample_rate");
     if (!pv_sample_rate_func) {
         print_dl_error("failed to load 'pv_sample_rate'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
-    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
+    pv_status_t (*pv_porcupine_init_func)(const char *, const char *, const char *, int32_t, const char *const *, const float *, pv_porcupine_t **) =
             load_symbol(porcupine_library, "pv_porcupine_init");
     if (!pv_porcupine_init_func) {
         print_dl_error("failed to load 'pv_porcupine_init'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     void (*pv_porcupine_delete_func)(pv_porcupine_t *) = load_symbol(porcupine_library, "pv_porcupine_delete");
     if (!pv_porcupine_delete_func) {
         print_dl_error("failed to load 'pv_porcupine_delete'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     pv_status_t (*pv_porcupine_process_func)(pv_porcupine_t *, const int16_t *, int32_t *) = load_symbol(porcupine_library, "pv_porcupine_process");
     if (!pv_porcupine_process_func) {
         print_dl_error("failed to load 'pv_porcupine_process'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     int32_t (*pv_porcupine_frame_length_func)() = load_symbol(porcupine_library, "pv_porcupine_frame_length");
     if (!pv_porcupine_frame_length_func) {
         print_dl_error("failed to load 'pv_porcupine_frame_length' with '%s'.\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     const char *(*pv_porcupine_version_func)() = load_symbol(porcupine_library, "pv_porcupine_version");
     if (!pv_porcupine_version_func) {
         print_dl_error("failed to load 'pv_porcupine_version'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     pv_status_t (*pv_get_error_stack_func)(char ***, int32_t *) = load_symbol(porcupine_library, "pv_get_error_stack");
     if (!pv_get_error_stack_func) {
         print_dl_error("failed to load 'pv_get_error_stack_func'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     void (*pv_free_error_stack_func)(char **) = load_symbol(porcupine_library, "pv_free_error_stack");
     if (!pv_free_error_stack_func) {
         print_dl_error("failed to load 'pv_free_error_stack_func'");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     drwav f;
@@ -221,28 +325,28 @@ int picovoice_main(int argc, char *argv[]) {
 
     if (!drwav_init_file_status) {
         fprintf(stderr, "failed to open wav file at '%s'.", wav_path);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     if (f.sampleRate != (uint32_t) pv_sample_rate_func()) {
         fprintf(stderr, "audio sample rate should be %d\n.", pv_sample_rate_func());
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     if (f.bitsPerSample != 16) {
         fprintf(stderr, "audio format should be 16-bit\n.");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     if (f.channels != 1) {
         fprintf(stderr, "audio should be single-channel.\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     int16_t *pcm = calloc(pv_porcupine_frame_length_func(), sizeof(int16_t));
     if (!pcm) {
         fprintf(stderr, "failed to allocate memory for audio frame.\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     char **message_stack = NULL;
@@ -250,13 +354,20 @@ int picovoice_main(int argc, char *argv[]) {
     pv_status_t error_status = PV_STATUS_RUNTIME_ERROR;
 
     pv_porcupine_t *porcupine = NULL;
-    pv_status_t status = pv_porcupine_init_func(access_key, model_path, 1, &keyword_path, &sensitivity, &porcupine);
+    pv_status_t status = pv_porcupine_init_func(
+            access_key,
+            model_path,
+            device,
+            1,
+            &keyword_path,
+            &sensitivity,
+            &porcupine);
     if (status != PV_STATUS_SUCCESS) {
         fprintf(stderr, "'pv_porcupine_init' failed with '%s'", pv_status_to_string_func(status));
         error_status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
         if (error_status != PV_STATUS_SUCCESS) {
             fprintf(stderr, ".\nUnable to get Porcupine error state with '%s'.\n", pv_status_to_string_func(error_status));
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 
         if (message_stack_depth > 0) {
@@ -267,10 +378,10 @@ int picovoice_main(int argc, char *argv[]) {
         }
 
         pv_free_error_stack_func(message_stack);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
-    fprintf(stdout, "V%s\n\n", pv_porcupine_version_func());
+    fprintf(stdout, "v%s\n\n", pv_porcupine_version_func());
 
     double total_cpu_time_usec = 0;
     double total_processed_time_usec = 0;
@@ -288,7 +399,7 @@ int picovoice_main(int argc, char *argv[]) {
             error_status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
             if (error_status != PV_STATUS_SUCCESS) {
                 fprintf(stderr, ".\nUnable to get Porcupine error state with '%s'.\n", pv_status_to_string_func(error_status));
-                exit(1);
+                exit(EXIT_FAILURE);
             }
 
             if (message_stack_depth > 0) {
@@ -299,7 +410,7 @@ int picovoice_main(int argc, char *argv[]) {
             }
 
             pv_free_error_stack_func(message_stack);
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 
         struct timeval after;
@@ -322,7 +433,7 @@ int picovoice_main(int argc, char *argv[]) {
     pv_porcupine_delete_func(porcupine);
     close_dl(porcupine_library);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main(int argc, char *argv[]) {
@@ -332,7 +443,7 @@ int main(int argc, char *argv[]) {
     LPWSTR *wargv = CommandLineToArgvW(GetCommandLineW(), &argc);
     if (wargv == NULL) {
         fprintf(stderr, "CommandLineToArgvW failed\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     char *utf8_argv[argc];

@@ -9,10 +9,10 @@ PODS:
     - hermes-engine/Pre-built (= 0.82.0)
   - hermes-engine/Pre-built (0.82.0)
   - ios-voice-processor (1.2.0)
-  - Porcupine-iOS (3.0.4):
+  - Porcupine-iOS (4.0.0):
     - ios-voice-processor (~> 1.2.0)
-  - porcupine-react-native (3.0.5):
-    - Porcupine-iOS (~> 3.0.4)
+  - porcupine-react-native (4.0.0):
+    - Porcupine-iOS (~> 4.0.0)
     - React
   - RCT-Folly (2024.11.18.00):
     - boost
@@ -2708,8 +2708,8 @@ SPEC CHECKSUMS:
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 8642d8f14a548ab718ec112e9bebdfdd154138b5
   ios-voice-processor: 6b5ca08962f39e434fe39dca0f483d923a3b1b97
-  Porcupine-iOS: da103a8848ce6b36acd4a5e42bb811d4532dd515
-  porcupine-react-native: 77279240d30d4dde3ccacfae9f174cb7c70ae458
+  Porcupine-iOS: 9e4b42239d780532760c073f48740d36c7211674
+  porcupine-react-native: 76d3535ed1d80788c047f6e9ebdca99fade6b7e7
   RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
   RCTDeprecation: 22bf66112da540a7d40e536366ddd8557934fca1
   RCTRequired: a0ed4dc41b35f79fbb6d8ba320e06882a8c792cf
@@ -2780,8 +2780,8 @@ SPEC CHECKSUMS:
   ReactCommon: 17f21c8e189e290113e40fd8652758ec9694897b
   RNCPicker: 3fc4d505041318ee8f59662d8d66892ce3c3295c
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  Yoga: edeb9900b9e5bb5b27b9a6a2d5914e4fe4033c1b
+  Yoga: 93bc00d78638987f9ffd928f4a9f895d3e601bc3
 
-PODFILE CHECKSUM: 75861677cd85dd42d78126f0676ed05e842097c2
+PODFILE CHECKSUM: b8ca30acd0f2b1805326837594bacdf5dc465b95
 
 COCOAPODS: 1.16.2

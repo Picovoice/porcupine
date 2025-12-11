@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/porcupine-react",
-  "version": "3.0.3",
+  "version": "4.0.0",
   "description": "React component for Porcupine Web SDK",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -36,7 +36,7 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=3.0.3"
+    "@picovoice/porcupine-web": "4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
@@ -50,6 +50,7 @@
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/pluginutils": "^5.0.2",
     "@testing-library/react-hooks": "^8.0.1",
+    "@types/emscripten": "1.40.0",
     "@types/react": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",

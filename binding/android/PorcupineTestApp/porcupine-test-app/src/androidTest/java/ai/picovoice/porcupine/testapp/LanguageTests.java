@@ -102,6 +102,7 @@ public class LanguageTests extends BaseTest {
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(modelPath)
+                .setDevice(device)
                 .setKeywordPaths(keywordPaths)
                 .build(appContext);
 

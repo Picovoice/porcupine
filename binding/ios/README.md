@@ -15,7 +15,12 @@ Porcupine is:
 
 To learn more about Porcupine, see the [product](https://picovoice.ai/products/porcupine/), [documentation](https://picovoice.ai/docs/), and [GitHub](https://github.com/Picovoice/porcupine/) pages.
 
+## Compatibility
+
+- iOS 16.0+
+
 ## Installation
+
 <!-- markdown-link-check-disable -->
 The Porcupine iOS binding is available via [Swift Package Manger](https://www.swift.org/documentation/package-manager/) or [CocoaPods](https://cocoapods.org/pods/Porcupine-iOS).
 <!-- markdown-link-check-enable -->

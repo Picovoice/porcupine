@@ -1,5 +1,5 @@
 #
-# Copyright 2018-2023 Picovoice Inc.
+# Copyright 2018-2025 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -43,10 +43,9 @@ def main():
 
     parser.add_argument(
         '--access_key',
-        help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)',
-        required=True)
+        help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)')
 
-    parser.add_argument('--wav_path', help='Absolute path to input .wav file', required=True)
+    parser.add_argument('--wav_path', help='Absolute path to input .wav file')
 
     parser.add_argument(
         '--keywords',
@@ -71,6 +70,11 @@ def main():
              'Default: using the library provided by `pvporcupine`')
 
     parser.add_argument(
+        '--device',
+        help='Device to run inference on (`best`, `cpu:{num_threads}` or `gpu:{gpu_index}`). '
+             'Default: automatically selects best device')
+
+    parser.add_argument(
         '--sensitivities',
         nargs='+',
         help="Sensitivities for detecting keywords. Each value should be a number within [0, 1]. A higher "
@@ -79,7 +83,19 @@ def main():
         type=float,
         default=None)
 
+    parser.add_argument(
+        '--show_inference_devices',
+        action='store_true',
+        help='Print devices that are available to run Porcupine inference')
+
     args = parser.parse_args()
+
+    if args.show_inference_devices:
+        print('\n'.join(pvporcupine.available_devices(library_path=args.library_path)))
+        return
+
+    if args.access_key is None or args.wav_path is None:
+        raise ValueError("Arguments --access_key and --wav_path are required.")
 
     if args.keyword_paths is None:
         if args.keywords is None:
@@ -100,6 +116,7 @@ def main():
             access_key=args.access_key,
             library_path=args.library_path,
             model_path=args.model_path,
+            device=args.device,
             keyword_paths=keyword_paths,
             sensitivities=args.sensitivities)
     except pvporcupine.PorcupineInvalidArgumentError as e:

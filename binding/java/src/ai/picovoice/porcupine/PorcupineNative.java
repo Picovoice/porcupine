@@ -1,5 +1,5 @@
 /*
-    Copyright 2022-2023 Picovoice Inc.
+    Copyright 2022-2025 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -25,6 +25,7 @@ class PorcupineNative {
     static native long init(
             String accessKey,
             String modelPath,
+            String device,
             String[] keywordPaths,
             float[] sensitivities) throws PorcupineException;
 
@@ -33,4 +34,6 @@ class PorcupineNative {
     static native int process(
             long object,
             short[] pcm) throws PorcupineException;
+
+    static native String[] listHardwareDevices() throws PorcupineException;
 }

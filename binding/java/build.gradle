@@ -8,7 +8,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '3.0.5'
+    PUBLISH_VERSION = '4.0.0'
     PUBLISH_ARTIFACT_ID = 'porcupine-java'
 }
 
@@ -126,6 +126,7 @@ task copyMacLib(type: Copy) {
 task copyWindowsLib(type: Copy) {
     from('../../lib/java/windows/')
     include('amd64/pv_porcupine_jni.dll',
+            'amd64/pv_ypu_impl_cuda.dll',
             'arm64/pv_porcupine_jni.dll')
     into "${outputDir}/porcupine/lib/java/windows/"
 }
@@ -177,6 +178,7 @@ compileTestJava {
 
 test {
     systemProperty 'pvTestingAccessKey', System.getProperty('pvTestingAccessKey')
+    systemProperty 'pvTestingDevice', System.getProperty('pvTestingDevice')
     systemProperty 'numTestIterations', System.getProperty('numTestIterations')
     systemProperty 'performanceThresholdSec', System.getProperty('performanceThresholdSec')
     useJUnitPlatform()

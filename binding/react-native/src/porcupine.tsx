@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2025 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -27,11 +27,36 @@ class Porcupine {
   private _version: string;
 
   /**
+   * Gets all available devices that Porcupine can use for inference. Each entry in the list can be the `device` argument
+   * of the constructor.
+   *
+   * @returns Array of all available devices that Porcupine can use for inference.
+   */
+  public static async getAvailableDevices() {
+    try {
+      return await RCTPorcupine.getAvailableDevices();
+    } catch (err) {
+      if (err instanceof PorcupineErrors.PorcupineError) {
+        throw err;
+      } else {
+        const nativeError = err as NativeError;
+        throw this.codeToError(nativeError.code, nativeError.message);
+      }
+    }
+  }
+
+  /**
    * Static creator for initializing Porcupine from one of the built-in keywords
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/.
    * @param keywords List of keywords (phrases) for detection. The list of available (default) keywords can be retrieved
    * using `Porcupine.KEYWORDS`. If `keyword_paths` is set then this argument will be ignored.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
+   * @param device String representation of the device (e.g., CPU or GPU) to use for inference.
+   * If set to `best`, the most suitable device is selected automatically. If set to `gpu`, the engine uses the
+   * first available GPU device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where
+   * `${GPU_INDEX}` is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the
+   * default number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+   * where `${NUM_THREADS}` is the desired number of threads.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
    * [0, 1].
@@ -41,6 +66,7 @@ class Porcupine {
     accessKey: string,
     keywords: BuiltInKeywords[],
     modelPath: string = '',
+    device: string = '',
     sensitivities: number[] = []
   ) {
     try {
@@ -48,6 +74,7 @@ class Porcupine {
         await RCTPorcupine.fromBuiltInKeywords(
           accessKey,
           modelPath,
+          device,
           Object.values(keywords),
           sensitivities
         );
@@ -67,6 +94,12 @@ class Porcupine {
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywordPaths Absolute paths to keyword model files.
    * @param modelPath Path to the file containing model parameters. If not set it will be set to the default location.
+   * @param device String representation of the device (e.g., CPU or GPU) to use for inference.
+   * If set to `best`, the most suitable device is selected automatically. If set to `gpu`, the engine uses the
+   * first available GPU device. To select a specific GPU device, set this argument to `gpu:${GPU_INDEX}`, where
+   * `${GPU_INDEX}` is the index of the target GPU. If set to `cpu`, the engine will run on the CPU with the
+   * default number of threads. To specify the number of threads, set this argument to `cpu:${NUM_THREADS}`,
+   * where `${NUM_THREADS}` is the desired number of threads.
    * @param sensitivities sensitivities for each keywords model. A higher sensitivity reduces miss rate
    * at the cost of potentially higher false alarm rate. Sensitivity should be a floating-point number within
    * [0, 1].
@@ -74,8 +107,9 @@ class Porcupine {
    */
   public static async fromKeywordPaths(
     accessKey: string,
-    keywordsPaths: string[],
+    keywordPaths: string[],
     modelPath: string = '',
+    device: string = '',
     sensitivities: number[] = []
   ) {
     try {
@@ -83,7 +117,8 @@ class Porcupine {
         await RCTPorcupine.fromKeywordPaths(
           accessKey,
           modelPath,
-          keywordsPaths,
+          device,
+          keywordPaths,
           sensitivities
         );
       return new Porcupine(handle, frameLength, sampleRate, version);

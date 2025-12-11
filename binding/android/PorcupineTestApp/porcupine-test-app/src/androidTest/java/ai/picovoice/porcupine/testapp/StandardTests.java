@@ -36,6 +36,7 @@ public class StandardTests extends BaseTest {
     public void testInitSuccessWithSingleBuiltIn() throws PorcupineException {
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
@@ -57,6 +58,7 @@ public class StandardTests extends BaseTest {
 
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setKeywords(inputBuiltInKeywords)
                 .build(appContext);
 
@@ -74,6 +76,7 @@ public class StandardTests extends BaseTest {
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
                 .setModelPath(modelPath.getAbsolutePath())
+                .setDevice(device)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setSensitivity(0.25f)
                 .build(appContext);
@@ -92,6 +95,7 @@ public class StandardTests extends BaseTest {
         String[] keywordPaths = new String[]{keywordPath.getAbsolutePath(), keywordPath2.getAbsolutePath()};
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setKeywordPaths(keywordPaths)
                 .setSensitivities(new float[]{0.35f, 0.6f})
                 .build(appContext);
@@ -112,6 +116,7 @@ public class StandardTests extends BaseTest {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
                     .setModelPath(modelPath.getAbsolutePath())
+                    .setDevice(device)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
         } catch (PorcupineException e) {
@@ -129,6 +134,23 @@ public class StandardTests extends BaseTest {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
                     .setModelPath(modelPath.getAbsolutePath())
+                    .setDevice(device)
+                    .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                    .build(appContext);
+        } catch (PorcupineException e) {
+            didFail = true;
+        }
+
+        assertTrue(didFail);
+    }
+
+    @Test
+    public void testInitFailWithInvalidDevice() {
+        boolean didFail = false;
+        try {
+            new Porcupine.Builder()
+                    .setAccessKey(accessKey)
+                    .setDevice("cloud:9")
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .build(appContext);
         } catch (PorcupineException e) {
@@ -144,6 +166,7 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
+                    .setDevice(device)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .setSensitivity(10)
                     .build(appContext);
@@ -160,6 +183,7 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
+                    .setDevice(device)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .setSensitivities(new float[]{0.4f, 0.8f})
                     .build(appContext);
@@ -176,6 +200,7 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
+                    .setDevice(device)
                     .build(appContext);
         } catch (PorcupineException e) {
             didFail = true;
@@ -191,6 +216,7 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
+                    .setDevice(device)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
         } catch (PorcupineException e) {
@@ -207,6 +233,7 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
+                    .setDevice(device)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
@@ -224,6 +251,7 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey(accessKey)
+                    .setDevice(device)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .build(appContext);
         } catch (PorcupineException e) {
@@ -237,6 +265,7 @@ public class StandardTests extends BaseTest {
     public void testProcSuccessSingleBuiltIn() throws Exception {
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                 .build(appContext);
 
@@ -277,6 +306,7 @@ public class StandardTests extends BaseTest {
 
         Porcupine p = new Porcupine.Builder()
                 .setAccessKey(accessKey)
+                .setDevice(device)
                 .setKeywords(inputBuiltInKeywords)
                 .build(appContext);
 
@@ -301,6 +331,7 @@ public class StandardTests extends BaseTest {
                 .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setModelPath(modelPath.getAbsolutePath())
+                .setDevice(device)
                 .build(appContext);
 
         assertTrue(p.getVersion() != null && !p.getVersion().isEmpty());
@@ -316,6 +347,7 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey("invalid")
+                    .setDevice(device)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .build(appContext);
         } catch (PorcupineException e) {
@@ -328,12 +360,22 @@ public class StandardTests extends BaseTest {
         try {
             new Porcupine.Builder()
                     .setAccessKey("invalid")
+                    .setDevice(device)
                     .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
                     .build(appContext);
         } catch (PorcupineException e) {
             for (int i = 0; i < error.length; i++) {
                 assertEquals(e.getMessageStack()[i], error[i]);
             }
+        }
+    }
+
+    @Test
+    public void testGetAvailableDevices() throws PorcupineException {
+        String[] availableDevices = Porcupine.getAvailableDevices();
+        assertTrue(availableDevices.length > 0);
+        for (String d : availableDevices) {
+            assertTrue(d != null && d.length() > 0);
         }
     }
 }
