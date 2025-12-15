@@ -11,6 +11,8 @@ import testData from './test_data.json';
 const ACCESS_KEY = Cypress.env('ACCESS_KEY');
 const DEVICE = Cypress.env('DEVICE');
 
+const CYPRESS_BASE_URI = "/__cypress/src";
+
 describe('Porcupine binding', () => {
   it('should be able to init via public path', () => {
     const { result } = renderHook(() => usePorcupine());
@@ -19,7 +21,7 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         ACCESS_KEY,
         BuiltInKeyword.Porcupine,
-        { publicPath: "/test/porcupine_params.pv", forceWrite: true },
+        { publicPath: `${CYPRESS_BASE_URI}/test/porcupine_params.pv`, forceWrite: true },
         { device: DEVICE }
       )
     ).then(() => {
@@ -55,12 +57,12 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         ACCESS_KEY,
         BuiltInKeyword.Porcupine,
-        { publicPath: "/porcupine_params_failed.pv", forceWrite: true },
+        { publicPath: `${CYPRESS_BASE_URI}/porcupine_params_failed.pv`, forceWrite: true },
         { device: DEVICE }
       )
     ).then(() => {
       expect(result.current.isLoaded).to.be.false;
-      expect(result.current.error?.toString()).to.contain("Error response returned while fetching model from '/porcupine_params_failed.pv'");
+      expect(result.current.error?.toString()).to.contain(`Error response returned while fetching model from '${CYPRESS_BASE_URI}/porcupine_params_failed.pv'`);
     });
   });
 
@@ -71,7 +73,7 @@ describe('Porcupine binding', () => {
       () => result.current.init(
         '',
         BuiltInKeyword.Porcupine,
-        { publicPath: "/test/porcupine_params.pv", forceWrite: true },
+        { publicPath: `${CYPRESS_BASE_URI}/test/porcupine_params.pv`, forceWrite: true },
         { device: DEVICE }
       )
     ).then(() => {
@@ -89,11 +91,11 @@ describe('Porcupine binding', () => {
           ACCESS_KEY,
           {
             label: testInfo.wakeword,
-            publicPath: `/test/keywords/${testInfo.wakeword}_wasm.ppn`,
+            publicPath: `${CYPRESS_BASE_URI}/test/keywords/${testInfo.wakeword}_wasm.ppn`,
             forceWrite: true,
           },
           {
-            publicPath: testInfo.language === 'en' ? "/test/porcupine_params.pv" : `/test/porcupine_params_${testInfo.language}.pv`,
+            publicPath: testInfo.language === 'en' ? `${CYPRESS_BASE_URI}/test/porcupine_params.pv` : `${CYPRESS_BASE_URI}/test/porcupine_params_${testInfo.language}.pv`,
             forceWrite: true,
           },
           { device: DEVICE }
