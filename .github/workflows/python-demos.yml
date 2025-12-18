@@ -40,12 +40,6 @@ jobs:
     - name: Pre-build dependencies
       run: python -m pip install --upgrade pip
 
-    # ************** REMOVE AFTER RELEASE ********************
-    - name: Build binding
-      run: |
-        pip install wheel setuptools && cd ../../binding/python && python3 setup.py sdist bdist_wheel && pip install dist/pvporcupine-4.0.1-py3-none-any.whl
-    # ********************************************************
-
     - name: Install dependencies
       run: pip install -r requirements.txt
 
@@ -74,12 +68,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    # ************** REMOVE AFTER RELEASE ********************
-    - name: Build binding
-      run: |
-        pip install wheel setuptools && cd ../../binding/python && python3 setup.py sdist bdist_wheel && pip install dist/pvporcupine-4.0.1-py3-none-any.whl --force-reinstall
-    # ********************************************************
 
     - name: Install dependencies
       run: pip3 install -r requirements.txt
