@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
-        <Version>4.0.0</Version>
+        <Version>4.0.1</Version>
         <Authors>Picovoice</Authors>
         <Company />
         <Product>Porcupine Wake Word Engine</Product>

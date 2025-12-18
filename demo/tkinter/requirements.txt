@@ -1,2 +1,2 @@
-pvporcupine==4.0.0
+../../binding/python/dist/pvporcupine-4.0.1-py3-none-any.whl
 pvrecorder==1.2.4

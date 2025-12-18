@@ -4,6 +4,9 @@ plugins {
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs '../../binding/java/build/libs'
+    }
 }
 
 sourceSets {
@@ -15,14 +18,15 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:4.0.0'
+    implementation name: 'Porcupine'
+    // implementation 'ai.picovoice:porcupine-java:4.0.1'
     implementation 'commons-cli:commons-cli:1.4'
 }
 
 jar {
     manifest {
         attributes "Main-Class": "ai.picovoice.porcupinedemo.MicDemo",
-                   "Class-Path" : "porcupine-4.0.0.jar;commons-cli-1.4.jar"
+                   "Class-Path" : "porcupine-4.0.1.jar;commons-cli-1.4.jar"
     }
     from sourceSets.main.output
     exclude "**/FileDemo.class"
@@ -33,7 +37,7 @@ jar {
 task fileDemoJar(type: Jar) {
     manifest {
         attributes "Main-Class": "ai.picovoice.porcupinedemo.FileDemo",
-                "Class-Path" : "porcupine-4.0.0.jar;commons-cli-1.4.jar"
+                "Class-Path" : "porcupine-4.0.1.jar;commons-cli-1.4.jar"
     }
     from sourceSets.main.output
     exclude "**/MicDemo.class"
