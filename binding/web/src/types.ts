@@ -69,7 +69,6 @@ export type PorcupineWorkerInitRequest = {
   command: 'init';
   accessKey: string;
   modelPath: string;
-  device?: string;
   keywordLabels: Array<string>;
   keywordPaths: Array<string>;
   sensitivities: Float32Array;

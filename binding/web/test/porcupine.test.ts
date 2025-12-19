@@ -218,6 +218,12 @@ describe('Porcupine Binding', function () {
       }
     });
 
+    it('List hardware devices', async () => {
+      const hardwareDevices: string[] = await Porcupine.listAvailableDevices();
+      expect(Array.isArray(hardwareDevices)).to.be.true;
+      expect(hardwareDevices).length.to.be.greaterThan(0);
+    });
+
     it(`should be able to init with public path (${instanceString})`, () => {
       cy.wrap(null).then(async () => {
         await runInitTest(instance);

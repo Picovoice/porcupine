@@ -60,7 +60,6 @@ self.onmessage = async function(
         Porcupine.setWasmSimdLib(event.data.wasmSimdLib);
         Porcupine.setWasmPThread(event.data.wasmPThread);
         Porcupine.setWasmPThreadLib(event.data.wasmPThreadLib);
-        Porcupine.setWasmSimd(event.data.wasmSimd);
         Porcupine.setSdk(event.data.sdk);
         porcupine = await Porcupine._init(
           event.data.accessKey,
