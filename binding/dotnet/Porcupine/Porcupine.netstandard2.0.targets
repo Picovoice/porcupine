@@ -10,8 +10,8 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Visible>false</Visible>
         </Content>
-        <Content Include="$(MSBuildThisFileDirectory)pv_ypu_impl_cuda.dll">
-            <Link>pv_ypu_impl_cuda.dll</Link>
+        <Content Include="$(MSBuildThisFileDirectory)pv_ypu_impl_cuda_porcupine.dll">
+            <Link>pv_ypu_impl_cuda_porcupine.dll</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Visible>false</Visible>
         </Content>
