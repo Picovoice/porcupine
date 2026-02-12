@@ -35,6 +35,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Local Packages
+      run: yarn && yarn build
+      working-directory: binding/nodejs
+    # ********************************************************
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -63,6 +69,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Local Packages
+      run: yarn && yarn build
+      working-directory: binding/nodejs
+    # ********************************************************
 
     - name: Install dependencies
       run: yarn install
