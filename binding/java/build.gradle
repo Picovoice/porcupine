@@ -8,7 +8,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '4.0.1'
+    PUBLISH_VERSION = '4.0.2'
     PUBLISH_ARTIFACT_ID = 'porcupine-java'
 }
 
@@ -126,7 +126,7 @@ task copyMacLib(type: Copy) {
 task copyWindowsLib(type: Copy) {
     from('../../lib/java/windows/')
     include('amd64/pv_porcupine_jni.dll',
-            'amd64/pv_ypu_impl_cuda.dll',
+            'amd64/pv_ypu_impl_cuda_porcupine.dll',
             'arm64/pv_porcupine_jni.dll')
     into "${outputDir}/porcupine/lib/java/windows/"
 }

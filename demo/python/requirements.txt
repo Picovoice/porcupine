@@ -1,2 +1,2 @@
-pvporcupine==4.0.1
+pvporcupine==4.0.2
 pvrecorder==1.2.4
