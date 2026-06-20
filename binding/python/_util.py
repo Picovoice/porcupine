@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2025 Picovoice Inc.
+# Copyright 2020-2026 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -11,8 +11,10 @@
 
 import logging
 import os
-import platform
+import platform as pf
+import requests
 import subprocess
+from typing import Optional
 
 
 log = logging.getLogger('PPN')
@@ -20,7 +22,7 @@ log.setLevel(logging.WARNING)
 
 
 def _is_64bit():
-    return '64bit' in platform.architecture()[0]
+    return '64bit' in pf.architecture()[0]
 
 
 def _pv_linux_machine(machine):
@@ -57,14 +59,14 @@ def _pv_linux_machine(machine):
 
 
 def _pv_platform():
-    pv_system = platform.system()
+    pv_system = pf.system()
     if pv_system not in {'Darwin', 'Linux', 'Windows'}:
         raise ValueError("Unsupported system '%s'." % pv_system)
 
     if pv_system == 'Linux':
-        pv_machine = _pv_linux_machine(platform.machine())
+        pv_machine = _pv_linux_machine(pf.machine())
     else:
-        pv_machine = platform.machine()
+        pv_machine = pf.machine()
 
     return pv_system, pv_machine
 
@@ -131,3 +133,69 @@ def pv_keyword_paths(relative: str = "") -> dict:
         res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
 
     return res
+
+
+VALID_LANGUAGES = ('de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'pt')
+VALID_PLATFORMS = ('linux', 'mac', 'windows', 'raspberry-pi', 'wasm', 'android', 'ios')
+PORCUPINE_PHRASE_MAX_LENGTH = 64
+PV_API_URL = "https://dev.api.console.pv-beta.net/"
+
+
+def pv_get_platform():
+    if _PV_SYSTEM == 'Darwin':
+        return 'mac'
+    elif _PV_SYSTEM == 'Linux':
+        if _PV_MACHINE == 'x86_64':
+            return 'linux'
+        elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
+            return 'raspberry-pi'
+    elif _PV_SYSTEM == 'Windows':
+        return 'windows'
+
+    raise NotImplementedError("Unsupported platform ('%s', '%s').", _PV_SYSTEM, _PV_MACHINE)
+
+
+def pv_train_model(
+        access_key: str,
+        output_path: str,
+        language: str,
+        phrase: str,
+        platform: Optional[str] = None) -> None:
+
+    if language not in VALID_LANGUAGES:
+        raise ValueError(f"Invalid language '{language}'")
+
+    if platform is None:
+        platform = pv_get_platform()
+
+    if platform not in VALID_PLATFORMS:
+        raise ValueError(f"Invalid platform '{platform}'")
+
+    if len(phrase) == 0:
+        raise ValueError(f"Phrase must not be empty")
+
+    if len(phrase) > PORCUPINE_PHRASE_MAX_LENGTH:
+        raise ValueError(f"Phrase must not exceed {PORCUPINE_PHRASE_MAX_LENGTH} characters")
+
+    payload = {
+        "platform": platform,
+        "phrase": phrase
+    }
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "x-api-key": access_key
+    }
+
+    url = f"{PV_API_URL}{language}/api/ppn"
+
+    try:
+        response = requests.post(url, json=payload, headers=headers, allow_redirects=True)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        raise RuntimeError(f"HTTP {e.response.status_code}: {e.response.text}") from e
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Request failed: {e}") from e
+
+    with open(output_path, 'wb') as f:
+        f.write(response.content)

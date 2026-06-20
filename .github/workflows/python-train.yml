@@ -1,0 +1,96 @@
+name: Python Train
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'binding/python/**'
+      - '!binding/python/README.md'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/audio_samples/**'
+      - 'resources/keyword_files*/linux/**'
+      - 'resources/keyword_files*/mac/**'
+      - 'resources/keyword_files*/raspberry-pi/**'
+      - 'resources/keyword_files*/windows/**'
+      - 'resources/.test/**'
+      - '.github/workflows/python.yml'
+  pull_request:
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    paths:
+      - 'binding/python/**'
+      - '!binding/python/README.md'
+      - 'lib/common/**'
+      - 'lib/linux/**'
+      - 'lib/mac/**'
+      - 'lib/raspberry-pi/**'
+      - 'lib/windows/**'
+      - 'resources/audio_samples/**'
+      - 'resources/keyword_files*/linux/**'
+      - 'resources/keyword_files*/mac/**'
+      - 'resources/keyword_files*/raspberry-pi/**'
+      - 'resources/keyword_files*/windows/**'
+      - 'resources/.test/**'
+      - '.github/workflows/python.yml'
+
+defaults:
+  run:
+    working-directory: binding/python
+
+jobs:
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        python-version: [ '3.12' ]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Test
+      run: python test_python_train.py ${{secrets.PV_VALID_ACCESS_KEY}}
+
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [ rpi4-64, pv-windows-arm64 ]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Python virtualenv (*nix)
+      if: ${{ matrix.machine != 'pv-windows' && matrix.machine != 'pv-windows-igpu' && matrix.machine != 'pv-windows-arm64' }}
+      run: |
+        python3 -m venv binding/python/.venv
+        . binding/python/.venv/bin/activate
+        echo PATH=$PATH >> $GITHUB_ENV
+
+    - name: Setup Python virtualenv (windows)
+      if: ${{ matrix.machine == 'pv-windows' || matrix.machine == 'pv-windows-igpu' || matrix.machine == 'pv-windows-arm64' }}
+      run: |
+        python3 -m venv binding\python\.venv --symlinks
+        binding\python\.venv\Scripts\activate
+        echo PATH=$PATH >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Test
+      run: python3 test_python_train.py ${{secrets.PV_VALID_ACCESS_KEY}}
