@@ -172,7 +172,7 @@ def pv_train_model(
         raise ValueError(f"Invalid platform '{platform}'")
 
     if len(phrase) == 0:
-        raise ValueError(f"Phrase must not be empty")
+        raise ValueError("Phrase must not be empty")
 
     if len(phrase) > PORCUPINE_PHRASE_MAX_LENGTH:
         raise ValueError(f"Phrase must not exceed {PORCUPINE_PHRASE_MAX_LENGTH} characters")
