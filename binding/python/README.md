@@ -124,8 +124,6 @@ In order to run inference on non-English contexts you need to use the correspond
 
 You can train models over API without going to the console:
 
-(or)
-
 ```python
 train_model_from_phrase(
         "${ACCESS_KEY}",                             # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
