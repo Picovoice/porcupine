@@ -113,7 +113,7 @@ def available_devices(library_path: Optional[str] = None) -> Sequence[str]:
     return list_hardware_devices(library_path=library_path)
 
 
-def train_model_from_phrase(
+def train_wake_word_from_phrase(
         access_key: str,
         output_path: str,
         language: str,
@@ -144,5 +144,5 @@ __all__ = [
     'create',
     'KEYWORDS',
     'KEYWORD_PATHS',
-    'train_model_from_phrase',
+    'train_wake_word_from_phrase',
 ]
