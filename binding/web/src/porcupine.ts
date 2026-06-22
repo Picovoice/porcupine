@@ -75,6 +75,7 @@ type pv_free_error_stack_type = (messageStack: number) => void;
 
 const PV_API_URL = "https://rest.picovoice.ai/";
 const VALID_LANGUAGES = ['de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'pt'];
+const PORCUPINE_PHRASE_MAX_LENGTH = 64;
 
 /**
  * JavaScript/WebAssembly Binding for the Picovoice Porcupine wake word engine.
@@ -267,6 +268,18 @@ export class Porcupine {
     if (!VALID_LANGUAGES.includes(language)) {
       throw new PorcupineErrors.PorcupineInvalidArgumentError(
         `Invalid language ('${language}')`
+      );
+    }
+
+    if (phrase.length === 0) {
+      throw new PorcupineErrors.PorcupineInvalidArgumentError(
+        "Phrase must not be empty"
+      );
+    }
+
+    if (phrase.length > PORCUPINE_PHRASE_MAX_LENGTH) {
+      throw new PorcupineErrors.PorcupineInvalidArgumentError(
+        `Phrase must not exceed ${PORCUPINE_PHRASE_MAX_LENGTH} characters`
       );
     }
 
