@@ -192,6 +192,23 @@ Alternatively, if the model files are deployed to the device with a different me
 
 In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
 
+
+
+## Train Models over API
+
+You can train models over API without going to the console:
+
+```swift
+try Porcupine.trainWakeWordFromPhrase(
+    "${ACCESS_KEY}",   // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+    "${OUTPUT_PATH}",  // Absolute path to file where the trained model will be saved
+    "${LANGUAGE}",     // Two character language code for the model (e.g. "en", "fr")
+    "${PHRASE}"        // Phrase to create a wake word from
+)
+```
+
+Check [Porcupine Model API](https://picovoice.ai/docs/model-api/porcupine/) docs for a list of supported languages.
+
 ## Running Unit Tests
 
 Open [`PorcupineAppTest.xcodeproj`](PorcupineAppTest/PorcupineAppTest.xcodeproj) with XCode and run the tests with `Product > Test`.
