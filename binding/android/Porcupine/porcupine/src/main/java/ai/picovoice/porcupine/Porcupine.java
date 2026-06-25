@@ -119,7 +119,7 @@ public class Porcupine {
         }
 
         Request request = new Request.Builder()
-                .url(PV_API_URL + language + "/api/rhn")
+                .url(PV_API_URL + language + "/api/ppn")
                 .post(RequestBody.create(
                         payload,
                         MediaType.parse("application/json")
