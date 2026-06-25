@@ -51,7 +51,7 @@ class PorcupineTrainTestCase(unittest.TestCase):
     def test_train_model_invalid_phrase(self):
         output_path = f'{str(uuid.uuid4())}.rhn'
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(RuntimeError):
             pv_train_model(
                 sys.argv[1],
                 output_path,

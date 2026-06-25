@@ -138,7 +138,7 @@ def pv_keyword_paths(relative: str = "") -> dict:
 VALID_LANGUAGES = ('de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'pt')
 VALID_PLATFORMS = ('linux', 'mac', 'windows', 'raspberry-pi', 'wasm', 'android', 'ios')
 PORCUPINE_PHRASE_MAX_LENGTH = 64
-PV_API_URL = "https://dev.api.console.pv-beta.net/"
+PV_API_URL = "https://rest.picovoice.ai/"
 
 
 def pv_get_platform():
