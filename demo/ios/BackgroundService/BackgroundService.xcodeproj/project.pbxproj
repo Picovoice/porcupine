@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E0A9CCA2FEDE56B0007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CC92FEDE56B0007AC86 /* Porcupine */; };
 		5A210C632DA6E77C00FC64D6 /* BackgroundServiceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C5D2DA6E77C00FC64D6 /* BackgroundServiceApp.swift */; };
 		5A210C642DA6E77C00FC64D6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C5E2DA6E77C00FC64D6 /* ContentView.swift */; };
 		5A210C652DA6E77C00FC64D6 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C602DA6E77C00FC64D6 /* NotificationManager.swift */; };
 		5A210C662DA6E77C00FC64D6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C612DA6E77C00FC64D6 /* ViewModel.swift */; };
 		5A210C672DA6E77C00FC64D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C5A2DA6E77C00FC64D6 /* Preview Assets.xcassets */; };
 		5A210C682DA6E77C00FC64D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C5C2DA6E77C00FC64D6 /* Assets.xcassets */; };
-		5AD8B4742D9C5C910077FA19 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD8B4732D9C5C910077FA19 /* Porcupine */; };
 		5AD8B4772D9C5C9D0077FA19 /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD8B4762D9C5C9D0077FA19 /* SwiftySound */; };
 /* End PBXBuildFile section */
 
@@ -33,8 +33,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E0A9CCA2FEDE56B0007AC86 /* Porcupine in Frameworks */,
 				5AD8B4772D9C5C9D0077FA19 /* SwiftySound in Frameworks */,
-				5AD8B4742D9C5C910077FA19 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,8 +96,8 @@
 			);
 			name = BackgroundService;
 			packageProductDependencies = (
-				5AD8B4732D9C5C910077FA19 /* Porcupine */,
 				5AD8B4762D9C5C9D0077FA19 /* SwiftySound */,
+				1E0A9CC92FEDE56B0007AC86 /* Porcupine */,
 			);
 			productName = BackgroundService;
 			productReference = 5AD8B45B2D9C5BB60077FA19 /* BackgroundService.app */;
@@ -129,8 +129,8 @@
 			mainGroup = 5AD8B4522D9C5BB60077FA19;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				5AD8B4722D9C5C910077FA19 /* XCRemoteSwiftPackageReference "porcupine" */,
 				5AD8B4752D9C5C9D0077FA19 /* XCRemoteSwiftPackageReference "SwiftySound" */,
+				1E0A9CC82FEDE56B0007AC86 /* XCRemoteSwiftPackageReference "porcupine" */,
 			);
 			productRefGroup = 5AD8B45C2D9C5BB60077FA19 /* Products */;
 			projectDirPath = "";
@@ -372,20 +372,13 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../porcupine;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
-		5AD8B4722D9C5C910077FA19 /* XCRemoteSwiftPackageReference "porcupine" */ = {
+		1E0A9CC82FEDE56B0007AC86 /* XCRemoteSwiftPackageReference "porcupine" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Picovoice/porcupine.git";
+			repositoryURL = "https://github.com/Picovoice/porcupine";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				kind = exactVersion;
+				version = 4.0.1;
 			};
 		};
 		5AD8B4752D9C5C9D0077FA19 /* XCRemoteSwiftPackageReference "SwiftySound" */ = {
@@ -399,9 +392,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5AD8B4732D9C5C910077FA19 /* Porcupine */ = {
+		1E0A9CC92FEDE56B0007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5AD8B4722D9C5C910077FA19 /* XCRemoteSwiftPackageReference "porcupine" */;
+			package = 1E0A9CC82FEDE56B0007AC86 /* XCRemoteSwiftPackageReference "porcupine" */;
 			productName = Porcupine;
 		};
 		5AD8B4762D9C5C9D0077FA19 /* SwiftySound */ = {
