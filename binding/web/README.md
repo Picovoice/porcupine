@@ -253,6 +253,20 @@ const handle = await Porcupine.create(
 In order to detect non-English wake words you need to use the corresponding model file (`.pv`). The model files for all
 supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common).
 
+## Train Models over API
+
+You can train models over API without going to the console:
+
+```javascript
+Porcupine.trainWakeWordFromPhrase(
+  "${ACCESS_KEY}",     // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+  "${WRITE_PATH}",     // Custom path/key used to store the trained model in IndexedDB
+  "${LANGUAGE}",       // Two-character language code
+  "${PHRASE}")        // Phrase to create a wake word from
+```
+
+Check [Porcupine Model API](https://picovoice.ai/docs/model-api/porcupine/) docs for a list of supported languages and platforms.
+
 ## Demo
 
 For example usage refer to our [Web demo application](https://github.com/Picovoice/porcupine/tree/master/demo/web).

@@ -196,6 +196,7 @@ timecode
 tmpdir
 unitypackage
 uppercased
+vérifier
 vtable
 wakeword
 wakewords

@@ -96,12 +96,12 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.4.2.tgz#1860473de7dfa1546767448f333db80cb0ff2161"
   integrity sha512-xeO57FpIu4p1Ri3Jq/EXq4ClRm86dVF2z/+kvFnyqVYRavTZmaFaUBbWCOuuTh0o/g7DSsk6kc2vrS4Vl5oPOQ==
 
-"@picovoice/porcupine-web@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-4.0.0.tgz#33946e43a48db84a8c27d6fd4b61a747304af085"
-  integrity sha512-YqXBp6R9od6NTgcm80UyyB71c4eBArxD3BtX1SKQC4/xAvThM2VgwtPj4J7gvjl9yqqlcr+0Mg3T4lbKIOziTw==
+"@picovoice/porcupine-web@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-4.0.1.tgz#ba1ff139590910702138b98047d49ef94a6349a0"
+  integrity sha512-FtmVJmxcyZS0zLf3X7Uo2ecnX49gTmw5hqI44LHTlf3VScfqoUT5h7CRSbX9Rqi478bexFpK7fnyMeALDniQ4Q==
   dependencies:
-    "@picovoice/web-utils" "=1.4.3"
+    "@picovoice/web-utils" "=1.4.4"
 
 "@picovoice/web-utils@=1.3.1":
   version "1.3.1"
@@ -110,10 +110,10 @@
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-utils@=1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.4.3.tgz#1de0b20d6080c18d295c6df37c09d88bf7c4f555"
-  integrity sha512-7JN3YYsSD9Gtce6YKG3XqpX49dkeu7jTdbox7rHQA/X/Q3zxopXA9zlCKSq6EIjFbiX2iuzDKUx1XrFa3d8c0w==
+"@picovoice/web-utils@=1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.4.4.tgz#8c0be3b22a9de204921c5b5858a66f3ac837f928"
+  integrity sha512-jmwzU3v7ZvL98LbHI0Df99RNz/THCvp8S7DCFvH4KH7GL6kO1YqHDuqdkuy7/xLt+76nbj8R/2LSeVbLsSFGAw==
   dependencies:
     commander "^10.0.1"
 
