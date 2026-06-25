@@ -14,66 +14,45 @@ import Yams
 import Porcupine
 
 class PorcupineTrainTests: BaseTest {
-    func testTrainModel() throws {
-        let bundle = Bundle(for: type(of: self))
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
 
+    func testTrainModel() throws {
         let fileManager = FileManager.default
         let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
         guard let documentsDirectory = urls.first else {
             XCTFail("Could not access document directory")
             return
         }
-        let outputPath = documentsDirectory.appendingPathComponent("custom_coffee_maker_android.rhn").path
+        let outputPath = documentsDirectory.appendingPathComponent("custom_phrase_ios.ppn").path
 
-        let slots: [String: Set<String>] = ["size": ["macchiato", "cortado"]]
-
-        try Porcupine.trainContextFromDynamicSlots(
+        try Porcupine.trainWakeWordFromPhrase(
             accessKey: accessKey,
             outputPath: outputPath,
             language: "en",
-            contextPath: contextPath,
-            modelPath: nil,
-            slots: slots
+            phrase: "custom phrase",
         )
 
-        let r = try Porcupine(
+        let p = try Porcupine(
             accessKey: accessKey,
-            contextPath: outputPath
+            keywordPath: outputPath
         )
-
-        XCTAssert(r.contextInfo != "")
-
-        guard let content = try Yams.load(yaml: r.contextInfo) as? [String: Any],
-              let context = content["context"] as? [String: Any],
-              let contextSlots = context["slots"] as? [String: [String]] else {
-            XCTFail("Failed to parse context information or locate slots dictionary")
-            return
-        }
-
-        let expectedSlots = Array(slots["size"]!).sorted()
-        let actualSlots = contextSlots["size"]?.sorted()
-        XCTAssertEqual(expectedSlots, actualSlots)
+        p.delete()
     }
 
     func testTrainModelInvalidSlots() throws {
-        let bundle = Bundle(for: type(of: self))
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
-
         let fileManager = FileManager.default
         let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
-        let outputPath = urls.first!.appendingPathComponent("custom_coffee_maker_android.rhn").path
-
-        let slots: [String: Set<String>] = ["size": ["blue", "Blue"]]
+        guard let documentsDirectory = urls.first else {
+            XCTFail("Could not access document directory")
+            return
+        }
+        let outputPath = documentsDirectory.appendingPathComponent("custom_phrase_ios.ppn").path
 
         XCTAssertThrowsError(
-            try Porcupine.trainContextFromDynamicSlots(
+            try Porcupine.trainWakeWordFromPhrase(
                 accessKey: accessKey,
                 outputPath: outputPath,
                 language: "en",
-                contextPath: contextPath,
-                modelPath: nil,
-                slots: slots
+                phrase: "ㅁㄴㅇㄹ"
             )
         ) { error in
             XCTAssertTrue(error is PorcupineError)

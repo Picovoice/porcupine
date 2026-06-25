@@ -6,6 +6,7 @@ disabled_rules:
   - implicit_getter
   - cyclomatic_complexity
   - function_parameter_count
+  - file_length
 excluded:
   - ${PWD}/**/Pods
   - ${PWD}/**/node_modules

@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }
   s.source = { :git => "https://github.com/Picovoice/porcupine.git", :tag => s.version.to_s }
   s.ios.deployment_target = '16.0'
-  s.swift_version = '5.0'
+  s.swift_version = '5.7'
   s.vendored_frameworks = 'lib/ios/PvPorcupine.xcframework'
   s.resource_bundles = {
     'PorcupineResources' => [
@@ -36,4 +36,5 @@ Pod::Spec.new do |s|
   s.exclude_files = 'binding/ios/PorcupineAppTest/**'
 
   s.dependency 'ios-voice-processor', '~> 1.2.0'
+  s.dependency 'Yams', '~> 5.0.6'
 end
