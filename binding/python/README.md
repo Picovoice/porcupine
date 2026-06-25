@@ -116,6 +116,25 @@ handle.delete()
 
 In order to detect non-English wake words you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common).
 
+## Non-English Contexts
+
+In order to run inference on non-English contexts you need to use the corresponding model file. The model files for all supported languages are available [here](../../lib/common).
+
+## Train Models over API
+
+You can train models over API without going to the console:
+
+```python
+train_wake_word_from_phrase(
+        "${ACCESS_KEY}",                             # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+        "${OUTPUT_PATH}",                            # Path to save the newly trained model
+        "${LANGUAGE}",                               # Two-character language code
+        "${PHRASE}",                                 # Phrase to create a wake word from
+        "${PLATFORM}")                               # Optional platform for the trained model. If None, the default(current) platform is used.
+```
+
+Check [Porcupine Model API](https://picovoice.ai/docs/model-api/porcupine/) docs for a list of supported languages and platforms.
+
 ## Demos
 
 [pvporcupinedemo](https://pypi.org/project/pvporcupinedemo/) provides command-line utilities for processing real-time

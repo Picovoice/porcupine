@@ -148,6 +148,7 @@ porcupinemicdemo
 porcupinetestapp
 prefs
 println
+prueba
 pthread
 ptrs
 pubspec

@@ -84,6 +84,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Setup Python virtualenv (*nix)
+      if: ${{ matrix.machine != 'pv-windows' && matrix.machine != 'pv-windows-igpu' && matrix.machine != 'pv-windows-arm64' }}
+      run: |
+        python3 -m venv binding/python/.venv
+        . binding/python/.venv/bin/activate
+        echo PATH=$PATH >> $GITHUB_ENV
+
+    - name: Setup Python virtualenv (windows)
+      if: ${{ matrix.machine == 'pv-windows' || matrix.machine == 'pv-windows-igpu' || matrix.machine == 'pv-windows-arm64' }}
+      run: |
+        python3 -m venv binding\python\.venv --symlinks
+        binding\python\.venv\Scripts\activate
+        echo PATH=$PATH >> $GITHUB_ENV
+
     - name: Install dependencies
       run: pip install -r requirements.txt
 
