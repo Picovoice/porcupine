@@ -9,7 +9,6 @@
 
 import AVFoundation
 import XCTest
-import Yams
 
 import Porcupine
 

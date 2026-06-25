@@ -36,5 +36,4 @@ Pod::Spec.new do |s|
   s.exclude_files = 'binding/ios/PorcupineAppTest/**'
 
   s.dependency 'ios-voice-processor', '~> 1.2.0'
-  s.dependency 'Yams', '~> 5.0.6'
 end

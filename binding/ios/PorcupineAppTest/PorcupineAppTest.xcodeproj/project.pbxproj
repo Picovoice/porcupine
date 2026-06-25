@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1E0A9CB12FEDAFB10007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CB02FEDAFB10007AC86 /* Porcupine */; };
-		1E0A9CB32FEDAFB90007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CB22FEDAFB90007AC86 /* Porcupine */; };
-		1E0A9CB52FEDAFBD0007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CB42FEDAFBD0007AC86 /* Porcupine */; };
-		1E0A9CB92FEDB1780007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CB82FEDB1780007AC86 /* Porcupine */; };
+		1E0A9CBC2FEDD2100007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CBB2FEDD2100007AC86 /* Porcupine */; };
+		1E0A9CBE2FEDD2170007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CBD2FEDD2170007AC86 /* Porcupine */; };
+		1E0A9CC02FEDD21D0007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CBF2FEDD21D0007AC86 /* Porcupine */; };
 		1E5B7AA127FFC12000F8BDDB /* PerformanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32769C288BB32DEA6645EC92 /* PerformanceTest.swift */; };
 		1E5B7ABA27FFC18400F8BDDB /* multiple_keywords.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E5B7AB927FFC18400F8BDDB /* multiple_keywords.wav */; };
 		1E7744B427CD9D7E00491D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7744B327CD9D7E00491D0B /* AppDelegate.swift */; };
@@ -70,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E0A9CB52FEDAFBD0007AC86 /* Porcupine in Frameworks */,
+				1E0A9CC02FEDD21D0007AC86 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,7 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E0A9CB92FEDB1780007AC86 /* Porcupine in Frameworks */,
+				1E0A9CBC2FEDD2100007AC86 /* Porcupine in Frameworks */,
 				1E0A9CB12FEDAFB10007AC86 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E0A9CB32FEDAFB90007AC86 /* Porcupine in Frameworks */,
+				1E0A9CBE2FEDD2170007AC86 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +249,7 @@
 			);
 			mainGroup = 1E7744A727CD9D7E00491D0B;
 			packageReferences = (
-				1E0A9CAF2FEDAFB10007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */,
+				1E0A9CBA2FEDD2100007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */,
 			);
 			productRefGroup = 1E7744B127CD9D7E00491D0B /* Products */;
 			projectDirPath = "";
@@ -659,7 +659,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		1E0A9CAF2FEDAFB10007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */ = {
+		1E0A9CBA2FEDD2100007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../../../porcupine;
 		};
@@ -670,19 +670,18 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Porcupine;
 		};
-		1E0A9CB22FEDAFB90007AC86 /* Porcupine */ = {
+		1E0A9CBB2FEDD2100007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1E0A9CAF2FEDAFB10007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */;
 			productName = Porcupine;
 		};
-		1E0A9CB42FEDAFBD0007AC86 /* Porcupine */ = {
+		1E0A9CBD2FEDD2170007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1E0A9CAF2FEDAFB10007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */;
+			package = 1E0A9CBA2FEDD2100007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */;
 			productName = Porcupine;
 		};
-		1E0A9CB82FEDB1780007AC86 /* Porcupine */ = {
+		1E0A9CBF2FEDD21D0007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1E0A9CAF2FEDAFB10007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */;
+			package = 1E0A9CBA2FEDD2100007AC86 /* XCLocalSwiftPackageReference "../../../../porcupine" */;
 			productName = Porcupine;
 		};
 /* End XCSwiftPackageProductDependency section */

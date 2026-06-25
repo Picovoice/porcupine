@@ -16,10 +16,6 @@ let package = Package(
         .package(
             url: "https://github.com/Picovoice/ios-voice-processor.git",
             .upToNextMajor(from: "1.2.0")
-        ),
-        .package(
-            url: "https://github.com/jpsim/yams",
-            .upToNextMajor(from: "5.0.6")
         )
     ],
     targets: [
@@ -31,8 +27,7 @@ let package = Package(
             name: "Porcupine",
             dependencies: [
                 "PvPorcupine",
-                .product(name: "ios_voice_processor", package: "ios-voice-processor"),
-                .product(name: "Yams", package: "Yams")
+                .product(name: "ios_voice_processor", package: "ios-voice-processor")
             ],
             path: ".",
             exclude: [
