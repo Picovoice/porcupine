@@ -1,23 +1,23 @@
-name: Android BrowserStack Tests
+name: Android AWS Device Farm Tests
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/android-browserstack.yml'
+      - '.github/workflows/android-devicefarm.yml'
       - 'binding/android/PorcupineTestApp/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
-      - 'script/automation/browserstack.py'
+      - 'script/automation/devicefarm.py'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '.github/workflows/android-browserstack.yml'
+      - '.github/workflows/android-devicefarm.yml'
       - 'binding/android/PorcupineTestApp/**'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
-      - 'script/automation/browserstack.py'
+      - 'script/automation/devicefarm.py'
 
 defaults:
   run:
@@ -25,7 +25,7 @@ defaults:
 
 jobs:
   build:
-    name: Run Android Tests on BrowserStack
+    name: Run Android Tests on AWS Device Farm
     runs-on: ubuntu-latest
 
     steps:
@@ -72,18 +72,20 @@ jobs:
     - name: Build androidTest
       run: ./gradlew assembleEnDebugAndroidTest
 
-    - name: Run tests on BrowserStack
-      run: python3 ../../../script/automation/browserstack.py
-        --type espresso
-        --username "${{secrets.BROWSERSTACK_USERNAME}}"
-        --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
-        --project_name "Porcupine-Android"
-        --devices "android-min-max"
+    - name: Run tests on AWS Device Farm
+      run: python3 ../../../script/automation/devicefarm.py
+        --type android
+        --run_name porcupine-android-unit
         --app_path "porcupine-test-app/build/outputs/apk/en/debug/porcupine-test-app-en-debug.apk"
         --test_path "porcupine-test-app/build/outputs/apk/androidTest/en/debug/porcupine-test-app-en-debug-androidTest.apk"
+        --aws_id "${{secrets.AWS_DEVICE_FARM_ACCESS_KEY_ID}}"
+        --aws_secret "${{secrets.AWS_DEVICE_FARM_ACCESS_KEY_SECRET}}"
+        --project_arn "${{secrets.AWS_DEVICE_FARM_PROJECT_ARN}}"
+        --test_spec_arn "${{secrets.AWS_DEVICE_FARM_ANDROID_TEST_SPEC_ARN}}"
+        --device_pool_arn "${{secrets.AWS_DEVICE_FARM_ANDROID_DEVICE_POOL_ARN}}"
 
   build-integ:
-    name: Run Android Integration Tests on BrowserStack
+    name: Run Android Integration Tests on AWS Device Farm
     runs-on: ubuntu-latest
 
     steps:
@@ -130,12 +132,14 @@ jobs:
     - name: Build androidTest
       run: ./gradlew assembleEnReleaseAndroidTest -DtestBuildType=integ
 
-    - name: Run tests on BrowserStack
-      run: python3 ../../../script/automation/browserstack.py
-        --type espresso
-        --username "${{secrets.BROWSERSTACK_USERNAME}}"
-        --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
-        --project_name "Porcupine-Android-Integration"
-        --devices "android-min-max"
+    - name: Run tests on AWS Device Farm
+      run: python3 ../../../script/automation/devicefarm.py
+        --type android
+        --run_name porcupine-android-integ
         --app_path "porcupine-test-app/build/outputs/apk/en/release/porcupine-test-app-en-release.apk"
         --test_path "porcupine-test-app/build/outputs/apk/androidTest/en/release/porcupine-test-app-en-release-androidTest.apk"
+        --aws_id "${{secrets.AWS_DEVICE_FARM_ACCESS_KEY_ID}}"
+        --aws_secret "${{secrets.AWS_DEVICE_FARM_ACCESS_KEY_SECRET}}"
+        --project_arn "${{secrets.AWS_DEVICE_FARM_PROJECT_ARN}}"
+        --test_spec_arn "${{secrets.AWS_DEVICE_FARM_ANDROID_TEST_SPEC_ARN}}"
+        --device_pool_arn "${{secrets.AWS_DEVICE_FARM_ANDROID_DEVICE_POOL_ARN}}"
