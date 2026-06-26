@@ -37,7 +37,7 @@ jobs:
         with:
           python-version: '3.10'
       - run:
-          pip3 install requests
+          pip3 install requests boto3
 
       - name: Make build dir
         run: mkdir ddp
