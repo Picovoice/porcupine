@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name = 'Porcupine-iOS'
   s.module_name = 'Porcupine'
-  s.version = '4.0.0'
+  s.version = '4.0.1'
   s.license = {:type => 'Apache 2.0'}
   s.summary = 'iOS SDK for Picovoice\'s Porcupine wake word engine'
   s.description =
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.author = { 'Picovoice' => 'hello@picovoice.ai' }
   s.source = { :git => "https://github.com/Picovoice/porcupine.git", :tag => s.version.to_s }
   s.ios.deployment_target = '16.0'
-  s.swift_version = '5.0'
+  s.swift_version = '5.7'
   s.vendored_frameworks = 'lib/ios/PvPorcupine.xcframework'
   s.resource_bundles = {
     'PorcupineResources' => [

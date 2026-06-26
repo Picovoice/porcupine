@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E0A9CCD2FEDE5990007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CCC2FEDE5990007AC86 /* Porcupine */; };
 		5A210BF92DA5CB4D00FC64D6 /* pre-build.sh in Resources */ = {isa = PBXBuildFile; fileRef = 5A210BF82DA5CB4D00FC64D6 /* pre-build.sh */; };
 		5A210C132DA5CEA100FC64D6 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C112DA5CEA100FC64D6 /* models */; };
 		5A210C142DA5CEA100FC64D6 /* keywords in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C122DA5CEA100FC64D6 /* keywords */; };
@@ -15,7 +16,6 @@
 		5A210C732DA6E7FF00FC64D6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A210C6F2DA6E7FF00FC64D6 /* ViewModel.swift */; };
 		5A210C742DA6E7FF00FC64D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C6A2DA6E7FF00FC64D6 /* Preview Assets.xcassets */; };
 		5A210C752DA6E7FF00FC64D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A210C6C2DA6E7FF00FC64D6 /* Assets.xcassets */; };
-		5AD8B4412D95C6C60077FA19 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD8B4402D95C6C60077FA19 /* Porcupine */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AD8B4412D95C6C60077FA19 /* Porcupine in Frameworks */,
+				1E0A9CCD2FEDE5990007AC86 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +98,7 @@
 			);
 			name = ForegroundApp;
 			packageProductDependencies = (
-				5AD8B4402D95C6C60077FA19 /* Porcupine */,
+				1E0A9CCC2FEDE5990007AC86 /* Porcupine */,
 			);
 			productName = ForegroundApp;
 			productReference = 5AD8B4282D95C6340077FA19 /* ForegroundApp.app */;
@@ -130,7 +130,7 @@
 			mainGroup = 5AD8B41F2D95C6340077FA19;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				5AD8B43F2D95C6C60077FA19 /* XCRemoteSwiftPackageReference "porcupine" */,
+				1E0A9CCB2FEDE5990007AC86 /* XCRemoteSwiftPackageReference "porcupine" */,
 			);
 			productRefGroup = 5AD8B4292D95C6340077FA19 /* Products */;
 			projectDirPath = "";
@@ -297,6 +297,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ForegroundApp/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porcupine demo";
@@ -327,6 +328,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ForegroundApp/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porcupine demo";
@@ -372,28 +374,21 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../porcupine;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
-		5AD8B43F2D95C6C60077FA19 /* XCRemoteSwiftPackageReference "porcupine" */ = {
+		1E0A9CCB2FEDE5990007AC86 /* XCRemoteSwiftPackageReference "porcupine" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Picovoice/porcupine.git";
+			repositoryURL = "https://github.com/Picovoice/porcupine";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				kind = exactVersion;
+				version = 4.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5AD8B4402D95C6C60077FA19 /* Porcupine */ = {
+		1E0A9CCC2FEDE5990007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5AD8B43F2D95C6C60077FA19 /* XCRemoteSwiftPackageReference "porcupine" */;
+			package = 1E0A9CCB2FEDE5990007AC86 /* XCRemoteSwiftPackageReference "porcupine" */;
 			productName = Porcupine;
 		};
 /* End XCSwiftPackageProductDependency section */

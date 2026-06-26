@@ -3,15 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02C7054B2CCB14450002B3E4 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 02C7054A2CCB14450002B3E4 /* Porcupine */; };
-		02C7054E2CCB14980002B3E4 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 02C7054D2CCB14980002B3E4 /* Porcupine */; };
-		02C705502CCB14B50002B3E4 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 02C7054F2CCB14B50002B3E4 /* Porcupine */; };
-		02C705532CCB15430002B3E4 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 02C705522CCB15430002B3E4 /* Porcupine */; };
-		02C705562CCB156D0002B3E4 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 02C705552CCB156D0002B3E4 /* Porcupine */; };
+		1E0A9CC32FEDE5150007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CC22FEDE5150007AC86 /* Porcupine */; };
+		1E0A9CC52FEDE51D0007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CC42FEDE51D0007AC86 /* Porcupine */; };
+		1E0A9CC72FEDE5220007AC86 /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0A9CC62FEDE5220007AC86 /* Porcupine */; };
 		1E5B7AA127FFC12000F8BDDB /* PerformanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32769C288BB32DEA6645EC92 /* PerformanceTest.swift */; };
 		1E5B7ABA27FFC18400F8BDDB /* multiple_keywords.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E5B7AB927FFC18400F8BDDB /* multiple_keywords.wav */; };
 		1E7744B427CD9D7E00491D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7744B327CD9D7E00491D0B /* AppDelegate.swift */; };
@@ -62,12 +60,16 @@
 		C765AF8F29AD7B75009D2BC2 /* test_resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1E0A9CA62FEDAE900007AC86 /* PorcupineTrainTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PorcupineTrainTest; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		1E5B7AA227FFC12000F8BDDB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02C705502CCB14B50002B3E4 /* Porcupine in Frameworks */,
+				1E0A9CC72FEDE5220007AC86 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,9 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02C705562CCB156D0002B3E4 /* Porcupine in Frameworks */,
-				02C705532CCB15430002B3E4 /* Porcupine in Frameworks */,
-				02C7054B2CCB14450002B3E4 /* Porcupine in Frameworks */,
+				1E0A9CC32FEDE5150007AC86 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,13 +85,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02C7054E2CCB14980002B3E4 /* Porcupine in Frameworks */,
+				1E0A9CC52FEDE51D0007AC86 /* Porcupine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E0A9CAA2FEDAF310007AC86 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1E5B7A9A27FFC0C400F8BDDB /* PerformanceTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,9 +112,11 @@
 		1E7744A727CD9D7E00491D0B = {
 			isa = PBXGroup;
 			children = (
+				1E0A9CA62FEDAE900007AC86 /* PorcupineTrainTest */,
 				1E5B7A9A27FFC0C400F8BDDB /* PerformanceTest */,
 				1E7744B227CD9D7E00491D0B /* PorcupineAppTest */,
 				1E7744D327CD9D7F00491D0B /* PorcupineAppTestUITests */,
+				1E0A9CAA2FEDAF310007AC86 /* Frameworks */,
 				1E7744B127CD9D7E00491D0B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -198,6 +207,9 @@
 			dependencies = (
 				1E7744D227CD9D7F00491D0B /* PBXTargetDependency */,
 			);
+			fileSystemSynchronizedGroups = (
+				1E0A9CA62FEDAE900007AC86 /* PorcupineTrainTest */,
+			);
 			name = PorcupineAppTestUITests;
 			productName = PorcupineAppTestUITests;
 			productReference = 1E7744D027CD9D7F00491D0B /* PorcupineAppTestUITests.xctest */;
@@ -235,7 +247,7 @@
 			);
 			mainGroup = 1E7744A727CD9D7E00491D0B;
 			packageReferences = (
-				02C705512CCB15430002B3E4 /* XCRemoteSwiftPackageReference "porcupine" */,
+				1E0A9CC12FEDE5150007AC86 /* XCRemoteSwiftPackageReference "porcupine" */,
 			);
 			productRefGroup = 1E7744B127CD9D7E00491D0B /* Products */;
 			projectDirPath = "";
@@ -644,44 +656,31 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		02C705542CCB156D0002B3E4 /* XCLocalSwiftPackageReference "../../../../porcupine" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../porcupine;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
-		02C705512CCB15430002B3E4 /* XCRemoteSwiftPackageReference "porcupine" */ = {
+		1E0A9CC12FEDE5150007AC86 /* XCRemoteSwiftPackageReference "porcupine" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Picovoice/porcupine";
 			requirement = {
 				kind = exactVersion;
-				version = 4.0.0;
+				version = 4.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		02C7054A2CCB14450002B3E4 /* Porcupine */ = {
+		1E0A9CC22FEDE5150007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 1E0A9CC12FEDE5150007AC86 /* XCRemoteSwiftPackageReference "porcupine" */;
 			productName = Porcupine;
 		};
-		02C7054D2CCB14980002B3E4 /* Porcupine */ = {
+		1E0A9CC42FEDE51D0007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 1E0A9CC12FEDE5150007AC86 /* XCRemoteSwiftPackageReference "porcupine" */;
 			productName = Porcupine;
 		};
-		02C7054F2CCB14B50002B3E4 /* Porcupine */ = {
+		1E0A9CC62FEDE5220007AC86 /* Porcupine */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Porcupine;
-		};
-		02C705522CCB15430002B3E4 /* Porcupine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02C705512CCB15430002B3E4 /* XCRemoteSwiftPackageReference "porcupine" */;
-			productName = Porcupine;
-		};
-		02C705552CCB156D0002B3E4 /* Porcupine */ = {
-			isa = XCSwiftPackageProductDependency;
+			package = 1E0A9CC12FEDE5150007AC86 /* XCRemoteSwiftPackageReference "porcupine" */;
 			productName = Porcupine;
 		};
 /* End XCSwiftPackageProductDependency section */

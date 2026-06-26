@@ -1,5 +1,5 @@
 //
-//  Copyright 2021-2025 Picovoice Inc.
+//  Copyright 2021-2026 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -52,6 +52,10 @@ public class Porcupine {
         case terminator = "Terminator"
     }
 
+    private static let PV_API_URL = "https://rest.picovoice.ai/"
+    private static let PORCUPINE_PHRASE_MAX_LENGTH = 64
+    private static let VALID_LANGUAGES: Set<String> = ["en", "fr", "de", "es", "it", "ja", "ko", "pt"]
+
     private var handle: OpaquePointer?
     public static let frameLength = UInt32(pv_porcupine_frame_length())
     public static let sampleRate = UInt32(pv_sample_rate())
@@ -60,6 +64,90 @@ public class Porcupine {
 
     public static func setSdk(sdk: String) {
         self.sdk = sdk
+    }
+
+    /// Trains a wake word model given a phrase.
+    ///
+    /// - Parameters:
+    ///   - accessKey: AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
+    ///   - outputPath: Absolute path to file where the trained model will be saved.
+    ///   - language: Two character language code for the model (e.g. "en", "fr").
+    ///   - phrase: Phrase to create a wake word from.
+    /// - Throws: `PorcupineError` if model training fails.
+    public static func trainWakeWordFromPhrase(
+        accessKey: String,
+        outputPath: String,
+        language: String,
+        phrase: String
+    ) throws {
+
+        guard VALID_LANGUAGES.contains(language) else {
+            throw PorcupineInvalidArgumentError("Invalid language ('\(language)')")
+        }
+
+        guard !phrase.isEmpty else {
+            throw PorcupineInvalidArgumentError("Phrase must not be empty")
+        }
+
+        guard phrase.count <= PORCUPINE_PHRASE_MAX_LENGTH else {
+            throw PorcupineInvalidArgumentError("Phrase must not exceed ('\(PORCUPINE_PHRASE_MAX_LENGTH)') characters")
+        }
+
+        let payload: Data
+        do {
+            payload = try JSONSerialization.data(withJSONObject: [
+                "platform": "ios",
+                "phrase": phrase
+            ])
+        } catch {
+            throw PorcupineRuntimeError("Failed to create request payload \(error.localizedDescription)")
+        }
+
+        guard let url = URL(string: PV_API_URL + language + "/api/ppn") else {
+            throw PorcupineRuntimeError("Invalid request URL")
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = payload
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(accessKey, forHTTPHeaderField: "x-api-key")
+
+        var resultData: Data?
+        var resultResponse: URLResponse?
+        var resultError: Error?
+        let semaphore = DispatchSemaphore(value: 0)
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            resultData = data
+            resultResponse = response
+            resultError = error
+            semaphore.signal()
+        }.resume()
+        semaphore.wait()
+
+        if let error = resultError {
+            throw PorcupineRuntimeError("Request failed: \(error.localizedDescription)")
+        }
+
+        guard let http = resultResponse as? HTTPURLResponse else {
+            throw PorcupineRuntimeError("Invalid response")
+        }
+
+        guard (200...299).contains(http.statusCode) else {
+            let errorBody = resultData.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+            throw PorcupineRuntimeError("Failed to train model: \(errorBody)")
+        }
+
+        guard let data = resultData, !data.isEmpty else {
+            throw PorcupineRuntimeError("Empty response body")
+        }
+
+        do {
+            try data.write(to: URL(fileURLWithPath: outputPath))
+        } catch {
+            throw PorcupineRuntimeError("Failed to save Porcupine context file: \(error.localizedDescription)")
+        }
     }
 
     /// Lists all available devices that Porcupine can use for inference.
