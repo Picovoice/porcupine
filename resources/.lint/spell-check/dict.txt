@@ -216,3 +216,4 @@ xcshareddata
 xcuitest
 xcworkspace
 xpresso
+XCTEST
