@@ -1,5 +1,5 @@
 /*
-    Copyright 2021-2025 Picovoice Inc.
+    Copyright 2021-2026 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -15,15 +15,23 @@ package ai.picovoice.porcupine;
 import android.content.Context;
 import android.content.res.Resources;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
+
+import okhttp3.*;
 
 /**
  * Android binding for Porcupine wake word engine. It detects utterances of given keywords within an
@@ -34,6 +42,15 @@ import java.util.Locale;
  * audio.
  */
 public class Porcupine {
+    private static final Set<String> VALID_LANGUAGES =
+            new HashSet<>(Arrays.asList("de", "en", "es", "fr", "it", "ja", "ko", "pt"));
+
+    private static final int PORCUPINE_PHRASE_MAX_LENGTH = 64;
+
+    private static final String PV_API_URL = "https://rest.picovoice.ai/";
+
+    private static final OkHttpClient client = new OkHttpClient();
+
 
     private static final int[] KEYWORDS_RESOURCES = {
             R.raw.alexa, R.raw.americano, R.raw.blueberry, R.raw.bumblebee, R.raw.computer, R.raw.grapefruit,
@@ -54,6 +71,91 @@ public class Porcupine {
 
     public static void setSdk(String sdk) {
         Porcupine._sdk = sdk;
+    }
+
+    /**
+     * Trains a wake word model given a phrase.
+     *
+     * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
+     * @param outputPath Absolute path to file where the trained model will be saved.
+     * @param language Two character language code for the model (e.g. "en", "fr").
+     *                 See https://picovoice.ai/docs/model-api/porcupine/ for supported languages.
+     * @param phrase Phrase to create a wake word from.
+     * @throws PorcupineException if model training fails.
+     */
+    public static void trainWakeWordFromPhrase(
+            String accessKey,
+            String outputPath,
+            String language,
+            String phrase) throws PorcupineException {
+
+        if (!VALID_LANGUAGES.contains(language)) {
+            throw new PorcupineInvalidArgumentException(
+                    "Invalid language ('" + language + "')"
+            );
+        }
+
+        if (phrase == null || phrase.isEmpty()) {
+            throw new PorcupineInvalidArgumentException("Phrase must not be empty");
+        }
+
+        if (phrase.length() > PORCUPINE_PHRASE_MAX_LENGTH) {
+            throw new PorcupineInvalidArgumentException(
+                    "Phrase must not exceed " + PORCUPINE_PHRASE_MAX_LENGTH + " characters"
+            );
+        }
+
+        String payload;
+
+        try {
+            payload = new JSONObject()
+                    .put("platform", "android")
+                    .put("phrase", phrase)
+                    .toString();
+        } catch (JSONException e) {
+            throw new PorcupineRuntimeException(
+                    "Failed to create request payload " + e.getMessage()
+            );
+        }
+
+        Request request = new Request.Builder()
+                .url(PV_API_URL + language + "/api/ppn")
+                .post(RequestBody.create(
+                        payload,
+                        MediaType.parse("application/json")
+                ))
+                .addHeader("x-api-key", accessKey)
+                .build();
+
+        try (Response res = client.newCall(request).execute()) {
+            if (!res.isSuccessful()) {
+                String errorBody = res.body() != null ? res.body().string() : "";
+                throw new PorcupineRuntimeException("Failed to train model: " + errorBody);
+            }
+
+            if (res.body() == null) {
+                throw new PorcupineRuntimeException("Empty response body");
+            }
+
+            byte[] data = res.body().bytes();
+
+            if (data.length == 0) {
+                throw new PorcupineRuntimeException("Empty response body");
+            }
+
+            File file = new File(outputPath);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(data);
+            } catch (IOException e) {
+                throw new PorcupineRuntimeException(
+                        "Failed to save Porcupine model: " + e.getMessage()
+                );
+            }
+        } catch (IOException e) {
+            throw new PorcupineRuntimeException(
+                    "Request failed: " + e.getMessage()
+            );
+        }
     }
 
     /**

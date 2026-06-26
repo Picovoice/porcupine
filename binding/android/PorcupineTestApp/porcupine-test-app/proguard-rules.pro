@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 -keep class com.google.** { *; }
 -keep class com.microsoft.** { *; }
+-keep class kotlin.** { *; }
