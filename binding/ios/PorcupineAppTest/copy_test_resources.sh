@@ -1,9 +1,11 @@
 LIB_DIR="../../../lib"
 RESOURCE_DIR="../../../resources"
+SCRIPT_DIR="../../../script"
 ASSETS_DIR="./PorcupineAppTestUITests/test_resources"
 
 echo "Creating test resources asset directory"
 mkdir -p ${ASSETS_DIR}
+rm -rf ${ASSETS_DIR}/*
 
 echo "Copying test audio samples..."
 mkdir -p ${ASSETS_DIR}/audio_samples
@@ -30,5 +32,5 @@ cp ${LIB_DIR}/common/*.pv ${ASSETS_DIR}/model_files
 echo "Copying test data file..."
 cp ${RESOURCE_DIR}/.test/test_data.json ${ASSETS_DIR}
 
-echo "Fixing filename encodings for Appcenter compatibility"
-convmv --notest -f utf8 -t utf8 --nfd -r ${ASSETS_DIR}
+echo "Fixing filenames for AWS Device Farm compatibility"
+python ${SCRIPT_DIR}/automation/pv_df_pack.py --root ${ASSETS_DIR}

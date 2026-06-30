@@ -23,7 +23,7 @@ defaults:
 
 jobs:
   build:
-    name: Run iOS Tests on BrowserStack
+    name: Run iOS Tests on AWS Device Farm
     runs-on: macos-latest
 
     strategy:
@@ -42,7 +42,7 @@ jobs:
         with:
           python-version: '3.10'
       - run:
-          pip3 install requests
+          pip3 install requests boto3
 
       - name: Make build dir
         run: mkdir ddp
@@ -91,12 +91,14 @@ jobs:
         run: cd ddp/Build/Products/Debug-iphoneos/ &&
           zip --symlinks -r PerformanceTest.zip PerformanceTest-Runner.app
 
-      - name: Run tests on BrowserStack
-        run: python3 ../../../script/automation/browserstack.py
-          --type xcuitest
-          --username "${{secrets.BROWSERSTACK_USERNAME}}"
-          --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
-          --project_name "Porcupine-iOS-Performance"
-          --devices "${{ matrix.device }}"
+      - name: Run tests on AWS Device Farm
+        run: python3 ../../../script/automation/devicefarm.py
+          --type ios
+          --run_name porcupine-ios-perf
           --app_path "ddp/Build/Products/Debug-iphoneos/PorcupineAppTest.ipa"
           --test_path "ddp/Build/Products/Debug-iphoneos/PerformanceTest.zip"
+          --aws_id "${{secrets.AWS_DEVICE_FARM_ACCESS_KEY_ID}}"
+          --aws_secret "${{secrets.AWS_DEVICE_FARM_ACCESS_KEY_SECRET}}"
+          --project_arn "${{secrets.AWS_DEVICE_FARM_PROJECT_ARN}}"
+          --test_spec_arn "${{secrets.AWS_DEVICE_FARM_IOS_TEST_SPEC_ARN}}"
+          --device_pool_arn "${{secrets.AWS_DEVICE_FARM_IOS_PERF_DEVICE_POOL_ARN}}"
