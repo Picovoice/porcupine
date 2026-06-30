@@ -36,11 +36,13 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitSuccessWithCustomArguments() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(
+        let keywordPath = getFilePath(
+            bundle: bundle,
             forResource: "hey barista_ios",
             ofType: "ppn",
             inDirectory: "test_resources/keyword_files/en")!
-        let modelPath = bundle.path(
+        let modelPath = getFilePath(
+            bundle: bundle,
             forResource: "porcupine_params",
             ofType: "pv",
             inDirectory: "test_resources/model_files")
@@ -55,11 +57,13 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitSuccessWithMultipleCustomKeywordsAndSensitivities() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(
+        let keywordPath = getFilePath(
+            bundle: bundle,
             forResource: "hey barista_ios",
             ofType: "ppn",
             inDirectory: "test_resources/keyword_files/en")!
-        let keywordPath2 = bundle.path(
+        let keywordPath2 = getFilePath(
+            bundle: bundle,
             forResource: "pico clock_ios",
             ofType: "ppn",
             inDirectory: "test_resources/keyword_files/en")!
@@ -74,11 +78,13 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitFailWithMismatchedLanguage() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(
+        let keywordPath = getFilePath(
+            bundle: bundle,
             forResource: "ananas_ios",
             ofType: "ppn",
             inDirectory: "test_resources/keyword_files/de")!
-        let modelPath = bundle.path(
+        let modelPath = getFilePath(
+            bundle: bundle,
             forResource: "porcupine_params",
             ofType: "pv",
             inDirectory: "test_resources/model_files")!
@@ -174,7 +180,8 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitFailWithWrongKeywordPlatform() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(
+        let keywordPath = getFilePath(
+            bundle: bundle,
             forResource: "alexa_linux",
             ofType: "ppn",
             inDirectory: "test_resources/keyword_files/en")!
@@ -191,11 +198,13 @@ class PorcupineAppTestUITests: BaseTest {
 
     func testInitWithNonAsciiModelName() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(
+        let keywordPath = getFilePath(
+            bundle: bundle,
             forResource: "murciélago_ios",
             ofType: "ppn",
             inDirectory: "test_resources/keyword_files/es")!
-        let modelPath = bundle.path(
+        let modelPath = getFilePath(
+            bundle: bundle,
             forResource: "porcupine_params_es",
             ofType: "pv",
             inDirectory: "test_resources/model_files")!
@@ -215,7 +224,8 @@ class PorcupineAppTestUITests: BaseTest {
             device: device)
 
         let bundle = Bundle(for: type(of: self))
-        let fileURL: URL = bundle.url(
+        let fileURL: URL = getFileURL(
+            bundle: bundle,
             forResource: "porcupine",
             withExtension: "wav",
             subdirectory: "test_resources/audio_samples")!
@@ -242,7 +252,8 @@ class PorcupineAppTestUITests: BaseTest {
         let p: Porcupine = try Porcupine.init(accessKey: accessKey, keywords: keywords, device: device)
 
         let bundle = Bundle(for: type(of: self))
-        let fileURL: URL = bundle.url(
+        let fileURL: URL = getFileURL(
+            bundle: bundle,
             forResource: "multiple_keywords",
             withExtension: "wav",
             subdirectory: "test_resources/audio_samples")!

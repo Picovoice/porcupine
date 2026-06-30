@@ -35,7 +35,8 @@ struct MultipleKeywordTest: Decodable {
 class PorcupineLanguageTests: BaseTest {
     func testWrapper() throws {
         let bundle = Bundle(for: type(of: self))
-        let testDataJsonUrl = bundle.url(
+        let testDataJsonUrl = getFileURL(
+            bundle: bundle,
             forResource: "test_data",
             withExtension: "json",
             subdirectory: "test_resources")!
@@ -47,18 +48,21 @@ class PorcupineLanguageTests: BaseTest {
             let suffix = testCase.language == "en" ? "" : "_\(testCase.language)"
 
             let language: String = testCase.language
-            let modelPath: String = bundle.path(
+            let modelPath: String = getFilePath(
+                bundle: bundle,
                 forResource: "porcupine_params\(suffix)",
                 ofType: "pv",
                 inDirectory: "test_resources/model_files")!
             var keywordPaths: [String] = []
             for keyword in testCase.wakewords {
-                keywordPaths.append(bundle.path(
+                keywordPaths.append(getFilePath(
+                    bundle: bundle,
                     forResource: "\(keyword)_ios",
                     ofType: "ppn",
                     inDirectory: "test_resources/keyword_files/\(testCase.language)")!)
             }
-            let testAudioPath: URL = bundle.url(
+            let testAudioPath: URL = getFileURL(
+                bundle: bundle,
                 forResource: "multiple_keywords\(suffix)",
                 withExtension: "wav",
                 subdirectory: "test_resources/audio_samples")!
