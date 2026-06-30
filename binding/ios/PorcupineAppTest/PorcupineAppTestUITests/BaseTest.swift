@@ -50,10 +50,10 @@ class BaseTest: XCTestCase {
                 .replacingOccurrences(of: "/", with: "_")
             return bundle.path(forResource: encoded, ofType: ofType, inDirectory: inDirectory)
         }
-        
+
         return bundle.path(forResource: forResource, ofType: ofType, inDirectory: inDirectory)
     }
-    
+
     func getFileURL(bundle: Bundle, forResource: String, withExtension: String, subdirectory: String) -> URL? {
         if withExtension == "ppn" || withExtension == "wav" || withExtension == "pv" {
             let encoded = forResource.data(using: .utf8)?.base64EncodedString()
@@ -61,7 +61,7 @@ class BaseTest: XCTestCase {
                 .replacingOccurrences(of: "/", with: "_")
             return bundle.url(forResource: encoded, withExtension: withExtension, subdirectory: subdirectory)
         }
-        
+
         return bundle.url(forResource: forResource, withExtension: withExtension, subdirectory: subdirectory)
     }
 }
