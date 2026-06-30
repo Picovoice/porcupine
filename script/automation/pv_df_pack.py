@@ -7,7 +7,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', required=True)
 
-    parser.add_argument('--pack', action='store_true')
+    parser.add_argument('--unpack', action='store_true')
 
     args = parser.parse_args()
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     for file in found_files:
         filename, extension = os.path.basename(file).split(".")
-        new_filename = base64.urlsafe_b64encode(filename.encode('utf8')) if args.pack else base64.urlsafe_b64decode(filename.encode('utf8'))
+        new_filename = base64.urlsafe_b64encode(filename.encode('utf8')) if not args.unpack else base64.urlsafe_b64decode(filename.encode('utf8'))
         new_filename = new_filename.decode('utf8')
 
         old_path = file
