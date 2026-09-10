@@ -31,11 +31,19 @@ target 'PorcupineDemo' do
       # :ccache_enabled => true
     )
 
-    installer.pods_project.targets.each do |target|
-      if target.name == 'fmt'
-        target.build_configurations.each do |config|
-          config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
-        end
+    # New XCode doesn't agree with old react-native. Remove this fmt patch when
+    # react-native is updated past 0.85
+    fmt_base = File.join(installer.sandbox.root, 'fmt', 'include', 'fmt', 'base.h')
+    if File.exist?(fmt_base)
+      contents = File.read(fmt_base)
+      patched = contents.sub(
+        'defined(__apple_build_version__) && __apple_build_version__ < 14000029L',
+        'defined(__apple_build_version__)'
+      )
+      if patched == contents
+        Pod::UI.warn 'fmt consteval patch did nothing'
+      else
+        File.write(fmt_base, patched)
       end
     end
   end
