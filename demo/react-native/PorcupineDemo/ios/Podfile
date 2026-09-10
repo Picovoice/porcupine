@@ -15,11 +15,11 @@ if linkage != nil
 end
 
 pre_install do |installer|
-  installer.pod_targets.each do |target|
-    if target.name == 'fmt'
-      target.build_configurations.each do |config|
-        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'gnu++17'
-      end
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      next unless target.name == 'fmt'
+
+      config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'gnu++17'
     end
   end
 end
