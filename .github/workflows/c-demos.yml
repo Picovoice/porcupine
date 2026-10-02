@@ -73,17 +73,11 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, pv-windows-arm64]
+        machine: [rpi3-64, rpi4-64, rpi5-64, pv-windows-arm64]
         include:
-          - machine: rpi3-32
-            make_file: "Unix Makefiles"
-            pv_recorder_platform: "raspberry-pi3"
           - machine: rpi3-64
             make_file: "Unix Makefiles"
             pv_recorder_platform: "raspberry-pi3-64"
-          - machine: rpi4-32
-            make_file: "Unix Makefiles"
-            pv_recorder_platform: "raspberry-pi4"
           - machine: rpi4-64
             make_file: "Unix Makefiles"
             pv_recorder_platform: "raspberry-pi4-64"
@@ -153,25 +147,13 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, pv-windows-arm64, pv-linux, pv-ios, pv-windows]
+        machine: [rpi3-64, rpi4-64, pv-windows-arm64, pv-linux, pv-ios, pv-windows]
         include:
-          - machine: rpi3-32
-            platform: raspberry-pi
-            arch: cortex-a53
-            make_file: "Unix Makefiles"
-            pv_recorder_platform: "raspberry-pi3"
-            device: best
           - machine: rpi3-64
             platform: raspberry-pi
             arch: cortex-a53-aarch64
             make_file: "Unix Makefiles"
             pv_recorder_platform: "raspberry-pi3-64"
-            device: best
-          - machine: rpi4-32
-            platform: raspberry-pi
-            arch: cortex-a72
-            make_file: "Unix Makefiles"
-            pv_recorder_platform: "raspberry-pi4"
             device: best
           - machine: rpi4-64
             platform: raspberry-pi
