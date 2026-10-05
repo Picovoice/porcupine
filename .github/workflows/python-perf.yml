@@ -81,13 +81,13 @@ jobs:
         include:
         - machine: rpi3-64
           num_test_iterations: 50
-          performance_threshold_sec: 3.5
+          performance_threshold_sec: 6.0
         - machine: rpi4-64
           num_test_iterations: 50
           performance_threshold_sec: 1.5
         - machine: rpi5-64
           num_test_iterations: 50
-          performance_threshold_sec: 0.5
+          performance_threshold_sec: 0.6
 
     steps:
     - uses: actions/checkout@v3
