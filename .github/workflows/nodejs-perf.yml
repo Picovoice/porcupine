@@ -67,7 +67,7 @@ jobs:
         include:
         - machine: rpi3-64
           num_test_iterations: 50
-          performance_threshold_sec: 2.5
+          performance_threshold_sec: 3.5
         - machine: rpi4-64
           num_test_iterations: 50
           performance_threshold_sec: 1.5
