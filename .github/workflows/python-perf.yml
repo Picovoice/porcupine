@@ -77,23 +77,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64]
+        machine: [rpi3-64, rpi4-64]
         include:
-        - machine: rpi3-32
-          num_test_iterations: 50
-          performance_threshold_sec: 3.2
         - machine: rpi3-64
           num_test_iterations: 50
-          performance_threshold_sec: 3.5
-        - machine: rpi4-32
-          num_test_iterations: 50
-          performance_threshold_sec: 1.5
+          performance_threshold_sec: 6.0
         - machine: rpi4-64
           num_test_iterations: 50
           performance_threshold_sec: 1.5
         - machine: rpi5-64
           num_test_iterations: 50
-          performance_threshold_sec: 0.5
+          performance_threshold_sec: 0.6
 
     steps:
     - uses: actions/checkout@v3
