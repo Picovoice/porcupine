@@ -6,6 +6,7 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/nodejs-perf.yml'
+      - 'binding/nodejs/**'
       - 'lib/node/**'
       - 'lib/common/**'
       - 'resources/keyword_files/linux/**'
@@ -16,6 +17,7 @@ on:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/nodejs-perf.yml'
+      - 'binding/nodejs/**'
       - 'lib/node/**'
       - 'lib/common/**'
       - 'resources/keyword_files/linux/**'
