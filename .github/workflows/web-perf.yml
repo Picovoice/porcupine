@@ -6,6 +6,7 @@ on:
     branches: [ master ]
     paths:
       - 'binding/web/**'
+      - '!binding/web/README.md'
       - 'lib/wasm/**'
       - 'lib/common/**'
       - '.github/workflows/web-perf.yml'
@@ -13,6 +14,7 @@ on:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'binding/web/**'
+      - '!binding/web/README.md'
       - 'lib/wasm/**'
       - 'lib/common/**'
       - '.github/workflows/web-perf.yml'
