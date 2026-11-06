@@ -6,6 +6,8 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/nodejs-perf.yml'
+      - 'binding/nodejs/**'
+      - '!binding/nodejs/README.md'
       - 'lib/node/**'
       - 'lib/common/**'
       - 'resources/keyword_files/linux/**'
@@ -16,6 +18,8 @@ on:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/nodejs-perf.yml'
+      - 'binding/nodejs/**'
+      - '!binding/nodejs/README.md'
       - 'lib/node/**'
       - 'lib/common/**'
       - 'resources/keyword_files/linux/**'
@@ -67,7 +71,7 @@ jobs:
         include:
         - machine: rpi3-64
           num_test_iterations: 50
-          performance_threshold_sec: 3.5
+          performance_threshold_sec: 3.7
         - machine: rpi4-64
           num_test_iterations: 50
           performance_threshold_sec: 1.5

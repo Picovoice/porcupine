@@ -6,7 +6,8 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/python-perf.yml'
-      - 'binding/python/test_porcupine_perf.py'
+      - 'binding/python/**'
+      - '!binding/python/README.md'
       - 'lib/common/**'
       - 'lib/linux/**'
       - 'lib/mac/**'
@@ -20,7 +21,8 @@ on:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/python-perf.yml'
-      - 'binding/python/test_porcupine_perf.py'
+      - 'binding/python/**'
+      - '!binding/python/README.md'
       - 'lib/common/**'
       - 'lib/linux/**'
       - 'lib/mac/**'

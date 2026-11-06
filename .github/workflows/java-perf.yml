@@ -6,7 +6,8 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/java-perf.yml'
-      - 'binding/java/**/PorcupinePerformanceTest.java'
+      - 'binding/java/**'
+      - '!binding/java/README.md'
       - 'lib/common/**'
       - 'lib/java/**'
       - 'resources/keyword_files/linux/**'
@@ -17,6 +18,8 @@ on:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/java-perf.yml'
+      - 'binding/java/**'
+      - '!binding/java/README.md'
       - 'lib/common/**'
       - 'lib/java/**'
       - 'resources/keyword_files/linux/**'
